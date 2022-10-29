@@ -1,3 +1,5 @@
+[![.NET Core](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml)
+
 # Wexflow
 
 Wexflow is an open source and cross-platform workflow engine and automation platform. The goal of Wexflow is to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
