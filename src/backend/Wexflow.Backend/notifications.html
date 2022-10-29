@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Notifications</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toast.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/notifications.css" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/notifications.min.css" />
+
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/language.js"></script>
+
+    <!--<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/authenticate.js"></script>
+    <script type="text/javascript" src="js/language.core.js"></script>
+    <script type="text/javascript" src="js/notifications.js"></script>-->
+
+    <script type="text/javascript" src="js/notifications.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <a id="lnk-dashboard" href="dashboard.html">Dashboard</a>
+        <a id="lnk-records" href="records.html">Records</a>
+        <a id="lnk-manager" href="manager.html">Manager</a>
+        <a id="lnk-approval" href="approval.html">Approval</a>
+        <a id="lnk-designer" href="designer.html">Designer</a>
+        <a id="lnk-history" href="history.html">History</a>
+        <a id="lnk-users" href="users.html">Users</a>
+        <a id="lnk-profiles" href="profiles.html">Profiles</a>
+        <div id="lang" class="header-right"></div>
+        <a href="#" id="btn-logout" class="header-right"><span id="spn-logout">Logout</span><span id="spn-username"></span></a>
+        <a id="lnk-notifications" href="notifications.html" class="header-right"><img id="img-notifications" src="images/notification.png" /></a>
+    </div>
+    <div id="navigation">
+        <div id="left-side">
+            <div id="search">
+                <img src="assets/search.svg">
+                <input id="search-notifications" type="text" autocomplete="off" placeholder="Search notifications">
+            </div>
+        </div>
+        <div id="right-side">
+            <div id="btn-delete">Delete</div>
+            <div id="btn-mark-as-unread">Mark as unread</div>
+            <div id="btn-mark-as-read">Mark as read</div>
+        </div>
+    </div>
+    <div id="content"></div>
+</body>
+</html>

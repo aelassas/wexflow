@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="131" name="Workflow_RestVariables" description="Workflow_RestVariables">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<LocalVariables>
+	</LocalVariables>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="$restVar1" />
+			<Setting name="file" value="$restVar2" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+	</Tasks>
+</Workflow>

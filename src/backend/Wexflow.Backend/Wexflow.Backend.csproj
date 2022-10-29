@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C181F37A-30A6-45C6-A191-5672DE38F51F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Wexflow.Backend</RootNamespace>
+    <AssemblyName>Wexflow.Backend</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="approval.html" />
+    <Content Include="assets\action.svg" />
+    <Content Include="assets\actionblue.svg" />
+    <Content Include="assets\actionorange.svg" />
+    <Content Include="assets\arrow.svg" />
+    <Content Include="assets\checkoff.svg" />
+    <Content Include="assets\checkon.svg" />
+    <Content Include="assets\close.svg" />
+    <Content Include="assets\closeleft.png" />
+    <Content Include="assets\closeleft.svg" />
+    <Content Include="assets\database.svg" />
+    <Content Include="assets\databaseorange.svg" />
+    <Content Include="assets\dropdown.svg" />
+    <Content Include="assets\error.svg" />
+    <Content Include="assets\errorblue.svg" />
+    <Content Include="assets\errorred.svg" />
+    <Content Include="assets\eye.svg" />
+    <Content Include="assets\eyeblue.svg" />
+    <Content Include="assets\grabme.svg" />
+    <Content Include="assets\grid.gif" />
+    <Content Include="assets\heart.svg" />
+    <Content Include="assets\doc.png" />
+    <Content Include="assets\log.svg" />
+    <Content Include="assets\logred.svg" />
+    <Content Include="assets\meta.png" />
+    <Content Include="assets\more.svg" />
+    <Content Include="assets\openleft.png" />
+    <Content Include="assets\search.svg" />
+    <Content Include="assets\tile.png" />
+    <Content Include="assets\time.svg" />
+    <Content Include="assets\timeblue.svg" />
+    <Content Include="assets\twitter.svg" />
+    <Content Include="assets\twitterorange.svg" />
+    <Content Include="css\approval.min.css" />
+    <Content Include="css\bootstrap-toggle.min.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\dashboard.min.css" />
+    <Content Include="css\designer.min.css" />
+    <Content Include="css\editor.min.css" />
+    <Content Include="css\designer.css" />
+    <Content Include="css\flowy.css" />
+    <Content Include="css\forgot-password.css" />
+    <Content Include="css\forgot-password.min.css" />
+    <Content Include="css\history.css" />
+    <Content Include="css\bootstrap.min.css.map" />
+    <Content Include="css\history.min.css" />
+    <Content Include="css\jBox.all.min.css" />
+    <Content Include="css\jquery.toast.min.css" />
+    <Content Include="css\login.min.css" />
+    <Content Include="css\approval.css" />
+    <Content Include="css\manager.min.css" />
+    <Content Include="css\notifications.css" />
+    <Content Include="css\profiles.css" />
+    <Content Include="css\profiles.min.css" />
+    <Content Include="css\records.css" />
+    <Content Include="css\users.css" />
+    <Content Include="css\users.min.css" />
+    <Content Include="designer.html" />
+    <Content Include="forgot-password.html" />
+    <Content Include="images\notification-active.png" />
+    <Content Include="images\notification.png" />
+    <Content Include="images\da.png" />
+    <Content Include="images\delete.png" />
+    <Content Include="images\en.png" />
+    <Content Include="images\fr.png" />
+    <Content Include="images\logo.png" />
+    <Content Include="js\ace.js" />
+    <Content Include="js\approval.min.js" />
+    <Content Include="js\approval.js" />
+    <Content Include="js\blockly_compressed.js" />
+    <Content Include="js\blocks_compressed.js" />
+    <Content Include="js\bootstrap-toggle.min.js" />
+    <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\dashboard.min.js" />
+    <Content Include="js\designer.min.js" />
+    <Content Include="js\editor.min.js" />
+    <Content Include="js\designer.js" />
+    <Content Include="js\en.js" />
+    <Content Include="js\ext-keybinding_menu.js" />
+    <Content Include="js\ext-prompt.js" />
+    <Content Include="js\ext-searchbox.js" />
+    <Content Include="js\ext-settings_menu.js" />
+    <Content Include="js\flowy.js" />
+    <Content Include="js\forgot-password.js" />
+    <Content Include="js\forgot-password.min.js" />
+    <Content Include="js\history.min.js" />
+    <Content Include="js\jquery.toast.min.js" />
+    <Content Include="js\language.js" />
+    <Content Include="js\language.core.js" />
+    <Content Include="js\lodash.min.js" />
+    <Content Include="js\manager.min.js" />
+    <Content Include="js\mode-json.js" />
+    <Content Include="js\mode-xml.js" />
+    <Content Include="js\notifications.js" />
+    <Content Include="js\profiles.js" />
+    <Content Include="js\profiles.min.js" />
+    <Content Include="js\records.js" />
+    <Content Include="js\theme-ambiance.js" />
+    <Content Include="js\theme-chaos.js" />
+    <Content Include="js\theme-chrome.js" />
+    <Content Include="js\theme-clouds.js" />
+    <Content Include="js\theme-clouds_midnight.js" />
+    <Content Include="js\theme-cobalt.js" />
+    <Content Include="js\theme-crimson_editor.js" />
+    <Content Include="js\theme-dawn.js" />
+    <Content Include="js\theme-dracula.js" />
+    <Content Include="js\theme-dreamweaver.js" />
+    <Content Include="js\theme-eclipse.js" />
+    <Content Include="js\theme-github.js" />
+    <Content Include="js\theme-gob.js" />
+    <Content Include="js\theme-gruvbox.js" />
+    <Content Include="js\theme-idle_fingers.js" />
+    <Content Include="js\theme-iplastic.js" />
+    <Content Include="js\theme-katzenmilch.js" />
+    <Content Include="js\theme-kr_theme.js" />
+    <Content Include="js\theme-kuroir.js" />
+    <Content Include="js\theme-merbivore.js" />
+    <Content Include="js\theme-merbivore_soft.js" />
+    <Content Include="js\theme-monokai.js" />
+    <Content Include="js\theme-mono_industrial.js" />
+    <Content Include="js\theme-pastel_on_dark.js" />
+    <Content Include="js\theme-solarized_dark.js" />
+    <Content Include="js\theme-solarized_light.js" />
+    <Content Include="js\theme-sqlserver.js" />
+    <Content Include="js\theme-terminal.js" />
+    <Content Include="js\theme-textmate.js" />
+    <Content Include="js\theme-tomorrow.js" />
+    <Content Include="js\theme-tomorrow_night.js" />
+    <Content Include="js\theme-tomorrow_night_blue.js" />
+    <Content Include="js\theme-tomorrow_night_bright.js" />
+    <Content Include="js\theme-tomorrow_night_eighties.js" />
+    <Content Include="js\theme-twilight.js" />
+    <Content Include="js\theme-vibrant_ink.js" />
+    <Content Include="js\uglify-login.bat" />
+    <Content Include="js\uglify-dashboard.bat" />
+    <Content Include="js\uglify-manager.bat" />
+    <Content Include="js\uglify-editor.bat" />
+    <Content Include="js\uglify-history.bat" />
+    <Content Include="js\uglify-all.bat" />
+    <Content Include="css\uglify-login.bat" />
+    <Content Include="css\uglify-dashboard.bat" />
+    <Content Include="css\uglify-manager.bat" />
+    <Content Include="css\uglify-editor.bat" />
+    <Content Include="css\uglify-history.bat" />
+    <Content Include="css\uglify-all.bat" />
+    <Content Include="js\uglify-forgot-password.bat" />
+    <Content Include="js\uglify-users.bat" />
+    <Content Include="css\uglify-forgot-password.bat" />
+    <Content Include="css\uglify-users.bat" />
+    <Content Include="css\uglify-approval.bat" />
+    <Content Include="js\uglify-approval.bat" />
+    <Content Include="css\uglify-profiles.bat" />
+    <Content Include="js\uglify-profiles.bat" />
+    <Content Include="js\jBox.all.min.js" />
+    <Content Include="js\uglify-designer.bat" />
+    <Content Include="css\uglify-designer.bat" />
+    <Content Include="js\uglify-notifications.bat" />
+    <Content Include="js\uglify-records.bat" />
+    <Content Include="css\uglify-notifications.bat" />
+    <Content Include="css\uglify-records.bat" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\dashboard.css" />
+    <Content Include="css\editor.css" />
+    <Content Include="css\images\ui-icons_444444_256x240.png" />
+    <Content Include="css\images\ui-icons_555555_256x240.png" />
+    <Content Include="css\images\ui-icons_777620_256x240.png" />
+    <Content Include="css\images\ui-icons_777777_256x240.png" />
+    <Content Include="css\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="css\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="css\jquery-ui.min.css" />
+    <Content Include="css\login.css" />
+    <Content Include="css\manager.css" />
+    <Content Include="css\vs2015.css" />
+    <Content Include="dashboard.html" />
+    <Content Include="editor.html" />
+    <Content Include="history.html" />
+    <Content Include="images\disapproved-small.png" />
+    <Content Include="images\disapproved.png" />
+    <Content Include="images\done-small.png" />
+    <Content Include="images\done.png" />
+    <Content Include="images\failed-small.png" />
+    <Content Include="images\failed.png" />
+    <Content Include="images\pending-small.png" />
+    <Content Include="images\pending.png" />
+    <Content Include="images\running-small.png" />
+    <Content Include="images\running.png" />
+    <Content Include="images\stopped-small.png" />
+    <Content Include="images\stopped.png" />
+    <Content Include="images\warning-small.png" />
+    <Content Include="images\warning.png" />
+    <Content Include="index.html" />
+    <Content Include="js\authenticate.js" />
+    <Content Include="js\common.js" />
+    <Content Include="js\cytoscape-dagre.min.js" />
+    <Content Include="js\dashboard.js" />
+    <Content Include="js\editor.js" />
+    <Content Include="js\highlight.pack.js" />
+    <Content Include="js\history.js" />
+    <Content Include="js\jquery.min.js" />
+    <Content Include="js\jquery-ui.min.js" />
+    <Content Include="js\login.js" />
+    <Content Include="js\login.min.js" />
+    <Content Include="js\manager.js" />
+    <Content Include="js\md5.js" />
+    <Content Include="js\settings.js" />
+    <Content Include="js\users.js" />
+    <Content Include="js\users.min.js" />
+    <Content Include="js\worker-json.js" />
+    <Content Include="js\worker-xml.js" />
+    <Content Include="manager.html" />
+    <Content Include="notifications.html" />
+    <Content Include="profiles.html" />
+    <Content Include="records.html" />
+    <Content Include="users.html" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3367</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

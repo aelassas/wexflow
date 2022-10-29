@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FileSystemWatcher is a sequential task that watches a hot folder and triggers tasks on file created, changed or deleted.
+  -->
+  <Task id="$int" name="FileSystemWatcher" description="$string" enabled="true|false">
+    <!-- The path of the folder to watch. -->
+    <Setting name="folderToWatch" value="$string" />
+    <!-- Optional. The filter. Defaults to: *.* -->
+    <Setting name="filter" value="$string" />
+    <!-- Optional. Indicates whether sub folders should be included in the wtach process or not. Defaults to false. -->
+    <Setting name="includeSubFolders" value="true|false" />
+    <!-- onFileFound event. List of tasks to trigger on file found before starting watch process. Example: 2, 3 -->
+    <Setting name="onFileFound" value="$string" />
+    <!-- onFileCreated event. List of tasks to trigger on file created. Example: 2, 3 -->
+    <Setting name="onFileCreated" value="$string" />
+    <!-- onFileChanged event. List of tasks to trigger on file changed. Example: 4, 5, 6 -->
+    <Setting name="onFileChanged" value="$string" />
+    <!-- onFileDeleted event. List of tasks to trigger on file deleted. Example: 7 -->
+    <Setting name="onFileDeleted" value="$string" />
+    <!-- Optional and defaults to true. Bypass file locks. -->
+    <Setting name="safeMode" value="bool" />
+  </Task>
+</Tasks>

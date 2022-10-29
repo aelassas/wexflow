@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="168" name="Workflow_Untgz" description="Workflow_Untgz">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading TAR archives" enabled="true">
+      <Setting name="file" value="/Applications/wexflow/WexflowTesting/Untgz_src/archive.tar.gz" />
+    </Task>
+    <Task id="2" name="Untgz" description="Extracting TAR archives" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destDir" value="/Applications/wexflow/WexflowTesting/Untgz_dest" />
+    </Task>
+    <Task id="3" name="ListFiles" description="Listing files..." enabled="true" />
+  </Tasks>
+</Workflow>

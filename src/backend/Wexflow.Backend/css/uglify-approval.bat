@@ -1,0 +1,1 @@
+uglifycss bootstrap.min.css jquery.toast.min.css approval.css --output approval.min.css

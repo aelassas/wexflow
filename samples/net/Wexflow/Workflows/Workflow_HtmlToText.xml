@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="107" name="Workflow_HtmlToText" description="Workflow_HtmlToText">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading HTML files" enabled="true">
+	  <Setting name="file" value="C:\WexflowTesting\HtmlToText_src\page1.html" />
+	  <Setting name="file" value="C:\WexflowTesting\HtmlToText_src\page2.html" />
+    </Task>
+    <Task id="2" name="HtmlToText" description="Extracting text from HTML files" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving text files to HtmlToText_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\HtmlToText_dest\" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

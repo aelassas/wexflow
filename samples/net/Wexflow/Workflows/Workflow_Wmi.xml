@@ -1,0 +1,15 @@
+<Workflow xmlns="urn:wexflow-schema" id="23" name="Workflow_Wmi" description="Workflow_Wmi">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Wmi" description="Listing all running processes" enabled="true">
+			<Setting name="query" value="SELECT Name FROM Win32_ComputerSystem" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving Wmi Xmls to Wmi folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Wmi\" />
+		</Task>
+	</Tasks>
+</Workflow>

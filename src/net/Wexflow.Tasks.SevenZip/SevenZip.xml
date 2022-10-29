@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    SevenZip is a sequential task that creates a .7z from a collection of files.
+    
+    The .7z generated is loaded by this task so that other tasks can select it through the selectFiles option.
+  -->
+  <Task id="$int" name="SevenZip" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be added to the .7z archive.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- The Zip file name. Example: output.7z -->
+    <Setting name="zipFileName" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

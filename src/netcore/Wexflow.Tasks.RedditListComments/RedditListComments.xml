@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    RedditListComments is a sequential task that retrieves Reddit comment history and writes it in an XML file. 
+    
+    The format of the output XML file is as follows:
+    
+    <Comments>
+      <Comment id="$string" subreddit="$string" author="$string" upvotes="$int" downvotes="$int"><![CDATA[$html]]></Comment>
+      ...
+    </Comments>    
+  -->
+  <Task id="$int" name="RedditListComments" description="$string" enabled="true|false">
+    <!-- Application ID: You can obtain it from https://www.reddit.com/prefs/apps -->
+    <Setting name="appId" value="$string" />
+    <!-- Refresh token. You can obtain it from https://not-an-aardvark.github.io/reddit-oauth-helper/ -->
+    <Setting name="refreshToken" value="$string" />
+    <!-- Optional and defaults to 50. The maximum number of posts that should be returned in the result set. -->
+    <Setting name="maxResults" value="$int" />
+  </Task>
+</Tasks>

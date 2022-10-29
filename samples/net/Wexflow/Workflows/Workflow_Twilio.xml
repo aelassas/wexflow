@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="141" name="Workflow_Twilio" description="Workflow_Twilio">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="approval" value="false" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Twilio" description="Sending SMS" enabled="true">
+			<Setting name="accountSid" value="ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" />
+			<Setting name="authToken" value="AUTH_TOKEN" />
+			<Setting name="from" value="+15017122661" />
+			<Setting name="to" value="+15558675310" />
+			<Setting name="message" value="This is the ship that made the Kessel Run in fourteen parsecs?" />
+		</Task>
+	</Tasks>
+</Workflow>

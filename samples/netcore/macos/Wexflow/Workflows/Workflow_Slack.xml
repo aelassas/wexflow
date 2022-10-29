@@ -1,0 +1,15 @@
+<Workflow xmlns="urn:wexflow-schema" id="137" name="Workflow_Slack" description="Workflow_Slack">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading messages" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/Slack/Messages.xml" />
+		</Task>
+		<Task id="2" name="Slack" description="Sending messages" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="token" value="TOKEN" />
+		</Task>
+	</Tasks>
+</Workflow>

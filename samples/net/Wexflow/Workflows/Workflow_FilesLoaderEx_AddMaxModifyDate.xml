@@ -1,0 +1,14 @@
+<Workflow xmlns="urn:wexflow-schema" id="134" name="Workflow_FilesLoaderEx_AddMaxModifyDate" description="Workflow_FilesLoaderEx_AddMaxModifyDate">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="FilesLoaderEx" description="Loading files_AddMaxModifyDate" enabled="true">
+      <Setting name="folder" value="C:\WexflowTesting\FilesLoaderEx" />
+      <Setting name="addMaxModifyDate" value="2" />
+    </Task>
+    <Task id="2" name="ListFiles" description="Listing files" enabled="true" />
+  </Tasks>
+</Workflow>

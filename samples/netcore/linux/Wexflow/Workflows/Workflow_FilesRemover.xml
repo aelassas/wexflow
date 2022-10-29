@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="5" name="Workflow_FilesRemover" description="Workflow_FilesRemover">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file11.txt" />
+		</Task>
+		<Task id="2" name="FilesRemover" description="Deleting files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+	</Tasks>
+</Workflow>

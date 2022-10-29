@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    CsvToSql is a sequential task that converts CSV files to SQL scripts (Insert - SQL Server only).
+    
+    The first line of the CSV must contain column names.
+    
+    The SQL files generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="CsvToSql" description="$string" enabled="true|false">
+    <!-- 
+      The CSV files loaded by the task having as id $taskId will be
+      transformed to SQL scripts.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- SQL Table name.-->
+    <Setting name="tableName" value="$string" />
+    
+    <!-- CSV separator. Ex: ;-->
+    <Setting name="separator" value="$string" />
+  </Task>
+</Tasks>

@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D559C35B-BFF5-49C2-9490-818314C88A76}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Wexflow.Server</RootNamespace>
+    <AssemblyName>Wexflow.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Wexflow.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Wexflow.Server.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=6.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Autofac.6.1.0\lib\netstandard2.0\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Owin.4.1.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Owin.Host.HttpListener.4.1.1\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Owin.Hosting.4.1.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Nancy.2.0.0\lib\net452\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Owin, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Nancy.Owin.2.0.0\lib\net452\Nancy.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Reflection.TypeExtensions.4.7.0\lib\net461\System.Reflection.TypeExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Security.Cryptography.Cng.5.0.0\lib\net461\System.Security.Cryptography.Cng.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Text.Encodings.Web.5.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Text.Json.5.0.0\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppConfiguration.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Contracts\Approver.cs" />
+    <Compile Include="Contracts\AttributeInfo.cs" />
+    <Compile Include="Contracts\Auth.cs" />
+    <Compile Include="Contracts\Entry.cs" />
+    <Compile Include="Contracts\HistoryEntry.cs" />
+    <Compile Include="Contracts\Node.cs" />
+    <Compile Include="Contracts\Record.cs" />
+    <Compile Include="Contracts\SaveResult.cs" />
+    <Compile Include="Contracts\TaskSetting.cs" />
+    <Compile Include="Contracts\SettingInfo.cs" />
+    <Compile Include="Contracts\StatusCount.cs" />
+    <Compile Include="Contracts\TaskInfo.cs" />
+    <Compile Include="Contracts\TaskName.cs" />
+    <Compile Include="Contracts\User.cs" />
+    <Compile Include="Contracts\Variable.cs" />
+    <Compile Include="Contracts\Version.cs" />
+    <Compile Include="Contracts\WorkflowInfo.cs" />
+    <Compile Include="Contracts\Workflow\Workflow.cs" />
+    <Compile Include="Contracts\Workflow\WorkflowInfo.cs" />
+    <Compile Include="IAppConfiguration.cs" />
+    <Compile Include="Contracts\Notification.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Compile Include="WexflowService.cs" />
+    <Compile Include="WexflowServer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WexflowServer.Designer.cs">
+      <DependentUpon>WexflowServer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core.Db\Wexflow.Core.Db.csproj">
+      <Project>{ffe105a5-1c72-4e7d-bc48-5f5902376893}</Project>
+      <Name>Wexflow.Core.Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
+      <Project>{46257949-80B5-48F2-9B83-29354C339869}</Project>
+      <Name>Wexflow.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ApprovalRecordsCreator\Wexflow.Tasks.ApprovalRecordsCreator.csproj">
+      <Project>{5aee3696-ff81-423f-ab21-550aa85b0ccb}</Project>
+      <Name>Wexflow.Tasks.ApprovalRecordsCreator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ApprovalWorkflowsCreator\Wexflow.Tasks.ApprovalWorkflowsCreator.csproj">
+      <Project>{a175634e-7ee6-426a-a1f7-f1b90dbcc1e3}</Project>
+      <Name>Wexflow.Tasks.ApprovalWorkflowsCreator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Approval\Wexflow.Tasks.Approval.csproj">
+      <Project>{8bff752c-4eb0-49cb-a367-92046d78d010}</Project>
+      <Name>Wexflow.Tasks.Approval</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ApproveRecord\Wexflow.Tasks.ApproveRecord.csproj">
+      <Project>{69f2479a-876c-4f75-ac5e-585761bb5a17}</Project>
+      <Name>Wexflow.Tasks.ApproveRecord</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.CsvToJson\Wexflow.Tasks.CsvToJson.csproj">
+      <Project>{dd553a49-a5ad-4f12-91cb-9fba28777ed2}</Project>
+      <Name>Wexflow.Tasks.CsvToJson</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.CsvToSql\Wexflow.Tasks.CsvToSql.csproj">
+      <Project>{64b76fc5-b33d-4843-8708-bc8bd89fba15}</Project>
+      <Name>Wexflow.Tasks.CsvToSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.CsvToXml\Wexflow.Tasks.CsvToXml.csproj">
+      <Project>{40664177-8903-4c7b-ad0e-7b98bed6a3c8}</Project>
+      <Name>Wexflow.Tasks.CsvToXml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.CsvToYaml\Wexflow.Tasks.CsvToYaml.csproj">
+      <Project>{09607358-cfc4-4365-9bdb-57c9ce6ce741}</Project>
+      <Name>Wexflow.Tasks.CsvToYaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.EnvironmentVariable\Wexflow.Tasks.EnvironmentVariable.csproj">
+      <Project>{4d6b8683-6296-4703-9dc8-ab911875a703}</Project>
+      <Name>Wexflow.Tasks.EnvironmentVariable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ExecCs\Wexflow.Tasks.ExecCs.csproj">
+      <Project>{485bbbd8-4ad9-4088-a91d-2766cc5cfa0e}</Project>
+      <Name>Wexflow.Tasks.ExecCs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ExecVb\Wexflow.Tasks.ExecVb.csproj">
+      <Project>{25c5c91b-91b9-4cc6-9ce0-4d7cf9312496}</Project>
+      <Name>Wexflow.Tasks.ExecVb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FileContentMatch\Wexflow.Tasks.FileContentMatch.csproj">
+      <Project>{f151425b-cb47-4ef6-adb7-d8c2d9ae0479}</Project>
+      <Name>Wexflow.Tasks.FileContentMatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FileExists\Wexflow.Tasks.FileExists.csproj">
+      <Project>{8ed85a48-a8e3-4565-a874-3562f081d14c}</Project>
+      <Name>Wexflow.Tasks.FileExists</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FileMatch\Wexflow.Tasks.FileMatch.csproj">
+      <Project>{5d8b91f0-6363-4015-9c95-6a07ce15d56d}</Project>
+      <Name>Wexflow.Tasks.FileMatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesConcat\Wexflow.Tasks.FilesConcat.csproj">
+      <Project>{215834bb-7c88-45f0-b376-76ffae93f4b2}</Project>
+      <Name>Wexflow.Tasks.FilesConcat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesCopier\Wexflow.Tasks.FilesCopier.csproj">
+      <Project>{4f396126-2220-45ae-a90f-d655a3ab585f}</Project>
+      <Name>Wexflow.Tasks.FilesCopier</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesDecryptor\Wexflow.Tasks.FilesDecryptor.csproj">
+      <Project>{23ab8ee5-b04d-4876-9155-bfe7ac33e02d}</Project>
+      <Name>Wexflow.Tasks.FilesDecryptor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesDiff\Wexflow.Tasks.FilesDiff.csproj">
+      <Project>{ea90be5e-884e-4af0-bb46-d64b8fea3013}</Project>
+      <Name>Wexflow.Tasks.FilesDiff</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesEncryptor\Wexflow.Tasks.FilesEncryptor.csproj">
+      <Project>{34539ba1-7c7c-4844-80cf-d635151fc91a}</Project>
+      <Name>Wexflow.Tasks.FilesEncryptor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesEqual\Wexflow.Tasks.FilesEqual.csproj">
+      <Project>{a3d7f9d8-8359-4302-91a0-d00d4c1eda9b}</Project>
+      <Name>Wexflow.Tasks.FilesEqual</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesExist\Wexflow.Tasks.FilesExist.csproj">
+      <Project>{eda6a4d5-5814-4920-b2da-dd414894cbf5}</Project>
+      <Name>Wexflow.Tasks.FilesExist</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesInfo\Wexflow.Tasks.FilesInfo.csproj">
+      <Project>{4c64fc9a-edad-4741-9b1d-76f11a73532a}</Project>
+      <Name>Wexflow.Tasks.FilesInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesJoiner\Wexflow.Tasks.FilesJoiner.csproj">
+      <Project>{fc422775-d1f9-4566-b96d-e34530733f4a}</Project>
+      <Name>Wexflow.Tasks.FilesJoiner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesLoaderEx\Wexflow.Tasks.FilesLoaderEx.csproj">
+      <Project>{4d7ebc75-a7ed-4163-aebf-30a34ade0333}</Project>
+      <Name>Wexflow.Tasks.FilesLoaderEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesLoader\Wexflow.Tasks.FilesLoader.csproj">
+      <Project>{d9dd665a-a147-462c-bcee-3008559728b5}</Project>
+      <Name>Wexflow.Tasks.FilesLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesMover\Wexflow.Tasks.FilesMover.csproj">
+      <Project>{3abee317-3146-46a5-a59b-232177a0ab76}</Project>
+      <Name>Wexflow.Tasks.FilesMover</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesRemover\Wexflow.Tasks.FilesRemover.csproj">
+      <Project>{1dcff39a-5b91-49ce-b975-f47dff537a4b}</Project>
+      <Name>Wexflow.Tasks.FilesRemover</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesRenamer\Wexflow.Tasks.FilesRenamer.csproj">
+      <Project>{98a6156e-9784-4d83-8d39-c01976a32155}</Project>
+      <Name>Wexflow.Tasks.FilesRenamer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FilesSplitter\Wexflow.Tasks.FilesSplitter.csproj">
+      <Project>{7efe7108-621b-49a0-b592-77e402aadbdb}</Project>
+      <Name>Wexflow.Tasks.FilesSplitter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FileSystemWatcher\Wexflow.Tasks.FileSystemWatcher.csproj">
+      <Project>{9465947f-0326-491d-afba-4b64df1d282b}</Project>
+      <Name>Wexflow.Tasks.FileSystemWatcher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FolderExists\Wexflow.Tasks.FolderExists.csproj">
+      <Project>{b7cbd3a6-8473-4ba3-b346-0894ead0d6c9}</Project>
+      <Name>Wexflow.Tasks.FolderExists</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Ftp\Wexflow.Tasks.Ftp.csproj">
+      <Project>{272ab358-72d6-446a-b339-e9a579a63b76}</Project>
+      <Name>Wexflow.Tasks.Ftp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Guid\Wexflow.Tasks.Guid.csproj">
+      <Project>{eb130173-426e-45e6-a852-60215e46fdf8}</Project>
+      <Name>Wexflow.Tasks.Guid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HtmlToPdf\Wexflow.Tasks.HtmlToPdf.csproj">
+      <Project>{3b5b4434-ab77-41f7-a25a-fc3e12df1275}</Project>
+      <Name>Wexflow.Tasks.HtmlToPdf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HtmlToText\Wexflow.Tasks.HtmlToText.csproj">
+      <Project>{142396bc-6475-4678-a4a4-b5175f49e660}</Project>
+      <Name>Wexflow.Tasks.HtmlToText</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HttpDelete\Wexflow.Tasks.HttpDelete.csproj">
+      <Project>{121e2e4e-3337-4650-8fbc-7315314779ac}</Project>
+      <Name>Wexflow.Tasks.HttpDelete</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HttpGet\Wexflow.Tasks.HttpGet.csproj">
+      <Project>{85a03aea-b876-4009-ac26-6cd1af34c6d0}</Project>
+      <Name>Wexflow.Tasks.HttpGet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HttpPatch\Wexflow.Tasks.HttpPatch.csproj">
+      <Project>{03b0c261-e9ef-466d-8fd8-4d30ce977218}</Project>
+      <Name>Wexflow.Tasks.HttpPatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HttpPost\Wexflow.Tasks.HttpPost.csproj">
+      <Project>{0d02fb10-246b-4c1e-bf51-595747d0ff3a}</Project>
+      <Name>Wexflow.Tasks.HttpPost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.HttpPut\Wexflow.Tasks.HttpPut.csproj">
+      <Project>{169e1c8f-2307-4e20-a8c5-f13a19fd9fc3}</Project>
+      <Name>Wexflow.Tasks.HttpPut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Http\Wexflow.Tasks.Http.csproj">
+      <Project>{c249b3ea-e3a3-4975-b3ba-51bc9d7e5816}</Project>
+      <Name>Wexflow.Tasks.Http</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ImagesConcat\Wexflow.Tasks.ImagesConcat.csproj">
+      <Project>{7e3fe55c-4bbe-4d7f-b705-34d247815bb1}</Project>
+      <Name>Wexflow.Tasks.ImagesConcat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ImagesCropper\Wexflow.Tasks.ImagesCropper.csproj">
+      <Project>{2c953aeb-0bb5-43a6-a42d-8aff18ad4dc1}</Project>
+      <Name>Wexflow.Tasks.ImagesCropper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ImagesOverlay\Wexflow.Tasks.ImagesOverlay.csproj">
+      <Project>{cc2b67b1-5f8d-4e5d-9062-b92b0d0aa9ef}</Project>
+      <Name>Wexflow.Tasks.ImagesOverlay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ImagesResizer\Wexflow.Tasks.ImagesResizer.csproj">
+      <Project>{c62dde2e-17c7-41ce-9aa6-12f994939f1e}</Project>
+      <Name>Wexflow.Tasks.ImagesResizer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ImagesTransformer\Wexflow.Tasks.ImagesTransformer.csproj">
+      <Project>{d2ba9820-d5c7-4053-8e36-ac94c162c9b0}</Project>
+      <Name>Wexflow.Tasks.ImagesTransformer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.InstagramUploadImage\Wexflow.Tasks.InstagramUploadImage.csproj">
+      <Project>{45d2177b-efb1-4790-8f08-e373840413d7}</Project>
+      <Name>Wexflow.Tasks.InstagramUploadImage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.InstagramUploadVideo\Wexflow.Tasks.InstagramUploadVideo.csproj">
+      <Project>{882fcc8b-b7f6-4290-9c2d-ccdfbbc2e327}</Project>
+      <Name>Wexflow.Tasks.InstagramUploadVideo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.IsoCreator\Wexflow.Tasks.IsoCreator.csproj">
+      <Project>{9cdfaf59-62b3-48ba-bcce-3359856d3835}</Project>
+      <Name>Wexflow.Tasks.IsoCreator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.IsoExtractor\Wexflow.Tasks.IsoExtractor.csproj">
+      <Project>{8546cd00-1a5e-4455-bdd4-225716db1727}</Project>
+      <Name>Wexflow.Tasks.IsoExtractor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.JsonToYaml\Wexflow.Tasks.JsonToYaml.csproj">
+      <Project>{57edb875-bb62-42b2-8851-8ce774b13457}</Project>
+      <Name>Wexflow.Tasks.JsonToYaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ListEntities\Wexflow.Tasks.ListEntities.csproj">
+      <Project>{d03eb1f0-5dab-4e93-8b29-783c4135ab55}</Project>
+      <Name>Wexflow.Tasks.ListEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ListFiles\Wexflow.Tasks.ListFiles.csproj">
+      <Project>{8016d7d3-223b-484f-a78d-dfcdf8677607}</Project>
+      <Name>Wexflow.Tasks.ListFiles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.MailsReceiver\Wexflow.Tasks.MailsReceiver.csproj">
+      <Project>{e0481eca-ea10-4b91-ba37-f6c544398643}</Project>
+      <Name>Wexflow.Tasks.MailsReceiver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.MailsSender\Wexflow.Tasks.MailsSender.csproj">
+      <Project>{c12433e2-fb3d-472a-9c52-e2d8e60c0ab5}</Project>
+      <Name>Wexflow.Tasks.MailsSender</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Md5\Wexflow.Tasks.Md5.csproj">
+      <Project>{73f4e657-2d76-4fff-970a-788c8272d6a3}</Project>
+      <Name>Wexflow.Tasks.Md5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.MediaInfo\Wexflow.Tasks.MediaInfo.csproj">
+      <Project>{31f725ce-5047-4afd-a21e-58828f7ccb08}</Project>
+      <Name>Wexflow.Tasks.MediaInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.MessageCorrect\Wexflow.Tasks.MessageCorrect.csproj">
+      <Project>{84156eee-3f8f-432d-8846-ab01481c922a}</Project>
+      <Name>Wexflow.Tasks.MessageCorrect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Mkdir\Wexflow.Tasks.Mkdir.csproj">
+      <Project>{ff5a22b8-b594-4d2b-a3fe-10bd28038005}</Project>
+      <Name>Wexflow.Tasks.Mkdir</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Movedir\Wexflow.Tasks.Movedir.csproj">
+      <Project>{bbca7cf8-635a-4abe-b3c5-81c584db0d46}</Project>
+      <Name>Wexflow.Tasks.Movedir</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Now\Wexflow.Tasks.Now.csproj">
+      <Project>{f2f1e7e2-2707-40a7-a98d-b5bbd27c0787}</Project>
+      <Name>Wexflow.Tasks.Now</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Ping\Wexflow.Tasks.Ping.csproj">
+      <Project>{e9d7c7a8-6e79-4cc5-8ab1-f359290d70d0}</Project>
+      <Name>Wexflow.Tasks.Ping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ProcessInfo\Wexflow.Tasks.ProcessInfo.csproj">
+      <Project>{479d962f-08e3-4b9c-bf45-18c85cf44222}</Project>
+      <Name>Wexflow.Tasks.ProcessInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ProcessKiller\Wexflow.Tasks.ProcessKiller.csproj">
+      <Project>{72597a39-8c74-4107-950d-c0ea0719aa35}</Project>
+      <Name>Wexflow.Tasks.ProcessKiller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ProcessLauncher\Wexflow.Tasks.ProcessLauncher.csproj">
+      <Project>{22f4b18b-89bc-443a-ae3e-8863c2459d34}</Project>
+      <Name>Wexflow.Tasks.ProcessLauncher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Rmdir\Wexflow.Tasks.Rmdir.csproj">
+      <Project>{f3f7276b-ac03-4db2-a1d8-28738434c72e}</Project>
+      <Name>Wexflow.Tasks.Rmdir</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ScssToCss\Wexflow.Tasks.ScssToCss.csproj">
+      <Project>{ab4ce02a-1cb1-46b3-82fa-535d740f8efc}</Project>
+      <Name>Wexflow.Tasks.ScssToCss</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.SevenZip\Wexflow.Tasks.SevenZip.csproj">
+      <Project>{fa30208c-6aaa-4bbd-9932-79e2bcd17ede}</Project>
+      <Name>Wexflow.Tasks.SevenZip</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Sha1\Wexflow.Tasks.Sha1.csproj">
+      <Project>{58e208f5-9943-48e5-86df-56f1ccfa8e75}</Project>
+      <Name>Wexflow.Tasks.Sha1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Sha256\Wexflow.Tasks.Sha256.csproj">
+      <Project>{841f05bd-adfa-45d1-8c73-9ae0cdd6afd4}</Project>
+      <Name>Wexflow.Tasks.Sha256</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Sha512\Wexflow.Tasks.Sha512.csproj">
+      <Project>{261e8567-6ace-4591-80ec-658eede9ebcf}</Project>
+      <Name>Wexflow.Tasks.Sha512</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Slack\Wexflow.Tasks.Slack.csproj">
+      <Project>{b5c54157-6a34-41b3-9ec9-4cb1b6dc30ea}</Project>
+      <Name>Wexflow.Tasks.Slack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.SpeechToText\Wexflow.Tasks.SpeechToText.csproj">
+      <Project>{300f2fdc-7fb9-49a9-ae91-8ecacf92fea8}</Project>
+      <Name>Wexflow.Tasks.SpeechToText</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.SqlToCsv\Wexflow.Tasks.SqlToCsv.csproj">
+      <Project>{fe20effb-272e-4673-86aa-a8c62e043450}</Project>
+      <Name>Wexflow.Tasks.SqlToCsv</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.SqlToXml\Wexflow.Tasks.SqlToXml.csproj">
+      <Project>{118258f3-0273-48f2-bd0c-5349ae14a99a}</Project>
+      <Name>Wexflow.Tasks.SqlToXml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Sql\Wexflow.Tasks.Sql.csproj">
+      <Project>{ef416670-6443-4c98-8d26-27d3741b8fb0}</Project>
+      <Name>Wexflow.Tasks.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.SshCmd\Wexflow.Tasks.SshCmd.csproj">
+      <Project>{d2247c6a-d04e-4df0-bc2a-01d99c173e69}</Project>
+      <Name>Wexflow.Tasks.SshCmd</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.SubWorkflow\Wexflow.Tasks.SubWorkflow.csproj">
+      <Project>{4630cd57-eb1e-48ef-99c3-5513c63f7b8d}</Project>
+      <Name>Wexflow.Tasks.SubWorkflow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Tar\Wexflow.Tasks.Tar.csproj">
+      <Project>{d737b1bb-8a6d-4015-9b2c-3d6760eee6af}</Project>
+      <Name>Wexflow.Tasks.Tar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Template\Wexflow.Tasks.Template.csproj">
+      <Project>{ad401c5b-85fe-4c93-8e31-029c090e9b01}</Project>
+      <Name>Wexflow.Tasks.Template</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.TextsDecryptor\Wexflow.Tasks.TextsDecryptor.csproj">
+      <Project>{6fd67ff8-eeda-41b1-bf5e-073d6039ba59}</Project>
+      <Name>Wexflow.Tasks.TextsDecryptor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.TextsEncryptor\Wexflow.Tasks.TextsEncryptor.csproj">
+      <Project>{a9b590bc-6b24-4c1e-98e1-50f376f340c5}</Project>
+      <Name>Wexflow.Tasks.TextsEncryptor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.TextToPdf\Wexflow.Tasks.TextToPdf.csproj">
+      <Project>{dd5c037c-f7ff-4d8d-8076-3386e30cb0fa}</Project>
+      <Name>Wexflow.Tasks.TextToPdf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.TextToSpeech\Wexflow.Tasks.TextToSpeech.csproj">
+      <Project>{400071c8-ba8b-4264-b872-adc1a5107db5}</Project>
+      <Name>Wexflow.Tasks.TextToSpeech</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Tgz\Wexflow.Tasks.Tgz.csproj">
+      <Project>{f7184c59-67d4-4bf5-abd0-d6ea9c50b6b7}</Project>
+      <Name>Wexflow.Tasks.Tgz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Torrent\Wexflow.Tasks.Torrent.csproj">
+      <Project>{6502945c-bc08-42c4-86f8-224b05832f2d}</Project>
+      <Name>Wexflow.Tasks.Torrent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Touch\Wexflow.Tasks.Touch.csproj">
+      <Project>{701d8879-706f-4cf0-9783-41076e560124}</Project>
+      <Name>Wexflow.Tasks.Touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Twilio\Wexflow.Tasks.Twilio.csproj">
+      <Project>{c9e28222-5024-4e6d-b034-457c3bd788e9}</Project>
+      <Name>Wexflow.Tasks.Twilio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Twitter\Wexflow.Tasks.Twitter.csproj">
+      <Project>{d1b9e2ba-e783-4c26-89e8-28e13ae3220c}</Project>
+      <Name>Wexflow.Tasks.Twitter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.UglifyCss\Wexflow.Tasks.UglifyCss.csproj">
+      <Project>{455c5db9-cd56-4841-a5cf-2a80646433c2}</Project>
+      <Name>Wexflow.Tasks.UglifyCss</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.UglifyHtml\Wexflow.Tasks.UglifyHtml.csproj">
+      <Project>{db83cb0f-9ed6-4ec3-8735-4d1d0d5e4ce7}</Project>
+      <Name>Wexflow.Tasks.UglifyHtml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.UglifyJs\Wexflow.Tasks.UglifyJs.csproj">
+      <Project>{47e16d9b-c471-4a21-b88c-5515d80fcd8c}</Project>
+      <Name>Wexflow.Tasks.UglifyJs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Unrar\Wexflow.Tasks.Unrar.csproj">
+      <Project>{72ef213e-99a7-410c-992e-327dcf119a3b}</Project>
+      <Name>Wexflow.Tasks.Unrar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.UnSevenZip\Wexflow.Tasks.UnSevenZip.csproj">
+      <Project>{d72bbdc7-e818-4cb6-9814-0548bd98dcd4}</Project>
+      <Name>Wexflow.Tasks.UnSevenZip</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Untar\Wexflow.Tasks.Untar.csproj">
+      <Project>{7f8d838f-594e-47e7-aadc-6e57af9b9d57}</Project>
+      <Name>Wexflow.Tasks.Untar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Untgz\Wexflow.Tasks.Untgz.csproj">
+      <Project>{c2cc6b4b-381d-44c7-8c1f-3715a16909ca}</Project>
+      <Name>Wexflow.Tasks.Untgz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Unzip\Wexflow.Tasks.Unzip.csproj">
+      <Project>{0e4a787c-10f9-4c52-9e9a-596f6d6e2536}</Project>
+      <Name>Wexflow.Tasks.Unzip</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.VimeoListUploads\Wexflow.Tasks.VimeoListUploads.csproj">
+      <Project>{3f34a171-865f-4e37-a871-706ba39c4e39}</Project>
+      <Name>Wexflow.Tasks.VimeoListUploads</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Vimeo\Wexflow.Tasks.Vimeo.csproj">
+      <Project>{8bcf1509-4b79-44ac-bfe8-cf8c22c71f08}</Project>
+      <Name>Wexflow.Tasks.Vimeo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Wait\Wexflow.Tasks.Wait.csproj">
+      <Project>{81c8da3e-32cb-4084-84da-c531522318c3}</Project>
+      <Name>Wexflow.Tasks.Wait</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.WebToHtml\Wexflow.Tasks.WebToHtml.csproj">
+      <Project>{850e6ec7-fd36-4b9d-8a55-67c68f5e4236}</Project>
+      <Name>Wexflow.Tasks.WebToHtml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.WebToScreenshot\Wexflow.Tasks.WebToScreenshot.csproj">
+      <Project>{93c60793-44e3-468b-9460-915fb1003c4b}</Project>
+      <Name>Wexflow.Tasks.WebToScreenshot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Wmi\Wexflow.Tasks.Wmi.csproj">
+      <Project>{0bef411f-039f-4c4f-a0ff-8defcfe1c019}</Project>
+      <Name>Wexflow.Tasks.Wmi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Workflow\Wexflow.Tasks.Workflow.csproj">
+      <Project>{10f39219-fe79-4191-b63e-59ff217efc47}</Project>
+      <Name>Wexflow.Tasks.Workflow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.XmlToCsv\Wexflow.Tasks.XmlToCsv.csproj">
+      <Project>{39d75060-94b3-4164-9213-908ae208799c}</Project>
+      <Name>Wexflow.Tasks.XmlToCsv</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Xslt\Wexflow.Tasks.Xslt.csproj">
+      <Project>{68ae707e-1bc5-4af0-8b90-8ef0d2040359}</Project>
+      <Name>Wexflow.Tasks.Xslt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.YamlToJson\Wexflow.Tasks.YamlToJson.csproj">
+      <Project>{4ee9980e-e749-427d-846f-de3773d65263}</Project>
+      <Name>Wexflow.Tasks.YamlToJson</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.Zip\Wexflow.Tasks.Zip.csproj">
+      <Project>{67f62b85-9457-429f-857d-7f9d41f5c8f3}</Project>
+      <Name>Wexflow.Tasks.Zip</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EmbeddedResource Include="app.manifest" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="swagger-ui\swagger.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui.css.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui-bundle.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui-standalone-preset.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="swagger-ui\authenticate.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\common.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\doc.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\favicon-16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\favicon-32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\login.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\login.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\md5.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\oauth2-redirect.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\settings.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui-bundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="swagger-ui\swagger-ui-standalone-preset.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Wexflow.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WexflowServer.resx">
+      <DependentUpon>WexflowServer.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.-->
+  <Target Name="BeforeBuild">
+    <PropertyGroup>
+      <CodeAnalysisRuleSet>
+      </CodeAnalysisRuleSet>
+    </PropertyGroup>
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <Import Project="..\..\..\packages\SevenZipSharp.Interop.19.0.1\build\SevenZipSharp.Interop.targets" Condition="Exists('..\..\..\packages\SevenZipSharp.Interop.19.0.1\build\SevenZipSharp.Interop.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\SevenZipSharp.Interop.19.0.1\build\SevenZipSharp.Interop.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\SevenZipSharp.Interop.19.0.1\build\SevenZipSharp.Interop.targets'))" />
+  </Target>
+</Project>

@@ -1,0 +1,19 @@
+<Workflow xmlns="urn:wexflow-schema" id="90" name="Workflow_TextToSpeech" description="Workflow_TextToSpeech">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic|cron -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\TextToSpeech_src\file.txt" />
+		</Task>
+		<Task id="2" name="TextToSpeech" description="Converting files to speech" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving speech files to TextToSpeech_dest folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\TextToSpeech_dest\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

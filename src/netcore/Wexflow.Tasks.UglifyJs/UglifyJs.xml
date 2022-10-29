@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    UglifyJs is a sequential task that uglifies JavaScript files.
+    
+    The uglified scripts generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="UglifyJs" description="$string" enabled="true|false">
+    <!-- 
+      The JavaScript (.js) files loaded by the task having as id $taskId will be uglified.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

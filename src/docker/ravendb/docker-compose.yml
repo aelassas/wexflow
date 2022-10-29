@@ -1,0 +1,26 @@
+version: "3"
+services:
+  ravendb:
+     image: ravendb/ravendb
+     ports:
+       - 8080:8080
+
+  wexflow:
+    image: aelassas/wexflow:latest
+    depends_on:
+      - ravendb
+    ports:
+      - 8000:8000
+    volumes:
+      - ./appsettings.json:/opt/wexflow/Wexflow.Server/appsettings.json
+      - ./Wexflow:/opt/wexflow/Wexflow
+      - ./WexflowTesting:/opt/wexflow/WexflowTesting
+
+  wexflow-backend:
+    image: danjellz/http-server
+    ports:
+          - 8011:8011
+    volumes:
+      - ./Backend:/public
+    command:
+      http-server --cors -p 8011

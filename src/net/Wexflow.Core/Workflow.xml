@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    This is the configuration file of a workflow. 
+    A workflow is composed of:
+      - An id which is an integer that must be unique.
+      - A name which is a string that must be unique.
+      - A description which is a string.
+      - A Settings section which is composed of the following elements:
+        - A launchType which is one of the following options:
+          - startup: The workflow is launched when Wexflow Engine starts.
+          - trigger: The workflow is launched manually from Wexflow Manager.
+          - periodic: The workflow is launched periodically.
+          - cron: The workflow is launched depending on a cron expression.
+        - A period which is necessary for the periodic launchType. It is 
+          a timeSpan in this format dd.hh:mm:ss. For example the period
+          00.00:02:00 will launch the workflow every 2 minutes.
+        - A cron expression which is necessary for the cron launchType.
+          For example '0 0/2 * * * ?' will launch the workflow every 2 minutes.
+        - The enabled option which allows to enable or disable a workflow.
+          The possible values are true or false.
+        - The approval option which marks the current workflow as an approval workflow.
+          The possible values are true or false. An approval workflow must contain
+          at least one Approval task or more.
+        - The enableParallelJobs option Shows whether workflow jobs are executed in parallel. 
+          Otherwise jobs are queued. Defaults to true.  
+      - A LocalVariables section which contains local variables.
+      - A Tasks section which contains the tasks that will be executed by
+        the workflow one after the other.
+        - A Task is composed of:
+          - An id which is an integer that must be unique.
+          - A name which is one of the options described in the tasks documentation.
+          - A description which is a string.
+          - The enabled option which allows to enable or disable a task. The possible 
+            values are true or false.
+          - A collection of settings.
+      - An ExecutionGraph section which contains the execution graph of the workflow.
+-->
+<Workflow xmlns="urn:wexflow-schema" id="$int" name="$string" description="$string">
+  <Settings>
+    <Setting name="launchType" value="startup|trigger|periodic|cron" />
+    <Setting name="period" value="dd.hh:mm:ss" />
+    <Setting name="cronExpression" value="$string" />
+    <Setting name="enabled" value="true|false" />
+    <Setting name="approval" value="true|false" />
+    <Setting name="enableParallelJobs" value="true|false" />
+  </Settings>
+  <LocalVariables>
+    <Variable name="$string" value="$string" />
+    <Variable name="$string" value="$string" />
+    <!-- You can add as many variables as you want. -->
+  </LocalVariables>
+  <Tasks>
+    <Task id="$int" name="$string" description="$string" enabled="true|false">
+      <Setting name="$string" value="$string" />
+      <Setting name="$string" value="$string" />
+      <!-- You can add as many settings as you want. -->
+    </Task>
+    <Task id="$int" name="$string" description="$string" enabled="true|false">
+      <Setting name="$string" value="$string" />
+      <Setting name="$string" value="$string" />
+    </Task>
+    <!-- You can add as many tasks as you want. -->
+  </Tasks>
+  <!-- This section is optional and described in the samples section. -->
+  <ExecutionGraph />
+</Workflow>

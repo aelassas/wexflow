@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Records</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toast.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jBox.all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/records.css" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/records.min.css" />
+
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/language.js"></script>
+
+    <!--<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="js/jBox.all.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/authenticate.js"></script>
+    <script type="text/javascript" src="js/language.core.js"></script>
+    <script type="text/javascript" src="js/records.js"></script>-->
+
+    <script type="text/javascript" src="js/records.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <a id="lnk-dashboard" href="dashboard.html">Dashboard</a>
+        <a id="lnk-records" href="records.html" style="text-decoration: underline">Records</a>
+        <a id="lnk-manager" href="manager.html">Manager</a>
+        <a id="lnk-approval" href="approval.html">Approval</a>
+        <a id="lnk-designer" href="designer.html">Designer</a>
+        <a id="lnk-history" href="history.html">History</a>
+        <a id="lnk-users" href="users.html">Users</a>
+        <a id="lnk-profiles" href="profiles.html">Profiles</a>
+        <div id="lang" class="header-right"></div>
+        <a href="#" id="btn-logout" class="header-right"><span id="spn-logout">Logout</span><span id="spn-username"></span></a>
+        <a id="lnk-notifications" href="notifications.html" class="header-right"><img id="img-notifications" src="images/notification.png" /></a>
+    </div>
+    <div id="navigation">
+        <div id="left-side">
+            <div id="search">
+                <img src="assets/search.svg">
+                <input id="search-records" type="text" autocomplete="off" placeholder="Search records">
+            </div>
+        </div>
+        <div id="right-side">
+            <div id="btn-delete">Delete</div>
+            <div id="btn-new-record">New record</div>
+        </div>
+    </div>
+    <div id="content"></div>
+    <div id="edit-record">
+        <table class="edit-record-table">
+            <tbody>
+                <tr class="edit-record-tr-id">
+                    <td class="edit-record-title edit-record-td-id">Id</td>
+                    <td class="edit-record-value"><input class="form-control record-id" type="text" disabled /></td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-name">Name</td>
+                    <td class="edit-record-value"><input class="form-control record-name" type="text" /></td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-description">Description</td>
+                    <td class="edit-record-value"><textarea class="form-control record-description"></textarea></td>
+                </tr>
+                <tr class="edit-record-tr-approved">
+                    <td class="edit-record-title edit-record-td-approved">Approved</td>
+                    <td class="edit-record-value"><input class="record-approved" type="checkbox" disabled /></td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-start-date">Start date</td>
+                    <td class="edit-record-value"><input class="form-control record-start-date" type="text" placeholder="dd-MM-yyyy HH:mm:ss" /></td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-end-date">End date</td>
+                    <td class="edit-record-value"><input class="form-control record-end-date" type="text" placeholder="dd-MM-yyyy HH:mm:ss" /></td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-comments">Comments</td>
+                    <td class="edit-record-value"><textarea class="form-control record-comments"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-manager-comments">Manager comments</td>
+                    <td class="edit-record-value"><textarea class="form-control record-manager-comments"></textarea></td>
+                </tr>
+                <tr class="edit-record-tr-created-by">
+                    <td class="edit-record-title edit-record-td-created-by">Created by</td>
+                    <td class="edit-record-value"><input class="form-control record-created-by" type="text" disabled /></td>
+                </tr>
+                <tr class="edit-record-tr-created-on">
+                    <td class="edit-record-title edit-record-td-created-on">Created on</td>
+                    <td class="edit-record-value"><input class="form-control record-created-on" type="text" disabled /></td>
+                </tr>
+                <tr class="edit-record-tr-modified-by">
+                    <td class="edit-record-title edit-record-td-modified-by">Modified by</td>
+                    <td class="edit-record-value"><input class="form-control record-modified-by" type="text" disabled /></td>
+                </tr>
+                <tr class="edit-record-tr-modified-on">
+                    <td class="edit-record-title edit-record-td-modified-on">Modified on</td>
+                    <td class="edit-record-value"><input class="form-control record-modified-on" type="text" disabled /></td>
+                </tr>
+                <tr class="edit-record-tr-assigned-to">
+                    <td class="edit-record-title edit-record-td-assigned-to">Assigned to</td>
+                    <td class="edit-record-value"><input class="form-control record-assigned-to" type="text" disabled /></td>
+                </tr>
+                <tr class="edit-record-tr-assigned-on">
+                    <td class="edit-record-title edit-record-td-assigned-on">Assigned on</td>
+                    <td class="edit-record-value"><input class="form-control record-assigned-on" type="text" disabled /></td>
+                </tr>
+                <tr class="edit-record-tr-approvers">
+                    <td class="edit-record-title edit-record-td-approvers">Approvers</td>
+                    <td class="edit-record-value">
+                        <table class="table record-approvers">
+                            <thead>
+                                <tr>
+                                    <th class="th-approved-by">Approved by</th>
+                                    <th class="th-approved">Approved</th>
+                                    <th class="th-approved-on">Approved on</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="edit-record-title edit-record-td-versions">Versions</td>
+                    <td class="edit-record-value">
+                        <table class="record-versions"></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="button" class='btn-upload-version btn btn-primary btn-xs' value="Upload" />
+                        <span class="spn-upload-version"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <input id="file-dialog" type="file" style="position: fixed; top: -100em" />
+    <div id="edit-record-footer">
+        <div id="edit-record-footer-content">
+            <div class="record-save">Save</div>
+            <div class="record-cancel">Cancel</div>
+            <div class="record-delete">Delete</div>
+        </div>
+    </div>
+</body>
+</html>

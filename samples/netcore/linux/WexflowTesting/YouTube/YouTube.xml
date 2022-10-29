@@ -1,0 +1,10 @@
+<Videos>
+  <Video>
+	<Title>My video</Title>
+	<Description>My video description</Description>
+	<Tags>test, video</Tags>
+	<CategoryId>22</CategoryId>
+	<PrivacyStatus>private</PrivacyStatus>
+	<FilePath>/opt/wexflow/WexflowTesting/Videos/video2.mp4</FilePath>
+  </Video>
+</Videos>

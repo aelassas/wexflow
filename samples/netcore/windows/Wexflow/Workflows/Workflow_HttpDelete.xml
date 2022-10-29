@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="103" name="Workflow_HttpDelete" description="Workflow_HttpDelete">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="HttpDelete" description="Executing DELETE request" enabled="true">
+	  <Setting name="url" value="http://localhost:8000/wexflow/delete/999" />
+    </Task>
+  </Tasks>
+</Workflow>

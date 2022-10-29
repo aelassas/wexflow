@@ -1,0 +1,21 @@
+<Workflow xmlns="urn:wexflow-schema" id="77" name="Workflow_ImagesConcat" description="Workflow_ImagesConcat">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading images" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/ImagesConcatSrc/image1.jpg" />
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/ImagesConcatSrc/image2.jpg" />
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/ImagesConcatSrc/image3.jpg" />
+		</Task>
+		<Task id="2" name="ImagesConcat" description="Concatenating images" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving concatenated image to ImagesConcatDest folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/ImagesConcatDest/" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

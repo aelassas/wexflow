@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="120" name="Workflow_InstagramUploadVideo" description="Workflow_InstagramUploadVideo">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading videos" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\InstagramUploadVideo\Videos.xml" />
+		</Task>
+		<Task id="2" name="InstagramUploadVideo" description="Uploading videos" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="username" value="USERNAME" />
+			<Setting name="password" value="PASSWORD" />
+		</Task>
+	</Tasks>
+</Workflow>

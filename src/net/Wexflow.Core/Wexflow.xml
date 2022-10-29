@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Wexflow>
+  <Setting name="workflowsFolder" value="C:\Wexflow\Workflows" />
+  <Setting name="recordsFolder" value="C:\Wexflow\Records" />
+  <Setting name="recordsHotFolder" value="C:\Wexflow\Records\_HotFolder" />
+  <Setting name="tempFolder" value="C:\Wexflow\Temp" />
+  <Setting name="tasksFolder" value="C:\Wexflow\Tasks" />
+  <Setting name="approvalFolder" value="C:\Wexflow\Approval" />
+  <Setting name="xsd" value="C:\Wexflow\Workflow.xsd" />
+  <Setting name="tasksNamesFile" value="C:\Wexflow\TasksNames.json" />
+  <Setting name="tasksSettingsFile" value="C:\Wexflow\TasksSettings.json" />
+  <Setting name="globalVariablesFile" value="C:\Wexflow\GlobalVariables.xml" />
+  <!-- LiteDB or MongoDB or RavenDB or PostgreSQL or SQLServer or MySQL or SQLite or Firebird or Oracle or MariaDB -->
+  <Setting name="dbType" value="LiteDB" />
+  <!-- LiteDB -->
+  <Setting name="connectionString" value="Filename=C:\Wexflow\Database\Wexflow.db; Connection=direct" />
+  <!-- MongoDB. SslProtocols: None|Ssl2|Ssl3|Tls|Default|Tls11|Tls12 -->
+  <!--<Setting name="connectionString" value="Database=wexflow;MongoUrl=mongodb://localhost:27017;EnabledSslProtocols=false;SslProtocols=None" />-->
+  <!-- RavenDB -->
+  <!--<Setting name="connectionString" value="Database=wexflow;RavenUrl=http://localhost:8080" />-->
+  <!-- PostgreSQL -->
+  <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=postgres;Password=pwd;Database=wexflow;" />-->
+  <!-- SQLServer -->
+  <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=wexflow;Password=pwd;Database=wexflow;" />-->
+  <!--<Setting name="connectionString" value="Server=127.0.0.1;Trusted_Connection=True;Database=wexflow;" />-->
+  <!--<Setting name="connectionString" value="Server=.\SQLEXPRESS01;Trusted_Connection=True;Database=wexflow;" />-->
+  <!-- MySQL -->
+  <!--<Setting name="connectionString" value="Server=localhost;Database=wexflow;Uid=root;Pwd=password;" />-->
+  <!-- SQLite -->
+  <!--<Setting name="connectionString" value="Data Source=C:\Wexflow\Database\Wexflow.sqlite;Version=3;" />-->
+  <!-- Firebird -->
+  <!--<Setting name="connectionString" value="User=SYSDBA;Password=password;Database=D:\softs\firebird\data\WEXFLOW.FDB;DataSource=localhost;Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;" />-->
+  <!-- Oracle -->
+  <!--<Setting name="connectionString" value="Data Source=localhost:1521/wexflow;User Id=SYSTEM;Password=password;" />-->
+  <!-- MariaDB -->
+  <!--<Setting name="connectionString" value="SERVER=localhost;PORT=3306;DATABASE=wexflow;USER=root;PASSWORD=password;" />-->
+</Wexflow>

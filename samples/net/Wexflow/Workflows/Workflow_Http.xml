@@ -1,0 +1,15 @@
+<Workflow xmlns="urn:wexflow-schema" id="25" name="Workflow_Http" description="Workflow_Http">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Http" description="Downloading files" enabled="true">
+			<Setting name="url" value="https://aelassas.github.io/wexflow/images/logo.png" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving files to Http folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Http\" />
+		</Task>
+	</Tasks>
+</Workflow>

@@ -1,0 +1,15 @@
+<Workflow xmlns="urn:wexflow-schema" id="68" name="Workflow_Guid" description="Workflow_Guid">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Guid" description="Generating Guids" enabled="true">
+			<Setting name="guidCount" value="3" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving Guid file from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/Guid/" />
+		</Task>
+	</Tasks>
+</Workflow>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="153" name="Workflow_CsvToJson" description="Workflow_CsvToJson">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading CSV files" enabled="true">
+	  <Setting name="file" value="/opt/wexflow/WexflowTesting/CsvToJson_src/file1.csv" />
+	  <Setting name="file" value="/opt/wexflow/WexflowTesting/CsvToJson_src/file2.csv" />
+    </Task>
+    <Task id="2" name="CsvToJson" description="Converting CSV files to JSON files" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+	  <Setting name="separator" value=";" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving JSON files to CsvToJson_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="/opt/wexflow/WexflowTesting/CsvToJson_dest" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

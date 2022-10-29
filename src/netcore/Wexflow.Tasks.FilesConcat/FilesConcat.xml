@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesConcat is a sequential task that concatenates a collection of files.
+   
+   The generated file will be loaded by the FilesConcat task so that other tasks can select 
+   it through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesConcat" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      concatenated into one single file.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

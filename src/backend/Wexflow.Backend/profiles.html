@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Profiles</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toast.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/profiles.css" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/profiles.min.css" />
+
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/language.js"></script>
+
+    <!--<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/authenticate.js"></script>
+    <script type="text/javascript" src="js/language.core.js"></script>
+    <script type="text/javascript" src="js/profiles.js"></script>-->
+
+    <script type="text/javascript" src="js/profiles.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <a id="lnk-dashboard" href="dashboard.html">Dashboard</a>
+        <a id="lnk-records" href="records.html">Records</a>
+        <a id="lnk-manager" href="manager.html">Manager</a>
+        <a id="lnk-approval" href="approval.html">Approval</a>
+        <a id="lnk-designer" href="designer.html">Designer</a>
+        <a id="lnk-history" href="history.html">History</a>
+        <a id="lnk-users" href="users.html">Users</a>
+        <a id="lnk-profiles" href="profiles.html" style="text-decoration: underline">Profiles</a>
+        <div id="lang" href="#" class="header-right"></div>
+        <a href="#" id="btn-logout" class="header-right"><span id="spn-logout">Logout</span><span id="spn-username"></span></a>
+        <a id="lnk-notifications" href="notifications.html" class="header-right"><img id="img-notifications" src="images/notification.png" /></a>
+    </div>
+    <div id="profiles">
+        <div id="users-container">
+            <div id="users-search">
+                <input id="users-search-text" type="text" autocomplete="off">
+                <input id="users-search-action" type="button" value="Search" class="btn btn-primary btn-xs">
+            </div>
+            <div id="users-table"></div>
+        </div>
+        <div id="right-panel">
+            <input id="users-save-action" type="button" value="Save" class="btn btn-primary btn-xs">
+            <div id="workflows"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            new Profiles();
+        };
+    </script>
+</body>
+</html>

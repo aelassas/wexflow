@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Reddit is a sequential task that sends posts and links to Reddit. 
+    
+    The format of the XML file is as follows:
+    
+    <Reddit>
+      <SelfPosts>
+        <SelfPost subreddit="subreddit" title="My self post" text="My self post text" />
+        ...
+      </SelfPosts>
+      <LinkPosts>
+        <LinkPost subreddit="subreddit" title="Google" url="https://www.google.com/" />
+        ...
+      </LinkPosts>
+    </Reddit>    
+  -->
+  <Task id="$int" name="Reddit" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id $taskId will be
+      used to send posts and links on Reddit.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    
+    <!-- Application ID: You can obtain it from https://www.reddit.com/prefs/apps -->
+    <Setting name="appId" value="$string" />
+    <!-- Refresh token. You can obtain it from https://not-an-aardvark.github.io/reddit-oauth-helper/ -->
+    <Setting name="refreshToken" value="$string" />
+  </Task>
+</Tasks>

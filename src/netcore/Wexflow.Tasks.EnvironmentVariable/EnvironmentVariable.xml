@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    EnvironmentVariable is a flowchart task that retrieves an environment variable. 
+    This task is designed to be used in a Switch flowchart node.
+  -->
+  <Task id="$int" name="EnvironmentVariable" description="$string" enabled="true|false">
+    <!-- The name of the environment variable. Example: OS-->
+    <Setting name="name" value="$string" />
+  </Task>
+</Tasks>

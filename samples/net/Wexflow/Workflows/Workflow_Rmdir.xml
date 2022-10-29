@@ -1,0 +1,11 @@
+<Workflow xmlns="urn:wexflow-schema" id="14" name="Workflow_Rmdir" description="Workflow_Rmdir">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Rmdir" description="Deleting folders" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\Rmdir\" />
+		</Task>
+	</Tasks>
+</Workflow>

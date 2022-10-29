@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesJoiner is a sequential task that concatenates a collection of files.
+   
+   The generated file will be loaded by the FilesJoiner task so that other tasks can select it through the selectFiles option.
+
+   This task should be used to join and restore original file splitted with "FilesSplitter" task. Original file name is restored from splitted file name with end part "_N".
+  -->
+  <Task id="$int" name="FilesJoiner" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      joiner into one single file.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- Optional and defaults to empty.
+         The destination folder. For example: C:\MyFolder\
+         The task is executed in the temporary directory, only at the end of the job the joined file is moved.
+         When empty, output task file is temporary folder + file name. When not empty output task file is this derectory + file name -->
+    <Setting name="destFolder" value="$string" />
+    <!--
+          Optional and defaults to false.
+          If the destination file exist, the task will overwrite it if this setting option is set to true.
+          Otherwise the file is not overwritten.
+    -->
+    <Setting name="overwrite" value="true|false" />
+  </Task>
+</Tasks>

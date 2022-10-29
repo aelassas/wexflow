@@ -1,0 +1,32 @@
+<Workflow xmlns="urn:wexflow-schema" id="134" name="Workflow_FormSubmission" description="Workflow_FormSubmission">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="approval" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="ProcessLauncher" description="Form submission" enabled="true">
+			<Setting name="processPath" value="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" />
+			<Setting name="processCmd" value="https://docs.google.com/forms/d/1sHnPCJ05GLecqvZb0MNeFkFK0eMuVqBUyWAo5uurEQ8/prefill" />
+			<Setting name="hideGui" value="false" /> 
+			<Setting name="generatesFiles" value="false" />
+		</Task>
+		<Task id="2" name="Approval" description="Waiting for approval" enabled="true" />
+		<Task id="3" name="Wait" description="Waiting for 2 seconds" enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+		<Task id="4" name="Wait" description="Waiting for 3 seconds" enabled="true">
+		  <Setting name="duration" value="00.00:00:03" />
+		</Task>		
+	</Tasks>
+	<ExecutionGraph>
+		<Task id="1"><Parent id="-1" /></Task>
+		<Task id="2"><Parent id="1" /></Task>
+		<!-- You can add other tasks here depending on your need. -->
+		<Task id="3"><Parent id="2" /></Task>
+		<OnRejected>
+			<!-- You can add other tasks here depending on your need. -->
+			<Task id="4"><Parent id="-1" /></Task>
+		</OnRejected>
+	</ExecutionGraph>	
+</Workflow>

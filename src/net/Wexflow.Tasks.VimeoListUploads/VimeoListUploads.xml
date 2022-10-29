@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    VimeoListUploads is a sequential task that retrieves a list of videos uploaded to a Vimeo channel.
+    
+    This task outputs an XML file containing the results. The format of this file is as follows:
+    
+    <VimeoListUploads>
+      <Videos>
+        <Video title="Wexflow - If demo" uri="/videos/355692740" created_time="2019-08-24T09:01:26+00:00" status="available" />
+        ...
+      </Videos>
+    </VimeoListUploads>
+  -->
+  <Task id="$int" name="VimeoListUploads" description="$string" enabled="true|false">
+    <!-- Required. Vimeo token. You can obtain it from https://developer.vimeo.com/ -->
+    <Setting name="token" value="$string" />
+    <!-- Required. User id. -->
+    <Setting name="userId" value="$int" />
+  </Task>
+</Tasks>

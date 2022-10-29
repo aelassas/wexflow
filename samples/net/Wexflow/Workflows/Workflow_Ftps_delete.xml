@@ -1,0 +1,29 @@
+<Workflow xmlns="urn:wexflow-schema" id="32" name="Workflow_Ftps_delete" description="Workflow_Ftps_delete">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Ftp" description="Listing files" enabled="true">
+			<Setting name="command" value="list" />
+			<Setting name="protocol" value="ftps" /> <!-- ftp|ftps|sftp -->
+			<Setting name="encryption" value="explicit" />
+			<Setting name="server" value="inspiron" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="ftpuser" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/public/toDelete/" />
+		</Task>
+		<Task id="2" name="Ftp" description="Deleting files" enabled="true">
+			<Setting name="command" value="delete" />
+			<Setting name="protocol" value="ftps" /> <!-- ftp|ftps|sftp -->
+			<Setting name="encryption" value="explicit" />
+			<Setting name="server" value="inspiron" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="ftpuser" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+			<Setting name="selectFiles" value="1" />
+		</Task>
+	</Tasks>
+</Workflow>

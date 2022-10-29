@@ -1,0 +1,40 @@
+<Workflow xmlns="urn:wexflow-schema" id="40" name="Workflow_Ftp_download_tag" description="Workflow_Ftp_download_tag">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Ftp" description="Listing files" enabled="true">
+			<Setting name="command" value="list" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+		<Task id="3" name="Xslt" description="Renaming files and adding tags" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="xsltPath" value="C:\Wexflow\Xslt\ListFiles.xslt" />
+			<Setting name="version" value="2.0" /> <!-- 1.0|2.0 -->
+			<Setting name="removeWexflowProcessingNodes" value="false" />
+		</Task>
+		<Task id="4" name="Ftp" description="Downloading files" enabled="true">
+			<Setting name="command" value="download" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+			<Setting name="selectFiles" todo="toDownload" from="app4" />
+		</Task>
+		<Task id="5" name="FilesMover" description="Moving files to Ftp_download" enabled="true">
+			<Setting name="selectFiles" value="4" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Ftp_download\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

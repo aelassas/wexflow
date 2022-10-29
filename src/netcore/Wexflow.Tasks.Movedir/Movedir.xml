@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Movedir is a sequential task that moves a folder.
+  -->
+  <Task id="$int" name="Movedir" description="$string" enabled="true|false">
+    <!-- The path of the folder to move. Example: C:\MyFolder\-->
+    <Setting name="folder" value="$string" />
+    <!-- The destination folder. Example: C:\MyNewFolder\-->
+    <Setting name="destinationFolder" value="$string" />
+    <!-- Optional and defaults to false. If set to true, the destination folder is deleted if it already exists.-->
+    <Setting name="overwrite" value="true|false" />
+  </Task>
+</Tasks>

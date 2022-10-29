@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="48" name="Workflow_Sha512" description="Workflow_Sha512">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\Watchfolder1\" />
+		</Task>
+		<Task id="2" name="Sha512" description="Generating Sha512 hashes" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving Sha512 files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Sha512\" />
+		</Task>
+	</Tasks>
+</Workflow>

@@ -1,0 +1,27 @@
+<Workflow xmlns="urn:wexflow-schema" id="117" name="Workflow_MessageCorrect" description="Workflow_MessageCorrect">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="99" name="MessageCorrect" description="Checking the message" enabled="true">
+		  <Setting name="checkString" value="msg" />	
+		</Task>
+		<Task id="1" name="Wait" description="Waiting for 3 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:03" />
+		</Task>
+		<Task id="2" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<If id="100" parent="-1" if="99">
+			<Do>
+				<Task id="1"><Parent id="-1" /></Task>
+			</Do>
+			<Else>
+				<Task id="2"><Parent id="-1" /></Task>
+			</Else>
+		</If>
+	</ExecutionGraph>
+</Workflow>

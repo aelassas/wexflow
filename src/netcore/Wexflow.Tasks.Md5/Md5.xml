@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Md5 is a sequential task that generates MD5 sums of a collection of files. The results are written
+    to an XML file as follows:
+    <Files>
+      <File path="$filePath" name="$fileName" md5="a3de1332a4235e9a559cfacd9a74a835" />
+      <File path="$filePath" name="$fileName" md5="9eef0142654ebd7a923c5317207457c0" />
+      <File path="$filePath" name="$fileName" md5="4c7fa10591777864194411443ec40c2f" />
+      ...
+   </Files>
+   
+   The XML file generated will be loaded by the Md5 task so that other tasks can select 
+   it through the selectFiles option.
+  -->
+  <Task id="$int" name="Md5" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      used to calculate their MD5 sums.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

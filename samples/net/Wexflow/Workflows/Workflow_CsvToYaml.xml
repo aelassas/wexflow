@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="113" name="Workflow_CsvToYaml" description="Workflow_CsvToYaml">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading CSV files" enabled="true">
+	  <Setting name="file" value="C:\WexflowTesting\CsvToYaml_src\file1.csv" />
+	  <Setting name="file" value="C:\WexflowTesting\CsvToYaml_src\file2.csv" />
+    </Task>
+    <Task id="2" name="CsvToYaml" description="Converting CSV files to YAML files" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+	  <Setting name="separator" value=";" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving YAML files to CsvToYaml_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\CsvToYaml_dest\" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

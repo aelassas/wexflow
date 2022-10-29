@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ApprovalRecordsCreator is a sequential task that creates records from files.
+  -->
+  <Task id="$int" name="ApprovalRecordsCreator" description="$string" enabled="true|false">
+    <!-- Required. The files loaded will be used to create records. The files are moved to record's repository. -->
+    <!-- You can add as many selecteFiles as you want. -->
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- Required. Username of the user who creates the records. -->
+    <Setting name="createdBy" value="$string" />
+  </Task>
+</Tasks>

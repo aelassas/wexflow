@@ -1,0 +1,63 @@
+<Workflow xmlns="urn:wexflow-schema" id="158" name="Workflow_Sql" description="Workflow_Sql">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading SQL Server scripts" enabled="false">
+			<Setting name="file" value="C:\WexflowTesting\SqlServer\script1.sql" />
+			<Setting name="file" value="C:\WexflowTesting\SqlServer\script2.sql" />
+		</Task>
+		<Task id="2" name="Sql" description="SQL Server" enabled="false">
+			<Setting name="type" value="sqlserver" />
+			<Setting name="connectionString" value="Data Source=localhost;Initial Catalog=HELLOWORLD;Integrated Security=True" />
+			<!--<Setting name="sql" value="UPDATE [dbo].[Data] SET [Description] = 'Hello World Description 1! updated' WHERE Id = 11;" />-->
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesLoader" description="Loading SQLite scripts" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\sqlite\script1.sql" />
+			<Setting name="file" value="C:\WexflowTesting\sqlite\script2.sql" />
+		</Task>
+		<Task id="4" name="Sql" description="SQlite" enabled="true">
+			<Setting name="type" value="sqlite" />
+			<Setting name="connectionString" value="Data Source=C:\WexflowTesting\sqlite\HelloWorld.db;Version=3" /><!-- https://www.connectionstrings.com/sqlite/ -->
+			<!--<Setting name="sql" value="UPDATE Data SET Description = 'Hello World Description 1! updated' WHERE Id = 1;" />-->
+			<Setting name="selectFiles" value="3" />
+		</Task>
+		<Task id="5" name="FilesLoader" description="Loading MySQL scripts" enabled="false">
+			<Setting name="file" value="C:\WexflowTesting\mysql\script1.sql" />
+			<Setting name="file" value="C:\WexflowTesting\mysql\script2.sql" />
+		</Task>
+		<Task id="6" name="Sql" description="MySQL" enabled="false">
+			<Setting name="type" value="mysql" />
+			<Setting name="connectionString" value="Server=localhost;Database=helloworld;Uid=root;Pwd=password;" />
+			<!--<Setting name="sql" value="UPDATE `data` SET `Description`='Hello World Description 1! updated' WHERE `Id`=1" />-->
+			<Setting name="selectFiles" value="5" />
+		</Task>
+		<Task id="7" name="FilesLoader" description="Loading postgresql scripts" enabled="false">
+			<Setting name="file" value="C:\WexflowTesting\postgresql\script1.sql" />
+			<Setting name="file" value="C:\WexflowTesting\postgresql\script2.sql" />
+		</Task>
+		<Task id="8" name="Sql" description="PostgreSql" enabled="false">
+			<Setting name="type" value="postgresql" />
+			<Setting name="connectionString" value="User ID=postgres;Password=password;Host=localhost;Port=5432;Database=helloworld;" />
+			<!--<Setting name="sql" value="UPDATE DATA SET Description = 'Hello World Description 1! updated' WHERE Id = 1;" />-->
+			<Setting name="selectFiles" value="7" />
+		</Task>
+		<Task id="9" name="Sql" description="Oracle" enabled="false">
+			<Setting name="type" value="oracle" />
+			<Setting name="connectionString" value="Data Source=HelloWorld;Integrated Security=yes;" />
+			<Setting name="sql" value="UPDATE DATA SET Description = 'Hello World Description 1! updated' WHERE Id = 1;" />
+		</Task>
+		<Task id="10" name="Sql" description="Teradata" enabled="false">
+			<Setting name="type" value="teradata" />
+			<Setting name="connectionString" value="Data Source=HelloWorld;User ID=root;Password=password;" />
+			<Setting name="sql" value="UPDATE DATA SET Description = 'Hello World Description 1! updated' WHERE Id = 1;" />
+		</Task>
+		<Task id="11" name="Sql" description="Access" enabled="false">
+			<Setting name="type" value="access" />
+			<Setting name="connectionString" value="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\WexflowTesting\access\HelloWorld.accdb;Persist Security Info=False;" />
+			<Setting name="sql" value="UPDATE DATA SET Description = 'Hello World Description 1! updated' WHERE Id = 1;" />
+		</Task>
+	</Tasks>
+</Workflow>

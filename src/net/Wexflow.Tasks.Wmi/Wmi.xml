@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Wmi is a sequential task that executes a WMI query and outputs the results in an XML file.
+    The format of the generated XML file is as follows:
+    <Objects>
+      <Object>
+        <Property name="propertyName" value="propertyValue" />
+        <Property name="propertyName" value="propertyValue" />
+        <Property name="propertyName" value="propertyValue" />
+        ...
+       </Object>
+       <Object>
+        <Property name="propertyName" value="propertyValue" />
+        <Property name="propertyName" value="propertyValue" />
+        <Property name="propertyName" value="propertyValue" />
+        ...
+       </Object>
+       ...
+    </Objects>
+    
+    The XML files generated will be loaded by this task so that other
+    tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="Wmi" description="$string" enabled="true|false">
+    <!-- The WMI query. Example: SELECT * FROM Win32_Process-->
+    <Setting name="query" value="$string" />
+  </Task>
+</Tasks>

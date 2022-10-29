@@ -1,0 +1,19 @@
+<Workflow xmlns="urn:wexflow-schema" id="18" name="Workflow_Xslt" description="Workflow_Xslt">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading XMLs" enabled="true">
+			<Setting name="folder" value="/opt/wexflow/WexflowTesting/Xml/" />
+		</Task>
+		<Task id="2" name="Xslt" description="Transforming XMLs" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="xsltPath" value="/opt/wexflow/Wexflow/Xslt/Products.xslt" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving transformed XMLs" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/Xslt/" />
+		</Task>
+	</Tasks>
+</Workflow>

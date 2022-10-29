@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Approval is a sequential task that marks the current workflow as needing approval.
+    
+    To use this task the workflow must be an approval workflow. This can be done whether from the designer 
+    page in the back end or by editing the XML of the workflow.
+    
+    If the workflow is rejected the OnRejected workflow event is raised and the tasks after Approval
+    task are not executed.
+    
+    The disapproval of workflows can be done by clicking on reject button whether from Approval page in the back end
+    or from Wexflow Manager.
+  -->
+  <Task id="$int" name="Approval" description="$string" enabled="true|false">
+  </Task>
+</Tasks>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="99" name="Workflow_ExecVb" description="Workflow_ExecVb">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading VB scripts" enabled="true">
+	  <Setting name="file" value="C:\WexflowTesting\ExecVb_src\Program1.vb" />
+	  <Setting name="file" value="C:\WexflowTesting\ExecVb_src\Program2.vb" />
+    </Task>
+    <Task id="2" name="ExecVb" description="Executing VB scripts" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving exe files to ExecVb_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\ExecVb_dest\" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

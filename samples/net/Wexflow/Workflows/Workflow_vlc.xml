@@ -1,0 +1,22 @@
+<Workflow xmlns="urn:wexflow-schema" id="13" name="Workflow_vlc" description="Workflow_vlc">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading WAV files" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\WAV\" />
+		</Task>
+		<Task id="2" name="ProcessLauncher" description="WAV to MP3" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="processPath" value="C:\Program Files\VideoLAN\VLC\vlc.exe" /> <!-- You need to install VLC-->
+			<Setting name="processCmd" value="-I dummy {$filePath} :sout=#transcode{acodec=mpga}:std{dst={$output:$fileNameWithoutExtension.mp3},access=file} vlc://quit" /> <!-- variables: {$filePath},{$fileName},{$fileNameWithoutExtension}-->
+			<Setting name="hideGui" value="true" /> <!-- true|false -->
+			<Setting name="generatesFiles" value="true" /> <!-- true|false -->
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving MP3 files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\MP3\" />
+		</Task>
+	</Tasks>
+</Workflow>

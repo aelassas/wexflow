@@ -1,0 +1,7 @@
+<Videos>
+  <Video>
+	<FilePath>C:\WexflowTesting\Videos\video1.mp4</FilePath>
+	<ThumbnailPath>C:\WexflowTesting\Images\image1.jpg</ThumbnailPath>
+	<Caption>My awesome video.</Caption>
+  </Video>
+</Videos>

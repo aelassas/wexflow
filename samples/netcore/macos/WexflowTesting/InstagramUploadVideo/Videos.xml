@@ -1,0 +1,7 @@
+<Videos>
+  <Video>
+	<FilePath>/Applications/wexflow/WexflowTesting/Videos/video1.mp4</FilePath>
+	<ThumbnailPath>/Applications/wexflow/WexflowTesting/Images/image1.jpg</ThumbnailPath>
+	<Caption>My awesome video.</Caption>
+  </Video>
+</Videos>

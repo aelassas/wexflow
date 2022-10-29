@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ApproveRecord is a sequential task that assigns a record to a user and launches the approval process on that record.
+    
+    To use this task the workflow must be an approval workflow. This can be done whether from the designer 
+    page in the backend or by editing the XML or JSON definitions of the workflow.
+    
+    If the workflow is rejected the OnRejected workflow event is raised and the tasks after Approval
+    task are not executed.
+    
+    The rejection of workflows can be done by clicking on reject button whether from Approval page in the backend
+    or from Wexflow Manager.
+  -->
+  <Task id="$int" name="ApproveRecord" description="$string" enabled="true|false">
+    <!--Required. Record id.-->
+    <Setting name="record" value="$string" />
+    <!--Required. Username of the user assigned to the record.-->
+    <Setting name="assignedTo" value="$string" />
+    <!--Optional. Reminder delay. Defaults to 3.00:00:00 (3 days before due date)-->
+    <Setting name="reminderDelay" value="$string" />
+    <!--Optional. List of tasks to execute once the record is approved. Ex: 1, 2, 3-->
+    <Setting name="onApproved" value="$string" />
+    <!--Optional. List of tasks to execute once the record is rejected. Ex: 1, 2, 3-->
+    <Setting name="onRejected" value="$string" />
+    <!--Optional. List of tasks to execute once the record's due date is reached. Ex: 1, 2, 3-->
+    <Setting name="onDueDateReached" value="$string" />
+    <!--Optional. List of tasks to execute once the record's reminder date is reached. Ex: 1, 2, 3-->
+    <Setting name="onReminderDateReached" value="$string" />
+    <!--Optional. List of tasks to execute once the record is deleted. Ex: 1, 2, 3-->
+    <Setting name="onDeleted" value="$string" />
+    <!--Optional. List of tasks to execute once the worklow is stopped. Ex: 1, 2, 3-->
+    <Setting name="onStopped" value="$string" />
+    <!--Optional and defaults to false. Indicates whether the approval workflow is deleted once the record is approved. -->
+    <Setting name="deleteWorkflowOnApproval" value="$bool" />
+  </Task>
+</Tasks>

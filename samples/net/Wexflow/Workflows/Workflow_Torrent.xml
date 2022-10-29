@@ -1,0 +1,15 @@
+<Workflow xmlns="urn:wexflow-schema" id="72" name="Workflow_Torrent" description="Workflow_Torrent">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\Torrent\sample.torrent" />
+		</Task>
+		<Task id="2" name="Torrent" description="Downloading torrents" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="saveFolder" value="C:\WexflowTesting\Torrent\" />
+		</Task>
+	</Tasks>
+</Workflow>

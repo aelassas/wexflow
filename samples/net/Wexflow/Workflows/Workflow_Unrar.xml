@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="79" name="Workflow_Unrar" description="Workflow_Unrar">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading RAR archives" enabled="true">
+      <Setting name="file" value="C:\WexflowTesting\Unrar_src\archive.rar" />
+    </Task>
+    <Task id="2" name="Unrar" description="Extracting RAR archives" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destDir" value="C:\WexflowTesting\Unrar_dest" />
+    </Task>
+    <Task id="3" name="ListFiles" description="Listing files..." enabled="true" />
+  </Tasks>
+</Workflow>

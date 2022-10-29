@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ImagesCropper is a sequential task that crops a collection of image files.
+    
+    The image files generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="ImagesCropper" description="$string" enabled="true|false">
+    <!--  The image files loaded by the task having as id $taskId will be resized. -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    
+    <!-- The width in pixels.-->
+    <Setting name="width" value="int" />
+    <!-- The height in pixels.-->
+    <Setting name="height" value="int" />
+    <!-- The x-coordinate of the upper-left corner of the rectangle .-->
+    <Setting name="x" value="int" />
+    <!-- The y-coordinate of the upper-left corner of the rectangle.-->
+    <Setting name="y" value="int" />
+  </Task>
+</Tasks>

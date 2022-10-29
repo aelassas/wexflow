@@ -1,0 +1,12 @@
+<Workflow xmlns="urn:wexflow-schema" id="11" name="Workflow_Mkdir" description="Workflow_Mkdir">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Mkdir" description="Creating folders" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\Watchfolder4\" />
+			<Setting name="folder" value="C:\WexflowTesting\Watchfolder5\" />
+		</Task>
+	</Tasks>
+</Workflow>

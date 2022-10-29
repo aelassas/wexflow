@@ -1,0 +1,37 @@
+<Workflow xmlns="urn:wexflow-schema" id="9" name="Workflow_MailsSender" description="Workflow_MailsSender">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading mails" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\Mails\mails.xml" />
+		</Task>
+		<Task id="2" name="FilesLoader" description="Loading attachments" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file2.txt" />
+		</Task>
+		<Task id="3" name="MailsSender" description="Sending mails" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="selectAttachments" value="2" />
+			<Setting name="host" value="smtp.gmail.com" />
+			<Setting name="port" value="587" />
+			<Setting name="enableSsl" value="true" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+		</Task>
+		<Task id="4" name="FilesCopier" description="Copying attachments" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\MailsSender\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<Task id="1"><Parent id="-1" /></Task>
+		<Task id="2"><Parent id="1" /></Task>
+		<Task id="3"><Parent id="2" /></Task>
+		<OnSuccess>
+			<Task id="4"><Parent id="-1" /></Task>
+		</OnSuccess>
+	</ExecutionGraph>
+</Workflow>

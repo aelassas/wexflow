@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+   FilesSplitter is a sequential task that splits files into chunks.
+   
+   The resulted files are loaded by the FilesSplitter task so that other tasks can select 
+   them through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesSplitter" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      splitted into chunks.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The chunk size in bytes.-->  
+    <Setting name="chunkSize" value="$int" />
+  </Task>
+</Tasks>

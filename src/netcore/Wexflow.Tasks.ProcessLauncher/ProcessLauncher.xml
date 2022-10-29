@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ProcessLauncher is a sequential task that launches a process. If this process generates a file as output
+    It is possible to pass a collection of files to the task so that for each file an output
+    file will be generated through the process.
+    
+    The files generated are loaded in this task so that other tasks can select them through 
+    the selectFiles option.
+    
+    This task is useful for transforming images or transcoding video and audio files.
+  -->
+  <Task id="$int" name="ProcessLauncher" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      passed to the process command.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The process path. Example: C:\Program Files\VideoLAN\VLC\vlc.exe-->
+    <Setting name="processPath" value="$string" />
+    <!-- The process command.
+         It is possible to lauch a process that does not generates files. In this case the generatesFiles option must be false.
+         If this process generates a file as output, it is possible to pass the input file to
+         the process commad through {$filePath} variable. The output file path can be set through the {$output} variable
+         which is defined as follows: {$output:$fileNameWithoutExtension|$fileName[a-zA-Z0-9._-]*}
+         If this process generates files as output, for each file loaded the process will be launxhed and
+         the {$filePath} variable will be replaced by the file path of the loaded file and the {$output:$fileNameWithoutExtension|$fileName[a-zA-Z0-9._-]*}
+         will be replaced by $JobTempFolder\$fileNameWithoutExtension|$fileName[a-zA-Z0-9._-]* where $JobTempFolder is the temp folder of the job.
+         Each file generated will be loaded in this task so that other tasks can select it through the selectFiles option.
+         Example: -I dummy {$filePath} :sout=#transcode{acodec=mpga}:std{dst={$output:$fileNameWithoutExtension.mp3},access=file} vlc://quit-->
+    <Setting name="processCmd" value="$string" />
+    <!-- true to hide the process GUI, false otherwise.-->
+    <Setting name="hideGui" value="true|false" />
+    <!-- true if this process generates a file as output, false otherwise.-->
+    <Setting name="generatesFiles" value="true|false" />
+    <!-- Optional and defaults to false. Indicates whether to load all the files generated in the temporary folder by the command or not.-->
+    <Setting name="loadAllFiles" value="true|false" />
+  </Task>
+</Tasks>

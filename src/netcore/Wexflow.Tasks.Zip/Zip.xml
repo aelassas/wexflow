@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Zip is a sequential task that creates a .zip from a collection of files.
+    
+    The Zip file generated will be loaded by this task so that other
+    tasks can select it through the selectFiles option.
+  -->
+  <Task id="$int" name="Zip" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      added to the Zip file.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The Zip file name. Example: output.zip -->
+    <Setting name="zipFileName" value="$string" />
+  </Task>
+</Tasks>

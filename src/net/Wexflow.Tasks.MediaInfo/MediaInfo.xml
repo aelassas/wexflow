@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Md5 is a sequential task that generates the most relevant technical and tag data for video and audio files.
+    The results are written to an XML file as follows:
+   
+   <Files>
+     <File path="$string" name="$string">
+       <General>
+         <Tag name="$string" value="$value" />
+         <Tag name="$string" value="$value" />
+         ...
+       </General>
+       <Video>
+         <Tag name="$string" value="$value" />
+         <Tag name="$string" value="$value" />
+         ...
+       </Video>
+       <Audio>
+         <Tag name="$string" value="$value" />
+         <Tag name="$string" value="$value" />
+         ...
+       </Audio>
+     </File>
+     <File path="$string" name="$string">
+       <General>
+         <Tag name="$string" value="$value" />
+         <Tag name="$string" value="$value" />
+         ...
+       </General>
+       <Video>
+         <Tag name="$string" value="$value" />
+         <Tag name="$string" value="$value" />
+         ...
+       </Video>
+       <Audio>
+         <Tag name="$string" value="$value" />
+         <Tag name="$string" value="$value" />
+         ...
+       </Audio>
+     </File>
+     ...
+   </Files>
+   
+   The XML file generated will be loaded by the MediaInfo task so that other tasks can select 
+   it through the selectFiles option.
+  -->
+  <Task id="$int" name="MediaInfo" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      used to calculate their tag data.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

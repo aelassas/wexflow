@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Twilio is a sequential task that sends an SMS.
+  -->
+  <Task id="$int" name="Twilio" description="$string" enabled="true|false">
+    <!-- Twilio AccountSid. Ex: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+    <Setting name="accountSid" value="$string" />
+    <!-- Twilio AuthToken.-->
+    <Setting name="authToken" value="$string" />
+    <!-- From phone number. Ex: +15017122661 -->
+    <Setting name="from" value="$string" />
+    <!-- To phone number. Ex: +15558675310 -->
+    <Setting name="to" value="$string" />
+    <!-- SMS message. -->
+    <Setting name="message" value="$string" />
+  </Task>
+</Tasks>

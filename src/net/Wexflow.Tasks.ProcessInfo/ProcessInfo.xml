@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ProcessInfo is a sequential task that shows information about a process.
+    
+    The output is written in an XML file as follows:
+    
+    <Processes>
+      <Process id="7060" processName="notepad" fileName="C:\Windows\SysWOW64\notepad.exe" startTime="2017-10-31 13:11:57.741" machineName="." sessionId="1" mainWindowTitle="" pagedMemorySize64="1073152" peakVirtualMemorySize64="59478016" privateMemorySize64="1073152" virtualMemorySize64="59478016" priorityBoostEnabled="true" threadCount="1" />
+      ...
+    </Processes>
+    
+    The XML output is loaded by the task so that other tasks could select it through the selectFiles option.
+    
+  -->
+  <Task id="$int" name="ProcessInfo" description="$string" enabled="true|false">
+    <!-- The process name. Ex: notepad-->
+    <Setting name="processName" value="$string" />
+  </Task>
+</Tasks>

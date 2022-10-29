@@ -1,0 +1,152 @@
+﻿<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+    <style>
+        /*html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }*/
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+
+        #header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 43px;
+            background: #29A85C;
+            color: #FFFFFF;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+            #header a {
+                color: #FFFFFF;
+                font-size: 12px;
+                margin: 20px;
+                float: left;
+                font-weight: bold;
+                -webkit-font-smoothing: antialiased;
+                line-height: 5px;
+                white-space: nowrap;
+                text-decoration: none;
+            }
+
+            #header .header-right {
+                float: right;
+            }
+
+        #swagger-ui {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <a href="#" id="btn-logout" class="header-right">Logout</a>
+        <a href="https://wexflow.github.io" class="header-right">About</a>
+        <a href="https://github.com/aelassas/Wexflow/wiki" class="header-right">Help</a>
+    </div>
+    <div id="swagger-ui"></div>
+
+    <script src="./common.js"></script>
+    <script src="./settings.js"></script>
+    <script src="./authenticate.js"></script>
+    <script src="./swagger-ui-bundle.js"></script>
+    <script src="./swagger-ui-standalone-preset.js"></script>
+
+    <script>
+        window.onload = function () {
+            var uri = Common.trimEnd(Settings.Uri, "/");
+            var suser = getUser();
+
+            if (suser === null || suser === "") {
+                Common.redirectToLoginPage();
+            } else {
+                var user = JSON.parse(suser);
+                var auth = "Basic " + btoa(user.Username + ":" + user.Password);
+
+                Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+                    function (u) {
+                        if (user.Password !== u.Password) {
+                            Common.redirectToLoginPage();
+                        } else {
+                            if (u.UserProfile === 0 || u.UserProfile === 1) {
+
+                                var btnLogout = document.getElementById("btn-logout");
+                                btnLogout.onclick = function () {
+                                    deleteUser();
+                                    Common.redirectToLoginPage();
+                                };
+                                btnLogout.innerHTML = "Logout (" + user.Username + ")";
+
+                                // Begin Swagger UI call region
+                                const ui = SwaggerUIBundle({
+                                    url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/swagger-ui/swagger.yaml",
+                                    dom_id: '#swagger-ui',
+                                    defaultModelsExpandDepth: -1,
+                                    deepLinking: true,
+                                    presets: [
+                                        SwaggerUIBundle.presets.apis
+                                        //SwaggerUIStandalonePreset
+                                    ],
+                                    plugins: [
+                                        SwaggerUIBundle.plugins.DownloadUrl
+                                    ],
+                                    //layout: "StandaloneLayout",
+                                });
+                                // End Swagger UI call region
+
+                                ui.getConfigs().requestInterceptor = (req) => {
+                                    if (!req.loadSpec) {
+                                        // Add the header to "try it out" calls but not spec fetches
+                                        //req.headers.Authorization = auth;
+                                        req.headers = {
+                                            "Authorization": auth,
+                                            "Access-Control-Allow-Origin": "*",
+                                            "Access-Control-Request-Method": "POST,GET,PUT,DELETE,OPTIONS",
+                                            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+
+                                        };
+                                    }
+                                    req.contextUrl = window.location.origin + "/";
+                                    req.url = req.url.replace(/http(s){0,1}:\/\/[^/]*\//i, req.contextUrl);
+                                    return req;
+                                };
+
+                                window.ui = ui;
+                            } else {
+                                Common.redirectToLoginPage();
+                            }
+
+                        }
+                    },
+                    function () { }, auth);
+
+            }
+        }
+    </script>
+</body>
+</html>

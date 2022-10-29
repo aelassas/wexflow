@@ -1,0 +1,25 @@
+<Workflow xmlns="urn:wexflow-schema" id="8" name="Workflow_ListFiles" description="Workflow_ListFiles">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> 
+		<Setting name="enabled" value="true" />
+    <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file2.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file3.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file4.txt" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+		<!--<Task id="3" name="Xslt" description="Renaming files and adding tags" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="xsltPath" value="C:\Wexflow\Xslt\ListFiles.xslt" />
+			<Setting name="version" value="2.0" />
+			<Setting name="removeWexflowProcessingNodes" value="true" />
+		</Task>
+		<Task id="4" name="ListFiles" description="Listing files" enabled="true">
+		</Task>-->
+	</Tasks>
+</Workflow>

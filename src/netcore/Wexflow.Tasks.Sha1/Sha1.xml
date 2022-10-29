@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Sha1 is a sequential task that generates SHA-1 hashes of a collection of files. The results are written
+    to an XML file as follows:
+    <Files>
+      <File path="$filePath" name="$fileName" sha1="8F363337594ECE0664B261BE156D17FA6842FAB2" />
+      <File path="$filePath" name="$fileName" sha1="8F363337594ECE0664B261BE156D17FA6842FAB2" />
+      <File path="$filePath" name="$fileName" sha1="8F363337594ECE0664B261BE156D17FA6842FAB2" />
+      ...
+   </Files>
+   
+   The XML file generated will be loaded by the Md5 task so that other tasks can select 
+   it through the selectFiles option.
+  -->
+  <Task id="$int" name="Sha1" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      used to calculate their SHA-1 hashes.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

@@ -1,0 +1,80 @@
+<Workflow xmlns="urn:wexflow-schema" id="55" name="Workflow_Ftp" description="Workflow_Ftp">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="99" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file3.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file4.txt" />
+		</Task>
+		<Task id="100" name="Ftp" description="Sending files" enabled="true">
+			<Setting name="command" value="upload" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+			<Setting name="selectFiles" value="99" />
+		</Task>
+		<Task id="1" name="Ftp" description="Listing files" enabled="true">
+			<Setting name="command" value="list" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+		</Task>
+		<Task id="2" name="Ftp" description="Deleting files" enabled="true">
+			<Setting name="command" value="delete" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file2.txt" />
+		</Task>
+		<Task id="4" name="Ftp" description="Sending files" enabled="true">
+			<Setting name="command" value="upload" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+			<Setting name="selectFiles" value="3" />
+		</Task>
+		<Task id="5" name="Ftp" description="Listing files" enabled="true">
+			<Setting name="command" value="list" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+		</Task>
+		<Task id="6" name="ListFiles" description="Listing files" enabled="true" />
+		<Task id="7" name="Ftp" description="Downloading files" enabled="true">
+			<Setting name="command" value="download" />
+			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
+			<Setting name="server" value="127.0.1" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="user" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/" />
+			<Setting name="selectFiles" value="5" />
+		</Task>
+		<Task id="8" name="FilesMover" description="Moving files to Ftp_download" enabled="true">
+			<Setting name="selectFiles" value="7" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Ftp_download\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

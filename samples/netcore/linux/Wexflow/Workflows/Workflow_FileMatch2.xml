@@ -1,0 +1,29 @@
+<Workflow xmlns="urn:wexflow-schema" id="93" name="Workflow_FileMatch2" description="Workflow_FileMatch2">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="99" name="FileMatch" description="Checking file..." enabled="true">
+			<Setting name="dir" value="/opt/wexflow/WexflowTesting/" />
+			<Setting name="pattern" value=".*\.complete" />
+			<Setting name="recursive" value="true" />
+		</Task>
+		<Task id="1" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+		<Task id="2" name="Wait" description="Waiting for 2 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<If id="100" parent="-1" if="99">
+			<Do>
+				<Task id="1"><Parent id="-1" /></Task>
+			</Do>
+			<Else>
+				<Task id="2"><Parent id="-1" /></Task>
+			</Else>
+		</If>
+	</ExecutionGraph>
+</Workflow>

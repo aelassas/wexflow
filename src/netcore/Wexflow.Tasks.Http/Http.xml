@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Http is a sequential task that downbloads a collection of files over HTTP or HTTPS. 
+    
+    The files downloaded are loaded by this task so that other
+    tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="Http" description="$string" enabled="true|false">
+    <!-- 
+      The URL of the file to download. Example: https://aelassas.github.io/wf_logo.png
+    -->
+    <Setting name="url" value="$string" />
+    <Setting name="url" value="$string" />
+    <!-- You can add as many url settings as you want.-->
+  </Task>
+</Tasks>

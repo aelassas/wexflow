@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    MailsSender is a sequential task that sends emails.
+    The XML input format is as follows:
+    <Mails>
+	    <Mail>
+		    <From>user@host.com</From>
+		    <To>user@host.com, user@host.com, ...</To>
+		    <Cc>user@host.com, user@host.com, ...</Cc>
+        <Bcc>user@host.com, user@host.com, ...</Bcc>
+		    <Subject>Mail subject goes here.</Subject>
+		    <Body>Mail body goes here.</Body>
+	    </Mail>
+	    <Mail>
+		    <From>user@host.com</From>
+		    <To>user@host.com, user@host.com, ...</To>
+		    <Cc>user@host.com, user@host.com, ...</Cc>
+        <Bcc>user@host.com, user@host.com, ...</Bcc>
+		    <Subject>Mail subject goes here.</Subject>
+		    <Body>Mail body goes here.</Body>
+	    </Mail>
+      ...
+  </Mails>
+  -->
+  <Task id="$int" name="MailsSender" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id the $taskId will be
+      used to send emails.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- Optional.  The files loaded by the task having as id the $taskId will be sent as attachments.-->
+    <Setting name="selectAttachments" value="$taskId" />
+    <Setting name="selectAttachments" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The email server host address. Example:  smtp.gmail.com-->
+    <Setting name="host" value="$string" />
+    <!-- The email server port. Example: 587-->
+    <Setting name="port" value="$int" />
+    <!-- true if the email server uses SSL, false otherwise.-->
+    <Setting name="enableSsl" value="true|false" />
+    <!-- The user name to connect to the email server.-->
+    <Setting name="user" value="$string" />
+    <!-- The password to connect to the email server.-->
+    <Setting name="password" value="$string" />
+    <!-- Optional and defaults to true. True to send email body as HTML, false to send email body as TEXT.-->
+    <Setting name="isBodyHtml" value="true|false" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

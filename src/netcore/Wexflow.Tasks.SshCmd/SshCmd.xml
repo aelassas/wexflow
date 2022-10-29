@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    SshCmd is a sequential task that executes an SSH command.
+  -->
+  <Task id="$int" name="SshCmd" description="$string" enabled="true|false">
+    <!-- SSH host. -->
+    <Setting name="host" value="$string" />
+    <!-- SSH port. Defaults to 22.-->
+    <Setting name="port" value="$int" />
+    <!-- SSH username. -->
+    <Setting name="username" value="$string" />
+    <!-- SSH password. -->
+    <Setting name="password" value="$string" />
+    <!-- SSH command. -->
+    <Setting name="cmd" value="$string" />
+    <!-- SSH command timeout. Defaults to 60 seconds.-->
+    <Setting name="timeout" value="$int" />
+  </Task>
+</Tasks>

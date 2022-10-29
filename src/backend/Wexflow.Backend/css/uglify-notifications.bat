@@ -1,0 +1,1 @@
+uglifycss bootstrap.min.css jquery.toast.min.css notifications.css --output notifications.min.css

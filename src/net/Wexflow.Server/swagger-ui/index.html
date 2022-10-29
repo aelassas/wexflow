@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Wexflow</title>
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+
+    <link rel="stylesheet" type="text/css" href="login.css" />
+
+    <script type="text/javascript" src="settings.js"></script>
+
+    <script type="text/javascript" src="common.js"></script>
+    <script type="text/javascript" src="md5.js"></script>
+    <script type="text/javascript" src="authenticate.js"></script>
+    <script type="text/javascript" src="login.js"></script>
+
+</head>
+<body>
+    <div id="header">
+        <a href="https://wexflow.github.io" class="header-right">About</a>
+        <a href="https://github.com/aelassas/Wexflow/wiki" class="header-right">Help</a>
+    </div>
+    <div id="login">
+        <table>
+            <tr>
+                <td>
+                    <label>Username</label>
+                </td>
+                <td>
+                    <input type="text" name="username" id="txt-username" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Password</label>
+                </td>
+                <td>
+                    <input type="password" name="password" id="txt-password" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div id="login-action">
+                        <input id="btn-login" type="submit" name="sub" value="Sign in" class="btn btn-primary btn-xs" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            new Login();
+        }
+    </script>
+</body>
+</html>

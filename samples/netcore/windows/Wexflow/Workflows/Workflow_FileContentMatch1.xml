@@ -1,0 +1,28 @@
+<Workflow xmlns="urn:wexflow-schema" id="126" name="Workflow_FileContentMatch1" description="Workflow_FileContentMatch1">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="99" name="FileContentMatch" description="Checking file..." enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.txt" />
+			<Setting name="pattern" value="(Scenester)" />
+		</Task>
+		<Task id="1" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+		<Task id="2" name="Wait" description="Waiting for 2 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<If id="100" parent="-1" if="99">
+			<Do>
+				<Task id="1"><Parent id="-1" /></Task>
+			</Do>
+			<Else>
+				<Task id="2"><Parent id="-1" /></Task>
+			</Else>
+		</If>
+	</ExecutionGraph>
+</Workflow>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Untar is a sequential task that extracts TAR archives.
+   
+   The files extracted are loaded by the Untar task so that other tasks can select 
+   them through the selectFiles option.
+  -->
+  <Task id="$int" name="Untar" description="$string" enabled="true|false">
+    <!-- The TAR archives loaded by the task having as id $taskId will be extracted.-->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- Required. Destination directory where the archives will be extracted.-->
+    <Setting name="destDir" value="$string" />
+  </Task>
+</Tasks>

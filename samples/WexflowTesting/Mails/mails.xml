@@ -1,0 +1,16 @@
+<Mails>
+	<Mail>
+		<From>user@host.com</From>
+		<To>user@host.com, user@host.com</To>
+		<Cc>user@host.com, user@host.com</Cc>
+		<Bcc>user@host.com, user@host.com</Bcc>
+		<Subject>Wexflow testing 1</Subject>
+		<Body>Wexflow testing email body.</Body>
+	</Mail>
+	<Mail>
+		<From>user@host.com</From>
+		<To>user@host.com, user@host.com</To>
+		<Subject>Wexflow testing 2</Subject>
+		<Body>Wexflow testing email body.</Body>
+	</Mail>
+</Mails>

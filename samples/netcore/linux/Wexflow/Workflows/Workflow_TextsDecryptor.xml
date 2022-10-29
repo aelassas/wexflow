@@ -1,0 +1,20 @@
+<Workflow xmlns="urn:wexflow-schema" id="84" name="Workflow_TextsDecryptor" description="Workflow_TextsDecryptor">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/TextsDecryptor_src/file1.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/TextsDecryptor_src/file2.txt" />
+		</Task>
+		<Task id="2" name="TextsDecryptor" description="Decrypting files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving the decrypted files to TextsDecryptor_dest folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/TextsDecryptor_dest/" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

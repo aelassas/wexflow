@@ -1,0 +1,26 @@
+<Workflow xmlns="urn:wexflow-schema" id="150" name="Workflow_Approval_Import" description="Workflow_Approval_Import">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="approval" value="false" />
+		<Setting name="enableParallelJobs" value="true" />
+	</Settings>
+	<LocalVariables />
+	<Tasks>
+		<Task id="1" name="FileSystemWatcher" description="Watching RecordsHotFolder" enabled="true">
+			<Setting name="folderToWatch" value="C:\WexflowTesting\RecordsHotFolder" />
+			<Setting name="onFileFound" value="2, 3" />
+			<Setting name="onFileCreated" value="2, 3" />
+			<Setting name="onFileChanged" value="" />
+			<Setting name="onFileDeleted" value="" />
+		</Task>
+		<Task id="2" name="ApprovalRecordsCreator" description="Creating records" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="createdBy" value="admin" />
+		</Task>
+		<Task id="3" name="ApprovalWorkflowsCreator" description="Creating and starting approval workflows" enabled="true">
+			<Setting name="assignedTo" value="wexflow" />
+			<Setting name="approver" value="admin" />
+		</Task>
+	</Tasks>
+</Workflow>

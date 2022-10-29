@@ -1,0 +1,1 @@
+uglifyjs jquery.min.js jquery.toast.min.js bootstrap.min.js bootstrap-toggle.min.js common.js authenticate.js highlight.pack.js editor.js -o editor.min.js -c -m

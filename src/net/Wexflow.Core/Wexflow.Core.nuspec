@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Wexflow</id>
+    <version>6.0.0</version>
+    <title>Wexflow</title>
+    <authors>Akram El Assas</authors>
+    <owners>akram.elassas</owners>
+    <license type="file">LICENSE.txt</license>
+    <projectUrl>https://wexflow.github.io</projectUrl>
+    <repository type="git" url="https://github.com/aelassas/Wexflow" />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Core assembly of Wexflow workflow engine.</description>
+    <releaseNotes>Bug fixes, performance enhancements and under the hood updates.</releaseNotes>
+    <copyright>Copyright (c) 2017-2020 Akram El Assas.</copyright>
+    <tags>Wexflow Workflow</tags>
+    <dependencies>
+      <group targetFramework="net461">
+        <dependency id="log4net" version="2.0.8" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" />
+        <dependency id="Quartz" version="3.0.7" />
+      </group>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="log4net" version="2.0.8" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" />
+        <dependency id="Quartz" version="3.0.7" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\..\LICENSE.txt" />
+
+    <file src=".\bin\Debug\Wexflow.Core.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.LiteDB.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.MongoDB.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.RavenDB.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.PostgreSQL.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.SQLServer.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.MySQL.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.SQLite.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.Firebird.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.Oracle.dll" target="lib\net461" />
+    <file src=".\bin\Debug\Wexflow.Core.Db.MariaDB.dll" target="lib\net461" />
+
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.LiteDB.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.MongoDB.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.RavenDB.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.PostgreSQL.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.SQLServer.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.MySQL.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.SQLite.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.Firebird.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.Oracle.dll" target="lib\netcoreapp3.1" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\netcoreapp3.1\Wexflow.Core.Db.MariaDB.dll" target="lib\netcoreapp3.1" />
+  </files>
+</package>

@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Users</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toast.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/users.css" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/users.min.css" />
+
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/language.js"></script>
+
+    <!--<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/authenticate.js"></script>
+    <script type="text/javascript" src="js/language.core.js"></script>
+    <script type="text/javascript" src="js/users.js"></script>-->
+
+    <script type="text/javascript" src="js/users.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <a id="lnk-dashboard" href="dashboard.html">Dashboard</a>
+        <a id="lnk-records" href="records.html">Records</a>
+        <a id="lnk-manager" href="manager.html">Manager</a>
+        <a id="lnk-approval" href="approval.html">Approval</a>
+        <a id="lnk-designer" href="designer.html">Designer</a>
+        <a id="lnk-history" href="history.html">History</a>
+        <a id="lnk-users" href="users.html" style="text-decoration: underline">Users</a>
+        <a id="lnk-profiles" href="profiles.html">Profiles</a>
+        <div id="lang" href="#" class="header-right"></div>
+        <a href="#" id="btn-logout" class="header-right"><span id="spn-logout">Logout</span><span id="spn-username"></span></a>
+        <a id="lnk-notifications" href="notifications.html" class="header-right"><img id="img-notifications" src="images/notification.png" /></a>
+    </div>
+    <div id="users">
+        <div id="users-container">
+            <div id="users-search">
+                <input id="users-search-text" type="text" autocomplete="off">
+                <input id="users-search-action" type="button" value="Search" class="btn btn-primary btn-xs">
+            </div>
+            <div id="users-table"></div>
+        </div>
+        <div id="right-panel">
+            <input id="new-user-action" type="button" value="New user" class="btn btn-dark btn-xs" />
+            <div id="user-actions">
+                <input id="delete-action" type="button" value="Delete" class="btn btn-danger btn-xs action-right" />
+                <input id="save-action" type="button" value="Save" class="btn btn-primary btn-xs action-right" />
+            </div>
+            <div id="user-profile">
+                <table>
+                    <tr id="tr-id">
+                        <td>
+                            <label>Id</label>
+                        </td>
+                        <td>
+                            <input id="txt-id" type="text" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr id="tr-createdOn">
+                        <td>
+                            <label id="tr-createdOn-label">Created on</label>
+                        </td>
+                        <td>
+                            <input id="txt-createdOn" type="text" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr id="tr-modifiedOn">
+                        <td>
+                            <label id="tr-modifiedOn-label">Modified on</label>
+                        </td>
+                        <td>
+                            <input id="txt-modifiedOn" type="text" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="username-td">
+                            <label id="username-text-label">Username</label>
+                        </td>
+                        <td>
+                            <input id="username-text" type="text" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="userprofile-slct-label">User profile </label>
+                        </td>
+                        <td>
+                            <select id="slct-profile">
+                                <option value="-1" selected="selected"></option>
+                                <option value="0">SuperAdministrator</option>
+                                <option value="1">Administrator</option>
+                                <option value="2">Restricted</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="email-text-label">Email</label>
+                        </td>
+                        <td>
+                            <input id="email-text" type="text" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <a id="change-password" href="#">Change password</a>
+                        </td>
+                    </tr>
+                    <tr id="old-password-tr">
+                        <td>
+                            <label id="old-password-text-label">Old password</label>
+                        </td>
+                        <td>
+                            <input id="old-password-text" type="password">
+                        </td>
+                    </tr>
+                    <tr id="new-password-tr">
+                        <td>
+                            <label id="lbl-new-password">New password</label>
+                        </td>
+                        <td>
+                            <input id="new-password-text" type="password">
+                        </td>
+                    </tr>
+                    <tr id="confirm-password-tr">
+                        <td>
+                            <label id="confirm-password-text-label">Confirm password</label>
+                        </td>
+                        <td>
+                            <input id="confirm-password-text" type="password">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            new Users();
+        };
+    </script>
+</body>
+</html>

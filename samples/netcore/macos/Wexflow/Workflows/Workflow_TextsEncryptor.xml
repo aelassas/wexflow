@@ -1,0 +1,25 @@
+<Workflow xmlns="urn:wexflow-schema" id="83" name="Workflow_TextsEncryptor" description="Workflow_TextsEncryptor">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/file1.txt" />
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/file2.txt" />
+		</Task>
+		<Task id="2" name="TextsEncryptor" description="Encrypting files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesCopier" description="Copying encrypted files to TextsDecryptor_src folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/TextsDecryptor_src/" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+		<Task id="4" name="FilesMover" description="Moving the encrypted files to TextsEncryptor folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/TextsEncryptor/" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

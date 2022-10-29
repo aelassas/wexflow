@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesDiff is a sequential task that calculates the diff of two files.
+    
+    The result is written in an output file.
+    
+    The file generated is loaded by this task so that other tasks can select it through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesDiff" description="$string" enabled="true|false">
+    <!--  The file path of the old file to check.-->
+    <Setting name="oldFile" value="$string" />
+    <!--  The file path of the new file to check.-->
+    <Setting name="newFile" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

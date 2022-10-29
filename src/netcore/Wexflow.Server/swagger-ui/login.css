@@ -1,0 +1,80 @@
+
+body {
+    background: #FFFFFF;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+
+.jq-toast-single {
+    width: 300px;
+}
+
+#header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 43px;
+    background: #29A85C;
+    color: #878787;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+#header a {
+    color: #FFFFFF;
+    font-size: 12px;
+    margin: 20px;
+    float: left;
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+    line-height: 5px;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+#header .header-right {
+    float: right;
+}
+
+
+#login {
+    width: 280px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -120px;
+    margin-left: -120px;
+}
+
+    #login label {
+        font-weight: bold;
+        line-height: 5px;
+    }
+
+    #login input {
+        margin-left: 10px;
+        margin-top: 3px;
+        width: 170px;
+    }
+
+#login-action {
+    position: absolute;
+    right: 21px;
+    top: 73px;
+    left: 0;
+}
+
+    #login-action input {
+        float: right;
+        width: 78px;
+    }
+
+    #login-action #btn-login {
+        margin-left: 11px;
+    }
+
+    #login-action #forgot-password {
+        position: absolute;
+        top: 7px;
+    }

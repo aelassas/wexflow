@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toast.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jBox.all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/dashboard.min.css" />
+
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/language.js"></script>
+
+    <!--<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/authenticate.js"></script>
+    <script type="text/javascript" src="js/jBox.all.min.js"></script>
+    <script type="text/javascript" src="js/language.core.js"></script>
+    <script type="text/javascript" src="js/dashboard.js"></script>-->
+
+    <script type="text/javascript" src="js/dashboard.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <a id="lnk-dashboard" href="dashboard.html" style="text-decoration: underline">Dashboard</a>
+        <a id="lnk-records" href="records.html">Records</a>
+        <a id="lnk-manager" href="manager.html">Manager</a>
+        <a id="lnk-approval" href="approval.html">Approval</a>
+        <a id="lnk-designer" href="designer.html">Designer</a>
+        <a id="lnk-history" href="history.html">History</a>
+        <a id="lnk-users" href="users.html">Users</a>
+        <a id="lnk-profiles" href="profiles.html">Profiles</a>
+        <div id="lang" class="header-right"></div>
+        <a href="#" id="btn-logout" class="header-right"><span id="spn-logout">Logout</span><span id="spn-username"></span></a>
+        <a id="lnk-notifications" href="notifications.html" class="header-right"><img id="img-notifications" src="images/notification.png" /></a>
+    </div>
+    <div id="status">
+        <div id="status-pending">
+            <img src="images/pending.png">
+            <table>
+                <tr><td><label id="status-pending-label" class="status-title">Pending</label></td></tr>
+                <tr><td><label id="status-pending-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+        <div id="status-running">
+            <img src="images/running.png">
+            <table>
+                <tr><td><label id="status-running-label" class="status-title">Running</label></td></tr>
+                <tr><td><label id="status-running-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+        <div id="status-done">
+            <img src="images/done.png">
+            <table>
+                <tr><td><label id="status-done-label" class="status-title">Done</label></td></tr>
+                <tr><td><label id="status-done-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+        <div id="status-failed">
+            <img src="images/failed.png">
+            <table>
+                <tr><td><label id="status-failed-label" class="status-title">Failed</label></td></tr>
+                <tr><td><label id="status-failed-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+        <div id="status-warning" style="width: 180px;">
+            <img src="images/warning.png">
+            <table>
+                <tr><td><label id="status-warning-label" class="status-title">Warning</label></td></tr>
+                <tr><td><label id="status-warning-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+        <div id="status-disabled">
+            <img src="images/disapproved.png">
+            <table>
+                <tr><td><label id="status-disapproved-label" class="status-title">Rejected</label></td></tr>
+                <tr><td><label id="status-disapproved-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+        <div id="status-stopped">
+            <img src="images/stopped.png">
+            <table>
+                <tr><td><label id="status-stopped-label" class="status-title">Stopped</label></td></tr>
+                <tr><td><label id="status-stopped-value" class="status-value"></label></td></tr>
+            </table>
+        </div>
+    </div>
+    <div id="entries-action">
+        <label id="lbl-show">Show</label>
+        <select id="slct-entries-count">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="250">250</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2500">2500</option>
+            <option value="5000">5000</option>
+        </select>
+        <label id="lbl-entries">entries</label>
+        <input id="btn-previous-page" type="submit" name="search" value="<" class="btn btn-primary btn-xs">
+        <label id="lbl-pages"></label>
+        <input id="btn-next-page" type="submit" name="search" value=">" class="btn btn-primary btn-xs">
+        <label id="lbl-entries-count"><span id="spn-entries-count-label"></span><span id="spn-entries-count"></span></label>
+
+        <input id="btn-search" type="submit" name="search" value="Search" class="btn btn-primary btn-xs action-right">
+        <input id="txt-search" type="text" class="action-right" autocomplete="off">
+
+        <input id="txt-to" type="text" class="action-right" autocomplete="off">
+        <label id="lbl-to" class="action-right">to</label>
+
+        <input id="txt-from" type="text" class="action-right" autocomplete="off">
+        <label id="lbl-from" class="action-right">from</label>
+    </div>
+    <div id="entries"></div>
+    <div style="display: none" id="grabMe"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            new Dashboard();
+        });
+    </script>
+</body>
+</html>	

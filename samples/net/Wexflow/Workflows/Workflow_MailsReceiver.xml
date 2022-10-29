@@ -1,0 +1,21 @@
+<Workflow xmlns="urn:wexflow-schema" id="56" name="Workflow_MailsReceiver" description="Workflow_MailsReceiver">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="MailsReceiver" description="Receiving mails..." enabled="true">
+			<Setting name="host" value="pop.gmail.com" />
+			<Setting name="port" value="995" />
+			<Setting name="enableSsl" value="true" />
+			<Setting name="user" value="username" />
+			<Setting name="password" value="password" />
+			<Setting name="messageCount" value="2" />
+			<Setting name="deleteMessages" value="false" />
+    </Task>
+		<Task id="2" name="FilesMover" description="Moving mails files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\MailsReceiver\" />
+		</Task>
+	</Tasks>
+</Workflow>

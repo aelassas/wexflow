@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ListFiles is a sequential task that lists all the files loaded by the workflow tasks in the logs.
+    This task is useful for resolving issues.
+    
+    The ListFiles task outputs an XML file in this format:
+    
+    <?xml version="1.0" encoding="utf-8"?>
+    <WexflowProcessing>
+      <Workflow id="8" name="Workflow_ListFiles" description="Workflow_ListFiles">
+        <Files>
+          <File taskId="1" path="C:\WexflowTesting\file1.txt" name="file1.txt" renameTo="" renameToOrName="file1.txt" />
+          <File taskId="1" path="C:\WexflowTesting\file2.txt" name="file2.txt" renameTo="" renameToOrName="file2.txt" />
+          <File taskId="1" path="C:\WexflowTesting\file3.txt" name="file3.txt" renameTo="" renameToOrName="file3.txt" />
+          <File taskId="1" path="C:\WexflowTesting\file4.txt" name="file4.txt" renameTo="" renameToOrName="file4.txt" />
+          ...
+        </Files>
+      </Workflow>
+    </WexflowProcessing>
+    
+    This task can be used along with the Xslt task to rename files and adding tags to files. Refer to
+    the documentation of the Xslt task to see how to do it.
+  -->
+  <Task id="$int" name="ListFiles" description="$string" enabled="true|false">
+  </Task>
+</Tasks>

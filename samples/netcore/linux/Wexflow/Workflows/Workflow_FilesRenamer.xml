@@ -1,0 +1,25 @@
+<Workflow xmlns="urn:wexflow-schema" id="36" name="Workflow_FilesRenamer" description="Workflow_FilesRenamer">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file1.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file2.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file3.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file4.txt" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+		<Task id="3" name="Xslt" description="Renaming files and adding tags" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="xsltPath" value="/opt/wexflow/Wexflow/Xslt/ListFiles.xslt" />
+			<Setting name="removeWexflowProcessingNodes" value="false" />
+		</Task>
+		<Task id="4" name="FilesRenamer" description="Renaming files" enabled="true">
+			<Setting name="selectFiles" todo="toRename" />
+			<Setting name="overwrite" value="false" />
+		</Task>
+	</Tasks>
+</Workflow>

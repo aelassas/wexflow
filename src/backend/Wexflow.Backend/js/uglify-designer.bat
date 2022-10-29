@@ -1,0 +1,1 @@
+uglifyjs jquery.min.js jquery.toast.min.js bootstrap.min.js common.js authenticate.js flowy.js jBox.all.min.js lodash.min.js language.core.js designer.js -o designer.min.js -c -m

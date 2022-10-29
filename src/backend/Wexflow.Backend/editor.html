@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Editor</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-toggle.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/vs2015.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toast.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/editor.css" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/editor.min.css" />
+
+    <script type="text/javascript" src="js/settings.js"></script>
+
+    <!--<script type="text/javascript" src="js/cytoscape-dagre.min.js"></script>-->
+
+    <!--<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-toggle.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/authenticate.js"></script>
+    <script type="text/javascript" src="js/highlight.pack.js"></script>
+    <script type="text/javascript" src="js/ace.js"></script>
+    <script type="text/javascript" src="js/editor.js"></script>-->
+
+    <script type="text/javascript" src="js/ace.js"></script>
+    <script type="text/javascript" src="js/editor.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <a href="dashboard.html">Dashboard</a>
+        <a id="lnk-manager" href="manager.html">Manager</a>
+        <!--<a id="lnk-approval" href="approval.html">Approval</a>-->
+        <a id="lnk-designer" href="designer.html">Designer</a>
+        <a id="lnk-editor" href="editor.html" style="text-decoration: underline">Editor</a>
+        <a href="history.html">History</a>
+        <a id="lnk-users" href="users.html">Users</a>
+        <a id="lnk-profiles" href="profiles.html">Profiles</a>
+        <a href="#" id="btn-logout" class="header-right">Logout</a>
+        <a href="https://wexflow.github.io" class="header-right">About</a>
+        <a href="https://github.com/aelassas/Wexflow/wiki" class="header-right">Help</a>
+    </div>
+    <div id="wf-designer"></div>
+    <script type="text/javascript">
+        window.onload = function () {
+            new WexflowEditor();
+        };
+    </script>
+</body>
+</html>

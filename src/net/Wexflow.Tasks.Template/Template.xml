@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    The Template task documentation goes here.
+  -->
+  <Task id="$int" name="Template" description="$string" enabled="true|false">
+    <!-- The documentation of the Template task options goes here-->
+  </Task>
+</Tasks>

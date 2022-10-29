@@ -1,0 +1,1 @@
+uglifyjs jquery.min.js jquery.toast.min.js bootstrap.min.js common.js language.core.js forgot-password.js -o forgot-password.min.js -c -m

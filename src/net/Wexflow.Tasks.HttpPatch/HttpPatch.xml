@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    HttpPatch is a sequential task that executes a PATCH request.
+    
+    If the request outputs a response the result is written in a file that is loaded by the task so that other tasks can select it through selectFiles option.
+  -->
+  <Task id="$int" name="HttpPatch" description="$string" enabled="true|false">
+    <!-- The URL. Ex: http://localhost:8000/wexflow/start/2 -->
+    <Setting name="url" value="$string" />
+    <!-- The PATCH parameters. Ex: key1=value1&amp;key2=value2&amp;key3=value3-->
+    <Setting name="params" value="$string" />
+  </Task>
+</Tasks>

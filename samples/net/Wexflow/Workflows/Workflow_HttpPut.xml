@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="101" name="Workflow_HttpPut" description="Workflow_HttpPut">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="HttpPut" description="Executing PUT request" enabled="true">
+	  <Setting name="url" value="http://localhost:8000/wexflow/start/2" />
+    </Task>
+  </Tasks>
+</Workflow>

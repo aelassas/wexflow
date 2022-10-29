@@ -1,0 +1,79 @@
+﻿#wf-container
+{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    position: relative;
+    min-width: 600px;
+    min-height: 400px;
+    width: 100%;
+    height: 100%;
+}
+
+#wf-cmd
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+#wf-cmd button
+{
+    margin-right: 5px;
+    width: 70px;
+}
+
+#wf-notifier
+{
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    left: 10px;
+}
+
+#wf-notifier #wf-notifier-text
+{
+    width: 100%;
+}
+
+#wf-workflows
+{
+    position: absolute;
+    top: 85px;
+    bottom: 0;
+    right: 10px;
+    left: 10px;
+    overflow: auto;
+}
+
+/* start of table style */
+
+#wf-workflows #wf-workflows-table .wf-id
+{
+    width: 45px;    
+}
+
+#wf-workflows #wf-workflows-table .wf-n
+{
+    width: 200px;    
+}
+
+#wf-workflows #wf-workflows-table .wf-lt
+{
+    width: 100px;    
+}
+
+#wf-workflows #wf-workflows-table .wf-e
+{
+    width: 75px;
+}
+
+#wf-workflows #wf-workflows-table tbody tr:hover
+{
+    cursor: pointer;
+}
+
+#wf-workflows #wf-workflows-table .selected, #wf-workflows #wf-workflows-table .selected:hover
+{
+    background-color: #ffb347;
+}
+
+/*end of table style*/

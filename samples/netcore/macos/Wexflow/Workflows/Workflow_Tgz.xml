@@ -1,0 +1,19 @@
+<Workflow xmlns="urn:wexflow-schema" id="162" name="Workflow_Tgz" description="Workflow_Tgz">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="/Applications/wexflow/WexflowTesting/Watchfolder1/" />
+		</Task>
+		<Task id="2" name="Tgz" description="Creating Tgz" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="tgzFileName" value="output.tar.gz" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving tgzs to Tgz folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Tgz/" />
+		</Task>
+	</Tasks>
+</Workflow>

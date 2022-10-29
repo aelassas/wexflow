@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="166" name="Workflow_UglifyJs" description="Workflow_UglifyJs">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading js scripts" enabled="true">
+	  <Setting name="file" value="C:\WexflowTesting\UglifyJs_src\wexflow-designer.js" />
+	  <Setting name="file" value="C:\WexflowTesting\UglifyJs_src\wexflow-manager.js" />
+    </Task>
+    <Task id="2" name="UglifyJs" description="Uglifying js scripts" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving uglified scripts to UglifyJs_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\UglifyJs_dest\" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

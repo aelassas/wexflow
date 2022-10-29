@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesEncryptor is a sequential task that encrypts a collection of files.
+    
+    The crypted files generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesEncryptor" description="$string" enabled="true|false">
+    <!--  The files loaded by the task having as id $taskId will be crypted. -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

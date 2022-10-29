@@ -1,0 +1,20 @@
+<Workflow xmlns="urn:wexflow-schema" id="115" name="Workflow_FilesLoaderLocalVariables" description="Workflow_FilesLoaderLocalVariables">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<LocalVariables>
+		<Variable name="myFile1" value="$wexflowTesting\$fileName1" />
+		<Variable name="myFile2" value="$wexflowTesting\$fileName2" />
+		<Variable name="myFile3" value="$wexflowTesting\$fileName3" /> 
+	</LocalVariables>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="$myFile1" />
+			<Setting name="file" value="$myFile2" />
+			<Setting name="file" value="$myFile3" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+	</Tasks>
+</Workflow>

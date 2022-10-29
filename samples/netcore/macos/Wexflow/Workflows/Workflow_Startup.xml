@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="69" name="Workflow_Startup" description="Workflow_Startup">
+  <Settings>
+    <Setting name="launchType" value="startup" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+      <Setting name="file" value="/Applications/wexflow/WexflowTesting/file1.txt" />
+    </Task>
+    <Task id="2" name="FilesCopier" description="Copying files" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Startup" />
+      <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

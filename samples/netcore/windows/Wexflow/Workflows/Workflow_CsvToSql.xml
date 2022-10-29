@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="76" name="Workflow_CsvToSql" description="Workflow_CsvToSql">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading CSVs" enabled="true">
+      <Setting name="file" value="C:\WexflowTesting\CsvToSql\csv1.csv" />
+      <Setting name="file" value="C:\WexflowTesting\CsvToSql\csv2.csv" />
+    </Task>
+    <Task id="2" name="CsvToSql" description="Generating SQL files from CSVs" enabled="true">
+      <Setting name="selectFiles" value="1" />
+	  <Setting name="tableName" value="HelloWorld" />
+	  <Setting name="separator" value=";" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving SQL Files to CsvToSql folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\CsvToSql\" />
+    </Task>
+  </Tasks>
+</Workflow>

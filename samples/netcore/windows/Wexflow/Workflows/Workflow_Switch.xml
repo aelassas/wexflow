@@ -1,0 +1,34 @@
+<Workflow xmlns="urn:wexflow-schema" id="133" name="Workflow_Switch" description="Workflow_Switch">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="99" name="Now" description="Getting current day" enabled="true">
+		  <Setting name="culture" value="en-US" />	
+		  <Setting name="format" value="dddd" />
+		</Task>
+		<Task id="1" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+		<Task id="2" name="Wait" description="Waiting for 2 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+		<Task id="3" name="Wait" description="Waiting for 3 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:03" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<Switch id="100" parent="-1" switch="99">
+		  <Case value="Monday">
+			<Task id="1"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Wednesday">
+			<Task id="2"><Parent id="-1" /></Task>
+		  </Case>
+		  <Default>
+			<Task id="3"><Parent id="-1" /></Task>
+		  </Default>
+		</Switch>
+	</ExecutionGraph>
+</Workflow>

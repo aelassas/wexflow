@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="170" name="Workflow_ApproveDocument" description="Workflow_ApproveDocument">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="true" />
+    <Setting name="enableParallelJobs" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="ApproveRecord" description="Approve document" enabled="true">
+      <Setting name="record" value="1" />
+      <Setting name="assignedTo" value="wexflow" />
+    </Task>
+  </Tasks>
+</Workflow>

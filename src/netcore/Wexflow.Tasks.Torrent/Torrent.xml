@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Torrent is a sequential task that downloads torrent files.
+  
+  -->
+  <Task id="$int" name="Torrent" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id the $taskId will be loaded in order to upload the videos to YouTube.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- The path of the folder where to save the downloaded files. Ex: C:\WexflowTesting\Torrent\-->
+    <Setting name="saveFolder" value="$string" />
+  </Task>
+</Tasks>

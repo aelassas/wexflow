@@ -1,0 +1,13 @@
+<Workflow id="149" name="Workflow_DateInterpolation" description="Workflow_DateInterpolation" xmlns="urn:wexflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="false" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+     <Task id="1" name="HttpGet" description="Executing GET request" enabled="true">
+	   <Setting name="url" value="https://www.google.com/search?q={date:yyyy-MM-dd}" />
+     </Task>
+  </Tasks>
+</Workflow>

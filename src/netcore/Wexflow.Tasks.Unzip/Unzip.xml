@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Unzip is a sequential task that extracts ZIP archives.
+   
+   The files extracted are loaded by the Unzip task so that other tasks can select 
+   them through the selectFiles option.
+  -->
+  <Task id="$int" name="Unzip" description="$string" enabled="true|false">
+    <!-- The ZIP archives loaded by the task having as id $taskId will be extracted.-->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selectFiles as you want.-->
+    <!-- Required. Destination directory where the archives will be extracted.-->
+    <Setting name="destDir" value="$string" />
+    <!--
+          Optional and defaults to false. If the destination file exist, the task will overwrite it if this setting option is set to true.
+          Otherwise the file is not overwritten.
+    -->
+    <Setting name="overwrite" value="true|false" />
+    <!-- Optional and defaults to true. Create sub directory into destination dir with file name and current date time of extraction process. -->
+    <Setting name="createSubDirectoryWithDateTime" value="$bool" />
+  </Task>
+</Tasks>

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Wexflow</string>
+    <string name="menu_settings">Settings</string>
+    <string name="pref_wexflow_uri">Wexflow Web Service URI</string>
+    <string name="pref_wexflow_defualt_value">http://aelassas-pc:8000/wexflow/</string>
+    <string name="btnStart">Start</string>
+    <string name="btnSuspend">Suspend</string>
+    <string name="btnResume">Resume</string>
+    <string name="btnStop">Stop</string>
+    <string name="btnRefresh">Refresh</string>
+    <string name="btnApprove">Approve</string>
+    <string name="btnDisapprove">Reject</string>
+    <string name="workflow_disabled">This workflow is disabled.</string>
+    <string name="workflow_running">This workflow is running&#8230;</string>
+    <string name="workflow_waiting_for_approval">This workflow is waiting for approval&#8230;</string>
+    <string name="workflow_suspended">This workflow is suspended.</string>
+    <string name="workflows_error">An error occurred while retrieving workflows. Check the settings and click on refresh.</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_incorrect_password">This password is incorrect.</string>
+    <string name="error_restricted_access">This user does not have enough rights to access this application.</string>
+    <string name="error_exception">An error occurred during authentication.</string>
+    <string name="error_field_required">This field is required.</string>
+    <string name="error_user_not_found">This user does not exist.</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

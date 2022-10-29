@@ -1,0 +1,14 @@
+<Workflow xmlns="urn:wexflow-schema" id="143" name="Workflow_FilesLoaderEx_RemoveMaxCreateDate" description="Workflow_FilesLoaderEx_RemoveMaxCreateDate">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="FilesLoaderEx" description="Loading files_RemoveMaxCreateDate" enabled="true">
+      <Setting name="folder" value="C:\WexflowTesting\FilesLoaderEx" />
+      <Setting name="removeMaxCreateDate" value="2" />
+    </Task>
+    <Task id="2" name="ListFiles" description="Listing files" enabled="true" />
+  </Tasks>
+</Workflow>

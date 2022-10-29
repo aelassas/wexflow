@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Wait is a sequential task that waits for a specified duration of time.
+  -->
+  <Task id="$int" name="Wait" description="$string" enabled="true|false">
+    <!--  The waiting time in dd.hh:mm:ss. Example: 00.00:02:00-->
+    <Setting name="duration" value="dd.hh:mm:ss" />
+  </Task>
+</Tasks>

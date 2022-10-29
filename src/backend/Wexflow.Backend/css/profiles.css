@@ -1,0 +1,227 @@
+﻿body {
+    background: #FFFFFF;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+
+.jq-toast-single {
+    width: 300px;
+}
+
+#header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 43px;
+    background: #29A85C;
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+}
+
+#header a {
+    color: #FFFFFF;
+    font-size: 12px;
+    margin: 20px;
+    float: left;
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+    line-height: 5px;
+    white-space: nowrap;
+}
+
+#header .header-right {
+    float: right;
+}
+
+    #header #lnk-records, #lnk-manager, #lnk-designer, #lnk-editor, #lnk-approval, #lnk-users, #lnk-profiles, #lnk-notifications {
+        display: none;
+    }
+
+/*lang*/
+#lang {
+    margin-top: 10px;
+    margin-right: 20px;
+    color: #000;
+}
+
+#lang .lang{
+    cursor: pointer;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+#lang .lang:hover{
+    opacity:.8;
+}
+
+.dropdown-menu{
+    min-width: 90px;
+}
+
+/*notifications*/
+#lnk-notifications {
+    margin: 0 !important;
+    margin-top: 10px !important;
+}
+
+#profiles {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#users-search {
+    margin-bottom: 10px;
+}
+
+#users-search #users-search-action {
+    margin-left: 5px;
+    width: 75px;
+}
+
+#users-search #users-search-text {
+    margin-left: 10px;
+    width: 250px;
+}
+
+#users-container {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 0;
+    width: 360px;
+}
+
+#users-table {
+    position: absolute;
+    top: 38px;
+    left: 10px;
+    bottom: 0;
+    width: 340px;
+    overflow: auto;
+}
+
+/* users table */
+
+#users-table #wf-users-table {
+    display: block;
+    table-layout: fixed;
+    margin: 0;
+}
+
+#users-table #wf-users-table thead, tbody {
+    display: block;
+}
+
+#users-table #wf-users-table tbody {
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#users-table #wf-users-table .thead-dark {
+    background: #272727;
+    color: #EEEEEE;
+}
+
+#users-table #wf-users-table tbody tr:hover {
+    background: #EEEEEE;
+}
+
+#users-table #wf-users-table tbody tr:hover {
+    cursor: pointer;
+}
+
+#users-table #wf-users-table .selected, #users-table #wf-users-table .selected:hover {
+    background-color: #ffb347;
+}
+
+#users-table #wf-users-table #th-username {
+    cursor: pointer;
+}
+
+#users-table #wf-users-table #th-id, #users-table #wf-users-table .userid {
+    display: none;
+}
+
+#right-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 360px;
+}
+
+#users-save-action {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: none;
+}
+
+#workflows {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    right: 10px;
+    left: 10px;
+    overflow: hidden;
+}
+
+/* workflows table */
+
+#workflows #wf-workflows-table {
+    display: block;
+    table-layout: fixed;
+    margin: 0;
+    width: 100%;
+}
+
+#workflows #wf-workflows-table thead, tbody {
+    display: block;
+}
+
+#workflows #wf-workflows-table tbody {
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#workflows #wf-workflows-table .thead-dark {
+    background: #272727;
+    color: #EEEEEE;
+}
+
+#workflows #wf-workflows-table tbody tr:hover {
+    background: #EEEEEE;
+}
+
+#workflows #wf-workflows-table .wf-id {
+    width: 45px;
+}
+
+#workflows #wf-workflows-table .wf-n {
+    width: 200px;
+}
+
+#workflows #wf-workflows-table .wf-lt {
+    width: 100px;
+}
+
+#workflows #wf-workflows-table .wf-e {
+    width: 75px;
+}
+
+#workflows #wf-workflows-table .wf-a {
+    width: 75px;
+}
+
+#workflows #wf-workflows-table tbody tr:hover {
+    cursor: pointer;
+}
+
+#workflows #wf-workflows-table .selected, #workflows #wf-workflows-table .selected:hover {
+    background-color: #ffb347;
+}

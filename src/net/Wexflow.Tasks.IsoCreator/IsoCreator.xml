@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    IsoCreator is a sequential task that creates a .iso from a source folder.
+    
+    The created .iso is loaded by this task so that other tasks can select it through the selectFiles option.
+  -->
+  <Task id="$int" name="IsoCreator" description="$string" enabled="true|false">
+    <!-- The source directory to create the iso from. Ex: C:\WexflowTesting\IsoCreator_src-->
+    <Setting name="srcDir" value="$string" />
+    <!-- The volume identifier. Ex: Wexflow sample-->
+    <Setting name="volumeIdentifier" value="$string" />
+    <!-- The iso file name. Ex: Wexflow_sample.iso-->
+    <Setting name="isoFileName" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

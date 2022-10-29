@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ListEntities is a sequential task that lists all the entities loaded by the workflow tasks in the logs.
+    This task is useful for resolving issues.
+  -->
+  <Task id="$int" name="ListEntities" description="$string" enabled="true|false">
+  </Task>
+</Tasks>

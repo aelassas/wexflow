@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    MessageCorrect is a flowchart task that checks whether a message is in the memory of the task having as key message.
+  -->
+  <Task id="$int" name="MessageCorrect" description="$string" enabled="true|false">
+    <!-- The message to check.-->
+    <Setting name="checkString" value="$string" />
+  </Task>
+</Tasks>

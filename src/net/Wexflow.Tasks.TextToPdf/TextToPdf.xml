@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    TextToPdf is a sequential task that generates PDF files from TEXT files.
+    
+   The PDF files generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="TextToPdf" description="$string" enabled="true|false">
+    <!-- 
+      The TEXT files loaded by the task having as id $taskId will be
+      used to generate PDF files.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

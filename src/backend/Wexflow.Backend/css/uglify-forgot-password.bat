@@ -1,0 +1,1 @@
+uglifycss bootstrap.min.css jquery.toast.min.css forgot-password.css --output forgot-password.min.css

@@ -1,0 +1,21 @@
+<Workflow xmlns="urn:wexflow-schema" id="24" name="Workflow_ImagesTransformer" description="Workflow_ImagesTransformer">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading JPG images" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/ImagesTransformer/image1.jpg" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/ImagesTransformer/image2.jpg" />
+		</Task>
+		<Task id="2" name="ImagesTransformer" description="JPG to PNG" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="outputFilePattern" value="$fileNameWithoutExtension.png" />
+			<Setting name="outputFormat" value="png" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving PNG images to ImagesTransformer folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/ImagesTransformer/" />
+		</Task>
+	</Tasks>
+</Workflow>

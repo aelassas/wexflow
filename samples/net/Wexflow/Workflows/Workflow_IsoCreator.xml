@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="87" name="Workflow_IsoCreator" description="Workflow_IsoCreator">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic|cron -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="IsoCreator" description="Creating .iso" enabled="true">
+			<Setting name="srcDir" value="C:\WexflowTesting\IsoCreator_src" />
+			<Setting name="volumeIdentifier" value="Wexflow sample" />
+			<Setting name="isoFileName" value="Wexflow_sample.iso" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving .iso to IsoCreator_dest folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\IsoCreator_dest\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesLoader is a sequential task that loads a collection of files located in folders or through the file option. 
+  -->
+  <Task id="$int" name="FilesLoader" description="$string" enabled="true|false">
+    <!-- The files located the the folder option will be loaded. For example, if the option 
+          value is C:\Watchfolder\ the files located in this folder will be loaded so that
+          other tasks can work on them.
+     -->
+    <Setting name="folder" value="$string" />
+    <Setting name="folder" value="$string" />
+    <!-- You can add as many folder options as you want.-->
+    <!-- The file path of the file to load. For example, if the option 
+          value is C:\MyFolder\MyFile.txt the file will be loaded so that
+          other tasks can work on it.
+     -->
+    <Setting name="file" value="$string" />
+    <Setting name="file" value="$string" />
+    <!-- You can add as many file options as you want.-->
+    <!-- Optional. The files loaded from the folders matching the regex pattern will be loaded. 
+    Example: .*\.mp4 will load only mp4 files. The regex is case sensitive.-->
+    <Setting name="regexPattern" value="$string" />
+    <!-- Optional and by default false. If set to true the files in subfolders will be loaded recursively. -->
+    <Setting name="recursive" value="true|false" />
+  </Task>
+</Tasks>

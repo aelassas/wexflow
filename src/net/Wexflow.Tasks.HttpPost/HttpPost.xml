@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    HttpPost is a sequential task that executes a POST request.
+    
+    If the request outputs a response the result is written in a file that is loaded by the task so that other tasks can select it through selectFiles option.
+  -->
+  <Task id="$int" name="HttpPost" description="$string" enabled="true|false">
+    <!-- The URL. Ex: http://localhost:8000/wexflow/start?w=2 -->
+    <Setting name="url" value="$string" />
+    <!-- Optional. Ex: Basic or Bearer.-->
+    <Setting name="authorizationScheme" value="$string" />
+    <!-- Optional. authorization parameter value.-->
+    <Setting name="authorizationParameter" value="$string" />
+    <!-- Optional. The payload.-->
+    <Setting name="payload" value="$string" />
+    <!-- Optional. The type. Defaults to application/json -->
+    <Setting name="type" value="$string" />
+  </Task>
+</Tasks>

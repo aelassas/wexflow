@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ApprovalWorkflowsCreator is a sequential task that creates approval workflows for records from shared memory and starts them. The record ids are sent from ApprovalRecordsCreator task.
+  -->
+  <Task id="$int" name="ApprovalWorkflowsCreator" description="$string" enabled="true|false">
+    <!-- Required. The username of the user assigned to the records. -->
+    <Setting name="assignedTo" value="$string" />
+    <!-- Required. The username of the approver.  -->
+    <Setting name="approver" value="$string" />
+    <!--Optional and defaults to true. Indicates whether the approval workflow created is deleted once the record is approved. -->
+    <Setting name="deleteWorkflowOnApproval" value="$bool" />
+  </Task>
+</Tasks>

@@ -1,0 +1,59 @@
+<Workflow xmlns="urn:wexflow-schema" id="51" name="Workflow_Now" description="Workflow_Now">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="99" name="Now" description="Getting current day" enabled="true">
+		  <Setting name="culture" value="en-US" />	
+		  <Setting name="format" value="dddd" />
+		</Task>
+		<Task id="1" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+		<Task id="2" name="Wait" description="Waiting for 2 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+		<Task id="3" name="Wait" description="Waiting for 3 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:03" />
+		</Task>
+		<Task id="4" name="Wait" description="Waiting for 4 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:04" />
+		</Task>
+		<Task id="5" name="Wait" description="Waiting for 5 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:05" />
+		</Task>
+		<Task id="6" name="Wait" description="Waiting for 6 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:06" />
+		</Task>
+		<Task id="7" name="Wait" description="Waiting for 7 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:07" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<Switch id="100" parent="-1" switch="99">
+		  <Case value="Monday">
+			<Task id="1"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Tuesday">
+			<Task id="2"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Wednesday">
+			<Task id="3"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Thursday">
+			<Task id="4"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Friday">
+			<Task id="5"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Saturday">
+			<Task id="6"><Parent id="-1" /></Task>
+		  </Case>
+		  <Case value="Sunday">
+			<Task id="7"><Parent id="-1" /></Task>
+		  </Case>
+		  <Default></Default>
+		</Switch>
+	</ExecutionGraph>
+</Workflow>

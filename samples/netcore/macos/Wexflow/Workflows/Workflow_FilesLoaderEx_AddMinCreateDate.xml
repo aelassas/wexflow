@@ -1,0 +1,14 @@
+<Workflow xmlns="urn:wexflow-schema" id="140" name="Workflow_FilesLoaderEx_AddMinCreateDate" description="Workflow_FilesLoaderEx_AddMinCreateDate">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="FilesLoaderEx" description="Loading files_AddMinCreateDate" enabled="true">
+      <Setting name="folder" value="/Applications/wexflow/WexflowTesting/FilesLoaderEx" />
+      <Setting name="addMinCreateDate" value="2" />
+    </Task>
+    <Task id="2" name="ListFiles" description="Listing files" enabled="true" />
+  </Tasks>
+</Workflow>

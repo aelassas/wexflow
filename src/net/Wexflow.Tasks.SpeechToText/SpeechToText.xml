@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    SpeechToText is a sequential task that converts audio files (.wav) to text files.
+    
+    The text files generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="SpeechToText" description="$string" enabled="true|false">
+    <!-- 
+      The text files loaded by the task having as id $taskId will be converted to text files.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

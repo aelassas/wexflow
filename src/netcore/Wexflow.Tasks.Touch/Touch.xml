@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Touch is a sequential task that creates a collection of empty files.
+    The files created are loaded by this task so that other tasks can
+    use them through the selectFiles option.
+  -->
+  <Task id="$int" name="Touch" description="$string" enabled="true|false">
+    <!-- The file path of the file to create. Example: C:\MyFolder\MyFile.txt-->
+    <Setting name="file" value="$string" />
+    <Setting name="file" value="$string" />
+    <!-- You can add as many file options as you want.-->
+  </Task>
+</Tasks>

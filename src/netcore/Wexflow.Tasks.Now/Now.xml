@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Now is a flowchart task that retrieves the current date in the specified format. 
+    This task is designed to be used in a Switch flowchart node.
+  -->
+  <Task id="$int" name="Now" description="$string" enabled="true|false">
+    <!-- The culture https://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx. Example: en-US-->
+    <Setting name="culture" value="$string" />
+    <!-- The date format https://msdn.microsoft.com/en-us/library/8kb3ddd4(v=vs.110).aspx. Example: dddd-->
+    <Setting name="format" value="$string" />
+  </Task>
+</Tasks>

@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="15" name="Workflow_Touch" description="Workflow_Touch">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Touch" description="Touching files" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/trigger1.empty" />
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/trigger2.empty" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving triggers to Triggers folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Triggers/" />
+		</Task>
+		<Task id="3" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+	</Tasks>
+</Workflow>

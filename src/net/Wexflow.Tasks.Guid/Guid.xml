@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Guid is a sequential task that generates Guids. 
+    The result is written in an XML file as follows:
+    
+    <Guids>
+      <Guid>e22863f5-4f83-4365-ac7c-2e2703a854de</Guid>
+      <Guid>72e25e5a-f72c-4cb3-bdb5-1e0de4e31b75</Guid>
+      <Guid>8212345e-7186-465e-96b7-b5b1086c6382</Guid>
+      ...
+    </Guids>
+   
+   The XML file generated is loaded by the task so that other tasks can select 
+   it through the selectFiles option.
+  -->
+  <Task id="$int" name="Guid" description="$string" enabled="true|false">
+    <!-- Optional and defaults to 1. The number of Guids to generate.-->
+    <Setting name="guidCount" value="$int" />
+  </Task>
+</Tasks>

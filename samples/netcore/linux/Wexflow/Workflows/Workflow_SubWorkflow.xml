@@ -1,0 +1,15 @@
+﻿<Workflow xmlns="urn:wexflow-schema" id="152" name="Workflow_SubWorkflow" description="Workflow_SubWorkflow">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="approval" value="false" />
+		<Setting name="enableParallelJobs" value="true" />
+	</Settings>
+	<LocalVariables />
+	<Tasks>
+		<Task id="1" name="SubWorkflow" description="Kicking off the workflow 41" enabled="true">
+			<Setting name="id" value="41" />
+			<Setting name="mode" value="sync" />
+		</Task>
+	</Tasks>
+</Workflow>

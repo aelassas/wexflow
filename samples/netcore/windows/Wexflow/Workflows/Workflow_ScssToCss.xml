@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="157" name="Workflow_ScssToCss" description="Workflow_ScssToCss">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading SCSS files" enabled="true">
+	  <Setting name="file" value="C:\WexflowTesting\ScssToCss_src\file1.scss" />
+	  <Setting name="file" value="C:\WexflowTesting\ScssToCss_src\file2.scss" />
+    </Task>
+    <Task id="2" name="ScssToCss" description="Converting SCSS files to CSS files" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving CSS files to ScssToCss_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\ScssToCss_dest\" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

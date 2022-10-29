@@ -1,0 +1,19 @@
+<Workflow xmlns="urn:wexflow-schema" id="17" name="Workflow_XmlToCsv" description="Workflow_XmlToCsv">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading Xmls" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\XmlToCsv\csv1.xml" />
+			<Setting name="file" value="C:\WexflowTesting\XmlToCsv\csv2.xml" />
+		</Task>
+		<Task id="2" name="XmlToCsv" description="Generating CSV files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving CSVs to XmlToCsv folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\XmlToCsv\" />
+		</Task>
+	</Tasks>
+</Workflow>

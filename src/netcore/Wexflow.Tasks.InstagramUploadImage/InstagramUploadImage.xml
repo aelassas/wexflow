@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    InstagramUploadImage is a sequential task that uploads images to Instagram.
+    
+    This task takes as input XML files containing the images to be uploaded. The format of these files is as follows:
+    
+    <Images>
+      <Image>
+	      <FilePath>C:\WexflowTesting\Images\image1.jpg</FilePath>
+	      <Caption>My awesome image.</Caption>
+      </Image>
+      ...
+    </Images>
+  -->
+  <Task id="$int" name="InstagramUploadImage" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id the $taskId will be loaded in order to upload the videos to YouTube.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    
+    <!-- Instagram username.-->
+    <Setting name="username" value="$string" />
+    <!-- Instagram password.-->
+    <Setting name="password" value="$string" />
+  </Task>
+</Tasks>

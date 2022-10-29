@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="47" name="Workflow_Sha256" description="Workflow_Sha256">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="/Applications/wexflow/WexflowTesting/Watchfolder1/" />
+		</Task>
+		<Task id="2" name="Sha256" description="Generating Sha256 hashes" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving Sha256 files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Sha256/" />
+		</Task>
+	</Tasks>
+</Workflow>

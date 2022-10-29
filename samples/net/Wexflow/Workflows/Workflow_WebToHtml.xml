@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="97" name="Workflow_WebToHtml" description="Workflow_WebToHtml">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="WebToHtml" description="Retrieving HTML sources" enabled="true">
+      <Setting name="url" value="https://www.google.com" />
+	  <Setting name="url" value="https://github.com" />
+    </Task>
+    <Task id="2" name="FilesMover" description="Moving HTML sources to WebToHtml folder" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destFolder" value="C:\WexflowTesting\WebToHtml\" />
+    </Task>
+  </Tasks>
+</Workflow>

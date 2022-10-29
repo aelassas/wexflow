@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="42" name="Workflow_FilesExist" description="Workflow_FilesExist">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesExist" description="Checking files and folders..." enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file1.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file2.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file3.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file41.txt" />
+			<Setting name="folder" value="/opt/wexflow/WexflowTesting/Watchfolder1" />
+			<Setting name="folder" value="/opt/wexflow/WexflowTesting/Watchfolder2" />
+			<Setting name="folder" value="/opt/wexflow/WexflowTesting/Watchfolder41" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true" />
+	</Tasks>
+</Workflow>

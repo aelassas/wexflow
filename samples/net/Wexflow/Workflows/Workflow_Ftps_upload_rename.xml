@@ -1,0 +1,32 @@
+<Workflow xmlns="urn:wexflow-schema" id="38" name="Workflow_Ftps_upload_rename" description="Workflow_Ftps_upload_rename">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file2.txt" />
+			<Setting name="file" value="C:\WexflowTesting\file3.txt" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+		<Task id="3" name="Xslt" description="Renaming files and adding tags" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="xsltPath" value="C:\Wexflow\Xslt\ListFiles.xslt" />
+			<Setting name="version" value="2.0" /> <!-- 1.0|2.0 -->
+			<Setting name="removeWexflowProcessingNodes" value="false" />
+		</Task>
+		<Task id="4" name="Ftp" description="Sending files" enabled="true">
+			<Setting name="command" value="upload" />
+			<Setting name="protocol" value="ftps" /> <!-- ftp|ftps|sftp -->
+			<Setting name="encryption" value="explicit" />
+			<Setting name="server" value="spreadbs.ddns.net" />
+			<Setting name="port" value="21" />
+			<Setting name="user" value="ftpuser" />
+			<Setting name="password" value="password" />
+			<Setting name="path" value="/public/" />
+			<Setting name="selectFiles" todo="toSend" />
+		</Task>
+	</Tasks>
+</Workflow>

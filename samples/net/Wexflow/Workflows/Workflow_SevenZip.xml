@@ -1,0 +1,21 @@
+<Workflow xmlns="urn:wexflow-schema" id="89" name="Workflow_SevenZip" description="Workflow_SevenZip">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic|cron -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\SevenZip_src\" />
+			<Setting name="recursive" value="true" />
+		</Task>
+		<Task id="2" name="SevenZip" description="Zipping files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="zipFileName" value="output.7z" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving .7z to SevenZip_dest folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\SevenZip_dest\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

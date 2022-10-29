@@ -1,0 +1,15 @@
+<Workflow xmlns="urn:wexflow-schema" id="63" name="Workflow_ProcessInfo" description="Workflow_ProcessInfo">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="ProcessInfo" description="Generating Process informations" enabled="true">
+			<Setting name="processName" value="notepad" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving ProcessInfo files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\ProcessInfo\" />
+		</Task>
+	</Tasks>
+</Workflow>

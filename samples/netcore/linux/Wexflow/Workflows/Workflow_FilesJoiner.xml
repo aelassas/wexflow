@@ -1,0 +1,16 @@
+<Workflow id="147" name="Workflow_FilesJoiner" description="Workflow_FilesJoiner" xmlns="urn:wexflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="false" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading chunks" enabled="true">
+    	<Setting name="folder" value="/opt/wexflow/WexflowTesting/FilesJoiner" />
+    </Task>
+    <Task id="2" name="FilesJoiner" description="Files Joiner" enabled="true">
+      <Setting name="selectFiles" value="1" />
+    </Task>
+  </Tasks>
+</Workflow>

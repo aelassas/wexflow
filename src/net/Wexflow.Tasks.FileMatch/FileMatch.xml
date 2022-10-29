@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FileMatch is a flowchart task that checks whether a file exists or not in a directory by using a regex pattern.
+  -->
+  <Task id="$int" name="FileMatch" description="$string" enabled="true|false">
+    <!-- The path of the directory to check. Example: C:\WexflowTesting\ -->
+    <Setting name="dir" value="$string" />
+    <!-- The regex pattern. It is case sensitive! Ex: .*\.txt -->
+    <Setting name="pattern" value=".*\.txt" />
+    <!-- Optional and defaults to false. Indicates whether to check the sub-directories recursively. -->
+    <Setting name="recursive" value="false" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

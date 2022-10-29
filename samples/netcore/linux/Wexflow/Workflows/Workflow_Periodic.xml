@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="59" name="Workflow_Periodic" description="Workflow_Periodic">
+	<Settings>
+		<Setting name="launchType" value="periodic" />
+		<Setting name="period" value="00.00:00:01" />
+		<Setting name="enabled" value="false" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+		<Setting name="file" value="/opt/wexflow/WexflowTesting/file1.txt" />
+		</Task>
+		<Task id="2" name="FilesCopier" description="Copying files" enabled="true">
+		<Setting name="selectFiles" value="1" />
+		<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/Periodic" />
+		<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

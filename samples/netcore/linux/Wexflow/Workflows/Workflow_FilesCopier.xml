@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="2" name="Workflow_FilesCopier" description="Workflow_FilesCopier">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file1.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file2.txt" />
+		</Task>
+		<Task id="2" name="FilesCopier" description="Copying files to FilesCopier folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/FilesCopier/" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

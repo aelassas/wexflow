@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="96" name="Workflow_WebToScreenshot" description="Workflow_WebToScreenshot">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="WebToScreenshot" description="Generating web screenshots" enabled="true">
+      <Setting name="url" value="https://www.google.com" />
+	  <Setting name="url" value="https://github.com" />
+    </Task>
+    <Task id="2" name="FilesMover" description="Moving screenshots to WebToScreenshot folder" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destFolder" value="C:\WexflowTesting\WebToScreenshot\" />
+    </Task>
+  </Tasks>
+</Workflow>

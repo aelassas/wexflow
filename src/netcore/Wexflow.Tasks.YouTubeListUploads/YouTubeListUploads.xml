@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    YouTubeListUploads is a sequential task that retrieves a list of videos uploaded to a YouTube channel.
+    
+    This task outputs an XML file containing the results. The format of this file is as follows:
+    
+    <YouTubeListUploads>
+      <Channels>
+        <Channel id="UUoFRC49RV1v_mPZYdRF30cw">
+          <Videos>
+            <Video id="g6b2ZjNcXz4" title="Wexflow - Switch Demo" />
+            <Video id="avSh6H_VHRk" title="Wexflow - If Demo" />
+            <Video id="rJ0MCqqhrqQ" title="Wexflow - While Demo" />
+            ...
+          </Videos>
+        </Channel>
+        ...
+      </Channels>
+    </YouTubeListUploads>
+  -->
+  <Task id="$int" name="YouTubeListUploads" description="$string" enabled="true|false">
+    <!-- YouTube username.-->
+    <Setting name="user" value="$string" />
+    <!-- YouTube application name.-->
+    <Setting name="applicationName" value="$string" />
+    <!-- The file containing YouTube credentials. You can create it from https://console.developers.google.com -->
+    <Setting name="clientSecrets" value="C:\Wexflow-netcore\client_secrets.json" />
+  </Task>
+</Tasks>

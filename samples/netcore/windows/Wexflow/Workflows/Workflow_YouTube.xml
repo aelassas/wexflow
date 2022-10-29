@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="119" name="Workflow_YouTube" description="Workflow_YouTube">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\YouTube\YouTube.xml" />
+		</Task>
+		<Task id="2" name="YouTube" description="Uploading videos" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="user" value="username" />
+			<Setting name="applicationName" value="Wexflow" />
+			<Setting name="clientSecrets" value="C:\Wexflow-netcore\client_secrets.json" />
+		</Task>
+	</Tasks>
+</Workflow>

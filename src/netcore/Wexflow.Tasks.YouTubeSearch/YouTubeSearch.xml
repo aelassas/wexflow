@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    YouTubeSearch is a sequential task that searches for content on YouTube.
+    
+    This task outputs an XML file containing the search results. The format of this file is as follows:
+    
+    <YouTubeSearch>
+      <Videos>
+	      <Video id="w3m4N0UVt0M" title="Google in Africa..." />
+        <Video id="YuOBzWF0Aws" title="If Google Was A Guy" />
+        ...
+      <Videos>
+      <Channels>
+        <Channel id="UCK8sQmJBp8GCxrOtXWBpyEA" title="Google" />
+        <Channel id="UC3x6qC4h-NyuvQBSZYaPKrQ" title="Google Help" />
+        ...
+      </Channels>
+      <Playlists>
+        <Playlist id="PL8kLGtvAULl4LrDNS8ZxH9qD55QQtjUN1" title="OK Google I buy shoes challenge Ok Google" />
+        ...
+      </Playlists>
+    </YouTubeSearch>
+  -->
+  <Task id="$int" name="YouTubeSearch" description="$string" enabled="true|false">
+    <!-- YouTube username. -->
+    <Setting name="user" value="$string" />
+    <!-- YouTube application name. -->
+    <Setting name="applicationName" value="$string" />
+    <!-- YouTube API key. You can create it from https://console.developers.google.com -->
+    <Setting name="apiKey" value="$string" />
+    <!-- Search keyword. -->
+    <Setting name="keyword" value="$string" />
+    <!-- Optional and defaults to 50. The maximum number of items that should be returned in the result set. -->
+    <Setting name="maxResults" value="$int" />
+  </Task>
+</Tasks>

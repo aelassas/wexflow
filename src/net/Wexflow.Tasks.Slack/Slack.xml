@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Slack is a sequential task that sends slack messages.
+    
+    It takes as input XML files containing Slack messages. Below is the format of these XML files:
+    
+    <Messages>
+	    <Message>
+		    <User>slackbot</User>
+		    <Text>Hello World!</Text>
+	    </Message>
+      ...
+    </Messages>    
+    
+  -->
+  <Task id="$int" name="Slack" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be used to send Slack messages.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- Slack token. You can obtain it from https://api.slack.com/custom-integrations/legacy-tokens -->
+    <Setting name="token" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

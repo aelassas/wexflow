@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Xslt is a sequential task that transforms a list of XML files.
+    
+    The files generated will be loaded by this task so that other
+    tasks can select them through the selectFiles option.
+    
+    This task can also be used along with ListFiles task to rename or tag a collection of files.
+    If you already know the file names that you want to rename and their taskId you don't need to
+    use ListFiles task.
+    
+    The ListFiles task outputs an XML file in this format:
+    
+    <?xml version="1.0" encoding="utf-8"?>
+    <WexflowProcessing>
+      <Workflow id="8" name="Workflow_ListFiles" description="Workflow_ListFiles">
+        <Files>
+          <File taskId="1" path="C:\WexflowTesting\file1.txt" name="file1.txt" renameTo="" renameToOrName="file1.txt" />
+          <File taskId="1" path="C:\WexflowTesting\file2.txt" name="file2.txt" renameTo="" renameToOrName="file2.txt" />
+          <File taskId="1" path="C:\WexflowTesting\file3.txt" name="file3.txt" renameTo="" renameToOrName="file3.txt" />
+          <File taskId="1" path="C:\WexflowTesting\file4.txt" name="file4.txt" renameTo="" renameToOrName="file4.txt" />
+          ...
+        </Files>
+      </Workflow>
+    </WexflowProcessing>
+    
+    The Xslt task can then be used by taking as input this XML file to rename or tag files. 
+    Here is a sample Xslt that takes as input the XML output of ListFiles task described above 
+    and performs the following operations:
+      - It renames "file1.txt" to "file1_renamed.txt"
+      - It adds the following tags to "file1.txt" : todo="toSend" from="app1"
+      - It renames "file2.txt" to "file2_renamed.txt"
+      - It adds the following tags to "file2.txt" :  todo="toSend" from="app2"
+    
+    XSL:
+    
+    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+      <xsl:output method="xml" indent="yes"/>
+
+      <xsl:template match="/">
+        <root>
+          <WexflowProcessing>
+            <xsl:for-each select="//WexflowProcessing/Workflow/Files//File">
+              <xsl:choose>
+                <xsl:when test="@name = 'file1.txt'">
+                  <File taskId="{@taskId}" name="{@name}" renameTo="file1_renamed.txt" todo="toSend" from="app1" />
+                </xsl:when>
+                <xsl:when test="@name = 'file2.txt'">
+                  <File taskId="{@taskId}" name="{@name}" renameTo="file2_renamed.txt" todo="toSend" from="app2" />
+                </xsl:when>
+              </xsl:choose>
+            </xsl:for-each>
+          </WexflowProcessing>
+        </root>
+      </xsl:template>
+    </xsl:stylesheet>
+    
+    The generate XML file will look like as follows:
+    
+    <?xml version="1.0" encoding="utf-8"?>
+    <root>
+      <WexflowProcessing>
+        <File taskId="1" name="file1.txt" renameTo="file1_renamed.txt" todo="toSend" from="app1" />
+        <File taskId="1" name="file2.txt" renameTo="file2_renamed.txt" todo="toSend" from="app2" />
+      </WexflowProcessing>
+    </root>
+    
+    The Xslt task looks for WexflowProcessing//File nodes wherever they are in the XML in order
+    to perform the following operations:
+      - Set the renameTo of the file.
+      - Set the tags of the file.
+    
+    The Xslt task needs the file name and the taskId to perform the operation described above.
+    
+    The tags can be used in the selectFiles option as follows:
+      <Setting name="selectFiles" todo="toSend" />
+      
+    In this case the files having the tag todo="toSend" will be loaded.
+    
+  -->
+  <Task id="$int" name="Xslt" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id $taskId will be
+      transformed.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The XSLT file path. Example: C:\Wexflow\Xslt\Products.xslt-->
+    <Setting name="xsltPath" value="$string" />
+    <!-- Optional and defaults to true. If it is set to false, <WexflowProcessing> nodes will not be removed
+         from the output XML document.-->
+    <!-- The output format. Defaults to {0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.{2} Where 0: input file name, 1: DateTime.Now, 2: Extension option.-->
+    <Setting name="outputFormat" value="$string" />
+    <Setting name="removeWexflowProcessingNodes" value="true|false" />
+    <!-- Optional and defaults to xml. the output extension. Ex: html-->
+    <Setting name="extension" value="$string" />
+  </Task>
+</Tasks>

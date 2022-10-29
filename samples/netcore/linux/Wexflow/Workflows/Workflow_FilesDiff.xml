@@ -1,0 +1,13 @@
+<Workflow xmlns="urn:wexflow-schema" id="155" name="Workflow_FilesDiff" description="Workflow_FilesDiff">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesDiff" description="Checking files" enabled="true">
+			<Setting name="oldFile" value="/opt/wexflow/WexflowTesting/old.txt" />
+			<Setting name="newFile" value="/opt/wexflow/WexflowTesting/new.txt" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true" />
+	</Tasks>
+</Workflow>

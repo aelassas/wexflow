@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ImagesResizer is a sequential task that resizes a collection of image files.
+    
+    The image files generated are loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="ImagesResizer" description="$string" enabled="true|false">
+    <!--  The image files loaded by the task having as id $taskId will be resized. -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    
+    <!-- The width in pixels.-->
+    <Setting name="width" value="int" />
+    <!-- The height in pixels.-->
+    <Setting name="height" value="int" />
+  </Task>
+</Tasks>

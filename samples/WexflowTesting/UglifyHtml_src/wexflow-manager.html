@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Wexflow Manager</title>
+<!--
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/wexflow-manager.min.css" />
+    <script type="text/javascript" src="js/wexflow-manager.min.js"></script>
+</head>
+<body>
+<div id="wf-manager" style="position: absolute; top:0; right:0; bottom:0; left:0;"></div>
+<script type="text/javascript">
+    window.onload = function () {
+        new WexflowManager("wf-manager", "http://localhost:8000/wexflow/");
+    };
+</script>
+</body>
+</html>

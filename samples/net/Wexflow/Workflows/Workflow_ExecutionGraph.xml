@@ -1,0 +1,86 @@
+<Workflow xmlns="urn:wexflow-schema" id="43" name="Workflow_ExecutionGraph" description="Workflow_ExecutionGraph">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+    <Task id="98" name="Now" description="Getting current day" enabled="true">
+      <Setting name="culture" value="en-US" />	
+      <Setting name="format" value="dddd" />
+		</Task>
+		<Task id="99" name="FileExists" description="Checking file" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.txt" />
+		</Task>
+		<Task id="6" name="Wait" description="Waiting for 5 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:05" />
+		</Task>
+		<Task id="7" name="Wait" description="Waiting for 3 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:03" />
+		</Task>
+		<Task id="8" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+		<Task id="9" name="Wait" description="Waiting for 4 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:04" />
+		</Task>
+		<Task id="10" name="Wait" description="Waiting for 3 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:03" />
+		</Task>
+		<Task id="11" name="Wait" description="Waiting for 2 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<Task id="8"><Parent id="-1" /></Task>
+		<If id="100" parent="8" if="99">
+			<Do>
+				<Task id="6"><Parent id="-1" /></Task>
+				<Task id="7"><Parent id="6" /></Task>
+				<Task id="8"><Parent id="7" /></Task>
+			</Do>
+			<Else>
+				<Task id="9"><Parent id="-1" /></Task>
+				<Task id="10"><Parent id="9" /></Task>
+				<Task id="11"><Parent id="10" /></Task>
+			</Else>
+		</If>
+		<Task id="11"><Parent id="100" /></Task>
+		<While id="101" parent="11" while="99">
+			<Task id="6"><Parent id="-1" /></Task>
+			<Task id="7"><Parent id="6" /></Task>
+			<Task id="8"><Parent id="7" /></Task>
+		</While>
+		<Task id="10"><Parent id="101" /></Task>
+		<Switch id="102" parent="10" switch="98">
+		  <Case value="Monday">
+			<Task id="6"><Parent id="-1" /></Task>
+			<Task id="7"><Parent id="6" /></Task>
+			<Task id="8"><Parent id="7" /></Task>
+		  </Case>
+		  <Case value="Wednesday">
+			<Task id="9"><Parent id="-1" /></Task>
+			<Task id="10"><Parent id="9" /></Task>
+			<Task id="11"><Parent id="10" /></Task>
+		  </Case>
+		  <Default>
+			<Task id="6"><Parent id="-1" /></Task>
+			<Task id="7"><Parent id="6" /></Task>
+		  </Default>
+		</Switch>
+		<OnSuccess>
+			<Task id="6"><Parent id="-1" /></Task>
+			<Task id="7"><Parent id="6" /></Task>
+			<Task id="8"><Parent id="7" /></Task>
+		</OnSuccess>
+		<OnWarning>
+			<Task id="9"><Parent id="-1" /></Task>
+			<Task id="10"><Parent id="9" /></Task>
+			<Task id="11"><Parent id="10" /></Task>
+		</OnWarning>
+		<OnError>
+			<Task id="8"><Parent id="-1" /></Task>
+			<Task id="9"><Parent id="8" /></Task>
+			<Task id="10"><Parent id="9" /></Task>
+		</OnError>
+	</ExecutionGraph>
+</Workflow>

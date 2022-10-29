@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    InstagramUploadVideo is a sequential task that uploads videos to Instagram.
+    
+    This task takes as input XML files containing the videos to be uploaded. The format of these files is as follows:
+    
+<Videos>
+  <Video>
+	<FilePath>C:\WexflowTesting\Videos\video1.mp4</FilePath>
+	<ThumbnailPath>C:\WexflowTesting\Images\image1.jpg</ThumbnailPath>
+	<Caption>My awesome video.</Caption>
+  </Video>
+  ...
+</Videos>
+  -->
+  <Task id="$int" name="InstagramUploadVideo" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id the $taskId will be loaded in order to upload the videos to YouTube.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- Instagram username.-->
+    <Setting name="username" value="$string" />
+    <!-- Instagram password.-->
+    <Setting name="password" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

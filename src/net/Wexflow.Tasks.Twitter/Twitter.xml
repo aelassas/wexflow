@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Twitter is a sequential task that sends tweets.
+    The format of the input XML file is as follows:
+    <Tweets>
+	    <Tweet>$string</Tweet>
+	    <Tweet>$string</Tweet>
+      ...
+   </Tweets>
+  -->
+  <Task id="$int" name="Twitter" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id $taskId will be
+      used to send tweets.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The consume key.-->
+    <Setting name="consumerKey" value="$string" />
+    <!-- The consumer key secret.-->
+    <Setting name="consumerSecret" value="$string" />
+    <!-- The acess token.-->
+    <Setting name="accessToken" value="$string" />
+    <!-- The access token secret.-->
+    <Setting name="accessTokenSecret" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

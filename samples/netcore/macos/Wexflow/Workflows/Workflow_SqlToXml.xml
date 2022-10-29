@@ -1,0 +1,54 @@
+<Workflow xmlns="urn:wexflow-schema" id="160" name="Workflow_SqlToXml" description="Workflow_SqlToXml">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="SqlToXml" description="SQL Server" enabled="false">
+			<Setting name="type" value="sqlserver" />
+			<Setting name="connectionString" value="Data Source=localhost;Initial Catalog=HELLOWORLD;Integrated Security=True" />
+			<Setting name="sql" value="select * from Data" />
+		</Task>
+		<Task id="2" name="SqlToXml" description="SQlite" enabled="true">
+			<Setting name="type" value="sqlite" />
+			<Setting name="connectionString" value="Data Source=/Applications/wexflow/WexflowTesting/sqlite/HelloWorld.db;Version=3" /><!-- https://www.connectionstrings.com/sqlite/ -->
+			<Setting name="sql" value="select * from Data;" />
+		</Task>
+		<Task id="3" name="SqlToXml" description="MySQL" enabled="false">
+			<Setting name="type" value="mysql" />
+			<Setting name="connectionString" value="Server=localhost;Database=helloworld;Uid=root;Pwd=password;" />
+			<Setting name="sql" value="select * from `Data`" />
+		</Task>
+		<Task id="4" name="SqlToXml" description="PostgreSqlToXml" enabled="false">
+			<Setting name="type" value="postgresql" />
+			<Setting name="connectionString" value="User ID=postgres;Password=password;Host=localhost;Port=5432;Database=helloworld;" />
+			<Setting name="sql" value="select * from Data" />
+			<Setting name="selectFiles" value="7" />
+		</Task>
+		<Task id="5" name="SqlToXml" description="Oracle" enabled="false">
+			<Setting name="type" value="oracle" />
+			<Setting name="connectionString" value="Data Source=HelloWorld;Integrated Security=yes;" />
+			<Setting name="sql" value="select * from Data" />
+		</Task>
+		<Task id="6" name="SqlToXml" description="Teradata" enabled="false">
+			<Setting name="type" value="teradata" />
+			<Setting name="connectionString" value="Data Source=HelloWorld;User ID=root;Password=password;" />
+			<Setting name="sql" value="select * from Data" />
+		</Task>
+		<Task id="7" name="SqlToXml" description="Access" enabled="false">
+			<Setting name="type" value="access" />
+			<Setting name="connectionString" value="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=/Applications/wexflow/WexflowTesting/access/HelloWorld.accdb;Persist Security Info=False;" />
+			<Setting name="sql" value="select * from Data" />
+		</Task>
+		<Task id="8" name="FilesMover" description="Moving SqlToXml files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="selectFiles" value="2" />
+			<Setting name="selectFiles" value="3" />
+			<Setting name="selectFiles" value="4" />
+			<Setting name="selectFiles" value="5" />
+			<Setting name="selectFiles" value="6" />
+			<Setting name="selectFiles" value="7" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/SqlToXml/" />
+		</Task>
+	</Tasks>
+</Workflow>

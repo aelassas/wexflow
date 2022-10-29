@@ -1,0 +1,40 @@
+version: "3"
+services:
+  wexflow-backend:
+    image: danjellz/http-server
+    ports:
+          - 8011:8011
+    volumes:
+      - ./wexflow-5.7-linux-netcore/Backend:/public
+    command:
+      http-server --cors -p 8011
+
+  # Uncomment these lines if you want to use MongoDB database
+  # You must also update Wexflow.xml https://github.com/aelassas/Wexflow/wiki/MongoDB
+  #mongo:
+  #   image: mongo:latest
+  #   ports:
+  #     - 27017:27017
+  
+  # Uncomment these lines if you want to use RavenDB database
+  # You must also update Wexflow.xml https://github.com/aelassas/Wexflow/wiki/RavenDB
+  #ravendb:
+  #   image: ravendb/ravendb
+  #   ports:
+  #     - 8080:8080
+
+  wexflow:
+    # Uncomment these lines if you want to use MongoDB database or RavenDB database
+    #depends_on:
+    #  - mongo
+    #  - ravendb
+    image: mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine
+    environment:
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+    ports:
+      - 8000:8000
+    volumes:
+      - ./wexflow-5.7-linux-netcore/:/opt/wexflow/
+    working_dir: /opt/wexflow/Wexflow.Server
+    command:
+      sh -c "apk add --update icu && cd /opt/wexflow/Wexflow.Server && dotnet Wexflow.Server.dll"

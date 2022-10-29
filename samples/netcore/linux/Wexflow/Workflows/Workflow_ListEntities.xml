@@ -1,0 +1,11 @@
+<Workflow xmlns="urn:wexflow-schema" id="7" name="Workflow_ListEntities" description="Workflow_ListEntities">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<!-- This task is useful when working with custom tasks that use entities.-->
+		<Task id="1" name="ListEntities" description="Listing entities" enabled="true">
+		</Task>
+	</Tasks>
+</Workflow>

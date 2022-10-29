@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    SubWorkflow is a sequential task that kicks off a sub workflow.
+  -->
+  <Task id="$int" name="Sync" description="$string" enabled="true|false">
+    <!-- The sub workflow id to kick off. -->
+    <Setting name="id" value="$int" />
+    <!-- Optional and defaults to start. Kick off action. -->
+    <Setting name="action" value="start|stop|approve|reject" />
+    <!-- Optional and defaults to sync. Kick off mode. -->
+    <Setting name="mode" value="sync|async" />
+  </Task>
+</Tasks>

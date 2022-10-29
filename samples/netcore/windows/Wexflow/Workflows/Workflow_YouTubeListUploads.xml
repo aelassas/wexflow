@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="121" name="Workflow_YouTubeListUploads" description="Workflow_YouTubeListUploads">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="YouTubeListUploads" description="Listing videos" enabled="true">
+			<Setting name="user" value="username" />
+			<Setting name="applicationName" value="Wexflow" />
+			<Setting name="clientSecrets" value="C:\Wexflow-netcore\client_secrets.json" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving results from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\YouTubeListUploads\" />
+		</Task>
+	</Tasks>
+</Workflow>

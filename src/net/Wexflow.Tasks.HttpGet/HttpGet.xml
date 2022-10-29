@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    HttpGet is a sequential task that executes a GET request.
+    
+    The response is written in a file that is loaded by the task so that other tasks can select it through selectFiles option.
+  -->
+  <Task id="$int" name="HttpGet" description="$string" enabled="true|false">
+    <!-- The URL. Ex: https://www.google.com -->
+    <Setting name="url" value="$string" />
+    <!-- Optional. Ex: Basic or Bearer.-->
+    <Setting name="authorizationScheme" value="$string" />
+    <!-- Optional. authorization parameter value.-->
+    <Setting name="authorizationParameter" value="$string" />
+  </Task>
+</Tasks>

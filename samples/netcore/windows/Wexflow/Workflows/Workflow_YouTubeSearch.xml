@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="120" name="Workflow_YouTubeSearch" description="Workflow_YouTubeSearch">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="YouTubeSearch" description="Searching for content" enabled="true">
+			<Setting name="applicationName" value="Wexflow" />
+			<Setting name="apiKey" value="API_KEY" />
+			<Setting name="keyword" value="Google" />
+			<Setting name="maxResults" value="50" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving search results from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\YouTubeSearch\" />
+		</Task>
+	</Tasks>
+</Workflow>

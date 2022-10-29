@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GlobalVariables>
+  <Variable name="wexflowTesting" value="/opt/wexflow/WexflowTesting" />
+  <Variable name="fileName1" value="file1.txt" />
+  <Variable name="fileName2" value="file2.txt" />
+  <Variable name="fileName3" value="file3.txt" />
+  <Variable name="file1" value="/opt/wexflow/WexflowTesting/file1.txt" />
+  <Variable name="file2" value="/opt/wexflow/WexflowTesting/file2.txt" />
+  <Variable name="file3" value="/opt/wexflow/WexflowTesting/file3.txt" /> 
+</GlobalVariables>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Tgz is a sequential task that creates a tar.gz from a collection of files.
+    
+    The tar.gz file generated will be loaded by this task so that other
+    tasks can select it through the selectFiles option.
+  -->
+  <Task id="$int" name="Tgz" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      added to the Tar file.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The tar.gz file name. Example: output.tar.gz-->
+    <Setting name="tgzFileName" value="$string" />
+  </Task>
+</Tasks>

@@ -1,0 +1,6 @@
+<Products>
+	<Product name="Product1" description="Product1 description"></Product>
+	<Product name="Product2" description="Product2 description"></Product>
+	<Product name="Product3" description="Product3 description"></Product>
+	<Product name="Product4" description="Product4 description"></Product>
+</Products>

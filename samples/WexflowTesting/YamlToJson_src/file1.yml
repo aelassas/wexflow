@@ -1,0 +1,4 @@
+scalar: a scalar
+sequence:
+  - one
+  - two

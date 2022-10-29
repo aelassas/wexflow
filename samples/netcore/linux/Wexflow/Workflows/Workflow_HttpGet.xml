@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="108" name="Workflow_HttpGet" description="Workflow_HttpGet">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="HttpGet" description="Executing GET request" enabled="true">
+	  <Setting name="url" value="https://www.google.com" />
+    </Task>
+    <Task id="2" name="FilesMover" description="Moving response file to HttpGet folder" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destFolder" value="/opt/wexflow/WexflowTesting/HttpGet/" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

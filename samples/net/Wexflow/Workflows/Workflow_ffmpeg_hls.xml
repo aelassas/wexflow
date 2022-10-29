@@ -1,0 +1,24 @@
+<Workflow xmlns="urn:wexflow-schema" id="118" name="Workflow_ffmpeg_hls" description="Workflow_ffmpeg_hls">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading MP4 files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\MP4\small.mp4" />
+		</Task>
+		<Task id="2" name="ProcessLauncher" description="MP4 to HLS" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="processPath" value="C:\Program Files\ffmpeg\bin\ffmpeg.exe" /> <!-- You need to install FFMPEG -->
+			<Setting name="processCmd" value="-i {$filePath} -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls {$output:$fileNameWithoutExtension.m3u}" /> <!-- variables: {$filePath},{$fileName},{$fileNameWithoutExtension}-->
+			<Setting name="hideGui" value="true" /> <!-- true|false -->
+			<Setting name="generatesFiles" value="true" /> <!-- true|false -->
+			<Setting name="loadAllFiles" value="true" /> <!-- true|false -->
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving HLS files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\HLS\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

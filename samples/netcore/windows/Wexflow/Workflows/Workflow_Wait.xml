@@ -1,0 +1,11 @@
+<Workflow xmlns="urn:wexflow-schema" id="41" name="Workflow_Wait" description="Workflow_Wait">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="Wait" description="Wait for 30 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:30" />
+		</Task>
+	</Tasks>
+</Workflow>

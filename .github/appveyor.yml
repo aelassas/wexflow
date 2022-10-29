@@ -1,0 +1,49 @@
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Visual Studio 2019
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
+# clone directory
+clone_folder: c:\projects\wexflow
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+
+# to add several platforms to build matrix:
+#platform:
+#  - x86
+#  - Any CPU
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+before_build: 
+  - ps: dotnet --list-sdks
+  - nuget restore
+
+# to add several configurations to build matrix:
+#configuration:
+#  - Debug
+#  - Release
+
+build:
+  parallel: true                   # enable MSBuild parallel builds
+  project: Wexflow.sln             # path to Visual Studio solution or project
+  verbosity: normal                # MSBuild verbosity level quiet|minimal|normal|detailed
+
+test: off
+
+# scripts to run before build
+#after_build:
+#  - ps: Copy-Item c:\projects\wexflow\samples\Wexflow c:\ -recurse
+#  - ps: Copy-Item c:\projects\wexflow\samples\WexflowTesting c:\ -recurse

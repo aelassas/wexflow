@@ -1,0 +1,19 @@
+<Workflow xmlns="urn:wexflow-schema" id="52" name="Workflow_MediaInfo" description="Workflow_MediaInfo">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\WAV\kof.wav" />
+			<Setting name="file" value="C:\WexflowTesting\MP4\small.mp4" />
+		</Task>
+		<Task id="2" name="MediaInfo" description="Generating MediaInfo informations." enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving MediaInfo files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\MediaInfo\" />
+		</Task>
+	</Tasks>
+</Workflow>

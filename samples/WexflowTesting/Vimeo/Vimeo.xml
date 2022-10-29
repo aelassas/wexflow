@@ -1,0 +1,7 @@
+<Videos>
+  <Video>
+	<Title>My video</Title>
+	<Description>My video description</Description>
+	<FilePath>C:\WexflowTesting\Videos\video1.mp4</FilePath>
+  </Video>
+</Videos>

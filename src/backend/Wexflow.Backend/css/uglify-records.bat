@@ -1,0 +1,1 @@
+uglifycss bootstrap.min.css jquery.toast.min.css jBox.all.min.css records.css --output records.min.css

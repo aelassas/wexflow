@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="131" name="Workflow_Approval" description="Workflow_Approval">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="Approval" description="Waiting for approval" enabled="true" />
+    <Task id="2" name="Wait" description="Waiting for 2 seconds" enabled="true">
+      <Setting name="duration" value="00.00:00:02" />
+    </Task>
+  </Tasks>
+</Workflow>

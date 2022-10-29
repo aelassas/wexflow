@@ -1,0 +1,25 @@
+<Workflow xmlns="urn:wexflow-schema" id="74" name="Workflow_ImagesCropper" description="Workflow_ImagesCropper">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading JPG images" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\ImagesCropperSrc\image1.jpg" />
+			<Setting name="file" value="C:\WexflowTesting\ImagesCropperSrc\image2.jpg" />
+			<Setting name="file" value="C:\WexflowTesting\ImagesCropperSrc\image3.jpg" />
+		</Task>
+		<Task id="2" name="ImagesCropper" description="Cropping images" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="width" value="512" />
+			<Setting name="height" value="384" />
+			<Setting name="x" value="0" />
+			<Setting name="y" value="200" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving the cropped images to ImagesCropperDest folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\ImagesCropperDest\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

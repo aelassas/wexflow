@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="129" name="Workflow_RedditListPosts" description="Workflow_RedditListPosts">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>  
+	<Tasks>
+		<Task id="1" name="RedditListPosts" description="Retrieving post history" enabled="true">
+			<Setting name="appId" value="APP_ID" />
+			<Setting name="refreshToken" value="REFRESH_TOKEN" /> 
+			<Setting name="maxResults" value="50" />
+		</Task> 
+		<Task id="2" name="FilesMover" description="Moving post history from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/RedditListPosts/" />
+		</Task>
+	</Tasks>  
+</Workflow>

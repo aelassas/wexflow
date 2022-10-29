@@ -1,0 +1,34 @@
+﻿<Workflow xmlns="urn:wexflow-schema" id="151" name="Workflow_FileSystemWatcher" description="Workflow_FileSystemWatcher">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FileSystemWatcher" description="Checking files" enabled="true">
+			<Setting name="folderToWatch" value="/Applications/wexflow/WexflowTesting/HotFolder" />		
+			<Setting name="filter" value="*.*" />
+			<Setting name="includeSubFolders" value="false" />
+			<Setting name="onFileCreated" value="2, 3" />
+			<Setting name="onFileChanged" value="4, 5" />
+			<Setting name="onFileDeleted" value="6" />
+		</Task>
+		<Task id="2" name="FilesCopier" description="Copying files" enabled="true">
+		  <Setting name="selectFiles" value="1" />
+		  <Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Folder1" />
+		  <Setting name="overwrite" value="true" />
+		</Task>
+		<Task id="3" name="Md5" description="Generating MD5 sums" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="4" name="FilesCopier" description="Copying files" enabled="true">
+		  <Setting name="selectFiles" value="1" />
+		  <Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Folder2" />
+		  <Setting name="overwrite" value="true" />
+		</Task>
+		<Task id="5" name="Md5" description="Generating MD5 sums" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="6" name="ListFiles" description="Listing files" enabled="true">
+		</Task>
+	</Tasks>
+</Workflow>

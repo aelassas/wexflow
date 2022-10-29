@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="128" name="Workflow_VimeoListUploads" description="Workflow_VimeoListUploads">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="VimeoListUploads" description="Listing videos" enabled="true">
+			<Setting name="token" value="TOKEN" />
+			<Setting name="userId" value="0" />
+		</Task>
+		<Task id="2" name="FilesMover" description="Moving results from temp folder" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destFolder" value="C:\WexflowTesting\VimeoListUploads\" />
+		</Task>
+	</Tasks>
+</Workflow>

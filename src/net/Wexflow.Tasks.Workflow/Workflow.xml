@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Workflow is a sequential task that allows to start, suspend, resume, stop, approve or reject workflows.
+  -->
+  <Task id="$int" name="Workflow" description="$string" enabled="true|false">
+    <!-- Wexflow Web Service Uri -->
+    <Setting name="wexflowWebServiceUri" value="http://localhost:8000/wexflow/" />
+    <!-- Wexflow username. -->
+    <Setting name="username" value="$string" />
+    <!-- Wexflow password (encrypted in MD5). -->
+    <Setting name="password" value="$string" />
+    <!-- Workflow action: start|suspend|resume|stop|approve|reject -->
+    <Setting name="action" value="start" />
+    <!-- Workflow ids-->
+    <Setting name="id" value="$int" />
+    <Setting name="id" value="$int" />
+  </Task>
+</Tasks>

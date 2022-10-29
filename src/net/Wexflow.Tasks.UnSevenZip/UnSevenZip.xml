@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    UnSevenZip is a sequential task that extracts 7Z archives.
+   
+   The files extracted are loaded by the UnSevenZip task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="UnSevenZip" description="$string" enabled="true|false">
+    <!-- The 7Z archives loaded by the task having as id $taskId will be extracted.-->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- Required. Destination directory where the archives will be extracted.-->
+    <Setting name="destDir" value="$string" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

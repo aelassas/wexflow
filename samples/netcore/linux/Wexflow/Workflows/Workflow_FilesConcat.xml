@@ -1,0 +1,20 @@
+<Workflow xmlns="urn:wexflow-schema" id="53" name="Workflow_FilesConcat" description="Workflow_FilesConcat">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file1.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file2.txt" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/file3.txt" />
+		</Task>
+		<Task id="2" name="FilesConcat" description="Concatenating files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving FilesConcat files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/FilesConcat/" />
+		</Task>
+	</Tasks>
+</Workflow>

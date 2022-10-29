@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="110" name="Workflow_YamlToJson" description="Workflow_YamlToJson">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading YAML files" enabled="true">
+	  <Setting name="file" value="C:\WexflowTesting\YamlToJson_src\file1.yml" />
+	  <Setting name="file" value="C:\WexflowTesting\YamlToJson_src\file2.yml" />
+    </Task>
+    <Task id="2" name="YamlToJson" description="Converting YAML files to JSON files" enabled="true">
+	  <Setting name="selectFiles" value="1" />
+    </Task>
+    <Task id="3" name="FilesMover" description="Moving JSON files to YamlToJson_dest folder" enabled="true">
+      <Setting name="selectFiles" value="2" />
+      <Setting name="destFolder" value="C:\WexflowTesting\YamlToJson_dest\" />
+	  <Setting name="overwrite" value="true" />
+    </Task>
+  </Tasks>
+</Workflow>

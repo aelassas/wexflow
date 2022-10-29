@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="143" name="Workflow_SshCmd" description="Workflow_SshCmd">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="false" />
+    <Setting name="enableParallelJobs" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="SshCmd" description="Executing SSH command" enabled="true">
+      <Setting name="host" value="host" />
+      <Setting name="port" value="22" />
+      <Setting name="username" value="username" />
+      <Setting name="password" value="password" />
+      <Setting name="cmd" value="uname" />
+      <Setting name="timeout" value="60" />
+    </Task>
+  </Tasks>
+</Workflow>

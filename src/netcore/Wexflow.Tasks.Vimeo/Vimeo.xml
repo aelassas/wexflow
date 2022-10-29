@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Vimeo is a sequential task that uploads videos to Vimeo.
+    
+    This task takes as input XML files containing the videos to be uploaded. The format of these files is as follows:
+    
+    <Videos>
+	    <Video>
+		    <Title>Test video</Title>
+		    <Description>Test video Description</Description>
+        <FilePath>C:\WexflowTesting\Videos\video1.mp4</FilePath>
+      </Video>
+      ...
+    </Videos>
+  -->
+  <Task id="$int" name="Vimeo" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id the $taskId will be loaded in order to upload the videos to Vimeo.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- Vimeo token. You can obtain it from https://developer.vimeo.com/ -->
+    <Setting name="token" value="$string" />
+  </Task>
+</Tasks>

@@ -1,0 +1,19 @@
+<Workflow xmlns="urn:wexflow-schema" id="161" name="Workflow_Tar" description="Workflow_Tar">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\Watchfolder1\" />
+		</Task>
+		<Task id="2" name="Tar" description="Creating Tar" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="tarFileName" value="output.tar" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving tars to Tar folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Tar\" />
+		</Task>
+	</Tasks>
+</Workflow>

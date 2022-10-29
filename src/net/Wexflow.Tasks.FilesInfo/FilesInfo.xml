@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesInfo is a sequential task that generates files information of a collection of files. 
+    The results are written to an XML file as follows:
+    
+    <Files>
+     <File path="C:\WexflowTesting\file1.txt" name="file1.txt" renameToOrName="file1.txt" createdOn="10/22/2017 17:54.49" lastWriteOn="02/17/2017 19:33.34" lastAcessOn="10/24/2017 12:32.12" isReadOnly="false" length="27" attributes="Archive" />
+     <File path="C:\WexflowTesting\file2.txt" name="file2.txt" renameToOrName="file2.txt" createdOn="02/17/2017 22:20.25" lastWriteOn="02/17/2017 19:33.34" lastAcessOn="10/20/2017 18:04.05" isReadOnly="false" length="27" attributes="Archive" />
+     ...
+   </Files>
+   
+   The XML file generated will be loaded by the FilesInfo task so that other tasks can select 
+   it through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesInfo" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      used to generate their information.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

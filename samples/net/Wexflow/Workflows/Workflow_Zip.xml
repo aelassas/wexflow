@@ -1,0 +1,20 @@
+<Workflow xmlns="urn:wexflow-schema" id="19" name="Workflow_Zip" description="Workflow_Zip">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="C:\WexflowTesting\Watchfolder1\" />
+		</Task>
+		<Task id="2" name="Zip" description="Zipping files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="zipFileName" value="output.zip" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving Zip to Zip folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\Zip\" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

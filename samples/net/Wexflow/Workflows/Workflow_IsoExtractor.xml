@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="88" name="Workflow_IsoExtractor" description="Workflow_IsoExtractor">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic|cron -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading iso files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\IsoExtractor_src\Wexflow_sample.iso" />
+		</Task>
+		<Task id="2" name="IsoExtractor" description="Extracting iso files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="destDir" value="C:\WexflowTesting\IsoExtractor_dest" />
+		</Task>
+		<Task id="3" name="ListFiles" description="Listing files..." enabled="true" />
+	</Tasks>
+</Workflow>

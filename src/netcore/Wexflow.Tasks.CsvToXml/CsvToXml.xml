@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    CsvToXml is a sequential task that converts CSV files to XML files. 
+    The format of the generated XML file is as follows:
+    <Lines>
+      <Line>
+        <Colomun>$string<Column>
+        <Colomun>$string<Column>
+        <Colomun>$string<Column>
+        ...
+       </Line>
+        <Line>
+        <Colomun>$string<Column>
+        <Colomun>$string<Column>
+        <Colomun>$string<Column>
+        ...
+       </Line>
+       ...
+    </Line>
+    
+    The XML files generated will be loaded by this task so that other
+    tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="CsvToXml" description="$string" enabled="true|false">
+    <!-- 
+      The CSV files loaded by the task having as id $taskId will be
+      transformed to XML files.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    YouTube is a sequential task that uploads videos to YouTube.
+    
+    This task takes as input XML files containing the videos to be uploaded. The format of these files is as follows:
+    
+    <Videos>
+	    <Video>
+		    <Title>Test video</Title>
+		    <Description>Test video Description</Description>
+		    <Tags>video, test</Tags>
+		    <CategoryId>22</CategoryId> 
+        <PrivacyStatus>Private</PrivacyStatus> 
+        <FilePath>C:\WexflowTesting\YouTube\small.mp4</FilePath>
+      </Video>
+      ...
+    </Videos>
+  -->
+  <Task id="$int" name="YouTube" description="$string" enabled="true|false">
+    <!-- 
+      The XML files loaded by the task having as id the $taskId will be loaded in order to upload the videos to YouTube.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    
+    <!-- YouTube username.-->
+    <Setting name="user" value="$string" />
+    <!-- YouTube application name.-->
+    <Setting name="applicationName" value="$string" />
+    <!-- The file containing YouTube credentials. You can create it from https://console.developers.google.com -->
+    <Setting name="clientSecrets" value="C:\Wexflow-netcore\client_secrets.json" />
+  </Task>
+</Tasks>

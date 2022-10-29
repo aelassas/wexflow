@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesExist is a sequential task that checks whether a collection of files and/or directories exists.
+    
+    The result is written in XML file in this format:
+    
+    <Root>
+      <Files>
+        <File path="C:\WexflowTesting\file1.txt" name="file1.txt" exists="true" />
+        <File path="C:\WexflowTesting\file2.txt" name="file2.txt" exists="true" />
+        <File path="C:\WexflowTesting\file3.txt" name="file3.txt" exists="true" />
+        <File path="C:\WexflowTesting\file41.txt" name="file41.txt" exists="false" />
+      </Files>
+      <Folders>
+        <Folder path="C:\WexflowTesting\Watchfolder1" name="Watchfolder1" exists="true" />
+        <Folder path="C:\WexflowTesting\Watchfolder2" name="Watchfolder2" exists="true" />
+        <Folder path="C:\WexflowTesting\Watchfolder41" name="Watchfolder41" exists="false" />
+      </Folders>
+    </Root>
+
+    The XML file generated will be loaded by this task so that other
+    tasks can select it through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesExist" description="$string" enabled="true|false">
+    <!--  The file path. You can add as many options as you want.-->
+    <Setting name="file" value="$string" />
+    <Setting name="file" value="$string" />
+    <!--  The folder path. You can add as many options as you want.-->
+    <Setting name="folder" value="$string" />
+    <Setting name="folder" value="$string" />
+  </Task>
+</Tasks>

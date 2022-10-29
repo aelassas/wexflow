@@ -1,0 +1,16 @@
+<Workflow xmlns="urn:wexflow-schema" id="128" name="Workflow_Reddit" description="Workflow_Reddit">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading posts" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/Reddit/Posts.xml" />
+		</Task>
+		<Task id="2" name="Reddit" description="Posting on Reddit" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="appId" value="APP_ID" />
+			<Setting name="refreshToken" value="REFRESH_TOKEN" />
+		</Task>
+	</Tasks>
+</Workflow>

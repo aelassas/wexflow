@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="16" name="Workflow_Twitter" description="Workflow_Twitter">
+	<Settings>
+		<Setting name="launchType" value="trigger" /> <!-- startup|trigger|periodic -->
+		<Setting name="enabled" value="true" /> <!-- true|false -->
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading tweets" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/Tweets/Tweets.xml" />
+		</Task>
+		<Task id="2" name="Twitter" description="Sending tweets" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="consumerKey" value="CUSTOMER_KEY" />
+			<Setting name="consumerSecret" value="CUSTOMER_SECRET" />
+			<Setting name="accessToken" value="ACCESS_TOKEN" />
+			<Setting name="accessTokenSecret" value="ACCESS_TOKEN_SECRET" />
+		</Task>
+	</Tasks>
+</Workflow>

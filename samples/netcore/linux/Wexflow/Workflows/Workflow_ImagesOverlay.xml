@@ -1,0 +1,20 @@
+<Workflow xmlns="urn:wexflow-schema" id="78" name="Workflow_ImagesOverlay" description="Workflow_ImagesOverlay">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading images" enabled="true">
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/ImagesOverlaySrc/image1.png" />
+			<Setting name="file" value="/opt/wexflow/WexflowTesting/ImagesOverlaySrc/image2.png" />
+		</Task>
+		<Task id="2" name="ImagesOverlay" description="Overlaying images" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving final image to ImagesOverlayDest folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/ImagesOverlayDest/" />
+			<Setting name="overwrite" value="true" />
+		</Task>
+	</Tasks>
+</Workflow>

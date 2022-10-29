@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="10" name="Workflow_Md5" description="Workflow_Md5">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="folder" value="/Applications/wexflow/WexflowTesting/Watchfolder1/" />
+		</Task>
+		<Task id="2" name="Md5" description="Generating MD5 sums" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving MD5 files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/MD5/" />
+		</Task>
+	</Tasks>
+</Workflow>

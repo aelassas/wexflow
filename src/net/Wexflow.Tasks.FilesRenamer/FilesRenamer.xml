@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesRenamer is a sequential task that renames a collection of files on the file system.
+    To see how to use it, refer to the documentation of The ListFiles and Xslt tasks.
+  -->
+  <Task id="$int" name="FilesRenamer" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id the $taskId will be renamed.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- Optional and defaults to false. Overwrite the file if a file with the new file name already exists.-->
+    <Setting name="overwrite" value="true|false" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

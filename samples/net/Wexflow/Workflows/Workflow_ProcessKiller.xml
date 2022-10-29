@@ -1,0 +1,11 @@
+<Workflow xmlns="urn:wexflow-schema" id="58" name="Workflow_ProcessKiller" description="Workflow_ProcessKiller">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="ProcessKiller" description="Killing notepad.exe" enabled="true">
+			<Setting name="processName" value="notepad.exe" />
+		</Task>
+	</Tasks>
+</Workflow>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow xmlns="urn:wexflow-schema" id="60" name="Workflow_Unzip" description="Workflow_Unzip">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="FilesLoader" description="Loading ZIP archives" enabled="true">
+      <Setting name="file" value="/Applications/wexflow/WexflowTesting/Unzip_src/archive.zip" />
+    </Task>
+    <Task id="2" name="Unzip" description="Extracting ZIP archives" enabled="true">
+      <Setting name="selectFiles" value="1" />
+      <Setting name="destDir" value="/Applications/wexflow/WexflowTesting/Unzip_dest" />
+    </Task>
+    <Task id="3" name="ListFiles" description="Listing files..." enabled="true" />
+  </Tasks>
+</Workflow>

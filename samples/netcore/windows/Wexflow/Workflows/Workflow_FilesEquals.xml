@@ -1,0 +1,13 @@
+<Workflow xmlns="urn:wexflow-schema" id="70" name="Workflow_FilesEqual" description="Workflow_FilesEqual">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesEqual" description="Checking files" enabled="true">
+			<Setting name="file1" value="C:\WexflowTesting\file1.txt" />
+			<Setting name="file2" value="C:\WexflowTesting\file2.txt" />
+		</Task>
+		<Task id="2" name="ListFiles" description="Listing files" enabled="true" />
+	</Tasks>
+</Workflow>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    HtmlToPdf is a sequential task that generates PDF files from HTML files.
+    
+   The PDF files generated are loaded by the HtmlToPdf task so that other tasks can select 
+   them through the selectFiles option.
+  -->
+  <Task id="$int" name="HtmlToPdf" description="$string" enabled="true|false">
+    <!-- 
+      The HTML files loaded by the task having as id $taskId will be
+      used to generate PDF files.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

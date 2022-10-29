@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Ping is a flowchart task that checks whether a server responds to a ping request or not.
+  -->
+  <Task id="$int" name="Ping" description="$string" enabled="true|false">
+    <!-- The server address or name. Ex: google.com-->
+    <Setting name="server" value="$string" />    
+  </Task>
+</Tasks>

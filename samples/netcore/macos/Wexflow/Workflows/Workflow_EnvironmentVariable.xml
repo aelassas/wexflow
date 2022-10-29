@@ -1,0 +1,27 @@
+<Workflow xmlns="urn:wexflow-schema" id="116" name="Workflow_EnvironmentVariable" description="Workflow_EnvironmentVariable">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="99" name="EnvironmentVariable" description="Getting OS environment variable" enabled="true">
+		  <Setting name="name" value="OS" />
+		</Task>
+		<Task id="1" name="Wait" description="Waiting for 1 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:01" />
+		</Task>
+		<Task id="2" name="Wait" description="Waiting for 2 seconds..." enabled="true">
+			<Setting name="duration" value="00.00:00:02" />
+		</Task>
+	</Tasks>
+	<ExecutionGraph>
+		<Switch id="100" parent="-1" switch="99">
+		  <Case value="Windows_NT">
+			<Task id="1"><Parent id="-1" /></Task>
+		  </Case>
+		  <Default>
+			<Task id="2"><Parent id="-1" /></Task>
+		  </Default>
+		</Switch>
+	</ExecutionGraph>
+</Workflow>

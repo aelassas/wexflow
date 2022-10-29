@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FolderExists is a flowchart task that checks whether a folder exists or not.
+  -->
+  <Task id="$int" name="FolderExists" description="$string" enabled="true|false">
+    <!-- The folder path to check. Example: C:\WexflowTesting\ -->
+    <Setting name="folder" value="$string" />    
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>

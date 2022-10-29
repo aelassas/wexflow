@@ -1,0 +1,18 @@
+<Workflow xmlns="urn:wexflow-schema" id="65" name="Workflow_HtmlToPdf" description="Workflow_HtmlToPdf">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\file1.html" />
+		</Task>
+		<Task id="2" name="HtmlToPdf" description="Generating PDF files" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving PDF files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\HtmlToPdf\" />
+		</Task>
+	</Tasks>
+</Workflow>

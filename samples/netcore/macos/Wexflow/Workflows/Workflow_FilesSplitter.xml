@@ -1,0 +1,20 @@
+<Workflow xmlns="urn:wexflow-schema" id="57" name="Workflow_FilesSplitter" description="Workflow_FilesSplitter">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading files" enabled="true">
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/file1.txt" />
+			<Setting name="file" value="/Applications/wexflow/WexflowTesting/file2.txt" />
+		</Task>
+		<Task id="2" name="FilesSplitter" description="Splitting files into chunks" enabled="true">
+			<Setting name="selectFiles" value="1" />
+			<Setting name="chunkSize" value="10" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving FilesSplitter files from temp folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/FilesSplitter/" />
+		</Task>
+	</Tasks>
+</Workflow>

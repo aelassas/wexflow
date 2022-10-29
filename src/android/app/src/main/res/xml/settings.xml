@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:title="@string/pref_wexflow_uri"
+        android:key="prefWexflowUri"
+        android:defaultValue="@string/pref_wexflow_defualt_value"/>
+
+</PreferenceScreen>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FilesCopier is a sequential task that copies a collection of files to a destination folder.
+    
+    The files copied will be loaded by this task so that other tasks can select them through the selectFiles option.
+  -->
+  <Task id="$int" name="FilesCopier" description="$string" enabled="true|false">
+    <!-- 
+      The files loaded by the task having as id $taskId will be
+      copied to the destination folder.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!-- The destination folder. For example: C:\MyFolder\-->
+    <Setting name="destFolder" value="$string" />
+    <!--- Optional and defaults to false. true to overwrite the files located in the destination folder, false otherwise.-->
+    <Setting name="overwrite" value="true|false" />
+    <!--
+      Optional and defaults to empty. Preserve Directory Structure from a Source Path Point.
+      For example:
+      Sources:
+        C:\MyFolder\Folder-1\file1.txt
+        C:\MyFolder\Folder-2\file2.txt
+      DestFolder: D:\Backup
+      PreserveFolderStructFrom: C:\MyFolder\
+      Output files path:
+        D:\Backup\Folder-1\file1.txt
+        D:\Backup\Folder-2\file2.txt
+     -->
+    <Setting name="preserveFolderStructFrom" value="$string" />
+    <!-- Optional and defaults to true. true to create destination directory if it does not exist. -->
+    <Setting name="allowCreateDirectory" value="true|false" />
+  </Task>
+</Tasks>

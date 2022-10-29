@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    Ftp is a sequential task that allows to list, upload, download or delete files over FTP, FTPS or SFTP.
+  -->
+  <Task id="$int" name="Ftp" description="$string" enabled="true|false">
+    <!--  The files loaded by the task having as id $taskId will be sent. -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+    <!--- FTP command. Possible values: list|upload|download|delete-->
+    <Setting name="command" value="list|upload|download|delete" />
+    <!--- FTP Protocol. Possible values: ftp|ftps|sftp-->
+    <Setting name="protocol" value="ftp|ftps|sftp" />
+    <!-- Encryption mode. This option is only necessary for FTPS protocol. Possible values: explicit|implicit.-->
+    <Setting name="encryption" value="explicit|implicit" />
+    <!-- The server host address. -->
+    <Setting name="server" value="$string" />
+    <!-- The server port. It should be 21 for FTP and 22 for SFTP.-->
+    <Setting name="port" value="$int" />
+    <!-- The user name to connect to the server.-->
+    <Setting name="user" value="$string" />
+    <!-- The user password to connect to the server.-->
+    <Setting name="password" value="password" />
+    <!-- 
+         The private key file path to connect to the server. 
+         This option is for SFTP only. You can remove it if it's not necessary.
+    -->
+    <Setting name="privateKeyPath" value="C:\WexflowTesting\Keys\key.key" />
+    <!-- 
+         The private key passphrase to connect to the server.
+         This option is for SFTP only. You can remove it if it's not necessary.
+    -->
+    <Setting name="passphrase" value="wexflow" />
+    <!-- The remote path. -->
+    <Setting name="path" value="$string" />
+    <!-- Optional and defaults to 3. Number of retry times in case of failures. -->
+    <Setting name="retryCount" value="$int" />
+    <!-- Optional and defaults to 1500 (milliseconds). The retry timeout between two tries. -->
+    <Setting name="retryTimeout" value="$int" />
+    <!-- Optional and defaults to false. Indicates whether to enable debug logs or not. Works for FTP and FTPS only. -->
+    <Setting name="debugLogs" value="$bool" />
+
+    <!-- Optional. Samba computer name. -->
+    <Setting name="smbComputerName" value="$string" />
+    <!-- Optional. Samba domain name. -->
+    <Setting name="smbDomain" value="$string" />
+    <!-- Optional. Samba username. -->
+    <Setting name="smbUsername" value="$string" />
+    <!-- Optional. Samba password. -->
+    <Setting name="smbPassword" value="$string" />
+  </Task>
+</Tasks>
