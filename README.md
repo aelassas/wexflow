@@ -22,6 +22,7 @@ Wexflow provides 100+ activities, supports 10+ database systems, and allows cust
 * Cron scheduling
 * Extensive logging
 * Real-time stats
+* Multiple Language support
 * RESTful API
 * Extensible
 
