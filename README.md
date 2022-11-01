@@ -2,7 +2,7 @@
 
 # Wexflow
 
-Wexflow is an open source and cross-platform workflow engine and automation platform. The goal of Wexflow is to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
+Wexflow is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
 
 Wexflow provides a cross-platform workflow server, a backend for designing, managing and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
@@ -31,3 +31,16 @@ You can download the latest release from [here](https://github.com/aelassas/wexf
 # Documentaion
 
 You can find the documentation [here](https://github.com/aelassas/wexflow/wiki).
+
+# Credentials
+
+Once you install Wexflow, you'll need a username and a password to sign in to the backend or Wexflow Manager:
+
+- **Username**: admin
+- **Password**: wexflow2018
+
+Once logged in, you can change the password from the backend.
+
+This is explained in [installation instructions](https://github.com/aelassas/wexflow/wiki/Installation).
+
+
