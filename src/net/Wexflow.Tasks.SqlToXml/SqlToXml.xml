@@ -35,7 +35,9 @@
     <Setting name="connectionString" value="$string" />
     <!-- Optional. It is possible to execute an SQL script through this option.-->
     <Setting name="sql" value="$string" />
-
+    <!-- Optional and defaults to false. If set to true value i empty or zero, dont include node. If set to false, all nodes is included.-->
+    <Setting name="excludeEmptyValues" value="$bool" />
+    
     <!-- Optional. Samba computer name. -->
     <Setting name="smbComputerName" value="$string" />
     <!-- Optional. Samba domain name. -->
