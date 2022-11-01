@@ -24,7 +24,7 @@ Wexflow automates the process of organizing, storing, manipulating files, provid
 * RESTful API
 * Extensible
 
-# Release
+# Download
 
 You can download the latest release from [here](https://github.com/aelassas/wexflow/releases/latest).
 
