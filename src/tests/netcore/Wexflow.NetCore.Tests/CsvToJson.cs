@@ -27,7 +27,7 @@ namespace Wexflow.NetCore.Tests
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(153);
+            Helper.StartWorkflow(112);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

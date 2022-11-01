@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:simpleType name="parameterDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Output"/>
+      <xs:enumeration value="InputOutput"/>
+      <xs:enumeration value="ReturnValue"/>
+      <xs:enumeration value="Implicit"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="customBoolean">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+      <xs:enumeration value="false"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ONSParameters">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="nodeList"/>
+      <!--<xs:enumeration value="walletFile"/>
+      <xs:enumeration value="walletPassword"/>-->
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ONSModeValues">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="local"/>
+      <xs:enumeration value="remote"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="datatype">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="System.Binary"/>
+      <xs:enumeration value="System.Boolean"/>
+      <xs:enumeration value="System.Byte"/>
+      <xs:enumeration value="System.Byte[]"/>
+      <xs:enumeration value="System.Char"/>
+      <xs:enumeration value="System.DateTime"/>
+      <xs:enumeration value="System.DateTimeOffset"/>
+      <xs:enumeration value="System.Decimal"/>
+      <xs:enumeration value="System.Double"/>
+      <xs:enumeration value="System.Guid"/>
+      <xs:enumeration value="System.Int16"/>
+      <xs:enumeration value="System.Int32"/>
+      <xs:enumeration value="System.Int64"/>
+      <xs:enumeration value="System.SByte"/>
+      <xs:enumeration value="System.Single"/>
+      <xs:enumeration value="System.String"/>
+      <xs:enumeration value="System.TimeSpan"/>
+      <xs:enumeration value="System.UInt16"/>
+      <xs:enumeration value="System.UInt32"/>
+      <xs:enumeration value="System.UInt64"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="providerType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BFile"/>
+      <xs:enumeration value="BinaryFloat"/>
+      <xs:enumeration value="BinaryDouble"/>
+      <xs:enumeration value="Blob"/>
+      <xs:enumeration value="Byte"/>
+      <xs:enumeration value="Char"/>
+      <xs:enumeration value="Clob"/>
+      <xs:enumeration value="Date"/>
+      <xs:enumeration value="Decimal"/>
+      <xs:enumeration value="Double"/>
+      <xs:enumeration value="Int16"/>
+      <xs:enumeration value="Int32"/>
+      <xs:enumeration value="Int64"/>
+      <xs:enumeration value="IntervalDS"/>
+      <xs:enumeration value="IntervalYM"/>
+      <xs:enumeration value="Long"/>
+      <xs:enumeration value="LongRaw"/>
+      <xs:enumeration value="NChar"/>
+      <xs:enumeration value="NClob"/>
+      <xs:enumeration value="NVarchar2"/>
+      <xs:enumeration value="Object"/>
+      <xs:enumeration value="Raw"/>
+      <xs:enumeration value="Single"/>
+      <xs:enumeration value="TimeStamp"/>
+      <xs:enumeration value="TimeStampLTZ"/>
+      <xs:enumeration value="TimeStampTZ"/>
+      <xs:enumeration value="Varchar2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="nativeDataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BFile"/>
+      <xs:enumeration value="Binary_Float"/>
+      <xs:enumeration value="Binary_Double"/>
+      <xs:enumeration value="Blob"/>
+      <xs:enumeration value="Char"/>
+      <xs:enumeration value="Clob"/>
+      <xs:enumeration value="Date"/>
+      <xs:enumeration value="Number"/>
+      <xs:enumeration value="Interval Day To Second"/>
+      <xs:enumeration value="Interval Year To Month"/>
+      <xs:enumeration value="Long"/>
+      <xs:enumeration value="Long Raw"/>
+      <xs:enumeration value="NChar"/>
+      <xs:enumeration value="NClob"/>
+      <xs:enumeration value="NVarchar2"/>
+      <xs:enumeration value="Raw"/>
+      <xs:enumeration value="Rowid"/>
+      <xs:enumeration value="Timestamp"/>
+      <xs:enumeration value="Timestamp With Local Time Zone"/>
+      <xs:enumeration value="Timestamp With Time Zone"/>
+      <xs:enumeration value="URowid"/>
+      <xs:enumeration value="UserDefinedType"/>
+      <xs:enumeration value="Varchar2"/>
+      <xs:enumeration value="XmlType"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="providerDBType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AnsiString"/>
+      <xs:enumeration value="AnsiStringFixedLength"/>
+      <xs:enumeration value="Binary"/>
+      <xs:enumeration value="Byte"/>
+      <xs:enumeration value="Date"/>
+      <xs:enumeration value="DateTime"/>
+      <xs:enumeration value="DateTimeOffset"/>
+      <xs:enumeration value="Decimal"/>
+      <xs:enumeration value="Double"/>
+      <xs:enumeration value="Int16"/>
+      <xs:enumeration value="Int32"/>
+      <xs:enumeration value="Int64"/>
+      <xs:enumeration value="Object"/>
+      <xs:enumeration value="Single"/>
+      <xs:enumeration value="String"/>
+      <xs:enumeration value="StringFixedLength"/>
+      <xs:enumeration value="Time"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

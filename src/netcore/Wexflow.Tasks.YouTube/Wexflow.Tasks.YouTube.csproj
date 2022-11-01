@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.49.0.2173" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.57.0.2756" />
   </ItemGroup>
 
   <ItemGroup>

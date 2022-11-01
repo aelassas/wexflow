@@ -68,11 +68,98 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DiscUtils, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.dll</HintPath>
+    <Reference Include="DiscUtils, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.0.16.13\lib\net45\DiscUtils.dll</HintPath>
     </Reference>
-    <Reference Include="DiscUtils.Common, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.Common.dll</HintPath>
+    <Reference Include="DiscUtils.BootConfig, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.BootConfig.0.16.13\lib\net45\DiscUtils.BootConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Btrfs, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Btrfs.0.16.13\lib\net45\DiscUtils.Btrfs.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Core, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Core.0.16.13\lib\net45\DiscUtils.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Dmg, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Dmg.0.16.13\lib\net45\DiscUtils.Dmg.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Ext, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Ext.0.16.13\lib\net45\DiscUtils.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Fat, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Fat.0.16.13\lib\net45\DiscUtils.Fat.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.HfsPlus, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.HfsPlus.0.16.13\lib\net45\DiscUtils.HfsPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Iscsi, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Iscsi.0.16.13\lib\net45\DiscUtils.Iscsi.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Iso9660, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Iso9660.0.16.13\lib\net45\DiscUtils.Iso9660.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Lvm, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Lvm.0.16.13\lib\net45\DiscUtils.Lvm.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Net, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Net.0.16.13\lib\net45\DiscUtils.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Nfs, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Nfs.0.16.13\lib\net45\DiscUtils.Nfs.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Ntfs, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Ntfs.0.16.13\lib\net45\DiscUtils.Ntfs.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.OpticalDiscSharing, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.OpticalDiscSharing.0.16.13\lib\net45\DiscUtils.OpticalDiscSharing.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.OpticalDisk, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.OpticalDisk.0.16.13\lib\net45\DiscUtils.OpticalDisk.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Registry, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Registry.0.16.13\lib\net45\DiscUtils.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Sdi, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Sdi.0.16.13\lib\net45\DiscUtils.Sdi.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.SquashFs, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.SquashFs.0.16.13\lib\net45\DiscUtils.SquashFs.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Streams, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Streams.0.16.13\lib\net45\DiscUtils.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Swap, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Swap.0.16.13\lib\net45\DiscUtils.Swap.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Udf, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Udf.0.16.13\lib\net45\DiscUtils.Udf.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Vdi, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Vdi.0.16.13\lib\net45\DiscUtils.Vdi.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Vhd, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Vhd.0.16.13\lib\net45\DiscUtils.Vhd.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Vhdx, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Vhdx.0.16.13\lib\net45\DiscUtils.Vhdx.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Vmdk, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Vmdk.0.16.13\lib\net45\DiscUtils.Vmdk.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Wim, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Wim.0.16.13\lib\net45\DiscUtils.Wim.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Xfs, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Xfs.0.16.13\lib\net45\DiscUtils.Xfs.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Xva, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiscUtils.Xva.0.16.13\lib\net45\DiscUtils.Xva.dll</HintPath>
+    </Reference>
+    <Reference Include="lzfse-net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\lzfse-net.1.0.15\lib\net45\lzfse-net.dll</HintPath>
+    </Reference>
+    <Reference Include="lzo.net, Version=0.0.6.0, Culture=neutral, PublicKeyToken=7c3b11b873e0cbca, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\lzo.net.0.0.6\lib\net45\lzo.net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

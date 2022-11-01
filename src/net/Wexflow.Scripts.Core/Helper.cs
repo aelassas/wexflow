@@ -51,7 +51,7 @@ namespace Wexflow.Scripts.Core
                         }
                     }
                 }
-                Console.WriteLine("Workflows created.");
+                Console.WriteLine($"{workflowFiles.Length} Workflows created.");
                 Console.WriteLine();
 
                 Console.WriteLine("Creating wexflow user...");

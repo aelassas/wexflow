@@ -4,6 +4,7 @@ using System.IO;
 namespace Wexflow.Tests
 {
     [TestClass]
+    [Ignore]
     public class DatabaseRestore
     {
         private static readonly string SuccessFile = @"C:\WexflowTesting\DatabaseRestore\file1.txt";

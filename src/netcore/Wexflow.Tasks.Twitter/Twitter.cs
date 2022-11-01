@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Threading;
 using Tweetinvi;
+using Tweetinvi.Models;
 
 namespace Wexflow.Tasks.Twitter
 {
@@ -31,24 +32,28 @@ namespace Wexflow.Tasks.Twitter
 
             var files = SelectFiles();
 
+            TwitterClient client;
             if (files.Length > 0)
             {
                 try
                 {
-                    TweetinviConfig.ApplicationSettings.HttpRequestTimeout = 20000;
-                    TweetinviConfig.CurrentThreadSettings.InitialiseFrom(TweetinviConfig.ApplicationSettings);
+                    var credentials = new TwitterCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
+                    client = new TwitterClient(credentials);
+                    
+                    //TweetinviConfig.ApplicationSettings.HttpRequestTimeout = 20000;
+                    //TweetinviConfig.CurrentThreadSettings.InitialiseFrom(TweetinviConfig.ApplicationSettings);
 
-                    Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
-                    var authenticatedUser = User.GetAuthenticatedUser();
+                    //Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
+                    //var authenticatedUser = User.GetAuthenticatedUser();
 
-                    if (authenticatedUser == null) // Something went wrong but we don't know what
-                    {
-                        // We can get the latest exception received by Tweetinvi
-                        var latestException = ExceptionHandler.GetLastException();
-                        ErrorFormat("The following error occured : '{0}'", latestException.TwitterDescription);
-                        Error("Authentication failed.");
-                        return new TaskStatus(Status.Error);
-                    }
+                    //if (authenticatedUser == null) // Something went wrong but we don't know what
+                    //{
+                    //    // We can get the latest exception received by Tweetinvi
+                    //    var latestException = ExceptionHandler.GetLastException();
+                    //    ErrorFormat("The following error occured : '{0}'", latestException.TwitterDescription);
+                    //    Error("Authentication failed.");
+                    //    return new TaskStatus(Status.Error);
+                    //}
                     Info("Authentication succeeded.");
                 }
                 catch (ThreadAbortException)
@@ -69,7 +74,11 @@ namespace Wexflow.Tasks.Twitter
                         foreach (XElement xTweet in xdoc.XPathSelectElements("Tweets/Tweet"))
                         {
                             var status = xTweet.Value;
-                            var tweet = Tweet.PublishTweet(status);
+                            //var tweet = Tweet.PublishTweet(status);
+                            var tweetTask = client.Tweets.PublishTweetAsync(status);
+                            tweetTask.Wait();
+                            var tweet = tweetTask.Result;
+
                             if (tweet != null)
                             {
                                 InfoFormat("Tweet '{0}' sent. Id: {1}", status, tweet.Id);

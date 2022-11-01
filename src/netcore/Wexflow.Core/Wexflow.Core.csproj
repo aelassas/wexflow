@@ -36,9 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Quartz" Version="3.2.3" />
-    <PackageReference Include="Quartz.Serialization.Json" Version="3.2.3" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Quartz" Version="3.5.0" />
+    <PackageReference Include="Quartz.Serialization.Json" Version="3.5.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -46,7 +46,7 @@ namespace Wexflow.Tasks.Ftp
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
             client.Connect();
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.Ftp
 
             foreach (FtpListItem item in ftpListItems)
             {
-                if (item.Type == FtpFileSystemObjectType.File)
+                if (item.Type == FtpObjectType.File)
                 {
                     files.Add(new FileInf(item.FullName, taskId));
                 }
@@ -86,7 +86,7 @@ namespace Wexflow.Tasks.Ftp
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
             client.Connect();
@@ -119,7 +119,7 @@ namespace Wexflow.Tasks.Ftp
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
             client.Connect();
@@ -161,7 +161,7 @@ namespace Wexflow.Tasks.Ftp
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
             client.Connect();

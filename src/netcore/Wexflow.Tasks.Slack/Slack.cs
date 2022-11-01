@@ -29,10 +29,12 @@ namespace Wexflow.Tasks.Slack
             {
                 ManualResetEventSlim clientReady = new ManualResetEventSlim(false);
                 SlackSocketClient client = new SlackSocketClient(Token);
-                client.Connect((connected) => {
+                client.Connect((connected) =>
+                {
                     // This is called once the client has emitted the RTM start command
                     clientReady.Set();
-                }, () => {
+                }, () =>
+                {
                     // This is called once the RTM client has connected to the end point
                 });
                 client.OnMessageReceived += (message) =>
@@ -52,11 +54,14 @@ namespace Wexflow.Tasks.Slack
                             var username = xMessage.Element("User").Value;
                             var text = xMessage.Element("Text").Value;
 
-                            var user = client.Users.Find(x => x.name.Equals(username));
-                            var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
-                            client.PostMessage((mr) => Info("Message '" + text + "' sent to " + dmchannel.id + "."), dmchannel.id, text);
+                            if (client.Users != null)
+                            {
+                                var user = client.Users.Find(x => x.name.Equals(username));
+                                var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
+                                client.PostMessage((mr) => Info("Message '" + text + "' sent to " + dmchannel.id + "."), dmchannel.id, text);
 
-                            if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                                if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                            }
                         }
 
                     }

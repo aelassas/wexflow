@@ -4,6 +4,7 @@ using System.IO;
 namespace Wexflow.Tests
 {
     [TestClass]
+    [Ignore]
     public class DatabaseBackup
     {
         private static readonly string BackupFilePath = @"C:\WexflowTesting\DatabaseBackup\HELLOWORLD.bak";

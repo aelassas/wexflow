@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Oracle.DataAccess.Common.Configuration.Section.xsd"/>
+  <xs:element name="oracle.manageddataaccess.client" >
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="version" type="odpmversiontype" minOccurs="0" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="odpmversiontype">
+    <xs:complexContent>
+      <xs:extension base="odpmparameters">
+        <xs:attribute name="number" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="odpmparameters">
+    <xs:all>
+      <xs:element minOccurs="0" name="settings">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="setting">
+              <xs:complexType>
+                <xs:attribute name="name" type="xs:string" use="required" />
+                <xs:attribute name="value" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="udtMappings">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="udtMapping">
+              <xs:complexType>
+                <xs:attribute name="typeName" type="xs:string" use="required" />
+                <xs:attribute name="factoryName" type="xs:string" use="required" />
+                <xs:attribute name="dataSource" type="xs:string" use="required" />
+                <xs:attribute name="schemaName" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="LDAPsettings">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="LDAPsetting">
+              <xs:complexType>
+                <xs:attribute name="name" type="xs:string" use="required" />
+                <xs:attribute name="value" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="distributedTransaction">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="setting">
+              <xs:complexType>
+                <xs:attribute name="name" type="xs:string" use="required" />
+                <xs:attribute name="value" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="dataSources">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="dataSource">
+              <xs:complexType>
+                <xs:attribute name="alias" type="xs:string" use="required" />
+                <xs:attribute name="descriptor" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="connectionPools">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="connectionPool">
+              <xs:complexType>
+                <xs:attribute name="connectionString" type="xs:string" use="required" />
+                <xs:attribute name="poolName" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+
+      <xs:element minOccurs="0" name="edmMappings">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="edmMapping">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="unbounded" name="add">
+                    <xs:complexType>
+                      <xs:attribute name="name" type="xs:string" use="required" />
+                      <xs:attribute name="precision" type="xs:int" use="required" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="dataType" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="edmNumberMapping">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="unbounded" name="add">
+                    <xs:complexType>
+                      <xs:attribute name="NETType" type="xs:string" use="required" />
+                      <xs:attribute name="MinPrecision" type="xs:int" use="required" />
+                      <xs:attribute name="MaxPrecision" type="xs:int" use="required" />
+                      <xs:attribute name="DBType" type="xs:string" use="required" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="implicitRefCursor">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="storedProcedure">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element maxOccurs="unbounded" minOccurs="1" name="refCursor">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" name="bindInfo">
+                          <xs:complexType>
+                            <xs:attribute name="mode" type="parameterDirection" use="required" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="metadata">
+                          <xs:complexType>
+                            <xs:attribute name="columnOrdinal" type="xs:int" use="required" />
+                            <xs:attribute name="columnName" type="xs:string" use="required" />
+                            <xs:attribute name="baseColumnName" type="xs:string" use="optional" />
+                            <xs:attribute name="baseSchemaName" type="xs:string" use="optional" />
+                            <xs:attribute name="baseTableName" type="xs:string" use="optional" />
+                            <xs:attribute name="providerType" type="providerType" use="optional" />
+                            <xs:attribute name="columnSize" type="xs:int" use="optional" />
+                            <xs:attribute name="numericPrecision" type="xs:int" use="optional" />
+                            <xs:attribute name="numericScale" type="xs:int" use="optional" />
+                            <xs:attribute name="isUnique" type="customBoolean" use="optional" />
+                            <xs:attribute name="isKey" type="customBoolean" use="optional" />
+                            <xs:attribute name="isRowID" type="customBoolean" use="optional" />
+                            <xs:attribute name="dataType" type="datatype" use="optional" />
+                            <xs:attribute name="allowDBNull" type="customBoolean" use="optional" />
+                            <xs:attribute name="isAliased" type="customBoolean" use="optional" />
+                            <xs:attribute name="isByteSemantic" type="customBoolean" use="optional" />
+                            <xs:attribute name="isExpression" type="customBoolean" use="optional" />
+                            <xs:attribute name="isHidden" type="customBoolean" use="optional" />
+                            <xs:attribute name="isReadOnly" type="customBoolean" use="optional" />
+                            <xs:attribute name="isLong" type="customBoolean" use="optional" />
+                            <xs:attribute name="udtTypeName" type="xs:string" use="optional" />
+                            <xs:attribute name="nativeDataType" type="nativeDataType" use="optional" />
+                            <xs:attribute name="providerDBType" type="providerDBType" use="optional" />
+                            <xs:attribute name="objectName" type="xs:string" use="optional" />
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="name" type="xs:string" use="optional" />
+                      <xs:attribute name="position" type="xs:int" use="optional" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="schema" type="xs:string" use="optional" />
+                <xs:attribute name="name" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="onsConfig">
+        <xs:complexType>
+          <xs:sequence>
+ 		    <xs:element minOccurs="0" name="settings">
+				<xs:complexType>
+				  <xs:sequence>
+					<xs:element maxOccurs="2" minOccurs="0" name="setting">
+					  <xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="value" type="xs:string" use="required" />
+					  </xs:complexType>
+					</xs:element>
+				  </xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ons">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element maxOccurs="3" minOccurs="1" name="add">
+                    <xs:complexType>
+                      <xs:attribute name="name" type="ONSParameters" use="required" />
+                      <xs:attribute name="value" type="xs:string" use="required" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="database" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="configFile" type="xs:string" use="optional" />
+          <xs:attribute name="mode" type="ONSModeValues" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+</xs:schema>

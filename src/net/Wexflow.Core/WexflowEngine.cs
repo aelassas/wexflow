@@ -347,7 +347,7 @@ namespace Wexflow.Core
         private void LoadWorkflows()
         {
             // Load workflows from db
-            var workflows = Database.GetWorkflows();
+            var workflows = Database.GetWorkflows().ToList();
 
             foreach (var workflow in workflows)
             {
@@ -766,7 +766,8 @@ namespace Wexflow.Core
             }
 
             Logger.InfoFormat("Scheduling {0} workflows...", Workflows.Count);
-            foreach (Workflow workflow in Workflows)
+
+            foreach (var workflow in Workflows)
             {
                 ScheduleWorkflow(workflow);
             }
@@ -775,6 +776,7 @@ namespace Wexflow.Core
             {
                 QuartzScheduler.Start().Wait();
             }
+
             Logger.InfoFormat("Scheduling {0} workflows finished.", Workflows.Count);
         }
 

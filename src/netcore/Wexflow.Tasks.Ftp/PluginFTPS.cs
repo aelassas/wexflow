@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Wexflow.Core;
 using FluentFTP;
+using FluentFTP.Client.BaseClient;
 using System.Net;
 
 namespace Wexflow.Tasks.Ftp
@@ -55,16 +56,17 @@ namespace Wexflow.Tasks.Ftp
                 Host = Server,
                 Port = Port,
                 Credentials = new NetworkCredential(User, Password),
-                DataConnectionType = FtpDataConnectionType.PASV,
-                EncryptionMode = _encryptionMode
             };
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += OnValidateCertificate;
+            client.Config.DataConnectionType = FtpDataConnectionType.PASV;
+            client.Config.EncryptionMode = _encryptionMode;
+            client.Config.ValidateAnyCertificate = true;
+            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
             client.Connect();
             client.SetWorkingDirectory(Path);
 
@@ -85,12 +87,12 @@ namespace Wexflow.Tasks.Ftp
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += OnValidateCertificate;
-            client.DataConnectionType = FtpDataConnectionType.PASV;
-            client.EncryptionMode = _encryptionMode;
+            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
+            client.Config.DataConnectionType = FtpDataConnectionType.PASV;
+            client.Config.EncryptionMode = _encryptionMode;
 
             client.Connect();
             client.SetWorkingDirectory(Path);
@@ -101,7 +103,7 @@ namespace Wexflow.Tasks.Ftp
             client.Disconnect();
         }
 
-        private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e)
+        private static void OnValidateCertificate(BaseFtpClient control, FtpSslValidationEventArgs e)
         {
             e.Accept = true;
         }
@@ -112,16 +114,17 @@ namespace Wexflow.Tasks.Ftp
             {
                 Host = Server,
                 Port = Port,
-                Credentials = new NetworkCredential(User, Password),
-                EncryptionMode = _encryptionMode
+                Credentials = new NetworkCredential(User, Password)
             };
+
+            client.Config.EncryptionMode = _encryptionMode;
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += OnValidateCertificate;
+            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
             client.Connect();
             client.SetWorkingDirectory(Path);
 
@@ -137,16 +140,16 @@ namespace Wexflow.Tasks.Ftp
             {
                 Host = Server,
                 Port = Port,
-                Credentials = new NetworkCredential(User, Password),
-                EncryptionMode = _encryptionMode
+                Credentials = new NetworkCredential(User, Password)
             };
+            client.Config.EncryptionMode = _encryptionMode;
 
             if (DebugLogs)
             {
-                client.OnLogEvent = OnLogEvent;
+                client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += OnValidateCertificate;
+            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
             client.Connect();
             client.SetWorkingDirectory(Path);
 

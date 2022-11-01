@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reddit" Version="1.4.0" />
+    <PackageReference Include="Reddit" Version="1.5.2" />
   </ItemGroup>
 
   <ItemGroup>

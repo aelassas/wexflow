@@ -70,8 +70,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DiffPlex, Version=1.6.3.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\DiffPlex.1.6.3\lib\net40\DiffPlex.dll</HintPath>
+    <Reference Include="DiffPlex, Version=1.7.1.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DiffPlex.1.7.1\lib\net40\DiffPlex.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -103,9 +103,11 @@
     <PropertyGroup>
       <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets'))" />
     <Error Condition="!Exists('..\..\..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets'))" />
   </Target>
-  <Import Project="..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets" Condition="Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets')" />
   <Import Project="..\..\..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets" Condition="Exists('..\..\..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets')" />
+  <Import Project="..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets" Condition="Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets')" />
+  <Import Project="..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets" Condition="Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" />
 </Project>

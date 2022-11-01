@@ -104,11 +104,14 @@ namespace Wexflow.Tasks.Slack
                             var username = xMessage.Element("User").Value;
                             var text = xMessage.Element("Text").Value;
 
-                            var user = client.Users.Find(x => x.name.Equals(username));
-                            var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
-                            client.PostMessage((mr) => Info("Message '" + text + "' sent to " + dmchannel.id + "."), dmchannel.id, text);
+                            if (client.Users != null)
+                            {
+                                var user = client.Users.Find(x => x.name.Equals(username));
+                                var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
+                                client.PostMessage((mr) => Info("Message '" + text + "' sent to " + dmchannel.id + "."), dmchannel.id, text);
 
-                            if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                                if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                            }
                         }
 
                     }

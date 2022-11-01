@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DiffPlex" Version="1.6.3" />
+    <PackageReference Include="DiffPlex" Version="1.7.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="InstagramApiSharp" Version="1.5.0.1" />
+    <PackageReference Include="InstagramApiSharp" Version="1.7.4" />
   </ItemGroup>
 
   <ItemGroup>

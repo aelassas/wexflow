@@ -39,7 +39,7 @@ namespace Wexflow.Tasks.YouTubeSearch
             catch (Exception e)
             {
                 status = Status.Error;
-                ErrorFormat("An error occured while searching for content: {1}", e.Message);
+                ErrorFormat("An error occured while searching for content: {0}", e.Message);
             }
 
             Info("Task finished.");

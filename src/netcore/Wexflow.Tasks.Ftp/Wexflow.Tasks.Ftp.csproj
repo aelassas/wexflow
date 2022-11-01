@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentFTP" Version="33.0.3" />
-    <PackageReference Include="SSH.NET" Version="2016.1.0" />
+    <PackageReference Include="FluentFTP" Version="42.0.0" />
+    <PackageReference Include="SSH.NET" Version="2020.0.2" />
   </ItemGroup>
 
   <ItemGroup>
