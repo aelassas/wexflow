@@ -14,6 +14,8 @@ using System.Xml.Linq;
 using Teradata.Client.Provider;
 using Wexflow.Core;
 using System.Data.Odbc;
+using System.Text.RegularExpressions;
+using System.Data.SqlTypes;
 
 namespace Wexflow.Tasks.SqlToXml
 {
@@ -38,6 +40,7 @@ namespace Wexflow.Tasks.SqlToXml
         public string SmbDomain { get; private set; }
         public string SmbUsername { get; private set; }
         public string SmbPassword { get; private set; }
+        public bool ExcludeEmptyValues { get; private set; }
 
         public SqlToXml(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -48,6 +51,7 @@ namespace Wexflow.Tasks.SqlToXml
             SmbDomain = GetSetting("smbDomain");
             SmbUsername = GetSetting("smbUsername");
             SmbPassword = GetSetting("smbPassword");
+            ExcludeEmptyValues = bool.Parse(GetSetting("excludeEmptyValues", "false"));
         }
 
         public override TaskStatus Run()
@@ -231,17 +235,42 @@ namespace Wexflow.Tasks.SqlToXml
 
                     foreach (var column in columns)
                     {
-                        xobject.Add(new XElement("Cell"
-                            , new XAttribute("column", SecurityElement.Escape(column))
-                            , new XAttribute("value", SecurityElement.Escape(reader[column].ToString()))));
+                        string xmlvalue = CleanInvalidXmlChars(reader[column].ToString());
+                        var columntype = reader[column].GetType();
+                        int number;
+                        decimal decnumber;
+                        if (
+                            (columntype == typeof(Int32) && int.TryParse(xmlvalue, out number) && number == 0) ||
+                            (columntype == typeof(Decimal) && decimal.TryParse(xmlvalue, out decnumber) && decnumber == 0) ||
+                            (columntype == typeof(DateTime) && (Convert.ToDateTime(xmlvalue) == SqlDateTime.MinValue || xmlvalue == "01-01-1900 00:00:00"))
+                            )
+                        {
+                            xmlvalue = "";
+                        }
+                        if (!ExcludeEmptyValues || !string.IsNullOrEmpty(xmlvalue))
+                        {
+                            xobject.Add(new XElement("Cell"
+                                , new XAttribute("column", SecurityElement.Escape(column))
+                                , new XAttribute("value", SecurityElement.Escape(xmlvalue))));
+                        }
                     }
                     xobjects.Add(xobject);
                 }
+                
                 xdoc.Add(xobjects);
                 xdoc.Save(destPath);
                 Files.Add(new FileInf(destPath, Id));
                 InfoFormat("XML file generated: {0}", destPath);
             }
+        }
+
+        public static string CleanInvalidXmlChars(string text)
+        {
+            // From xml spec valid chars: 
+            // #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]     
+            // any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. 
+            string re = @"[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD\x10000-x10FFFF]";
+            return Regex.Replace(text, re, "");
         }
     }
 }
