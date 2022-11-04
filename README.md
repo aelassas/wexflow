@@ -8,6 +8,23 @@ Wexflow provides a cross-platform workflow server, a backend for designing, mana
 
 Wexflow automates the process of organizing, storing, manipulating files, provides more than 100+ activities, and allows custom integration with other solutions through custom activities or Wexflow API.
 
+Here are some real life use cases:
+
+* Orchestration engine
+* Batch recording live video feeds
+* Batch transcoding audio and video files
+* Batch uploading videos to YouTube
+* Automatically send tweets
+* Automatically send SMS messages
+* Batch encrypting and decrypting large files
+* Batch converting, resizing and cropping images
+* Creating and sending reports and invoices by email
+* Connecting systems and applications via watch folders
+* Batch downloading files over FTP/FTPS/SFTP/HTTP/Torrent
+* Batch uploading files over FTP/FTPS/SFTP
+* Database administration and maintenance
+* Synchronizing the content of local or remote directories
+
 # Features
 
 * Cross-platform workflow server
