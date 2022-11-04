@@ -14,6 +14,7 @@ namespace Wexflow.NetCore.Tests
             : (Environment.OSVersion.Platform == PlatformID.MacOSX
                ? "/Applications/wexflow/Wexflow/Wexflow.xml"
                : @"C:\Wexflow-netcore\Wexflow.xml")
+            , LogLevel.All
             , false
             , "admin"
             , false

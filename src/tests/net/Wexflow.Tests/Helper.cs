@@ -12,6 +12,7 @@ namespace Wexflow.Tests
 
         private static readonly WexflowEngine WexflowEngine = new WexflowEngine(
             @"C:\Wexflow\Wexflow.xml"
+            , LogLevel.All
             , false
             , "admin"
             , false
