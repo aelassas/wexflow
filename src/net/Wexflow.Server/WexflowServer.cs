@@ -1,6 +1,5 @@
 ﻿using Microsoft.Owin.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
@@ -8,7 +7,6 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Threading;
 using Wexflow.Core;
-using Wexflow.Core.Db;
 
 namespace Wexflow.Server
 {
@@ -17,6 +15,7 @@ namespace Wexflow.Server
         public static NameValueCollection Config = ConfigurationManager.AppSettings;
 
         private static string settingsFile = Config["WexflowSettingsFile"];
+        private static Core.LogLevel logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
         private static string superAdminUsername = Config["SuperAdminUsername"];
         private static bool enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
         private static bool enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
@@ -30,7 +29,9 @@ namespace Wexflow.Server
 
         public static FileSystemWatcher WorkflowsWatcher;
         public static FileSystemWatcher RecordsWatcher;
-        public static WexflowEngine WexflowEngine = new WexflowEngine(settingsFile
+        public static WexflowEngine WexflowEngine = new WexflowEngine(
+            settingsFile
+            , logLevel
             , enableWorkflowsHotFolder
             , superAdminUsername
             , enableEmailNotifications

@@ -113,7 +113,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
 
             var instaApi = InstaApiBuilder.CreateBuilder()
                 .SetUser(userSession)
-                .UseLogger(new DebugLogger(LogLevel.Exceptions))
+                .UseLogger(new DebugLogger(InstagramApiSharp.Logger.LogLevel.Exceptions))
                 .Build();
             const string stateFile = "state.bin";
             try

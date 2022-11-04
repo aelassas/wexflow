@@ -14,6 +14,33 @@ using Wexflow.Core.Db;
 namespace Wexflow.Core
 {
     /// <summary>
+    /// Log level
+    /// </summary>
+    public enum LogLevel
+    {
+        /// <summary>
+        /// All logs and debug logs.
+        /// </summary>
+        Debug,
+        /// <summary>
+        /// All logs without debug logs.
+        /// </summary>
+        All,
+        /// <summary>
+        /// Only last workflow log and error logs.
+        /// </summary>
+        Severely,
+        /// <summary>
+        /// Only last workflow log.
+        /// </summary>
+        Minimum,
+        /// <summary>
+        /// No logs.
+        /// </summary>
+        None
+    }
+
+    /// <summary>
     /// Database type
     /// </summary>
     public enum DbType
@@ -65,6 +92,10 @@ namespace Wexflow.Core
     /// </summary>
     public class WexflowEngine
     {
+        /// <summary>
+        /// Log level.
+        /// </summary>
+        public LogLevel LogLevel { get; private set; }
         /// <summary>
         /// Records db folder name.
         /// </summary>
@@ -190,6 +221,7 @@ namespace Wexflow.Core
         /// Creates a new instance of Wexflow engine.
         /// </summary>
         /// <param name="settingsFile">Settings file path.</param>
+        /// <param name="logLevel">Log level.</param>
         /// <param name="enableWorkflowsHotFolder">Indicates whether workflows hot folder is enabled or not.</param>
         /// <param name="superAdminUsername">Super-admin username.</param>
         /// <param name="enableEmailNotifications"></param>
@@ -200,6 +232,7 @@ namespace Wexflow.Core
         /// <param name="smtpPassword">SMTP password.</param>
         /// <param name="smtpFrom">SMTP from.</param>
         public WexflowEngine(string settingsFile
+            , LogLevel logLevel
             , bool enableWorkflowsHotFolder
             , string superAdminUsername
             , bool enableEmailNotifications
@@ -212,6 +245,7 @@ namespace Wexflow.Core
             )
         {
             SettingsFile = settingsFile;
+            LogLevel = logLevel;
             EnableWorkflowsHotFolder = enableWorkflowsHotFolder;
             SuperAdminUsername = superAdminUsername;
             EnableEmailNotifications = enableEmailNotifications;

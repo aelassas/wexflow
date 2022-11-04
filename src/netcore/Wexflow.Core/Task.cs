@@ -46,7 +46,7 @@ namespace Wexflow.Core
         /// </summary>
         public List<string> Logs { get; private set; }
         /// <summary>
-        /// Log messages.
+        /// Indicates whether this task has been stopped or not.
         /// </summary>
         public bool IsStopped { get; private set; }
         /// <summary>
@@ -89,8 +89,8 @@ namespace Wexflow.Core
         /// <param name="wf">Workflow.</param>
 		protected Task(XElement xe, Workflow wf)
         {
-            Logs = new List<string>();
             IsStopped = false;
+            Logs = new List<string>();
             _xElement = xe;
             var xId = xe.Attribute("id");
             if (xId == null) throw new Exception("Task id attribute not found.");
@@ -147,7 +147,7 @@ namespace Wexflow.Core
         public abstract TaskStatus Run();
 
         /// <summary>
-        /// Stops the task.
+        /// Stops the current task.
         /// </summary>
         public virtual void Stop()
         {
@@ -379,9 +379,12 @@ namespace Wexflow.Core
         /// <param name="msg">Log message.</param>
         public void Info(string msg)
         {
-            var message = BuildLogMsg(msg);
-            Logger.Info(message);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + message);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
+            {
+                var message = BuildLogMsg(msg);
+                Logger.Info(message);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + message);
+            }
         }
 
         /// <summary>
@@ -391,9 +394,12 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void InfoFormat(string msg, params object[] args)
         {
-            var message = string.Format(BuildLogMsg(msg), args);
-            Logger.Info(message);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + message);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
+            {
+                var message = string.Format(BuildLogMsg(msg), args);
+                Logger.Info(message);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + message);
+            }
         }
 
         /// <summary>
@@ -402,9 +408,12 @@ namespace Wexflow.Core
         /// <param name="msg">Log message.</param>
         public void Debug(string msg)
         {
-            var message = BuildLogMsg(msg);
-            Logger.Debug(msg);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  DEBUG - " + message);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
+            {
+                var message = BuildLogMsg(msg);
+                Logger.Debug(msg);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  DEBUG - " + message);
+            }
         }
 
         /// <summary>
@@ -414,9 +423,12 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void DebugFormat(string msg, params object[] args)
         {
-            var message = string.Format(BuildLogMsg(msg), args);
-            Logger.DebugFormat(message);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  DEBUG - " + message);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
+            {
+                var message = string.Format(BuildLogMsg(msg), args);
+                Logger.DebugFormat(message);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  DEBUG - " + message);
+            }
         }
 
         /// <summary>
@@ -425,9 +437,12 @@ namespace Wexflow.Core
         /// <param name="msg">Log message.</param>
         public void Error(string msg)
         {
-            var message = BuildLogMsg(msg);
-            Logger.Error(message);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
+            {
+                var message = BuildLogMsg(msg);
+                Logger.Error(message);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message);
+            }
         }
 
         /// <summary>
@@ -437,9 +452,12 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void ErrorFormat(string msg, params object[] args)
         {
-            var message = string.Format(BuildLogMsg(msg), args);
-            Logger.Error(message);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
+            {
+                var message = string.Format(BuildLogMsg(msg), args);
+                Logger.Error(message);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message);
+            }
         }
 
         /// <summary>
@@ -449,9 +467,12 @@ namespace Wexflow.Core
         /// <param name="e">Exception.</param>
         public void Error(string msg, Exception e)
         {
-            var message = BuildLogMsg(msg);
-            Logger.Error(message, e);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message + "\r\n" + e);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
+            {
+                var message = BuildLogMsg(msg);
+                Logger.Error(message, e);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message + "\r\n" + e);
+            }
         }
 
         /// <summary>
@@ -462,9 +483,12 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void ErrorFormat(string msg, Exception e, params object[] args)
         {
-            var message = string.Format(BuildLogMsg(msg), args);
-            Logger.Error(message, e);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message + "\r\n" + e);
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
+            {
+                var message = string.Format(BuildLogMsg(msg), args);
+                Logger.Error(message, e);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message + "\r\n" + e);
+            }
         }
     }
 }

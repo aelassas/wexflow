@@ -35,6 +35,7 @@ namespace Wexflow.Server
             XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
 
             var settingsFile = Config["WexflowSettingsFile"];
+            var logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
             superAdminUsername = Config["SuperAdminUsername"];
             var enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
             var enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
@@ -45,7 +46,9 @@ namespace Wexflow.Server
             var smtpUser = Config["Smtp.User"];
             var smtpPassword = Config["Smtp.Password"];
             var smtpFrom = Config["Smtp.From"];
-            WexflowEngine = new WexflowEngine(settingsFile
+            WexflowEngine = new WexflowEngine(
+                settingsFile
+                , logLevel
                 , enableWorkflowsHotFolder
                 , superAdminUsername
                 , enableEmailNotifications

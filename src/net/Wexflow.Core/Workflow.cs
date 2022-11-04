@@ -948,10 +948,15 @@ namespace Wexflow.Core
             Load(dest);
 
             _stopCalled = false;
+
             Logs.Clear();
-            var msg = string.Format("{0} Workflow started - Instance Id: {1}", LogTag, InstanceId);
-            Logger.Info(msg);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + msg);
+
+            if (WexflowEngine.LogLevel != LogLevel.None)
+            {
+                var msg = string.Format("{0} Workflow started - Instance Id: {1}", LogTag, InstanceId);
+                Logger.Info(msg);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + msg);
+            }
 
             Database.IncrementRunningCount();
 
@@ -1142,9 +1147,12 @@ namespace Wexflow.Core
             }
             catch (Exception e)
             {
-                var emsg = string.Format("An error occured while running the workflow. Error: {0}", this);
-                Logger.Error(emsg, e);
-                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                if (WexflowEngine.LogLevel != LogLevel.None)
+                {
+                    var emsg = string.Format("An error occured while running the workflow. Error: {0}", this);
+                    Logger.Error(emsg, e);
+                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + emsg + "\r\n" + e);
+                }
                 Database.DecrementRunningCount();
                 Database.IncrementFailedCount();
                 entry.Status = Db.Status.Failed;
@@ -1193,9 +1201,12 @@ namespace Wexflow.Core
 
         private void LogWorkflowFinished()
         {
-            var msg = string.Format("{0} Workflow finished.", LogTag);
-            Logger.Info(msg);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + " INFO  - " + msg);
+            if (WexflowEngine.LogLevel != LogLevel.None)
+            {
+                var msg = string.Format("{0} Workflow finished.", LogTag);
+                Logger.Info(msg);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + " INFO  - " + msg);
+            }
         }
 
         private Task[] NodesToTasks(Node[] nodes)
@@ -1647,15 +1658,23 @@ namespace Wexflow.Core
 
                     Load(Xml); // Reload the original workflow
 
-                    Logger.Info($"Workflow {Name} / {jobId} / {InstanceId} stopped.");
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        Logger.Info($"Workflow {Name} / {jobId} / {InstanceId} stopped.");
+                    }
+
                     return true;
                 }
                 catch (Exception e)
                 {
                     _stopCalled = false;
-                    var msg = string.Format("An error occured while stopping the workflow : {0}", this);
-                    Logger.Error(msg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        var msg = string.Format("An error occured while stopping the workflow : {0}", this);
+                        Logger.Error(msg, e);
+                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    }
                 }
             }
 
@@ -1685,9 +1704,12 @@ namespace Wexflow.Core
                 }
                 catch (Exception e)
                 {
-                    var msg = string.Format("An error occured while suspending the workflow : {0}", this);
-                    Logger.Error(msg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        var msg = string.Format("An error occured while suspending the workflow : {0}", this);
+                        Logger.Error(msg, e);
+                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    }
                 }
             }
 
@@ -1715,9 +1737,12 @@ namespace Wexflow.Core
                 }
                 catch (Exception e)
                 {
-                    var msg = string.Format("An error occured while resuming the workflow : {0}", this);
-                    Logger.Error(msg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        var msg = string.Format("An error occured while resuming the workflow : {0}", this);
+                        Logger.Error(msg, e);
+                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    }
                 }
                 finally
                 {

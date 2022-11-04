@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
@@ -227,10 +226,10 @@ namespace Wexflow.Core
         /// </summary>
         public DateTime StartedOn { get; private set; }
 
-        private bool _stopCalled;
-        private Queue<Job> _jobsQueue;
+        private readonly Queue<Job> _jobsQueue;
         private Thread _thread;
         private HistoryEntry _historyEntry;
+        private bool _stopCalled;
 
         /// <summary>
         /// Creates a new workflow.
@@ -530,29 +529,19 @@ namespace Wexflow.Core
                         Type type = null;
                         var name = xAttribute.Value;
                         var assemblyName = "Wexflow.Tasks." + name;
-                        var typeFullName = "Wexflow.Tasks." + name + "." + name;
                         var typeName = "Wexflow.Tasks." + name + "." + name + ", " + assemblyName;
 
                         // Try to load from root
                         type = Type.GetType(typeName);
-                        if (type == null)
-                        {
-                            var binPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                            var assemblyPath = Path.Combine(binPath, assemblyName + ".dll");
-                            if (File.Exists(assemblyPath))
-                            {
-                                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
-                                type = assembly.GetType(typeFullName);
-                            }
-                        }
 
                         if (type == null) // Try to load from Tasks folder
                         {
-                            var assemblyPath = Path.Combine(TasksFolder, assemblyName + ".dll");
-                            if (File.Exists(assemblyPath))
+                            var taskAssemblyFile = Path.Combine(TasksFolder, assemblyName + ".dll");
+                            if (File.Exists(taskAssemblyFile))
                             {
-                                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
-                                type = assembly.GetType(typeFullName);
+                                var taskAssembly = Assembly.LoadFile(taskAssemblyFile);
+                                var typeFullName = "Wexflow.Tasks." + name + "." + name;
+                                type = taskAssembly.GetType(typeFullName);
                             }
                         }
 
@@ -622,10 +611,10 @@ namespace Wexflow.Core
 
                     // OnRejected
                     GraphEvent onRejected = null;
-                    var xOnRejected = xExectionGraph.XPathSelectElement("wf:OnRejected", XmlNamespaceManager);
-                    if (xOnRejected != null)
+                    var xOnDispproved = xExectionGraph.XPathSelectElement("wf:OnRejected", XmlNamespaceManager);
+                    if (xOnDispproved != null)
                     {
-                        var onRejectedNodes = GetTaskNodes(xOnRejected);
+                        var onRejectedNodes = GetTaskNodes(xOnDispproved);
                         CheckStartupNode(onRejectedNodes, "Startup node with parentId=-1 not found in OnError execution graph.");
                         CheckParallelTasks(onRejectedNodes, "Parallel tasks execution detected in OnError execution graph.");
                         CheckInfiniteLoop(onRejectedNodes, "Infinite loop detected in OnError execution graph.");
@@ -893,7 +882,7 @@ namespace Wexflow.Core
         }
 
         /// <summary>
-        /// Starts this workflow.
+        /// Starts this workflow asynchronously.
         /// </summary>
         /// <param name="startedBy">Username of the user that started the workflow.</param>
         /// <returns>Instance Id.</returns>
@@ -958,9 +947,16 @@ namespace Wexflow.Core
             var dest = Parse(Xml);
             Load(dest);
 
-            var msg = string.Format("{0} Workflow started - Instance Id: {1}", LogTag, InstanceId);
-            Logger.Info(msg);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + msg);
+            _stopCalled = false;
+
+            Logs.Clear();
+
+            if (WexflowEngine.LogLevel != LogLevel.None)
+            {
+                var msg = string.Format("{0} Workflow started - Instance Id: {1}", LogTag, InstanceId);
+                Logger.Info(msg);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + msg);
+            }
 
             Database.IncrementRunningCount();
 
@@ -999,7 +995,6 @@ namespace Wexflow.Core
 
             try
             {
-                _stopCalled = false;
                 IsRunning = true;
                 IsRejected = false;
 
@@ -1039,6 +1034,7 @@ namespace Wexflow.Core
                                 Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Done;
                                 resultSuccess = true;
+
                             }
                             else if (warning)
                             {
@@ -1151,9 +1147,12 @@ namespace Wexflow.Core
             }
             catch (Exception e)
             {
-                var emsg = string.Format("An error occured while running the workflow. Error: {0}", this);
-                Logger.Error(emsg, e);
-                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                if (WexflowEngine.LogLevel != LogLevel.None)
+                {
+                    var emsg = string.Format("An error occured while running the workflow. Error: {0}", this);
+                    Logger.Error(emsg, e);
+                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + emsg + "\r\n" + e);
+                }
                 Database.DecrementRunningCount();
                 Database.IncrementFailedCount();
                 entry.Status = Db.Status.Failed;
@@ -1168,7 +1167,10 @@ namespace Wexflow.Core
             finally
             {
                 // Cleanup
-                Logs.Clear();
+                if (!_stopCalled)
+                {
+                    Logs.Clear();
+                }
                 foreach (List<FileInf> files in FilesPerTask.Values) files.Clear();
                 foreach (List<Entity> entities in EntitiesPerTask.Values) entities.Clear();
                 IsRunning = false;
@@ -1191,6 +1193,7 @@ namespace Wexflow.Core
                     }
                     RestVariables.Clear();
                 }
+
             }
 
             return resultSuccess;
@@ -1198,9 +1201,12 @@ namespace Wexflow.Core
 
         private void LogWorkflowFinished()
         {
-            var msg = string.Format("{0} Workflow finished.", LogTag);
-            Logger.Info(msg);
-            Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + " INFO  - " + msg);
+            if (WexflowEngine.LogLevel != LogLevel.None)
+            {
+                var msg = string.Format("{0} Workflow finished.", LogTag);
+                Logger.Info(msg);
+                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + " INFO  - " + msg);
+            }
         }
 
         private Task[] NodesToTasks(Node[] nodes)
@@ -1211,8 +1217,7 @@ namespace Wexflow.Core
 
             foreach (var node in nodes)
             {
-                var @if = node as If;
-                if (@if != null)
+                if (node is If @if)
                 {
                     var doTasks = NodesToTasks(@if.DoNodes);
                     var otherwiseTasks = NodesToTasks(@if.ElseNodes);
@@ -1232,9 +1237,8 @@ namespace Wexflow.Core
                 {
                     tasks.AddRange(NodesToTasks(((While)node).Nodes));
                 }
-                else if (node is Switch)
+                else if (node is Switch @switch)
                 {
-                    var @switch = (Switch)node;
                     tasks.AddRange(NodesToTasks(@switch.Default).Where(task => tasks.All(t => t.Id != task.Id)));
                     tasks.AddRange(NodesToTasks(@switch.Cases.SelectMany(@case => @case.Nodes).ToArray()).Where(task => tasks.All(t => t.Id != task.Id)));
                 }
@@ -1269,15 +1273,13 @@ namespace Wexflow.Core
             {
                 var startNode = GetStartupNode(nodes);
 
-                var @if = startNode as If;
-                if (@if != null)
+                if (startNode is If @if)
                 {
                     var doIf = @if;
                     RunIf(tasks, nodes, doIf, force, ref success, ref warning, ref atLeastOneSucceed);
                 }
-                else if (startNode is While)
+                else if (startNode is While doWhile)
                 {
-                    var doWhile = (While)startNode;
                     RunWhile(tasks, nodes, doWhile, force, ref success, ref warning, ref atLeastOneSucceed);
                 }
                 else
@@ -1339,15 +1341,13 @@ namespace Wexflow.Core
             {
                 if (node is If || node is While || node is Switch)
                 {
-                    var if1 = node as If;
-                    if (if1 != null)
+                    if (node is If if1)
                     {
                         var @if = if1;
                         RunIf(tasks, nodes, @if, force, ref success, ref warning, ref atLeastOneSucceed);
                     }
-                    else if (node is While)
+                    else if (node is While @while)
                     {
-                        var @while = (While)node;
                         RunWhile(tasks, nodes, @while, force, ref success, ref warning, ref atLeastOneSucceed);
                     }
                     else
@@ -1374,21 +1374,18 @@ namespace Wexflow.Core
 
                             if (childNode != null)
                             {
-                                var if1 = childNode as If;
-                                if (if1 != null)
+                                if (childNode is If if1)
                                 {
                                     var @if = if1;
                                     RunIf(tasks, nodes, @if, force, ref success, ref warning, ref atLeastOneSucceed);
                                 }
-                                else if (childNode is While)
+                                else if (childNode is While while2)
                                 {
-                                    var @while = (While)childNode;
-                                    RunWhile(tasks, nodes, @while, force, ref success, ref warning, ref atLeastOneSucceed);
+                                    RunWhile(tasks, nodes, while2, force, ref success, ref warning, ref atLeastOneSucceed);
                                 }
-                                else if (childNode is Switch)
+                                else if (childNode is Switch switch2)
                                 {
-                                    var @switch = (Switch)childNode;
-                                    RunSwitch(tasks, nodes, @switch, force, ref success, ref warning, ref atLeastOneSucceed);
+                                    RunSwitch(tasks, nodes, switch2, force, ref success, ref warning, ref atLeastOneSucceed);
                                 }
                                 else
                                 {
@@ -1407,20 +1404,17 @@ namespace Wexflow.Core
                                             // Recusive call
                                             var ccNode = nodes.FirstOrDefault(n => n.ParentId == childNode.Id);
 
-                                            var node1 = ccNode as If;
-                                            if (node1 != null)
+                                            if (ccNode is If node1)
                                             {
                                                 var @if = node1;
                                                 RunIf(tasks, nodes, @if, force, ref success, ref warning, ref atLeastOneSucceed);
                                             }
-                                            else if (ccNode is While)
+                                            else if (ccNode is While @while)
                                             {
-                                                var @while = (While)ccNode;
                                                 RunWhile(tasks, nodes, @while, force, ref success, ref warning, ref atLeastOneSucceed);
                                             }
-                                            else if (ccNode is Switch)
+                                            else if (ccNode is Switch @switch)
                                             {
-                                                var @switch = (Switch)ccNode;
                                                 RunSwitch(tasks, nodes, @switch, force, ref success, ref warning, ref atLeastOneSucceed);
                                             }
                                             else
@@ -1627,15 +1621,16 @@ namespace Wexflow.Core
                 try
                 {
                     var jobId = JobId;
-                    _stopCalled = true;
                     StoppedBy = stoppedBy;
+                    _stopCalled = true;
+                    if (_thread != null)
+                    {
+                        _thread.Abort();
+                        _thread.Join();
+                    }
                     foreach (var task in Tasks)
                     {
                         task.Stop();
-                    }
-                    _thread.Join();
-                    foreach (var task in Tasks)
-                    {
                         Logs.AddRange(task.Logs);
                     }
                     var logs = string.Join("\r\n", Logs);
@@ -1663,15 +1658,23 @@ namespace Wexflow.Core
 
                     Load(Xml); // Reload the original workflow
 
-                    Logger.Info($"Workflow {Name} / {jobId} / {InstanceId} stopped.");
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        Logger.Info($"Workflow {Name} / {jobId} / {InstanceId} stopped.");
+                    }
+
                     return true;
                 }
                 catch (Exception e)
                 {
-                    var msg = string.Format("An error occured while stopping the workflow : {0}", this);
-                    Logger.Error(msg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
                     _stopCalled = false;
+
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        var msg = string.Format("An error occured while stopping the workflow : {0}", this);
+                        Logger.Error(msg, e);
+                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    }
                 }
             }
 
@@ -1701,9 +1704,12 @@ namespace Wexflow.Core
                 }
                 catch (Exception e)
                 {
-                    var msg = string.Format("An error occured while suspending the workflow : {0}", this);
-                    Logger.Error(msg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        var msg = string.Format("An error occured while suspending the workflow : {0}", this);
+                        Logger.Error(msg, e);
+                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    }
                 }
             }
 
@@ -1731,9 +1737,12 @@ namespace Wexflow.Core
                 }
                 catch (Exception e)
                 {
-                    var msg = string.Format("An error occured while resuming the workflow : {0}", this);
-                    Logger.Error(msg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    if (WexflowEngine.LogLevel != LogLevel.None)
+                    {
+                        var msg = string.Format("An error occured while resuming the workflow : {0}", this);
+                        Logger.Error(msg, e);
+                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                    }
                 }
                 finally
                 {
@@ -1762,6 +1771,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Rejects the current workflow.
         /// </summary>
+        /// <param name="rejectedBy">Username of the user who rejected the workflow.</param>
         public void Reject(string rejectedBy)
         {
             if (IsApproval)
