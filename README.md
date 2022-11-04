@@ -10,7 +10,7 @@ Wexflow automates the process of organizing, storing, manipulating files, provid
 
 # Features
 
-* Cross-platform server
+* Cross-platform workflow server
 * Powerful backend
 * HTML5 designer
 * Sequential workflows
