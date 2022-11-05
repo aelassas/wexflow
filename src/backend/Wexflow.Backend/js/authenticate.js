@@ -1,17 +1,17 @@
 ﻿function authorize(username, password, userProfile) {
-    set("authorize", '{"Username": "' + username + '", "Password":"' + password + '","UserProfile":' + userProfile + '}');
+    set("wf-authorize", '{"Username": "' + username + '", "Password":"' + password + '","UserProfile":' + userProfile + '}');
 }
 
 function getUser() {
-    return get("authorize");
+    return get("wf-authorize");
 }
 
 function deleteUser() {
-    remove("authorize");
+    remove("wf-authorize");
 }
 
 function set(key, value) {
-    if (isIE()) {
+    if (isIE() || isFirefox()) {
         setCookie(key, value, 365);
     } else {
         window.localStorage.setItem(key, value);
@@ -19,7 +19,7 @@ function set(key, value) {
 }
 
 function get(key) {
-    if (isIE()) {
+    if (isIE() || isFirefox()) {
         return getCookie(key);
     } else {
         return window.localStorage.getItem(key);
@@ -27,7 +27,7 @@ function get(key) {
 }
 
 function remove(key) {
-    if (isIE()) {
+    if (isIE() || isFirefox()) {
         setCookie(key, "", -365);
     } else {
         window.localStorage.removeItem(key);
@@ -59,7 +59,14 @@ function getCookie(cname) {
 function isIE() {
     let ua = navigator.userAgent;
     /* MSIE used to detect old browsers and Trident used to newer ones*/
-    let is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+    let is_ie = ua.indexOf("MSIE") > -1 || ua.indexOf("Trident/") > -1;
 
     return is_ie;
+}
+
+function isFirefox() {
+    let ua = navigator.userAgent;
+    let is_firefox = ua.toLowerCase().indexOf("firefox") > -1;
+
+    return is_firefox;
 }

@@ -1782,8 +1782,8 @@
         addEventListenerMulti("touchstart", beginTouch, false, ".block");
 
         document.getElementById("closecard").onclick = function () {
-            let blockelems = canvas.getElementsByClassName("blockelem");
-            let arrowblocks = canvas.getElementsByClassName("arrowblock");
+            //let blockelems = canvas.getElementsByClassName("blockelem");
+            //let arrowblocks = canvas.getElementsByClassName("arrowblock");
 
             if (leftcardHidden === false) {
 
@@ -1791,10 +1791,10 @@
                 document.getElementById("leftcard").style.transition = transition;
                 closecardimg.src = "assets/openleft.png";
                 leftcardHidden = true;
-                canvas.style.left = "0";
-                canvas.style.width = "100%";
+                //canvas.style.left = "0";
+                //canvas.style.width = "100%";
 
-                for (let i = 0; i < blockelems.length; i++) {
+                /*for (let i = 0; i < blockelems.length; i++) {
                     let blockelm = blockelems[i];
                     blockelm.style.left = (blockelm.offsetLeft + leftcardwidth) + "px";
                 }
@@ -1802,16 +1802,16 @@
                 for (let i = 0; i < arrowblocks.length; i++) {
                     let arrowblock = arrowblocks[i];
                     arrowblock.style.left = (arrowblock.offsetLeft + leftcardwidth) + "px";
-                }
+                }*/
             } else {
 
                 document.getElementById("leftcard").style.left = "0";
                 closecardimg.src = "assets/closeleft.png";
                 leftcardHidden = false;
-                canvas.style.left = leftcardwidth + "px";
-                canvas.style.width = "calc(100% - " + leftcardwidth + "px)";
+                //canvas.style.left = leftcardwidth + "px";
+                //canvas.style.width = "calc(100% - " + leftcardwidth + "px)";
 
-                for (let i = 0; i < blockelems.length; i++) {
+                /*for (let i = 0; i < blockelems.length; i++) {
                     let blockelm = blockelems[i];
                     blockelm.style.left = (blockelm.offsetLeft - leftcardwidth) + "px";
                 }
@@ -1819,7 +1819,7 @@
                 for (let i = 0; i < arrowblocks.length; i++) {
                     let arrowblock = arrowblocks[i];
                     arrowblock.style.left = (arrowblock.offsetLeft - leftcardwidth) + "px";
-                }
+                }*/
 
                 document.getElementById("searchtasks").focus();
                 document.getElementById("searchtasks").select();
@@ -1842,6 +1842,7 @@
                 closewfcardimg.src = "assets/openleft.png";
 
             }
+
         };
 
         // CTRL+S, CTRL+O
@@ -3211,15 +3212,19 @@
                         closeTaskSettings();
 
                         // build canvashtml
+                        const canvasWidth = document.body.clientWidth;
+                        const blockelemLeft = canvasWidth / 2 - 159;
+                        const arrowblockLeft = canvasWidth / 2 - 20;
+
                         let canvashtml = "";
                         let blockspace = 180;
                         let arrowspace = 180;
                         for (let i = 0; i < workflow.Tasks.length; i++) {
                             let task = workflow.Tasks[i];
-                            canvashtml += "<div class='blockelem noselect block' style='left: 500px; top: " + (25 + blockspace * i) + "px;'><input type='hidden' name='blockelemtype' class='blockelemtype' value='" + task.Name + "'><input type='hidden' name='blockelemdesc' class='blockelemdesc' value='" + task.Description + "'><input type='hidden' name='blockid' class='blockid' value='" + i + "'><div class='blockyleft'><img src='assets/actionorange.svg'><p class='blockyname'>" + task.Id + ". " + task.Name + "</p></div><div class='blockyright'><img class='removediagblock' src='assets/close.svg'></div><div class='blockydiv'></div><div class='blockyinfo'>" + (!task.Description || task.Description === "" ? "&nbsp;" : task.Description) + "</div><div class='indicator invisible' style='left: 154px; top: 100px;'></div></div>";
+                            canvashtml += "<div class='blockelem noselect block' style='left: " + blockelemLeft + "; top: " + (25 + blockspace * i) + "px;'><input type='hidden' name='blockelemtype' class='blockelemtype' value='" + task.Name + "'><input type='hidden' name='blockelemdesc' class='blockelemdesc' value='" + task.Description + "'><input type='hidden' name='blockid' class='blockid' value='" + i + "'><div class='blockyleft'><img src='assets/actionorange.svg'><p class='blockyname'>" + task.Id + ". " + task.Name + "</p></div><div class='blockyright'><img class='removediagblock' src='assets/close.svg'></div><div class='blockydiv'></div><div class='blockyinfo'>" + (!task.Description || task.Description === "" ? "&nbsp;" : task.Description) + "</div><div class='indicator invisible' style='left: 154px; top: 100px;'></div></div>";
                             if (i < workflow.Tasks.length - 1) {
                                 //canvashtml += "<div class='arrowblock' style='left: 639px; top: " + (125 + arrowspace * i) + "px;'><input type='hidden' class='arrowid' value='" + (i + 1) + "'><svg preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 0L20 40L20 40L20 80' stroke='#6CA5EC' stroke-width='2px'></path><path d='M15 75H25L20 80L15 75Z' fill='#6CA5EC'></path></svg></div>";
-                                canvashtml += "<div class='arrowblock' style='left: 639px; top: " + (125 + arrowspace * i) + "px;'><input type='hidden' class='arrowid' value='" + (i + 1) + "'><svg preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 0L20 40L20 40L20 80' stroke='#6CA5EC' stroke-width='2px'></path></svg></div>";
+                                canvashtml += "<div class='arrowblock' style='left: " + arrowblockLeft + "; top: " + (125 + arrowspace * i) + "px;'><input type='hidden' class='arrowid' value='" + (i + 1) + "'><svg preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 0L20 40L20 40L20 80' stroke='#6CA5EC' stroke-width='2px'></path></svg></div>";
                             }
                         }
 
@@ -3231,7 +3236,7 @@
                                     "parent": i - 1,
                                     "childwidth": (i < workflow.Tasks.length - 1 ? 318 : 0),
                                     "id": i,
-                                    "x": 644,
+                                    "x": blockelemLeft + 162,
                                     "y": 190 + blockspace * i,
                                     "width": 318,
                                     "height": 100

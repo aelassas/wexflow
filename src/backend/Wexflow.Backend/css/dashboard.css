@@ -1,71 +1,3 @@
-body {
-    background: #FFFFFF;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-}
-
-.jq-toast-single {
-    width: 300px;
-}
-
-#header {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 43px;
-    background: #29A85C;
-    color: #FFFFFF;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-}
-
-    #header a {
-        color: #FFFFFF;
-        font-size: 12px;
-        margin: 20px;
-        float: left;
-        font-weight: bold;
-        -webkit-font-smoothing: antialiased;
-        line-height: 5px;
-        white-space: nowrap;
-    }
-
-    #header .header-right {
-        float: right;
-    }
-
-    #header #lnk-records, #lnk-manager, #lnk-designer, #lnk-editor, #lnk-approval, #lnk-users, #lnk-profiles, #lnk-notifications {
-        display: none;
-    }
-
-/*lang*/
-#lang {
-    margin-top: 10px;
-    margin-right: 20px;
-    color: #000;
-}
-
-#lang .lang{
-    cursor: pointer;
-    padding-right: 3px;
-    padding-left: 3px;
-}
-
-#lang .lang:hover{
-    opacity:.8;
-}
-
-.dropdown-menu{
-    min-width: 90px;
-}
-
-/*notifications*/
-#lnk-notifications {
-    margin: 0 !important;
-    margin-top: 10px !important;
-}
-
-
 #status {
     position: absolute;
     top: 60px;
@@ -73,41 +5,43 @@ body {
     display: none;
 }
 
-#status div{
-	float: left;
-	width: 160px;
-	margin-right: 10px;
-	background: #FFFFFF;
-}
+    #status div {
+        float: left;
+        width: 160px;
+        margin-right: 10px;
+        background: #fafafa;
+    }
 
-#status table{
-	float: right;
-}
+    #status table {
+        float: right;
+    }
 
-#status .status-value{
-	font-weight: bold;
-	font-size: 23px;
-}
+    #status .status-value {
+        font-weight: bold;
+        font-size: 23px;
+    }
 
-#entries-action{
-	position: absolute;
+#entries-action {
+    position: absolute;
     top: 170px;
     right: 0;
     left: 5px;
 }
 
-#entries-action label{
-	font-weight: bold;
-}
+    #entries-action label {
+        font-weight: bold;
+        margin-top: 3px;
+    }
 
-#entries-action .action-right{
-	float: right;
-}
+    #entries-action .action-right {
+        float: right;
+    }
 
-#entries-action #btn-search{
-	margin-right: 10px;
-    margin-left: 5px;
-}
+    #entries-action #btn-search {
+        margin-right: 10px;
+        margin-left: 5px;
+        margin-top: 1px;
+    }
 
     #entries-action #txt-from, #txt-to {
         width: 120px;
@@ -121,25 +55,25 @@ body {
     right: 0;
     left: 10px;
     bottom: 0;
-    overflow: auto;
+    overflow: hidden;
     display: none;
 }
 
-/*table style*/
-#entries #entries-table {
-    display: block;
-    table-layout: fixed;
-    margin: 0;
-}
+    /*table style*/
+    #entries #entries-table {
+        display: block;
+        table-layout: fixed;
+        margin: 0;
+    }
 
-#entries #entries-table thead, tbody {
-    display: block;
-}
+        #entries #entries-table thead, tbody {
+            display: block;
+        }
 
-#entries #entries-table tbody {
-    overflow-y: auto;
-    overflow-x: auto;
-}
+        #entries #entries-table tbody {
+            overflow-y: auto;
+            overflow-x: auto;
+        }
 
 #entries-table .thead-dark {
     background: #272727;
@@ -155,8 +89,7 @@ body {
     background: #EEEEEE;
 }
 
-#entries #entries-table .status
-{
+#entries #entries-table .status {
     width: 120px;
 }
 
@@ -164,24 +97,20 @@ body {
     width: 135px;
 }
 
-#entries #entries-table .id
-{
-    width: 45px;    
+#entries #entries-table .id {
+    width: 45px;
 }
 
-#entries #entries-table .name
-{
-    width: 200px;    
+#entries #entries-table .name {
+    width: 200px;
 }
 
-#entries #entries-table .lt
-{
-    width: 100px;    
+#entries #entries-table .lt {
+    width: 100px;
 }
 
-#entries #entries-table .desc
-{
-    width: 200px;    
+#entries #entries-table .desc {
+    width: 200px;
 }
 
 #entries #entries-table tr:hover {
@@ -192,8 +121,7 @@ body {
     cursor: pointer;
 }
 
-#entries #entries-table .selected, #entries #entries-table .selected:hover
-{
+#entries #entries-table .selected, #entries #entries-table .selected:hover {
     background-color: #ffb347;
 }
 

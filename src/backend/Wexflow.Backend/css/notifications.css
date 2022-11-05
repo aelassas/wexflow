@@ -1,72 +1,4 @@
-﻿body {
-    background: #FFFFFF;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    overflow: hidden;
-}
-
-.jq-toast-single {
-    width: 300px;
-}
-
-#header {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 43px;
-    background: #29A85C;
-    color: #FFFFFF;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-}
-
-    #header a {
-        color: #FFFFFF;
-        font-size: 12px;
-        margin: 20px;
-        float: left;
-        font-weight: bold;
-        -webkit-font-smoothing: antialiased;
-        line-height: 5px;
-        white-space: nowrap;
-    }
-
-    #header .header-right {
-        float: right;
-    }
-
-    #header #lnk-records, #lnk-manager, #lnk-designer, #lnk-editor, #lnk-approval, #lnk-users, #lnk-profiles, #lnk-notifications {
-        display: none;
-    }
-
-/*lang*/
-#lang {
-    margin-top: 10px;
-    margin-right: 20px;
-    color: #000;
-}
-
-    #lang .lang {
-        cursor: pointer;
-        padding-right: 3px;
-        padding-left: 3px;
-    }
-
-        #lang .lang:hover {
-            opacity: .8;
-        }
-
-.dropdown-menu {
-    min-width: 90px;
-}
-
-/*notifications*/
-#lnk-notifications {
-    margin: 0 !important;
-    margin-top: 10px !important;
-}
-
-/*navigation*/
+﻿/*navigation*/
 #navigation {
     height: 71px;
     background-color: #FFF;
@@ -89,7 +21,7 @@
     font-weight: 500;
     font-size: 14px;
     color: #FFF;
-    background-color: #217CE8;
+    background-color: #3f51b5;
     border-radius: 5px;
     width: 143px;
     height: 38px;
@@ -140,7 +72,7 @@
 
 #btn-mark-as-read:hover, #btn-mark-as-unread:hover, #btn-delete:hover {
     cursor: pointer;
-    opacity: .7;
+    opacity: .9;
 }
 
 #left-side {
@@ -202,11 +134,11 @@
 }
 
 #content #notifications-table .assigned-by {
-    width: 130px;
+    width: 150px;
 }
 
 #content #notifications-table .assigned-on {
-    width: 130px;
+    width: 150px;
 }
 
 #content #notifications-table .message {

@@ -99,7 +99,7 @@
     languages["en"]["task-doc"] = "Open task documentation";
     languages["en"]["task-settings"] = "Task settings";
     languages["en"]["wf-settings-label"] = "Workflow settings";
-    languages["en"]["savehelp"] = "Use Ctrl+S to save.";
+    languages["en"]["savehelp"] = "Ctrl+S to save";
     languages["en"]["wfid-label"] = "Id";
     languages["en"]["wfname-label"] = "Name";
     languages["en"]["wfdesc-label"] = "Description";
@@ -150,7 +150,7 @@
     languages["en"]["toast-upload-not-valid"] = " is not valid.";
     languages["en"]["wf-open"] = "Open";
     languages["en"]["wfs-delete"] = "Delete";
-    languages["en"]["open-wfs-msg"] = "Use Ctrl+O to open this window.";
+    languages["en"]["open-wfs-msg"] = "Ctrl+O to open this window";
     languages["en"]["search-workflows"] = "Search workflows";
     languages["en"]["toast-user-deleted"] = "The user was deleted with success.";
     languages["en"]["toast-user-delete-error"] = "An error occurred while deleting the user.";
@@ -320,7 +320,7 @@
     languages["fr"]["task-doc"] = "Ouvrir la documentation de la tâche";
     languages["fr"]["task-settings"] = "Paramètres de la tâche";
     languages["fr"]["wf-settings-label"] = "Paramètres";
-    languages["fr"]["savehelp"] = "Ctrl+S pour sauvegarder.";
+    languages["fr"]["savehelp"] = "Ctrl+S pour sauvegarder";
     languages["fr"]["wfid-label"] = "Id";
     languages["fr"]["wfname-label"] = "Nom";
     languages["fr"]["wfdesc-label"] = "Description";
@@ -371,7 +371,7 @@
     languages["fr"]["toast-upload-not-valid"] = " n'est pas valide.";
     languages["fr"]["wf-open"] = "Ouvrir";
     languages["fr"]["wfs-delete"] = "Supprimer";
-    languages["fr"]["open-wfs-msg"] = "Ctrl+O pour ouvrir cette fenêtre.";
+    languages["fr"]["open-wfs-msg"] = "Ctrl+O pour ouvrir cette fenêtre";
     languages["fr"]["search-workflows"] = "Rechercher de workflows";
     languages["fr"]["toast-user-deleted"] = "L'utilisateur a été supprimé avec succès.";
     languages["fr"]["toast-user-delete-error"] = "Une erreur s'est produite lors de la suppression de l'utilisateur.";
@@ -541,7 +541,7 @@
     languages["da"]["task-doc"] = "Åben opgavedokumentation";
     languages["da"]["task-settings"] = "Opgaveindstillinger";
     languages["da"]["wf-settings-label"] = "Workflow-indstillinger";
-    languages["da"]["savehelp"] = "Ctrl + S for at gemme opgaven.";
+    languages["da"]["savehelp"] = "Ctrl+S for at gemme opgaven";
     languages["da"]["wfid-label"] = "Id";
     languages["da"]["wfname-label"] = "Navn";
     languages["da"]["wfdesc-label"] = "Beskrivelse";
@@ -592,7 +592,7 @@
     languages["da"]["toast-upload-not-valid"] = "er ikke gyldig.";
     languages["da"]["wf-open"] = "Åben";
     languages["da"]["wfs-delete"] = "Slet";
-    languages["da"]["open-wfs-msg"] = "Ctrl + O for at åbne dette vindue.";
+    languages["da"]["open-wfs-msg"] = "Ctrl+O for at åbne dette vindue";
     languages["da"]["search-workflows"] = "Søg i workflows";
     languages["da"]["toast-user-deleted"] = "Brugeren blev slettet med succes.";
     languages["da"]["toast-user-delete-error"] = "Der opstod en fejl under sletning af brugeren.";

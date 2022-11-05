@@ -1,5 +1,34 @@
 function Login() {
 
+    let auth = "";
+    let uri = Common.trimEnd(Settings.Uri, "/");
+    let suser = getUser();
+
+    document.body.style.display = 'none';
+    const load = () => document.body.style.display = 'block';
+    
+    if (suser) {
+        let user = JSON.parse(suser);
+
+        qusername = user.Username;
+        qpassword = user.Password;
+        auth = "Basic " + btoa(qusername + ":" + qpassword);
+
+        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+            function (u) {
+                console.log('user.Password', user.Password)
+                console.log('u.Password', u.Password)
+                if (user.Password === u.Password) {
+                    window.location.replace("dashboard.html");
+                } else {
+                    deleteUser();
+                    load();
+                }
+            }, function () { }, auth);
+    } else {
+        load();
+    }
+
     let updateLanguage = function (language) {
         document.getElementById("help").innerHTML = language.get("help");
         document.getElementById("about").innerHTML = language.get("about");
@@ -12,11 +41,9 @@ function Login() {
     let language = new Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
     let loginBtn = document.getElementById("btn-login");
     let usernameTxt = document.getElementById("txt-username");
     let passwordTxt = document.getElementById("txt-password");
-    let auth = "";
 
     loginBtn.onclick = function () {
         login();

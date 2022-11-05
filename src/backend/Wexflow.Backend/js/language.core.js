@@ -8,11 +8,11 @@ const Language = function (domId, updateLanguage) {
     };
 
     this.setLanguage = function (code) {
-        setValue("language", code);
+        setValue("wf-language", code);
     };
 
     this.getLanguage = function () {
-        let code = getValue("language");
+        let code = getValue("wf-language");
         if (!code) {
             return "en";
         }
@@ -60,7 +60,7 @@ const Language = function (domId, updateLanguage) {
 
     /* Internal functions */
     function setValue(key, value) {
-        if (isIE()) {
+        if (isIE() || isFirefox()) {
             setCookie(key, value, 365);
         } else {
             window.localStorage.setItem(key, value);
@@ -68,7 +68,7 @@ const Language = function (domId, updateLanguage) {
     }
 
     function getValue(key) {
-        if (isIE()) {
+        if (isIE() || isFirefox()) {
             return getCookie(key);
         } else {
             return window.localStorage.getItem(key);
@@ -103,5 +103,12 @@ const Language = function (domId, updateLanguage) {
         let is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
 
         return is_ie;
+    }
+
+    function isFirefox() {
+        let ua = navigator.userAgent;
+        let is_firefox = ua.toLowerCase().indexOf("firefox") > -1;
+
+        return is_firefox;
     }
 };
