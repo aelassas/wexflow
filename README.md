@@ -60,30 +60,28 @@ Once logged in, you can change the password from the backend.
 
 This is explained in [installation instructions](https://github.com/aelassas/wexflow/wiki/Installation).
 
-# Backend
-
-The Backend lets you design, manage and track your workflows with ease.
+# Quick overview
 
 ## Dashboard
 
 The Dashboard lets you have a nice overview of what's happening in Wexlow with real-time stats:
 
-![Dashboard](https://wexflow.github.io/content/dashboard-6.0.jpg)
+![Dashboard](https://wexflow.github.io/content/dashboard-6.1.png)
 
 ## Designer
 
 The HTML5 Designer lets you create your workflows with ease. Just by drag and dropping tasks one on another:
 
-![Designer](https://wexflow.github.io/content/designer-6.0.jpg)
+![Designer](https://wexflow.github.io/content/designer-6.1.png)
 
 ## Manager
 
 The Manager lets you see and manage running instances of your workflows:
 
-![Manager](https://wexflow.github.io/content/manager-6.0.jpg)
+![Manager](https://wexflow.github.io/content/manager-6.1.png)
 
 ## Logs
 
 The Logs lets you have a nice overview of what's happening in Wexflow.
 
-![Logs](https://wexflow.github.io/content/history-6.0.jpg)
+![Logs](https://wexflow.github.io/content/history-6.1.png)
