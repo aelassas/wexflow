@@ -64,7 +64,7 @@ This is explained in [installation instructions](https://github.com/aelassas/wex
 
 ## Dashboard
 
-The Dashboard lets you have a nice overview of what's happening in Wexlow with real-time stats:
+The Dashboard lets you have a nice overview of what's happening in Wexflow with real-time stats:
 
 ![Dashboard](https://wexflow.github.io/content/dashboard-6.1.png)
 
