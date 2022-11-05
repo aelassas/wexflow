@@ -16,25 +16,25 @@
     right: 0;
     left: 0;
     height: 43px;
-    background: #3f51b5;
+    background: #29a85c;
     color: #fff;
     box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
 }
 
-    #header a {
-        color: #FFFFFF;
-        font-size: 12px;
-        margin: 20px;
-        float: left;
-        font-weight: bold;
-        -webkit-font-smoothing: antialiased;
-        line-height: 5px;
-        white-space: nowrap;
-    }
+#header a {
+    color: #FFFFFF;
+    font-size: 12px;
+    margin: 20px;
+    float: left;
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+    line-height: 5px;
+    white-space: nowrap;
+}
 
-    #header .header-right {
-        float: right;
-    }
+#header .header-right {
+    float: right;
+}
 
 #lang {
     margin-top: 10px;
@@ -42,15 +42,15 @@
     color: #000;
 }
 
-    #lang .lang {
-        cursor: pointer;
-        padding-right: 3px;
-        padding-left: 3px;
-    }
+#lang .lang {
+    cursor: pointer;
+    padding-right: 3px;
+    padding-left: 3px;
+}
 
-        #lang .lang:hover {
-            opacity: .8;
-        }
+#lang .lang:hover {
+    opacity: .8;
+}
 
 .dropdown-menu {
     min-width: 95px;
@@ -61,17 +61,9 @@
     margin-top: 10px !important;
 }
 
-.btn-primary,
-.btn-primary:hover,
-.btn-primary[disabled] {
-    color: #fff;
-    background-color: #3f51b5;
-    border-color: #3f51b5;
+.btn-primary:hover {
+    opacity: .9;
 }
-
-    .btn-primary:hover {
-        opacity: .9;
-    }
 
 input {
     border: 1px solid #dadada;
@@ -80,5 +72,5 @@ input {
 }
 
 .jBox-overlay {
-    background-color: rgba(0,0,0,.72);
+    background-color: rgba(0, 0, 0, .72);
 }
