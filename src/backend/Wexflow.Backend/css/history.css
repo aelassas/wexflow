@@ -33,7 +33,7 @@
     right: 0;
     left: 10px;
     bottom: 0;
-    overflow: auto;
+    overflow: hidden;
     display: none;
 }
 

@@ -10,12 +10,10 @@
   <Setting name="tasksNamesFile" value="C:\Wexflow-netcore\TasksNames.json" />
   <Setting name="tasksSettingsFile" value="C:\Wexflow-netcore\TasksSettings.json" />
   <Setting name="globalVariablesFile" value="C:\Wexflow-netcore\GlobalVariables.xml" />
-  <!-- LiteDB or SQLite or MongoDB or SQLServer -->
-  <Setting name="dbType" value="LiteDB" />
-  <!-- LiteDB -->
-  <Setting name="connectionString" value="Filename=C:\Wexflow-netcore\Database\Wexflow.db; Connection=direct" />
+  <!-- SQLite or MongoDB or SQLServer -->
+  <Setting name="dbType" value="SQLite" />
   <!-- SQLite -->
-  <!--<Setting name="connectionString" value="Data Source=C:\Wexflow-netcore\Database\Wexflow.sqlite;Version=3;" />-->
+  <Setting name="connectionString" value="Data Source=C:\Wexflow-netcore\Database\Wexflow.sqlite;Version=3;" />
   <!-- MongoDB -->
   <!--<Setting name="connectionString" value="Database=wexflow;MongoUrl=mongodb://localhost:27017;EnabledSslProtocols=false;SslProtocols=None" />-->
   <!-- SQLServer -->

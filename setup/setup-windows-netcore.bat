@@ -73,9 +73,9 @@ copy netcore\windows\install-SQLServer.bat %dstDir%
 ::copy netcore\windows\install-MySQL.bat %dstDir%
 
 :: SQLite script
-dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
-copy netcore\windows\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
-copy netcore\windows\install-SQLite.bat %dstDir%
+::dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
+::copy netcore\windows\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
+::copy netcore\windows\install-SQLite.bat %dstDir%
 
 :: Firebird script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird

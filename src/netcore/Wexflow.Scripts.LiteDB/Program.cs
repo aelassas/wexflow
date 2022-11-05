@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using Wexflow.Core.Db.LiteDB;
 using Wexflow.Scripts.Core;
-using System.Linq;
 
 namespace Wexflow.Scripts.LiteDB
 {

@@ -193,7 +193,7 @@ Source: "..\src\net\Wexflow.Tasks.ApprovalWorkflowsCreator\ApprovalWorkflowsCrea
 Source: "..\LICENSE.txt"; DestDir: "{app}\"; Flags: ignoreversion
 
 ; Wexflow's configuration
-Source: "..\samples\net\Wexflow\Database\*"; DestDir: "C:\Wexflow\Database"; Components: samples; Flags: ignoreversion recursesubdirs uninsneveruninstall
+Source: "..\samples\net\Wexflow\Database\*"; DestDir: "C:\Wexflow\Database"; Components: samples; Flags: ignoreversion recursesubdirs onlyifdoesntexist uninsneveruninstall
 Source: "..\samples\net\Wexflow\Workflows\*"; DestDir: "C:\Wexflow\Workflows"; Components: samples; Flags: ignoreversion recursesubdirs uninsneveruninstall
 Source: "..\samples\net\Wexflow\Records\*"; DestDir: "C:\Wexflow\Records"; Components: samples; Flags: ignoreversion recursesubdirs uninsneveruninstall
 Source: "..\samples\net\Wexflow\Xslt\*"; DestDir: "C:\Wexflow\Xslt"; Components: samples; Flags: ignoreversion recursesubdirs uninsneveruninstall
@@ -205,7 +205,7 @@ Source: "..\src\net\Wexflow.Core\Wexflow.xml"; DestDir: "C:\Wexflow\"; Flags: ig
 Source: "..\src\net\Wexflow.Core\Workflow.xsd"; DestDir: "C:\Wexflow\"; Flags: ignoreversion recursesubdirs uninsneveruninstall
 Source: "..\src\net\Wexflow.Core\GlobalVariables.xml"; DestDir: "C:\Wexflow\"; Flags: ignoreversion recursesubdirs uninsneveruninstall
 
-Source: "..\samples\WexflowTesting\*"; DestDir: "C:\WexflowTesting\"; Components: samples; Flags: ignoreversion recursesubdirs uninsneveruninstall
+Source: "..\samples\WexflowTesting\*"; DestDir: "C:\WexflowTesting\"; Flags: ignoreversion recursesubdirs onlyifdoesntexist uninsneveruninstall
 
 ; Wexflow.Scripts.MongoDB
 Source: "..\src\net\Wexflow.Scripts.MongoDB\bin\x64\Release\Wexflow.Scripts.MongoDB.exe"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
@@ -303,9 +303,9 @@ Filename: "{sys}\sc.exe"; Parameters: "delete Wexflow"; Flags: runhidden waitunt
 [UninstallDelete]
 Type: files; Name: "{app}\chromedriver.exe"
 
-[InstallDelete]
-Type: files; Name: "C:\Wexflow\Database\Wexflow.db"
-Type: files; Name: "C:\Wexflow\Database\Wexflow-log.db"
+;[InstallDelete]
+;Type: files; Name: "C:\Wexflow\Database\Wexflow.db"
+;Type: files; Name: "C:\Wexflow\Database\Wexflow-log.db"
 
 [Code]
 procedure InitializeWizard();
