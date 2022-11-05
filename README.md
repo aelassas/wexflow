@@ -66,22 +66,22 @@ This is explained in [installation instructions](https://github.com/aelassas/wex
 
 The Dashboard lets you have a nice overview of what's happening in Wexflow with real-time stats:
 
-![Dashboard](https://wexflow.github.io/content/dashboard-6.1.png)
+![Dashboard](https://wexflow.github.io/content/dashboard-6.1.0.png)
 
 ## Designer
 
 The HTML5 Designer lets you create your workflows with ease. Just by drag and dropping tasks one on another:
 
-![Designer](https://wexflow.github.io/content/designer-6.1.png)
+![Designer](https://wexflow.github.io/content/designer-6.1.0.png)
 
 ## Manager
 
 The Manager lets you see and manage running instances of your workflows:
 
-![Manager](https://wexflow.github.io/content/manager-6.1.png)
+![Manager](https://wexflow.github.io/content/manager-6.1.0.png)
 
 ## Logs
 
 The Logs lets you have a nice overview of what's happening in Wexflow.
 
-![Logs](https://wexflow.github.io/content/history-6.1.png)
+![Logs](https://wexflow.github.io/content/history-6.1.0.png)
