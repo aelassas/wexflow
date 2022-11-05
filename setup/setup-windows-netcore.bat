@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=6.0
+set version=6.1
 set dst=wexflow-%version%-windows-netcore
 set dstDir=.\%dst%
 set backend=Backend
@@ -47,10 +47,10 @@ copy netcore\windows\install.bat %dstDir%
 copy netcore\windows\run.bat %dstDir%
 
 :: MongoDB script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
-::copy netcore\windows\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
-::xcopy "..\samples\netcore\windows\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
-::copy netcore\windows\install-MongoDB.bat %dstDir%
+dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
+copy netcore\windows\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
+xcopy "..\samples\netcore\windows\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
+copy netcore\windows\install-MongoDB.bat %dstDir%
 
 :: RavenDB script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RavenDB
@@ -63,9 +63,9 @@ copy netcore\windows\run.bat %dstDir%
 ::copy netcore\windows\install-PostgreSQL.bat %dstDir%
 
 :: SQLServer script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
-::copy netcore\windows\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
-::copy netcore\windows\install-SQLServer.bat %dstDir%
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
+copy netcore\windows\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
+copy netcore\windows\install-SQLServer.bat %dstDir%
 
 :: MySQL script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL

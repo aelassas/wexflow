@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Wexflow</id>
-    <version>6.0.0</version>
+    <version>6.1.0</version>
     <title>Wexflow</title>
     <authors>Akram El Assas</authors>
     <owners>akram.elassas</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Core assembly of Wexflow workflow engine.</description>
     <releaseNotes>Bug fixes, performance enhancements and under the hood updates.</releaseNotes>
-    <copyright>Copyright (c) 2017-2020 Akram El Assas.</copyright>
+    <copyright>Copyright (c) 2017-2022 Akram El Assas.</copyright>
     <tags>Wexflow Workflow</tags>
     <dependencies>
       <group targetFramework="net48">

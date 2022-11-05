@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=6.0
+set version=6.1
 set dst=wexflow
 set zip=wexflow-%version%-macos-netcore.zip
 set dstDir=.\%dst%
@@ -46,9 +46,9 @@ dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj --configurati
 copy netcore\macos\appsettings.json %dstDir%\Wexflow.Server
 
 :: MongoDB script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
-::copy netcore\macos\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
-::xcopy "..\samples\netcore\macos\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
+dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
+copy netcore\macos\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
+xcopy "..\samples\netcore\macos\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
 
 :: RavenDB script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RavenDB
@@ -59,8 +59,8 @@ copy netcore\macos\appsettings.json %dstDir%\Wexflow.Server
 ::copy netcore\macos\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
 
 :: SQLServer script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
-::copy netcore\macos\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
+copy netcore\macos\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
 
 :: MySQL script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
