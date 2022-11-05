@@ -305,6 +305,7 @@ Type: files; Name: "{app}\chromedriver.exe"
 
 [InstallDelete]
 Type: files; Name: "C:\Wexflow\Database\Wexflow.db"
+Type: files; Name: "C:\Wexflow\Database\Wexflow-log.db"
 
 [Code]
 procedure InitializeWizard();
