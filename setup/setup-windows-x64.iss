@@ -208,11 +208,11 @@ Source: "..\src\net\Wexflow.Core\GlobalVariables.xml"; DestDir: "C:\Wexflow\"; F
 Source: "..\samples\WexflowTesting\*"; DestDir: "C:\WexflowTesting\"; Components: samples; Flags: ignoreversion recursesubdirs uninsneveruninstall
 
 ; Wexflow.Scripts.MongoDB
-;Source: "..\src\net\Wexflow.Scripts.MongoDB\bin\x64\Release\Wexflow.Scripts.MongoDB.exe"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
-;Source: ".\net\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.exe.config"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Core.Db.MongoDB\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Scripts.MongoDB\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
-;Source: "..\samples\net\Wexflow\Workflows\*.xml"; DestDir: "{app}\Wexflow.Scripts.MongoDB\Workflows"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.MongoDB\bin\x64\Release\Wexflow.Scripts.MongoDB.exe"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
+Source: ".\net\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.exe.config"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Core.Db.MongoDB\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.MongoDB\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MongoDB"; Flags: ignoreversion recursesubdirs
+Source: "..\samples\net\Wexflow\Workflows\*.xml"; DestDir: "{app}\Wexflow.Scripts.MongoDB\Workflows"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.RavenDB
 ;Source: "..\src\net\Wexflow.Scripts.RavenDB\bin\x64\Release\Wexflow.Scripts.RavenDB.exe"; DestDir: "{app}\Wexflow.Scripts.RavenDB"; Flags: ignoreversion recursesubdirs
@@ -227,10 +227,10 @@ Source: "..\samples\WexflowTesting\*"; DestDir: "C:\WexflowTesting\"; Components
 ;Source: "..\src\net\Wexflow.Scripts.PostgreSQL\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.SQLServer
-;Source: "..\src\net\Wexflow.Scripts.SQLServer\bin\x64\Release\Wexflow.Scripts.SQLServer.exe"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
-;Source: ".\net\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.exe.config"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Core.Db.SQLServer\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Scripts.SQLServer\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.SQLServer\bin\x64\Release\Wexflow.Scripts.SQLServer.exe"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
+Source: ".\net\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.exe.config"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Core.Db.SQLServer\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.SQLServer\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.MySQL
 ;Source: "..\src\net\Wexflow.Scripts.MySQL\bin\x64\Release\Wexflow.Scripts.MySQL.exe"; DestDir: "{app}\Wexflow.Scripts.MySQL"; Flags: ignoreversion recursesubdirs
@@ -273,10 +273,10 @@ Name: "{commonprograms}\{#MyAppName}\Swagger"; Filename: "http://localhost:8000"
 Name: "{commonprograms}\{#MyAppName}\Configuration"; Filename: "C:\Wexflow\";
 Name: "{commonprograms}\{#MyAppName}\Documentation"; Filename: "{app}\Documentation";
 Name: "{commonprograms}\{#MyAppName}\Logs"; Filename: "{app}\Wexflow.log";
-;Name: "{commonprograms}\{#MyAppName}\Install MongoDB samples"; Filename: "{app}\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.exe";
+Name: "{commonprograms}\{#MyAppName}\Install MongoDB samples"; Filename: "{app}\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install RavenDB samples"; Filename: "{app}\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install PostgreSQL samples"; Filename: "{app}\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.exe";
-;Name: "{commonprograms}\{#MyAppName}\Install SQL Server samples"; Filename: "{app}\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.exe";
+Name: "{commonprograms}\{#MyAppName}\Install SQL Server samples"; Filename: "{app}\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install MySQL samples"; Filename: "{app}\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install SQLite samples"; Filename: "{app}\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install Firebird samples"; Filename: "{app}\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.exe";
