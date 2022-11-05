@@ -67,8 +67,8 @@ copy netcore\linux\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
 ::copy netcore\linux\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
 
 :: SQLite script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
-::copy netcore\linux\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
+copy netcore\linux\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
 
 :: Firebird script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird

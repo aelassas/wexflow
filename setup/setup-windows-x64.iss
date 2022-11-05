@@ -239,10 +239,10 @@ Source: "..\src\net\Wexflow.Scripts.SQLServer\bin\x64\Release\*.dll"; DestDir: "
 ;Source: "..\src\net\Wexflow.Scripts.MySQL\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MySQL"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.SQLite
-;Source: "..\src\net\Wexflow.Scripts.SQLite\bin\x64\Release\Wexflow.Scripts.SQLite.exe"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
-;Source: ".\net\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.exe.config"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Core.Db.SQLite\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Scripts.SQLite\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.SQLite\bin\x64\Release\Wexflow.Scripts.SQLite.exe"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
+Source: ".\net\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.exe.config"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Core.Db.SQLite\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.SQLite\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.SQLite"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.Firebird
 ;Source: "..\src\net\Wexflow.Scripts.Firebird\bin\x64\Release\Wexflow.Scripts.Firebird.exe"; DestDir: "{app}\Wexflow.Scripts.Firebird"; Flags: ignoreversion recursesubdirs
@@ -278,7 +278,7 @@ Name: "{commonprograms}\{#MyAppName}\Install MongoDB samples"; Filename: "{app}\
 ;Name: "{commonprograms}\{#MyAppName}\Install PostgreSQL samples"; Filename: "{app}\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.exe";
 Name: "{commonprograms}\{#MyAppName}\Install SQL Server samples"; Filename: "{app}\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install MySQL samples"; Filename: "{app}\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.exe";
-;Name: "{commonprograms}\{#MyAppName}\Install SQLite samples"; Filename: "{app}\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.exe";
+Name: "{commonprograms}\{#MyAppName}\Install SQLite samples"; Filename: "{app}\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install Firebird samples"; Filename: "{app}\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install Oracle samples"; Filename: "{app}\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install MariaDB samples"; Filename: "{app}\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.exe";

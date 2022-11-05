@@ -1,3 +1,3 @@
-This folder contains the documentation of workflows and the documentation of all the tasks available.
+This folder contains the documentation of all tasks available in Wexflow.
 
-For workflow samples, please read the following documentation: https://github.com/aelassas/Wexflow/wiki/Tasks-documentation
+For further information, read the following documentation: https://github.com/aelassas/wexflow/wiki/Tasks
