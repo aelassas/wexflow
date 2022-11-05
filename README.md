@@ -60,7 +60,7 @@ Once logged in, you can change the password from the backend.
 
 This is explained in [installation instructions](https://github.com/aelassas/wexflow/wiki/Installation).
 
-# Quick overview
+# Quick Overview
 
 ## Dashboard
 
