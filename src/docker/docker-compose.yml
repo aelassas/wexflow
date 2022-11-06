@@ -9,7 +9,7 @@ services:
     command:
       http-server --cors -p 8011
 
-  # Uncomment these lines if you want to use MongoDB database
+  # Uncomment the lines below if you want to use MongoDB database
   # You must also update Wexflow.xml https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml
   #mongo:
   #   image: mongo:latest
@@ -17,7 +17,7 @@ services:
   #     - 27017:27017
 
   wexflow:
-    # Uncomment this line if you want to use MongoDB database
+    # Uncomment the lines below if you want to use MongoDB database
     #depends_on:
     #  - mongo
     build:
