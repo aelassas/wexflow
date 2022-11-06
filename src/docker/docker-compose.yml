@@ -5,7 +5,7 @@ services:
     ports:
           - 8011:8011
     volumes:
-      - ./wexflow-6.1-linux-netcore/Backend:/public
+      - ./wexflow/Backend:/public
     command:
       http-server --cors -p 8011
 
@@ -20,13 +20,8 @@ services:
     # Uncomment this line if you want to use MongoDB database
     #depends_on:
     #  - mongo
-    image: mcr.microsoft.com/dotnet/aspnet:6.0
-    environment:
-      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 8000:8000
-    volumes:
-      - ./wexflow-6.1-linux-netcore/:/opt/wexflow/
-    working_dir: /opt/wexflow/Wexflow.Server
-    command:
-      sh -c "apk add --update icu && cd /opt/wexflow/Wexflow.Server && dotnet Wexflow.Server.dll"
