@@ -49,7 +49,7 @@ copy netcore\windows\run.bat %dstDir%
 :: MongoDB script
 dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
 copy netcore\windows\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
-xcopy "..\samples\netcore\windows\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
+xcopy "..\samples\netcore\windows\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows\ /s /e
 copy netcore\windows\install-MongoDB.bat %dstDir%
 
 :: RavenDB script

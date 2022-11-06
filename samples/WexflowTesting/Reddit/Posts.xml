@@ -1,8 +1,0 @@
-<Reddit>
-    <SelfPosts>
-      <SelfPost subreddit="subreddit" title="My self post" text="My self post text" />
-    </SelfPosts>
-    <LinkPosts>
-      <LinkPost subreddit="subreddit" title="Google" url="https://www.google.com/" />
-    </LinkPosts>
-</Reddit>   
