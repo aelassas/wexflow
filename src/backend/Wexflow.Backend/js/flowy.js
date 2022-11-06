@@ -233,6 +233,7 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                                 if (drag.parentNode) {
                                     drag.parentNode.removeChild(drag);
                                 }
+                                canvas.scrollTop = canvas.scrollHeight;
                             }
 
                         }
