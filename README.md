@@ -1,8 +1,10 @@
 [![.NET Core](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml)
 
-# Wexflow
+<p align="center">
+  <img src="https://wexflow.github.io/content/wexflow.drawio.png" alt="" />
+</p>
 
-Wexflow is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
+[Wexflow](https://wexflow.github.io/) is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
 
 Wexflow provides a cross-platform workflow server, a backend for designing, managing and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
@@ -44,6 +46,18 @@ Here are some real life use cases:
 # Download
 
 You can download the latest release from [here](https://github.com/aelassas/wexflow/releases/latest).
+
+# Install
+
+You can find installation instructions [here](https://github.com/aelassas/wexflow/wiki/Installation).
+
+# Docker
+
+You can find instructions on how build and run Wexflow Docker image [here](https://github.com/aelassas/wexflow/wiki/Docker).
+
+# Run from Code
+
+You can find instructions in the [wiki](https://github.com/aelassas/wexflow/wiki/Run-From-Code) to run Wexflow from code.
 
 # Documentaion
 
