@@ -1,4 +1,4 @@
-[![.NET Core](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml)
+[![.NET Core](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/)
 
 <p align="center">
   <img src="https://wexflow.github.io/content/wexflow.drawio.png" alt="" />
