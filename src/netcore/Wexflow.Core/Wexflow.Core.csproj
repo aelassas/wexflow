@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
 	<DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>6.1.0</Version>
+    <Version>6.2.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
