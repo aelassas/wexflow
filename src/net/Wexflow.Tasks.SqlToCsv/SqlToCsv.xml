@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tasks>
   <!--
-    SqlToXml is a sequential task that executes a collection of SQL scripts (select queries) and outputs the results in CSV files as follows:
+    SqlToCsv is a sequential task that executes a collection of SQL scripts (select queries) and outputs the results in CSV files as follows:
     
     columnName;columnName;columnName;...
     columnValue;columnValue;columnValue;...
@@ -11,7 +11,7 @@
     
     The CSV files generated are loaded by this task so that other tasks can select them through the selectFiles setting.
   -->
-  <Task id="$int" name="SqlToXml" description="$string" enabled="true|false">
+  <Task id="$int" name="SqlToCsv" description="$string" enabled="true|false">
     <!-- 
       The SQL script files loaded by the task having as id $taskId will be
       executed.

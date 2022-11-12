@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tasks>
   <!--
-    Sha1 is a sequential task that generates SHA-512 hashes of a collection of files. The results are written
+    Sha512 is a sequential task that generates SHA-512 hashes of a collection of files. The results are written
     to an XML file as follows:
     <Files>
       <File path="$filePath" name="$fileName" sha512="37f1ee35382e6e7918ce5cedbca431e58073af561b4681704df8ea495e048ddd0c890995302893beaecc946890673d1b6d6d2428fabe7ace0564c57a5454fb2f" />

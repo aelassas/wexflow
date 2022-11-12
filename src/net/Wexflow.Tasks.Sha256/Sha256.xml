@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tasks>
   <!--
-    Sha1 is a sequential task that generates SHA-256 hashes of a collection of files. The results are written
+    Sha256 is a sequential task that generates SHA-256 hashes of a collection of files. The results are written
     to an XML file as follows:
     <Files>
       <File path="$filePath" name="$fileName" sha256="ddd23773d8724b8a40749046d8e3414402507a21a1ccc522653197b0803d268b" />

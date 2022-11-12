@@ -130,6 +130,7 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
 
         flowy.endDrag = function (event) {
             if (event.which != 3 && (active || rearrange)) {
+
                 dragblock = false;
                 blockReleased();
                 if (document.querySelector(".indicator") && !document.querySelector(".indicator").classList.contains("invisible")) {
@@ -177,6 +178,23 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                     });
                 } else if (active && blocks.length == 0) {
                     //canvas_div.appendChild(document.querySelector(".indicator"));
+
+                    blockSnap(drag, true, undefined);
+                    active = false;
+                    const _drag = drag.cloneNode(true);
+                    _drag.style.top = "25px";
+                    _drag.style.left = (canvas_div.clientWidth / 2 - drag.clientWidth / 2) + "px";
+                    canvas_div.appendChild(_drag);
+                    blocks.push({
+                        parent: -1,
+                        childwidth: 0,
+                        id: parseInt(drag.querySelector(".blockid").value),
+                        x: (_drag.getBoundingClientRect().left + window.scrollX) + (parseInt(window.getComputedStyle(_drag).width) / 2) + canvas_div.scrollLeft,
+                        y: (_drag.getBoundingClientRect().top + window.scrollY) + (parseInt(window.getComputedStyle(_drag).height) / 2) + canvas_div.scrollTop,
+                        width: parseInt(window.getComputedStyle(drag).width),
+                        height: parseInt(window.getComputedStyle(drag).height)
+                    });
+
                     if (drag.parentNode) {
                         drag.parentNode.removeChild(drag);
                     }
@@ -185,6 +203,7 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                     let xpos = (drag.getBoundingClientRect().left + window.scrollX) + (parseInt(window.getComputedStyle(drag).width) / 2) + canvas_div.scrollLeft;
                     let ypos = (drag.getBoundingClientRect().top + window.scrollY) + canvas_div.scrollTop
                     let blocko = blocks.map(a => a.id);
+
                     for (let i = 0; i < blocks.length; i++) {
                         if (blocks.filter(a => a.id == blocko[i])[0] && xpos >= blocks.filter(a => a.id == blocko[i])[0].x - (blocks.filter(a => a.id == blocko[i])[0].width / 2) - paddingx && xpos <= blocks.filter(a => a.id == blocko[i])[0].x + (blocks.filter(a => a.id == blocko[i])[0].width / 2) + paddingx && ypos >= blocks.filter(a => a.id == blocko[i])[0].y - (blocks.filter(a => a.id == blocko[i])[0].height / 2) && ypos <= blocks.filter(a => a.id == blocko[i])[0].y + blocks.filter(a => a.id == blocko[i])[0].height) {
                             active = false;

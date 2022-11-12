@@ -40,9 +40,9 @@ html {
     margin-right: 10px
 }
 
-#back img {
-    margin-top: 13px;
-}
+    #back img {
+        margin-top: 13px;
+    }
 
 #names {
     display: inline-block;
@@ -138,13 +138,13 @@ html {
     cursor: pointer;
 }
 
-#leftswitch:hover,
-#middleswitch:hover,
-#rightswitch:hover,
-#graphswitch:hover {
-    border: 1px solid #E8E8EF;
-    opacity: .9;
-}
+    #leftswitch:hover,
+    #middleswitch:hover,
+    #rightswitch:hover,
+    #graphswitch:hover {
+        border: 1px solid #E8E8EF;
+        opacity: .9;
+    }
 
 #exporttype {
     width: 100px;
@@ -167,11 +167,11 @@ html {
     transition: all .2s cubic-bezier(.05, .03, .35, 1);
 }
 
-#export:hover,
-#import:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #export:hover,
+    #import:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #browse {
     font-family: Roboto;
@@ -190,10 +190,10 @@ html {
     margin-top: 15px;
 }
 
-#browse:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #browse:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #newworkflow {
     font-family: Roboto;
@@ -213,10 +213,10 @@ html {
     transition: all .2s cubic-bezier(.05, .03, .35, 1);
 }
 
-#newworkflow:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #newworkflow:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #buttonsright {
     float: right;
@@ -281,12 +281,12 @@ color: #C9C9D5;
     margin-top: 13px;
 }
 
-#search img {
-    position: absolute;
-    margin-top: 10px;
-    width: 18px;
-    margin-left: 12px;
-}
+    #search img {
+        position: absolute;
+        margin-top: 10px;
+        width: 18px;
+        margin-left: 12px;
+    }
 
 #searchworkflows img {
     position: absolute;
@@ -363,29 +363,29 @@ color: #393C44;
     font-size: 14px;
 }
 
-#footer a {
-    text-decoration: none;
-    color: #393C44;
-    transition: all .2s cubic-bezier(.05, .03, .35, 1);
-}
+    #footer a {
+        text-decoration: none;
+        color: #393C44;
+        transition: all .2s cubic-bezier(.05, .03, .35, 1);
+    }
 
-#footer a:hover {
-    opacity: .9;
-}
+        #footer a:hover {
+            opacity: .9;
+        }
 
-#footer span {
-    color: #808292;
-}
+    #footer span {
+        color: #808292;
+    }
 
-#footer p {
-    display: inline-block;
-    color: #808292;
-}
+    #footer p {
+        display: inline-block;
+        color: #808292;
+    }
 
-#footer img {
-    margin-left: 5px;
-    margin-right: 5px;
-}
+    #footer img {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 
 .blockelem:first-child {
     margin-top: 20px
@@ -403,12 +403,12 @@ color: #393C44;
     box-sizing: border-box;
 }
 
-.blockelem:hover {
-    box-shadow: 0px 4px 30px rgba(22, 33, 74, 0.08);
-    border-radius: 5px;
-    background-color: #FFF;
-    cursor: pointer;
-}
+    .blockelem:hover {
+        box-shadow: 0px 4px 30px rgba(22, 33, 74, 0.08);
+        border-radius: 5px;
+        background-color: #FFF;
+        cursor: pointer;
+    }
 
 .grabme,
 .blockico {
@@ -450,19 +450,19 @@ color: #393C44;
     white-space: nowrap;
 }
 
-.blockico span {
-    height: 100%;
-    width: 0px;
-    display: inline-block;
-    vertical-align: middle;
-}
+    .blockico span {
+        height: 100%;
+        width: 0px;
+        display: inline-block;
+        vertical-align: middle;
+    }
 
-.blockico img {
-    vertical-align: middle;
-    margin-left: auto;
-    margin-right: auto;
-    display: inline-block;
-}
+    .blockico img {
+        vertical-align: middle;
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-block;
+    }
 
 .blocktext {
     display: inline-block;
@@ -509,14 +509,14 @@ color: #393C44;
     border-bottom-right-radius: 4px;
 }
 
-#closecard img {
-    margin-top: 15px
-}
+    #closecard img {
+        margin-top: 15px
+    }
 
-#closecard:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #closecard:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #canvas {
     position: absolute;
@@ -578,9 +578,13 @@ color: #393C44;
     cursor: pointer;
 }
 
-#taskdoc:hover {
-    opacity: .9;
-}
+    #taskdoc.badge {
+        background-color: #1a73e8;
+    }
+
+    #taskdoc:hover {
+        opacity: .9;
+    }
 
 #close {
     position: absolute;
@@ -589,10 +593,10 @@ color: #393C44;
     transition: all .25s cubic-bezier(.05, .03, .35, 1);
 }
 
-#close:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #close:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #wfpropwrap {
     position: fixed;
@@ -638,14 +642,14 @@ color: #393C44;
     z-index: 10;
 }
 
-#wfclose:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #wfclose:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
-#wfclose img {
-    margin-top: 15px
-}
+    #wfclose img {
+        margin-top: 15px
+    }
 
 #wfheader2 {
     font-size: 20px;
@@ -691,28 +695,28 @@ color: #393C44;
     margin-bottom: 25px;
 }
 
-.dropme img {
-    margin-top: 17px;
-    float: right;
-    margin-right: 15px;
-}
+    .dropme img {
+        margin-top: 17px;
+        float: right;
+        margin-right: 15px;
+    }
 
 .checkus {
     margin-bottom: 10px;
 }
 
-.checkus img {
-    display: inline-block;
-    vertical-align: middle;
-}
+    .checkus img {
+        display: inline-block;
+        vertical-align: middle;
+    }
 
-.checkus p {
-    display: inline-block;
-    font-family: Roboto;
-    font-size: 14px;
-    vertical-align: middle;
-    margin-left: 10px;
-}
+    .checkus p {
+        display: inline-block;
+        font-family: Roboto;
+        font-size: 14px;
+        vertical-align: middle;
+        margin-left: 10px;
+    }
 
 #divisionthing {
     height: 1px;
@@ -739,10 +743,10 @@ color: #393C44;
     background-color: #d9534f;
 }
 
-#removeblock:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #removeblock:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #removeworkflow {
     border-radius: 5px;
@@ -762,10 +766,10 @@ color: #393C44;
     display: none;
 }
 
-#removeworkflow:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #removeworkflow:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 .noselect {
     -webkit-touch-callout: none;
@@ -813,7 +817,7 @@ color: #393C44;
     z-index: 10;
 }
 
-/*.blockyright:hover {
+    /*.blockyright:hover {
 background-color: #F1F4FC;
 cursor: pointer;
 }
@@ -822,14 +826,14 @@ cursor: pointer;
 margin-top: 12px;
 }*/
 
-.blockyright .removediagblock {
-    margin-top: -15px;
-}
+    .blockyright .removediagblock {
+        margin-top: -15px;
+    }
 
-.blockyright .removediagblock:hover {
-    background-color: #F1F4FC;
-    cursor: pointer;
-}
+        .blockyright .removediagblock:hover {
+            background-color: #F1F4FC;
+            cursor: pointer;
+        }
 
 .blockyleft {
     display: inline-block;
@@ -851,14 +855,14 @@ margin-top: 12px;
     margin-bottom: 20px;
 }
 
-.blockyinfo span {
-    color: #253134;
-    font-weight: 500;
-    display: inline-block;
-    border-bottom: 1px solid #D3DCEA;
-    line-height: 20px;
-    text-indent: 0px;
-}
+    .blockyinfo span {
+        color: #253134;
+        font-weight: 500;
+        display: inline-block;
+        border-bottom: 1px solid #D3DCEA;
+        line-height: 20px;
+        text-indent: 0px;
+    }
 
 .block {
     background-color: #FFF;
@@ -904,51 +908,51 @@ margin-top: 12px;
     margin: 0;
 }
 
-.wf-workflows-table thead,
-tbody {
-    display: block;
-}
+    .wf-workflows-table thead,
+    tbody {
+        display: block;
+    }
 
-.wf-workflows-table tbody {
-    height: calc(100% - 50px);
-    overflow-y: auto;
-    overflow-x: auto;
-}
+    .wf-workflows-table tbody {
+        height: calc(100% - 50px);
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 
-.wf-workflows-table .wf-id {
-    width: 65px;
-}
+    .wf-workflows-table .wf-id {
+        width: 65px;
+    }
 
-.wf-workflows-table .wf-n {
-    width: 300px;
-}
+    .wf-workflows-table .wf-n {
+        width: 300px;
+    }
 
-.wf-workflows-table .wf-d {
-    width: 500px;
-}
+    .wf-workflows-table .wf-d {
+        width: 500px;
+    }
 
-.wf-workflows-table tbody tr:hover {
-    cursor: pointer;
-}
+    .wf-workflows-table tbody tr:hover {
+        cursor: pointer;
+    }
 
-.wf-workflows-table .selected,
-.wf-workflows-table .selected:hover {
-    background-color: #ffb347;
-}
+    .wf-workflows-table .selected,
+    .wf-workflows-table .selected:hover {
+        background-color: #ffb347;
+    }
 
-.wf-workflows-table .thead-dark {
-    background: #272727;
-    color: #EEEEEE;
-}
+    .wf-workflows-table .thead-dark {
+        background: #272727;
+        color: #EEEEEE;
+    }
 
-.wf-workflows-table tbody tr:hover {
-    background: #EEEEEE;
-}
+    .wf-workflows-table tbody tr:hover {
+        background: #EEEEEE;
+    }
 
-.wf-workflows-table .selected,
-#wf-workflows .wf-workflows-table .selected:hover {
-    background-color: #ffb347;
-}
+    .wf-workflows-table .selected,
+    #wf-workflows .wf-workflows-table .selected:hover {
+        background-color: #ffb347;
+    }
 
 #openworkflow {
     font-family: Roboto;
@@ -968,10 +972,10 @@ tbody {
     float: right;
 }
 
-#openworkflow:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #openworkflow:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #deleteworkflows {
     font-family: Roboto;
@@ -992,10 +996,10 @@ tbody {
     float: right;
 }
 
-#deleteworkflows:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #deleteworkflows:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 #exportmodal {
     display: none;
@@ -1020,10 +1024,10 @@ tbody {
     float: right;
 }
 
-#exportworkflow:hover {
-    cursor: pointer;
-    opacity: .9;
-}
+    #exportworkflow:hover {
+        cursor: pointer;
+        opacity: .9;
+    }
 
 .jBox-footer {
     height: 55px;
@@ -1048,18 +1052,18 @@ tbody {
     display: none;
 }
 
-#overlay #onverlay-content {
-    color: #fff;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100px;
-    height: 100px;
-    font-size: 40px;
-}
+    #overlay #onverlay-content {
+        color: #fff;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+    }
 
 #blocklyArea {
     display: none;

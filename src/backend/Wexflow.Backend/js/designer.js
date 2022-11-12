@@ -692,12 +692,11 @@
                     // task settings
                     let taskname = tempblock.getElementsByClassName("blockelemtype")[0].value;
 
-                    // document.getElementById("header2").innerHTML = "<span id='task-settings-label'>" + language.get("task-settings") + "</span>&nbsp;<span id='taskdoc' class='badge' title='" + language.get("task-doc") + "'>doc</span>";
-                    document.getElementById("header2").innerHTML = "<span id='task-settings-label'>" + language.get("task-settings") + "</span>";
-                    // document.getElementById("taskdoc").onclick = function () {
-                    //     let url = "https://github.com/aelassas/Wexflow/wiki/" + taskname;
-                    //     openInNewTab(url);
-                    // };
+                    document.getElementById("header2").innerHTML = "<span id='task-settings-label'>" + language.get("task-settings") + "</span>&nbsp;<span id='taskdoc' class='badge' title='" + language.get("task-doc") + "'>doc</span>";
+                    document.getElementById("taskdoc").onclick = function () {
+                        let url = "https://github.com/aelassas/wexflow/wiki/" + taskname;
+                        openInNewTab(url);
+                    };
 
                     function openInNewTab(url) {
                         let win = window.open(url, "_blank");

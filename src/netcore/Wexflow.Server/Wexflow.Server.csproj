@@ -39,7 +39,6 @@
     <None Remove="swagger-ui\swagger-ui.js" />
     <None Remove="swagger-ui\swagger-ui.js.map" />
     <None Remove="swagger-ui\swagger.yaml" />
-    <None Remove="WexflowService.cs~RF63476ca.TMP" />
   </ItemGroup>
 
   <ItemGroup>

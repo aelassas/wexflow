@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tasks>
   <!--
-    Md5 is a sequential task that generates the most relevant technical and tag data for video and audio files.
+    MediaInfo is a sequential task that generates the most relevant technical and tag data for video and audio files.
     The results are written to an XML file as follows:
    
    <Files>
