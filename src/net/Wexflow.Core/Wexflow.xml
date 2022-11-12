@@ -17,5 +17,5 @@
   <!-- MongoDB -->
   <!--<Setting name="connectionString" value="Database=wexflow;MongoUrl=mongodb://localhost:27017;EnabledSslProtocols=false;SslProtocols=None" />-->
   <!-- SQLServer -->
-  <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=wexflow;Password=pwd;Database=wexflow;" />-->
+  <!--<Setting name="connectionString" value="Server=localhost;Trusted_Connection=True;Database=wexflow;" />-->
 </Wexflow>

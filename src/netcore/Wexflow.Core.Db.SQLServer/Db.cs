@@ -10,7 +10,7 @@ namespace Wexflow.Core.Db.SQLServer
     public sealed class Db : Core.Db.Db
     {
         private static readonly object padlock = new object();
-        private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private static readonly string dateTimeFormat = "yyyyMMdd HH:mm:ss.fff";
 
         private static string connectionString;
 
