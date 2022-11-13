@@ -1,5 +1,3 @@
-<!--[![.NET Core](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/dotnet-core.yml)-->
-
 [![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/)
 
 <p align="center">
