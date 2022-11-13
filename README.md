@@ -57,7 +57,7 @@ You can find instructions on how build and run Wexflow Docker image [here](https
 
 # Run from Code
 
-You can find instructions in the [wiki](https://github.com/aelassas/wexflow/wiki/Run-From-Code) to run Wexflow from code.
+You can find instructions on running Wexflow from source code [here](https://github.com/aelassas/wexflow/wiki/Run-From-Code).
 
 # Documentaion
 
