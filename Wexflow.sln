@@ -569,21 +569,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{4F4A0E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{74678727-8612-4E24-B9FB-47BD5DAD5573}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "litedb", "litedb", "{05E6F076-127F-4A22-9FC8-C29061AE1EDB}"
-	ProjectSection(SolutionItems) = preProject
-		src\docker\litedb\docker-compose.yml = src\docker\litedb\docker-compose.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mongodb", "mongodb", "{21C00445-62BF-453A-B693-DD59878CC322}"
-	ProjectSection(SolutionItems) = preProject
-		src\docker\mondodb\docker-compose.yml = src\docker\mondodb\docker-compose.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ravendb", "ravendb", "{545BA2FB-A6DA-40CF-A0EA-C9091ACE0C79}"
-	ProjectSection(SolutionItems) = preProject
-		src\docker\ravendb\docker-compose.yml = src\docker\ravendb\docker-compose.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -5069,9 +5054,6 @@ Global
 		{A175634E-7EE6-426A-A1F7-F1B90DBCC1E3} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{3B8311AF-E35A-4648-AC20-F6DDFB228DC6} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
 		{4D81D112-3F59-4561-8EC4-533B10E797BA} = {0D67593B-D05C-4F4D-8FCB-20C2AF3EE39A}
-		{05E6F076-127F-4A22-9FC8-C29061AE1EDB} = {4D81D112-3F59-4561-8EC4-533B10E797BA}
-		{21C00445-62BF-453A-B693-DD59878CC322} = {4D81D112-3F59-4561-8EC4-533B10E797BA}
-		{545BA2FB-A6DA-40CF-A0EA-C9091ACE0C79} = {4D81D112-3F59-4561-8EC4-533B10E797BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {694D69C8-AA13-4F54-BAAA-5B967F1A8F9C}

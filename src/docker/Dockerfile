@@ -1,5 +1,5 @@
 # Linux .NET runtime
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
