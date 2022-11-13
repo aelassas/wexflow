@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wexflow")]
 [assembly: AssemblyProduct("Wexflow.Server")]
-[assembly: AssemblyCopyright("Copyright © Akram El Assas 2019")]
+[assembly: AssemblyCopyright("Copyright © Akram El Assas 2017-2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

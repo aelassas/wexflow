@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Wexflow.Clients.CommandLine")]
-[assembly: AssemblyCopyright("Copyright © 2019  Akram El Assas")]
+[assembly: AssemblyCopyright("Copyright © Akram El Assas 2017-2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
