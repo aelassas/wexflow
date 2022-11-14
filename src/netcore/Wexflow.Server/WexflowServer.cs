@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
 using Wexflow.Core;
-using Wexflow.Core.Db;
 
 namespace Wexflow.Server
 {
@@ -34,9 +32,10 @@ namespace Wexflow.Server
             var repo = LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
             XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
 
+            superAdminUsername = Config["SuperAdminUsername"];
+
             var settingsFile = Config["WexflowSettingsFile"];
             var logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
-            superAdminUsername = Config["SuperAdminUsername"];
             var enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
             var enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
             var enableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"]);
@@ -46,6 +45,7 @@ namespace Wexflow.Server
             var smtpUser = Config["Smtp.User"];
             var smtpPassword = Config["Smtp.Password"];
             var smtpFrom = Config["Smtp.From"];
+
             WexflowEngine = new WexflowEngine(
                 settingsFile
                 , logLevel
