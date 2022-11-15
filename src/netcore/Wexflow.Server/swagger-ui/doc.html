@@ -23,6 +23,8 @@
         body {
             margin: 0;
             background: #fafafa;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
         }
 
         #header {
@@ -104,7 +106,7 @@
 
                                 // Begin Swagger UI call region
                                 const ui = SwaggerUIBundle({
-                                    url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/swagger-ui/swagger.yaml",
+                                    url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/swagger.yaml",
                                     dom_id: '#swagger-ui',
                                     defaultModelsExpandDepth: -1,
                                     deepLinking: true,

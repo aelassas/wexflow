@@ -2504,6 +2504,12 @@ namespace Wexflow.Server
                     file.Value.CopyTo(ms);
                     var fileValue = Encoding.UTF8.GetString(ms.ToArray());
 
+                    var index = fileValue.IndexOf('<');
+                    if (index > 0)
+                    {
+                        fileValue = fileValue.Substring(index, fileValue.Length - index);
+                    }
+
                     var workflowId = -1;
                     var extension = Path.GetExtension(fileName).ToLower();
                     var isXml = extension == ".xml";
