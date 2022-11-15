@@ -1,7 +1,7 @@
-swagger: "2.0"
+﻿swagger: "2.0"
 info:
   description: "Wexflow API."
-  version: "6.0"
+  version: "6.3"
   title: "Swagger Wexflow"
   contact:
     email: "akram.elassas@gmail.com"
