@@ -1,1792 +1,1506 @@
-swagger: "2.0"
+﻿openapi: 3.0.1
 info:
-  description: "Wexflow API."
-  version: "6.0"
-  title: "Swagger Wexflow"
+  title: Swagger Wexflow
+  description: Wexflow API.
   contact:
-    email: "akram.elassas@gmail.com"
+    email: akram.elassas@gmail.com
   license:
-    name: "MIT"
-    url: "https://github.com/aelassas/Wexflow/wiki/License"
-host: "localhost:8000"
-basePath: "/wexflow"
+    name: MIT
+    url: https://github.com/aelassas/Wexflow/wiki/License
+  version: 6.3
+externalDocs:
+  description: Find out more about Wexflow
+  url: https://wexflow.github.io
+servers:
+- url: //localhost:8000/wexflow
 tags:
-- name: "Dashboard"
-  description: "Operations about dashboard"
-- name: "Records"
-  description: "Operations about records"
-- name: "Manager"
-  description: "Operations about manager"
-- name: "Designer"
-  description: "Operations about designer"
-- name: "History"
-  description: "Operations about history"
-- name: "Users"
-  description: "Operations about users"
-- name: "Profiles"
-  description: "Operations about profiles"
-- name: "Notifications"
-  description: "Operations about notifications"
-#schemes:
-#- "https"
-#- "http"
+- name: Dashboard
+  description: Operations about dashboard
+- name: Records
+  description: Operations about records
+- name: Manager
+  description: Operations about manager
+- name: Designer
+  description: Operations about designer
+- name: History
+  description: Operations about history
+- name: Users
+  description: Operations about users
+- name: Profiles
+  description: Operations about profiles
+- name: Notifications
+  description: Operations about notifications
 paths:
- 
- #
- # Dashboard
- #
-
   /statusCount:
     get:
-     tags:
-     - "Dashboard"
-     summary: "Returns status count"
-     description: ""
-     produces:
-       - "application/json"
-     responses:
+      tags:
+      - Dashboard
+      summary: Returns status count
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /entriesCountByDate:
     get:
-     tags:
-     - "Dashboard"
-     summary: "Returns entries count by keyword and date filter"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword  
-        - in: query
-          name: from
-          type: "number"
-          description: From 
-        - in: query
-          name: to
-          type: "number"
-          description: To
-     responses:
+      tags:
+      - Dashboard
+      summary: Returns entries count by keyword and date filter
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: From
+        schema:
+          type: number
+      - name: to
+        in: query
+        description: To
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /searchEntriesByPageOrderBy:
     get:
-     tags:
-     - "Dashboard"
-     summary: "Searches for entries"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword  
-        - in: query
-          name: from
-          type: "number"
-          description: From 
-        - in: query
-          name: to
-          type: "number"
-          description: To
-        - in: query
-          name: page
-          type: "number"
-          description: Page number
-        - in: query
-          name: entriesCount
-          type: "number"
-          description: Number of entries
-        - in: query
-          name: heo
-          type: "number"
-          description: Entry order by type (From 0 to 11)
-     responses:
+      tags:
+      - Dashboard
+      summary: Searches for entries
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: From
+        schema:
+          type: number
+      - name: to
+        in: query
+        description: To
+        schema:
+          type: number
+      - name: page
+        in: query
+        description: Page number
+        schema:
+          type: number
+      - name: entriesCount
+        in: query
+        description: Number of entries
+        schema:
+          type: number
+      - name: heo
+        in: query
+        description: Entry order by type (From 0 to 11)
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-    
+          description: successful operation
+          content: {}
   /entryStatusDateMin:
     get:
-     tags:
-     - "Dashboard"
-     summary: "Returns entry min date"
-     description: ""
-     produces:
-       - "application/json"
-     responses:
+      tags:
+      - Dashboard
+      summary: Returns entry min date
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
+          description: successful operation
+          content: {}
   /entryStatusDateMax:
     get:
-     tags:
-     - "Dashboard"
-     summary: "Returns entry max date"
-     description: ""
-     produces:
-       - "application/json"
-     responses:
+      tags:
+      - Dashboard
+      summary: Returns entry max date
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
   /entryLogs:
     get:
-     tags:
-     - "Dashboard"
-     summary: "Returns entry logs"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: id
-          type: "string"
-          description: Entry id
-     responses:
+      tags:
+      - Dashboard
+      summary: Returns entry logs
+      parameters:
+      - name: id
+        in: query
+        description: Entry id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json" 
-
-#
-# Records
-#
-
+          description: successful operation
+          content: {}
   /uploadVersion:
     post:
-     tags:
-     - "Records"
-     summary: "Uploads a version file"
-     description: ""
-     consumes:
-         - multipart/form-data
-     produces:
-       - "application/json"
-     parameters:
-        - in: formData
-          name: file
-          type: file
-          description: The file version to upload   
-        - in: query
-          name: r
-          type: "string"
-          description: Record id
-     responses:
+      tags:
+      - Records
+      summary: Uploads a version file
+      parameters:
+      - name: r
+        in: query
+        description: Record id
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  type: string
+                  description: The file version to upload
+                  format: binary
+      responses:
         200:
-          description: "successful operation" 
-
+          description: successful operation
+          content: {}
   /downloadFile:
     get:
-     tags:
-     - "Records"
-     summary: "Downloads a file"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: p
-          type: "string"
-          description: File path
-     responses:
+      tags:
+      - Records
+      summary: Downloads a file
+      parameters:
+      - name: p
+        in: query
+        description: File path
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /deleteTempVersionFile:
     post:
-     tags:
-     - "Records"
-     summary: "Deletes a temp version file"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: p
-          type: "string"
-          description: File path
-     responses:
+      tags:
+      - Records
+      summary: Deletes a temp version file
+      parameters:
+      - name: p
+        in: query
+        description: File path
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation" 
-
+          description: successful operation
+          content: {}
   /deleteTempVersionFiles:
     post:
-     tags:
-     - "Records"
-     summary: "Deletes temp version files"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/record"
-     responses:
+      tags:
+      - Records
+      summary: Deletes temp version files
+      requestBody:
+        description: Payload
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/record'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /saveRecord:
     post:
-     tags:
-     - "Records"
-     summary: "Saves a record"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/record"
-     responses:
+      tags:
+      - Records
+      summary: Saves a record
+      requestBody:
+        description: Payload
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/record'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /deleteRecords:
     post:
-     tags:
-     - "Records"
-     summary: "Deletes records"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Record Ids"
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-     responses:
+      tags:
+      - Records
+      summary: Deletes records
+      requestBody:
+        description: Record Ids
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /searchRecords:
     get:
-     tags:
-     - "Records"
-     summary: "Searches for records by keyword"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword
-     responses:
+      tags:
+      - Records
+      summary: Searches for records by keyword
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /recordsCreatedBy:
     get:
-     tags:
-     - "Records"
-     summary: "Retrieves records created by a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: c
-          type: "string"
-          description: Username of the creator of the records
-     responses:
+      tags:
+      - Records
+      summary: Retrieves records created by a user
+      parameters:
+      - name: c
+        in: query
+        description: Username of the creator of the records
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /searchRecordsCreatedByOrAssignedTo:
     get:
-     tags:
-     - "Records"
-     summary: "Searches for records assigned to or created by a user by keyword"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword
-        - in: query
-          name: c
-          type: "string"
-          description: Username of the creator of the records
-        - in: query
-          name: a
-          type: "string"
-          description: username of the user assigned to a record
-     responses:
+      tags:
+      - Records
+      summary: Searches for records assigned to or created by a user by keyword
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: c
+        in: query
+        description: Username of the creator of the records
+        schema:
+          type: string
+      - name: a
+        in: query
+        description: username of the user assigned to a record
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
-#
-# Manager
-#
-
+          description: successful operation
+          content: {}
   /search:
     get:
-     tags:
-     - "Manager"
-     summary: "Search for workflows"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword
-     responses:
+      tags:
+      - Manager
+      summary: Search for workflows
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
+          description: successful operation
+          content: {}
   /searchApprovalWorkflows:
     get:
-     tags:
-     - "Manager"
-     summary: "Search for approval workflows"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword
-     responses:
+      tags:
+      - Manager
+      summary: Search for approval workflows
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
   /workflow:
     get:
-     tags:
-     - "Manager"
-     summary: "Displays information of the first job of the workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-     responses:
+      tags:
+      - Manager
+      summary: Displays information of the first job of the workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-   
+          description: successful operation
+          content: {}
   /job:
     get:
-     tags:
-     - "Manager"
-     summary: "Displays information of a job"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-        - in: query
-          name: i
-          type: "string"
-          description: Job instance id
-     responses:
+      tags:
+      - Manager
+      summary: Displays information of a job
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Job instance id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /jobs:
     get:
-     tags:
-     - "Manager"
-     summary: "Returns jobs of a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-     responses:
+      tags:
+      - Manager
+      summary: Returns jobs of a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /start:
     post:
-     tags:
-     - "Manager"
-     summary: "Starts a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-     responses:
+      tags:
+      - Manager
+      summary: Starts a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-      
+          description: successful operation
+          content: {}
   /startWithVariables:
     post:
-     tags:
-     - "Manager"
-     summary: "Starts a workflow with variables"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/startWithVariables"
-     responses:
+      tags:
+      - Manager
+      summary: Starts a workflow with variables
+      requestBody:
+        description: Payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/startWithVariables'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /stop:
     post:
-     tags:
-     - "Manager"
-     summary: "Stops a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-        - in: query
-          name: i
-          type: "string"
-          description: Instance id
-     responses:
+      tags:
+      - Manager
+      summary: Stops a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Instance id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"     
-  
+          description: successful operation
+          content: {}
   /suspend:
     post:
-     tags:
-     - "Manager"
-     summary: "Suspends a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-        - in: query
-          name: i
-          type: "string"
-          description: Instance id
-     responses:
+      tags:
+      - Manager
+      summary: Suspends a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Instance id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json" 
-  
+          description: successful operation
+          content: {}
   /resume:
     post:
-     tags:
-     - "Manager"
-     summary: "Resumes a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-        - in: query
-          name: i
-          type: "string"
-          description: Instance id
-     responses:
+      tags:
+      - Manager
+      summary: Resumes a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Instance id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"  
-  
+          description: successful operation
+          content: {}
   /approve:
     post:
-     tags:
-     - "Manager"
-     summary: "Approves a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-        - in: query
-          name: i
-          type: "string"
-          description: Instance id
-     responses:
+      tags:
+      - Manager
+      summary: Approves a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Instance id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json" 
-  
+          description: successful operation
+          content: {}
   /reject:
     post:
-     tags:
-     - "Manager"
-     summary: "Rejects a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id
-        - in: query
-          name: i
-          type: "string"
-          description: Instance id
-     responses:
+      tags:
+      - Manager
+      summary: Rejects a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Instance id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json" 
-  
-#
-# Designer
-#
-
+          description: successful operation
+          content: {}
   /tasks/{id}:
     get:
-     tags:
-     - "Designer"
-     summary: "Returns workflow's tasks"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "integer"
-          format: "int64"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
-  /xml/{id}:
-    get:
-     tags:
-     - "Designer"
-     summary: "Returns a workflow as XML"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "integer"
-          format: "int64"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
-  /json/{id}:
-    get:
-     tags:
-     - "Designer"
-     summary: "Returns a workflow as JSON"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "integer"
-          format: "int64"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json" 
-  
-  /taskNames:
-    get:
-     tags:
-     - "Designer"
-     summary: "Returns task names"
-     description: ""
-     produces:
-       - "application/json"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
-  /searchTaskNames:
-    get:
-     tags:
-     - "Designer"
-     summary: "Searches for task names"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
-  /settings/{taskName}:
-    get:
-     tags:
-     - "Designer"
-     summary: "Returns task settings"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "taskName"
-          in: "path"
-          description: "Task name"
-          required: true
-          type: "string"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
-  /taskToXml:
-    post:
-     tags:
-     - "Designer"
-     summary: "Returns a task as XML"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/task"   
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
-  /isWorkflowIdValid/{id}:
-    get:
-     tags:
-     - "Designer"
-     summary: "Checks if a workflow id is valid"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "integer"
-          format: "int64"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json" 
-  
-  /isCronExpressionValid:
-    get:
-     tags:
-     - "Designer"
-     summary: "Checks if a cron expression is valid"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: e
-          type: "string"
-          description: Cron expression
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
-  /isPeriodValid/{period}:
-    get:
-     tags:
-     - "Designer"
-     summary: "Checks if a workflow id is valid"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "period"
-          in: "path"
-          description: "period"
-          required: true
-          type: "string"
-     responses:
-        200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
-  /isXmlWorkflowValid:
-    post:
-     tags:
-     - "Designer"
-     summary: "Checks if the XML of a workflow is valid"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-      - in: "body"
-        name: "body"
-        description: "XML"
+      tags:
+      - Designer
+      summary: Returns workflow's tasks
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
         required: true
         schema:
-          $ref: "#/definitions/isXmlWorkflowValid"   
-     responses:
+          type: integer
+          format: int64
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
+  /xml/{id}:
+    get:
+      tags:
+      - Designer
+      summary: Returns a workflow as XML
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /json/{id}:
+    get:
+      tags:
+      - Designer
+      summary: Returns a workflow as JSON
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /taskNames:
+    get:
+      tags:
+      - Designer
+      summary: Returns task names
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /searchTaskNames:
+    get:
+      tags:
+      - Designer
+      summary: Searches for task names
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /settings/{taskName}:
+    get:
+      tags:
+      - Designer
+      summary: Returns task settings
+      parameters:
+      - name: taskName
+        in: path
+        description: Task name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /taskToXml:
+    post:
+      tags:
+      - Designer
+      summary: Returns a task as XML
+      requestBody:
+        description: Payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+  /isWorkflowIdValid/{id}:
+    get:
+      tags:
+      - Designer
+      summary: Checks if a workflow id is valid
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /isCronExpressionValid:
+    get:
+      tags:
+      - Designer
+      summary: Checks if a cron expression is valid
+      parameters:
+      - name: e
+        in: query
+        description: Cron expression
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /isPeriodValid/{period}:
+    get:
+      tags:
+      - Designer
+      summary: Checks if a workflow id is valid
+      parameters:
+      - name: period
+        in: path
+        description: period
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /isXmlWorkflowValid:
+    post:
+      tags:
+      - Designer
+      summary: Checks if the XML of a workflow is valid
+      requestBody:
+        description: XML
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/isXmlWorkflowValid'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /workflowId:
     get:
-     tags:
-     - "Designer"
-     summary: "Returns a new workflow id"
-     description: ""
-     produces:
-       - "application/json"   
-     responses:
+      tags:
+      - Designer
+      summary: Returns a new workflow id
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /saveXml:
     post:
-     tags:
-     - "Designer"
-     summary: "Saves a workflow from XML"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/saveXml"   
-     responses:
+      tags:
+      - Designer
+      summary: Saves a workflow from XML
+      requestBody:
+        description: Payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/saveXml'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /save:
     post:
-     tags:
-     - "Designer"
-     summary: "Saves a workflow from JSON"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/workflow"   
-     responses:
+      tags:
+      - Designer
+      summary: Saves a workflow from JSON
+      requestBody:
+        description: Payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /disable/{id}:
     post:
-     tags:
-     - "Designer"
-     summary: "Disables a workdlow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "integer"
-          format: "int64"
-     responses:
+      tags:
+      - Designer
+      summary: Disables a workdlow
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /enable/{id}:
     post:
-     tags:
-     - "Designer"
-     summary: "Enables a workdlow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "integer"
-          format: "int64"
-     responses:
+      tags:
+      - Designer
+      summary: Enables a workdlow
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /upload:
     post:
-     tags:
-     - "Designer"
-     summary: "Uploads a workflow from JSON or XML"
-     description: ""
-     consumes:
-         - multipart/form-data
-     produces:
-       - "application/json"
-     parameters:
-        - in: formData
-          name: file
-          type: file
-          description: The file to upload   
-     responses:
+      tags:
+      - Designer
+      summary: Uploads a workflow from JSON or XML
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  type: string
+                  description: The file to upload
+                  format: binary
+      responses:
         200:
-          description: "successful operation" 
-
+          description: successful operation
+          content: {}
   /delete:
     post:
-     tags:
-     - "Designer"
-     summary: "Deletes a workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: w
-          type: "number"
-          description: Workflow id   
-     responses:
+      tags:
+      - Designer
+      summary: Deletes a workflow
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /deleteWorkflows:
     post:
-     tags:
-     - "Designer"
-     summary: "Deletes workflows"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/deleteWorkflows"   
-     responses:
+      tags:
+      - Designer
+      summary: Deletes workflows
+      requestBody:
+        description: Payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deleteWorkflows'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /graph/{id}:
     get:
-     tags:
-     - "Designer"
-     summary: "Returns the execution graph of the workflow"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "string"
-     responses:
+      tags:
+      - Designer
+      summary: Returns the execution graph of the workflow
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
+          description: successful operation
+          content: {}
   /graphXml/{id}:
     get:
-     tags:
-     - "Designer"
-     summary: "Returns the execution graph of the workflow as XML"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "string"
-     responses:
+      tags:
+      - Designer
+      summary: Returns the execution graph of the workflow as XML
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /graphBlockly/{id}:
     get:
-     tags:
-     - "Designer"
-     summary: "Returns the execution graph of the workflow as Blockly"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - name: "id"
-          in: "path"
-          description: "Workflow id"
-          required: true
-          type: "string"
-     responses:
+      tags:
+      - Designer
+      summary: Returns the execution graph of the workflow as Blockly
+      parameters:
+      - name: id
+        in: path
+        description: Workflow id
+        required: true
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
-#
-# History
-#
-
+          description: successful operation
+          content: {}
   /historyEntriesCountByDate:
     get:
-     tags:
-     - "History"
-     summary: "Returns entries count by keyword and date filter"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword  
-        - in: query
-          name: from
-          type: "number"
-          description: From 
-        - in: query
-          name: to
-          type: "number"
-          description: To
-     responses:
+      tags:
+      - History
+      summary: Returns entries count by keyword and date filter
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: From
+        schema:
+          type: number
+      - name: to
+        in: query
+        description: To
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /searchHistoryEntriesByPageOrderBy:
     get:
-     tags:
-     - "History"
-     summary: "Searches for entries"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword  
-        - in: query
-          name: from
-          type: "number"
-          description: From 
-        - in: query
-          name: to
-          type: "number"
-          description: To
-        - in: query
-          name: page
-          type: "number"
-          description: Page number
-        - in: query
-          name: entriesCount
-          type: "number"
-          description: Number of entries
-        - in: query
-          name: heo
-          type: "number"
-          description: Entry order by type (From 0 to 11)
-     responses:
+      tags:
+      - History
+      summary: Searches for entries
+      parameters:
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: From
+        schema:
+          type: number
+      - name: to
+        in: query
+        description: To
+        schema:
+          type: number
+      - name: page
+        in: query
+        description: Page number
+        schema:
+          type: number
+      - name: entriesCount
+        in: query
+        description: Number of entries
+        schema:
+          type: number
+      - name: heo
+        in: query
+        description: Entry order by type (From 0 to 11)
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-    
+          description: successful operation
+          content: {}
   /historyEntryStatusDateMin:
     get:
-     tags:
-     - "History"
-     summary: "Returns entry min date"
-     description: ""
-     produces:
-       - "application/json"
-     responses:
+      tags:
+      - History
+      summary: Returns entry min date
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
+          description: successful operation
+          content: {}
   /historyEntryStatusDateMax:
     get:
-     tags:
-     - "History"
-     summary: "Returns entry max date"
-     description: ""
-     produces:
-       - "application/json"
-     responses:
+      tags:
+      - History
+      summary: Returns entry max date
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
   /historyEntryLogs:
     get:
-     tags:
-     - "History"
-     summary: "Returns history entry logs"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: id
-          type: "string"
-          description: Entry id
-     responses:
+      tags:
+      - History
+      summary: Returns history entry logs
+      parameters:
+      - name: id
+        in: query
+        description: Entry id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
-#
-# Users
-#
-
+          description: successful operation
+          content: {}
   /user:
     get:
-     tags:
-     - "Users"
-     summary: "Returns a user from his username"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: username
-          type: "string"
-          description: Username
-     responses:
+      tags:
+      - Users
+      summary: Returns a user from his username
+      parameters:
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /searchUsers:
     get:
-     tags:
-     - "Users"
-     summary: "Searches for users"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: keyword
-          type: "string"
-          description: Keyword
-        - in: query
-          name: uo
-          type: "number"
-          description: Order by type (0 or 1)   
-     responses:
+      tags:
+      - Users
+      summary: Searches for users
+      parameters:
+      - name: keyword
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: uo
+        in: query
+        description: Order by type (0 or 1)
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-
+          description: successful operation
+          content: {}
   /nonRestrictedUsers:
     get:
-     tags:
-     - "Users"
-     summary: "Returns non restricted users"
-     description: ""
-     produces:
-       - "application/json"  
-     responses:
+      tags:
+      - Users
+      summary: Returns non restricted users
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
+          description: successful operation
+          content: {}
   /insertUser:
     post:
-     tags:
-     - "Users"
-     summary: "Inserts a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: username
-          type: "string"
-          description: Username
-        - in: query
-          name: password
-          type: "string"
-          description: Password  
-        - in: query
-          name: up
-          type: "number"
-          description: User profile (From 0 to 2)
-        - in: query
-          name: email
-          type: "string"  
-          description: Email  
-     responses:
+      tags:
+      - Users
+      summary: Inserts a user
+      parameters:
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: Password
+        schema:
+          type: string
+      - name: up
+        in: query
+        description: User profile (From 0 to 2)
+        schema:
+          type: number
+      - name: email
+        in: query
+        description: Email
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /updateUser:
     post:
-     tags:
-     - "Users"
-     summary: "Updates a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: userId
-          type: "string"
-          description: User id
-        - in: query
-          name: username
-          type: "string"
-          description: Username
-        - in: query
-          name: password
-          type: "string"
-          description: Password  
-        - in: query
-          name: up
-          type: "number"
-          description: User profile (From 0 to 2)
-        - in: query
-          name: email
-          type: "string"  
-          description: Email  
-     responses:
+      tags:
+      - Users
+      summary: Updates a user
+      parameters:
+      - name: userId
+        in: query
+        description: User id
+        schema:
+          type: string
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: Password
+        schema:
+          type: string
+      - name: up
+        in: query
+        description: User profile (From 0 to 2)
+        schema:
+          type: number
+      - name: email
+        in: query
+        description: Email
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-  
+          description: successful operation
+          content: {}
   /updateUsernameAndEmailAndUserProfile:
     post:
-     tags:
-     - "Users"
-     summary: "Updates the username, the email and the user profile of a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: userId
-          type: "string"
-          description: User id
-        - in: query
-          name: username
-          type: "string"
-          description: Username
-        - in: query
-          name: password
-          type: "string"
-          description: Password  
-        - in: query
-          name: up
-          type: "number"
-          description: User profile (From 0 to 2)
-        - in: query
-          name: email
-          type: "string"  
-          description: Email  
-     responses:
+      tags:
+      - Users
+      summary: Updates the username, the email and the user profile of a user
+      parameters:
+      - name: userId
+        in: query
+        description: User id
+        schema:
+          type: string
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: Password
+        schema:
+          type: string
+      - name: up
+        in: query
+        description: User profile (From 0 to 2)
+        schema:
+          type: number
+      - name: email
+        in: query
+        description: Email
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-  
+          description: successful operation
+          content: {}
   /deleteUser:
     post:
-     tags:
-     - "Users"
-     summary: "Deletes a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: username
-          type: "string"
-          description: Username
-        - in: query
-          name: password
-          type: "string"
-          description: Password
-     responses:
+      tags:
+      - Users
+      summary: Deletes a user
+      parameters:
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: Password
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /resetPassword:
     post:
-     tags:
-     - "Users"
-     summary: "Resets a password"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: username
-          type: "string"
-          description: Username
-     responses:
+      tags:
+      - Users
+      summary: Resets a password
+      parameters:
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"    
-
-#
-# Profiles
-#
-  
+          description: successful operation
+          content: {}
   /searchAdmins:
     get:
-     tags:
-     - "Profiles"
-     summary: "Searches for administrators"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: keyword
-          type: "string"
-          description: Keyword
-        - in: query
-          name: uo
-          type: "number"
-          description: Order by type (0 or 1)   
-     responses:
+      tags:
+      - Profiles
+      summary: Searches for administrators
+      parameters:
+      - name: keyword
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      - name: uo
+        in: query
+        description: Order by type (0 or 1)
+        schema:
+          type: number
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /userWorkflows:
     get:
-     tags:
-     - "Profiles"
-     summary: "Returns user workflows"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: u
-          type: "string"
-          description: "User id"
-     responses:
+      tags:
+      - Profiles
+      summary: Returns user workflows
+      parameters:
+      - name: u
+        in: query
+        description: User id
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-      
+          description: successful operation
+          content: {}
   /saveUserWorkflows:
     post:
-     tags:
-     - "Profiles"
-     summary: "Saves user workflow relations"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Payload"
-          required: true
-          schema:
-           $ref: "#/definitions/saveUserWorkflows"   
-     responses:
+      tags:
+      - Profiles
+      summary: Saves user workflow relations
+      requestBody:
+        description: Payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/saveUserWorkflows'
+        required: true
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"     
-
-#
-# Notifications
-#
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /hasNotifications:
     get:
-     tags:
-     - "Notifications"
-     summary: "Indicates whether the user has notifications or not"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: a
-          type: "string"
-          description: Username of the user assigned to the notifications
-     responses:
+      tags:
+      - Notifications
+      summary: Indicates whether the user has notifications or not
+      parameters:
+      - name: a
+        in: query
+        description: Username of the user assigned to the notifications
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /markNotificationsAsRead:
     post:
-     tags:
-     - "Notifications"
-     summary: "Marks notifications as read"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Notification Ids"
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-     responses:
+      tags:
+      - Notifications
+      summary: Marks notifications as read
+      requestBody:
+        description: Notification Ids
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /markNotificationsAsUnread:
     post:
-     tags:
-     - "Notifications"
-     summary: "Marks notifications as unread"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Notification Ids"
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-     responses:
+      tags:
+      - Notifications
+      summary: Marks notifications as unread
+      requestBody:
+        description: Notification Ids
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /deleteNotifications:
     post:
-     tags:
-     - "Notifications"
-     summary: "Deletes notifications"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: "body"
-          name: "body"
-          description: "Notification Ids"
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-     responses:
+      tags:
+      - Notifications
+      summary: Deletes notifications
+      requestBody:
+        description: Notification Ids
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /searchNotifications:
     get:
-     tags:
-     - "Notifications"
-     summary: "Searches for notifications of a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: a
-          type: "string"
-          description: Username of the user assigned to the notifications
-        - in: query
-          name: s
-          type: "string"
-          description: Keyword
-     responses:
+      tags:
+      - Notifications
+      summary: Searches for notifications of a user
+      parameters:
+      - name: a
+        in: query
+        description: Username of the user assigned to the notifications
+        schema:
+          type: string
+      - name: s
+        in: query
+        description: Keyword
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-     consumes:
-      - "application/json"
-
+          description: successful operation
+          content: {}
   /notify:
     post:
-     tags:
-     - "Notifications"
-     summary: "Notifies a user"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: a
-          type: "string"
-          description: Username of the user assigned to the notification
-        - in: query
-          name: m
-          type: "string"
-          description: Notification message
-     responses:
+      tags:
+      - Notifications
+      summary: Notifies a user
+      parameters:
+      - name: a
+        in: query
+        description: Username of the user assigned to the notification
+        schema:
+          type: string
+      - name: m
+        in: query
+        description: Notification message
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-
+          description: successful operation
+          content: {}
   /notifyApprovers:
     post:
-     tags:
-     - "Notifications"
-     summary: "Notifies the approvers"
-     description: ""
-     produces:
-       - "application/json"
-     parameters:
-        - in: query
-          name: r
-          type: "string"
-          description: Record Id
-        - in: query
-          name: m
-          type: "string"
-          description: Notification message
-     responses:
+      tags:
+      - Notifications
+      summary: Notifies the approvers
+      parameters:
+      - name: r
+        in: query
+        description: Record Id
+        schema:
+          type: string
+      - name: m
+        in: query
+        description: Notification message
+        schema:
+          type: string
+      responses:
         200:
-          description: "successful operation"
-
-#
-# Definitions
-#
-
-definitions:
-  variable:
-    type: "object"
-    properties:
-      Name: 
-        type: "string"
-      Value: 
-        type: "string"
-      
-  startWithVariables:
-    type: "object"
-    properties:
-       WorkflowId:
-         type: "integer"
-         format: "int64"
-       Variables:   
-         type: "array"
-         items:
-          $ref: "#/definitions/variable"
-          
-  saveXml: 
-    type: "object"
-    properties:
-       workflowId:
-         type: "integer"
-         format: "int64"
-       xml:
-         type: "string"
-         
-  deleteWorkflows:
-    type: "object"
-    properties:
-       WorkflowsToDelete:   
-         type: "array"
-         items:
-           type: "integer"
-           format: "int64"
-           
-  userWorkflow:
-    type: "object"
-    properties:
-      UserId: 
-        type: "string"
-      WorkflowId: 
-        type: "string"
-        
-  saveUserWorkflows:
-    type: "object"
-    properties:
-       UserId:
-         type: "string"
-       UserWorkflows:   
-         type: "array"
-         items:
-          $ref: "#/definitions/userWorkflow"
-  
-  attribute:
-    type: "object"
-    properties:
-       Name:
-         type: "string"
-       Value:
-         type: "string"
-  
-  setting:
-    type: "object"
-    properties:
-       Name:
-         type: "string"
-       Value:
-         type: "string"
-       Attributes:   
-         type: "array"
-         items:
-          $ref: "#/definitions/attribute"  
-       
-  task:
-    type: "object"
-    properties:
-       Id:
-         type: "integer"
-         format: "int64"
-       Name:
-         type: "string"
-       Description:
-         type: "string"
-       IsEnabled:
-         type: "boolean"
-       Settings:   
-         type: "array"
-         items:
-          $ref: "#/definitions/setting"
-  
-  localVariable:
-    type: "object"
-    properties:
-       Key:
-         type: "string"
-       Value:
-         type: "string"
-  
-  workflowInfo:
-    type: "object"
-    properties:
-       Id:
-         type: "integer"
-         format: "int64"
-       IsApproval:
-         type: "boolean"
-       IsEnabled:
-         type: "boolean"
-       EnableParallelJobs:
-         type: "boolean"
-       LaunchType:
-         type: "integer"
-         format: "int64"
-       Name:
-         type: "string"
-       FilePath:
-         type: "string"
-       Description:
-         type: "string"
-       Period:
-         type: "string"   
-       CronExpression:
-         type: "string"
-       LocalVariables:   
-         type: "array"
-         items:
-          $ref: "#/definitions/localVariable"
-          
-          
-  workflow:
-    type: "object"
-    properties:
-       WorkflowInfo:
-          $ref: "#/definitions/workflowInfo"
-       Tasks:   
-         type: "array"
-         items:
-          $ref: "#/definitions/task"    
-  
-  isXmlWorkflowValid:
-    type: "object"
-    properties:
-       xml:
-         type: "string"
-
-  version:
-    type: "object"
-    properties:
-       Id:
-         type: "string"
-       FilePath:
-         type: "string"
-       FileName:
-         type: "string"
-       RecordId:
-         type: "string"
-       CreatedOn:
-         type: "string"
-
-  record:
-    type: "object"
-    properties:
-       Id:
-         type: "string"
-       Name:
-         type: "string"
-       Description:
-         type: "string"
-       StartDate:
-         type: "string"
-       EndDate:
-         type: "string"
-       Comments:
-         type: "string"
-       Approved:
-         type: "boolean"
-       ManagerComments:
-         type: "string"
-       ModifiedBy:
-         type: "string"
-       ModifiedOn:
-         type: "string"
-       CreatedBy:
-         type: "string"
-       CreatedOn:
-         type: "string"
-       AssignedTo:
-         type: "string"
-       AssignedOn:
-         type: "string"
-       Versions:
-         type: "array"
-         items:
-          $ref: "#/definitions/version"
-
-externalDocs:
-  description: "Find out more about Wexflow"
-  url: "https://wexflow.github.io"
+          description: successful operation
+          content: {}
+components:
+  schemas:
+    variable:
+      type: object
+      properties:
+        Name:
+          type: string
+        Value:
+          type: string
+    startWithVariables:
+      type: object
+      properties:
+        WorkflowId:
+          type: integer
+          format: int64
+        Variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/variable'
+    saveXml:
+      type: object
+      properties:
+        workflowId:
+          type: integer
+          format: int64
+        xml:
+          type: string
+    deleteWorkflows:
+      type: object
+      properties:
+        WorkflowsToDelete:
+          type: array
+          items:
+            type: integer
+            format: int64
+    userWorkflow:
+      type: object
+      properties:
+        UserId:
+          type: string
+        WorkflowId:
+          type: string
+    saveUserWorkflows:
+      type: object
+      properties:
+        UserId:
+          type: string
+        UserWorkflows:
+          type: array
+          items:
+            $ref: '#/components/schemas/userWorkflow'
+    attribute:
+      type: object
+      properties:
+        Name:
+          type: string
+        Value:
+          type: string
+    setting:
+      type: object
+      properties:
+        Name:
+          type: string
+        Value:
+          type: string
+        Attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/attribute'
+    task:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+        Name:
+          type: string
+        Description:
+          type: string
+        IsEnabled:
+          type: boolean
+        Settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/setting'
+    localVariable:
+      type: object
+      properties:
+        Key:
+          type: string
+        Value:
+          type: string
+    workflowInfo:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+        IsApproval:
+          type: boolean
+        IsEnabled:
+          type: boolean
+        EnableParallelJobs:
+          type: boolean
+        LaunchType:
+          type: integer
+          format: int64
+        Name:
+          type: string
+        FilePath:
+          type: string
+        Description:
+          type: string
+        Period:
+          type: string
+        CronExpression:
+          type: string
+        LocalVariables:
+          type: array
+          items:
+            $ref: '#/components/schemas/localVariable'
+    workflow:
+      type: object
+      properties:
+        WorkflowInfo:
+          $ref: '#/components/schemas/workflowInfo'
+        Tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/task'
+    isXmlWorkflowValid:
+      type: object
+      properties:
+        xml:
+          type: string
+    version:
+      type: object
+      properties:
+        Id:
+          type: string
+        FilePath:
+          type: string
+        FileName:
+          type: string
+        RecordId:
+          type: string
+        CreatedOn:
+          type: string
+    record:
+      type: object
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        Description:
+          type: string
+        StartDate:
+          type: string
+        EndDate:
+          type: string
+        Comments:
+          type: string
+        Approved:
+          type: boolean
+        ManagerComments:
+          type: string
+        ModifiedBy:
+          type: string
+        ModifiedOn:
+          type: string
+        CreatedBy:
+          type: string
+        CreatedOn:
+          type: string
+        AssignedTo:
+          type: string
+        AssignedOn:
+          type: string
+        Versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/version'
