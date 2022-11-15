@@ -60,6 +60,7 @@
 	{ "Name": "Mkdir", "Description": "Creates a collection of folders."},
 	{ "Name": "Movedir", "Description": "Moves a folder."},
 	{ "Name": "Now", "Description": "A flowchart task that retrieves the current date in the specified format."},
+	{ "Name": "PdfToText", "Description": "Extract TEXT files from PDF files."},
 	{ "Name": "Ping", "Description": "Checks whether a server responds to a ping request or not."},
 	{ "Name": "ProcessInfo", "Description": "Shows information about a process."},
 	{ "Name": "ProcessKiller", "Description": "Kills a process."},

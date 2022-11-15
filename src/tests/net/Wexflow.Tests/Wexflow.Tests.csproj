@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="FilesJoiner.cs" />
     <Compile Include="FilesLoaderEx.cs" />
+    <Compile Include="PdfToText.cs" />
     <Compile Include="Slack.cs" />
     <Compile Include="FileSystemWatcher.cs" />
     <Compile Include="SubWorkflow.cs" />
