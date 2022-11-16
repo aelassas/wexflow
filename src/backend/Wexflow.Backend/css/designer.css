@@ -178,8 +178,17 @@ html {
     #run:hover,
     #save:hover {
         cursor: pointer;
-        opacity: .7;
     }
+
+#export:hover,
+#import:hover {
+    opacity: .7;
+}
+
+#run:hover,
+#save:hover {
+    opacity: .85;
+}
 
 #browse {
     font-weight: 500;
@@ -199,7 +208,7 @@ html {
 
     #browse:hover {
         cursor: pointer;
-        opacity: .7;
+        opacity: .8;
     }
 
 #newworkflow {
