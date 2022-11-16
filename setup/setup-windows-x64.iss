@@ -189,6 +189,7 @@ Source: "..\src\net\Wexflow.Tasks.SubWorkflow\SubWorkflow.xml"; DestDir: "{app}\
 Source: "..\src\net\Wexflow.Tasks.ApproveRecord\ApproveRecord.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.ApprovalRecordsCreator\ApprovalRecordsCreator.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.ApprovalWorkflowsCreator\ApprovalWorkflowsCreator.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.PdfToText\PdfToText.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 
 Source: "..\LICENSE.txt"; DestDir: "{app}\"; Flags: ignoreversion
 
