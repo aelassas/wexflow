@@ -516,6 +516,10 @@
       <Project>{f2f1e7e2-2707-40a7-a98d-b5bbd27c0787}</Project>
       <Name>Wexflow.Tasks.Now</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.PdfToText\Wexflow.Tasks.PdfToText.csproj">
+      <Project>{6c663245-2ce9-4996-bd01-edfc36d9384f}</Project>
+      <Name>Wexflow.Tasks.PdfToText</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wexflow.Tasks.Ping\Wexflow.Tasks.Ping.csproj">
       <Project>{e9d7c7a8-6e79-4cc5-8ab1-f359290d70d0}</Project>
       <Name>Wexflow.Tasks.Ping</Name>

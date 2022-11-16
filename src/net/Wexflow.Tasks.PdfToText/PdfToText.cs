@@ -1,13 +1,11 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.IO;
-using System.Threading;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+﻿using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
-using static System.Net.Mime.MediaTypeNames;
+using System;
+using System.IO;
 using System.Text;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 using Path = System.IO.Path;
 
 namespace Wexflow.Tasks.PdfToText
@@ -34,21 +32,21 @@ namespace Wexflow.Tasks.PdfToText
                 {
                     try
                     {                        
-                        string textPath = Path.Combine(Workflow.WorkflowTempFolder,
+                        var textPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.txt", Path.GetFileNameWithoutExtension(pdfFile.FileName), DateTime.Now));
 
                         //Document doc = new Document();
-                        using (StreamWriter doc = new StreamWriter(textPath))
+                        using (var doc = new StreamWriter(textPath))
                         {
-                            PdfReader pdfReader = new PdfReader(pdfFile.FileName);
+                            var pdfReader = new PdfReader(pdfFile.Path);
+                            
                             // Add the text file contents
-
                             for (int page = 1; page <= pdfReader.NumberOfPages; page++)
                             {
                                 ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
                                 string currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, strategy);
 
-                                currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
+                                currentText = Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
                                 doc.Write(currentText);
                             }
                             pdfReader.Close();

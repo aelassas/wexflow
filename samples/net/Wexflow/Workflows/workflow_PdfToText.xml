@@ -1,0 +1,21 @@
+<Workflow xmlns="urn:wexflow-schema" id="151" name="Workflow_PdfToText" description="Workflow_PdfToText">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="approval" value="false" />
+		<Setting name="enableParallelJobs" value="true" />
+	</Settings>
+	<LocalVariables />
+	<Tasks>
+		<Task id="1" name="FilesLoader" description="Loading PDF files" enabled="true">
+			<Setting name="file" value="C:\WexflowTesting\PdfToText\lorem-ipsum.pdf" />
+		</Task>
+		<Task id="2" name="PdfToText" description="Converting PDF files to text" enabled="true">
+			<Setting name="selectFiles" value="1" />
+		</Task>
+		<Task id="3" name="FilesMover" description="Moving Text files to PdfToText folder" enabled="true">
+			<Setting name="selectFiles" value="2" />
+			<Setting name="destFolder" value="C:\WexflowTesting\PdfToText" />
+		</Task>
+	</Tasks>
+</Workflow>
