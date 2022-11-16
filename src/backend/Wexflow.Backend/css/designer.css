@@ -138,7 +138,7 @@ html {
     #rightswitch:hover,
     #graphswitch:hover {
         border: 1px solid #E8E8EF;
-        opacity: .8;
+        opacity: .7;
     }
 
 #exporttype {
@@ -178,7 +178,7 @@ html {
     #run:hover,
     #save:hover {
         cursor: pointer;
-        opacity: .9;
+        opacity: .7;
     }
 
 #browse {
@@ -199,7 +199,7 @@ html {
 
     #browse:hover {
         cursor: pointer;
-        opacity: .9;
+        opacity: .7;
     }
 
 #newworkflow {
