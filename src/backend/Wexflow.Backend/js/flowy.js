@@ -164,8 +164,10 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                 } else if (active && blocks.length == 0 && (drag.getBoundingClientRect().top + window.scrollY) > (canvas_div.getBoundingClientRect().top + window.scrollY) && (drag.getBoundingClientRect().left + window.scrollX) > (canvas_div.getBoundingClientRect().left + window.scrollX)) {
                     blockSnap(drag, true, undefined);
                     active = false;
-                    drag.style.top = (drag.getBoundingClientRect().top + window.scrollY) - (canvas_div.getBoundingClientRect().top + window.scrollY) + canvas_div.scrollTop + "px";
-                    drag.style.left = (drag.getBoundingClientRect().left + window.scrollX) - (canvas_div.getBoundingClientRect().left + window.scrollX) + canvas_div.scrollLeft + "px";
+                    //drag.style.top = (drag.getBoundingClientRect().top + window.scrollY) - (canvas_div.getBoundingClientRect().top + window.scrollY) + canvas_div.scrollTop + "px";
+                    //drag.style.left = (drag.getBoundingClientRect().left + window.scrollX) - (canvas_div.getBoundingClientRect().left + window.scrollX) + canvas_div.scrollLeft + "px";
+                    drag.style.top = "25px";
+                    drag.style.left = (canvas_div.clientWidth / 2 - drag.clientWidth / 2) + "px";
                     canvas_div.appendChild(drag);
                     blocks.push({
                         parent: -1,
@@ -178,7 +180,6 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                     });
                 } else if (active && blocks.length == 0) {
                     //canvas_div.appendChild(document.querySelector(".indicator"));
-
                     blockSnap(drag, true, undefined);
                     active = false;
                     const _drag = drag.cloneNode(true);
@@ -431,7 +432,8 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                     mouse_x = event.clientX;
                     mouse_y = event.clientY;
                 }
-                if (dragblock) {
+                if (false && dragblock) {  // disable blocks drag & drop
+                    console.log(drag);
                     rearrange = true;
                     drag.classList.add("dragging");
                     let blockid = parseInt(drag.querySelector(".blockid").value);
@@ -492,7 +494,7 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                 if (active) {
                     drag.style.left = mouse_x - dragx + "px";
                     drag.style.top = mouse_y - dragy + "px";
-                } else if (rearrange) {
+                } else if (false && rearrange) {   // disable blocks drag & drop
                     drag.style.left = mouse_x - dragx - (canvas_div.getBoundingClientRect().left + window.scrollX) + canvas_div.scrollLeft + "px";
                     drag.style.top = mouse_y - dragy - (canvas_div.getBoundingClientRect().top + window.scrollY) + canvas_div.scrollTop + "px";
                     blockstemp.filter(a => a.id == parseInt(drag.querySelector(".blockid").value)).x = (drag.getBoundingClientRect().left + window.scrollX) + (parseInt(window.getComputedStyle(drag).width) / 2) + canvas_div.scrollLeft;

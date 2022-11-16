@@ -52,6 +52,7 @@
     languages["en"]["new-user-action"] = "New user";
     languages["en"]["save-action"] = "Save";
     languages["en"]["delete-action"] = "Delete";
+    languages["en"]["run-action"] = "Run";
     languages["en"]["tr-createdOn-label"] = "Created on";
     languages["en"]["tr-modifiedOn-label"] = "Modified on";
     languages["en"]["userprofile-slct-label"] = "User profile";
@@ -232,6 +233,7 @@
     languages["en"]["th-approved-by"] = "Approved by";
     languages["en"]["th-approved"] = "Approved";
     languages["en"]["th-approved-on"] = "Approved on";
+    languages["en"]["toast-save-and-run"] = "Workflow saved and started successfully.";
 
     // 
     // fr
@@ -273,6 +275,7 @@
     languages["fr"]["new-user-action"] = "Nouvel utilisateur";
     languages["fr"]["save-action"] = "Sauvegarder";
     languages["fr"]["delete-action"] = "Supprimer";
+    languages["fr"]["run-action"] = "Exécuter";
     languages["fr"]["tr-createdOn-label"] = "Créé le";
     languages["fr"]["tr-modifiedOn-label"] = "Modifié le";
     languages["fr"]["userprofile-slct-label"] = "Profile";
@@ -453,6 +456,7 @@
     languages["fr"]["th-approved-by"] = "Approuvé par";
     languages["fr"]["th-approved"] = "Approuvé";
     languages["fr"]["th-approved-on"] = "Approuvé le";
+    languages["fr"]["toast-save-and-run"] = "Workflow enregistré et démarré avec succès.";
 
     //
     // da
@@ -494,6 +498,7 @@
     languages["da"]["new-user-action"] = "Ny bruger";
     languages["da"]["save-action"] = "Gem";
     languages["da"]["delete-action"] = "Slet";
+    languages["da"]["run-action"] = "Kør";
     languages["da"]["tr-createdOn-label"] = "Oprettet den";
     languages["da"]["tr-modifiedOn-label"] = "Ændret på";
     languages["da"]["userprofile-slct-label"] = "Brugerprofil";
@@ -674,6 +679,7 @@
     languages["da"]["th-approved-by"] = "Godkendt af";
     languages["da"]["th-approved"] = "Godkendt";
     languages["da"]["th-approved-on"] = "Godkendt på";
+    languages["da"]["toast-save-and-run"] = "Workflow gemt og startet med succes.";
 
     return {
         codes: codes,

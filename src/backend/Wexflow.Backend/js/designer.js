@@ -59,6 +59,8 @@
         for (let i = 0; i < removeVariableButtons.length; i++) {
             removeVariableButtons[i].innerHTML = language.get("wf-remove-var");
         }
+        document.getElementById("save").innerHTML = language.get("save-action");
+        document.getElementById("run").innerHTML = language.get("run-action");
     };
 
     let language = new Language("lang", updateLanguage);
@@ -150,7 +152,7 @@
         let leftcardwidth = 361;
         let closecardimg = document.getElementById("closecardimg");
         let wfpropHidden = true;
-        let wfpropwidth = 331;
+        let wfpropwidth = 311;
         let closewfcardimg = document.getElementById("wfcloseimg");
         let wfclose = document.getElementById("wfclose");
         let code = document.getElementById("code-container");
@@ -2038,204 +2040,218 @@
             }
         }
 
-        window.onkeydown = function (event) {
-            if ((event.ctrlKey || event.metaKey || event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) && event.keyCode === 83) {
-                event.preventDefault();
-                let wfid = document.getElementById("wfid").value;
+        function save(callback) {
+            if (diag === true) {
+                updateTasks();
 
-                if (diag === true) {
-                    updateTasks();
-
-                    let saveFunc = function () {
-                        Common.post(uri + "/save", function (res) {
-                            if (res.Result === true) {
-                                workflow.WorkflowInfo.FilePath = res.FilePath;
-                                initialWorkflow = JSON.parse(JSON.stringify(workflow));
-                                checkId = false;
-                                openSavePopup = false;
-                                removeworkflow.style.display = "block";
-                                jsonEditorChanged = false;
-                                xmlEditorChanged = false;
-                                Common.toastSuccess(language.get("toast-save-workflow-diag"));
+                let saveFunc = function () {
+                    Common.post(uri + "/save", function (res) {
+                        if (res.Result === true) {
+                            workflow.WorkflowInfo.FilePath = res.FilePath;
+                            initialWorkflow = JSON.parse(JSON.stringify(workflow));
+                            checkId = false;
+                            openSavePopup = false;
+                            removeworkflow.style.display = "block";
+                            jsonEditorChanged = false;
+                            xmlEditorChanged = false;
+                            if (callback) {
+                                callback();
                             } else {
-                                Common.toastError(language.get("toast-save-workflow-diag-error"));
+                                Common.toastSuccess(language.get("toast-save-workflow-diag"));
                             }
-                        }, function () {
+                        } else {
                             Common.toastError(language.get("toast-save-workflow-diag-error"));
-                        }, workflow, auth);
-                    };
+                        }
+                    }, function () {
+                        Common.toastError(language.get("toast-save-workflow-diag-error"));
+                    }, workflow, auth);
+                };
 
-                    let wfIdStr = document.getElementById("wfid").value;
-                    if (isInt(wfIdStr)) {
-                        let workflowId = parseInt(wfIdStr);
+                let wfIdStr = document.getElementById("wfid").value;
+                if (isInt(wfIdStr)) {
+                    let workflowId = parseInt(wfIdStr);
 
-                        if (checkId === true) {
-                            Common.get(uri + "/isWorkflowIdValid/" + workflowId,
-                                function (res) {
-                                    if (res === true) {
-                                        if (document.getElementById("wfname").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-name"));
+                    if (checkId === true) {
+                        Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            function (res) {
+                                if (res === true) {
+                                    if (document.getElementById("wfname").value === "") {
+                                        Common.toastInfo(language.get("toast-workflow-name"));
+                                    } else {
+                                        let lt = document.getElementById("wflaunchtype").value;
+                                        if (lt === "") {
+                                            Common.toastInfo(language.get("toast-workflow-launchType"));
                                         } else {
-                                            let lt = document.getElementById("wflaunchtype").value;
-                                            if (lt === "") {
-                                                Common.toastInfo(language.get("toast-workflow-launchType"));
+                                            if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
+                                                Common.toastInfo(language.get("toast-workflow-period"));
                                             } else {
-                                                if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-period"));
+                                                if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
+                                                    Common.toastInfo(language.get("toast-workflow-cron"));
                                                 } else {
-                                                    if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                        Common.toastInfo(language.get("toast-workflow-cron"));
+
+                                                    // Period validation
+                                                    if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
+                                                        let period = document.getElementById("wfperiod").value;
+                                                        Common.get(uri + "/isPeriodValid/" + period,
+                                                            function (res) {
+                                                                if (res === true) {
+                                                                    saveFunc();
+                                                                } else {
+                                                                    Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                }
+                                                            },
+                                                            function () { }, auth
+                                                        );
+                                                    } // Cron expression validation
+                                                    else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
+                                                        let expression = document.getElementById("wfcronexp").value;
+                                                        let expressionEncoded = encodeURIComponent(expression);
+
+                                                        Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            function (res) {
+                                                                if (res === true) {
+                                                                    saveFunc();
+                                                                } else {
+                                                                    if (confirm(language.get("confirm-cron"))) {
+                                                                        openInNewTab("https://github.com/aelassas/Wexflow/wiki/Cron-scheduling");
+                                                                    }
+                                                                }
+                                                            },
+                                                            function () { }, auth
+                                                        );
                                                     } else {
-
-                                                        // Period validation
-                                                        if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
-                                                            let period = document.getElementById("wfperiod").value;
-                                                            Common.get(uri + "/isPeriodValid/" + period,
-                                                                function (res) {
-                                                                    if (res === true) {
-                                                                        saveFunc();
-                                                                    } else {
-                                                                        Common.toastInfo(language.get("toast-workflow-period-error"));
-                                                                    }
-                                                                },
-                                                                function () { }, auth
-                                                            );
-                                                        } // Cron expression validation
-                                                        else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
-                                                            let expression = document.getElementById("wfcronexp").value;
-                                                            let expressionEncoded = encodeURIComponent(expression);
-
-                                                            Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
-                                                                function (res) {
-                                                                    if (res === true) {
-                                                                        saveFunc();
-                                                                    } else {
-                                                                        if (confirm(language.get("confirm-cron"))) {
-                                                                            openInNewTab("https://github.com/aelassas/Wexflow/wiki/Cron-scheduling");
-                                                                        }
-                                                                    }
-                                                                },
-                                                                function () { }, auth
-                                                            );
-                                                        } else {
-                                                            saveFunc();
-                                                        }
-
+                                                        saveFunc();
                                                     }
+
                                                 }
                                             }
                                         }
-                                    } else {
-                                        Common.toastInfo(language.get("toast-workflow-id"));
                                     }
-                                },
-                                function () { }, auth
-                            );
-                        } else {
-
-                            if (document.getElementById("wfname").value === "") {
-                                Common.toastInfo(language.get("toast-workflow-name"));
-                            } else {
-                                let lt = document.getElementById("wflaunchtype").value;
-                                if (lt === "") {
-                                    Common.toastInfo(language.get("toast-workflow-launchType"));
                                 } else {
-                                    if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                        Common.toastInfo(language.get("toast-workflow-period"));
+                                    Common.toastInfo(language.get("toast-workflow-id"));
+                                }
+                            },
+                            function () { }, auth
+                        );
+                    } else {
+
+                        if (document.getElementById("wfname").value === "") {
+                            Common.toastInfo(language.get("toast-workflow-name"));
+                        } else {
+                            let lt = document.getElementById("wflaunchtype").value;
+                            if (lt === "") {
+                                Common.toastInfo(language.get("toast-workflow-launchType"));
+                            } else {
+                                if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
+                                    Common.toastInfo(language.get("toast-workflow-period"));
+                                } else {
+                                    if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
+                                        Common.toastInfo(language.get("toast-workflow-cron"));
                                     } else {
-                                        if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-cron"));
+
+                                        // Period validation
+                                        if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
+                                            let period = document.getElementById("wfperiod").value;
+                                            Common.get(uri + "/isPeriodValid/" + period,
+                                                function (res) {
+                                                    if (res === true) {
+                                                        saveFunc();
+                                                    } else {
+                                                        Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                    }
+                                                },
+                                                function () { }, auth
+                                            );
+                                        } // Cron expression validation
+                                        else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
+                                            let expression = document.getElementById("wfcronexp").value;
+                                            let expressionEncoded = encodeURIComponent(expression);
+
+                                            Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                function (res) {
+                                                    if (res === true) {
+                                                        saveFunc();
+                                                    } else {
+                                                        if (confirm(language.get("confirm-cron"))) {
+                                                            openInNewTab("https://github.com/aelassas/Wexflow/wiki/Cron-scheduling");
+                                                        }
+                                                    }
+                                                },
+                                                function () { }, auth
+                                            );
                                         } else {
-
-                                            // Period validation
-                                            if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
-                                                let period = document.getElementById("wfperiod").value;
-                                                Common.get(uri + "/isPeriodValid/" + period,
-                                                    function (res) {
-                                                        if (res === true) {
-                                                            saveFunc();
-                                                        } else {
-                                                            Common.toastInfo(language.get("toast-workflow-period-error"));
-                                                        }
-                                                    },
-                                                    function () { }, auth
-                                                );
-                                            } // Cron expression validation
-                                            else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
-                                                let expression = document.getElementById("wfcronexp").value;
-                                                let expressionEncoded = encodeURIComponent(expression);
-
-                                                Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
-                                                    function (res) {
-                                                        if (res === true) {
-                                                            saveFunc();
-                                                        } else {
-                                                            if (confirm(language.get("confirm-cron"))) {
-                                                                openInNewTab("https://github.com/aelassas/Wexflow/wiki/Cron-scheduling");
-                                                            }
-                                                        }
-                                                    },
-                                                    function () { }, auth
-                                                );
-                                            } else {
-                                                saveFunc();
-                                            }
-
+                                            saveFunc();
                                         }
+
                                     }
                                 }
                             }
-
                         }
 
-                    } else {
-                        Common.toastInfo(language.get("toast-workflow-id-error"));
                     }
 
-                } else if (json === true) {
-                    let json = JSON.parse(editor.getValue());
-                    Common.post(uri + "/save", function (res) {
-                        if (res.Result === true) {
-                            checkId = false;
-                            openSavePopup = false;
-                            workflow.WorkflowInfo.FilePath = res.FilePath;
-                            loadDiagram(workflow.WorkflowInfo.Id, res.FilePath);
-                            initialWorkflow = JSON.parse(JSON.stringify(workflow));
-                            removeworkflow.style.display = "block";
-                            jsonEditorChanged = false;
-                            openJsonView(JSON.stringify(workflow, null, '\t'));
-                            Common.toastSuccess(language.get("toast-save-workflow-json"));
-                        } else {
-                            Common.toastError(language.get("toast-save-workflow-json-error"));
-                        }
-                    }, function () {
-                        Common.toastError(language.get("toast-save-workflow-json-error"));
-                    }, json, auth);
-                } else if (xml === true) {
-                    let json = {
-                        workflowId: workflow.WorkflowInfo.Id,
-                        filePath: workflow.WorkflowInfo.FilePath,
-                        xml: editor.getValue()
-                    };
-                    Common.post(uri + "/saveXml", function (res) {
-                        if (res.Result === true) {
-                            checkId = false;
-                            openSavePopup = false;
-                            //let filePath = res.FilePath.replace(/\\/g, "\\\\");
-                            workflow.WorkflowInfo.FilePath = res.FilePath;
-                            loadDiagram(workflow.WorkflowInfo.Id, res.FilePath);
-                            initialWorkflow = JSON.parse(JSON.stringify(workflow));
-                            removeworkflow.style.display = "block";
-                            xmlEditorChanged = false;
-                            Common.toastSuccess(language.get("toast-save-workflow-xml"));
-                        } else {
-                            Common.toastError(language.get("toast-save-workflow-xml-error"));
-                        }
-                    }, function () {
-                        Common.toastError(language.get("toast-save-workflow-xml-error"));
-                    }, json, auth);
+                } else {
+                    Common.toastInfo(language.get("toast-workflow-id-error"));
                 }
 
+            } else if (json === true) {
+                let json = JSON.parse(editor.getValue());
+                Common.post(uri + "/save", function (res) {
+                    if (res.Result === true) {
+                        checkId = false;
+                        openSavePopup = false;
+                        workflow.WorkflowInfo.FilePath = res.FilePath;
+                        loadDiagram(workflow.WorkflowInfo.Id, res.FilePath);
+                        initialWorkflow = JSON.parse(JSON.stringify(workflow));
+                        removeworkflow.style.display = "block";
+                        jsonEditorChanged = false;
+                        openJsonView(JSON.stringify(workflow, null, '\t'));
+                        if (callback) {
+                            callback();
+                        } else {
+                            Common.toastSuccess(language.get("toast-save-workflow-json"));
+                        }
+                    } else {
+                        Common.toastError(language.get("toast-save-workflow-json-error"));
+                    }
+                }, function () {
+                    Common.toastError(language.get("toast-save-workflow-json-error"));
+                }, json, auth);
+            } else if (xml === true) {
+                let json = {
+                    workflowId: workflow.WorkflowInfo.Id,
+                    filePath: workflow.WorkflowInfo.FilePath,
+                    xml: editor.getValue()
+                };
+                Common.post(uri + "/saveXml", function (res) {
+                    if (res.Result === true) {
+                        checkId = false;
+                        openSavePopup = false;
+                        //let filePath = res.FilePath.replace(/\\/g, "\\\\");
+                        workflow.WorkflowInfo.FilePath = res.FilePath;
+                        loadDiagram(workflow.WorkflowInfo.Id, res.FilePath);
+                        initialWorkflow = JSON.parse(JSON.stringify(workflow));
+                        removeworkflow.style.display = "block";
+                        xmlEditorChanged = false;
+
+                        if (callback) {
+                            callback();
+                        } else {
+                            Common.toastSuccess(language.get("toast-save-workflow-xml"));
+                        }
+                    } else {
+                        Common.toastError(language.get("toast-save-workflow-xml-error"));
+                    }
+                }, function () {
+                    Common.toastError(language.get("toast-save-workflow-xml-error"));
+                }, json, auth);
+            }
+        }
+
+        window.onkeydown = function (event) {
+            if ((event.ctrlKey || event.metaKey || event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) && event.keyCode === 83) {
+                event.preventDefault();
+                save();
                 return false;
             }
             else if ((event.ctrlKey || event.metaKey || event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) && event.keyCode === 79) {
@@ -2243,6 +2259,19 @@
                 browse();
                 return false;
             }
+        };
+
+        document.getElementById("save").onclick = () => {
+            save();
+        };
+
+        document.getElementById("run").onclick = () => {
+            save(() => {
+                let startUri = uri + "/start?w=" + workflow.WorkflowInfo.Id;
+                Common.post(startUri, function (res) {
+                    Common.toastSuccess(language.get("toast-save-and-run"));
+                }, function () { }, "", auth);
+            });
         };
 
         function launchTypeReverse(lt) {
@@ -2832,12 +2861,13 @@
                 }
             };
 
-            saveChanges(function () {
-                openJson();
-            }, function () {
-                openJson();
-            }, true);
+            //saveChanges(function () {
+            //    openJson();
+            //}, function () {
+            //    openJson();
+            //}, true);
 
+            openJson();
         };
 
         // xml click
@@ -2904,8 +2934,9 @@
         };
 
         document.getElementById("rightswitch").onclick = function () {
-
+            
             let openXml = function () {
+                
                 Common.get(uri + "/graphXml/" + (workflow.WorkflowInfo.Id ? workflow.WorkflowInfo.Id : 0), function (val) {
                     function getXml() {
                         let graph = val;
@@ -2952,6 +2983,7 @@
                     }
 
                     if (diag === true) {
+                        
                         let wfIdStr = document.getElementById("wfid").value;
                         if (isInt(wfIdStr)) {
                             let workflowId = parseInt(wfIdStr);
@@ -3085,16 +3117,18 @@
                 }, auth);
             };
 
-            saveChanges(function () {
-                // onSave getXml
-                let workflowId = parseInt(document.getElementById("wfid").value);
-                Common.get(uri + "/xml/" + workflowId, function (val) {
-                    openXmlView(val);
-                }, function () { }, auth);
-            }, function () {
-                // onCancel
-                openXml();
-            }, true);
+            //saveChanges(function () {
+            //    // onSave getXml
+            //    let workflowId = parseInt(document.getElementById("wfid").value);
+            //    Common.get(uri + "/xml/" + workflowId, function (val) {
+            //        openXmlView(val);
+            //    }, function () { }, auth);
+            //}, function () {
+            //    // onCancel
+            //    openXml();
+            //}, true);
+
+            openXml();
 
         };
 

@@ -2513,13 +2513,9 @@ namespace Wexflow.Server
                             }
                             graph = builder.ToString();
                         }
+                    }
 
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(graph));
-                    }
-                    else
-                    {
-                        await WorkflowNotFound(context);
-                    }
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(graph));
                 }
                 else
                 {
