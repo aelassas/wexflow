@@ -129,8 +129,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Twilio, Version=5.81.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Twilio.5.81.2\lib\net451\Twilio.dll</HintPath>
+    <Reference Include="Twilio, Version=6.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Twilio.6.0.1\lib\net451\Twilio.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
