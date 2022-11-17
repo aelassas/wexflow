@@ -79,7 +79,6 @@ namespace Wexflow.Server
             });
             services.AddCors();
             services.AddControllers();
-
         }
     }
 }

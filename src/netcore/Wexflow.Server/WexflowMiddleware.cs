@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Wexflow.Server
 {
-    internal class WexflowMiddleware
+    public class WexflowMiddleware
     {
         private readonly RequestDelegate _next;
 
