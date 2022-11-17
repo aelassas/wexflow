@@ -53,6 +53,7 @@
     languages["en"]["save-action"] = "Save";
     languages["en"]["delete-action"] = "Delete";
     languages["en"]["run-action"] = "Run";
+    languages["en"]["run-action-title"] = "Save & Run";
     languages["en"]["tr-createdOn-label"] = "Created on";
     languages["en"]["tr-modifiedOn-label"] = "Modified on";
     languages["en"]["userprofile-slct-label"] = "User profile";
@@ -276,6 +277,7 @@
     languages["fr"]["save-action"] = "Sauvegarder";
     languages["fr"]["delete-action"] = "Supprimer";
     languages["fr"]["run-action"] = "Exécuter";
+    languages["fr"]["run-action-title"] = "Sauvegarder & Exécuter";
     languages["fr"]["tr-createdOn-label"] = "Créé le";
     languages["fr"]["tr-modifiedOn-label"] = "Modifié le";
     languages["fr"]["userprofile-slct-label"] = "Profile";
@@ -499,6 +501,7 @@
     languages["da"]["save-action"] = "Gem";
     languages["da"]["delete-action"] = "Slet";
     languages["da"]["run-action"] = "Kør";
+    languages["da"]["run-action-title"] = "Gem & Kør";
     languages["da"]["tr-createdOn-label"] = "Oprettet den";
     languages["da"]["tr-modifiedOn-label"] = "Ændret på";
     languages["da"]["userprofile-slct-label"] = "Brugerprofil";

@@ -61,6 +61,7 @@
         }
         document.getElementById("save").innerHTML = language.get("save-action");
         document.getElementById("run").innerHTML = language.get("run-action");
+        document.getElementById("run").title = language.get("run-action-title");
     };
 
     let language = new Language("lang", updateLanguage);
