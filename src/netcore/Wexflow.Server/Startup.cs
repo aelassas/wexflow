@@ -30,7 +30,7 @@ namespace Wexflow.Server
             }
 
             //
-            // swagger-ui
+            // Swagger UI
             //
             var webBuilder = WebApplication.CreateBuilder();
             var path = Path.Combine(webBuilder.Environment.ContentRootPath, "swagger-ui");
