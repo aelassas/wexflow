@@ -432,8 +432,7 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                     mouse_x = event.clientX;
                     mouse_y = event.clientY;
                 }
-                if (false && dragblock) {  // disable blocks drag & drop
-                    console.log(drag);
+                if (dragblock) {  // blocks drag & drop
                     rearrange = true;
                     drag.classList.add("dragging");
                     let blockid = parseInt(drag.querySelector(".blockid").value);
@@ -494,7 +493,7 @@ let flowy = function (canvas, grab, release, snapping, drop, spacing_x, spacing_
                 if (active) {
                     drag.style.left = mouse_x - dragx + "px";
                     drag.style.top = mouse_y - dragy + "px";
-                } else if (false && rearrange) {   // disable blocks drag & drop
+                } else if (rearrange) {   // blocks drag & drop
                     drag.style.left = mouse_x - dragx - (canvas_div.getBoundingClientRect().left + window.scrollX) + canvas_div.scrollLeft + "px";
                     drag.style.top = mouse_y - dragy - (canvas_div.getBoundingClientRect().top + window.scrollY) + canvas_div.scrollTop + "px";
                     blockstemp.filter(a => a.id == parseInt(drag.querySelector(".blockid").value)).x = (drag.getBoundingClientRect().left + window.scrollX) + (parseInt(window.getComputedStyle(drag).width) / 2) + canvas_div.scrollLeft;
