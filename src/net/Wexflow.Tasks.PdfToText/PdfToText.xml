@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tasks>
   <!--
-   PdfToText is a sequential task that extract TEXT from PDF files.
+   PdfToText is a sequential task that extracts TEXT from PDF files.
     
    The TEXT files generated are loaded by this task so that other tasks can select them through the selectFiles option.
   -->
