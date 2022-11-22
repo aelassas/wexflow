@@ -5,11 +5,11 @@
     <TargetFramework>net7.0</TargetFramework>
 	<DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms> 
-    <Version>6.3.0</Version>
-    <AssemblyVersion>6.3.0.0</AssemblyVersion>
-    <FileVersion>6.3.0.0</FileVersion>
+    <Version>6.4.0</Version>
+    <AssemblyVersion>6.4.0.0</AssemblyVersion>
+    <FileVersion>6.4.0.0</FileVersion>
     
-    <Version>6.3.0</Version>
+    <Version>6.4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

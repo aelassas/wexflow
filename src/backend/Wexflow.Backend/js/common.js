@@ -22,6 +22,8 @@
                 } else {
                     callback();
                 }
+            } else if (this.status >= 400 && errorCallback) {
+                errorCallback();
             }
         };
         xmlhttp.onerror = function () {
@@ -42,6 +44,8 @@
                 } else {
                     callback();
                 }
+            } else if (this.status >= 400 && errorCallback) {
+                errorCallback();
             }
         };
         xmlhttp.onerror = function () {

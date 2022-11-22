@@ -63,7 +63,7 @@
 
         Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (user.Password !== u.Password) {
+                if (!u || user.Password !== u.Password) {
                     Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
@@ -113,7 +113,9 @@
                     }
 
                 }
-            }, function () { }, auth);
+            }, function () {
+                logout();
+            }, auth);
 
         function loadNotifications() {
             Common.get(uri + "/searchNotifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {

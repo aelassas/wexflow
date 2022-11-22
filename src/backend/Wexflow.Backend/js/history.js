@@ -96,7 +96,7 @@
 
         Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (user.Password !== u.Password) {
+                if (!u || user.Password !== u.Password) {
                     Common.redirectToLoginPage();
                 } else {
                     Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
@@ -235,7 +235,9 @@
 
                     }, function () { }, auth);
                 }
-            }, function () { }, auth);
+            }, function () {
+                logout();
+            }, auth);
     }
 
     function updatePager() {

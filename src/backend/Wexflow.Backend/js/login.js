@@ -6,7 +6,7 @@ function Login() {
 
     document.body.style.display = 'none';
     const load = () => document.body.style.display = 'block';
-    
+
     if (suser) {
         let user = JSON.parse(suser);
 
@@ -14,17 +14,22 @@ function Login() {
         qpassword = user.Password;
         auth = "Basic " + btoa(qusername + ":" + qpassword);
 
+        const _logout = () => {
+            logout(() => {
+                load();
+            });
+        };
+
         Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                console.log('user.Password', user.Password)
-                console.log('u.Password', u.Password)
-                if (user.Password === u.Password) {
+                if (u && user.Password === u.Password) {
                     window.location.replace("dashboard.html");
                 } else {
-                    deleteUser();
-                    load();
+                    _logout();
                 }
-            }, function () { }, auth);
+            }, function () {
+                _logout();
+            }, auth);
     } else {
         load();
     }

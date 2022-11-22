@@ -10,6 +10,15 @@ function deleteUser() {
     remove("wf-authorize");
 }
 
+function logout(callback) {
+    deleteUser();
+    if (callback) {
+        callback();
+    } else {
+        window.location.replace("index.html");
+    }
+}
+
 function set(key, value) {
     if (isIE() || isFirefox()) {
         setCookie(key, value, 365);

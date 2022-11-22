@@ -60,8 +60,9 @@
             removeVariableButtons[i].innerHTML = language.get("wf-remove-var");
         }
         document.getElementById("save").innerHTML = language.get("save-action");
-        document.getElementById("run").innerHTML = language.get("run-action");
-        document.getElementById("run").title = language.get("run-action-title");
+        const btnRun = document.getElementById("run");
+        btnRun.innerHTML = language.get("run-action");
+        btnRun.title = language.get("run-action-title");
     };
 
     let language = new Language("lang", updateLanguage);
@@ -102,7 +103,7 @@
 
         Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (user.Password !== u.Password) {
+                if (!u || user.Password !== u.Password) {
                     Common.redirectToLoginPage();
                 } else {
 
@@ -144,7 +145,9 @@
                     }
 
                 }
-            }, function () { }, auth);
+            }, function () {
+                logout();
+            }, auth);
     }
 
     function load() {
@@ -2935,9 +2938,9 @@
         };
 
         document.getElementById("rightswitch").onclick = function () {
-            
+
             let openXml = function () {
-                
+
                 Common.get(uri + "/graphXml/" + (workflow.WorkflowInfo.Id ? workflow.WorkflowInfo.Id : 0), function (val) {
                     function getXml() {
                         let graph = val;
@@ -2984,7 +2987,7 @@
                     }
 
                     if (diag === true) {
-                        
+
                         let wfIdStr = document.getElementById("wfid").value;
                         if (isInt(wfIdStr)) {
                             let workflowId = parseInt(wfIdStr);
