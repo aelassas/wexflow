@@ -2703,7 +2703,6 @@
             editor.setTheme("ace/theme/github");
             editor.getSession().setMode("ace/mode/json");
 
-
             editor.commands.addCommand({
                 name: "showKeyboardShortcuts",
                 bindKey: { win: "Ctrl-Alt-h", mac: "Command-Alt-h" },
