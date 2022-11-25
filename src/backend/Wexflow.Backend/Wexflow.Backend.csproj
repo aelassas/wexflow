@@ -171,6 +171,7 @@
     <Content Include="js\theme-solarized_light.js" />
     <Content Include="js\theme-sqlserver.js" />
     <Content Include="js\theme-terminal.js" />
+    <Content Include="js\theme-xcode.js" />
     <Content Include="js\theme-textmate.js" />
     <Content Include="js\theme-tomorrow.js" />
     <Content Include="js\theme-tomorrow_night.js" />
