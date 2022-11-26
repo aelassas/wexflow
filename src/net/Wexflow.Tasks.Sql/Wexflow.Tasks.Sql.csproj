@@ -134,7 +134,7 @@
       <HintPath>..\..\..\packages\Microsoft.Extensions.Primitives.7.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="MySqlConnector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MySqlConnector.2.2.0\lib\net471\MySqlConnector.dll</HintPath>
+      <HintPath>..\..\..\packages\MySqlConnector.2.2.1\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql, Version=7.0.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Npgsql.7.0.0\lib\netstandard2.0\Npgsql.dll</HintPath>
