@@ -1,4 +1,4 @@
-[![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/)
+[![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/) [![Open in vscode](https://img.shields.io/badge/Open%20in-vscode-1f425f.svg)](https://vscode.dev/github/aelassas/wexflow)
 
 <p align="center">
   <img src="https://wexflow.github.io/content/wexflow.drawio.png" alt="" />
