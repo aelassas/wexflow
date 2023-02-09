@@ -1,18 +1,12 @@
 [![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/)
 
+<!--
 <p align="center">
   <img src="https://wexflow.github.io/content/wexflow.drawio.png" alt="" />
 </p>
+-->
 
 Wexflow is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
-
-Wexflow was created to handle this use case: 
-
-Imagine you have a system that produces video and metadata files. This system uploads the videos and their metadata to an FTP server. Another intermediate system needs to wait for the videos to arrive in order to process them, create new metadata files, send all of that to another FTP server, and finally send a file that triggers ingest in order to create the videos in a streaming platform.
-
-Well, Wexflow is that intermediate system. Wexflow watches the FTP folder and each time the video and its metadata arrive to that folder, Wexflow will process that video file (transcoding), will create a new metadata file (XSLT), will send the new video and metadata files to a new system (like YouTube SFTP dropbox or another system), and finally will send a file that triggers ingest in order to create the videos in the specified streaming platform.
-
-Wexflow resolves that use case easily and now Wexlflow can do much more with more than 100+ built-in [activities](https://github.com/aelassas/wexflow/wiki/Tasks).
 
 Wexflow provides a cross-platform workflow server, a backend for designing, managing and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
