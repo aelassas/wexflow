@@ -6,11 +6,11 @@
 
 Wexflow is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
 
-Wexflow provides a cross-platform workflow server, a backend for designing, managing and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
+Wexflow provides a cross-platform workflow server, a backend for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
 Wexflow automates the process of organizing, storing, manipulating files, provides more than 100+ activities, and allows custom integration with other solutions through custom activities or Wexflow API.
 
-Here are some real life use cases:
+Here are some real-life use cases:
 
 * Orchestration engine
 * Batch recording live video feeds
@@ -19,7 +19,7 @@ Here are some real life use cases:
 * Automatically send tweets
 * Automatically send SMS messages
 * Batch encrypting and decrypting large files
-* Batch converting, resizing and cropping images
+* Batch converting, resizing, and cropping images
 * Creating and sending reports and invoices by email
 * Connecting systems and applications via watch folders
 * Batch downloading files over FTP/FTPS/SFTP/HTTP/Torrent
@@ -59,13 +59,13 @@ You can find instructions on how build and run Wexflow Docker image [here](https
 
 You can find instructions on running Wexflow from source code [here](https://github.com/aelassas/wexflow/wiki/Run-From-Code).
 
-# Documentaion
+# Documentation
 
 You can find the documentation [here](https://github.com/aelassas/wexflow/wiki).
 
 # Credentials
 
-Once you install Wexflow, you'll need a username and a password to sign in to the backend or Wexflow Manager:
+Once you install Wexflow, you'll need a username and a password to sign into the backend or Wexflow Manager:
 
 - **Username**: admin
 - **Password**: wexflow2018
