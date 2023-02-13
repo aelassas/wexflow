@@ -74,7 +74,7 @@ Once you install Wexflow, you'll need a username and a password to sign into the
 
 Once logged in, you can change the password from the backend.
 
-This is explained in [installation instructions](https://github.com/aelassas/wexflow/wiki/Installation).
+This is explained in the [installation instructions](https://github.com/aelassas/wexflow/wiki/Installation).
 
 # Quick Overview
 
