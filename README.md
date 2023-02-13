@@ -1,8 +1,10 @@
 [![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/)
 
+<!--
 <p align="center">
   <img src="https://wexflow.github.io/content/wexflow.drawio.png" alt="" />
 </p>
+-->
 
 Wexflow is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
 
@@ -21,7 +23,7 @@ Here are some real-life use cases:
 * Batch encrypting and decrypting large files
 * Batch converting, resizing, and cropping images
 * Creating and sending reports and invoices by email
-* Connecting systems and applications via watch folders
+* Connecting systems and applications
 * Batch downloading files over FTP/FTPS/SFTP/HTTP/Torrent
 * Batch uploading files over FTP/FTPS/SFTP
 * Database administration and maintenance
