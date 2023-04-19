@@ -72,8 +72,8 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\..\..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.22.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Google.Protobuf.3.22.1\lib\net45\Google.Protobuf.dll</HintPath>
+    <Reference Include="Google.Protobuf, Version=3.22.3.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Google.Protobuf.3.22.3\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="IdentityModel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=e7877f4675df049f, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\IdentityModel.6.0.0\lib\net472\IdentityModel.dll</HintPath>
@@ -121,7 +121,7 @@
       <HintPath>..\..\..\packages\Npgsql.7.0.2\lib\netstandard2.0\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.21.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Oracle.ManagedDataAccess.21.9.0\lib\net462\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\..\..\packages\Oracle.ManagedDataAccess.21.10.0\lib\net462\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Renci.SshNet, Version=2020.0.2.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll</HintPath>
@@ -181,11 +181,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Teradata.Client.Provider, Version=17.20.5.0, Culture=neutral, PublicKeyToken=76b417ee2e04956c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Teradata.Client.Provider.17.20.5\lib\net462\Teradata.Client.Provider.dll</HintPath>
+    <Reference Include="Teradata.Client.Provider, Version=17.20.6.0, Culture=neutral, PublicKeyToken=76b417ee2e04956c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Teradata.Client.Provider.17.20.6\lib\net462\Teradata.Client.Provider.dll</HintPath>
     </Reference>
-    <Reference Include="Teradata.Net.Security.Tdgss, Version=17.0.1.0, Culture=neutral, PublicKeyToken=76b417ee2e04956c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Teradata.Client.Provider.17.20.5\lib\net462\Teradata.Net.Security.Tdgss.dll</HintPath>
+    <Reference Include="Teradata.Net.Security.Tdgss, Version=17.10.3.0, Culture=neutral, PublicKeyToken=76b417ee2e04956c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Teradata.Client.Provider.17.20.6\lib\net462\Teradata.Net.Security.Tdgss.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
