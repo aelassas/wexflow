@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Core assembly of Wexflow workflow engine.</description>
     <releaseNotes>Bug fixes, performance enhancements and under the hood updates.</releaseNotes>
-    <copyright>Copyright (c) 2017-2022 Akram El Assas.</copyright>
+    <copyright>Copyright (c) 2017-2023 Akram El Assas.</copyright>
     <tags>Wexflow Workflow</tags>
     <dependencies>
       <group targetFramework="net48">

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    ExecPython is a sequential task that executes Python scripts.
+  -->
+  <Task id="$int" name="ExecPython" description="$string" enabled="true|false">
+    <!-- Path to Python executable. Ex: C:\Python\Python311\python.exe -->
+    <Setting name="pythonPath" value="$string" />
+    <!-- 
+      The Python (.py) files loaded by the task having as id $taskId will be executed.
+    -->
+    <Setting name="selectFiles" value="$taskId" />
+    <Setting name="selectFiles" value="$taskId" />
+    <!-- You can add as many selecteFiles as you want.-->
+  </Task>
+</Tasks>

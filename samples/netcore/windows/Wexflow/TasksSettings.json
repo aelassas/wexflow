@@ -8,6 +8,7 @@
 	"CsvToXml": [  {"Name": "selectFiles", "Required": true, "Type": "int", "List": [], "DefaultValue": ""} ],
 	"CsvToYaml": [ {"Name": "selectFiles", "Required": true, "Type": "int", "List": [], "DefaultValue": ""}, {"Name": "separator", "Required": false, "Type": "string", "List": [], "DefaultValue": ";"} ],
 	"EnvironmentVariable": [  {"Name": "name", "Required": true, "Type": "string", "List": [], "DefaultValue": ""} ],
+	"ExecPython": [ {"Name": "pythonPath", "Required": true, "Type": "string", "List": [], "DefaultValue": ""}, {"Name": "selectFiles", "Required": true, "Type": "int", "List": [], "DefaultValue": ""} ],
 	"FileContentMatch": [ {"Name": "file", "Required": true, "Type": "string", "List": [], "DefaultValue": ""}, {"Name": "folder", "Required": false, "Type": "string", "List": [], "DefaultValue": ""}, {"Name": "recursive", "Required": false, "Type": "bool", "List": [], "DefaultValue": "false"} , {"Name": "pattern", "Required": true, "Type": "string", "List": [], "DefaultValue": ""} ],
 	"FileExists": [ {"Name": "file", "Required": true, "Type": "string", "List": [], "DefaultValue": ""} ],
 	"FileMatch": [ {"Name": "dir", "Required": true, "Type": "string", "List": [], "DefaultValue": ""}, {"Name": "pattern", "Required": true, "Type": "string", "List": [], "DefaultValue": ""}, {"Name": "recursive", "Required": false, "Type": "bool", "List": [], "DefaultValue": "false"} ],

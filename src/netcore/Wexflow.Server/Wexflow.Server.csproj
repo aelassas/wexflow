@@ -126,6 +126,7 @@
     <ProjectReference Include="..\Wexflow.Tasks.CsvToXml\Wexflow.Tasks.CsvToXml.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.CsvToYaml\Wexflow.Tasks.CsvToYaml.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.EnvironmentVariable\Wexflow.Tasks.EnvironmentVariable.csproj" />
+    <ProjectReference Include="..\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FileContentMatch\Wexflow.Tasks.FileContentMatch.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FileExists\Wexflow.Tasks.FileExists.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FileMatch\Wexflow.Tasks.FileMatch.csproj" />

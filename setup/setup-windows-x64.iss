@@ -155,6 +155,7 @@ Source: "..\src\net\Wexflow.Tasks.Ping\Ping.xml"; DestDir: "{app}\Documentation"
 Source: "..\src\net\Wexflow.Tasks.WebToScreenshot\WebToScreenshot.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.WebToHtml\WebToHtml.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.ExecCs\ExecCs.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.ExecPython\ExecPython.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.ExecVb\ExecVb.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.HttpPost\HttpPost.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.HttpPut\HttpPut.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion

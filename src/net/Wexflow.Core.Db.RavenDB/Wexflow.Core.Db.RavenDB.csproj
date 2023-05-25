@@ -95,11 +95,11 @@
     <Reference Include="Nito.Disposables, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Nito.Disposables.2.4.0\lib\net461\Nito.Disposables.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client, Version=5.4.103.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\RavenDB.Client.5.4.103\lib\netstandard2.0\Raven.Client.dll</HintPath>
+    <Reference Include="Raven.Client, Version=5.4.104.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\RavenDB.Client.5.4.104\lib\netstandard2.0\Raven.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Sparrow, Version=5.4.103.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\RavenDB.Client.5.4.103\lib\netstandard2.0\Sparrow.dll</HintPath>
+    <Reference Include="Sparrow, Version=5.4.104.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\RavenDB.Client.5.4.104\lib\netstandard2.0\Sparrow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">

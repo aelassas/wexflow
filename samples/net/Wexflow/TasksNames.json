@@ -9,6 +9,7 @@
 	{ "Name": "CsvToYaml", "Description": "Converts CSV files to YAML files."},
 	{ "Name": "EnvironmentVariable", "Description": "A flowchart task that retrieves the value of an environment variable."},
 	{ "Name": "ExecCs", "Description": "Executes C# scripts."},
+	{ "Name": "ExecPython", "Description": "Executes Python scripts."},
 	{ "Name": "ExecVb", "Description": "Executes Visual Basic scripts."},
 	{ "Name": "FileContentMatch", "Description": "A flowchart task that checks whether the content of a file matches a regex pattern."},
 	{ "Name": "FileExists", "Description": "A flowchart task that checks whether a file exists or not."},

@@ -312,6 +312,10 @@
       <Project>{485bbbd8-4ad9-4088-a91d-2766cc5cfa0e}</Project>
       <Name>Wexflow.Tasks.ExecCs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj">
+      <Project>{5abbae16-18e6-442a-a668-d3922fdacb63}</Project>
+      <Name>Wexflow.Tasks.ExecPython</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wexflow.Tasks.ExecVb\Wexflow.Tasks.ExecVb.csproj">
       <Project>{25c5c91b-91b9-4cc6-9ce0-4d7cf9312496}</Project>
       <Name>Wexflow.Tasks.ExecVb</Name>
