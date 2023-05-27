@@ -30,7 +30,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                         }
                     }
                 }
-
             }
         }
 
