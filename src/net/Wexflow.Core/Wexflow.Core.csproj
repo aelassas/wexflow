@@ -162,6 +162,7 @@
     <Content Include="Workflow.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="docs\README.md" />
     <None Include="packages.config" />
     <None Include="Wexflow.Core.nuspec">
       <SubType>Designer</SubType>
