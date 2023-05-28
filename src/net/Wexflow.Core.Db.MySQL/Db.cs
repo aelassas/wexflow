@@ -20,6 +20,7 @@ namespace Wexflow.Core.Db.MySQL
             var uid = string.Empty;
             var pwd = string.Empty;
             var database = string.Empty;
+            var port = 3306;
 
             var connectionStringParts = ConnectionString.Split(';');
 
@@ -44,11 +45,15 @@ namespace Wexflow.Core.Db.MySQL
                     {
                         database = connPart.Replace("Database=", string.Empty);
                     }
+                    else if (connPart.StartsWith("Port="))
+                    {
+                        port = int.Parse(connPart.Replace("Port=", string.Empty));
+                    }
                 }
             }
 
             var helper = new Helper(connectionString);
-            helper.CreateDatabaseIfNotExists(server, uid, pwd, database);
+            helper.CreateDatabaseIfNotExists(server, uid, pwd, database, port);
             helper.CreateTableIfNotExists(Core.Db.Entry.DocumentName, Entry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DocumentName, HistoryEntry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.StatusCount.DocumentName, StatusCount.TableStruct);

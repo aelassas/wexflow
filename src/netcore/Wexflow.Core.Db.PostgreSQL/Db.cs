@@ -19,6 +19,7 @@ namespace Wexflow.Core.Db.PostgreSQL
             var userId = string.Empty;
             var password = string.Empty;
             var database = string.Empty;
+            var port = 5432;
 
             var connectionStringParts = ConnectionString.Split(';');
 
@@ -43,11 +44,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                     {
                         database = connPart.Replace("Database=", string.Empty);
                     }
+                    else if (connPart.StartsWith("Port="))
+                    {
+                        port = int.Parse(connPart.Replace("Port=", string.Empty));
+                    }
                 }
             }
 
             var helper = new Helper(connectionString);
-            helper.CreateDatabaseIfNotExists(server, userId, password, database);
+            helper.CreateDatabaseIfNotExists(server, userId, password, database, port);
             helper.CreateTableIfNotExists(Core.Db.Entry.DocumentName, Entry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DocumentName, HistoryEntry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.StatusCount.DocumentName, StatusCount.TableStruct);
