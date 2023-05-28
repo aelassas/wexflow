@@ -11,7 +11,7 @@ Wexflow is an open source and cross-platform workflow engine and automation plat
 Wexflow provides a cross-platform workflow server, a backend for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
 Wexflow automates the process of organizing, storing, manipulating files, provides more than 100+ activities, and allows custom integration with other solutions through custom activities or Wexflow API.
-
+<!--
 Here are some real-life use cases:
 
 * Orchestration engine
@@ -28,6 +28,7 @@ Here are some real-life use cases:
 * Batch uploading files over FTP/FTPS/SFTP
 * Database administration and maintenance
 * Synchronizing the content of local or remote directories
+-->
 
 # Features
 
