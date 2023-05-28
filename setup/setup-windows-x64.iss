@@ -223,10 +223,10 @@ Source: "..\samples\net\Wexflow\Workflows\*.xml"; DestDir: "{app}\Wexflow.Script
 ;Source: "..\src\net\Wexflow.Scripts.RavenDB\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.RavenDB"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.PostgreSQL
-;Source: "..\src\net\Wexflow.Scripts.PostgreSQL\bin\x64\Release\Wexflow.Scripts.PostgreSQL.exe"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
-;Source: ".\net\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.exe.config"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Core.Db.PostgreSQL\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Scripts.PostgreSQL\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.PostgreSQL\bin\x64\Release\Wexflow.Scripts.PostgreSQL.exe"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
+Source: ".\net\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.exe.config"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Core.Db.PostgreSQL\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.PostgreSQL\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.PostgreSQL"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.SQLServer
 Source: "..\src\net\Wexflow.Scripts.SQLServer\bin\x64\Release\Wexflow.Scripts.SQLServer.exe"; DestDir: "{app}\Wexflow.Scripts.SQLServer"; Flags: ignoreversion recursesubdirs
