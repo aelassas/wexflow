@@ -45,25 +45,13 @@ Here are some real-life use cases:
 * RESTful API
 * Extensible
 
-# Download
+# Resources
 
-You can download the latest release from [here](https://github.com/aelassas/wexflow/releases/latest).
-
-# Install
-
-You can find installation instructions [here](https://github.com/aelassas/wexflow/wiki/Installation).
-
-# Docker
-
-You can find instructions on how build and run Wexflow Docker image [here](https://github.com/aelassas/wexflow/wiki/Docker).
-
-# Run from Code
-
-You can find instructions on running Wexflow from source code [here](https://github.com/aelassas/wexflow/wiki/Run-From-Code).
-
-# Documentation
-
-You can find the documentation [here](https://github.com/aelassas/wexflow/wiki).
+* [Download](https://github.com/aelassas/wexflow/releases/latest)
+* [Installation instructions](https://github.com/aelassas/wexflow/wiki/Installation)
+* [Docker image](https://github.com/aelassas/wexflow/wiki/Docker)
+* [Run from source code](https://github.com/aelassas/wexflow/wiki/Run-From-Code)
+* [Documentation](https://github.com/aelassas/wexflow/wiki)
 
 # Credentials
 
