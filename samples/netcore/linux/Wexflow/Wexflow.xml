@@ -10,7 +10,7 @@
   <Setting name="tasksNamesFile" value="/opt/wexflow/Wexflow/TasksNames.json" />
   <Setting name="tasksSettingsFile" value="/opt/wexflow/Wexflow/TasksSettings.json" />
   <Setting name="globalVariablesFile" value="/opt/wexflow/Wexflow/GlobalVariables.xml" />
-  <!-- SQLite or MongoDB or SQLServer -->
+  <!-- SQLite or MongoDB or SQLServer or PostgreSQL -->
   <Setting name="dbType" value="SQLite" />
   <!-- SQLite -->
   <Setting name="connectionString" value="Data Source=/opt/wexflow/Wexflow/Database/Wexflow.sqlite;Version=3;" />
@@ -18,4 +18,6 @@
   <!--<Setting name="connectionString" value="Database=wexflow_netcore;MongoUrl=mongodb://localhost:27017;EnabledSslProtocols=false;SslProtocols=None" />-->
   <!-- SQLServer -->
   <!--<Setting name="connectionString" value="Server=localhost;Trusted_Connection=True;Database=wexflow_netcore;" />-->
+  <!-- PostgreSQL -->
+  <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=postgres;Password=pwd;Database=wexflow;Port=5432" />-->
 </Wexflow>
