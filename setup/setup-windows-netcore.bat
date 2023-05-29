@@ -58,9 +58,9 @@ copy netcore\windows\install-MongoDB.bat %dstDir%
 ::copy netcore\windows\install-RavenDB.bat %dstDir%
 
 :: PostgreSQL script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
-::copy netcore\windows\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
-::copy netcore\windows\install-PostgreSQL.bat %dstDir%
+dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
+copy netcore\windows\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
+copy netcore\windows\install-PostgreSQL.bat %dstDir%
 
 :: SQLServer script
 dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
@@ -68,14 +68,19 @@ copy netcore\windows\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServ
 copy netcore\windows\install-SQLServer.bat %dstDir%
 
 :: MySQL script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
-::copy netcore\windows\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
-::copy netcore\windows\install-MySQL.bat %dstDir%
+dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
+copy netcore\windows\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
+copy netcore\windows\install-MySQL.bat %dstDir%
 
 :: SQLite script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
-::copy netcore\windows\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
-::copy netcore\windows\install-SQLite.bat %dstDir%
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
+copy netcore\windows\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
+copy netcore\windows\install-SQLite.bat %dstDir%
+
+:: LiteDB script
+dotnet publish ..\src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.LiteDB
+copy netcore\windows\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
+copy netcore\windows\install-LiteDB.bat %dstDir%
 
 :: Firebird script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird

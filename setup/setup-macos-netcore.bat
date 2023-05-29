@@ -55,20 +55,24 @@ xcopy "..\samples\netcore\macos\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.Mo
 ::copy netcore\macos\RavenDB\appsettings.json %dstDir%\Wexflow.Scripts.RavenDB
 
 :: PostgreSQL script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
-::copy netcore\macos\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
+dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
+copy netcore\macos\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
 
 :: SQLServer script
 dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
 copy netcore\macos\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
 
 :: MySQL script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
-::copy netcore\macos\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
+dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
+copy netcore\macos\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
 
 :: SQLite script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
-::copy netcore\macos\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
+copy netcore\macos\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
+
+:: LiteDB script
+dotnet publish ..\src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.LiteDB
+copy netcore\macos\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
 
 :: Firebird script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird
