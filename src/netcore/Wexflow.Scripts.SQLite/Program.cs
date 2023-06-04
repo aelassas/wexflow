@@ -24,10 +24,15 @@ namespace Wexflow.Scripts.SQLite
                 Core.Helper.InsertRecords(db, "sqlite", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();
 
-                // .NET Core
-                BuildDatabase("Windows", "windows");
-                BuildDatabase("Linux", "linux");
-                BuildDatabase("Mac OS X", "macos");
+                var buildAllDatabases = false;
+                bool.TryParse(config["buildAllDatabases"], out buildAllDatabases);
+
+                if (buildAllDatabases)
+                {
+                    BuildDatabase("Windows", "windows");
+                    BuildDatabase("Linux", "linux");
+                    BuildDatabase("Mac OS X", "macos");
+                }
             }
             catch (Exception e)
             {
