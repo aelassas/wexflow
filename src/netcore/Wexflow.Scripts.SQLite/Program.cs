@@ -15,7 +15,7 @@ namespace Wexflow.Scripts.SQLite
             {
                 config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
+                //.AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
                 .Build();
 
                 var workflowsFolder = config["workflowsFolder"];
