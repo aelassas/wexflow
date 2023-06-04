@@ -55,6 +55,8 @@ Source: "..\src\net\Wexflow.Core.Db.SQLite\bin\x64\Release\x64\SQLite.Interop.dl
 Source: "..\src\net\Wexflow.Server\bin\x64\Release\x64\7z.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Server\bin\x64\Release\x64\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\libs\chromedriver.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Core.Db.MongoDB\bin\x64\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+
 
 ; Wexflow Manager
 Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\Wexflow.Clients.Manager.exe"; DestDir: "{app}\Manager"; Flags: ignoreversion
