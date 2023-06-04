@@ -6,7 +6,7 @@ namespace Wexflow.Scripts.LiteDB
 {
     class Program
     {
-        private static IConfiguration config;
+        private static IConfiguration? config;
 
         static void Main()
         {
