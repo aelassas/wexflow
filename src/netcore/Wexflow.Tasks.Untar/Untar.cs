@@ -92,7 +92,7 @@ namespace Wexflow.Tasks.Untar
             return success;
         }
 
-        private void ExtractTarByEntry(string tarFileName, string targetDir)
+        private static void ExtractTarByEntry(string tarFileName, string targetDir)
         {
             using (FileStream fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read))
             {
