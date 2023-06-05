@@ -1,8 +1,8 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesSplitter
 {
@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.FilesSplitter
                         }
 
                         InfoFormat("The file {0} was splitted into {1} chunks.", file.Path, index + 1);
-                        
+
                         if (!atLeastOneSucceed) atLeastOneSucceed = true;
                     }
                     catch (ThreadAbortException)

@@ -1,21 +1,21 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Security.Authentication;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Http
 {
-    public class Http:Task
+    public class Http : Task
     {
         private const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
         private const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
 
         public string[] Urls { get; private set; }
 
-        public Http(XElement xe, Workflow wf): base(xe, wf)
+        public Http(XElement xe, Workflow wf) : base(xe, wf)
         {
             Urls = GetSettings("url");
         }

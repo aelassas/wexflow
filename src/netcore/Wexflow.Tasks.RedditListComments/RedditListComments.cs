@@ -53,7 +53,7 @@ namespace Wexflow.Tasks.RedditListComments
 
                 var xdoc = new XDocument(new XElement("Comments"));
 
-                foreach(var comment in comments)
+                foreach (var comment in comments)
                 {
                     var xcomment = new XElement("Comment", new XAttribute("id", SecurityElement.Escape(comment.Id)), new XAttribute("subreddit", SecurityElement.Escape(comment.Subreddit)), new XAttribute("author", SecurityElement.Escape(comment.Author)), new XAttribute("upvotes", comment.UpVotes), new XAttribute("downvotes", comment.DownVotes), new XCData(comment.BodyHTML));
                     xdoc.Root.Add(xcomment);

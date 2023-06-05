@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.ListFiles
 {
-    public class ListFiles:Task
+    public class ListFiles : Task
     {
         public ListFiles(XElement xe, Workflow wf)
             : base(xe, wf)
         {
-		}
+        }
 
         public override TaskStatus Run()
         {
@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.ListFiles
                 }
 
                 xWorkflow.Add(xFiles);
-                if(xdoc.Root != null) xdoc.Root.Add(xWorkflow);
+                if (xdoc.Root != null) xdoc.Root.Add(xWorkflow);
                 xdoc.Save(xmlPath);
 
                 var xmlFile = new FileInf(xmlPath, Id);

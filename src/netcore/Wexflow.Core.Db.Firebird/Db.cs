@@ -7,7 +7,7 @@ namespace Wexflow.Core.Db.Firebird
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object padlock = new object();
+        private static readonly object padlock = new();
         private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
         private static string connectionString;
@@ -253,7 +253,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (padlock)
             {
-                List<User> admins = new List<User>();
+                List<User> admins = new();
 
                 using (var conn = new FbConnection(connectionString))
                 {
@@ -302,7 +302,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (padlock)
             {
-                List<Entry> entries = new List<Entry>();
+                List<Entry> entries = new();
 
                 using (var conn = new FbConnection(connectionString))
                 {
@@ -351,7 +351,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (padlock)
             {
-                List<Entry> entries = new List<Entry>();
+                List<Entry> entries = new();
 
                 using (var conn = new FbConnection(connectionString))
                 {
@@ -651,7 +651,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                List<HistoryEntry> entries = new();
 
                 using (var conn = new FbConnection(connectionString))
                 {
@@ -698,7 +698,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                List<HistoryEntry> entries = new();
 
                 using (var conn = new FbConnection(connectionString))
                 {
@@ -749,7 +749,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                List<HistoryEntry> entries = new();
 
                 using (var conn = new FbConnection(connectionString))
                 {

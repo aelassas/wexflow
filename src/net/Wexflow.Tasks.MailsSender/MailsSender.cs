@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Wexflow.Core;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Threading;
-using System.IO;
-using System.Text.RegularExpressions;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.MailsSender
 {

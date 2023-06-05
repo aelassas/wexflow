@@ -10,7 +10,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.YouTubeListUploads
 {
-    public class YouTubeListUploads:Task
+    public class YouTubeListUploads : Task
     {
         public string User { get; }
         public string ApplicationName { get; }
@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
                     GoogleClientSecrets.Load(stream).Secrets,
                     // This OAuth 2.0 access scope allows for read-only access to the authenticated 
                     // user's account, but not other types of account access.
-                    new[] {YouTubeService.Scope.YoutubeReadonly},
+                    new[] { YouTubeService.Scope.YoutubeReadonly },
                     User,
                     CancellationToken.None,
                     new FileDataStore(GetType().ToString())
@@ -82,7 +82,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
 
             var xdoc = new XDocument(new XElement("YouTubeListUploads"));
             var xchannels = new XElement("Channels");
-            
+
             foreach (var channel in channelsListResponse.Items)
             {
                 // From the API response, extract the playlist ID that identifies the list

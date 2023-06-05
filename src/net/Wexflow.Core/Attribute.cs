@@ -8,7 +8,7 @@
         /// <summary>
         /// Attribute name.
         /// </summary>
-        public string Name { get; set; }        
+        public string Name { get; set; }
         /// <summary>
         /// Attribute value.
         /// </summary>

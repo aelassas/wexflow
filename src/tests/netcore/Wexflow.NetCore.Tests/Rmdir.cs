@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Wexflow.NetCore.Tests
 {
@@ -19,7 +19,7 @@ namespace Wexflow.NetCore.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            Helper.CopyDirRec(Path.Combine(Temp, "Rmdir") , @"C:\WexflowTesting");
+            Helper.CopyDirRec(Path.Combine(Temp, "Rmdir"), @"C:\WexflowTesting");
         }
 
         [TestMethod]

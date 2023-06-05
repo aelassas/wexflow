@@ -437,7 +437,7 @@ namespace Wexflow.Core
         /// <param name="msg">Log message.</param>
         public void Error(string msg)
         {
-            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug|| Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
                 var message = BuildLogMsg(msg);
                 Logger.Error(message);

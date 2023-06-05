@@ -4,18 +4,18 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Data.SQLite;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Security;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Linq;
 using Teradata.Client.Provider;
 using Wexflow.Core;
-using System.Data.Odbc;
-using System.Text.RegularExpressions;
-using System.Data.SqlTypes;
 
 namespace Wexflow.Tasks.SqlToXml
 {
@@ -256,7 +256,7 @@ namespace Wexflow.Tasks.SqlToXml
                     }
                     xobjects.Add(xobject);
                 }
-                
+
                 xdoc.Add(xobjects);
                 xdoc.Save(destPath);
                 Files.Add(new FileInf(destPath, Id));

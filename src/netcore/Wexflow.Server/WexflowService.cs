@@ -2278,7 +2278,7 @@ namespace Wexflow.Server
                     var ms = new MemoryStream();
                     await file.CopyToAsync(ms);
                     var fileValue = Encoding.UTF8.GetString(ms.ToArray());
-                    
+
                     var index = fileValue.IndexOf('<');
                     if (index > 0)
                     {

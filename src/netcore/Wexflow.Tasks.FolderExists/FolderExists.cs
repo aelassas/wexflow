@@ -1,7 +1,7 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FolderExists
 {
@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.FolderExists
     {
         public string Folder { get; private set; }
 
-        public FolderExists(XElement xe, Workflow wf): base(xe, wf)
+        public FolderExists(XElement xe, Workflow wf) : base(xe, wf)
         {
             Folder = GetSetting("folder");
         }
@@ -17,7 +17,7 @@ namespace Wexflow.Tasks.FolderExists
         public override TaskStatus Run()
         {
             Info("Checking folder...");
-            
+
             bool success;
 
             try

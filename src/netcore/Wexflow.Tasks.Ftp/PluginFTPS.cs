@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Wexflow.Core;
-using FluentFTP;
+﻿using FluentFTP;
 using FluentFTP.Client.BaseClient;
+using System.Collections.Generic;
 using System.Net;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Ftp
 {

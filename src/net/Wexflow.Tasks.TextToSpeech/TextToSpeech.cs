@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.TextToSpeech
 {
     public class TextToSpeech : Task
     {
-        public TextToSpeech(XElement xe, Workflow wf): base(xe, wf)
+        public TextToSpeech(XElement xe, Workflow wf) : base(xe, wf)
         {
         }
 

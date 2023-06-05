@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Wexflow.Core;
 using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.ListEntities
 {
-    public class ListEntities:Task
+    public class ListEntities : Task
     {
         public ListEntities(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -14,7 +14,7 @@ namespace Wexflow.Tasks.ListEntities
         public override TaskStatus Run()
         {
             Info("Listing entities...");
-            
+
             foreach (List<Entity> entities in Workflow.EntitiesPerTask.Values)
             {
                 foreach (Entity entity in entities)

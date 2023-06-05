@@ -2,9 +2,9 @@
 {
     public class AttributeInfo
     {
-        
+
         public string Name { get; set; }
-        
+
         public string Value { get; set; }
 
         public AttributeInfo(string name, string value)

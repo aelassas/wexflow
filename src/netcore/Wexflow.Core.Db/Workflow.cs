@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Wexflow.Core.Db
+﻿namespace Wexflow.Core.Db
 {
     public class Workflow
     {

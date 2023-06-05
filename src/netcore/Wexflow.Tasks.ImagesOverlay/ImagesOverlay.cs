@@ -63,7 +63,7 @@ namespace Wexflow.Tasks.ImagesOverlay
             {
                 List<int> imageHeights = new List<int>();
                 List<int> imageWidths = new List<int>();
-                
+
                 foreach (FileInf imageFile in imageFiles)
                 {
                     using (Image img = Image.FromFile(imageFile.Path))

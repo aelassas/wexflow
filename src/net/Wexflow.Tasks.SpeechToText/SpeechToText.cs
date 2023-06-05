@@ -8,7 +8,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.SpeechToText
 {
-    public class SpeechToText:Task
+    public class SpeechToText : Task
     {
         public SpeechToText(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -45,7 +45,7 @@ namespace Wexflow.Tasks.SpeechToText
                         Files.Add(new FileInf(destFile, Id));
                         InfoFormat("The file {0} was converted to a text file with success -> {1}", file.Path, destFile);
                         if (!atLeastOneSucceed) atLeastOneSucceed = true;
-                    }   
+                    }
                 }
                 catch (ThreadAbortException)
                 {

@@ -1,10 +1,10 @@
-﻿using Wexflow.Core;
+﻿using System.Threading;
 using System.Xml.Linq;
-using System.Threading;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Template
 {
-    public class Template:Task
+    public class Template : Task
     {
         public Template(XElement xe, Workflow wf)
             : base(xe, wf)

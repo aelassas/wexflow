@@ -12,7 +12,7 @@ namespace Wexflow.Core.Service.Contracts
     }
 
     [DataContract]
-    public class WorkflowInfo:IComparable
+    public class WorkflowInfo : IComparable
     {
         [DataMember]
         public string DbId { get; private set; }

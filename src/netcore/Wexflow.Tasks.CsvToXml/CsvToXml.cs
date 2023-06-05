@@ -1,12 +1,12 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.CsvToXml
 {
-    public class CsvToXml:Task
+    public class CsvToXml : Task
     {
         public CsvToXml(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.CsvToXml
                 var xLine = new XElement("Line");
                 foreach (string col in line.Split(';'))
                 {
-                    if(!string.IsNullOrEmpty(col)) xLine.Add(new XElement("Column", col));
+                    if (!string.IsNullOrEmpty(col)) xLine.Add(new XElement("Column", col));
                 }
                 if (xdoc.Root == null) throw new Exception("No root node found.");
                 xdoc.Root.Add(xLine);

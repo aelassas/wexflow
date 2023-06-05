@@ -17,7 +17,7 @@ namespace Wexflow.Tasks.UglifyCss
         public override TaskStatus Run()
         {
             Info("Uglifying CSS files...");
-            
+
             bool success;
             var atLeastOneSuccess = false;
             try

@@ -1,10 +1,10 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.IO;
 using System.Threading;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.TextToPdf
 {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.TextToPdf
                         ErrorFormat("An error occured while converting the file {0}", e, file.Path);
                         success = false;
                     }
-                }  
+                }
             }
 
             var status = Status.Success;

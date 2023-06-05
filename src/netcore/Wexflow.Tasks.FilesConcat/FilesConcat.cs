@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
+using System.Text;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesConcat
 {
@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.FilesConcat
             if (files.Length > 0)
             {
                 StringBuilder builder = new StringBuilder();
-                for(int i = 0; i<files.Length; i++)
+                for (int i = 0; i < files.Length; i++)
                 {
                     var file = files[i];
                     builder.Append(Path.GetFileNameWithoutExtension(file.FileName));
@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.FilesConcat
                 }
 
                 using (var output = File.Create(concatPath))
-                { 
+                {
                     foreach (FileInf file in files)
                     {
                         try

@@ -38,7 +38,7 @@ namespace Wexflow.Core.ExecutionGraph
         /// <param name="onError">OnError event.</param>
         /// <param name="onRejected">OnRejected event.</param>
         public Graph(IEnumerable<Node> nodes
-            , GraphEvent onSuccess 
+            , GraphEvent onSuccess
             , GraphEvent onWarning
             , GraphEvent onError
             , GraphEvent onRejected

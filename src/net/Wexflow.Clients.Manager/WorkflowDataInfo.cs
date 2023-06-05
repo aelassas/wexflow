@@ -3,7 +3,7 @@ using Wexflow.Core.Service.Contracts;
 
 namespace Wexflow.Clients.Manager
 {
-    public class WorkflowDataInfo:IComparable
+    public class WorkflowDataInfo : IComparable
     {
         public int Id { get; private set; }
         public string Name { get; private set; }

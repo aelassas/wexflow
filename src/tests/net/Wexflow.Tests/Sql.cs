@@ -1,5 +1,5 @@
-﻿using System.Data.SQLite;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.SQLite;
 
 namespace Wexflow.Tests
 {
@@ -36,7 +36,7 @@ namespace Wexflow.Tests
                     while (reader.Read())
                     {
                         int id = int.Parse(reader["Id"].ToString());
-                        string desc = (string) reader["Description"];
+                        string desc = (string)reader["Description"];
 
                         if (id == 1)
                         {
@@ -67,7 +67,7 @@ namespace Wexflow.Tests
 
         private void InitDataTable()
         {
-            const string sql = 
+            const string sql =
                   "UPDATE Data SET Description = 'Hello World Description 1!' WHERE Id = 1;"
                 + "UPDATE Data SET Description = 'Hello World Description 2!' WHERE Id = 2;"
                 + "UPDATE Data SET Description = 'Hello World Description 3!' WHERE Id = 3;"

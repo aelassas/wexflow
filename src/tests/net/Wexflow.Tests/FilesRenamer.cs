@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Wexflow.Tests
 {
@@ -13,7 +13,7 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if(!File.Exists(Tmp)) File.Copy(Src, Tmp);
+            if (!File.Exists(Tmp)) File.Copy(Src, Tmp);
             if (File.Exists(SrcRenamed)) File.Delete(SrcRenamed);
         }
 

@@ -1,10 +1,9 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
+﻿using MediaInfoDotNet;
+using System;
 using System.IO;
 using System.Threading;
-using MediaInfoDotNet.Models;
-using MediaInfoDotNet;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.MediaInfo
 {

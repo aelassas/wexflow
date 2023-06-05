@@ -1,5 +1,5 @@
-﻿using System.Data.SQLite;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.SQLite;
 
 namespace Wexflow.NetCore.Tests
 {

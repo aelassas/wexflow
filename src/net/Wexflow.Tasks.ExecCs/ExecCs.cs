@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.ExecCs
 {
     public class ExecCs : Task
     {
-        public ExecCs(XElement xe, Workflow wf): base(xe, wf)
+        public ExecCs(XElement xe, Workflow wf) : base(xe, wf)
         {
         }
 
@@ -111,7 +111,7 @@ namespace Wexflow.Tasks.ExecCs
             {
                 compileOk = true;
             }
-            
+
             return compileOk;
         }
 

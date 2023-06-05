@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Wexflow.Core;
-using Renci.SshNet;
-using System.IO;
+﻿using Renci.SshNet;
 using Renci.SshNet.Sftp;
+using System.Collections.Generic;
+using System.IO;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Ftp
 {

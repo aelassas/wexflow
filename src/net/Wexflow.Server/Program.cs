@@ -45,7 +45,7 @@ namespace Wexflow.Server
                 Console.Write("Starting {0} ... ", service.ServiceName);
                 if (onStartMethod != null)
                 {
-                    onStartMethod.Invoke(service, new object[] {new string[] { }});
+                    onStartMethod.Invoke(service, new object[] { new string[] { } });
                 }
                 Console.WriteLine("Started");
             }

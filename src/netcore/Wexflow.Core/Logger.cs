@@ -1,5 +1,5 @@
-﻿using System;
-using log4net;
+﻿using log4net;
+using System;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 

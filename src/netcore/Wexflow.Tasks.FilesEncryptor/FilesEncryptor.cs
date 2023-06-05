@@ -91,7 +91,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                 Files.Add(new FileInf(outputFile, Id));
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ErrorFormat("An error occured while encrypting the file {0}: {1}", inputFile, e.Message);
                 return false;

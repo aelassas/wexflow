@@ -6,7 +6,7 @@ using System.IO.Enumeration;
 
 namespace System.IO
 {
-    internal class FileSystemChangeEnumerator: FileSystemEnumerator<string>
+    internal class FileSystemChangeEnumerator : FileSystemEnumerator<string>
     {
         private FileChangeList _changes = new FileChangeList();
         private string _currentDirectory;

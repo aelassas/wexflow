@@ -1,15 +1,15 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FileExists
 {
-    public class FileExists:Task
+    public class FileExists : Task
     {
         public string File { get; private set; }
 
-        public FileExists(XElement xe, Workflow wf): base(xe, wf)
+        public FileExists(XElement xe, Workflow wf) : base(xe, wf)
         {
             File = GetSetting("file");
         }
@@ -17,7 +17,7 @@ namespace Wexflow.Tasks.FileExists
         public override TaskStatus Run()
         {
             Info("Checking file...");
-            
+
             bool success;
 
             try

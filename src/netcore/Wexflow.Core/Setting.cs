@@ -4,7 +4,7 @@
     /// Setting.
     /// </summary>
     public class Setting
-    {        
+    {
         /// <summary>
         /// Setting name.
         /// </summary>

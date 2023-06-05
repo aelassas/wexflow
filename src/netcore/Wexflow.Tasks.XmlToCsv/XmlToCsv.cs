@@ -7,7 +7,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.XmlToCsv
 {
-    public class XmlToCsv:Task
+    public class XmlToCsv : Task
     {
         public string Separator { get; set; }
         public string Quote { get; set; }
@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.XmlToCsv
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
                     Files.Add(new FileInf(csvPath, Id));
-                    
+
                     if (!atLeastOneSucceed) atLeastOneSucceed = true;
                 }
                 catch (ThreadAbortException)

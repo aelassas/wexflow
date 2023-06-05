@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.PdfToText
                 foreach (FileInf pdfFile in files)
                 {
                     try
-                    {                        
+                    {
                         var textPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.txt", Path.GetFileNameWithoutExtension(pdfFile.FileName), DateTime.Now));
 
@@ -39,7 +39,7 @@ namespace Wexflow.Tasks.PdfToText
                         using (var doc = new StreamWriter(textPath))
                         {
                             var pdfReader = new PdfReader(pdfFile.Path);
-                            
+
                             // Add the text file contents
                             for (int page = 1; page <= pdfReader.NumberOfPages; page++)
                             {
@@ -65,7 +65,7 @@ namespace Wexflow.Tasks.PdfToText
                         ErrorFormat("An error occured while converting the file {0}", e, pdfFile.Path);
                         success = false;
                     }
-                }  
+                }
             }
 
             var status = Status.Success;

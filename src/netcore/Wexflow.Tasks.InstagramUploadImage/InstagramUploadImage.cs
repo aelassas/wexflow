@@ -1,18 +1,18 @@
-﻿using InstagramApiSharp.API.Builder;
+﻿using InstagramApiSharp.API;
+using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Classes;
+using InstagramApiSharp.Classes.Models;
 using InstagramApiSharp.Logger;
 using System;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using InstagramApiSharp.API;
-using InstagramApiSharp.Classes.Models;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.InstagramUploadImage
 {
-    public class InstagramUploadImage:Task
+    public class InstagramUploadImage : Task
     {
         public string Username { get; }
         public string Password { get; }
@@ -180,7 +180,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
                 {
                     InfoFormat("Unable to upload image: {0}", result.Info.Message);
                     return false;
-                    
+
                 }
 
                 InfoFormat("Media created: {0}, {1}", result.Value.Pk, result.Value.Caption.Text);
@@ -191,7 +191,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
                 ErrorFormat("An error occured while uploading the image: {0}", e, filePath);
                 return false;
             }
-            
+
         }
 
     }

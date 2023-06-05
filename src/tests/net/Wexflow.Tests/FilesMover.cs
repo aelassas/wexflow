@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Wexflow.Tests
 {
@@ -25,7 +25,7 @@ namespace Wexflow.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            if(File.Exists(Dest) && !File.Exists(Src)) File.Move(Dest, Src);
+            if (File.Exists(Dest) && !File.Exists(Src)) File.Move(Dest, Src);
         }
 
         [TestMethod]

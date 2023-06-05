@@ -10,7 +10,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.HttpPatch
 {
-    public class HttpPatch:Task
+    public class HttpPatch : Task
     {
         private const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
         private const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;

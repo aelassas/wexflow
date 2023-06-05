@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Text;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Md5
 {
-    public class Md5:Task
+    public class Md5 : Task
     {
         public Md5(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.Md5
                                 new XAttribute("md5", md5)));
                         }
                         InfoFormat("Md5 of the file {0} is {1}", file.Path, md5);
-                        
+
                         if (!atLeastOneSucceed) atLeastOneSucceed = true;
                     }
                     catch (ThreadAbortException)

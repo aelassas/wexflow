@@ -319,7 +319,7 @@ namespace Wexflow.Clients.Manager
 
                 if (workflow.IsRunning)
                 {
-                    if(!_jobs.ContainsKey(wfId))
+                    if (!_jobs.ContainsKey(wfId))
                     {
                         _jobs.Add(wfId, workflow.InstanceId);
                     }

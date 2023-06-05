@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Wexflow.Core;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Threading;
-using System.IO;
-using System.Text.RegularExpressions;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.MailsSender
 {
-    public class MailsSender:Task
+    public class MailsSender : Task
     {
         public string Host { get; }
         public int Port { get; }
@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.MailsSender
                         }
                         catch (Exception e)
                         {
-							ErrorFormat("An error occured while parsing the mail {0}. Please check the XML configuration according to the documentation. Error: {1}", count, e.Message);
+                            ErrorFormat("An error occured while parsing the mail {0}. Please check the XML configuration according to the documentation. Error: {1}", count, e.Message);
                             success = false;
                             count++;
                             continue;
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.MailsSender
                             mail.Send(Host, Port, EnableSsl, User, Password, IsBodyHtml);
                             InfoFormat("Mail {0} sent.", count);
                             count++;
-                            
+
                             if (!atLeastOneSucceed) atLeastOneSucceed = true;
                         }
                         catch (ThreadAbortException)
@@ -184,8 +184,8 @@ namespace Wexflow.Tasks.MailsSender
                 else
                 {
                     var qf = (from lf in Workflow.FilesPerTask.Values
-                        from f in QueryFiles(lf, xSelectFile)
-                        select f).Distinct().ToArray();
+                              from f in QueryFiles(lf, xSelectFile)
+                              select f).Distinct().ToArray();
 
                     files.AddRange(qf);
                 }

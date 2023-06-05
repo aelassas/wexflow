@@ -1,13 +1,13 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.Threading;
-using System.Management;
 using System.IO;
+using System.Management;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Wmi
 {
-    public class Wmi:Task
+    public class Wmi : Task
     {
         public string Query { get; private set; }
 
@@ -33,14 +33,14 @@ namespace Wexflow.Tasks.Wmi
 
                 foreach (var o in collection)
                 {
-                    var obj = (ManagementObject) o;
+                    var obj = (ManagementObject)o;
                     var xObj = new XElement("Object");
                     foreach (PropertyData prop in obj.Properties)
                     {
                         var xProp = new XElement("Property", new XAttribute("name", prop.Name), new XAttribute("value", prop.Value ?? string.Empty));
                         xObj.Add(xProp);
                     }
-                    if(xdoc.Root==null)throw new Exception("Root node does not exist.");
+                    if (xdoc.Root == null) throw new Exception("Root node does not exist.");
                     xdoc.Root.Add(xObj);
                 }
                 xdoc.Save(xmlPath);

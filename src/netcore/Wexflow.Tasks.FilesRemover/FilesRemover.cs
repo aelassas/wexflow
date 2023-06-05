@@ -1,12 +1,12 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesRemover
 {
-    public class FilesRemover:Task
+    public class FilesRemover : Task
     {
         public FilesRemover(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -16,7 +16,7 @@ namespace Wexflow.Tasks.FilesRemover
         public override TaskStatus Run()
         {
             Info("Removing files...");
-            
+
             bool success = true;
             bool atLeastOneSucceed = false;
 

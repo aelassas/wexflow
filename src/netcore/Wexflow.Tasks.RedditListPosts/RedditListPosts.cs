@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.RedditListPosts
 
                 var xdoc = new XDocument(new XElement("Posts"));
 
-                foreach(var post in posts)
+                foreach (var post in posts)
                 {
                     var xpost = new XElement("Post", new XAttribute("id", SecurityElement.Escape(post.Id)), new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit)), new XAttribute("title", SecurityElement.Escape(post.Title)), new XAttribute("upvotes", post.UpVotes), new XAttribute("downvotes", post.DownVotes));
                     xdoc.Root.Add(xpost);

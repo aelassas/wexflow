@@ -2,11 +2,11 @@
 {
     public class SettingInfo
     {
-        
+
         public string Name { get; set; }
-        
+
         public string Value { get; set; }
-        
+
         public AttributeInfo[] Attributes { get; set; }
 
         public SettingInfo(string name, string value, AttributeInfo[] attributes)

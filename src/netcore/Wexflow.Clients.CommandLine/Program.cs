@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Wexflow.Core.Service.Client;
 using Wexflow.Core.Service.Contracts;
 

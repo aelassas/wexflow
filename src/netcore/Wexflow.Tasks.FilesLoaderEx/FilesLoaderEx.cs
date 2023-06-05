@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.Threading;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesLoaderEx
 {

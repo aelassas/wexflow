@@ -1,17 +1,17 @@
-﻿using System;
+﻿using MySqlConnector;
+using Npgsql;
+using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Data.Common;
-using Wexflow.Core;
+using System.Data.Odbc;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+using System.Data.SQLite;
+using System.IO;
 using System.Threading;
 using System.Xml.Linq;
-using System.Data.SqlClient;
-using Oracle.ManagedDataAccess.Client;
-using MySqlConnector;
-using System.Data.SQLite;
-using Npgsql;
-using System.IO;
-using System.Data.OleDb;
 using Teradata.Client.Provider;
-using System.Data.Odbc;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Sql
 {

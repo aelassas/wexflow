@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Text;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Sha512
 {
@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.Sha512
                                 new XAttribute("sha512", sha1)));
                         }
                         InfoFormat("SHA-512 hash of the file {0} is {1}", file.Path, sha1);
-                        
+
                         if (!atLeastOneSucceed) atLeastOneSucceed = true;
                     }
                     catch (ThreadAbortException)

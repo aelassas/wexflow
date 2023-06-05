@@ -5,7 +5,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.ProcessKiller
 {
-    public class ProcessKiller:Task
+    public class ProcessKiller : Task
     {
         public static string ProcessName { get; private set; }
 

@@ -1,9 +1,9 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.XmlToCsv
 {

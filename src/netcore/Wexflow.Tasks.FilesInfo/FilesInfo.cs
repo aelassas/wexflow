@@ -1,8 +1,8 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesInfo
 {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.FilesInfo
                             xdoc.Root.Add(xfile);
                         }
                         InfoFormat("File information of the file {0} generated.", file.Path);
-                        
+
                         if (!atLeastOneSucceed) atLeastOneSucceed = true;
                     }
                     catch (ThreadAbortException)

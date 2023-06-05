@@ -1,13 +1,13 @@
-﻿using InstagramApiSharp.API.Builder;
+﻿using InstagramApiSharp.API;
+using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Classes;
+using InstagramApiSharp.Classes.Models;
 using InstagramApiSharp.Logger;
 using System;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using InstagramApiSharp.API;
-using InstagramApiSharp.Classes.Models;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.InstagramUploadVideo
@@ -179,7 +179,7 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                 {
                     InfoFormat("Unable to upload video: {0}", result.Info.Message);
                     return false;
-                    
+
                 }
 
                 InfoFormat("Media created: {0}, {1}", result.Value.Pk, result.Value.Caption.Text);
@@ -190,7 +190,7 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                 ErrorFormat("An error occured while uploading the video: {0}", e, filePath);
                 return false;
             }
-            
+
         }
 
     }

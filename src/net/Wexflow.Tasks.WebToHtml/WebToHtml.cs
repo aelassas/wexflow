@@ -7,7 +7,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.WebToHtml
 {
-    public class WebToHtml: Task
+    public class WebToHtml : Task
     {
         public string[] Urls { get; private set; }
 

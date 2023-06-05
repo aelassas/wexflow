@@ -1,12 +1,12 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesMover
 {
-    public class FilesMover:Task
+    public class FilesMover : Task
     {
         public string DestFolder { get; private set; }
         public bool Overwrite { get; private set; }
@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.FilesMover
             var atLeastOneSucceed = false;
 
             var files = SelectFiles();
-            for (var i = files.Length - 1; i > -1; i--) 
+            for (var i = files.Length - 1; i > -1; i--)
             {
                 var file = files[i];
                 var fileName = Path.GetFileName(file.Path);
@@ -97,7 +97,7 @@ namespace Wexflow.Tasks.FilesMover
                     throw;
                 }
                 catch (Exception e)
-                { 
+                {
                     ErrorFormat("An error occured while moving the file {0} to {1}", e, file.Path, destFilePath);
                     success = false;
                 }

@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Wexflow.NetCore.Tests
 {
@@ -7,7 +7,7 @@ namespace Wexflow.NetCore.Tests
     public class CsvToXml
     {
         private static readonly string ExpectedResult =
-            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"+
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" +
             "<Lines>\r\n" +
             "  <Line>\r\n" +
             "    <Column>content</Column>\r\n" +
@@ -29,7 +29,7 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-           DeleteXmls();
+            DeleteXmls();
         }
 
         [TestCleanup]

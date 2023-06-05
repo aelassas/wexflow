@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Wexflow.Core.Db.MongoDB
 {
-    public class Workflow: Core.Db.Workflow
+    public class Workflow : Core.Db.Workflow
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

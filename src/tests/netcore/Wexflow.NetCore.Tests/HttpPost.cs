@@ -20,7 +20,7 @@ namespace Wexflow.NetCore.Tests
         {
             //Helper.DeleteFiles(DestDir);
         }
-        
+
         //
         // Must start Wexflow server for this test???
         //

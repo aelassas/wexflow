@@ -1,12 +1,12 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.Threading;
 using System.IO;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesExist
 {
-    public class FilesExist:Task
+    public class FilesExist : Task
     {
         public string[] FFiles { get; private set; }
         public string[] Folders { get; private set; }

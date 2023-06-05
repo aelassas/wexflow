@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;

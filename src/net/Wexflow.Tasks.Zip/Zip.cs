@@ -1,9 +1,9 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using System;
 using System.IO;
 using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Zip
 {

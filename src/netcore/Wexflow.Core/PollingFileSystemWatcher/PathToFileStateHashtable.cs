@@ -32,7 +32,7 @@ namespace System.IO
 
         public void Add(string directory, string file, FileState value)
         {
-            if(_nextValuesIndex >= Values.Length) // Resize
+            if (_nextValuesIndex >= Values.Length) // Resize
             {
                 Resize();
             }

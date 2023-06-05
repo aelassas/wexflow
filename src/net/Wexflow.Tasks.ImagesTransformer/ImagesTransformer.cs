@@ -1,10 +1,10 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Threading;
-using System.Xml.Linq;
-using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.ImagesTransformer
 {

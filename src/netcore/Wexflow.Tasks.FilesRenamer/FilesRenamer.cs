@@ -1,12 +1,12 @@
 ﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.Threading;
 using System.IO;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesRenamer
 {
-    public class FilesRenamer:Task
+    public class FilesRenamer : Task
     {
         public bool Overwrite { get; private set; }
 
@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.FilesRenamer
                     if (!string.IsNullOrEmpty(file.RenameTo))
                     {
                         var dirName = Path.GetDirectoryName(file.Path);
-                        if(dirName == null) throw new Exception("File directory is null");
+                        if (dirName == null) throw new Exception("File directory is null");
                         var destPath = Path.Combine(dirName, file.RenameTo);
 
                         if (File.Exists(destPath))

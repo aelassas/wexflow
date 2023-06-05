@@ -1,10 +1,10 @@
 ﻿using System;
-using Wexflow.Core;
+using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Threading;
 using Tweetinvi;
 using Tweetinvi.Models;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Twitter
 {
@@ -39,7 +39,7 @@ namespace Wexflow.Tasks.Twitter
                 {
                     var credentials = new TwitterCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
                     client = new TwitterClient(credentials);
-                    
+
                     //TweetinviConfig.ApplicationSettings.HttpRequestTimeout = 20000;
                     //TweetinviConfig.CurrentThreadSettings.InitialiseFrom(TweetinviConfig.ApplicationSettings);
 
