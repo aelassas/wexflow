@@ -111,6 +111,7 @@ namespace Wexflow.Tasks.YouTube
                 UserCredential credential;
                 using (var stream = new FileStream(ClientSecrets, FileMode.Open, FileAccess.Read))
                 {
+#pragma warning disable CS0618 // Le type ou le membre est obsolète
                     credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                         GoogleClientSecrets.Load(stream).Secrets,
                         // This OAuth 2.0 access scope allows an application to upload files to the
@@ -119,6 +120,7 @@ namespace Wexflow.Tasks.YouTube
                         User,
                         CancellationToken.None
                         );
+#pragma warning restore CS0618 // Le type ou le membre est obsolète
                 }
                 Info("Authentication succeeded.");
 

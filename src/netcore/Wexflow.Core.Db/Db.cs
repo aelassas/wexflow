@@ -136,19 +136,16 @@ namespace Wexflow.Core.Db
         public static string GetMd5(string input)
         {
             // Use input string to calculate MD5 hash
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
+            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+            byte[] hashBytes = MD5.HashData(inputBytes);
 
-                // Convert the byte array to hexadecimal string
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("x2"));
-                }
-                return sb.ToString();
+            // Convert the byte array to hexadecimal string
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                sb.Append(hashBytes[i].ToString("x2"));
             }
+            return sb.ToString();
         }
     }
 }
