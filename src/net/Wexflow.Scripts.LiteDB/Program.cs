@@ -43,7 +43,8 @@ namespace Wexflow.Scripts.LiteDB
             var path2 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..",
                 "samples", "net", "Wexflow", "Database", "Wexflow-log.db");
-            var connString = "Filename=" + path1 + "; Connection=direct";
+
+            var connString = $"Filename={path1}; Connection=direct";
 
             if (File.Exists(path1)) File.Delete(path1);
             if (File.Exists(path2)) File.Delete(path2);
