@@ -26,11 +26,11 @@ namespace Wexflow.Scripts.LiteDB
                 var buildDevDatabases = false;
                 bool.TryParse(config["buildDevDatabases"], out buildDevDatabases);
 
-                if (buildDevDatabases)
+                if (buildDevDatabases && config != null)
                 {
-                    BuildDatabase("Windows", "windows");
-                    BuildDatabase("Linux", "linux");
-                    BuildDatabase("Mac OS X", "macos");
+                    BuildDatabase("Windows", "windows", config);
+                    BuildDatabase("Linux", "linux", config);
+                    BuildDatabase("Mac OS X", "macos", config);
                 }
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace Wexflow.Scripts.LiteDB
             Console.ReadKey();
         }
 
-        private static void BuildDatabase(string info, string platformFolder)
+        private static void BuildDatabase(string info, string platformFolder, IConfiguration config)
         {
             Console.WriteLine($"=== Build {info} database ===");
             var path1 = Path.Combine(
