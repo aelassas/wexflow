@@ -40,7 +40,7 @@ namespace Wexflow.Scripts.SQLite
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..",
                 "samples", "net", "Wexflow", "Database", "Wexflow.sqlite");
 
-            var connString = "Data Source=" + path1 + ";Version=3;";
+            var connString = $"Data Source={path1};Version=3;";
 
             if (File.Exists(path1)) File.Delete(path1);
 
