@@ -551,12 +551,7 @@ namespace Wexflow.Core.Db.RavenDB
                 {
                     Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
                     IOrderedQueryable<Entry> q = col.OrderByDescending(e => e.StatusDate);
-                    if (q.Any())
-                    {
-                        return q.Select(e => e.StatusDate).First();
-                    }
-
-                    return DateTime.Now;
+                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
                 {
@@ -574,12 +569,7 @@ namespace Wexflow.Core.Db.RavenDB
                 {
                     Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
                     IOrderedQueryable<Entry> q = col.OrderBy(e => e.StatusDate);
-                    if (q.Any())
-                    {
-                        return q.Select(e => e.StatusDate).First();
-                    }
-
-                    return DateTime.Now;
+                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
                 {
@@ -855,12 +845,7 @@ namespace Wexflow.Core.Db.RavenDB
                 {
                     Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
                     IOrderedQueryable<HistoryEntry> q = col.OrderByDescending(e => e.StatusDate);
-                    if (q.Any())
-                    {
-                        return q.Select(e => e.StatusDate).First();
-                    }
-
-                    return DateTime.Now;
+                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
                 {
@@ -878,12 +863,7 @@ namespace Wexflow.Core.Db.RavenDB
                 {
                     Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
                     IOrderedQueryable<HistoryEntry> q = col.OrderBy(e => e.StatusDate);
-                    if (q.Any())
-                    {
-                        return q.Select(e => e.StatusDate).First();
-                    }
-
-                    return DateTime.Now;
+                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
                 {

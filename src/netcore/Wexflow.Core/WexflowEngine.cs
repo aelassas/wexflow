@@ -363,8 +363,7 @@ namespace Wexflow.Core
             try
             {
                 XAttribute xValue = xdoc.XPathSelectElement(string.Format("/Wexflow/Setting[@name='{0}']", name)).Attribute("value");
-                if (xValue == null) throw new Exception("Wexflow Setting Value attribute not found.");
-                return xValue.Value;
+                return xValue == null ? throw new Exception("Wexflow Setting Value attribute not found.") : xValue.Value;
             }
             catch (Exception e)
             {
@@ -818,8 +817,10 @@ namespace Wexflow.Core
                     }
                     else if (wf.LaunchType == LaunchType.Periodic)
                     {
-                        IDictionary<string, object> map = new Dictionary<string, object>();
-                        map.Add("workflow", wf);
+                        IDictionary<string, object> map = new Dictionary<string, object>
+                        {
+                            { "workflow", wf }
+                        };
 
                         string jobIdentity = "Workflow Job " + wf.Id;
                         IJobDetail jobDetail = JobBuilder.Create<WorkflowJob>()
@@ -845,8 +846,10 @@ namespace Wexflow.Core
                     }
                     else if (wf.LaunchType == LaunchType.Cron)
                     {
-                        IDictionary<string, object> map = new Dictionary<string, object>();
-                        map.Add("workflow", wf);
+                        IDictionary<string, object> map = new Dictionary<string, object>
+                        {
+                            { "workflow", wf }
+                        };
 
                         string jobIdentity = "Workflow Job " + wf.Id;
                         IJobDetail jobDetail = JobBuilder.Create<WorkflowJob>()
@@ -1260,12 +1263,7 @@ namespace Wexflow.Core
         public User[] GetUsers()
         {
             IEnumerable<User> q = Database.GetUsers();
-            if (q.Any())
-            {
-                return q.ToArray();
-            }
-
-            return Array.Empty<User>();
+            return q.Any() ? q.ToArray() : Array.Empty<User>();
         }
 
         /// <summary>
@@ -1275,12 +1273,7 @@ namespace Wexflow.Core
         public User[] GetUsers(string keyword, UserOrderBy uo)
         {
             IEnumerable<User> q = Database.GetUsers(keyword, uo);
-            if (q.Any())
-            {
-                return q.ToArray();
-            }
-
-            return Array.Empty<User>();
+            return q.Any() ? q.ToArray() : Array.Empty<User>();
         }
 
         /// <summary>
@@ -1338,14 +1331,7 @@ namespace Wexflow.Core
         {
             IEnumerable<HistoryEntry> col = Database.GetHistoryEntries(keyword, from, to, page, entriesCount, heo);
 
-            if (!col.Any())
-            {
-                return Array.Empty<HistoryEntry>();
-            }
-            else
-            {
-                return col.ToArray();
-            }
+            return !col.Any() ? Array.Empty<HistoryEntry>() : col.ToArray();
         }
 
         /// <summary>
@@ -1362,14 +1348,7 @@ namespace Wexflow.Core
         {
             IEnumerable<Entry> col = Database.GetEntries(keyword, from, to, page, entriesCount, heo);
 
-            if (!col.Any())
-            {
-                return Array.Empty<Entry>();
-            }
-            else
-            {
-                return col.ToArray();
-            }
+            return !col.Any() ? Array.Empty<Entry>() : col.ToArray();
         }
 
         /// <summary>

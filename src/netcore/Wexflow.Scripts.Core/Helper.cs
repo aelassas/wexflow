@@ -207,14 +207,7 @@ namespace Wexflow.Scripts.Core
                         File.Delete(recordFilePath);
                     }
                     File.Copy(recordSrc, recordFilePath, true);
-                    if (isUnix)
-                    {
-                        recordVersion.FilePath = recordsFolder + "/" + dbFolderName + "/" + recordId + "/" + recordVersionId + "/" + recordFileName;
-                    }
-                    else
-                    {
-                        recordVersion.FilePath = recordFilePath;
-                    }
+                    recordVersion.FilePath = isUnix ? recordsFolder + "/" + dbFolderName + "/" + recordId + "/" + recordVersionId + "/" + recordFileName : recordFilePath;
                     db.UpdateVersion(recordVersionId, recordVersion);
                 }
 

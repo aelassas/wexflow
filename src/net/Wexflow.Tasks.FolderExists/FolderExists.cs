@@ -55,11 +55,7 @@ namespace Wexflow.Tasks.FolderExists
 
             Info("Task finished");
 
-            if (status != null)
-            {
-                return status;
-            }
-            return new TaskStatus(Status.Success, success);
+            return status ?? new TaskStatus(Status.Success, success);
         }
 
         private bool CheckFolder(ref TaskStatus status)

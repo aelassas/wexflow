@@ -112,7 +112,7 @@ namespace Wexflow.Core
             {
                 // setting name
                 XAttribute xSettingName = xSetting.Attribute("name") ?? throw new Exception("Setting name not found");
-                var settingName = xSettingName.Value;
+                string settingName = xSettingName.Value;
 
                 // setting value
                 XAttribute xSettingValue = xSetting.Attribute("value");
@@ -175,12 +175,7 @@ namespace Wexflow.Core
         {
             string returnValue = GetSetting(name);
 
-            if (string.IsNullOrEmpty(returnValue))
-            {
-                return defaultValue;
-            }
-
-            return returnValue;
+            return string.IsNullOrEmpty(returnValue) ? defaultValue : returnValue;
         }
 
         /// <summary>
@@ -193,12 +188,7 @@ namespace Wexflow.Core
         {
             string returnValue = GetSetting(name);
 
-            if (string.IsNullOrEmpty(returnValue))
-            {
-                return defaultValue;
-            }
-
-            return (T)Convert.ChangeType(returnValue, typeof(T), CultureInfo.InvariantCulture);
+            return string.IsNullOrEmpty(returnValue) ? defaultValue : (T)Convert.ChangeType(returnValue, typeof(T), CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -347,11 +337,7 @@ namespace Wexflow.Core
         public object SelectObject()
         {
             string key = GetSetting("selectObject");
-            if (SharedMemory.ContainsKey(key))
-            {
-                return SharedMemory[key];
-            }
-            return null;
+            return SharedMemory.ContainsKey(key) ? SharedMemory[key] : null;
         }
 
         private string BuildLogMsg(string msg)

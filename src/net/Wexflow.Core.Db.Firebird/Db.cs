@@ -333,7 +333,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[Entry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[Entry.ColumnName_WorkflowId],
+                                    WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
                                     JobId = (string)reader[Entry.ColumnName_JobId]
                                 };
 
@@ -453,7 +453,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[Entry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[Entry.ColumnName_WorkflowId],
+                                    WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
                                     JobId = (string)reader[Entry.ColumnName_JobId]
                                 };
 
@@ -524,7 +524,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[Entry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[Entry.ColumnName_WorkflowId],
+                                    WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
                                     JobId = (string)reader[Entry.ColumnName_JobId]
                                 };
 
@@ -574,7 +574,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[Entry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[Entry.ColumnName_WorkflowId],
+                                    WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
                                     JobId = (string)reader[Entry.ColumnName_JobId]
                                 };
 
@@ -680,7 +680,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[HistoryEntry.ColumnName_WorkflowId]
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -730,7 +730,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[HistoryEntry.ColumnName_WorkflowId]
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -782,7 +782,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[HistoryEntry.ColumnName_WorkflowId]
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -900,7 +900,7 @@ namespace Wexflow.Core.Db.Firebird
                                     LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
                                     Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
                                     StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                                    WorkflowId = (int)(int)reader[HistoryEntry.ColumnName_WorkflowId]
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
                                 };
 
                                 entries.Add(entry);

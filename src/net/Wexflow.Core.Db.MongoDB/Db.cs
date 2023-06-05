@@ -589,12 +589,7 @@ namespace Wexflow.Core.Db.MongoDB
             {
                 IMongoCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
                 IEnumerable<HistoryEntry> q = col.Find(FilterDefinition<HistoryEntry>.Empty).Sort(Builders<HistoryEntry>.Sort.Ascending(e => e.StatusDate)).ToEnumerable();
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -604,12 +599,7 @@ namespace Wexflow.Core.Db.MongoDB
             {
                 IMongoCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
                 IEnumerable<HistoryEntry> q = col.Find(FilterDefinition<HistoryEntry>.Empty).Sort(Builders<HistoryEntry>.Sort.Descending(e => e.StatusDate)).ToEnumerable();
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -619,12 +609,7 @@ namespace Wexflow.Core.Db.MongoDB
             {
                 IMongoCollection<Entry> col = db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
                 IEnumerable<Entry> q = col.Find(FilterDefinition<Entry>.Empty).Sort(Builders<Entry>.Sort.Ascending(e => e.StatusDate)).ToEnumerable();
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -634,12 +619,7 @@ namespace Wexflow.Core.Db.MongoDB
             {
                 IMongoCollection<Entry> col = db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
                 IEnumerable<Entry> q = col.Find(FilterDefinition<Entry>.Empty).Sort(Builders<Entry>.Sort.Descending(e => e.StatusDate)).ToEnumerable();
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 

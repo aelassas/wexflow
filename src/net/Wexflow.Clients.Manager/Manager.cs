@@ -369,25 +369,11 @@ namespace Wexflow.Clients.Manager
                         buttonApprove.Enabled = workflow.IsApproval && workflow.IsWaitingForApproval;
                         buttonReject.Enabled = workflow.IsApproval && workflow.IsWaitingForApproval;
 
-                        if (workflow.IsApproval && workflow.IsWaitingForApproval && !workflow.IsPaused)
-                        {
-                            textBoxInfo.Text = "This workflow is waiting for approval...";
-                        }
-                        else
-                        {
-                            if (workflow.IsRunning && !workflow.IsPaused)
-                            {
-                                textBoxInfo.Text = @"This workflow is running...";
-                            }
-                            else if (workflow.IsPaused)
-                            {
-                                textBoxInfo.Text = @"This workflow is suspended.";
-                            }
-                            else
-                            {
-                                textBoxInfo.Text = "";
-                            }
-                        }
+                        textBoxInfo.Text = workflow.IsApproval && workflow.IsWaitingForApproval && !workflow.IsPaused
+                            ? "This workflow is waiting for approval..."
+                            : workflow.IsRunning && !workflow.IsPaused
+                                ? @"This workflow is running..."
+                                : workflow.IsPaused ? @"This workflow is suspended." : "";
 
                     }
                 }

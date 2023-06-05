@@ -165,11 +165,7 @@ namespace Wexflow.Core
             if (xNode != null)
             {
                 XAttribute xSetting = xNode.Attribute("value");
-                if (xSetting == null)
-                {
-                    throw new Exception("Setting " + name + " value attribute not found.");
-                }
-                return xSetting.Value;
+                return xSetting == null ? throw new Exception("Setting " + name + " value attribute not found.") : xSetting.Value;
             }
             return string.Empty;
         }
@@ -184,12 +180,7 @@ namespace Wexflow.Core
         {
             string returnValue = GetSetting(name);
 
-            if (string.IsNullOrEmpty(returnValue))
-            {
-                return defaultValue;
-            }
-
-            return returnValue;
+            return string.IsNullOrEmpty(returnValue) ? defaultValue : returnValue;
         }
 
         /// <summary>
@@ -198,16 +189,11 @@ namespace Wexflow.Core
         /// <param name="name">Setting name.</param>
         /// <param name="defaultValue">Default value.</param>
         /// <returns>Setting value.</returns>
-        public T GetSetting<T>(string name, T defaultValue = default(T))
+        public T GetSetting<T>(string name, T defaultValue = default)
         {
             string returnValue = GetSetting(name);
 
-            if (string.IsNullOrEmpty(returnValue))
-            {
-                return defaultValue;
-            }
-
-            return (T)Convert.ChangeType(returnValue, typeof(T), CultureInfo.InvariantCulture);
+            return string.IsNullOrEmpty(returnValue) ? defaultValue : (T)Convert.ChangeType(returnValue, typeof(T), CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -244,12 +230,7 @@ namespace Wexflow.Core
             return _xElement.XPathSelectElements(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager).Select(xe =>
             {
                 XAttribute xAttribute = xe.Attribute("value");
-                if (xAttribute == null)
-                {
-                    throw new Exception("Setting " + name + " value attribute not found.");
-                }
-
-                return xAttribute.Value;
+                return xAttribute == null ? throw new Exception("Setting " + name + " value attribute not found.") : xAttribute.Value;
             }).ToArray();
         }
 
@@ -361,11 +342,7 @@ namespace Wexflow.Core
         public object SelectObject()
         {
             string key = GetSetting("selectObject");
-            if (SharedMemory.ContainsKey(key))
-            {
-                return SharedMemory[key];
-            }
-            return null;
+            return SharedMemory.ContainsKey(key) ? SharedMemory[key] : null;
         }
 
         private string BuildLogMsg(string msg)

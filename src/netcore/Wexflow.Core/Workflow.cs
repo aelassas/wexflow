@@ -842,12 +842,7 @@ namespace Wexflow.Core
         private string GetWorkflowAttribute(XDocument xdoc, string attr)
         {
             XAttribute xAttribute = xdoc.XPathSelectElement("/wf:Workflow", XmlNamespaceManager).Attribute(attr);
-            if (xAttribute != null)
-            {
-                return xAttribute.Value;
-            }
-
-            throw new Exception("Workflow attribute " + attr + "not found.");
+            return xAttribute != null ? xAttribute.Value : throw new Exception("Workflow attribute " + attr + "not found.");
         }
 
         private string GetWorkflowSetting(XDocument xdoc, string name, bool throwExceptionIfNotFound)
@@ -905,9 +900,11 @@ namespace Wexflow.Core
                     , XsdPath
                     , Database
                     , GlobalVariables
-                    );
-                workflow.RestVariables = RestVariables;
-                workflow.StartedBy = startedBy;
+                    )
+                {
+                    RestVariables = RestVariables,
+                    StartedBy = startedBy
+                };
                 return workflow.StartAsync(startedBy);
             }
 
@@ -1287,22 +1284,7 @@ namespace Wexflow.Core
                 }
             }
 
-            if (IsRejected)
-            {
-                return Status.Rejected;
-            }
-
-            if (success)
-            {
-                return Status.Success;
-            }
-
-            if (atLeastOneSucceed || warning)
-            {
-                return Status.Warning;
-            }
-
-            return Status.Error;
+            return IsRejected ? Status.Rejected : success ? Status.Success : atLeastOneSucceed || warning ? Status.Warning : Status.Error;
         }
 
         private void RunSequentialTasks(IEnumerable<Task> tasks, ref bool success, ref bool warning, ref bool error)

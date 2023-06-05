@@ -201,11 +201,9 @@ namespace Wexflow.Tasks.SqlToXml
                     {
                         string xmlvalue = CleanInvalidXmlChars(reader[column].ToString());
                         System.Type columntype = reader[column].GetType();
-                        int number;
-                        decimal decnumber;
                         if (
-                            (columntype == typeof(Int32) && int.TryParse(xmlvalue, out number) && number == 0) ||
-                            (columntype == typeof(Decimal) && decimal.TryParse(xmlvalue, out decnumber) && decnumber == 0) ||
+                            (columntype == typeof(Int32) && int.TryParse(xmlvalue, out int number) && number == 0) ||
+                            (columntype == typeof(Decimal) && decimal.TryParse(xmlvalue, out decimal decnumber) && decnumber == 0) ||
                             (columntype == typeof(DateTime) && (Convert.ToDateTime(xmlvalue) == SqlDateTime.MinValue || xmlvalue == "01-01-1900 00:00:00"))
                             )
                         {

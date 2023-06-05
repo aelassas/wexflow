@@ -21,17 +21,9 @@ namespace Wexflow.Tasks.Ftp
         private ConnectionInfo GetConnectionInfo()
         {
             // Setup Credentials and Server Information
-            ConnectionInfo connInfo;
-
-            if (!string.IsNullOrEmpty(PrivateKeyPath) && !string.IsNullOrEmpty(Passphrase))
-            {
-                connInfo = new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password), new PrivateKeyAuthenticationMethod(User, new PrivateKeyFile(PrivateKeyPath, Passphrase)));
-            }
-            else
-            {
-                connInfo = new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password));
-            }
-
+            ConnectionInfo connInfo = !string.IsNullOrEmpty(PrivateKeyPath) && !string.IsNullOrEmpty(Passphrase)
+                ? new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password), new PrivateKeyAuthenticationMethod(User, new PrivateKeyFile(PrivateKeyPath, Passphrase)))
+                : new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password));
             return connInfo;
         }
 

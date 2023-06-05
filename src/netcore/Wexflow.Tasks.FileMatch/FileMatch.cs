@@ -29,17 +29,9 @@ namespace Wexflow.Tasks.FileMatch
 
             try
             {
-                string[] files;
-
-                if (Recursive)
-                {
-                    files = Directory.GetFiles(Dir, "*.*", SearchOption.AllDirectories);
-                }
-                else
-                {
-                    files = Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
-                }
-
+                string[] files = Recursive
+                    ? Directory.GetFiles(Dir, "*.*", SearchOption.AllDirectories)
+                    : Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
                 foreach (string file in files)
                 {
                     if (Regex.Match(Path.GetFileName(file), Pattern).Success)

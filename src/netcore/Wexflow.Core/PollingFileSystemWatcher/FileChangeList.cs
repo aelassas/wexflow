@@ -76,9 +76,7 @@ namespace System.IO
             public int Compare(FileChange left, FileChange right)
             {
                 int nameOrder = String.CompareOrdinal(left.Name, right.Name);
-                if (nameOrder != 0) return nameOrder;
-
-                return left.ChangeType.CompareTo(right.ChangeType);
+                return nameOrder != 0 ? nameOrder : left.ChangeType.CompareTo(right.ChangeType);
             }
         }
     }

@@ -267,14 +267,9 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
         private static string[] GetFiles()
         {
-            if (IncludeSubFolders)
-            {
-                return Directory.GetFiles(FolderToWatch, Filter, SearchOption.AllDirectories);
-            }
-            else
-            {
-                return Directory.GetFiles(FolderToWatch, Filter, SearchOption.TopDirectoryOnly);
-            }
+            return IncludeSubFolders
+                ? Directory.GetFiles(FolderToWatch, Filter, SearchOption.AllDirectories)
+                : Directory.GetFiles(FolderToWatch, Filter, SearchOption.TopDirectoryOnly);
         }
 
         private Task[] GetTasks(string evt)

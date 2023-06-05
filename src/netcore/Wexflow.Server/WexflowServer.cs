@@ -17,13 +17,9 @@ namespace Wexflow.Server
     {
         private static string superAdminUsername;
 
-        private static PollingFileSystemWatcher watcher;
-        private static IConfiguration config;
-        private static WexflowEngine wexflowEngine;
-
-        public static PollingFileSystemWatcher Watcher { get => watcher; set => watcher = value; }
-        public static IConfiguration Config { get => config; set => config = value; }
-        public static WexflowEngine WexflowEngine { get => wexflowEngine; set => wexflowEngine = value; }
+        public static PollingFileSystemWatcher Watcher { get; set; }
+        public static IConfiguration Config { get; set; }
+        public static WexflowEngine WexflowEngine { get; set; }
 
         public static void Main()
         {

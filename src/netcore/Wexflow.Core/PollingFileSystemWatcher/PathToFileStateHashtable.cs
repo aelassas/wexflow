@@ -96,16 +96,8 @@ namespace System.IO
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe bool Equal(FullPath fullPath, string directory, ReadOnlySpan<char> file)
         {
-            if (!String.Equals(fullPath.Directory, directory, StringComparison.Ordinal))
-            {
-                return false;
-            }
-
-            if (!file.Equals((ReadOnlySpan<char>)fullPath.File, StringComparison.Ordinal))
-            {
-                return false;
-            }
-            return true;
+            return String.Equals(fullPath.Directory, directory, StringComparison.Ordinal)
+&& file.Equals((ReadOnlySpan<char>)fullPath.File, StringComparison.Ordinal);
         }
 
         private static unsafe int GetHashCode(ReadOnlySpan<char> path)
@@ -242,8 +234,7 @@ namespace System.IO
 
             public override readonly string ToString()
             {
-                if (IsEmpty) return "empty";
-                return Key.ToString();
+                return IsEmpty ? "empty" : Key.ToString();
             }
         }
 

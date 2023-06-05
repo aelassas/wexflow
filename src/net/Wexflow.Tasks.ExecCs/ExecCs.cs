@@ -103,14 +103,7 @@ namespace Wexflow.Tasks.ExecCs
             }
 
             // Return the results of the compilation.
-            if (cr.Errors.Count > 0)
-            {
-                compileOk = false;
-            }
-            else
-            {
-                compileOk = true;
-            }
+            compileOk = cr.Errors.Count <= 0;
 
             return compileOk;
         }

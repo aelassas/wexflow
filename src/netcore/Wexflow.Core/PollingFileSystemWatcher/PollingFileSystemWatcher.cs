@@ -117,10 +117,7 @@ namespace System.IO
             if (Filter == null) return true;
 
             bool ignoreCase = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-            if (FileSystemName.MatchesSimpleExpression(Filter, entry.FileName, ignoreCase: ignoreCase))
-                return true;
-
-            return false;
+            return FileSystemName.MatchesSimpleExpression(Filter, entry.FileName, ignoreCase: ignoreCase);
         }
 
         protected internal virtual bool ShouldRecurseIntoEntry(ref FileSystemEntry entry) => true;

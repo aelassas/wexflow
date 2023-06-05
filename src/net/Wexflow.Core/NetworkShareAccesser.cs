@@ -202,16 +202,9 @@ namespace Wexflow.Core
                 lpRemoteName = remoteUnc
             };
 
-            int result;
-            if (promptUser)
-            {
-                result = WNetUseConnection(IntPtr.Zero, nr, "", "", CONNECT_INTERACTIVE | CONNECT_PROMPT, null, null, null);
-            }
-            else
-            {
-                result = WNetUseConnection(IntPtr.Zero, nr, password, username, 0, null, null, null);
-            }
-
+            int result = promptUser
+                ? WNetUseConnection(IntPtr.Zero, nr, "", "", CONNECT_INTERACTIVE | CONNECT_PROMPT, null, null, null)
+                : WNetUseConnection(IntPtr.Zero, nr, password, username, 0, null, null, null);
             if (result != NO_ERROR)
             {
                 throw new Win32Exception(result);

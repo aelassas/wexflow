@@ -1778,16 +1778,16 @@ namespace Wexflow.Core.Db.SQLite
                         Name = (string)reader[Record.ColumnName_Name],
                         Description = (string)reader[Record.ColumnName_Description],
                         Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
                         Comments = (string)reader[Record.ColumnName_Comments],
                         ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
                         CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
                         CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
                         ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
                         AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
                     };
 
                     return record;
@@ -1836,16 +1836,16 @@ namespace Wexflow.Core.Db.SQLite
                             Name = (string)reader[Record.ColumnName_Name],
                             Description = (string)reader[Record.ColumnName_Description],
                             Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
                             Comments = (string)reader[Record.ColumnName_Comments],
                             ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
                             CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
                             CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
                             ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
                             AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
                         };
 
                         records.Add(record);
@@ -1894,16 +1894,16 @@ namespace Wexflow.Core.Db.SQLite
                             Name = (string)reader[Record.ColumnName_Name],
                             Description = (string)reader[Record.ColumnName_Description],
                             Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
                             Comments = (string)reader[Record.ColumnName_Comments],
                             ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
                             CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
                             CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
                             ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
                             AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
                         };
 
                         records.Add(record);
@@ -1954,16 +1954,16 @@ namespace Wexflow.Core.Db.SQLite
                             Name = (string)reader[Record.ColumnName_Name],
                             Description = (string)reader[Record.ColumnName_Description],
                             Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
                             Comments = (string)reader[Record.ColumnName_Comments],
                             ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
                             CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
                             CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
                             ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
                             AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
                         };
 
                         records.Add(record);
@@ -2410,7 +2410,7 @@ namespace Wexflow.Core.Db.SQLite
                             UserId = ((long)reader[Approver.ColumnName_UserId]).ToString(),
                             RecordId = ((long)reader[Approver.ColumnName_RecordId]).ToString(),
                             Approved = (long)reader[Approver.ColumnName_Approved] == 1,
-                            ApprovedOn = reader[Approver.ColumnName_ApprovedOn] == DBNull.Value ? null : (DateTime?)DateTime.Parse((string)reader[Approver.ColumnName_ApprovedOn])
+                            ApprovedOn = reader[Approver.ColumnName_ApprovedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Approver.ColumnName_ApprovedOn])
                         };
 
                         approvers.Add(approver);

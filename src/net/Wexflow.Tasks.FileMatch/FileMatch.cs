@@ -61,11 +61,7 @@ namespace Wexflow.Tasks.FileMatch
 
             Info("Task finished");
 
-            if (status != null)
-            {
-                return status;
-            }
-            return new TaskStatus(Status.Success, success);
+            return status ?? new TaskStatus(Status.Success, success);
         }
 
         private bool CheckFile(ref TaskStatus status)
@@ -75,17 +71,9 @@ namespace Wexflow.Tasks.FileMatch
 
             try
             {
-                string[] files;
-
-                if (Recursive)
-                {
-                    files = Directory.GetFiles(Dir, "*.*", SearchOption.AllDirectories);
-                }
-                else
-                {
-                    files = Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
-                }
-
+                string[] files = Recursive
+                    ? Directory.GetFiles(Dir, "*.*", SearchOption.AllDirectories)
+                    : Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
                 foreach (string file in files)
                 {
                     if (Regex.Match(Path.GetFileName(file), Pattern).Success)

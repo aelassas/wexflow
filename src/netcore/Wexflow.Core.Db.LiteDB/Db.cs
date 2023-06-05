@@ -701,18 +701,10 @@ namespace Wexflow.Core.Db.LiteDB
                 ILiteCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
                 string keywordToLower = keyword.ToLower();
                 int skip = (page - 1) * entriesCount;
-                BsonExpression query;
-
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    query = Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
-                                    , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)));
-                }
-                else
-                {
-                    query = Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
-                }
-
+                BsonExpression query = !string.IsNullOrEmpty(keyword)
+                    ? Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
+                                    , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)))
+                    : Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
                 switch (heo)
                 {
                     case EntryOrderBy.StatusDateAscending:
@@ -967,18 +959,10 @@ namespace Wexflow.Core.Db.LiteDB
                 ILiteCollection<Entry> col = db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
                 string keywordToLower = keyword.ToLower();
                 int skip = (page - 1) * entriesCount;
-                BsonExpression query;
-
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    query = Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
-                                    , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)));
-                }
-                else
-                {
-                    query = Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
-                }
-
+                BsonExpression query = !string.IsNullOrEmpty(keyword)
+                    ? Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
+                                    , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)))
+                    : Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
                 switch (eo)
                 {
                     case EntryOrderBy.StatusDateAscending:
@@ -1242,18 +1226,10 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 string keywordToLower = keyword.ToLower();
                 ILiteCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
-                BsonExpression query;
-
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    query = Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
-                        , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)));
-                }
-                else
-                {
-                    query = Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
-                }
-
+                BsonExpression query = !string.IsNullOrEmpty(keyword)
+                    ? Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
+                        , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)))
+                    : Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
                 return col.Find(query).LongCount();
             }
         }
@@ -1264,18 +1240,10 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 string keywordToLower = keyword.ToLower();
                 ILiteCollection<Entry> col = db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
-                BsonExpression query;
-
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    query = Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
-                        , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)));
-                }
-                else
-                {
-                    query = Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
-                }
-
+                BsonExpression query = !string.IsNullOrEmpty(keyword)
+                    ? Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
+                        , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)))
+                    : Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to));
                 return col.Find(query).LongCount();
             }
         }
@@ -1286,12 +1254,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 ILiteCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
                 IEnumerable<HistoryEntry> q = col.Find(Query.All("StatusDate"));
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1301,12 +1264,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 ILiteCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
                 IEnumerable<HistoryEntry> q = col.Find(Query.All("StatusDate", Query.Descending));
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1316,12 +1274,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 ILiteCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.Entry.DocumentName);
                 IEnumerable<HistoryEntry> q = col.Find(Query.All("StatusDate"));
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1331,12 +1284,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 ILiteCollection<HistoryEntry> col = db.GetCollection<HistoryEntry>(Core.Db.Entry.DocumentName);
                 IEnumerable<HistoryEntry> q = col.Find(Query.All("StatusDate", Query.Descending));
-                if (q.Any())
-                {
-                    return q.Select(e => e.StatusDate).First();
-                }
-
-                return DateTime.Now;
+                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 

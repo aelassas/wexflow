@@ -1318,14 +1318,7 @@ namespace Wexflow.Server
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
                             string id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
-                            if (id == "-1")
-                            {
-                                res = false;
-                            }
-                            else
-                            {
-                                res = true;
-                            }
+                            res = id != "-1";
                         }
                         else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                         {
@@ -1338,27 +1331,13 @@ namespace Wexflow.Server
                                 if (check)
                                 {
                                     string id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
-                                    if (id == "-1")
-                                    {
-                                        res = false;
-                                    }
-                                    else
-                                    {
-                                        res = true;
-                                    }
+                                    res = id != "-1";
                                 }
                             }
                             else
                             {
                                 string id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
-                                if (id == "-1")
-                                {
-                                    res = false;
-                                }
-                                else
-                                {
-                                    res = true;
-                                }
+                                res = id != "-1";
                             }
                         }
                     }
@@ -1728,7 +1707,7 @@ namespace Wexflow.Server
                             xsetting.SetAttributeValue(attributeName, attributeValue);
                         }
 
-                        if (settingName == "selectFiles" || settingName == "selectAttachments" || settingName != "selectFiles" && settingName != "selectAttachments" && !string.IsNullOrEmpty(settingValue))
+                        if (settingName == "selectFiles" || settingName == "selectAttachments" || (settingName != "selectFiles" && settingName != "selectAttachments" && !string.IsNullOrEmpty(settingValue)))
                         {
                             xtask.Add(xsetting);
                         }
@@ -2011,7 +1990,7 @@ namespace Wexflow.Server
                                 xsetting.SetAttributeValue(attributeName, attributeValue);
                             }
 
-                            if (settingName == "selectFiles" || settingName == "selectAttachments" || settingName != "selectFiles" && settingName != "selectAttachments" && !string.IsNullOrEmpty(settingValue))
+                            if (settingName == "selectFiles" || settingName == "selectAttachments" || (settingName != "selectFiles" && settingName != "selectAttachments" && !string.IsNullOrEmpty(settingValue)))
                             {
                                 xtask.Add(xsetting);
                             }
@@ -2690,12 +2669,7 @@ namespace Wexflow.Server
                 }
             }
 
-            if (block.Attribute("type") == null)
-            {
-                return null;
-            }
-
-            return block;
+            return block.Attribute("type") == null ? null : block;
         }
 
         private XElement SwitchCasesToBlockly(Core.ExecutionGraph.Graph graph, Case @case, int caseIndex, Case nextCase, Switch @switch, bool isFlowchart, bool isEvent, ref int depth)

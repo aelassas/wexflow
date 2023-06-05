@@ -73,8 +73,8 @@ namespace Wexflow.Tasks.ImagesOverlay
                 imageHeights.Sort();
                 imageWidths.Sort();
 
-                int height = imageHeights[imageHeights.Count - 1];
-                int width = imageWidths[imageWidths.Count - 1];
+                int height = imageHeights[^1];
+                int width = imageWidths[^1];
 
                 using (Bitmap finalImage = new(width, height))
                 using (Graphics graphics = Graphics.FromImage(finalImage))
