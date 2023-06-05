@@ -24,8 +24,7 @@ namespace Wexflow.Scripts.SQLite
                 Core.Helper.InsertRecords(db, "sqlite", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();
 
-                var buildDevDatabases = false;
-                bool.TryParse(config["buildDevDatabases"], out buildDevDatabases);
+                bool.TryParse(config["buildDevDatabases"], out bool buildDevDatabases);
 
                 if (buildDevDatabases)
                 {
