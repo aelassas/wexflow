@@ -16,8 +16,7 @@ namespace Wexflow.Scripts.SQLite
                 Core.Helper.InsertRecords(db, "sqlite");
                 db.Dispose();
 
-                var buildDevDatabase = false;
-                bool.TryParse(ConfigurationManager.AppSettings["buildDevDatabase"], out buildDevDatabase);
+                bool.TryParse(ConfigurationManager.AppSettings["buildDevDatabase"], out bool buildDevDatabase);
 
                 if (buildDevDatabase)
                 {
