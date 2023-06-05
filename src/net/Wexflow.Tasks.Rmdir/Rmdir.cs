@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.Rmdir
         {
             Info("Removing folders...");
 
-            var success = true;
-            var atLeastOneSucceed = false;
+            bool success = true;
+            bool atLeastOneSucceed = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.Rmdir
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.Rmdir
 
         private bool RemoveFolders(ref bool atLeastOneSucceed)
         {
-            var success = true;
+            bool success = true;
             foreach (string folder in Folders)
             {
                 try

@@ -25,7 +25,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void FilesEncryptorTest()
         {
-            var files = GetFiles(FilesEncryptorFolder);
+            string[] files = GetFiles(FilesEncryptorFolder);
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(81);
             files = GetFiles(FilesEncryptorFolder);

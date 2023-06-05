@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.ImagesOverlay
         public override TaskStatus Run()
         {
             Info("Overlaying images...");
-            var success = true;
+            bool success = true;
 
             try
             {
@@ -52,7 +52,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -65,16 +65,16 @@ namespace Wexflow.Tasks.ImagesOverlay
 
         private bool Overlay()
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var imageFiles = SelectFiles();
+                FileInf[] imageFiles = SelectFiles();
 
                 if (imageFiles.Length >= 2)
                 {
-                    var extension = Path.GetExtension(imageFiles[0].FileName);
+                    string extension = Path.GetExtension(imageFiles[0].FileName);
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("ImagesOverlay_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
                     success = OverlayImages(imageFiles, destPath);

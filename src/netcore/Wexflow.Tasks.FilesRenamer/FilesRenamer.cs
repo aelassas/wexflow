@@ -23,15 +23,14 @@ namespace Wexflow.Tasks.FilesRenamer
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            foreach (var file in SelectFiles())
+            foreach (FileInf file in SelectFiles())
             {
                 try
                 {
                     if (!string.IsNullOrEmpty(file.RenameTo))
                     {
-                        var dirName = Path.GetDirectoryName(file.Path);
-                        if (dirName == null) throw new Exception("File directory is null");
-                        var destPath = Path.Combine(dirName, file.RenameTo);
+                        string dirName = Path.GetDirectoryName(file.Path) ?? throw new Exception("File directory is null");
+                        string destPath = Path.Combine(dirName, file.RenameTo);
 
                         if (File.Exists(destPath))
                         {
@@ -74,7 +73,7 @@ namespace Wexflow.Tasks.FilesRenamer
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

@@ -25,7 +25,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void YamlToJsonTest()
         {
-            var files = GetFiles();
+            string[] files = GetFiles();
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(169);
             files = GetFiles();

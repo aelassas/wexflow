@@ -30,8 +30,8 @@ namespace Wexflow.Tasks.XmlToCsv
         {
             Info("Creating csv files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.XmlToCsv
             }
 
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -75,13 +75,13 @@ namespace Wexflow.Tasks.XmlToCsv
 
         private bool CreateCsvs(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
 
             foreach (FileInf file in SelectFiles())
             {
                 try
                 {
-                    var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string csvPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.csv", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
@@ -105,7 +105,7 @@ namespace Wexflow.Tasks.XmlToCsv
 
         private void CreateCsv(string xmlPath, string csvPath)
         {
-            var xdoc = XDocument.Load(xmlPath);
+            XDocument xdoc = XDocument.Load(xmlPath);
 
             using (StreamWriter sw = new StreamWriter(csvPath))
             {

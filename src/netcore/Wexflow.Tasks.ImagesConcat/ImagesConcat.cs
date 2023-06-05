@@ -22,16 +22,16 @@ namespace Wexflow.Tasks.ImagesConcat
 
             try
             {
-                var imageFiles = SelectFiles();
+                FileInf[] imageFiles = SelectFiles();
 
                 if (imageFiles.Length >= 2)
                 {
-                    var extension = Path.GetExtension(imageFiles[0].FileName);
+                    string extension = Path.GetExtension(imageFiles[0].FileName);
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("ImagesConcat_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
-                    var res = ConcatImages(imageFiles, destPath);
+                    bool res = ConcatImages(imageFiles, destPath);
                     if (!res)
                     {
                         status = Status.Error;
@@ -61,40 +61,36 @@ namespace Wexflow.Tasks.ImagesConcat
         {
             try
             {
-                List<int> imageHeights = new List<int>();
+                List<int> imageHeights = new();
                 int nIndex = 0;
                 int width = 0;
                 foreach (FileInf imageFile in imageFiles)
                 {
-                    using (Image img = Image.FromFile(imageFile.Path))
-                    {
-                        imageHeights.Add(img.Height);
-                        width += img.Width;
-                    }
+                    using Image img = Image.FromFile(imageFile.Path);
+                    imageHeights.Add(img.Height);
+                    width += img.Width;
                 }
                 imageHeights.Sort();
 
                 int height = imageHeights[imageHeights.Count - 1];
 
-                using (Bitmap finalImage = new Bitmap(width, height))
+                using (Bitmap finalImage = new(width, height))
                 using (Graphics graphics = Graphics.FromImage(finalImage))
                 {
                     graphics.Clear(SystemColors.AppWorkspace);
                     foreach (FileInf imageFile in imageFiles)
                     {
-                        using (Image img = Image.FromFile(imageFile.Path))
+                        using Image img = Image.FromFile(imageFile.Path);
+                        if (nIndex == 0)
                         {
-                            if (nIndex == 0)
-                            {
-                                graphics.DrawImage(img, new Point(0, 0));
-                                nIndex++;
-                                width = img.Width;
-                            }
-                            else
-                            {
-                                graphics.DrawImage(img, new Point(width, 0));
-                                width += img.Width;
-                            }
+                            graphics.DrawImage(img, new Point(0, 0));
+                            nIndex++;
+                            width = img.Width;
+                        }
+                        else
+                        {
+                            graphics.DrawImage(img, new Point(width, 0));
+                            width += img.Width;
                         }
                     }
 

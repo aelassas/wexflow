@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.FileMatch
         {
             Info("Checking file...");
 
-            var success = false;
+            bool success = false;
             TaskStatus status = null;
 
             try
@@ -70,7 +70,7 @@ namespace Wexflow.Tasks.FileMatch
 
         private bool CheckFile(ref TaskStatus status)
         {
-            var success = false;
+            bool success = false;
             string fileFound = string.Empty;
 
             try
@@ -86,7 +86,7 @@ namespace Wexflow.Tasks.FileMatch
                     files = Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
                 }
 
-                foreach (var file in files)
+                foreach (string file in files)
                 {
                     if (Regex.Match(Path.GetFileName(file), Pattern).Success)
                     {

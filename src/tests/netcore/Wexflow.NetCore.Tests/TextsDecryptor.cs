@@ -28,7 +28,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void TextsDecryptorTest()
         {
-            var files = GetFiles(TextsDecryptorDestFolder);
+            string[] files = GetFiles(TextsDecryptorDestFolder);
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(83);
             Helper.StartWorkflow(84);

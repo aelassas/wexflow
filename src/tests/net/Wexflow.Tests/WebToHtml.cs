@@ -23,7 +23,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void WebToHtmlTest()
         {
-            var files = GetFiles();
+            string[] files = GetFiles();
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(97);
             files = GetFiles();

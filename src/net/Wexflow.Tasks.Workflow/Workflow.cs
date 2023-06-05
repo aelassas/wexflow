@@ -42,7 +42,7 @@ namespace Wexflow.Tasks.Workflow
             Info("Task started.");
             bool success = true;
             bool atLeastOneSucceed = false;
-            foreach (var id in WorkflowIds)
+            foreach (int id in WorkflowIds)
             {
                 try
                 {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.Workflow
                             }
                             else
                             {
-                                var instanceId = client.StartWorkflow(id, Username, Password);
+                                Guid instanceId = client.StartWorkflow(id, Username, Password);
                                 if (Jobs.ContainsKey(id))
                                 {
                                     Jobs[id] = instanceId;
@@ -74,7 +74,7 @@ namespace Wexflow.Tasks.Workflow
                         case WorkflowAction.Suspend:
                             if (wfInfo.IsRunning)
                             {
-                                var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
+                                Guid jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
                                 if (jobId != null)
                                 {
                                     client.SuspendWorkflow(id, jobId, Username, Password);
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.Workflow
                         case WorkflowAction.Resume:
                             if (wfInfo.IsPaused)
                             {
-                                var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
+                                Guid jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
                                 if (jobId != null)
                                 {
                                     client.ResumeWorkflow(id, jobId, Username, Password);
@@ -118,7 +118,7 @@ namespace Wexflow.Tasks.Workflow
                         case WorkflowAction.Stop:
                             if (wfInfo.IsRunning)
                             {
-                                var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
+                                Guid jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
                                 if (jobId != null)
                                 {
                                     client.StopWorkflow(id, jobId, Username, Password);
@@ -140,7 +140,7 @@ namespace Wexflow.Tasks.Workflow
                         case WorkflowAction.Approve:
                             if (wfInfo.IsApproval && wfInfo.IsWaitingForApproval)
                             {
-                                var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
+                                Guid jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
                                 if (jobId != null)
                                 {
                                     client.ApproveWorkflow(id, jobId, Username, Password);
@@ -162,7 +162,7 @@ namespace Wexflow.Tasks.Workflow
                         case WorkflowAction.Reject:
                             if (wfInfo.IsApproval && wfInfo.IsWaitingForApproval)
                             {
-                                var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
+                                Guid jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
                                 if (jobId != null)
                                 {
                                     client.RejectWorkflow(id, jobId, Username, Password);
@@ -190,7 +190,7 @@ namespace Wexflow.Tasks.Workflow
                 }
             }
             Info("Task finished.");
-            var status = Core.Status.Success;
+            Core.Status status = Core.Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

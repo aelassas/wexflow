@@ -38,8 +38,8 @@ namespace Wexflow.Core.Db
 
         protected void InsertDefaultUser()
         {
-            var password = GetMd5("wexflow2018");
-            var user = new User { Username = "admin", Password = password, UserProfile = UserProfile.SuperAdministrator };
+            string password = GetMd5("wexflow2018");
+            User user = new User { Username = "admin", Password = password, UserProfile = UserProfile.SuperAdministrator };
             InsertUser(user);
         }
 

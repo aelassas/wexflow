@@ -46,11 +46,9 @@ namespace Wexflow.NetCore.Tests
 
         private void CheckImageSize(string path)
         {
-            using (Image image = Image.FromFile(path))
-            {
-                Assert.AreEqual(512, image.Width);
-                Assert.AreEqual(384, image.Height);
-            }
+            using Image image = Image.FromFile(path);
+            Assert.AreEqual(512, image.Width);
+            Assert.AreEqual(384, image.Height);
         }
 
     }

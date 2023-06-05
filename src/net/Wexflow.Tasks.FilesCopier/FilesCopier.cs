@@ -33,8 +33,8 @@ namespace Wexflow.Tasks.FilesCopier
         {
             Info("Copying files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.FilesCopier
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -77,15 +77,15 @@ namespace Wexflow.Tasks.FilesCopier
 
         private bool CopyFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
             foreach (FileInf file in files)
             {
                 string destPath;
                 if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                     file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var preservedFolderStruct = Path.GetDirectoryName(file.Path);
+                    string preservedFolderStruct = Path.GetDirectoryName(file.Path);
                     preservedFolderStruct = preservedFolderStruct.Length > PreserveFolderStructFrom.Length
                         ? preservedFolderStruct.Remove(0, PreserveFolderStructFrom.Length)
                         : string.Empty;

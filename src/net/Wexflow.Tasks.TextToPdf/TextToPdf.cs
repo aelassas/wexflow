@@ -22,7 +22,7 @@ namespace Wexflow.Tasks.TextToPdf
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.TextToPdf
                         PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));
                         doc.Open();
                         // Add the text file contents
-                        var content = File.ReadAllText(file.Path);
+                        string content = File.ReadAllText(file.Path);
                         doc.Add(new Paragraph(content));
                         // Close the document
                         doc.Close();
@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.TextToPdf
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

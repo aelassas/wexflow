@@ -28,9 +28,9 @@ namespace Wexflow.Tasks.CsvToSql
 
             try
             {
-                var csvFiles = SelectFiles();
+                FileInf[] csvFiles = SelectFiles();
 
-                foreach (var csvFile in csvFiles)
+                foreach (FileInf csvFile in csvFiles)
                 {
                     string sqlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.sql", Path.GetFileNameWithoutExtension(csvFile.FileName), DateTime.Now));
@@ -49,7 +49,7 @@ namespace Wexflow.Tasks.CsvToSql
                 return new TaskStatus(Status.Error);
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!succeeded && atLeastOneSucceed)
             {
@@ -68,51 +68,46 @@ namespace Wexflow.Tasks.CsvToSql
         {
             try
             {
-                using (StreamReader sr = new StreamReader(csvPath))
-                using (StreamWriter sw = new StreamWriter(sqlPath))
+                using StreamReader sr = new(csvPath);
+                using StreamWriter sw = new(sqlPath);
+                string columnsLine = sr.ReadLine(); // First line contains columns
+                string line;
+                while (!string.IsNullOrEmpty(line = sr.ReadLine()))
                 {
-                    string columnsLine = sr.ReadLine(); // First line contains columns
-                    string line;
-                    while (!string.IsNullOrEmpty(line = sr.ReadLine()))
+                    sw.Write("INSERT INTO " + tableName + "(" + columnsLine.Replace(separator, ",").TrimEnd(',') + ")" + " VALUES ");
+                    sw.Write("(");
+                    string[] values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string value in values)
                     {
-                        sw.Write("INSERT INTO " + tableName + "(" + columnsLine.Replace(separator, ",").TrimEnd(',') + ")" + " VALUES ");
-                        sw.Write("(");
-                        var values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (var value in values)
+                        if (int.TryParse(value, out int i))
                         {
-                            int i;
-                            double d;
-                            float f;
-                            if (int.TryParse(value, out i))
-                            {
-                                sw.Write(i);
-                            }
-                            else if (double.TryParse(value, out d))
-                            {
-                                sw.Write(d);
-                            }
-                            else if (float.TryParse(value, out f))
-                            {
-                                sw.Write(f);
-                            }
-                            else
-                            {
-                                sw.Write("'" + value + "'");
-                            }
-
-                            if (!values.Last().Equals(value))
-                            {
-                                sw.Write(", ");
-                            }
+                            sw.Write(i);
                         }
-                        sw.Write(");\r\n");
+                        else if (double.TryParse(value, out double d))
+                        {
+                            sw.Write(d);
+                        }
+                        else if (float.TryParse(value, out float f))
+                        {
+                            sw.Write(f);
+                        }
+                        else
+                        {
+                            sw.Write("'" + value + "'");
+                        }
+
+                        if (!values.Last().Equals(value))
+                        {
+                            sw.Write(", ");
+                        }
                     }
-
-                    Files.Add(new FileInf(sqlPath, Id));
-                    InfoFormat("SQL script {0} created from {1} with success.", sqlPath, csvPath);
-
-                    return true;
+                    sw.Write(");\r\n");
                 }
+
+                Files.Add(new FileInf(sqlPath, Id));
+                InfoFormat("SQL script {0} created from {1} with success.", sqlPath, csvPath);
+
+                return true;
             }
             catch (Exception e)
             {

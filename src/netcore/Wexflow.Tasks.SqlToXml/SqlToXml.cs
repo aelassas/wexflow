@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.SqlToXml
             {
                 try
                 {
-                    var sql = File.ReadAllText(file.Path);
+                    string sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
@@ -95,7 +95,7 @@ namespace Wexflow.Tasks.SqlToXml
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -115,57 +115,57 @@ namespace Wexflow.Tasks.SqlToXml
             switch (DbType)
             {
                 case Type.SqlServer:
-                    using (var connection = new SqlConnection(ConnectionString))
-                    using (var command = new SqlCommand(sql, connection))
+                    using (SqlConnection connection = new(ConnectionString))
+                    using (SqlCommand command = new(sql, connection))
                     {
                         ConvertToXml(connection, command);
                     }
                     break;
                 case Type.Access:
-                    using (var conn = new OleDbConnection(ConnectionString))
-                    using (var comm = new OleDbCommand(sql, conn))
+                    using (OleDbConnection conn = new(ConnectionString))
+                    using (OleDbCommand comm = new(sql, conn))
                     {
                         ConvertToXml(conn, comm);
                     }
                     break;
                 case Type.Oracle:
-                    using (var connection = new OracleConnection(ConnectionString))
-                    using (var command = new OracleCommand(sql, connection))
+                    using (OracleConnection connection = new(ConnectionString))
+                    using (OracleCommand command = new(sql, connection))
                     {
                         ConvertToXml(connection, command);
                     }
                     break;
                 case Type.MySql:
-                    using (var connection = new MySqlConnection(ConnectionString))
-                    using (var command = new MySqlCommand(sql, connection))
+                    using (MySqlConnection connection = new(ConnectionString))
+                    using (MySqlCommand command = new(sql, connection))
                     {
                         ConvertToXml(connection, command);
                     }
                     break;
                 case Type.Sqlite:
-                    using (var connection = new SQLiteConnection(ConnectionString))
-                    using (var command = new SQLiteCommand(sql, connection))
+                    using (SQLiteConnection connection = new(ConnectionString))
+                    using (SQLiteCommand command = new(sql, connection))
                     {
                         ConvertToXml(connection, command);
                     }
                     break;
                 case Type.PostGreSql:
-                    using (var connection = new NpgsqlConnection(ConnectionString))
-                    using (var command = new NpgsqlCommand(sql, connection))
+                    using (NpgsqlConnection connection = new(ConnectionString))
+                    using (NpgsqlCommand command = new(sql, connection))
                     {
                         ConvertToXml(connection, command);
                     }
                     break;
                 case Type.Teradata:
-                    using (var connenction = new TdConnection(ConnectionString))
-                    using (var command = new TdCommand(sql, connenction))
+                    using (TdConnection connenction = new(ConnectionString))
+                    using (TdCommand command = new(sql, connenction))
                     {
                         ConvertToXml(connenction, command);
                     }
                     break;
                 case Type.Odbc:
-                    using (var connenction = new OdbcConnection(ConnectionString))
-                    using (var command = new OdbcCommand(sql, connenction))
+                    using (OdbcConnection connenction = new(ConnectionString))
+                    using (OdbcCommand command = new(sql, connenction))
                     {
                         ConvertToXml(connenction, command);
                     }
@@ -176,11 +176,11 @@ namespace Wexflow.Tasks.SqlToXml
         private void ConvertToXml(DbConnection connection, DbCommand command)
         {
             connection.Open();
-            var reader = command.ExecuteReader();
+            DbDataReader reader = command.ExecuteReader();
 
             if (reader.HasRows)
             {
-                var columns = new List<string>();
+                List<string> columns = new();
 
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
@@ -190,17 +190,17 @@ namespace Wexflow.Tasks.SqlToXml
                 string destPath = Path.Combine(Workflow.WorkflowTempFolder,
                                                string.Format("SqlToXml_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml",
                                                DateTime.Now));
-                var xdoc = new XDocument();
-                var xobjects = new XElement("Records");
+                XDocument xdoc = new();
+                XElement xobjects = new("Records");
 
                 while (reader.Read())
                 {
-                    var xobject = new XElement("Record");
+                    XElement xobject = new("Record");
 
-                    foreach (var column in columns)
+                    foreach (string column in columns)
                     {
                         string xmlvalue = CleanInvalidXmlChars(reader[column].ToString());
-                        var columntype = reader[column].GetType();
+                        System.Type columntype = reader[column].GetType();
                         int number;
                         decimal decnumber;
                         if (

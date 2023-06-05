@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.Movedir
         {
             Info("Moving directory...");
 
-            var success = false;
+            bool success = false;
             try
             {
                 if (!string.IsNullOrEmpty(SmbComputerName) && !string.IsNullOrEmpty(SmbUsername) && !string.IsNullOrEmpty(SmbPassword))
@@ -62,7 +62,7 @@ namespace Wexflow.Tasks.Movedir
 
         private bool MoveDirectory()
         {
-            var success = false;
+            bool success = false;
             try
             {
                 bool move = true;

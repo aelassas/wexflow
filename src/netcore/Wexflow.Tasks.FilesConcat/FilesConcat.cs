@@ -21,14 +21,14 @@ namespace Wexflow.Tasks.FilesConcat
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 for (int i = 0; i < files.Length; i++)
                 {
-                    var file = files[i];
+                    FileInf file = files[i];
                     builder.Append(Path.GetFileNameWithoutExtension(file.FileName));
                     if (i < files.Length - 1)
                     {
@@ -36,20 +36,20 @@ namespace Wexflow.Tasks.FilesConcat
                     }
                 }
 
-                var concatPath = Path.Combine(Workflow.WorkflowTempFolder, builder.ToString());
+                string concatPath = Path.Combine(Workflow.WorkflowTempFolder, builder.ToString());
 
                 if (File.Exists(concatPath))
                 {
                     File.Delete(concatPath);
                 }
 
-                using (var output = File.Create(concatPath))
+                using (FileStream output = File.Create(concatPath))
                 {
                     foreach (FileInf file in files)
                     {
                         try
                         {
-                            using (var input = File.OpenRead(file.Path))
+                            using (FileStream input = File.OpenRead(file.Path))
                             {
                                 input.CopyTo(output);
                             }
@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.FilesConcat
                 Files.Add(new FileInf(concatPath, Id));
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

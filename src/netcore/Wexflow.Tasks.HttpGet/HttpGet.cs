@@ -24,13 +24,13 @@ namespace Wexflow.Tasks.HttpGet
         public override TaskStatus Run()
         {
             Info("Executing GET request...");
-            var status = Status.Success;
+            Status status = Status.Success;
             try
             {
-                var getTask = Post(Url, AuthorizationScheme, AuthorizationParameter);
+                System.Threading.Tasks.Task<string> getTask = Post(Url, AuthorizationScheme, AuthorizationParameter);
                 getTask.Wait();
-                var result = getTask.Result;
-                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpGet_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                string result = getTask.Result;
+                string destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpGet_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("GET request {0} executed with success -> {1}", Url, destFile);
@@ -50,17 +50,17 @@ namespace Wexflow.Tasks.HttpGet
 
         public async System.Threading.Tasks.Task<string> Post(string url, string authScheme, string authParam)
         {
-            using (var httpClient = new HttpClient())
+            using (HttpClient httpClient = new())
             {
                 if (!string.IsNullOrEmpty(authScheme) && !string.IsNullOrEmpty(authParam))
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
                 }
 
-                var httpResponse = await httpClient.GetAsync(url);
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(url);
                 if (httpResponse.Content != null)
                 {
-                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
+                    string responseContent = await httpResponse.Content.ReadAsStringAsync();
                     return responseContent;
                 }
             }

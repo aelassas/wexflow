@@ -24,8 +24,8 @@ namespace Wexflow.Tasks.FilesEncryptor
 
             try
             {
-                var files = SelectFiles();
-                foreach (var file in files)
+                FileInf[] files = SelectFiles();
+                foreach (FileInf file in files)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     succeeded &= Encrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
@@ -61,22 +61,24 @@ namespace Wexflow.Tasks.FilesEncryptor
             {
                 //byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
                 byte[] saltBytes = GenerateRandomSalt();
-                UnicodeEncoding ue = new UnicodeEncoding();
+                UnicodeEncoding ue = new();
 
                 string cryptFile = outputFile;
-                RijndaelManaged rmcrypto = new RijndaelManaged();
-                rmcrypto.KeySize = 256;
-                rmcrypto.BlockSize = 128;
+                RijndaelManaged rmcrypto = new()
+                {
+                    KeySize = 256,
+                    BlockSize = 128
+                };
 
-                var key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                Rfc2898DeriveBytes key = new(ue.GetBytes(passphrase), saltBytes, derivationIterations);
                 rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                 rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
                 rmcrypto.Padding = PaddingMode.Zeros;
                 rmcrypto.Mode = CipherMode.CBC;
 
-                using (FileStream fsCrypt = new FileStream(cryptFile, FileMode.Create))
-                using (CryptoStream cs = new CryptoStream(fsCrypt, rmcrypto.CreateEncryptor(), CryptoStreamMode.Write))
-                using (FileStream fsIn = new FileStream(inputFile, FileMode.Open))
+                using (FileStream fsCrypt = new(cryptFile, FileMode.Create))
+                using (CryptoStream cs = new(fsCrypt, rmcrypto.CreateEncryptor(), CryptoStreamMode.Write))
+                using (FileStream fsIn = new(inputFile, FileMode.Open))
                 {
                     fsCrypt.Write(saltBytes, 0, saltBytes.Length);
                     int data;
@@ -98,11 +100,11 @@ namespace Wexflow.Tasks.FilesEncryptor
             }
         }
 
-        private byte[] GenerateRandomSalt()
+        private static byte[] GenerateRandomSalt()
         {
             byte[] data = new byte[32];
 
-            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            using (RNGCryptoServiceProvider rng = new())
             {
                 for (int i = 0; i < 10; i++)
                 {

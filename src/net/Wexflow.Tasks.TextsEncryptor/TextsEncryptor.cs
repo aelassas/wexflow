@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.TextsEncryptor
         public override TaskStatus Run()
         {
             Info("Encrypting files...");
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.TextsEncryptor
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,11 +71,11 @@ namespace Wexflow.Tasks.TextsEncryptor
 
         private bool EncryptFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var files = SelectFiles();
-                foreach (var file in files)
+                FileInf[] files = SelectFiles();
+                foreach (FileInf file in files)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     success &= Encrypt(file.Path, destPath, Workflow.PassPhrase);
@@ -96,6 +96,11 @@ namespace Wexflow.Tasks.TextsEncryptor
 
         private bool Encrypt(string inputFile, string outputFile, string passphrase)
         {
+            if (passphrase is null)
+            {
+                throw new ArgumentNullException(nameof(passphrase));
+            }
+
             try
             {
                 string srcStr = File.ReadAllText(inputFile);
@@ -116,27 +121,27 @@ namespace Wexflow.Tasks.TextsEncryptor
         {
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
             // so that the same Salt and IV values can be used when decrypting.  
-            var saltStringBytes = Generate128BitsOfRandomEntropy();
-            var ivStringBytes = Generate128BitsOfRandomEntropy();
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, derivationIterations))
+            byte[] saltStringBytes = Generate128BitsOfRandomEntropy();
+            byte[] ivStringBytes = Generate128BitsOfRandomEntropy();
+            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            using (Rfc2898DeriveBytes password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, derivationIterations))
             {
-                var keyBytes = password.GetBytes(keySize / 8);
-                using (var symmetricKey = new RijndaelManaged())
+                byte[] keyBytes = password.GetBytes(keySize / 8);
+                using (RijndaelManaged symmetricKey = new RijndaelManaged())
                 {
                     symmetricKey.BlockSize = 128;
                     symmetricKey.Mode = CipherMode.CBC;
                     symmetricKey.Padding = PaddingMode.PKCS7;
-                    using (var encryptor = symmetricKey.CreateEncryptor(keyBytes, ivStringBytes))
+                    using (ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, ivStringBytes))
                     {
-                        using (var memoryStream = new MemoryStream())
+                        using (MemoryStream memoryStream = new MemoryStream())
                         {
-                            using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                            using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                             {
                                 cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
                                 cryptoStream.FlushFinalBlock();
                                 // Create the final bytes as a concatenation of the random salt bytes, the random iv bytes and the cipher bytes.
-                                var cipherTextBytes = saltStringBytes;
+                                byte[] cipherTextBytes = saltStringBytes;
                                 cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
                                 cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
                                 memoryStream.Close();
@@ -151,8 +156,8 @@ namespace Wexflow.Tasks.TextsEncryptor
 
         private static byte[] Generate128BitsOfRandomEntropy()
         {
-            var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
-            using (var rngCsp = new RNGCryptoServiceProvider())
+            byte[] randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
+            using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
             {
                 // Fill the array with cryptographically secure random bytes.
                 rngCsp.GetBytes(randomBytes);

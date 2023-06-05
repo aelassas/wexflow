@@ -22,26 +22,23 @@ namespace Wexflow.Tasks.Sha1
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
-                var md5Path = Path.Combine(Workflow.WorkflowTempFolder,
+                string md5Path = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("SHA1_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("Files"));
+                XDocument xdoc = new(new XElement("Files"));
                 foreach (FileInf file in files)
                 {
                     try
                     {
-                        var sha1 = GetSha1(file.Path);
-                        if (xdoc.Root != null)
-                        {
-                            xdoc.Root.Add(new XElement("File",
+                        string sha1 = GetSha1(file.Path);
+                        xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("sha1", sha1)));
-                        }
                         InfoFormat("SHA-1 hash of the file {0} is {1}", file.Path, sha1);
 
                         if (!atLeastOneSucceed) atLeastOneSucceed = true;
@@ -60,7 +57,7 @@ namespace Wexflow.Tasks.Sha1
                 Files.Add(new FileInf(md5Path, Id));
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -75,19 +72,17 @@ namespace Wexflow.Tasks.Sha1
             return new TaskStatus(status, false);
         }
 
-        private string GetSha1(string filePath)
+        private static string GetSha1(string filePath)
         {
-            var sb = new StringBuilder();
-            using (SHA1Managed sha1 = new SHA1Managed())
+            StringBuilder sb = new();
+            using (SHA1Managed sha1 = new())
             {
-                using (FileStream stream = File.OpenRead(filePath))
-                {
-                    var bytes = sha1.ComputeHash(stream);
+                using FileStream stream = File.OpenRead(filePath);
+                byte[] bytes = sha1.ComputeHash(stream);
 
-                    foreach (byte bt in bytes)
-                    {
-                        sb.Append(bt.ToString("x2"));
-                    }
+                foreach (byte bt in bytes)
+                {
+                    sb.Append(bt.ToString("x2"));
                 }
             }
             return sb.ToString();

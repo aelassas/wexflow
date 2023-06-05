@@ -32,8 +32,8 @@ namespace Wexflow.Tasks.ImagesResizer
         {
             Info("Resizing images...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -59,7 +59,7 @@ namespace Wexflow.Tasks.ImagesResizer
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -76,11 +76,11 @@ namespace Wexflow.Tasks.ImagesResizer
 
         private bool ResizeImages(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var images = SelectFiles();
-                foreach (var image in images)
+                FileInf[] images = SelectFiles();
+                foreach (FileInf image in images)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     success &= Resize(image.Path, destPath);
@@ -125,12 +125,12 @@ namespace Wexflow.Tasks.ImagesResizer
 
         private Bitmap ResizeImage(Image image, int width, int height)
         {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
+            Rectangle destRect = new Rectangle(0, 0, width, height);
+            Bitmap destImage = new Bitmap(width, height);
 
             destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
-            using (var graphics = Graphics.FromImage(destImage))
+            using (Graphics graphics = Graphics.FromImage(destImage))
             {
                 graphics.CompositingMode = CompositingMode.SourceCopy;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -138,7 +138,7 @@ namespace Wexflow.Tasks.ImagesResizer
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                using (var wrapMode = new ImageAttributes())
+                using (ImageAttributes wrapMode = new ImageAttributes())
                 {
                     wrapMode.SetWrapMode(WrapMode.TileFlipXY);
                     graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);

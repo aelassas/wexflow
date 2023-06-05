@@ -34,8 +34,8 @@ namespace Wexflow.Tasks.FilesMover
         {
             Info("Moving files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.FilesMover
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -78,19 +78,19 @@ namespace Wexflow.Tasks.FilesMover
 
         private bool MoveFiles(ref bool atLeastOneSucceed)
         {
-            var success = true;
-            var files = SelectFiles();
-            for (var i = files.Length - 1; i > -1; i--)
+            bool success = true;
+            FileInf[] files = SelectFiles();
+            for (int i = files.Length - 1; i > -1; i--)
             {
-                var file = files[i];
-                var fileName = Path.GetFileName(file.Path);
+                FileInf file = files[i];
+                string fileName = Path.GetFileName(file.Path);
                 string destFilePath;
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                         file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        var preservedFolderStruct = Path.GetDirectoryName(file.Path);
+                        string preservedFolderStruct = Path.GetDirectoryName(file.Path);
                         preservedFolderStruct = preservedFolderStruct.Length > PreserveFolderStructFrom.Length
                             ? preservedFolderStruct.Remove(0, PreserveFolderStructFrom.Length)
                             : string.Empty;
@@ -136,7 +136,7 @@ namespace Wexflow.Tasks.FilesMover
                     }
 
                     File.Move(file.Path, destFilePath);
-                    var fi = new FileInf(destFilePath, Id);
+                    FileInf fi = new FileInf(destFilePath, Id);
                     Files.Add(fi);
                     Workflow.FilesPerTask[file.TaskId].Remove(file);
                     InfoFormat("File moved: {0} -> {1}", file.Path, destFilePath);

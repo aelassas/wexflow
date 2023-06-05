@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.MailsSender
 
         public void Send(string host, int port, bool enableSsl, string user, string password, bool isBodyHtml)
         {
-            var smtp = new SmtpClient
+            SmtpClient smtp = new SmtpClient
             {
                 Host = host,
                 Port = port,
@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.MailsSender
                 Credentials = new NetworkCredential(user, password)
             };
 
-            using (var msg = new MailMessage())
+            using (MailMessage msg = new MailMessage())
             {
                 msg.From = new MailAddress(From);
                 foreach (string to in To) msg.To.Add(new MailAddress(to));
@@ -51,7 +51,7 @@ namespace Wexflow.Tasks.MailsSender
                 msg.Body = Body;
                 msg.IsBodyHtml = isBodyHtml;
 
-                foreach (var attachment in Attachments)
+                foreach (FileInf attachment in Attachments)
                 {
                     // Create  the file attachment for this e-mail message.
                     Attachment data = new Attachment(attachment.Path, MediaTypeNames.Application.Octet);
@@ -71,14 +71,14 @@ namespace Wexflow.Tasks.MailsSender
         public static Mail Parse(MailsSender mailsSender, XElement xe, FileInf[] attachments)
         {
             string from = mailsSender.ParseVariables(xe.XPathSelectElement("From").Value);
-            var to = mailsSender.ParseVariables(xe.XPathSelectElement("To").Value).Split(',');
+            string[] to = mailsSender.ParseVariables(xe.XPathSelectElement("To").Value).Split(',');
 
             string[] cc = { };
-            var ccElement = xe.XPathSelectElement("Cc");
+            XElement ccElement = xe.XPathSelectElement("Cc");
             if (ccElement != null) cc = mailsSender.ParseVariables(ccElement.Value).Split(',');
 
             string[] bcc = { };
-            var bccElement = xe.XPathSelectElement("Bcc");
+            XElement bccElement = xe.XPathSelectElement("Bcc");
             if (bccElement != null) bcc = mailsSender.ParseVariables(bccElement.Value).Split(',');
 
             string subject = mailsSender.ParseVariables(xe.XPathSelectElement("Subject").Value);

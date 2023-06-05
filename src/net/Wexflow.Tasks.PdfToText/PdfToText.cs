@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.PdfToText
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
@@ -32,13 +32,13 @@ namespace Wexflow.Tasks.PdfToText
                 {
                     try
                     {
-                        var textPath = Path.Combine(Workflow.WorkflowTempFolder,
+                        string textPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.txt", Path.GetFileNameWithoutExtension(pdfFile.FileName), DateTime.Now));
 
                         //Document doc = new Document();
-                        using (var doc = new StreamWriter(textPath))
+                        using (StreamWriter doc = new StreamWriter(textPath))
                         {
-                            var pdfReader = new PdfReader(pdfFile.Path);
+                            PdfReader pdfReader = new PdfReader(pdfFile.Path);
 
                             // Add the text file contents
                             for (int page = 1; page <= pdfReader.NumberOfPages; page++)
@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.PdfToText
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

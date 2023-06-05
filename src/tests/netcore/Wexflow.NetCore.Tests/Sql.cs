@@ -27,38 +27,34 @@ namespace Wexflow.NetCore.Tests
 
             // sqlite
             const string sql = "select Id, Description from Data;";
-            using (var conn = new SQLiteConnection(SqliteConnectionString))
+            using SQLiteConnection conn = new(SqliteConnectionString);
+            SQLiteCommand comm = new(sql, conn);
+            conn.Open();
+            using SQLiteDataReader reader = comm.ExecuteReader();
+            while (reader.Read())
             {
-                var comm = new SQLiteCommand(sql, conn);
-                conn.Open();
-                using (var reader = comm.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        int id = int.Parse(reader["Id"].ToString());
-                        string desc = (string)reader["Description"];
+                int id = int.Parse(reader["Id"].ToString());
+                string desc = (string)reader["Description"];
 
-                        if (id == 1)
-                        {
-                            Assert.AreEqual("Hello World Description 1! updated", desc);
-                        }
-                        else if (id == 2)
-                        {
-                            Assert.AreEqual("Hello World Description 2! updated", desc);
-                        }
-                        else if (id == 3)
-                        {
-                            Assert.AreEqual("Hello World Description 3! updated", desc);
-                        }
-                        else if (id == 4)
-                        {
-                            Assert.AreEqual("Hello World Description 4! updated", desc);
-                        }
-                        else if (id == 5)
-                        {
-                            Assert.AreEqual("Hello World Description 5!", desc);
-                        }
-                    }
+                if (id == 1)
+                {
+                    Assert.AreEqual("Hello World Description 1! updated", desc);
+                }
+                else if (id == 2)
+                {
+                    Assert.AreEqual("Hello World Description 2! updated", desc);
+                }
+                else if (id == 3)
+                {
+                    Assert.AreEqual("Hello World Description 3! updated", desc);
+                }
+                else if (id == 4)
+                {
+                    Assert.AreEqual("Hello World Description 4! updated", desc);
+                }
+                else if (id == 5)
+                {
+                    Assert.AreEqual("Hello World Description 5!", desc);
                 }
             }
 
@@ -74,12 +70,10 @@ namespace Wexflow.NetCore.Tests
                 + "UPDATE Data SET Description = 'Hello World Description 4!' WHERE Id = 4;"
                 + "UPDATE Data SET Description = 'Hello World Description 5!' WHERE Id = 5;";
 
-            using (var conn = new SQLiteConnection(SqliteConnectionString))
-            {
-                var comm = new SQLiteCommand(sql, conn);
-                conn.Open();
-                comm.ExecuteNonQuery();
-            }
+            using SQLiteConnection conn = new(SqliteConnectionString);
+            SQLiteCommand comm = new(sql, conn);
+            conn.Open();
+            comm.ExecuteNonQuery();
         }
     }
 }

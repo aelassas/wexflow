@@ -23,12 +23,12 @@ namespace Wexflow.Tasks.Slack
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
-                ManualResetEventSlim clientReady = new ManualResetEventSlim(false);
-                SlackSocketClient client = new SlackSocketClient(Token);
+                ManualResetEventSlim clientReady = new(false);
+                SlackSocketClient client = new(Token);
                 client.Connect((connected) =>
                 {
                     // This is called once the client has emitted the RTM start command
@@ -48,16 +48,16 @@ namespace Wexflow.Tasks.Slack
                 {
                     try
                     {
-                        var xdoc = XDocument.Load(file.Path);
+                        XDocument xdoc = XDocument.Load(file.Path);
                         foreach (XElement xMessage in xdoc.XPathSelectElements("Messages/Message"))
                         {
-                            var username = xMessage.Element("User").Value;
-                            var text = xMessage.Element("Text").Value;
+                            string username = xMessage.Element("User").Value;
+                            string text = xMessage.Element("Text").Value;
 
                             if (client.Users != null)
                             {
-                                var user = client.Users.Find(x => x.name.Equals(username));
-                                var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
+                                User user = client.Users.Find(x => x.name.Equals(username));
+                                DirectMessageConversation dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
                                 client.PostMessage((mr) => Info("Message '" + text + "' sent to " + dmchannel.id + "."), dmchannel.id, text);
 
                                 if (!atLeastOneSucceed) atLeastOneSucceed = true;
@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.Slack
                 }
             }
 
-            var tstatus = Status.Success;
+            Status tstatus = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

@@ -22,7 +22,7 @@ namespace Wexflow.Tasks.Untar
             Info("Extracting TAR archives...");
 
             bool success;
-            var atLeastOneSuccess = false;
+            bool atLeastOneSuccess = false;
             try
             {
                 success = UntarFiles(ref atLeastOneSuccess);
@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.Untar
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -54,8 +54,8 @@ namespace Wexflow.Tasks.Untar
 
         private bool UntarFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var tars = SelectFiles();
+            bool success = true;
+            FileInf[] tars = SelectFiles();
 
             if (tars.Length > 0)
             {
@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.Untar
                         Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 
-                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
@@ -94,9 +94,9 @@ namespace Wexflow.Tasks.Untar
 
         private static void ExtractTarByEntry(string tarFileName, string targetDir)
         {
-            using var fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read);
+            using FileStream fsIn = new(tarFileName, FileMode.Open, FileAccess.Read);
 
-            var tarIn = new TarInputStream(fsIn, Encoding.UTF8);
+            TarInputStream tarIn = new(fsIn, Encoding.UTF8);
             TarEntry tarEntry;
             while ((tarEntry = tarIn.GetNextEntry()) != null)
             {
@@ -120,7 +120,7 @@ namespace Wexflow.Tasks.Untar
                 string directoryName = Path.GetDirectoryName(outName);
                 Directory.CreateDirectory(directoryName);
 
-                var outStr = new FileStream(outName, FileMode.Create);
+                FileStream outStr = new(outName, FileMode.Create);
 
                 tarIn.CopyEntryContents(outStr);
 

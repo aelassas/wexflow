@@ -52,8 +52,8 @@ namespace Wexflow.Tasks.SqlToCsv
             QuoteString = GetSetting("quote", string.Empty);
             EndOfLine = GetSetting("endline", "\r\n");
             Separator = QuoteString + GetSetting("separator", ";") + QuoteString;
-            if (bool.TryParse(GetSetting("headers", bool.TrueString), out var result1)) Headers = result1;
-            if (bool.TryParse(GetSetting("singlerecordheaders", bool.TrueString), out var result2)) SingleRecordHeaders = result2;
+            if (bool.TryParse(GetSetting("headers", bool.TrueString), out bool result1)) Headers = result1;
+            if (bool.TryParse(GetSetting("singlerecordheaders", bool.TrueString), out bool result2)) SingleRecordHeaders = result2;
             DoNotGenerateFilesIfEmpty = bool.Parse(GetSetting("doNotGenerateFilesIfEmpty", "false"));
             SmbComputerName = GetSetting("smbComputerName");
             SmbDomain = GetSetting("smbDomain");
@@ -92,7 +92,7 @@ namespace Wexflow.Tasks.SqlToCsv
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -109,7 +109,7 @@ namespace Wexflow.Tasks.SqlToCsv
 
         private bool ExecuteSqlFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             // Execute SqlScript if necessary
             try
             {
@@ -134,7 +134,7 @@ namespace Wexflow.Tasks.SqlToCsv
             {
                 try
                 {
-                    var sql = File.ReadAllText(file.Path);
+                    string sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
@@ -158,57 +158,57 @@ namespace Wexflow.Tasks.SqlToCsv
             switch (DbType)
             {
                 case Type.SqlServer:
-                    using (var connection = new SqlConnection(ConnectionString))
-                    using (var command = new SqlCommand(sql, connection))
+                    using (SqlConnection connection = new SqlConnection(ConnectionString))
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Access:
-                    using (var connection = new OleDbConnection(ConnectionString))
-                    using (var command = new OleDbCommand(sql, connection))
+                    using (OleDbConnection connection = new OleDbConnection(ConnectionString))
+                    using (OleDbCommand command = new OleDbCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Oracle:
-                    using (var connection = new OracleConnection(ConnectionString))
-                    using (var command = new OracleCommand(sql, connection))
+                    using (OracleConnection connection = new OracleConnection(ConnectionString))
+                    using (OracleCommand command = new OracleCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.MySql:
-                    using (var connection = new MySqlConnection(ConnectionString))
-                    using (var command = new MySqlCommand(sql, connection))
+                    using (MySqlConnection connection = new MySqlConnection(ConnectionString))
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Sqlite:
-                    using (var connection = new SQLiteConnection(ConnectionString))
-                    using (var command = new SQLiteCommand(sql, connection))
+                    using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.PostGreSql:
-                    using (var connection = new NpgsqlConnection(ConnectionString))
-                    using (var command = new NpgsqlCommand(sql, connection))
+                    using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
+                    using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Teradata:
-                    using (var connection = new TdConnection(ConnectionString))
-                    using (var command = new TdCommand(sql, connection))
+                    using (TdConnection connection = new TdConnection(ConnectionString))
+                    using (TdCommand command = new TdCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Odbc:
-                    using (var connection = new OdbcConnection(ConnectionString))
-                    using (var command = new OdbcCommand(sql, connection))
+                    using (OdbcConnection connection = new OdbcConnection(ConnectionString))
+                    using (OdbcCommand command = new OdbcCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
@@ -219,10 +219,10 @@ namespace Wexflow.Tasks.SqlToCsv
         private void ConvertToCsv(DbConnection conn, DbCommand comm)
         {
             conn.Open();
-            var reader = comm.ExecuteReader();
+            DbDataReader reader = comm.ExecuteReader();
             string destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
 
-            using (var sw = new StreamWriter(destPath))
+            using (StreamWriter sw = new StreamWriter(destPath))
             {
                 bool hasRows = reader.HasRows;
 

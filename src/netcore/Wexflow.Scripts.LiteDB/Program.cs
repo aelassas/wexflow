@@ -17,8 +17,8 @@ namespace Wexflow.Scripts.LiteDB
                 //.AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                var workflowsFolder = config["workflowsFolder"];
-                var db = new Db(config["connectionString"]);
+                string? workflowsFolder = config["workflowsFolder"];
+                Db db = new(config["connectionString"]);
                 Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Helper.InsertRecords(db, "litedb", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();
@@ -44,15 +44,15 @@ namespace Wexflow.Scripts.LiteDB
         private static void BuildDatabase(string info, string platformFolder, IConfiguration config)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            var path1 = Path.Combine(
+            string path1 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow.db");
-            var path2 = Path.Combine(
+            string path2 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow-log.db");
-            var connString = "Filename=" + path1 + "; Connection=direct";
+            string connString = "Filename=" + path1 + "; Connection=direct";
 
-            var workflowsFolder = Path.Combine(
+            string workflowsFolder = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Workflows");
 
@@ -60,9 +60,9 @@ namespace Wexflow.Scripts.LiteDB
             if (File.Exists(path1)) File.Delete(path1);
             if (File.Exists(path2)) File.Delete(path2);
 
-            var db = new Db(connString);
+            Db db = new(connString);
             Helper.InsertWorkflowsAndUser(db, workflowsFolder);
-            var recordsFolder = config["recordsFolder"];
+            string? recordsFolder = config["recordsFolder"];
             if (platformFolder == "linux")
             {
                 recordsFolder = "/opt/wexflow/Wexflow/Records";
@@ -71,7 +71,7 @@ namespace Wexflow.Scripts.LiteDB
             {
                 recordsFolder = "/Applications/wexflow/Wexflow/Records";
             }
-            var isUnix = platformFolder == "linux" || platformFolder == "macos";
+            bool isUnix = platformFolder == "linux" || platformFolder == "macos";
             Helper.InsertRecords(db, "litedb", recordsFolder, config["documentFile"], config["invoiceFile"], config["timesheetFile"], isUnix);
             db.Dispose();
         }

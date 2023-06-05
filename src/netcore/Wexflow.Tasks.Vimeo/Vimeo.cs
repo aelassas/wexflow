@@ -27,10 +27,10 @@ namespace Wexflow.Tasks.Vimeo
         public override TaskStatus Run()
         {
             Info("Uploading videos...");
+            bool atLeastOneSuccess = false;
 
-            var success = true;
-            var atLeastOneSuccess = false;
 
+            bool success;
             try
             {
                 success = UploadVideos(ref atLeastOneSuccess);
@@ -45,7 +45,7 @@ namespace Wexflow.Tasks.Vimeo
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -62,18 +62,18 @@ namespace Wexflow.Tasks.Vimeo
 
         private bool UploadVideos(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var files = SelectFiles();
-                var vimeoApi = new VimeoDotNet.VimeoClient(Token);
-                foreach (var file in files)
+                FileInf[] files = SelectFiles();
+                VimeoDotNet.VimeoClient vimeoApi = new(Token);
+                foreach (FileInf file in files)
                 {
                     try
                     {
                         XDocument xdoc = XDocument.Load(file.Path);
 
-                        foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
+                        foreach (XElement xvideo in xdoc.XPathSelectElements("/Videos/Video"))
                         {
                             string title = xvideo.Element("Title").Value;
                             string desc = xvideo.Element("Description").Value;
@@ -81,11 +81,11 @@ namespace Wexflow.Tasks.Vimeo
 
                             try
                             {
-                                using (var vfile = new BinaryContent(file.Path))
+                                using (BinaryContent vfile = new(file.Path))
                                 {
-                                    var uploadTask = vimeoApi.UploadEntireFileAsync(vfile);
+                                    System.Threading.Tasks.Task<IUploadRequest> uploadTask = vimeoApi.UploadEntireFileAsync(vfile);
                                     uploadTask.Wait();
-                                    var videoId = uploadTask.Result.ClipId;
+                                    long? videoId = uploadTask.Result.ClipId;
                                     InfoFormat("Video {0} uploaded to Vimeo. VideoId: {1}", filePath, videoId);
                                 }
 

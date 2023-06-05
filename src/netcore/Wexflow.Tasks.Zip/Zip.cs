@@ -23,41 +23,37 @@ namespace Wexflow.Tasks.Zip
 
             bool success = true;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
             if (files.Length > 0)
             {
-                var zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
+                string zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
 
                 try
                 {
-                    using (var zip = new ZipArchive(File.Create(zipPath), ZipArchiveMode.Create, false))
+                    using ZipArchive zip = new(File.Create(zipPath), ZipArchiveMode.Create, false);
+
+                    byte[] buffer = new byte[4096];
+
+                    foreach (FileInf file in files)
                     {
+                        // Using GetFileName makes the result compatible with XP
+                        // as the resulting path is not absolute.
+                        ZipArchiveEntry entry = zip.CreateEntry(file.RenameToOrName);
 
-                        var buffer = new byte[4096];
-
-                        foreach (FileInf file in files)
+                        using FileStream fs = File.OpenRead(file.Path);
+                        using Stream entryStream = entry.Open();
+                        // Using a fixed size buffer here makes no noticeable difference for output
+                        // but keeps a lid on memory usage.
+                        int sourceBytes;
+                        do
                         {
-                            // Using GetFileName makes the result compatible with XP
-                            // as the resulting path is not absolute.
-                            var entry = zip.CreateEntry(file.RenameToOrName);
-
-                            using (FileStream fs = File.OpenRead(file.Path))
-                            using (Stream entryStream = entry.Open())
-                            {
-                                // Using a fixed size buffer here makes no noticeable difference for output
-                                // but keeps a lid on memory usage.
-                                int sourceBytes;
-                                do
-                                {
-                                    sourceBytes = fs.Read(buffer, 0, buffer.Length);
-                                    entryStream.Write(buffer, 0, sourceBytes);
-                                } while (sourceBytes > 0);
-                            }
-                        }
-
-                        InfoFormat("Zip {0} created.", zipPath);
-                        Files.Add(new FileInf(zipPath, Id));
+                            sourceBytes = fs.Read(buffer, 0, buffer.Length);
+                            entryStream.Write(buffer, 0, sourceBytes);
+                        } while (sourceBytes > 0);
                     }
+
+                    InfoFormat("Zip {0} created.", zipPath);
+                    Files.Add(new FileInf(zipPath, Id));
                 }
                 catch (ThreadAbortException)
                 {
@@ -70,7 +66,7 @@ namespace Wexflow.Tasks.Zip
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

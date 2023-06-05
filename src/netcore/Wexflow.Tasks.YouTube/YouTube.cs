@@ -41,15 +41,15 @@ namespace Wexflow.Tasks.YouTube
 
             try
             {
-                var files = SelectFiles();
+                FileInf[] files = SelectFiles();
 
-                foreach (var file in files)
+                foreach (FileInf file in files)
                 {
                     try
                     {
                         XDocument xdoc = XDocument.Load(file.Path);
 
-                        foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
+                        foreach (XElement xvideo in xdoc.XPathSelectElements("/Videos/Video"))
                         {
                             string title = xvideo.Element("Title").Value;
                             string desc = xvideo.Element("Description").Value;
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.YouTube
                             PrivacyStatus ps = (PrivacyStatus)Enum.Parse(typeof(PrivacyStatus), xvideo.Element("PrivacyStatus").Value, true);
                             string filePath = xvideo.Element("FilePath").Value;
 
-                            var succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);
+                            System.Threading.Tasks.Task<bool> succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);
                             succeededTask.Wait();
                             succeeded &= succeededTask.Result;
 
@@ -87,7 +87,7 @@ namespace Wexflow.Tasks.YouTube
                 return new TaskStatus(Status.Error);
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!succeeded && atLeastOneSucceed)
             {
@@ -109,7 +109,7 @@ namespace Wexflow.Tasks.YouTube
                 InfoFormat("Uploading the video file {0} to YouTube started...", filePath);
                 Info("Authentication started...");
                 UserCredential credential;
-                using (var stream = new FileStream(ClientSecrets, FileMode.Open, FileAccess.Read))
+                using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
                 {
 #pragma warning disable CS0618 // Le type ou le membre est obsolète
                     credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -124,13 +124,13 @@ namespace Wexflow.Tasks.YouTube
                 }
                 Info("Authentication succeeded.");
 
-                var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+                YouTubeService youtubeService = new(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = ApplicationName,
                 });
 
-                var video = new Video
+                Video video = new()
                 {
                     Snippet = new VideoSnippet()
                 };
@@ -143,12 +143,12 @@ namespace Wexflow.Tasks.YouTube
                     PrivacyStatus = ps.ToString().ToLower() // "unlisted" or "private" or "public"
                 };
 
-                using (var fileStream = new FileStream(filePath, FileMode.Open))
+                using (FileStream fileStream = new(filePath, FileMode.Open))
                 {
-                    var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                    VideosResource.InsertMediaUpload videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
                     videosInsertRequest.ResponseReceived += VideosInsertRequest_ResponseReceived;
 
-                    var res = videosInsertRequest.Upload();
+                    Google.Apis.Upload.IUploadProgress res = videosInsertRequest.Upload();
 
                     if (res.Exception != null)
                     {

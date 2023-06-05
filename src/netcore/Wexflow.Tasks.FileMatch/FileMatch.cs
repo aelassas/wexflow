@@ -40,7 +40,7 @@ namespace Wexflow.Tasks.FileMatch
                     files = Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
                 }
 
-                foreach (var file in files)
+                foreach (string file in files)
                 {
                     if (Regex.Match(Path.GetFileName(file), Pattern).Success)
                     {

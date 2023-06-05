@@ -20,12 +20,12 @@ namespace Wexflow.Tests
         public void SuspendTest()
         {
             int workflowId = 41;
-            var instanceId = Helper.StartWorkflowAsync(workflowId);
+            System.Guid instanceId = Helper.StartWorkflowAsync(workflowId);
 
             try
             {
                 Thread.Sleep(500);
-                var workflow = Helper.GetWorkflow(workflowId);
+                Core.Workflow workflow = Helper.GetWorkflow(workflowId);
                 Assert.IsFalse(workflow.IsPaused);
                 Helper.SuspendWorkflow(workflowId, instanceId);
                 Thread.Sleep(500);

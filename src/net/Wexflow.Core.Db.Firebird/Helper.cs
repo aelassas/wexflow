@@ -13,16 +13,16 @@ namespace Wexflow.Core.Db.Firebird
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {
-            using (var conn = new FbConnection(_connectionString))
+            using (FbConnection conn = new FbConnection(_connectionString))
             {
                 conn.Open();
 
-                using (var command = new FbCommand("select 1 from rdb$relations where rdb$relation_name = '" + tableName.ToUpper() + "';", conn))
+                using (FbCommand command = new FbCommand("select 1 from rdb$relations where rdb$relation_name = '" + tableName.ToUpper() + "';", conn))
                 {
-                    var res = command.ExecuteScalar();
+                    object res = command.ExecuteScalar();
                     if (res == null)
                     {
-                        using (var cmd = new FbCommand("create table " + tableName + tableStruct + ";", conn))
+                        using (FbCommand cmd = new FbCommand("create table " + tableName + tableStruct + ";", conn))
                         {
                             cmd.ExecuteNonQuery();
                         }

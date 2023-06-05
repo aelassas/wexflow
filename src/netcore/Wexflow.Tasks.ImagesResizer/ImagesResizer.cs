@@ -30,8 +30,8 @@ namespace Wexflow.Tasks.ImagesResizer
 
             try
             {
-                var images = SelectFiles();
-                foreach (var image in images)
+                FileInf[] images = SelectFiles();
+                foreach (FileInf image in images)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     succeeded &= Resize(image.Path, destPath);
@@ -65,14 +65,12 @@ namespace Wexflow.Tasks.ImagesResizer
         {
             try
             {
-                using (Image src = Image.FromFile(srcPath))
-                using (Image dest = ResizeImage(src, Width, Height))
-                {
-                    dest.Save(destPath);
-                    Files.Add(new FileInf(destPath, Id));
-                    InfoFormat("The image {0} was resized to {1}x{2} -> {3}", srcPath, Width, Height, destPath);
-                    return true;
-                }
+                using Image src = Image.FromFile(srcPath);
+                using Image dest = ResizeImage(src, Width, Height);
+                dest.Save(destPath);
+                Files.Add(new FileInf(destPath, Id));
+                InfoFormat("The image {0} was resized to {1}x{2} -> {3}", srcPath, Width, Height, destPath);
+                return true;
             }
             catch (ThreadAbortException)
             {
@@ -87,12 +85,12 @@ namespace Wexflow.Tasks.ImagesResizer
 
         private Bitmap ResizeImage(Image image, int width, int height)
         {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
+            Rectangle destRect = new(0, 0, width, height);
+            Bitmap destImage = new(width, height);
 
             destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
-            using (var graphics = Graphics.FromImage(destImage))
+            using (Graphics graphics = Graphics.FromImage(destImage))
             {
                 graphics.CompositingMode = CompositingMode.SourceCopy;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -100,11 +98,9 @@ namespace Wexflow.Tasks.ImagesResizer
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                }
+                using ImageAttributes wrapMode = new();
+                wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
             }
 
             return destImage;

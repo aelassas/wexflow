@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.ImagesTransformer
             {
                 try
                 {
-                    var destFilePath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destFilePath = Path.Combine(Workflow.WorkflowTempFolder,
                         OutputFilePattern.Replace("$fileNameWithoutExtension", Path.GetFileNameWithoutExtension(file.FileName)).Replace("$fileName", file.FileName));
 
                     using (Image img = Image.FromFile(file.Path))
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.ImagesTransformer
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

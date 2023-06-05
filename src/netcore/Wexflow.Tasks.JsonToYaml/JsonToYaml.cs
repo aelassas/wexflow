@@ -21,7 +21,7 @@ namespace Wexflow.Tasks.JsonToYaml
             Info("Converting JSON files to YAML files...");
 
             bool success;
-            var atLeastOneSuccess = false;
+            bool atLeastOneSuccess = false;
             try
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.JsonToYaml
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
             if (!success && atLeastOneSuccess)
             {
                 status = Status.Warning;
@@ -52,22 +52,22 @@ namespace Wexflow.Tasks.JsonToYaml
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var yamlFiles = SelectFiles();
+            bool success = true;
+            FileInf[] yamlFiles = SelectFiles();
 
-            foreach (var yamlFile in yamlFiles)
+            foreach (FileInf yamlFile in yamlFiles)
             {
                 try
                 {
-                    var source = File.ReadAllText(yamlFile.Path);
+                    string source = File.ReadAllText(yamlFile.Path);
 
-                    var expConverter = new ExpandoObjectConverter();
+                    ExpandoObjectConverter expConverter = new();
                     dynamic deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(source, expConverter);
 
-                    var serializer = new Serializer();
-                    var yaml = serializer.Serialize(deserializedObject);
+                    Serializer serializer = new();
+                    dynamic yaml = serializer.Serialize(deserializedObject);
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(yamlFile.FileName) + ".yml");
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(yamlFile.FileName) + ".yml");
                     File.WriteAllText(destPath, yaml);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The JSON file {0} has been converted -> {1}", yamlFile.Path, destPath);

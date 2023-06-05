@@ -19,19 +19,19 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
         {
             Info("Importing records...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
-                var recordIds = new List<string>();
-                var files = SelectFiles();
+                List<string> recordIds = new();
+                FileInf[] files = SelectFiles();
 
-                foreach (var file in files)
+                foreach (FileInf file in files)
                 {
                     try
                     {
-                        var recordId = Workflow.WexflowEngine.SaveRecordFromFile(file.Path, CreatedBy);
+                        string recordId = Workflow.WexflowEngine.SaveRecordFromFile(file.Path, CreatedBy);
 
                         if (recordId != "-1")
                         {
@@ -59,7 +59,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                     }
                 }
 
-                var smKey = "ApprovalRecordsCreator.RecordIds";
+                string smKey = "ApprovalRecordsCreator.RecordIds";
                 if (SharedMemory.ContainsKey(smKey))
                 {
                     SharedMemory.Remove(smKey);
@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {

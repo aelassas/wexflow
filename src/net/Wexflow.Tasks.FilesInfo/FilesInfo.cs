@@ -21,8 +21,8 @@ namespace Wexflow.Tasks.FilesInfo
         {
             Info("Generating files informations...");
 
-            var success = true;
-            var atLeastOneSucceed = false;
+            bool success = true;
+            bool atLeastOneSucceed = false;
 
             try
             {
@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.FilesInfo
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -65,15 +65,15 @@ namespace Wexflow.Tasks.FilesInfo
 
         private bool GenerateInfo(ref bool atLeastOneSucceed)
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
-                var filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("FilesInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("Files"));
+                XDocument xdoc = new XDocument(new XElement("Files"));
                 foreach (FileInf file in files)
                 {
                     try
@@ -82,7 +82,7 @@ namespace Wexflow.Tasks.FilesInfo
                         {
                             const string dateFormat = @"MM\/dd\/yyyy HH:mm.ss";
                             FileInfo fileInfo = new FileInfo(file.Path);
-                            var xfile = new XElement("File",
+                            XElement xfile = new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("renameToOrName", file.RenameToOrName),
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.FilesInfo
                                 new XAttribute("attributes", fileInfo.Attributes)
                                 );
 
-                            foreach (var tag in file.Tags)
+                            foreach (Tag tag in file.Tags)
                             {
                                 xfile.SetAttributeValue(tag.Key, tag.Value);
                             }

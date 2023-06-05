@@ -19,8 +19,7 @@ namespace Wexflow.Tasks.Ping
         {
             Info("Checking file...");
 
-            bool success = false;
-
+            bool success;
             try
             {
                 success = PingHost(Server);

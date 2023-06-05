@@ -68,7 +68,7 @@ namespace Wexflow.Core
         /// <summary>
         /// File system info from <see cref="Path"/>.
         /// </summary>
-        public FileInfo FileInfo => _fileInfo ?? (_fileInfo = new FileInfo(Path));
+        public FileInfo FileInfo => _fileInfo ??= new FileInfo(Path);
 
         /// <summary>
         /// Creates a new instance of FileInf.

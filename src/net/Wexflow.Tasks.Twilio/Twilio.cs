@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.Twilio
             {
                 TwilioClient.Init(AccountSid, AuthToken);
 
-                var message = MessageResource.Create(
+                MessageResource message = MessageResource.Create(
                     body: Message,
                     from: new PhoneNumber(From),
                     to: new PhoneNumber(To)
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.Twilio
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

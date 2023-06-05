@@ -25,19 +25,19 @@ namespace Wexflow.Tasks.Wmi
 
             try
             {
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("WMI_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("WMI_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("Objects"));
-                var searcher = new ManagementObjectSearcher(Query);
-                var collection = searcher.Get();
+                XDocument xdoc = new XDocument(new XElement("Objects"));
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(Query);
+                ManagementObjectCollection collection = searcher.Get();
 
-                foreach (var o in collection)
+                foreach (ManagementBaseObject o in collection)
                 {
-                    var obj = (ManagementObject)o;
-                    var xObj = new XElement("Object");
+                    ManagementObject obj = (ManagementObject)o;
+                    XElement xObj = new XElement("Object");
                     foreach (PropertyData prop in obj.Properties)
                     {
-                        var xProp = new XElement("Property", new XAttribute("name", prop.Name), new XAttribute("value", prop.Value ?? string.Empty));
+                        XElement xProp = new XElement("Property", new XAttribute("name", prop.Name), new XAttribute("value", prop.Value ?? string.Empty));
                         xObj.Add(xProp);
                     }
                     if (xdoc.Root == null) throw new Exception("Root node does not exist.");
@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.Wmi
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

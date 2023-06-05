@@ -36,12 +36,12 @@ namespace Wexflow.Tasks.SubWorkflow
         {
             InfoFormat("Processing the sub workflow {0} ...", WorkflowId);
 
-            var success = true;
-            var warning = false;
+            bool success = true;
+            bool warning = false;
 
             try
             {
-                var workflow = Workflow.WexflowEngine.GetWorkflow(WorkflowId);
+                Workflow workflow = Workflow.WexflowEngine.GetWorkflow(WorkflowId);
                 if (workflow != null)
                 {
                     switch (Action)
@@ -116,7 +116,7 @@ namespace Wexflow.Tasks.SubWorkflow
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

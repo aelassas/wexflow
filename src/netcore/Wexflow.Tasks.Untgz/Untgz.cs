@@ -23,7 +23,7 @@ namespace Wexflow.Tasks.Untgz
             Info("Extracting TAR.GZ archives...");
 
             bool success;
-            var atLeastOneSuccess = false;
+            bool atLeastOneSuccess = false;
             try
             {
                 success = ExtractFiles(ref atLeastOneSuccess);
@@ -38,7 +38,7 @@ namespace Wexflow.Tasks.Untgz
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -55,8 +55,8 @@ namespace Wexflow.Tasks.Untgz
 
         private bool ExtractFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var tgzs = SelectFiles();
+            bool success = true;
+            FileInf[] tgzs = SelectFiles();
 
             if (tgzs.Length > 0)
             {
@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.Untgz
                         Directory.CreateDirectory(destFolder);
                         ExtractTGZ(tgz.Path, destFolder);
 
-                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }

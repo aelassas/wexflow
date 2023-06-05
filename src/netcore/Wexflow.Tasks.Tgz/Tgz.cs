@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.Tgz
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -50,16 +50,16 @@ namespace Wexflow.Tasks.Tgz
 
         private bool CreateTgz()
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
             if (files.Length > 0)
             {
-                var tgzPath = Path.Combine(Workflow.WorkflowTempFolder, TgzFileName);
+                string tgzPath = Path.Combine(Workflow.WorkflowTempFolder, TgzFileName);
 
                 try
                 {
-                    using var gz = new GZipOutputStream(File.Create(tgzPath));
-                    using var tar = new TarOutputStream(gz, Encoding.UTF8);
+                    using GZipOutputStream gz = new(File.Create(tgzPath));
+                    using TarOutputStream tar = new(gz, Encoding.UTF8);
 
                     foreach (FileInf file in files)
                     {
@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.Tgz
 
                             // Create a tar entry named as appropriate. You can set the name to anything,
                             // but avoid names starting with drive or UNC.
-                            var entry = TarEntry.CreateTarEntry(file.RenameToOrName);
+                            TarEntry entry = TarEntry.CreateTarEntry(file.RenameToOrName);
 
                             // Must set size, otherwise TarOutputStream will fail when output exceeds.
                             entry.Size = fileSize;
@@ -77,10 +77,10 @@ namespace Wexflow.Tasks.Tgz
                             // Add the entry to the tar stream, before writing the data.
                             tar.PutNextEntry(entry);
 
-                            var localBuffer = new byte[32 * 1024];
+                            byte[] localBuffer = new byte[32 * 1024];
                             while (true)
                             {
-                                var numRead = inputStream.Read(localBuffer, 0, localBuffer.Length);
+                                int numRead = inputStream.Read(localBuffer, 0, localBuffer.Length);
                                 if (numRead <= 0)
                                 {
                                     break;

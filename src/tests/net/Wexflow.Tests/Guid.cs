@@ -31,12 +31,12 @@ namespace Wexflow.Tests
             Helper.StartWorkflow(68);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            var xdoc = XDocument.Load(files[0]);
-            var xguids = xdoc.Descendants("Guid").ToList();
+            XDocument xdoc = XDocument.Load(files[0]);
+            System.Collections.Generic.List<XElement> xguids = xdoc.Descendants("Guid").ToList();
             Assert.AreEqual(3, xguids.Count);
-            var regexPattern = @"^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$";
+            string regexPattern = @"^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$";
 
-            foreach (var xguid in xguids)
+            foreach (XElement xguid in xguids)
             {
                 Assert.IsTrue(Regex.IsMatch(xguid.Value, regexPattern));
             }

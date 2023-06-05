@@ -20,10 +20,10 @@ namespace Wexflow.Tasks.FilesRemover
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
             for (int i = files.Length - 1; i > -1; i--)
             {
-                var file = files[i];
+                FileInf file = files[i];
 
                 try
                 {
@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.FilesRemover
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.Slack
         {
             Info("Sending slack messages...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.Slack
                 success = false;
             }
 
-            var tstatus = Status.Success;
+            Status tstatus = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -72,8 +72,8 @@ namespace Wexflow.Tasks.Slack
 
         private bool SendMessages(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
@@ -98,16 +98,16 @@ namespace Wexflow.Tasks.Slack
                 {
                     try
                     {
-                        var xdoc = XDocument.Load(file.Path);
+                        XDocument xdoc = XDocument.Load(file.Path);
                         foreach (XElement xMessage in xdoc.XPathSelectElements("Messages/Message"))
                         {
-                            var username = xMessage.Element("User").Value;
-                            var text = xMessage.Element("Text").Value;
+                            string username = xMessage.Element("User").Value;
+                            string text = xMessage.Element("Text").Value;
 
                             if (client.Users != null)
                             {
-                                var user = client.Users.Find(x => x.name.Equals(username));
-                                var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
+                                User user = client.Users.Find(x => x.name.Equals(username));
+                                DirectMessageConversation dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
                                 client.PostMessage((mr) => Info("Message '" + text + "' sent to " + dmchannel.id + "."), dmchannel.id, text);
 
                                 if (!atLeastOneSuccess) atLeastOneSuccess = true;

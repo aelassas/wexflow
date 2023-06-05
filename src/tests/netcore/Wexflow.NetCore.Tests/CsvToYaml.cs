@@ -25,7 +25,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void CsvToYamlTest()
         {
-            var files = GetFiles();
+            string[] files = GetFiles();
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(154);
             files = GetFiles();

@@ -14,8 +14,8 @@ namespace Wexflow.Scripts.MySQL
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                var workflowsFolder = config["workflowsFolder"];
-                Db db = new Db(config["connectionString"]);
+                string workflowsFolder = config["workflowsFolder"];
+                Db db = new(config["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Core.Helper.InsertRecords(db, "mysql", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();

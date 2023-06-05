@@ -31,8 +31,8 @@ namespace Wexflow.Tasks.Unrar
         {
             Info("Extracting RAR archives...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.Unrar
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -75,8 +75,8 @@ namespace Wexflow.Tasks.Unrar
 
         private bool ExtractFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var rars = SelectFiles();
+            bool success = true;
+            FileInf[] rars = SelectFiles();
 
             if (rars.Length > 0)
             {
@@ -90,7 +90,7 @@ namespace Wexflow.Tasks.Unrar
 
                         ExtractRar(rar.Path, destFolder);
 
-                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
@@ -115,9 +115,9 @@ namespace Wexflow.Tasks.Unrar
 
         private void ExtractRar(string rarFileName, string targetDir)
         {
-            using (var archive = RarArchive.Open(rarFileName))
+            using (RarArchive archive = RarArchive.Open(rarFileName))
             {
-                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                foreach (RarArchiveEntry entry in archive.Entries.Where(entry => !entry.IsDirectory))
                 {
                     entry.WriteToDirectory(targetDir, new ExtractionOptions()
                     {

@@ -35,7 +35,7 @@ namespace Wexflow.NetCore.Tests
             Helper.StartWorkflow(76);
             files = GetSqlScripts();
             Assert.AreEqual(2, files.Length);
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 string content = File.ReadAllText(file);
                 Assert.AreEqual(ExpectedResult, content);
@@ -50,7 +50,7 @@ namespace Wexflow.NetCore.Tests
         private void DeleteSqlScripts()
         {
             string[] files = GetSqlScripts();
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 File.Delete(file);
             }

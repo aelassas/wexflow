@@ -44,19 +44,19 @@ namespace Wexflow.NetCore.Tests
             Helper.StartWorkflow(1);
 
             // Check the workflow result
-            var xmlFiles = Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml");
+            string[] xmlFiles = Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml");
             Assert.AreEqual(2, xmlFiles.Length);
 
-            foreach (var xmlFile in xmlFiles)
+            foreach (string xmlFile in xmlFiles)
             {
-                var xmlContent = File.ReadAllText(xmlFile);
+                string xmlContent = File.ReadAllText(xmlFile);
                 Assert.AreEqual(ExpectedResult, xmlContent);
             }
         }
 
         private void DeleteXmls()
         {
-            foreach (var file in Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml"))
+            foreach (string file in Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml"))
             {
                 File.Delete(file);
             }

@@ -40,15 +40,15 @@ namespace Wexflow.Clients.CommandLine
         {
             try
             {
-                var parser = new Parser(cfg => cfg.CaseInsensitiveEnumValues = true);
-                var res = parser.ParseArguments<Options>(args)
+                Parser parser = new Parser(cfg => cfg.CaseInsensitiveEnumValues = true);
+                ParserResult<Options> res = parser.ParseArguments<Options>(args)
                    .WithParsed(o =>
                    {
-                       var client = new WexflowServiceClient(ConfigurationManager.AppSettings["WexflowWebServiceUri"]);
-                       var username = ConfigurationManager.AppSettings["Username"];
-                       var password = ConfigurationManager.AppSettings["Password"];
+                       WexflowServiceClient client = new WexflowServiceClient(ConfigurationManager.AppSettings["WexflowWebServiceUri"]);
+                       string username = ConfigurationManager.AppSettings["Username"];
+                       string password = ConfigurationManager.AppSettings["Password"];
 
-                       var workflows = client.Search(string.Empty, username, password);
+                       WorkflowInfo[] workflows = client.Search(string.Empty, username, password);
                        if (!workflows.Any(w => w.Id == o.WorkflowId))
                        {
                            Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
@@ -59,14 +59,14 @@ namespace Wexflow.Clients.CommandLine
                        switch (o.Operation)
                        {
                            case Operation.Start:
-                               var instanceId = client.StartWorkflow(o.WorkflowId, username, password);
+                               Guid instanceId = client.StartWorkflow(o.WorkflowId, username, password);
                                Console.WriteLine("JobId: {0}", instanceId);
 
                                if (o.Wait)
                                {
                                    Thread.Sleep(1000);
                                    workflow = client.GetWorkflow(username, password, o.WorkflowId);
-                                   var isRunning = workflow.IsRunning;
+                                   bool isRunning = workflow.IsRunning;
                                    while (isRunning)
                                    {
                                        Thread.Sleep(100);
@@ -132,7 +132,7 @@ namespace Wexflow.Clients.CommandLine
 
                 res.WithNotParsed(errs =>
                 {
-                    var helpText = HelpText.AutoBuild(res, h => h, e =>
+                    HelpText helpText = HelpText.AutoBuild(res, h => h, e =>
                     {
                         return e;
                     });

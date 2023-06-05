@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.ImagesConcat
         {
             Info("Concatenating images...");
 
-            var success = true;
+            bool success = true;
 
             try
             {
@@ -53,7 +53,7 @@ namespace Wexflow.Tasks.ImagesConcat
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -66,16 +66,16 @@ namespace Wexflow.Tasks.ImagesConcat
 
         private bool Concat()
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var imageFiles = SelectFiles();
+                FileInf[] imageFiles = SelectFiles();
 
                 if (imageFiles.Length >= 2)
                 {
-                    var extension = Path.GetExtension(imageFiles[0].FileName);
+                    string extension = Path.GetExtension(imageFiles[0].FileName);
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("ImagesConcat_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
                     success = ConcatImages(imageFiles, destPath);

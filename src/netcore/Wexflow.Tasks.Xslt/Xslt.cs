@@ -33,7 +33,7 @@ namespace Wexflow.Tasks.Xslt
 
             foreach (FileInf file in SelectFiles())
             {
-                var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string destPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format(OutputFormat, Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now, Extension));
 
                 try
@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.Xslt
                     switch (Version)
                     {
                         case "1.0":
-                            var xslt = new XslCompiledTransform();
+                            XslCompiledTransform xslt = new();
                             xslt.Load(XsltPath);
                             xslt.Transform(file.Path, destPath);
                             InfoFormat("File transformed (XSLT 1.0): {0} -> {1}", file.Path, destPath);
@@ -63,26 +63,26 @@ namespace Wexflow.Tasks.Xslt
                     // Set renameTo and tags from /*//<WexflowProcessing>//<File> nodes
                     // Remove /*//<WexflowProcessing> nodes if necessary
 
-                    var xdoc = XDocument.Load(destPath);
-                    var xWexflowProcessings = xdoc.Descendants("WexflowProcessing").ToArray();
-                    foreach (var xWexflowProcessing in xWexflowProcessings)
+                    XDocument xdoc = XDocument.Load(destPath);
+                    XElement[] xWexflowProcessings = xdoc.Descendants("WexflowProcessing").ToArray();
+                    foreach (XElement xWexflowProcessing in xWexflowProcessings)
                     {
-                        var xFiles = xWexflowProcessing.Descendants("File");
-                        foreach (var xFile in xFiles)
+                        System.Collections.Generic.IEnumerable<XElement> xFiles = xWexflowProcessing.Descendants("File");
+                        foreach (XElement xFile in xFiles)
                         {
                             try
                             {
-                                var taskId = int.Parse(xFile.Attribute("taskId").Value);
+                                int taskId = int.Parse(xFile.Attribute("taskId").Value);
                                 string fileName = xFile.Attribute("name").Value;
-                                var xRenameTo = xFile.Attribute("renameTo");
+                                XAttribute xRenameTo = xFile.Attribute("renameTo");
                                 string renameTo = xRenameTo != null ? xRenameTo.Value : string.Empty;
-                                var tags = (from xTag in xFile.Attributes()
-                                            where xTag.Name != "taskId" && xTag.Name != "name" && xTag.Name != "renameTo" && xTag.Name != "path" && xTag.Name != "renameToOrName"
-                                            select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
+                                System.Collections.Generic.List<Tag> tags = (from xTag in xFile.Attributes()
+                                                                             where xTag.Name != "taskId" && xTag.Name != "name" && xTag.Name != "renameTo" && xTag.Name != "path" && xTag.Name != "renameToOrName"
+                                                                             select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
 
-                                var fileToEdit = (from f in Workflow.FilesPerTask[taskId]
-                                                  where f.FileName.Equals(fileName)
-                                                  select f).FirstOrDefault();
+                                FileInf fileToEdit = (from f in Workflow.FilesPerTask[taskId]
+                                                      where f.FileName.Equals(fileName)
+                                                      select f).FirstOrDefault();
 
                                 if (fileToEdit != null)
                                 {
@@ -125,7 +125,7 @@ namespace Wexflow.Tasks.Xslt
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

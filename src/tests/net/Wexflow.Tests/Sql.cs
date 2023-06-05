@@ -27,11 +27,11 @@ namespace Wexflow.Tests
 
             // sqlite
             const string sql = "select Id, Description from Data;";
-            using (var conn = new SQLiteConnection(SqliteConnectionString))
+            using (SQLiteConnection conn = new SQLiteConnection(SqliteConnectionString))
             {
-                var comm = new SQLiteCommand(sql, conn);
+                SQLiteCommand comm = new SQLiteCommand(sql, conn);
                 conn.Open();
-                using (var reader = comm.ExecuteReader())
+                using (SQLiteDataReader reader = comm.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -74,9 +74,9 @@ namespace Wexflow.Tests
                 + "UPDATE Data SET Description = 'Hello World Description 4!' WHERE Id = 4;"
                 + "UPDATE Data SET Description = 'Hello World Description 5!' WHERE Id = 5;";
 
-            using (var conn = new SQLiteConnection(SqliteConnectionString))
+            using (SQLiteConnection conn = new SQLiteConnection(SqliteConnectionString))
             {
-                var comm = new SQLiteCommand(sql, conn);
+                SQLiteCommand comm = new SQLiteCommand(sql, conn);
                 conn.Open();
                 comm.ExecuteNonQuery();
             }

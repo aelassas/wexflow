@@ -50,7 +50,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
         private async System.Threading.Tasks.Task ListUploads()
         {
             UserCredential credential;
-            using (var stream = new FileStream(ClientSecrets, FileMode.Open, FileAccess.Read))
+            using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
             {
 #pragma warning disable CS0618 // Le type ou le membre est obsolète
                 credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -65,47 +65,47 @@ namespace Wexflow.Tasks.YouTubeListUploads
 #pragma warning restore CS0618 // Le type ou le membre est obsolète
             }
 
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            YouTubeService youtubeService = new(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName
             });
 
-            var channelsListRequest = youtubeService.Channels.List("contentDetails");
+            ChannelsResource.ListRequest channelsListRequest = youtubeService.Channels.List("contentDetails");
             channelsListRequest.Mine = true;
 
             // Retrieve the contentDetails part of the channel resource for the authenticated user's channel.
-            var channelsListResponse = await channelsListRequest.ExecuteAsync();
+            Google.Apis.YouTube.v3.Data.ChannelListResponse channelsListResponse = await channelsListRequest.ExecuteAsync();
 
-            var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+            string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "YouTubeListUploads", DateTime.Now));
 
-            var xdoc = new XDocument(new XElement("YouTubeListUploads"));
-            var xchannels = new XElement("Channels");
+            XDocument xdoc = new(new XElement("YouTubeListUploads"));
+            XElement xchannels = new("Channels");
 
-            foreach (var channel in channelsListResponse.Items)
+            foreach (Google.Apis.YouTube.v3.Data.Channel channel in channelsListResponse.Items)
             {
                 // From the API response, extract the playlist ID that identifies the list
                 // of videos uploaded to the authenticated user's channel.
-                var uploadsListId = channel.ContentDetails.RelatedPlaylists.Uploads;
+                string uploadsListId = channel.ContentDetails.RelatedPlaylists.Uploads;
 
                 InfoFormat("Videos in list {0}", uploadsListId);
 
-                var xchannel = new XElement("Channel", new XAttribute("id", uploadsListId));
-                var xvideos = new XElement("Videos");
+                XElement xchannel = new("Channel", new XAttribute("id", uploadsListId));
+                XElement xvideos = new("Videos");
 
-                var nextPageToken = "";
+                string nextPageToken = "";
                 while (nextPageToken != null)
                 {
-                    var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+                    PlaylistItemsResource.ListRequest playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
                     playlistItemsListRequest.PlaylistId = uploadsListId;
                     playlistItemsListRequest.MaxResults = 50;
                     playlistItemsListRequest.PageToken = nextPageToken;
 
                     // Retrieve the list of videos uploaded to the authenticated user's channel.
-                    var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
+                    Google.Apis.YouTube.v3.Data.PlaylistItemListResponse playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
 
-                    foreach (var playlistItem in playlistItemsListResponse.Items)
+                    foreach (Google.Apis.YouTube.v3.Data.PlaylistItem playlistItem in playlistItemsListResponse.Items)
                     {
                         // Print information about each video.
                         InfoFormat("{0} ({1})", playlistItem.Snippet.Title, playlistItem.Snippet.ResourceId.VideoId);

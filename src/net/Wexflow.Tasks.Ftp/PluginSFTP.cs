@@ -37,14 +37,14 @@ namespace Wexflow.Tasks.Ftp
 
         public override FileInf[] List()
         {
-            var files = new List<FileInf>();
+            List<FileInf> files = new List<FileInf>();
 
-            using (var client = new SftpClient(GetConnectionInfo()))
+            using (SftpClient client = new SftpClient(GetConnectionInfo()))
             {
                 client.Connect();
                 client.ChangeDirectory(Path);
 
-                var sftpFiles = client.ListDirectory(".");
+                IEnumerable<SftpFile> sftpFiles = client.ListDirectory(".");
                 foreach (SftpFile file in sftpFiles)
                 {
                     if (file.IsRegularFile)
@@ -62,7 +62,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Upload(FileInf file)
         {
-            using (var client = new SftpClient(GetConnectionInfo()))
+            using (SftpClient client = new SftpClient(GetConnectionInfo()))
             {
                 client.Connect();
                 client.ChangeDirectory(Path);
@@ -79,12 +79,12 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Download(FileInf file)
         {
-            using (var client = new SftpClient(GetConnectionInfo()))
+            using (SftpClient client = new SftpClient(GetConnectionInfo()))
             {
                 client.Connect();
                 client.ChangeDirectory(Path);
 
-                var destFileName = System.IO.Path.Combine(Task.Workflow.WorkflowTempFolder, file.FileName);
+                string destFileName = System.IO.Path.Combine(Task.Workflow.WorkflowTempFolder, file.FileName);
                 using (FileStream ostream = File.Create(destFileName))
                 {
                     client.DownloadFile(file.Path, ostream);
@@ -98,7 +98,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Delete(FileInf file)
         {
-            using (var client = new SftpClient(GetConnectionInfo()))
+            using (SftpClient client = new SftpClient(GetConnectionInfo()))
             {
                 client.Connect();
                 client.ChangeDirectory(Path);

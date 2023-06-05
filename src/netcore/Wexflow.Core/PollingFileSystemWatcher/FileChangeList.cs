@@ -14,7 +14,7 @@ namespace System.IO
         FileChange[] _changes;
         int _count;
 
-        public bool IsEmpty { get { return _changes == null || _count == 0; } }
+        public readonly bool IsEmpty { get { return _changes == null || _count == 0; } }
 
         internal void AddAdded(string directory, string path)
         {
@@ -42,32 +42,29 @@ namespace System.IO
 
         void EnsureCapacity()
         {
-            if (_changes == null)
-            {
-                _changes = new FileChange[DefaultListSize];
-            }
+            _changes ??= new FileChange[DefaultListSize];
             if (_count >= _changes.Length)
             {
-                var larger = new FileChange[_changes.Length * 2];
+                FileChange[] larger = new FileChange[_changes.Length * 2];
                 _changes.CopyTo(larger, 0);
                 _changes = larger;
             }
         }
 
-        void Sort()
+        readonly void Sort()
         {
             Array.Sort(_changes, 0, _count, Comparer.Default);
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return _count.ToString();
         }
 
-        public FileChange[] ToArray()
+        public readonly FileChange[] ToArray()
         {
             Sort();
-            var result = new FileChange[_count];
+            FileChange[] result = new FileChange[_count];
             Array.Copy(_changes, result, _count);
             return result;
         }
@@ -78,7 +75,7 @@ namespace System.IO
 
             public int Compare(FileChange left, FileChange right)
             {
-                var nameOrder = String.CompareOrdinal(left.Name, right.Name);
+                int nameOrder = String.CompareOrdinal(left.Name, right.Name);
                 if (nameOrder != 0) return nameOrder;
 
                 return left.ChangeType.CompareTo(right.ChangeType);

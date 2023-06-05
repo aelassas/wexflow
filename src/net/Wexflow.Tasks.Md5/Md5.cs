@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.Md5
         {
             Info("Generating MD5 sums...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.Md5
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,27 +71,24 @@ namespace Wexflow.Tasks.Md5
 
         private bool GenerateMd5(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
-                var md5Path = Path.Combine(Workflow.WorkflowTempFolder,
+                string md5Path = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("MD5_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("Files"));
+                XDocument xdoc = new XDocument(new XElement("Files"));
                 foreach (FileInf file in files)
                 {
                     try
                     {
-                        var md5 = GetMd5(file.Path);
-                        if (xdoc.Root != null)
-                        {
-                            xdoc.Root.Add(new XElement("File",
+                        string md5 = GetMd5(file.Path);
+                        xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("md5", md5)));
-                        }
                         InfoFormat("Md5 of the file {0} is {1}", file.Path, md5);
 
                         if (!atLeastOneSuccess) atLeastOneSuccess = true;
@@ -114,12 +111,12 @@ namespace Wexflow.Tasks.Md5
 
         private string GetMd5(string filePath)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             using (MD5 md5 = MD5.Create())
             {
                 using (FileStream stream = File.OpenRead(filePath))
                 {
-                    var bytes = md5.ComputeHash(stream);
+                    byte[] bytes = md5.ComputeHash(stream);
 
                     foreach (byte bt in bytes)
                     {

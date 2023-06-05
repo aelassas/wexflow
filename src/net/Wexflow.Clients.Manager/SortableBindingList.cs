@@ -84,7 +84,7 @@ namespace Wexflow.Clients.Manager
             _sortProperty = prop;
             _sortDirection = direction;
 
-            var list = Items as List<T>;
+            List<T> list = Items as List<T>;
             if (list == null) return;
 
             list.Sort(Compare);
@@ -96,7 +96,7 @@ namespace Wexflow.Clients.Manager
 
         private int Compare(T lhs, T rhs)
         {
-            var result = OnComparison(lhs, rhs);
+            int result = OnComparison(lhs, rhs);
             //invert if descending
             if (_sortDirection == ListSortDirection.Descending)
                 result = -result;
@@ -115,7 +115,7 @@ namespace Wexflow.Clients.Manager
             {
                 return 1; //first has value, second doesn't
             }
-            var value = lhsValue as IComparable;
+            IComparable value = lhsValue as IComparable;
             if (value != null)
             {
                 return value.CompareTo(rhsValue);

@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.Mkdir
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

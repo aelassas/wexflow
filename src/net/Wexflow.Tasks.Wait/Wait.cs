@@ -7,7 +7,7 @@ namespace Wexflow.Tasks.Wait
 {
     public class Wait : Task
     {
-        private CancellationTokenSource _cancellationTokenSource;
+        private readonly CancellationTokenSource _cancellationTokenSource;
 
         public TimeSpan Duration { get; private set; }
 
@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.Wait
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

@@ -20,14 +20,14 @@ namespace Wexflow.Tasks.FilesInfo
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
-                var filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("FilesInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("Files"));
+                XDocument xdoc = new(new XElement("Files"));
                 foreach (FileInf file in files)
                 {
                     try
@@ -35,8 +35,8 @@ namespace Wexflow.Tasks.FilesInfo
                         if (xdoc.Root != null)
                         {
                             const string dateFormat = @"MM\/dd\/yyyy HH:mm.ss";
-                            FileInfo fileInfo = new FileInfo(file.Path);
-                            var xfile = new XElement("File",
+                            FileInfo fileInfo = new(file.Path);
+                            XElement xfile = new("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("renameToOrName", file.RenameToOrName),
@@ -50,7 +50,7 @@ namespace Wexflow.Tasks.FilesInfo
                                 new XAttribute("attributes", fileInfo.Attributes)
                                 );
 
-                            foreach (var tag in file.Tags)
+                            foreach (Tag tag in file.Tags)
                             {
                                 xfile.SetAttributeValue(tag.Key, tag.Value);
                             }
@@ -75,7 +75,7 @@ namespace Wexflow.Tasks.FilesInfo
                 Files.Add(new FileInf(filesInfoPath, Id));
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

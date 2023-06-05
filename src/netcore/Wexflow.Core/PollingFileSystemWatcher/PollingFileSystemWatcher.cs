@@ -26,7 +26,7 @@ namespace System.IO
     public class PollingFileSystemWatcher : IDisposable, ISerializable
     {
         private Timer _timer;
-        private PathToFileStateHashtable _state; // stores state of the directory
+        private readonly PathToFileStateHashtable _state; // stores state of the directory
         private long _version; // this is used to keep track of removals. // TODO: describe the algorithm
         private bool _started = false;
         private bool _disposed = false;
@@ -92,7 +92,7 @@ namespace System.IO
         {
             _version++;
 
-            var enumerator = new FileSystemChangeEnumerator(this, Path, EnumerationOptions);
+            FileSystemChangeEnumerator enumerator = new(this, Path, EnumerationOptions);
             while (enumerator.MoveNext())
             {
                 // Ignore `.Current`
@@ -134,10 +134,12 @@ namespace System.IO
 
                 changes.AddAdded(directory, path.ToString());
 
-                var newFileState = new FileState(directory, path);
-                newFileState.LastWriteTimeUtc = file.LastWriteTimeUtc;
-                newFileState.Length = file.Length;
-                newFileState._version = _version;
+                FileState newFileState = new(directory, path)
+                {
+                    LastWriteTimeUtc = file.LastWriteTimeUtc,
+                    Length = file.Length,
+                    _version = _version
+                };
                 _state.Add(directory, path, newFileState);
                 return;
             }
@@ -178,7 +180,9 @@ namespace System.IO
             _disposed = true;
             bool isSuccess = _timer.Dispose(notifyObject);
             Dispose(true);
+#pragma warning disable CA1816 // Les méthodes Dispose doivent appeler SuppressFinalize
             GC.SuppressFinalize(this);
+#pragma warning restore CA1816 // Les méthodes Dispose doivent appeler SuppressFinalize
 
             return isSuccess;
         }

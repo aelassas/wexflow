@@ -19,12 +19,12 @@ namespace Wexflow.Tasks.ExecPython
         {
             Info("Executing python scripts...");
 
-            var status = Status.Success;
-            var success = true;
-            var atLeastOneSuccess = false;
-            var pythonFiles = SelectFiles();
+            Status status = Status.Success;
+            bool success = true;
+            bool atLeastOneSuccess = false;
+            FileInf[] pythonFiles = SelectFiles();
 
-            foreach (var pythonFile in pythonFiles)
+            foreach (FileInf pythonFile in pythonFiles)
             {
                 try
                 {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.ExecPython
 
         private void Exec(string pyScriptPath)
         {
-            var startInfo = new ProcessStartInfo(PythonPath, pyScriptPath)
+            ProcessStartInfo startInfo = new ProcessStartInfo(PythonPath, pyScriptPath)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.ExecPython
                 RedirectStandardError = true
             };
 
-            var process = new Process { StartInfo = startInfo };
+            Process process = new Process { StartInfo = startInfo };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
             process.Start();

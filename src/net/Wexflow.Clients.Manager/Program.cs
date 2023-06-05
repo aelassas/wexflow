@@ -11,7 +11,7 @@ namespace Wexflow.Clients.Manager
         public static bool DebugMode = false;
 
         [STAThread]
-        private static void Main(string[] args)
+        private static void Main()
         {
             if (Environment.UserInteractive && System.Diagnostics.Debugger.IsAttached)
             {
@@ -30,7 +30,7 @@ namespace Wexflow.Clients.Manager
 
         public static bool IsWexflowWindowsServiceRunning()
         {
-            var sc = new ServiceController(WexflowServiceName);
+            ServiceController sc = new ServiceController(WexflowServiceName);
             return sc.Status == ServiceControllerStatus.Running;
         }
     }

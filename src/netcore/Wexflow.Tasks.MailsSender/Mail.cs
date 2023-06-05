@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.MailsSender
 
         public void Send(string host, int port, bool enableSsl, string user, string password, bool isBodyHtml)
         {
-            var smtp = new SmtpClient
+            SmtpClient smtp = new()
             {
                 Host = host,
                 Port = port,
@@ -41,44 +41,42 @@ namespace Wexflow.Tasks.MailsSender
                 Credentials = new NetworkCredential(user, password)
             };
 
-            using (var msg = new MailMessage())
+            using MailMessage msg = new();
+            msg.From = new MailAddress(From);
+            foreach (string to in To) msg.To.Add(new MailAddress(to));
+            foreach (string cc in Cc) msg.CC.Add(new MailAddress(cc));
+            foreach (string bcc in Bcc) msg.Bcc.Add(new MailAddress(bcc));
+            msg.Subject = Subject;
+            msg.Body = Body;
+            msg.IsBodyHtml = isBodyHtml;
+
+            foreach (FileInf attachment in Attachments)
             {
-                msg.From = new MailAddress(From);
-                foreach (string to in To) msg.To.Add(new MailAddress(to));
-                foreach (string cc in Cc) msg.CC.Add(new MailAddress(cc));
-                foreach (string bcc in Bcc) msg.Bcc.Add(new MailAddress(bcc));
-                msg.Subject = Subject;
-                msg.Body = Body;
-                msg.IsBodyHtml = isBodyHtml;
-
-                foreach (var attachment in Attachments)
-                {
-                    // Create  the file attachment for this e-mail message.
-                    Attachment data = new Attachment(attachment.Path, MediaTypeNames.Application.Octet);
-                    // Add time stamp information for the file.
-                    ContentDisposition disposition = data.ContentDisposition;
-                    disposition.CreationDate = File.GetCreationTime(attachment.Path);
-                    disposition.ModificationDate = File.GetLastWriteTime(attachment.Path);
-                    disposition.ReadDate = File.GetLastAccessTime(attachment.Path);
-                    // Add the file attachment to this e-mail message.
-                    msg.Attachments.Add(data);
-                }
-
-                smtp.Send(msg);
+                // Create  the file attachment for this e-mail message.
+                Attachment data = new(attachment.Path, MediaTypeNames.Application.Octet);
+                // Add time stamp information for the file.
+                ContentDisposition disposition = data.ContentDisposition;
+                disposition.CreationDate = File.GetCreationTime(attachment.Path);
+                disposition.ModificationDate = File.GetLastWriteTime(attachment.Path);
+                disposition.ReadDate = File.GetLastAccessTime(attachment.Path);
+                // Add the file attachment to this e-mail message.
+                msg.Attachments.Add(data);
             }
+
+            smtp.Send(msg);
         }
 
         public static Mail Parse(MailsSender mailsSender, XElement xe, FileInf[] attachments)
         {
             string from = mailsSender.ParseVariables(xe.XPathSelectElement("From").Value);
-            var to = mailsSender.ParseVariables(xe.XPathSelectElement("To").Value).Split(',');
+            string[] to = mailsSender.ParseVariables(xe.XPathSelectElement("To").Value).Split(',');
 
             string[] cc = { };
-            var ccElement = xe.XPathSelectElement("Cc");
+            XElement ccElement = xe.XPathSelectElement("Cc");
             if (ccElement != null) cc = mailsSender.ParseVariables(ccElement.Value).Split(',');
 
             string[] bcc = { };
-            var bccElement = xe.XPathSelectElement("Bcc");
+            XElement bccElement = xe.XPathSelectElement("Bcc");
             if (bccElement != null) bcc = mailsSender.ParseVariables(bccElement.Value).Split(',');
 
             string subject = mailsSender.ParseVariables(xe.XPathSelectElement("Subject").Value);

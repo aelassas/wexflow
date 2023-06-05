@@ -15,8 +15,8 @@ namespace Wexflow.Scripts.RavenDB
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                var workflowsFolder = config["workflowsFolder"];
-                Db db = new Db(config["connectionString"]);
+                string workflowsFolder = config["workflowsFolder"];
+                Db db = new(config["connectionString"]);
                 Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Helper.InsertRecords(db, "ravendb", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();

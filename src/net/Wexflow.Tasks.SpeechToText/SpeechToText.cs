@@ -17,17 +17,17 @@ namespace Wexflow.Tasks.SpeechToText
         public override TaskStatus Run()
         {
             Info("Converting speech to text...");
-            var status = Status.Success;
-            var success = true;
-            var atLeastOneSucceed = false;
+            Status status = Status.Success;
+            bool success = true;
+            bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
-            foreach (var file in files)
+            foreach (FileInf file in files)
             {
                 try
                 {
-                    using (var sre = new SpeechRecognitionEngine(new CultureInfo("en-US")))
+                    using (SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new CultureInfo("en-US")))
                     {
                         sre.SetInputToWaveFile(file.Path);
                         sre.LoadGrammar(new DictationGrammar());
@@ -37,10 +37,10 @@ namespace Wexflow.Tasks.SpeechToText
                         sre.EndSilenceTimeout = new TimeSpan(100000000);
                         sre.EndSilenceTimeoutAmbiguous = new TimeSpan(100000000);
 
-                        var result = sre.Recognize();
-                        var text = result.Text;
+                        RecognitionResult result = sre.Recognize();
+                        string text = result.Text;
 
-                        var destFile = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(file.FileName) + ".txt");
+                        string destFile = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(file.FileName) + ".txt");
                         File.WriteAllText(destFile, text);
                         Files.Add(new FileInf(destFile, Id));
                         InfoFormat("The file {0} was converted to a text file with success -> {1}", file.Path, destFile);

@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.UglifyHtml
             Info("Uglifying HTML files...");
 
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.UglifyHtml
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
             if (!success && atLeastOneSuccess)
             {
                 status = Status.Warning;
@@ -71,15 +71,15 @@ namespace Wexflow.Tasks.UglifyHtml
 
         private bool UglifyHtmlFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var htmlFiles = SelectFiles();
+            bool success = true;
+            FileInf[] htmlFiles = SelectFiles();
 
-            foreach (var htmlFile in htmlFiles)
+            foreach (FileInf htmlFile in htmlFiles)
             {
                 try
                 {
-                    var source = File.ReadAllText(htmlFile.Path);
-                    var result = Uglify.Html(source);
+                    string source = File.ReadAllText(htmlFile.Path);
+                    UglifyResult result = Uglify.Html(source);
                     if (result.HasErrors)
                     {
                         ErrorFormat("An error occured while uglifying the HTML file {0}: {1}", htmlFile.Path, string.Concat(result.Errors.Select(e => e.Message + "\n").ToArray()));
@@ -87,7 +87,7 @@ namespace Wexflow.Tasks.UglifyHtml
                         continue;
                     }
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(htmlFile.FileName) + ".min.html");
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(htmlFile.FileName) + ".min.html");
                     File.WriteAllText(destPath, result.Code);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The HTML file {0} has been uglified -> {1}", htmlFile.Path, destPath);

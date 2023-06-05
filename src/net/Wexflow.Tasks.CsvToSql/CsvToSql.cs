@@ -28,9 +28,9 @@ namespace Wexflow.Tasks.CsvToSql
 
             try
             {
-                var csvFiles = SelectFiles();
+                FileInf[] csvFiles = SelectFiles();
 
-                foreach (var csvFile in csvFiles)
+                foreach (FileInf csvFile in csvFiles)
                 {
                     string sqlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.sql", Path.GetFileNameWithoutExtension(csvFile.FileName), DateTime.Now));
@@ -49,7 +49,7 @@ namespace Wexflow.Tasks.CsvToSql
                 return new TaskStatus(Status.Error);
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!succeeded && atLeastOneSucceed)
             {
@@ -77,21 +77,18 @@ namespace Wexflow.Tasks.CsvToSql
                     {
                         sw.Write("INSERT INTO " + tableName + "(" + columnsLine.Replace(separator, ",").TrimEnd(',') + ")" + " VALUES ");
                         sw.Write("(");
-                        var values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (var value in values)
+                        string[] values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string value in values)
                         {
-                            int i;
-                            double d;
-                            float f;
-                            if (int.TryParse(value, out i))
+                            if (int.TryParse(value, out int i))
                             {
                                 sw.Write(i);
                             }
-                            else if (double.TryParse(value, out d))
+                            else if (double.TryParse(value, out double d))
                             {
                                 sw.Write(d);
                             }
-                            else if (float.TryParse(value, out f))
+                            else if (float.TryParse(value, out float f))
                             {
                                 sw.Write(f);
                             }

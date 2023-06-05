@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.Rmdir
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

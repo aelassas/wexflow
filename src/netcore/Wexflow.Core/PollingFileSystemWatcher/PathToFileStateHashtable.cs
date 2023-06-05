@@ -94,7 +94,7 @@ namespace System.IO
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private unsafe bool Equal(FullPath fullPath, string directory, ReadOnlySpan<char> file)
+        private static unsafe bool Equal(FullPath fullPath, string directory, ReadOnlySpan<char> file)
         {
             if (!String.Equals(fullPath.Directory, directory, StringComparison.Ordinal))
             {
@@ -108,7 +108,7 @@ namespace System.IO
             return true;
         }
 
-        private unsafe int GetHashCode(ReadOnlySpan<char> path)
+        private static unsafe int GetHashCode(ReadOnlySpan<char> path)
         {
             int code = 0;
             for (int index = 0; index < path.Length; index++)
@@ -135,7 +135,7 @@ namespace System.IO
             // this is because sometimes we just need to garbade collect instead of increase size
             int newSize = Math.Max(Count * 2, 4);
 
-            PathToFileStateHashtable bigger = new PathToFileStateHashtable(newSize);
+            PathToFileStateHashtable bigger = new(newSize);
 
             foreach (FileState existingValue in this)
             {
@@ -166,7 +166,7 @@ namespace System.IO
                 }
                 return true;
             }
-            return (candidate == 2);
+            return candidate == 2;
         }
 
         private static int GetPrime(int min)
@@ -179,7 +179,7 @@ namespace System.IO
 
             //outside of our predefined table. 
             //compute the hard way. 
-            for (int i = (min | 1); i < Int32.MaxValue; i += 2)
+            for (int i = min | 1; i < Int32.MaxValue; i += 2)
             {
                 if (IsPrime(i))
                     return i;
@@ -194,7 +194,7 @@ namespace System.IO
 
         public struct Enumerator
         {
-            PathToFileStateHashtable _table;
+            readonly PathToFileStateHashtable _table;
             int _index;
 
             public Enumerator(PathToFileStateHashtable table)
@@ -215,7 +215,7 @@ namespace System.IO
                 return true;
             }
 
-            public FileState Current
+            public readonly FileState Current
             {
                 get { return _table.Values[_index]; }
             }
@@ -238,9 +238,9 @@ namespace System.IO
                 Key.File = file;
                 ValuesIndex = valueIndex;
             }
-            public bool IsEmpty { get { return ValuesIndex == 0; } }
+            public readonly bool IsEmpty { get { return ValuesIndex == 0; } }
 
-            public override string ToString()
+            public override readonly string ToString()
             {
                 if (IsEmpty) return "empty";
                 return Key.ToString();
@@ -253,7 +253,7 @@ namespace System.IO
             public string Directory;
             public string File;
 
-            public override string ToString()
+            public override readonly string ToString()
             {
                 return File;
             }

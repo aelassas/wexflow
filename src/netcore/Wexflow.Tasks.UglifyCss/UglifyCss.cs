@@ -19,7 +19,7 @@ namespace Wexflow.Tasks.UglifyCss
             Info("Uglifying CSS files...");
 
             bool success;
-            var atLeastOneSuccess = false;
+            bool atLeastOneSuccess = false;
             try
             {
                 success = UglifyCssFiles(ref atLeastOneSuccess);
@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.UglifyCss
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -51,15 +51,15 @@ namespace Wexflow.Tasks.UglifyCss
 
         private bool UglifyCssFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var cssFiles = SelectFiles();
+            bool success = true;
+            FileInf[] cssFiles = SelectFiles();
 
-            foreach (var cssFile in cssFiles)
+            foreach (FileInf cssFile in cssFiles)
             {
                 try
                 {
-                    var source = File.ReadAllText(cssFile.Path);
-                    var result = Uglify.Css(source);
+                    string source = File.ReadAllText(cssFile.Path);
+                    UglifyResult result = Uglify.Css(source);
                     if (result.HasErrors)
                     {
                         ErrorFormat("An error occured while uglifying the CSS file {0}: {1}", cssFile.Path, string.Concat(result.Errors.Select(e => e.Message + "\n").ToArray()));
@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.UglifyCss
                         continue;
                     }
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(cssFile.FileName) + ".min.css");
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(cssFile.FileName) + ".min.css");
                     File.WriteAllText(destPath, result.Code);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The CSS file {0} has been uglified -> {1}", cssFile.Path, destPath);

@@ -20,21 +20,21 @@ namespace Wexflow.Tasks.WebToScreenshot
         public override TaskStatus Run()
         {
             Info("Taking screenshots...");
-            var status = Status.Success;
+            Status status = Status.Success;
 
             bool success = true;
             bool atLeastOneSuccess = false;
 
-            foreach (var url in Urls)
+            foreach (string url in Urls)
             {
                 try
                 {
-                    var driver = new ChromeDriver();
+                    ChromeDriver driver = new ChromeDriver();
 
                     driver.Navigate().GoToUrl(url);
                     Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
 
-                    var destFile = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destFile = Path.Combine(Workflow.WorkflowTempFolder,
                          string.Format("WebToScreenshot_{0:yyyy-MM-dd-HH-mm-ss-fff}.png", DateTime.Now));
 
                     ss.SaveAsFile(destFile, ScreenshotImageFormat.Png);

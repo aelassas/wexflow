@@ -43,8 +43,8 @@ namespace Wexflow.Tasks.MailsSender
 
                 foreach (FileInf mailFile in SelectFiles())
                 {
-                    var xdoc = XDocument.Load(mailFile.Path);
-                    var xMails = xdoc.XPathSelectElements("Mails/Mail");
+                    XDocument xdoc = XDocument.Load(mailFile.Path);
+                    IEnumerable<XElement> xMails = xdoc.XPathSelectElements("Mails/Mail");
 
                     int count = 1;
                     foreach (XElement xMail in xMails)
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.MailsSender
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -116,9 +116,9 @@ namespace Wexflow.Tasks.MailsSender
             //
             // Parse local variables.
             //
-            var res = string.Empty;
-            using (StringReader sr = new StringReader(src))
-            using (StringWriter sw = new StringWriter())
+            string res = string.Empty;
+            using (StringReader sr = new(src))
+            using (StringWriter sw = new())
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -129,11 +129,11 @@ namespace Wexflow.Tasks.MailsSender
                     {
                         if (m.Value.StartsWith("{date:"))
                         {
-                            var replaceValue = DateTime.Now.ToString(m.Value.Remove(m.Value.Length - 1).Remove(0, 6));
+                            string replaceValue = DateTime.Now.ToString(m.Value.Remove(m.Value.Length - 1).Remove(0, 6));
                             line = Regex.Replace(line, pattern, replaceValue);
                         }
                     }
-                    foreach (var variable in Workflow.LocalVariables)
+                    foreach (Variable variable in Workflow.LocalVariables)
                     {
                         line = line.Replace("$" + variable.Key, variable.Value);
                     }
@@ -145,14 +145,14 @@ namespace Wexflow.Tasks.MailsSender
             //
             // Parse Rest variables.
             //
-            var res2 = string.Empty;
-            using (StringReader sr = new StringReader(res))
-            using (StringWriter sw = new StringWriter())
+            string res2 = string.Empty;
+            using (StringReader sr = new(res))
+            using (StringWriter sw = new())
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    foreach (var variable in Workflow.RestVariables)
+                    foreach (Variable variable in Workflow.RestVariables)
                     {
                         if (variable != null)
                         {
@@ -169,23 +169,23 @@ namespace Wexflow.Tasks.MailsSender
 
         public FileInf[] SelectAttachments()
         {
-            var files = new List<FileInf>();
-            foreach (var xSelectFile in GetXSettings("selectAttachments"))
+            List<FileInf> files = new();
+            foreach (XElement xSelectFile in GetXSettings("selectAttachments"))
             {
-                var xTaskId = xSelectFile.Attribute("value");
+                XAttribute xTaskId = xSelectFile.Attribute("value");
                 if (xTaskId != null)
                 {
-                    var taskId = int.Parse(xTaskId.Value);
+                    int taskId = int.Parse(xTaskId.Value);
 
-                    var qf = QueryFiles(Workflow.FilesPerTask[taskId], xSelectFile).ToArray();
+                    FileInf[] qf = QueryFiles(Workflow.FilesPerTask[taskId], xSelectFile).ToArray();
 
                     files.AddRange(qf);
                 }
                 else
                 {
-                    var qf = (from lf in Workflow.FilesPerTask.Values
-                              from f in QueryFiles(lf, xSelectFile)
-                              select f).Distinct().ToArray();
+                    FileInf[] qf = (from lf in Workflow.FilesPerTask.Values
+                                    from f in QueryFiles(lf, xSelectFile)
+                                    select f).Distinct().ToArray();
 
                     files.AddRange(qf);
                 }

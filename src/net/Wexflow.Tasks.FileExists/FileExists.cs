@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.FileExists
         {
             Info("Checking file...");
 
-            var success = false;
+            bool success = false;
 
             try
             {
@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.FileExists
 
         private bool CheckFile()
         {
-            var success = System.IO.File.Exists(File);
+            bool success = System.IO.File.Exists(File);
 
             if (success)
             {

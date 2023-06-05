@@ -19,8 +19,7 @@ namespace Wexflow.Tasks.Ping
         {
             Info("Checking file...");
 
-            bool success = false;
-
+            bool success;
             try
             {
                 success = PingHost(Server);
@@ -50,11 +49,11 @@ namespace Wexflow.Tasks.Ping
             return new TaskStatus(Status.Success, success);
         }
 
-        private bool PingHost(string server)
+        private static bool PingHost(string server)
         {
             bool pingable = false;
 
-            using (System.Net.NetworkInformation.Ping pinger = new System.Net.NetworkInformation.Ping())
+            using (System.Net.NetworkInformation.Ping pinger = new())
             {
                 PingReply reply = pinger.Send(server);
                 pingable = reply.Status == IPStatus.Success;

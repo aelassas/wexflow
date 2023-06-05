@@ -26,8 +26,8 @@ namespace Wexflow.Tasks.FilesConcat
         {
             Info("Concatenating files...");
 
-            var success = true;
-            var atLeastOneSucceed = false;
+            bool success = true;
+            bool atLeastOneSucceed = false;
 
             try
             {
@@ -53,7 +53,7 @@ namespace Wexflow.Tasks.FilesConcat
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -70,15 +70,15 @@ namespace Wexflow.Tasks.FilesConcat
 
         private bool ConcatFiles(ref bool atLeastOneSucceed)
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < files.Length; i++)
                 {
-                    var file = files[i];
+                    FileInf file = files[i];
                     builder.Append(Path.GetFileNameWithoutExtension(file.FileName));
                     if (i < files.Length - 1)
                     {
@@ -86,20 +86,20 @@ namespace Wexflow.Tasks.FilesConcat
                     }
                 }
 
-                var concatPath = Path.Combine(Workflow.WorkflowTempFolder, builder.ToString());
+                string concatPath = Path.Combine(Workflow.WorkflowTempFolder, builder.ToString());
 
                 if (File.Exists(concatPath))
                 {
                     File.Delete(concatPath);
                 }
 
-                using (var output = File.Create(concatPath))
+                using (FileStream output = File.Create(concatPath))
                 {
                     foreach (FileInf file in files)
                     {
                         try
                         {
-                            using (var input = File.OpenRead(file.Path))
+                            using (FileStream input = File.OpenRead(file.Path))
                             {
                                 input.CopyTo(output);
                             }

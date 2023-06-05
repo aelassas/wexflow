@@ -7,7 +7,7 @@ namespace Wexflow.Tasks.SshCmd
     {
         public static string StringAfter(this string str, string substring)
         {
-            var index = str.IndexOf(substring, StringComparison.Ordinal);
+            int index = str.IndexOf(substring, StringComparison.Ordinal);
 
             return index >= 0 ? str.Substring(index + substring.Length) : string.Empty;
         }

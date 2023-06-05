@@ -80,7 +80,7 @@ namespace Wexflow.Tasks.Sql
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -97,7 +97,7 @@ namespace Wexflow.Tasks.Sql
 
         private bool ExecuteSqlFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
 
             // Execute SqlScript if necessary
             try
@@ -122,7 +122,7 @@ namespace Wexflow.Tasks.Sql
             {
                 try
                 {
-                    var sql = File.ReadAllText(file.Path);
+                    string sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
@@ -146,58 +146,58 @@ namespace Wexflow.Tasks.Sql
             switch (DbType)
             {
                 case Type.SqlServer:
-                    using (var conn = new SqlConnection(ConnectionString))
+                    using (SqlConnection conn = new SqlConnection(ConnectionString))
                     {
-                        var comm = new SqlCommand(sql, conn);
+                        SqlCommand comm = new SqlCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Access:
-                    using (var conn = new OleDbConnection(ConnectionString))
+                    using (OleDbConnection conn = new OleDbConnection(ConnectionString))
                     {
-                        var comm = new OleDbCommand(sql, conn);
+                        OleDbCommand comm = new OleDbCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Oracle:
-                    using (var conn = new OracleConnection(ConnectionString))
+                    using (OracleConnection conn = new OracleConnection(ConnectionString))
                     {
-                        var comm = new OracleCommand(sql, conn);
+                        OracleCommand comm = new OracleCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.MySql:
-                    using (var conn = new MySqlConnection(ConnectionString))
+                    using (MySqlConnection conn = new MySqlConnection(ConnectionString))
                     {
-                        var comm = new MySqlCommand(sql, conn);
+                        MySqlCommand comm = new MySqlCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Sqlite:
-                    using (var conn = new SQLiteConnection(ConnectionString))
+                    using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
                     {
-                        var comm = new SQLiteCommand(sql, conn);
+                        SQLiteCommand comm = new SQLiteCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.PostGreSql:
-                    using (var conn = new NpgsqlConnection(ConnectionString))
+                    using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
                     {
-                        var comm = new NpgsqlCommand(sql, conn);
+                        NpgsqlCommand comm = new NpgsqlCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Teradata:
-                    using (var conn = new TdConnection(ConnectionString))
+                    using (TdConnection conn = new TdConnection(ConnectionString))
                     {
-                        var comm = new TdCommand(sql, conn);
+                        TdCommand comm = new TdCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Odbc:
-                    using (var conn = new OdbcConnection(ConnectionString))
+                    using (OdbcConnection conn = new OdbcConnection(ConnectionString))
                     {
-                        var comm = new OdbcCommand(sql, conn);
+                        OdbcCommand comm = new OdbcCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;

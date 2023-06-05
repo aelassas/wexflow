@@ -33,7 +33,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void WmiTest()
         {
-            var files = GetFiles();
+            string[] files = GetFiles();
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(23);
             files = GetFiles();

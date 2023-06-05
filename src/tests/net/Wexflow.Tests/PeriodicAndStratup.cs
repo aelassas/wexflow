@@ -32,7 +32,7 @@ namespace Wexflow.Tests
         {
             // Startup test
             Thread.Sleep(1000);
-            var files = GetFiles(StartupFolder);
+            string[] files = GetFiles(StartupFolder);
             Assert.AreEqual(1, files.Length);
 
             // Periodic test

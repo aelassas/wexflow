@@ -44,8 +44,8 @@ namespace Wexflow.Tasks.ImagesTransformer
         {
             Info("Transforming images...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -72,7 +72,7 @@ namespace Wexflow.Tasks.ImagesTransformer
             }
 
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -89,12 +89,12 @@ namespace Wexflow.Tasks.ImagesTransformer
 
         private bool Transform(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             foreach (FileInf file in SelectFiles())
             {
                 try
                 {
-                    var destFilePath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destFilePath = Path.Combine(Workflow.WorkflowTempFolder,
                         OutputFilePattern.Replace("$fileNameWithoutExtension", Path.GetFileNameWithoutExtension(file.FileName)).Replace("$fileName", file.FileName));
 
                     using (Image img = Image.FromFile(file.Path))

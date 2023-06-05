@@ -20,12 +20,12 @@ namespace Wexflow.Tasks.FilesJoiner
             Overwrite = bool.Parse(GetSetting("overwrite", "false"));
         }
 
-        private (string RenamedPath, int Number) GetNumberPart(string path)
+        private static (string RenamedPath, int Number) GetNumberPart(string path)
         {
-            var lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
+            int lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
             if (lastUnderscoreIndex == -1) return (path, -1);
-            var substring = path.Substring(lastUnderscoreIndex + 1, path.Length - lastUnderscoreIndex - 1);
-            var part = int.TryParse(substring, out var result) ? result : -1;
+            string substring = path.Substring(lastUnderscoreIndex + 1, path.Length - lastUnderscoreIndex - 1);
+            int part = int.TryParse(substring, out int result) ? result : -1;
             return part == -1 ? (path, -1) : (path.Remove(lastUnderscoreIndex), part);
         }
 
@@ -33,15 +33,15 @@ namespace Wexflow.Tasks.FilesJoiner
         {
             var files = SelectFiles().Select(f =>
             {
-                var info = GetNumberPart(f.Path);
+                (string RenamedPath, int Number) = GetNumberPart(f.Path);
                 return new
                 {
-                    info.RenamedPath,
-                    info.Number,
+                    RenamedPath,
+                    Number,
                     FileInf = f
                 };
             });
-            var groupedFiles = files
+            (string FileName, List<FileInf> Files)[] groupedFiles = files
                 .GroupBy(f => f.RenamedPath)
                 .Select(g => (
                     FileName: Path.GetFileName(g.Key),
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.FilesJoiner
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            foreach (var file in GetFiles())
+            foreach ((string FileName, List<FileInf> Files) file in GetFiles())
             {
                 if (JoinFiles(file.FileName, file.Files.ToArray()))
                     atLeastOneSucceed = true;
@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.FilesJoiner
                     success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
             if (!success && atLeastOneSucceed)
             {
                 status = Status.Warning;
@@ -91,11 +91,11 @@ namespace Wexflow.Tasks.FilesJoiner
         /// <returns></returns>
         private bool JoinFiles(string fileName, FileInf[] files)
         {
-            var success = true;
+            bool success = true;
             if (files.Length > 0)
             {
-                var tempPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
-                var destFilePath = string.IsNullOrEmpty(DestFolder)
+                string tempPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
+                string destFilePath = string.IsNullOrEmpty(DestFolder)
                     ? tempPath
                     : Path.Combine(Path.Combine(DestFolder, fileName));
 
@@ -108,17 +108,15 @@ namespace Wexflow.Tasks.FilesJoiner
                 if (File.Exists(tempPath))
                     File.Delete(tempPath);
 
-                using (var output = new FileStream(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                using (FileStream output = new(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                 {
                     foreach (FileInf file in files)
                     {
                         Info("Joiner " + file.Path);
                         try
                         {
-                            using (var input = File.OpenRead(file.Path))
-                            {
-                                input.CopyTo(output);
-                            }
+                            using FileStream input = File.OpenRead(file.Path);
+                            input.CopyTo(output);
                         }
                         catch (ThreadAbortException)
                         {

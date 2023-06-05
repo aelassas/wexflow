@@ -23,7 +23,7 @@ namespace Wexflow.Tasks.FilesSplitter
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
@@ -72,7 +72,7 @@ namespace Wexflow.Tasks.FilesSplitter
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

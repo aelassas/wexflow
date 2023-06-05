@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.IsoCreator
         {
             Info("Creating .iso...");
             Status status = Status.Success;
-            var success = true;
+            bool success = true;
 
             try
             {
@@ -69,21 +69,23 @@ namespace Wexflow.Tasks.IsoCreator
 
         private bool CreateIso()
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var files = Directory.GetFiles(SrcDir, "*.*", SearchOption.AllDirectories);
-                CDBuilder builder = new CDBuilder();
-                builder.UseJoliet = true;
-                builder.VolumeIdentifier = VolumeIdentifier;
-
-                foreach (var file in files)
+                string[] files = Directory.GetFiles(SrcDir, "*.*", SearchOption.AllDirectories);
+                CDBuilder builder = new CDBuilder
                 {
-                    var fileIsoPath = file.Replace(SrcDir, string.Empty).TrimStart('\\');
+                    UseJoliet = true,
+                    VolumeIdentifier = VolumeIdentifier
+                };
+
+                foreach (string file in files)
+                {
+                    string fileIsoPath = file.Replace(SrcDir, string.Empty).TrimStart('\\');
                     builder.AddFile(fileIsoPath, file);
                 }
 
-                var isoPath = Path.Combine(Workflow.WorkflowTempFolder, IsoFileName);
+                string isoPath = Path.Combine(Workflow.WorkflowTempFolder, IsoFileName);
                 builder.Build(isoPath);
 
                 Files.Add(new FileInf(isoPath, Id));

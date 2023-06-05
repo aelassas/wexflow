@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.ProcessLauncher
         {
             Info("Launching process...");
 
-            if (GeneratesFiles && !(ProcessCmd.Contains(VarFileName) && (ProcessCmd.Contains(VarOutput) && (ProcessCmd.Contains(VarFileName) || ProcessCmd.Contains(VarFileNameWithoutExtension)))))
+            if (GeneratesFiles && !(ProcessCmd.Contains(VarFileName) && ProcessCmd.Contains(VarOutput) && (ProcessCmd.Contains(VarFileName) || ProcessCmd.Contains(VarFileNameWithoutExtension))))
             {
                 Error("Error in process command. Please read the documentation.");
                 return new TaskStatus(Status.Error, false);
@@ -59,8 +59,8 @@ namespace Wexflow.Tasks.ProcessLauncher
                     cmd = ProcessCmd.Replace(string.Format("{{{0}}}", VarFilePath), string.Format("\"{0}\"", file.Path));
 
                     const string outputRegexPattern = @"{\$output:(?:\$fileNameWithoutExtension|\$fileName)(?:[a-zA-Z0-9._-]*})";
-                    var outputRegex = new Regex(outputRegexPattern);
-                    var m = outputRegex.Match(cmd);
+                    Regex outputRegex = new Regex(outputRegexPattern);
+                    Match m = outputRegex.Match(cmd);
 
                     if (m.Success)
                     {
@@ -101,9 +101,9 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                     if (LoadAllFiles)
                     {
-                        var files = Directory.GetFiles(Workflow.WorkflowTempFolder, "*.*", SearchOption.AllDirectories);
+                        string[] files = Directory.GetFiles(Workflow.WorkflowTempFolder, "*.*", SearchOption.AllDirectories);
 
-                        foreach (var f in files)
+                        foreach (string f in files)
                         {
                             if (f != outputFilePath)
                             {
@@ -120,7 +120,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -139,7 +139,7 @@ namespace Wexflow.Tasks.ProcessLauncher
         {
             try
             {
-                var startInfo = new ProcessStartInfo(processPath, processCmd)
+                ProcessStartInfo startInfo = new ProcessStartInfo(processPath, processCmd)
                 {
                     CreateNoWindow = hideGui,
                     UseShellExecute = false,
@@ -147,7 +147,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                     RedirectStandardError = true
                 };
 
-                var process = new Process { StartInfo = startInfo };
+                Process process = new Process { StartInfo = startInfo };
                 process.OutputDataReceived += OutputHandler;
                 process.ErrorDataReceived += ErrorHandler;
                 process.Start();

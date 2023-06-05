@@ -29,8 +29,8 @@ namespace Wexflow.Tasks.Untar
         {
             Info("Extracting TAR archives...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.Untar
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -73,8 +73,8 @@ namespace Wexflow.Tasks.Untar
 
         private bool UntarFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var tars = SelectFiles();
+            bool success = true;
+            FileInf[] tars = SelectFiles();
 
             if (tars.Length > 0)
             {
@@ -87,7 +87,7 @@ namespace Wexflow.Tasks.Untar
                         Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 
-                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }

@@ -17,7 +17,7 @@ namespace Wexflow.Tasks.MessageCorrect
         {
             try
             {
-                var o = SharedMemory["message"];
+                object o = SharedMemory["message"];
                 string message = o == null ? string.Empty : o.ToString();
                 bool result = message.IndexOf(CheckString) >= 0;
                 Info("The result is " + result);

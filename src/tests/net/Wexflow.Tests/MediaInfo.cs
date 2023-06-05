@@ -44,9 +44,9 @@ namespace Wexflow.Tests
             // TODO Tasks.MediaInfo.MediaInfo.Inform
         }
 
-        private string[] GetFiles()
-        {
-            return Directory.GetFiles(MediaInfoFolder, "MediaInfo_*.xml");
-        }
+        //private string[] GetFiles()
+        //{
+        //    return Directory.GetFiles(MediaInfoFolder, "MediaInfo_*.xml");
+        //}
     }
 }

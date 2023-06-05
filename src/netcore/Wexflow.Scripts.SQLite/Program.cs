@@ -18,8 +18,8 @@ namespace Wexflow.Scripts.SQLite
                 //.AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                var workflowsFolder = config["workflowsFolder"];
-                var db = new Db(config["connectionString"]);
+                string workflowsFolder = config["workflowsFolder"];
+                Db db = new(config["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Core.Helper.InsertRecords(db, "sqlite", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();
@@ -45,21 +45,21 @@ namespace Wexflow.Scripts.SQLite
         private static void BuildDatabase(string info, string platformFolder)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            var path1 = Path.Combine(
+            string path1 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow.sqlite");
-            var connString = "Data Source=" + path1 + ";Version=3;";
+            string connString = "Data Source=" + path1 + ";Version=3;";
 
-            var workflowsFolder = Path.Combine(
+            string workflowsFolder = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Workflows");
 
             if (!Directory.Exists(workflowsFolder)) throw new DirectoryNotFoundException("Invalid workflows folder: " + workflowsFolder);
             if (File.Exists(path1)) File.Delete(path1);
 
-            var db = new Db(connString);
+            Db db = new(connString);
             Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
-            var recordsFolder = config["recordsFolder"];
+            string recordsFolder = config["recordsFolder"];
             if (platformFolder == "linux")
             {
                 recordsFolder = "/opt/wexflow/Wexflow/Records";
@@ -68,7 +68,7 @@ namespace Wexflow.Scripts.SQLite
             {
                 recordsFolder = "/Applications/wexflow/Wexflow/Records";
             }
-            var isUnix = platformFolder == "linux" || platformFolder == "macos";
+            bool isUnix = platformFolder == "linux" || platformFolder == "macos";
             Core.Helper.InsertRecords(db, "sqlite", recordsFolder, config["documentFile"], config["invoiceFile"], config["timesheetFile"], isUnix);
             db.Dispose();
         }

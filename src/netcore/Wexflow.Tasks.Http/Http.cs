@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Http
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            using (var webClient = new WebClient())
+            using (WebClient webClient = new())
             {
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = Tls12;
@@ -36,9 +36,8 @@ namespace Wexflow.Tasks.Http
                 {
                     try
                     {
-                        var fileName = Path.GetFileName(url);
-                        if (fileName == null) throw new Exception("File name is null");
-                        var destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
+                        string fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
+                        string destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
 
                         webClient.DownloadFile(url, destPath);
 
@@ -59,7 +58,7 @@ namespace Wexflow.Tasks.Http
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

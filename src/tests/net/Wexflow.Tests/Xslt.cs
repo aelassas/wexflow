@@ -31,7 +31,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void XsltTest()
         {
-            var files = GetFiles();
+            string[] files = GetFiles();
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(18);
             files = GetFiles();

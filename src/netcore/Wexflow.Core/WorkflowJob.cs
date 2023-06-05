@@ -16,7 +16,7 @@ namespace Wexflow.Core
         {
             Workflow workflow = (Workflow)context.JobDetail.JobDataMap.Get("workflow");
 
-            System.Threading.Tasks.Task task = new System.Threading.Tasks.Task(() =>
+            System.Threading.Tasks.Task task = new(() =>
             {
                 workflow.StartAsync(workflow.WexflowEngine.SuperAdminUsername);
             });

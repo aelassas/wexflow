@@ -26,7 +26,7 @@ namespace Wexflow.Clients.Manager
         private WexflowServiceClient _wexflowServiceClient;
         private WorkflowInfo[] _workflows;
         private Dictionary<int, WorkflowInfo> _workflowsPerId;
-        private Dictionary<int, Guid> _jobs;
+        private readonly Dictionary<int, Guid> _jobs;
         private bool _windowsServiceWasStopped;
         private Timer _timer;
         private Exception _exception;
@@ -102,7 +102,7 @@ namespace Wexflow.Clients.Manager
                     {
                         _wexflowServiceClient = new WexflowServiceClient(WexflowWebServiceUri);
 
-                        var keyword = textBoxSearch.Text.ToUpper();
+                        string keyword = textBoxSearch.Text.ToUpper();
                         _workflows = _wexflowServiceClient.Search(keyword, Login.Username, Login.Password);
                     }
                     catch (Exception ex)
@@ -116,7 +116,7 @@ namespace Wexflow.Clients.Manager
                 }
                 else
                 {
-                    _workflows = new WorkflowInfo[] { };
+                    _workflows = Array.Empty<WorkflowInfo>();
                     textBoxInfo.Text = "";
                 }
             }
@@ -153,7 +153,7 @@ namespace Wexflow.Clients.Manager
                 return;
             }
 
-            var sworkflows = new SortableBindingList<WorkflowDataInfo>();
+            SortableBindingList<WorkflowDataInfo> sworkflows = new SortableBindingList<WorkflowDataInfo>();
             _workflowsPerId = new Dictionary<int, WorkflowInfo>();
             foreach (WorkflowInfo workflow in _workflows)
             {
@@ -183,7 +183,7 @@ namespace Wexflow.Clients.Manager
 
         private int GetSlectedWorkflowId()
         {
-            var wfId = -1;
+            int wfId = -1;
             if (dataGridViewWorkflows.SelectedRows.Count > 0)
             {
                 if (Program.DebugMode || Program.IsWexflowWindowsServiceRunning())
@@ -225,10 +225,10 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
-                var instanceId = _wexflowServiceClient.StartWorkflow(wfId, Login.Username, Login.Password);
+                Guid instanceId = _wexflowServiceClient.StartWorkflow(wfId, Login.Username, Login.Password);
                 if (_jobs.ContainsKey(wfId))
                 {
                     _jobs[wfId] = instanceId;
@@ -242,7 +242,7 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonPause_Click(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
                 if (_jobs.ContainsKey(wfId))
@@ -259,7 +259,7 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonResume_Click(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
                 if (_jobs.ContainsKey(wfId))
@@ -275,7 +275,7 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonStop_Click(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
                 if (_jobs.ContainsKey(wfId))
@@ -292,11 +292,11 @@ namespace Wexflow.Clients.Manager
 
         private void DataGridViewWorkflows_SelectionChanged(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
 
             if (wfId > -1)
             {
-                var workflow = GetWorkflow(wfId);
+                WorkflowInfo workflow = GetWorkflow(wfId);
 
                 if (_timer != null)
                 {
@@ -335,7 +335,7 @@ namespace Wexflow.Clients.Manager
         {
             if (_workflowsPerId.ContainsKey(workflow.Id))
             {
-                var changed = _workflowsPerId[workflow.Id].IsRunning != workflow.IsRunning || _workflowsPerId[workflow.Id].IsPaused != workflow.IsPaused || _workflowsPerId[workflow.Id].IsWaitingForApproval != workflow.IsWaitingForApproval;
+                bool changed = _workflowsPerId[workflow.Id].IsRunning != workflow.IsRunning || _workflowsPerId[workflow.Id].IsPaused != workflow.IsPaused || _workflowsPerId[workflow.Id].IsWaitingForApproval != workflow.IsWaitingForApproval;
                 _workflowsPerId[workflow.Id].IsRunning = workflow.IsRunning;
                 _workflowsPerId[workflow.Id].IsPaused = workflow.IsPaused;
                 _workflowsPerId[workflow.Id].IsWaitingForApproval = workflow.IsWaitingForApproval;
@@ -349,7 +349,7 @@ namespace Wexflow.Clients.Manager
         {
             if (wfId > -1)
             {
-                var workflow = GetWorkflow(wfId);
+                WorkflowInfo workflow = GetWorkflow(wfId);
 
                 if (workflow != null)
                 {
@@ -411,10 +411,10 @@ namespace Wexflow.Clients.Manager
 
         private void DataGridViewWorkflows_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
-                var workflow = GetWorkflow(wfId);
+                WorkflowInfo workflow = GetWorkflow(wfId);
 
                 if (workflow != null && workflow.IsEnabled)
                 {
@@ -458,8 +458,8 @@ namespace Wexflow.Clients.Manager
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var about = _resources.GetString("Form1_toolStripMenuItem1_Click_About");
-            var title = _resources.GetString("Form1_toolStripMenuItem1_Click_About_Title");
+            string about = _resources.GetString("Form1_toolStripMenuItem1_Click_About");
+            string title = _resources.GetString("Form1_toolStripMenuItem1_Click_About_Title");
 
             if (MessageBox.Show(about
                 , title
@@ -482,21 +482,17 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-            }
+            _timer?.Stop();
 
             textBoxInfo.Text = "Restarting Wexflow server...";
-            _workflows = new WorkflowInfo[] { };
+            _workflows = Array.Empty<WorkflowInfo>();
             BindDataGridView();
             backgroundWorker2.RunWorkerAsync();
         }
 
         private void BackgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
         {
-            string errorMsg;
-            _serviceRestarted = RestartWindowsService(Program.WexflowServiceName, out errorMsg);
+            _serviceRestarted = RestartWindowsService(Program.WexflowServiceName, out string errorMsg);
 
             if (!_serviceRestarted)
             {
@@ -515,7 +511,7 @@ namespace Wexflow.Clients.Manager
             ServiceController serviceController = new ServiceController(serviceName);
             try
             {
-                if ((serviceController.Status.Equals(ServiceControllerStatus.Running)) || (serviceController.Status.Equals(ServiceControllerStatus.StartPending)))
+                if (serviceController.Status.Equals(ServiceControllerStatus.Running) || serviceController.Status.Equals(ServiceControllerStatus.StartPending))
                 {
                     serviceController.Stop();
                 }
@@ -531,12 +527,12 @@ namespace Wexflow.Clients.Manager
             }
         }
 
-        private void buttonSearch_Click(object sender, EventArgs e)
+        private void ButtonSearch_Click(object sender, EventArgs e)
         {
             LoadWorkflows();
         }
 
-        private void textBoxSearch_KeyUp(object sender, KeyEventArgs e)
+        private void TextBoxSearch_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -546,7 +542,7 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonApprove_Click(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
                 if (_jobs.ContainsKey(wfId))
@@ -563,7 +559,7 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonReject_Click(object sender, EventArgs e)
         {
-            var wfId = GetSlectedWorkflowId();
+            int wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
                 if (_jobs.ContainsKey(wfId))

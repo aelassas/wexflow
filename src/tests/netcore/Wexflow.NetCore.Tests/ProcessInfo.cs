@@ -32,8 +32,8 @@ namespace Wexflow.NetCore.Tests
             Helper.StartWorkflow(63);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            var xdoc = XDocument.Load(files[0]);
-            var count = xdoc.Descendants("Process").Count();
+            XDocument xdoc = XDocument.Load(files[0]);
+            int count = xdoc.Descendants("Process").Count();
             Assert.AreEqual(1, count);
         }
 

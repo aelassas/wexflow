@@ -26,13 +26,13 @@ namespace Wexflow.Tasks.FilesExist
 
             try
             {
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                        string.Format("FilesExist_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
-                var xdoc = new XDocument(new XElement("Root"));
-                var xFiles = new XElement("Files");
-                var xFolders = new XElement("Folders");
+                XDocument xdoc = new(new XElement("Root"));
+                XElement xFiles = new("Files");
+                XElement xFolders = new("Folders");
 
-                foreach (var file in FFiles)
+                foreach (string file in FFiles)
                 {
                     xFiles.Add(new XElement("File",
                         new XAttribute("path", file),
@@ -40,7 +40,7 @@ namespace Wexflow.Tasks.FilesExist
                         new XAttribute("exists", File.Exists(file))));
                 }
 
-                foreach (var folder in Folders)
+                foreach (string folder in Folders)
                 {
                     xFolders.Add(new XElement("Folder",
                         new XAttribute("path", folder),
@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.FilesExist
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

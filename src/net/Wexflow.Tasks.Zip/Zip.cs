@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Zip
         {
             Info("Zipping files...");
 
-            var success = true;
+            bool success = true;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.Zip
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -67,25 +67,25 @@ namespace Wexflow.Tasks.Zip
 
         private bool ZipFiles()
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
             if (files.Length > 0)
             {
-                var zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
+                string zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
 
                 try
                 {
-                    using (var s = new ZipOutputStream(File.Create(zipPath)))
+                    using (ZipOutputStream s = new ZipOutputStream(File.Create(zipPath)))
                     {
                         s.SetLevel(9); // 0 - store only to 9 - means best compression
 
-                        var buffer = new byte[4096];
+                        byte[] buffer = new byte[4096];
 
                         foreach (FileInf file in files)
                         {
                             // Using GetFileName makes the result compatible with XP
                             // as the resulting path is not absolute.
-                            var entry = new ZipEntry(file.RenameToOrName) { DateTime = DateTime.Now };
+                            ZipEntry entry = new ZipEntry(file.RenameToOrName) { DateTime = DateTime.Now };
 
                             // Setup the entry data as required.
 

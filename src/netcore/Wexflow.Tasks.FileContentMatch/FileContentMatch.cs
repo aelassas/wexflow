@@ -26,13 +26,13 @@ namespace Wexflow.Tasks.FileContentMatch
         {
             Info("Checking file...");
 
-            var success = true;
+            bool success = true;
             try
             {
                 // Checking files
-                foreach (var file in FilesToCheck)
+                foreach (string file in FilesToCheck)
                 {
-                    var res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
+                    bool res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
 
                     if (res)
                     {
@@ -46,9 +46,9 @@ namespace Wexflow.Tasks.FileContentMatch
                 }
 
                 // Checking folders
-                foreach (var folder in FoldersToCheck)
+                foreach (string folder in FoldersToCheck)
                 {
-                    var files = new string[] { };
+                    string[] files = Array.Empty<string>();
                     if (Recursive)
                     {
                         files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories); ;
@@ -58,9 +58,9 @@ namespace Wexflow.Tasks.FileContentMatch
                         files = Directory.GetFiles(folder);
                     }
 
-                    foreach (var file in files)
+                    foreach (string file in files)
                     {
-                        var res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
+                        bool res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
 
                         if (res)
                         {

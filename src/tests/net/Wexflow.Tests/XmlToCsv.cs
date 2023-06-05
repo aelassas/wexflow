@@ -32,7 +32,7 @@ namespace Wexflow.Tests
             Helper.StartWorkflow(17);
             files = GetCsvs();
             Assert.AreEqual(2, files.Length);
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 string content = File.ReadAllText(file);
                 Assert.AreEqual(ExpectedResult, content);
@@ -47,7 +47,7 @@ namespace Wexflow.Tests
         private void DeleteCsvs()
         {
             string[] files = GetCsvs();
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 File.Delete(file);
             }

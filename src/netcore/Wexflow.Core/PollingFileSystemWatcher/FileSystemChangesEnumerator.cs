@@ -8,9 +8,9 @@ namespace System.IO
 {
     internal class FileSystemChangeEnumerator : FileSystemEnumerator<string>
     {
-        private FileChangeList _changes = new FileChangeList();
+        private FileChangeList _changes = new();
         private string _currentDirectory;
-        private PollingFileSystemWatcher _watcher;
+        private readonly PollingFileSystemWatcher _watcher;
 
         internal FileSystemChangeEnumerator(PollingFileSystemWatcher watcher, string directory, EnumerationOptions options = null)
             : base(directory, options)
@@ -33,8 +33,7 @@ namespace System.IO
         protected override bool ShouldIncludeEntry(ref FileSystemEntry entry)
         {
             // Don't want to convert this to string every time
-            if (_currentDirectory == null)
-                _currentDirectory = entry.Directory.ToString();
+            _currentDirectory ??= entry.Directory.ToString();
 
             return _watcher.ShouldIncludeEntry(ref entry);
         }

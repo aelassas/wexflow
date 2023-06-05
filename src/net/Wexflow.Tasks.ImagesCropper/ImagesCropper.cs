@@ -34,8 +34,8 @@ namespace Wexflow.Tasks.ImagesCropper
         {
             Info("Cropping images...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.ImagesCropper
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -78,11 +78,11 @@ namespace Wexflow.Tasks.ImagesCropper
 
         private bool CropImages(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var images = SelectFiles();
-                foreach (var image in images)
+                FileInf[] images = SelectFiles();
+                foreach (FileInf image in images)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     success &= Crop(image.Path, destPath);

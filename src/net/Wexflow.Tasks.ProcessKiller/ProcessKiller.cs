@@ -20,7 +20,7 @@ namespace Wexflow.Tasks.ProcessKiller
             try
             {
                 string processCmd = "/im \"" + ProcessName + "\" /f";
-                var startInfo = new ProcessStartInfo("taskkill", processCmd)
+                ProcessStartInfo startInfo = new ProcessStartInfo("taskkill", processCmd)
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.ProcessKiller
                     RedirectStandardError = true
                 };
 
-                var process = new Process { StartInfo = startInfo };
+                Process process = new Process { StartInfo = startInfo };
                 process.OutputDataReceived += OutputHandler;
                 process.ErrorDataReceived += ErrorHandler;
                 process.Start();

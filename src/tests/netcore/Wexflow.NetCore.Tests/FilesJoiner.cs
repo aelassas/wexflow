@@ -45,7 +45,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void FilesJoinerTest()
         {
-            var files = Directory.GetFiles(SourceFilesFolder);
+            string[] files = Directory.GetFiles(SourceFilesFolder);
             Assert.AreEqual(16, files.Length);
 
             Helper.StartWorkflow(147);
@@ -53,7 +53,7 @@ namespace Wexflow.NetCore.Tests
             files = Directory.GetFiles(TempFolder, "*", SearchOption.AllDirectories).OrderBy(f => f).ToArray();
             Assert.AreEqual(4, files.Length);
 
-            var content = File.ReadAllText(files[0]);
+            string content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResultFileA, content);
 
             content = File.ReadAllText(files[1]);

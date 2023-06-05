@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.SevenZip
         {
             Info("Zipping files...");
 
-            var success = true;
+            bool success = true;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.SevenZip
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -69,29 +69,31 @@ namespace Wexflow.Tasks.SevenZip
 
         private bool CreateZip()
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
             if (files.Length > 0)
             {
-                var sevenZipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
+                string sevenZipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
 
                 try
                 {
-                    var assembly = Assembly.GetEntryAssembly();
-                    var libraryPath = Path.GetDirectoryName(assembly.Location);
+                    Assembly assembly = Assembly.GetEntryAssembly();
+                    string libraryPath = Path.GetDirectoryName(assembly.Location);
 #if DEBUG
-                    var processorArch = assembly.GetName().ProcessorArchitecture;
-                    var x86 = processorArch == ProcessorArchitecture.X86;
+                    ProcessorArchitecture processorArch = assembly.GetName().ProcessorArchitecture;
+                    bool x86 = processorArch == ProcessorArchitecture.X86;
                     libraryPath = Path.Combine(libraryPath, x86 ? "x86" : "x64", "7z.dll");
 #else
                     libraryPath = Path.Combine(libraryPath, "7z.dll");
 #endif
 
                     SevenZipBase.SetLibraryPath(libraryPath);
-                    SevenZipCompressor sevenZipCompressor = new SevenZipCompressor();
-                    sevenZipCompressor.CompressionLevel = CompressionLevel.Ultra;
-                    sevenZipCompressor.CompressionMethod = CompressionMethod.Lzma;
-                    var filesParam = files.Select(f => f.Path).ToArray();
+                    SevenZipCompressor sevenZipCompressor = new SevenZipCompressor
+                    {
+                        CompressionLevel = CompressionLevel.Ultra,
+                        CompressionMethod = CompressionMethod.Lzma
+                    };
+                    string[] filesParam = files.Select(f => f.Path).ToArray();
                     sevenZipCompressor.CompressFiles(sevenZipPath, filesParam);
                     Files.Add(new FileInf(sevenZipPath, Id));
                     InfoFormat("7Z {0} created with success.", sevenZipPath);

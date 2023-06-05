@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.HtmlToPdf
         {
             Info("Generating PDF files from HTML files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.HtmlToPdf
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -72,8 +72,8 @@ namespace Wexflow.Tasks.HtmlToPdf
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var files = SelectFiles();
+            bool success = true;
+            FileInf[] files = SelectFiles();
 
             if (files.Length > 0)
             {
@@ -84,10 +84,10 @@ namespace Wexflow.Tasks.HtmlToPdf
                         string pdfPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.pdf", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
 
-                        var doc = new Document();
+                        Document doc = new Document();
                         PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));
 #pragma warning disable CS0612
-                        var worker = new HTMLWorker(doc);
+                        HTMLWorker worker = new HTMLWorker(doc);
 #pragma warning restore CS0612
                         doc.Open();
                         worker.StartDocument();

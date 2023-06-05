@@ -53,19 +53,19 @@ namespace Wexflow.Tasks.MailsReceiver
                 switch (Protocol)
                 {
                     case Protocol.Imap:
-                        using (var client = new ImapClient())
+                        using (ImapClient client = new())
                         {
                             client.Connect(Host, Port, EnableSsl);
                             client.Authenticate(User, Password);
                             client.Inbox.Open(FolderAccess.ReadOnly);
 
-                            var uids = client.Inbox.Search(SearchQuery.All);
+                            System.Collections.Generic.IList<UniqueId> uids = client.Inbox.Search(SearchQuery.All);
 
-                            var count = uids.Count();
+                            int count = uids.Count;
 
                             for (int i = Math.Min(MessageCount, count); i > 0; i--)
                             {
-                                var message = client.Inbox.GetMessage(uids[i]);
+                                MimeMessage message = client.Inbox.GetMessage(uids[i]);
                                 string messageFileName = "message_" + i + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", message.Date);
                                 string messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
@@ -73,28 +73,26 @@ namespace Wexflow.Tasks.MailsReceiver
                                 InfoFormat("Message {0} received. Path: {1}", i, messagePath);
 
                                 // save attachments
-                                var j = 0;
-                                var attachments = message.Attachments.ToList();
-                                foreach (var attachment in attachments)
+                                int j = 0;
+                                System.Collections.Generic.List<MimeEntity> attachments = message.Attachments.ToList();
+                                foreach (MimeEntity attachment in attachments)
                                 {
                                     if (attachment.IsAttachment)
                                     {
                                         string attachmentPath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + "_" + (attachment is MessagePart ? ++j + ".eml" : ((MimePart)attachment).FileName));
 
-                                        if (attachment is MessagePart)
+                                        if (attachment is not MessagePart)
                                         {
-                                            ((MessagePart)attachment).WriteTo(attachmentPath);
+                                            using FileStream stream = File.Create(attachmentPath);
+                                            ((MimePart)attachment).Content.DecodeTo(stream);
                                         }
                                         else
                                         {
-                                            using (var stream = File.Create(attachmentPath))
-                                            {
-                                                ((MimePart)attachment).Content.DecodeTo(stream);
-                                            }
+                                            ((MessagePart)attachment).WriteTo(attachmentPath);
                                         }
 
                                         Files.Add(new FileInf(attachmentPath, Id));
-                                        InfoFormat("Attachment {0} of mail {1} received. Path: {2}", (attachment is MessagePart ? j + ".eml" : ((MimePart)attachment).FileName), i, attachmentPath);
+                                        InfoFormat("Attachment {0} of mail {1} received. Path: {2}", attachment is MessagePart ? j + ".eml" : ((MimePart)attachment).FileName, i, attachmentPath);
                                     }
                                 }
 
@@ -109,13 +107,13 @@ namespace Wexflow.Tasks.MailsReceiver
                         }
                         break;
                     case Protocol.Pop3:
-                        using (var client = new Pop3Client())
+                        using (Pop3Client client = new())
                         {
                             client.Connect(Host, Port, EnableSsl);
                             client.AuthenticationMechanisms.Remove("XOAUTH2");
                             client.Authenticate(User, Password);
 
-                            var count = client.GetMessageCount();
+                            int count = client.GetMessageCount();
 
                             // We want to download messages
                             // Messages are numbered in the interval: [1, messageCount]
@@ -123,7 +121,7 @@ namespace Wexflow.Tasks.MailsReceiver
                             // Most servers give the latest message the highest number
                             for (int i = Math.Min(MessageCount, count); i > 0; i--)
                             {
-                                var message = client.GetMessage(i);
+                                MimeMessage message = client.GetMessage(i);
                                 string messageFileName = "message_" + i + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", message.Date);
                                 string messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
@@ -131,8 +129,8 @@ namespace Wexflow.Tasks.MailsReceiver
                                 InfoFormat("Message {0} received. Path: {1}", i, messagePath);
 
                                 // save attachments
-                                var attachments = message.Attachments.ToList();
-                                foreach (var attachment in attachments)
+                                System.Collections.Generic.List<MimeEntity> attachments = message.Attachments.ToList();
+                                foreach (MimeEntity attachment in attachments)
                                 {
                                     if (attachment.IsAttachment)
                                     {
@@ -170,7 +168,7 @@ namespace Wexflow.Tasks.MailsReceiver
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

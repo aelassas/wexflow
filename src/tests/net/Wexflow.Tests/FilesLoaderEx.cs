@@ -103,7 +103,7 @@ namespace Wexflow.Tests
 
         public void TestInitialize(int workflowId)
         {
-            var tempFolder = Path.Combine(Helper.TempFolder, workflowId.ToString());
+            string tempFolder = Path.Combine(Helper.TempFolder, workflowId.ToString());
             if (!Directory.Exists(tempFolder)) Directory.CreateDirectory(tempFolder);
             Helper.DeleteFilesAndFolders(tempFolder);
         }

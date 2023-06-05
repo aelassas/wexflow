@@ -6,8 +6,8 @@ namespace Wexflow.NetCore.Tests
     [TestClass]
     public class FilesCopier
     {
-        private string file1 = @"C:\WexflowTesting\FilesCopier\file1.txt";
-        private string file2 = @"C:\WexflowTesting\FilesCopier\file2.txt";
+        private readonly string file1 = @"C:\WexflowTesting\FilesCopier\file1.txt";
+        private readonly string file2 = @"C:\WexflowTesting\FilesCopier\file2.txt";
 
         [TestInitialize]
         public void TestInitialize()

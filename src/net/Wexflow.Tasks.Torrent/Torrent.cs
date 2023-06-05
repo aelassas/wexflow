@@ -20,7 +20,7 @@ namespace Wexflow.Tasks.Torrent
             Info("Downloading torrents...");
 
             bool success;
-            var atLeastOneSuccess = false;
+            bool atLeastOneSuccess = false;
             try
             {
                 success = Download(ref atLeastOneSuccess);
@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.Torrent
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -52,11 +52,11 @@ namespace Wexflow.Tasks.Torrent
 
         private bool Download(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var torrents = SelectFiles();
-                foreach (var torrent in torrents)
+                FileInf[] torrents = SelectFiles();
+                foreach (FileInf torrent in torrents)
                 {
                     success &= DownloadTorrent(torrent.Path);
                     if (!atLeastOneSuccess && success) atLeastOneSuccess = true;
@@ -81,14 +81,14 @@ namespace Wexflow.Tasks.Torrent
             {
                 ClientEngine engine = new ClientEngine(new EngineSettings());
 
-                var settingsBuilder = new TorrentSettingsBuilder
+                TorrentSettingsBuilder settingsBuilder = new TorrentSettingsBuilder
                 {
                     MaximumConnections = 60,
                 };
-                var managerTask = engine.AddAsync(path, SaveFolder, settingsBuilder.ToSettings());
+                System.Threading.Tasks.Task<TorrentManager> managerTask = engine.AddAsync(path, SaveFolder, settingsBuilder.ToSettings());
                 managerTask.Wait();
-                var manager = managerTask.Result;
-                var task = manager.StartAsync();
+                TorrentManager manager = managerTask.Result;
+                System.Threading.Tasks.Task task = manager.StartAsync();
                 task.Wait();
 
                 while (engine.IsRunning)

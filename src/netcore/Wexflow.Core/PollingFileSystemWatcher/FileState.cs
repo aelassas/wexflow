@@ -22,7 +22,7 @@ namespace System.IO
             Path = path;
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Path;
         }

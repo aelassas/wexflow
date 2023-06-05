@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.Touch
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

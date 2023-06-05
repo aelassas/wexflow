@@ -35,13 +35,13 @@ namespace Wexflow.Tests
 
         public static System.Guid StartWorkflow(int workflowId)
         {
-            var instanceId = WexflowEngine.StartWorkflow(WexflowEngine.SuperAdminUsername, workflowId);
+            System.Guid instanceId = WexflowEngine.StartWorkflow(WexflowEngine.SuperAdminUsername, workflowId);
 
             // Wait until the workflow finishes
             Thread.Sleep(1000);
-            var workflow = WexflowEngine.GetWorkflow(workflowId);
-            var isRunning = workflow.IsRunning;
-            var isWaitingForApproval = workflow.IsWaitingForApproval;
+            Core.Workflow workflow = WexflowEngine.GetWorkflow(workflowId);
+            bool isRunning = workflow.IsRunning;
+            bool isWaitingForApproval = workflow.IsWaitingForApproval;
             while (isRunning && !isWaitingForApproval)
             {
                 Thread.Sleep(100);
@@ -93,7 +93,7 @@ namespace Wexflow.Tests
             if (!Directory.Exists(folder)) return;
             DeleteFiles(folder);
 
-            foreach (var dir in Directory.GetDirectories(folder))
+            foreach (string dir in Directory.GetDirectories(folder))
             {
                 DeleteDirRec(dir);
             }
@@ -102,7 +102,7 @@ namespace Wexflow.Tests
         public static void DeleteFiles(string dir)
         {
             if (!Directory.Exists(dir)) return;
-            foreach (var file in Directory.GetFiles(dir))
+            foreach (string file in Directory.GetFiles(dir))
             {
                 File.Delete(file);
             }
@@ -115,7 +115,7 @@ namespace Wexflow.Tests
             //    File.Delete(file);
             //}
 
-            foreach (var subdir in Directory.GetDirectories(dir))
+            foreach (string subdir in Directory.GetDirectories(dir))
             {
                 DeleteDirRec(subdir);
             }
@@ -140,7 +140,7 @@ namespace Wexflow.Tests
 
         public static void StartProcess(string name, string cmd, bool hideGui)
         {
-            var startInfo = new ProcessStartInfo(name, cmd)
+            ProcessStartInfo startInfo = new ProcessStartInfo(name, cmd)
             {
                 CreateNoWindow = hideGui,
                 UseShellExecute = false,
@@ -148,7 +148,7 @@ namespace Wexflow.Tests
                 RedirectStandardError = true
             };
 
-            var process = new Process { StartInfo = startInfo };
+            Process process = new Process { StartInfo = startInfo };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
             process.Start();

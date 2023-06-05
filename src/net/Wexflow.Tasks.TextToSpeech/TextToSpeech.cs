@@ -16,24 +16,24 @@ namespace Wexflow.Tasks.TextToSpeech
         public override TaskStatus Run()
         {
             Info("Converting text to speech...");
-            var status = Status.Success;
-            var success = true;
-            var atLeastOneSucceed = false;
+            Status status = Status.Success;
+            bool success = true;
+            bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
-            foreach (var file in files)
+            foreach (FileInf file in files)
             {
                 try
                 {
-                    using (var synth = new SpeechSynthesizer())
-                    using (var stream = new MemoryStream())
+                    using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                    using (MemoryStream stream = new MemoryStream())
                     {
                         synth.SetOutputToWaveStream(stream);
                         string text = File.ReadAllText(file.Path);
                         synth.Speak(text);
                         byte[] bytes = stream.GetBuffer();
-                        var destFile = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(file.FileName) + ".wav");
+                        string destFile = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(file.FileName) + ".wav");
                         File.WriteAllBytes(destFile, bytes);
                         Files.Add(new FileInf(destFile, Id));
                         InfoFormat("The file {0} was converted to speech with success -> {1}", file.Path, destFile);

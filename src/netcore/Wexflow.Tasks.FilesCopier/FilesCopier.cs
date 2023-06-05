@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.FilesCopier
 
             bool success = true;
             bool atLeastOneSucceed = false;
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             foreach (FileInf file in files)
             {
@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.FilesCopier
                 if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                     file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var preservedFolderStruct = Path.GetDirectoryName(file.Path);
+                    string preservedFolderStruct = Path.GetDirectoryName(file.Path);
                     preservedFolderStruct = preservedFolderStruct.Length > PreserveFolderStructFrom.Length
                         ? preservedFolderStruct.Remove(0, PreserveFolderStructFrom.Length)
                         : string.Empty;
@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.FilesCopier
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

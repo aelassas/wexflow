@@ -29,8 +29,8 @@ namespace Wexflow.Tasks.IsoExtractor
         {
             Info("Extracting ISO files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.IsoExtractor
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -73,8 +73,8 @@ namespace Wexflow.Tasks.IsoExtractor
 
         private bool ExtractIsos(ref bool atLeastOneSuccess)
         {
-            var success = true;
-            var isos = SelectFiles();
+            bool success = true;
+            FileInf[] isos = SelectFiles();
 
             if (isos.Length > 0)
             {
@@ -88,7 +88,7 @@ namespace Wexflow.Tasks.IsoExtractor
 
                         ExtractIso(iso.Path, destFolder);
 
-                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
@@ -116,19 +116,19 @@ namespace Wexflow.Tasks.IsoExtractor
             using (FileStream isoStream = File.Open(isoPath, FileMode.Open))
             {
                 CDReader cd = new CDReader(isoStream, true);
-                var files = cd.GetFiles("\\", "*.*", SearchOption.AllDirectories);
+                string[] files = cd.GetFiles("\\", "*.*", SearchOption.AllDirectories);
 
-                foreach (var file in files)
+                foreach (string file in files)
                 {
-                    using (var stream = cd.OpenFile(file, FileMode.Open))
+                    using (DiscUtils.Streams.SparseStream stream = cd.OpenFile(file, FileMode.Open))
                     {
-                        var destFile = destDir.TrimEnd('\\') + "\\" + Regex.Replace(file.Replace("/", "\\"), @";\d*$", "").TrimStart('\\');
+                        string destFile = destDir.TrimEnd('\\') + "\\" + Regex.Replace(file.Replace("/", "\\"), @";\d*$", "").TrimStart('\\');
 
                         // Create directories
-                        var destFolder = Path.GetDirectoryName(destFile);
+                        string destFolder = Path.GetDirectoryName(destFile);
                         destFolder = destFolder.Equals(destDir) ? string.Empty : destFolder;
 
-                        var finalDestFolder = destDir;
+                        string finalDestFolder = destDir;
                         if (!string.IsNullOrEmpty(destFolder))
                         {
                             finalDestFolder = Path.Combine(destDir, destFolder);

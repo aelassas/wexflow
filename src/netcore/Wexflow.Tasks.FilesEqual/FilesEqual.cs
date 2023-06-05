@@ -38,10 +38,10 @@ namespace Wexflow.Tasks.FilesEqual
                     return new TaskStatus(Status.Error, false);
                 }
 
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                        string.Format("FilesEqual_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
-                var xdoc = new XDocument(new XElement("Root"));
-                var xFiles = new XElement("Files");
+                XDocument xdoc = new(new XElement("Root"));
+                XElement xFiles = new("Files");
 
                 xFiles.Add(new XElement("File",
                     new XAttribute("path", File1),
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.FilesEqual
                 {
                     xdoc.Root.Add(xFiles);
 
-                    var res = FileEquals(File1, File2);
+                    bool res = FileEquals(File1, File2);
                     xdoc.Root.Add(new XElement("Result", res.ToString().ToLower()));
                 }
 
@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.FilesEqual
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

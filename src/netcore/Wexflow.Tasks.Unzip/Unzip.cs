@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Unzip
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var zips = SelectFiles();
+            FileInf[] zips = SelectFiles();
 
             if (zips.Length > 0)
             {
@@ -46,7 +46,7 @@ namespace Wexflow.Tasks.Unzip
 
                         ZipFile.ExtractToDirectory(zip.Path, destFolder, Overwrite);
 
-                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.Unzip
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

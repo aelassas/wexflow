@@ -15,13 +15,13 @@ namespace Wexflow.Server
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
+            IConfigurationBuilder builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .SetBasePath(env.ContentRootPath);
 
-            var config = builder.Build();
+            IConfigurationRoot config = builder.Build();
 
-            var appConfig = new AppConfiguration();
+            AppConfiguration appConfig = new();
             ConfigurationBinder.Bind(config, appConfig);
 
             if (env.IsDevelopment())
@@ -32,14 +32,14 @@ namespace Wexflow.Server
             //
             // Swagger UI
             //
-            var webBuilder = WebApplication.CreateBuilder();
-            var path = Path.Combine(webBuilder.Environment.ContentRootPath, "swagger-ui");
+            WebApplicationBuilder webBuilder = WebApplication.CreateBuilder();
+            string path = Path.Combine(webBuilder.Environment.ContentRootPath, "swagger-ui");
 
-            var extensionProvider = new FileExtensionContentTypeProvider();
+            FileExtensionContentTypeProvider extensionProvider = new();
             extensionProvider.Mappings.Add(".yaml", "application/x-yaml");
             extensionProvider.Mappings.Add(".yml", "application/x-yaml");
 
-            var fileProvider = new PhysicalFileProvider(path);
+            PhysicalFileProvider fileProvider = new(path);
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = fileProvider,
@@ -66,7 +66,7 @@ namespace Wexflow.Server
             );
             app.UseEndpoints(endpoints =>
             {
-                var wexflowService = new WexflowService(endpoints);
+                WexflowService wexflowService = new(endpoints);
                 wexflowService.Map();
             });
         }

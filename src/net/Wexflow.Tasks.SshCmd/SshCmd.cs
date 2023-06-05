@@ -39,17 +39,17 @@ namespace Wexflow.Tasks.SshCmd
         {
             Info("Running SSH command...");
 
-            var success = true;
+            bool success = true;
             ShellStream stream = null;
 
             try
             {
-                var connectionInfo = new ConnectionInfo(Host, Port, Username, new PasswordAuthenticationMethod(Username, Password));
+                ConnectionInfo connectionInfo = new ConnectionInfo(Host, Port, Username, new PasswordAuthenticationMethod(Username, Password));
                 SshClient sshclient = new SshClient(connectionInfo);
                 sshclient.Connect();
-                var modes = new Dictionary<TerminalModes, uint> { { TerminalModes.ECHO, 53 } };
+                Dictionary<TerminalModes, uint> modes = new Dictionary<TerminalModes, uint> { { TerminalModes.ECHO, 53 } };
                 stream = sshclient.CreateShellStream("xterm", 80, 24, 800, 600, 4096, modes);
-                var result = stream.Expect(Prompt, ExpectTimeout);
+                string result = stream.Expect(Prompt, ExpectTimeout);
 
                 if (result == null)
                 {
@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.SshCmd
                     return new TaskStatus(Status.Error);
                 }
 
-                foreach (var line in result.GetLines())
+                foreach (string line in result.GetLines())
                 {
                     Info(line);
                 }
@@ -75,12 +75,9 @@ namespace Wexflow.Tasks.SshCmd
             }
             finally
             {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
+                stream?.Close();
             }
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -94,7 +91,7 @@ namespace Wexflow.Tasks.SshCmd
         public void SendCommand(ShellStream stream, string cmd)
         {
             stream.WriteLine(cmd);
-            var result = stream.Expect(PromptOrPwd, ExpectTimeout);
+            string result = stream.Expect(PromptOrPwd, ExpectTimeout);
 
             if (result == null)
             {
@@ -105,7 +102,7 @@ namespace Wexflow.Tasks.SshCmd
             if (PwdPrompt.IsMatch(result))
             {
                 stream.WriteLine(Password);
-                var res = stream.Expect(Prompt, ExpectTimeout);
+                string res = stream.Expect(Prompt, ExpectTimeout);
 
                 if (res == null)
                 {
@@ -116,9 +113,9 @@ namespace Wexflow.Tasks.SshCmd
                 result += res;
             }
 
-            var echoCmd = "echo $?";
+            string echoCmd = "echo $?";
             stream.WriteLine(echoCmd);
-            var errorCode = stream.Expect(Prompt, ExpectTimeout);
+            string errorCode = stream.Expect(Prompt, ExpectTimeout);
 
             if (errorCode == null)
             {
@@ -138,14 +135,14 @@ namespace Wexflow.Tasks.SshCmd
 
             if (errorCode == "0")
             {
-                foreach (var line in result.GetLines())
+                foreach (string line in result.GetLines())
                 {
                     Info(line);
                 }
             }
             else if (result.Length > 0)
             {
-                foreach (var line in result.GetLines())
+                foreach (string line in result.GetLines())
                 {
                     Error(line);
                 }

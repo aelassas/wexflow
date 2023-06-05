@@ -27,18 +27,18 @@ namespace Wexflow.Tasks.VimeoListUploads
 
             try
             {
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "VimeoListUploads", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("VimeoListUploads"));
-                var xvideos = new XElement("Videos");
+                XDocument xdoc = new(new XElement("VimeoListUploads"));
+                XElement xvideos = new("Videos");
 
-                var vimeoApi = new VimeoClient(Token);
-                var videosTask = vimeoApi.GetVideosAsync(UserId, null, null);
+                VimeoClient vimeoApi = new(Token);
+                System.Threading.Tasks.Task<VimeoDotNet.Models.Paginated<VimeoDotNet.Models.Video>> videosTask = vimeoApi.GetVideosAsync(UserId, null, null);
                 videosTask.Wait();
-                var videos = videosTask.Result.Data;
+                System.Collections.Generic.List<VimeoDotNet.Models.Video> videos = videosTask.Result.Data;
 
-                foreach (var d in videos)
+                foreach (VimeoDotNet.Models.Video d in videos)
                 {
                     xvideos.Add(new XElement("Video"
                         , new XAttribute("title", SecurityElement.Escape(d.Name))

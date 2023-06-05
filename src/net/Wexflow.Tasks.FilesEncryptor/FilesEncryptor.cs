@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.FilesEncryptor
         {
             Info("Encrypting files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,11 +71,11 @@ namespace Wexflow.Tasks.FilesEncryptor
 
         private bool EncryptFiles(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             try
             {
-                var files = SelectFiles();
-                foreach (var file in files)
+                FileInf[] files = SelectFiles();
+                foreach (FileInf file in files)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     success &= Encrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
@@ -103,11 +103,13 @@ namespace Wexflow.Tasks.FilesEncryptor
                 UnicodeEncoding ue = new UnicodeEncoding();
 
                 string cryptFile = outputFile;
-                RijndaelManaged rmcrypto = new RijndaelManaged();
-                rmcrypto.KeySize = 256;
-                rmcrypto.BlockSize = 128;
+                RijndaelManaged rmcrypto = new RijndaelManaged
+                {
+                    KeySize = 256,
+                    BlockSize = 128
+                };
 
-                var key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
                 rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                 rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
                 rmcrypto.Padding = PaddingMode.Zeros;

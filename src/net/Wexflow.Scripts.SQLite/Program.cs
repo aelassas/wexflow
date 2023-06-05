@@ -11,7 +11,7 @@ namespace Wexflow.Scripts.SQLite
         {
             try
             {
-                var db = new Db(ConfigurationManager.AppSettings["connectionString"]);
+                Db db = new Db(ConfigurationManager.AppSettings["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db);
                 Core.Helper.InsertRecords(db, "sqlite");
                 db.Dispose();
@@ -35,15 +35,15 @@ namespace Wexflow.Scripts.SQLite
         private static void BuildDatabase(string info)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            var path1 = Path.Combine(
+            string path1 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..",
                 "samples", "net", "Wexflow", "Database", "Wexflow.sqlite");
 
-            var connString = $"Data Source={path1};Version=3;";
+            string connString = $"Data Source={path1};Version=3;";
 
             if (File.Exists(path1)) File.Delete(path1);
 
-            var db = new Db(connString);
+            Db db = new Db(connString);
             Core.Helper.InsertWorkflowsAndUser(db);
             Core.Helper.InsertRecords(db, "sqlite");
             db.Dispose();

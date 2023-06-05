@@ -22,16 +22,16 @@ namespace Wexflow.Tasks.ImagesOverlay
 
             try
             {
-                var imageFiles = SelectFiles();
+                FileInf[] imageFiles = SelectFiles();
 
                 if (imageFiles.Length >= 2)
                 {
-                    var extension = Path.GetExtension(imageFiles[0].FileName);
+                    string extension = Path.GetExtension(imageFiles[0].FileName);
 
-                    var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string destPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("ImagesOverlay_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
-                    var res = OverlayImages(imageFiles, destPath);
+                    bool res = OverlayImages(imageFiles, destPath);
                     if (!res)
                     {
                         status = Status.Error;
@@ -61,16 +61,14 @@ namespace Wexflow.Tasks.ImagesOverlay
         {
             try
             {
-                List<int> imageHeights = new List<int>();
-                List<int> imageWidths = new List<int>();
+                List<int> imageHeights = new();
+                List<int> imageWidths = new();
 
                 foreach (FileInf imageFile in imageFiles)
                 {
-                    using (Image img = Image.FromFile(imageFile.Path))
-                    {
-                        imageHeights.Add(img.Height);
-                        imageWidths.Add(img.Width);
-                    }
+                    using Image img = Image.FromFile(imageFile.Path);
+                    imageHeights.Add(img.Height);
+                    imageWidths.Add(img.Width);
                 }
                 imageHeights.Sort();
                 imageWidths.Sort();
@@ -78,16 +76,14 @@ namespace Wexflow.Tasks.ImagesOverlay
                 int height = imageHeights[imageHeights.Count - 1];
                 int width = imageWidths[imageWidths.Count - 1];
 
-                using (Bitmap finalImage = new Bitmap(width, height))
+                using (Bitmap finalImage = new(width, height))
                 using (Graphics graphics = Graphics.FromImage(finalImage))
                 {
                     graphics.Clear(SystemColors.AppWorkspace);
                     foreach (FileInf imageFile in imageFiles)
                     {
-                        using (Image img = Image.FromFile(imageFile.Path))
-                        {
-                            graphics.DrawImage(img, new Point(0, 0));
-                        }
+                        using Image img = Image.FromFile(imageFile.Path);
+                        graphics.DrawImage(img, new Point(0, 0));
                     }
 
                     finalImage.Save(destPath);

@@ -25,7 +25,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void TextsEncryptorTest()
         {
-            var files = GetFiles(TextsEncryptorFolder);
+            string[] files = GetFiles(TextsEncryptorFolder);
             Assert.AreEqual(0, files.Length);
             Helper.StartWorkflow(83);
             files = GetFiles(TextsEncryptorFolder);

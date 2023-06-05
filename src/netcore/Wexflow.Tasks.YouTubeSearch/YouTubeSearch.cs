@@ -48,34 +48,34 @@ namespace Wexflow.Tasks.YouTubeSearch
 
         private async System.Threading.Tasks.Task Search()
         {
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            YouTubeService youtubeService = new(new BaseClientService.Initializer()
             {
                 ApiKey = ApiKey,
                 ApplicationName = ApplicationName
             });
 
-            var searchListRequest = youtubeService.Search.List("snippet");
+            SearchResource.ListRequest searchListRequest = youtubeService.Search.List("snippet");
             searchListRequest.Q = Keyword;
             searchListRequest.MaxResults = MaxResults;
 
             // Call the search.list method to retrieve results matching the specified query term.
-            var searchListResponse = await searchListRequest.ExecuteAsync();
+            Google.Apis.YouTube.v3.Data.SearchListResponse searchListResponse = await searchListRequest.ExecuteAsync();
 
-            List<string> videos = new List<string>();
-            List<string> channels = new List<string>();
-            List<string> playlists = new List<string>();
+            List<string> videos = new();
+            List<string> channels = new();
+            List<string> playlists = new();
 
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
-            var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+            string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "YouTubeSearch", DateTime.Now));
 
-            var xdoc = new XDocument(new XElement("YouTubeSearch"));
-            var xvideos = new XElement("Videos");
-            var xchannels = new XElement("Channels");
-            var xplaylists = new XElement("Playlists");
+            XDocument xdoc = new(new XElement("YouTubeSearch"));
+            XElement xvideos = new("Videos");
+            XElement xchannels = new("Channels");
+            XElement xplaylists = new("Playlists");
 
-            foreach (var searchResult in searchListResponse.Items)
+            foreach (Google.Apis.YouTube.v3.Data.SearchResult searchResult in searchListResponse.Items)
             {
                 switch (searchResult.Id.Kind)
                 {

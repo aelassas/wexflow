@@ -18,16 +18,16 @@ namespace Wexflow.Tasks.ExecVb
         {
             Info("Executing VB scripts...");
 
-            var status = Status.Success;
-            var success = true;
-            var atLeastOneSuccess = false;
-            var csFiles = SelectFiles();
+            Status status = Status.Success;
+            bool success = true;
+            bool atLeastOneSuccess = false;
+            FileInf[] csFiles = SelectFiles();
 
-            foreach (var csFile in csFiles)
+            foreach (FileInf csFile in csFiles)
             {
                 try
                 {
-                    var exePath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csFile.FileName) + ".exe");
+                    string exePath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csFile.FileName) + ".exe");
                     Exec(csFile.Path, exePath);
                     Files.Add(new FileInf(exePath, Id));
                     InfoFormat("The script {0} has been executed -> {1}", csFile.Path, exePath);
@@ -59,30 +59,30 @@ namespace Wexflow.Tasks.ExecVb
 
         private void Exec(string csPath, string exePath)
         {
-            var exeGenerated = CompileExecutable(csPath, exePath);
+            _ = CompileExecutable(csPath, exePath);
             StartProcess(exePath, string.Empty, false);
         }
 
         private bool CompileExecutable(string sourceName, string exeName)
         {
-            FileInfo sourceFile = new FileInfo(sourceName);
             CodeDomProvider provider = CodeDomProvider.CreateProvider("VisualBasic");
-            bool compileOk = false;
+            bool compileOk;
 
-            CompilerParameters cp = new CompilerParameters();
+            CompilerParameters cp = new CompilerParameters
+            {
+                // Generate an executable instead of 
+                // a class library.
+                GenerateExecutable = true,
 
-            // Generate an executable instead of 
-            // a class library.
-            cp.GenerateExecutable = true;
+                // Specify the assembly file name to generate.
+                OutputAssembly = exeName,
 
-            // Specify the assembly file name to generate.
-            cp.OutputAssembly = exeName;
+                // Save the assembly as a physical file.
+                GenerateInMemory = false,
 
-            // Save the assembly as a physical file.
-            cp.GenerateInMemory = false;
-
-            // Set whether to treat all warnings as errors.
-            cp.TreatWarningsAsErrors = false;
+                // Set whether to treat all warnings as errors.
+                TreatWarningsAsErrors = false
+            };
 
             // Invoke compilation of the source file.
             CompilerResults cr = provider.CompileAssemblyFromFile(cp, sourceName);
@@ -117,7 +117,7 @@ namespace Wexflow.Tasks.ExecVb
 
         private void StartProcess(string processPath, string processCmd, bool hideGui)
         {
-            var startInfo = new ProcessStartInfo(processPath, processCmd)
+            ProcessStartInfo startInfo = new ProcessStartInfo(processPath, processCmd)
             {
                 CreateNoWindow = hideGui,
                 UseShellExecute = false,
@@ -125,7 +125,7 @@ namespace Wexflow.Tasks.ExecVb
                 RedirectStandardError = true
             };
 
-            var process = new Process { StartInfo = startInfo };
+            Process process = new Process { StartInfo = startInfo };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
             process.Start();

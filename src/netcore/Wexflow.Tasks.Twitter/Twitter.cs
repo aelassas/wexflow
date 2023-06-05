@@ -30,14 +30,14 @@ namespace Wexflow.Tasks.Twitter
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
 
             TwitterClient client;
             if (files.Length > 0)
             {
                 try
                 {
-                    var credentials = new TwitterCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
+                    TwitterCredentials credentials = new(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
                     client = new TwitterClient(credentials);
 
                     //TweetinviConfig.ApplicationSettings.HttpRequestTimeout = 20000;
@@ -70,14 +70,14 @@ namespace Wexflow.Tasks.Twitter
                 {
                     try
                     {
-                        var xdoc = XDocument.Load(file.Path);
+                        XDocument xdoc = XDocument.Load(file.Path);
                         foreach (XElement xTweet in xdoc.XPathSelectElements("Tweets/Tweet"))
                         {
-                            var status = xTweet.Value;
+                            string status = xTweet.Value;
                             //var tweet = Tweet.PublishTweet(status);
-                            var tweetTask = client.Tweets.PublishTweetAsync(status);
+                            System.Threading.Tasks.Task<ITweet> tweetTask = client.Tweets.PublishTweetAsync(status);
                             tweetTask.Wait();
-                            var tweet = tweetTask.Result;
+                            ITweet tweet = tweetTask.Result;
 
                             if (tweet != null)
                             {
@@ -105,7 +105,7 @@ namespace Wexflow.Tasks.Twitter
                 }
             }
 
-            var tstatus = Status.Success;
+            Status tstatus = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

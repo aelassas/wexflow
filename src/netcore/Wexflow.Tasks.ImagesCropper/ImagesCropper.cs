@@ -32,8 +32,8 @@ namespace Wexflow.Tasks.ImagesCropper
 
             try
             {
-                var images = SelectFiles();
-                foreach (var image in images)
+                FileInf[] images = SelectFiles();
+                foreach (FileInf image in images)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     succeeded &= Crop(image.Path, destPath);
@@ -67,14 +67,12 @@ namespace Wexflow.Tasks.ImagesCropper
         {
             try
             {
-                using (Image src = Image.FromFile(srcPath))
-                using (Image dest = Crop(src, X, Y, Width, Height))
-                {
-                    dest.Save(destPath);
-                    Files.Add(new FileInf(destPath, Id));
-                    InfoFormat("The image {0} was cropped -> {3}", srcPath, Width, Height, destPath);
-                    return true;
-                }
+                using Image src = Image.FromFile(srcPath);
+                using Image dest = Crop(src, X, Y, Width, Height);
+                dest.Save(destPath);
+                Files.Add(new FileInf(destPath, Id));
+                InfoFormat("The image {0} was cropped -> {3}", srcPath, Width, Height, destPath);
+                return true;
             }
             catch (ThreadAbortException)
             {
@@ -89,8 +87,8 @@ namespace Wexflow.Tasks.ImagesCropper
 
         private Image Crop(Image src, int x, int y, int width, int height)
         {
-            Rectangle cropRect = new Rectangle(x, y, width, height);
-            Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+            Rectangle cropRect = new(x, y, width, height);
+            Bitmap target = new(cropRect.Width, cropRect.Height);
 
             using (Graphics g = Graphics.FromImage(target))
             {

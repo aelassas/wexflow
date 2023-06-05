@@ -4,7 +4,7 @@ namespace Wexflow.Core.Db.Firebird
 {
     public class Helper
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public Helper(string connectionString)
         {
@@ -13,21 +13,15 @@ namespace Wexflow.Core.Db.Firebird
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {
-            using (var conn = new FbConnection(_connectionString))
-            {
-                conn.Open();
+            using FbConnection conn = new(_connectionString);
+            conn.Open();
 
-                using (var command = new FbCommand("select 1 from rdb$relations where rdb$relation_name = '" + tableName.ToUpper() + "';", conn))
-                {
-                    var res = command.ExecuteScalar();
-                    if (res == null)
-                    {
-                        using (var cmd = new FbCommand("create table " + tableName + tableStruct + ";", conn))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
+            using FbCommand command = new("select 1 from rdb$relations where rdb$relation_name = '" + tableName.ToUpper() + "';", conn);
+            object res = command.ExecuteScalar();
+            if (res == null)
+            {
+                using FbCommand cmd = new("create table " + tableName + tableStruct + ";", conn);
+                cmd.ExecuteNonQuery();
             }
         }
 

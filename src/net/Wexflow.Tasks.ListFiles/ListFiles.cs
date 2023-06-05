@@ -22,17 +22,17 @@ namespace Wexflow.Tasks.ListFiles
 
             try
             {
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("ListFiles_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                var xdoc = new XDocument(new XElement("WexflowProcessing"));
+                XDocument xdoc = new XDocument(new XElement("WexflowProcessing"));
 
-                var xWorkflow = new XElement("Workflow",
+                XElement xWorkflow = new XElement("Workflow",
                     new XAttribute("id", Workflow.Id),
                     new XAttribute("name", Workflow.Name),
                     new XAttribute("description", Workflow.Description));
 
-                var xFiles = new XElement("Files");
+                XElement xFiles = new XElement("Files");
                 foreach (List<FileInf> files in Workflow.FilesPerTask.Values)
                 {
                     foreach (FileInf file in files)
@@ -43,10 +43,10 @@ namespace Wexflow.Tasks.ListFiles
                 }
 
                 xWorkflow.Add(xFiles);
-                if (xdoc.Root != null) xdoc.Root.Add(xWorkflow);
+                xdoc.Root?.Add(xWorkflow);
                 xdoc.Save(xmlPath);
 
-                var xmlFile = new FileInf(xmlPath, Id);
+                FileInf xmlFile = new FileInf(xmlPath, Id);
                 Files.Add(xmlFile);
                 Info(xmlFile.ToString());
             }
@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.ListFiles
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {

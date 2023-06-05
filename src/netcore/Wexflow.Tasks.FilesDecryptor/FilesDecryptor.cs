@@ -24,8 +24,8 @@ namespace Wexflow.Tasks.FilesDecryptor
 
             try
             {
-                var files = SelectFiles();
-                foreach (var file in files)
+                FileInf[] files = SelectFiles();
+                foreach (FileInf file in files)
                 {
                     string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     succeeded &= Decrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
@@ -59,33 +59,33 @@ namespace Wexflow.Tasks.FilesDecryptor
         {
             try
             {
-                using (FileStream fsCrypt = new FileStream(inputFile, FileMode.Open))
+                using (FileStream fsCrypt = new(inputFile, FileMode.Open))
                 {
                     byte[] saltBytes = new byte[32];
                     fsCrypt.Read(saltBytes, 0, saltBytes.Length);
 
-                    UnicodeEncoding ue = new UnicodeEncoding();
+                    UnicodeEncoding ue = new();
 
-                    RijndaelManaged rmcrypto = new RijndaelManaged();
-                    rmcrypto.KeySize = 256;
-                    rmcrypto.BlockSize = 128;
+                    RijndaelManaged rmcrypto = new()
+                    {
+                        KeySize = 256,
+                        BlockSize = 128
+                    };
 
-                    var key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                    Rfc2898DeriveBytes key = new(ue.GetBytes(passphrase), saltBytes, derivationIterations);
                     rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                     rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
                     rmcrypto.Padding = PaddingMode.Zeros;
                     rmcrypto.Mode = CipherMode.CBC;
 
 
-                    using (CryptoStream cs = new CryptoStream(fsCrypt, rmcrypto.CreateDecryptor(), CryptoStreamMode.Read))
-                    using (FileStream fsOut = new FileStream(outputFile, FileMode.Create))
+                    using CryptoStream cs = new(fsCrypt, rmcrypto.CreateDecryptor(), CryptoStreamMode.Read);
+                    using FileStream fsOut = new(outputFile, FileMode.Create);
+                    int data;
+                    while ((data = cs.ReadByte()) != -1)
                     {
-                        int data;
-                        while ((data = cs.ReadByte()) != -1)
-                        {
-                            byte b = (byte)data;
-                            fsOut.WriteByte(b);
-                        }
+                        byte b = (byte)data;
+                        fsOut.WriteByte(b);
                     }
                 }
 

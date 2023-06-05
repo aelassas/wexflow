@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.Reddit
             bool success = true;
             bool atLeastOneSucceed = false;
 
-            var files = SelectFiles();
+            FileInf[] files = SelectFiles();
             if (files.Length > 0)
             {
                 RedditClient reddit;
@@ -50,17 +50,17 @@ namespace Wexflow.Tasks.Reddit
                 {
                     try
                     {
-                        var xdoc = XDocument.Load(file.Path);
+                        XDocument xdoc = XDocument.Load(file.Path);
 
                         // Self posts
-                        foreach (var xPost in xdoc.XPathSelectElements("Reddit/SelfPosts/SelfPost"))
+                        foreach (XElement xPost in xdoc.XPathSelectElements("Reddit/SelfPosts/SelfPost"))
                         {
-                            var subreddit = xPost.Attribute("subreddit").Value;
-                            var title = xPost.Attribute("title").Value;
-                            var text = xPost.Attribute("text").Value;
+                            string subreddit = xPost.Attribute("subreddit").Value;
+                            string title = xPost.Attribute("title").Value;
+                            string text = xPost.Attribute("text").Value;
 
-                            var sub = reddit.Subreddit(subreddit);
-                            var selfPost = sub.SelfPost(title, text).Submit();
+                            global::Reddit.Controllers.Subreddit sub = reddit.Subreddit(subreddit);
+                            global::Reddit.Controllers.SelfPost selfPost = sub.SelfPost(title, text).Submit();
 
                             if (selfPost == null)
                             {
@@ -76,14 +76,14 @@ namespace Wexflow.Tasks.Reddit
                         }
 
                         // Link posts
-                        foreach (var xLink in xdoc.XPathSelectElements("Reddit/LinkPosts/LinkPost"))
+                        foreach (XElement xLink in xdoc.XPathSelectElements("Reddit/LinkPosts/LinkPost"))
                         {
-                            var subreddit = xLink.Attribute("subreddit").Value;
-                            var title = xLink.Attribute("title").Value;
-                            var url = xLink.Attribute("url").Value;
+                            string subreddit = xLink.Attribute("subreddit").Value;
+                            string title = xLink.Attribute("title").Value;
+                            string url = xLink.Attribute("url").Value;
 
-                            var sub = reddit.Subreddit(subreddit);
-                            var linkPost = sub.LinkPost(title, url).Submit();
+                            global::Reddit.Controllers.Subreddit sub = reddit.Subreddit(subreddit);
+                            global::Reddit.Controllers.LinkPost linkPost = sub.LinkPost(title, url).Submit();
 
                             if (linkPost == null)
                             {
@@ -112,7 +112,7 @@ namespace Wexflow.Tasks.Reddit
                 }
             }
 
-            var tstatus = Status.Success;
+            Status tstatus = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

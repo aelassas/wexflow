@@ -21,8 +21,8 @@ namespace Wexflow.Tasks.CsvToXml
         {
             Info("Creating XML files...");
 
-            var success = true;
-            var atLeastOneSuccess = false;
+            bool success = true;
+            bool atLeastOneSuccess = false;
 
             try
             {
@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.CsvToXml
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -65,12 +65,12 @@ namespace Wexflow.Tasks.CsvToXml
 
         private bool CreateXmls(ref bool atLeastOneSuccess)
         {
-            var success = true;
+            bool success = true;
             foreach (FileInf file in SelectFiles())
             {
                 try
                 {
-                    var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateXml(file.Path, xmlPath);
                     Files.Add(new FileInf(xmlPath, Id));
@@ -92,11 +92,11 @@ namespace Wexflow.Tasks.CsvToXml
 
         private void CreateXml(string csvPath, string xmlPath)
         {
-            var xdoc = new XDocument(new XElement("Lines"));
+            XDocument xdoc = new XDocument(new XElement("Lines"));
 
             foreach (string line in File.ReadAllLines(csvPath))
             {
-                var xLine = new XElement("Line");
+                XElement xLine = new XElement("Line");
                 foreach (string col in line.Split(';'))
                 {
                     if (!string.IsNullOrEmpty(col)) xLine.Add(new XElement("Column", col));

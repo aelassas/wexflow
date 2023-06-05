@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.XmlToCsv
             {
                 try
                 {
-                    var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    string csvPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.csv", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
@@ -49,7 +49,7 @@ namespace Wexflow.Tasks.XmlToCsv
                 }
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -66,18 +66,16 @@ namespace Wexflow.Tasks.XmlToCsv
 
         private void CreateCsv(string xmlPath, string csvPath)
         {
-            var xdoc = XDocument.Load(xmlPath);
+            XDocument xdoc = XDocument.Load(xmlPath);
 
-            using (StreamWriter sw = new StreamWriter(csvPath))
+            using StreamWriter sw = new(csvPath);
+            foreach (XElement xLine in xdoc.XPathSelectElements("Lines/Line"))
             {
-                foreach (XElement xLine in xdoc.XPathSelectElements("Lines/Line"))
+                foreach (XElement xColumn in xLine.XPathSelectElements("Column"))
                 {
-                    foreach (XElement xColumn in xLine.XPathSelectElements("Column"))
-                    {
-                        sw.Write(string.Concat(Quote, xColumn.Value, Quote, Separator));
-                    }
-                    sw.Write("\r\n");
+                    sw.Write(string.Concat(Quote, xColumn.Value, Quote, Separator));
                 }
+                sw.Write("\r\n");
             }
         }
     }

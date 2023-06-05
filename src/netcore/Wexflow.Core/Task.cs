@@ -92,17 +92,13 @@ namespace Wexflow.Core
             IsStopped = false;
             Logs = new List<string>();
             _xElement = xe;
-            var xId = xe.Attribute("id");
-            if (xId == null) throw new Exception("Task id attribute not found.");
+            XAttribute xId = xe.Attribute("id") ?? throw new Exception("Task id attribute not found.");
             Id = int.Parse(xId.Value);
-            var xName = xe.Attribute("name");
-            if (xName == null) throw new Exception("Task name attribute not found.");
+            XAttribute xName = xe.Attribute("name") ?? throw new Exception("Task name attribute not found.");
             Name = xName.Value;
-            var xDesc = xe.Attribute("description");
-            if (xDesc == null) throw new Exception("Task description attribute not found.");
+            XAttribute xDesc = xe.Attribute("description") ?? throw new Exception("Task description attribute not found.");
             Description = xDesc.Value;
-            var xEnabled = xe.Attribute("enabled");
-            if (xEnabled == null) throw new Exception("Task enabled attribute not found.");
+            XAttribute xEnabled = xe.Attribute("enabled") ?? throw new Exception("Task enabled attribute not found.");
             IsEnabled = bool.Parse(xEnabled.Value);
             IsWaitingForApproval = false;
             Workflow = wf;
@@ -112,28 +108,27 @@ namespace Wexflow.Core
             // settings
             IList<Setting> settings = new List<Setting>();
 
-            foreach (var xSetting in xe.XPathSelectElements("wf:Setting", Workflow.XmlNamespaceManager))
+            foreach (XElement xSetting in xe.XPathSelectElements("wf:Setting", Workflow.XmlNamespaceManager))
             {
                 // setting name
-                var xSettingName = xSetting.Attribute("name");
-                if (xSettingName == null) throw new Exception("Setting name not found");
-                string settingName = xSettingName.Value;
+                XAttribute xSettingName = xSetting.Attribute("name") ?? throw new Exception("Setting name not found");
+                var settingName = xSettingName.Value;
 
                 // setting value
-                var xSettingValue = xSetting.Attribute("value");
+                XAttribute xSettingValue = xSetting.Attribute("value");
                 string settingValue = string.Empty;
                 if (xSettingValue != null) settingValue = xSettingValue.Value;
 
                 // setting attributes
                 IList<Attribute> attributes = new List<Attribute>();
 
-                foreach (var xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName != "name" && attr.Name.LocalName != "value"))
+                foreach (XAttribute xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName != "name" && attr.Name.LocalName != "value"))
                 {
-                    Attribute attr = new Attribute(xAttribute.Name.LocalName, xAttribute.Value);
+                    Attribute attr = new(xAttribute.Name.LocalName, xAttribute.Value);
                     attributes.Add(attr);
                 }
 
-                Setting setting = new Setting(settingName, settingValue, attributes.ToArray());
+                Setting setting = new(settingName, settingValue, attributes.ToArray());
                 settings.Add(setting);
             }
 
@@ -161,15 +156,11 @@ namespace Wexflow.Core
         /// <returns>Setting value.</returns>
         public string GetSetting(string name)
         {
-            var xNode = _xElement.XPathSelectElement(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager);
+            XElement xNode = _xElement.XPathSelectElement(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager);
             if (xNode != null)
             {
-                var xSetting = xNode.Attribute("value");
-                if (xSetting == null)
-                {
-                    throw new Exception("Setting " + name + " value attribute not found.");
-                }
-                return xSetting.Value;
+                XAttribute xSetting = xNode.Attribute("value");
+                return xSetting == null ? throw new Exception("Setting " + name + " value attribute not found.") : xSetting.Value;
             }
             return string.Empty;
         }
@@ -182,7 +173,7 @@ namespace Wexflow.Core
         /// <returns>Setting value.</returns>
         public string GetSetting(string name, string defaultValue)
         {
-            var returnValue = GetSetting(name);
+            string returnValue = GetSetting(name);
 
             if (string.IsNullOrEmpty(returnValue))
             {
@@ -198,9 +189,9 @@ namespace Wexflow.Core
         /// <param name="name">Setting name.</param>
         /// <param name="defaultValue">Default value.</param>
         /// <returns>Setting value.</returns>
-        public T GetSetting<T>(string name, T defaultValue = default(T))
+        public T GetSetting<T>(string name, T defaultValue = default)
         {
-            var returnValue = GetSetting(name);
+            string returnValue = GetSetting(name);
 
             if (string.IsNullOrEmpty(returnValue))
             {
@@ -218,7 +209,7 @@ namespace Wexflow.Core
         /// <returns>Setting value.</returns>
         public int GetSettingInt(string name, int defaultValue)
         {
-            var value = GetSetting(name, defaultValue.ToString());
+            string value = GetSetting(name, defaultValue.ToString());
             return int.Parse(value);
         }
 
@@ -230,7 +221,7 @@ namespace Wexflow.Core
         /// <returns>Setting value.</returns>
         public bool GetSettingBool(string name, bool defaultValue)
         {
-            var value = GetSetting(name, defaultValue.ToString());
+            string value = GetSetting(name, defaultValue.ToString());
             return bool.Parse(value);
         }
 
@@ -243,13 +234,8 @@ namespace Wexflow.Core
         {
             return _xElement.XPathSelectElements(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager).Select(xe =>
             {
-                var xAttribute = xe.Attribute("value");
-                if (xAttribute == null)
-                {
-                    throw new Exception("Setting " + name + " value attribute not found.");
-                }
-
-                return xAttribute.Value;
+                XAttribute xAttribute = xe.Attribute("value");
+                return xAttribute == null ? throw new Exception("Setting " + name + " value attribute not found.") : xAttribute.Value;
             }).ToArray();
         }
 
@@ -279,23 +265,23 @@ namespace Wexflow.Core
         /// <returns>A list of the files loaded by this task through selectFiles setting.</returns>
         public FileInf[] SelectFiles()
         {
-            var files = new List<FileInf>();
-            foreach (var xSelectFile in GetXSettings("selectFiles"))
+            List<FileInf> files = new();
+            foreach (XElement xSelectFile in GetXSettings("selectFiles"))
             {
-                var xTaskId = xSelectFile.Attribute("value");
+                XAttribute xTaskId = xSelectFile.Attribute("value");
                 if (xTaskId != null)
                 {
-                    var taskId = int.Parse(xTaskId.Value);
+                    int taskId = int.Parse(xTaskId.Value);
 
-                    var qf = QueryFiles(Workflow.FilesPerTask[taskId], xSelectFile).ToArray();
+                    FileInf[] qf = QueryFiles(Workflow.FilesPerTask[taskId], xSelectFile).ToArray();
 
                     files.AddRange(qf);
                 }
                 else
                 {
-                    var qf = (from lf in Workflow.FilesPerTask.Values
-                              from f in QueryFiles(lf, xSelectFile)
-                              select f).Distinct().ToArray();
+                    FileInf[] qf = (from lf in Workflow.FilesPerTask.Values
+                                    from f in QueryFiles(lf, xSelectFile)
+                                    select f).Distinct().ToArray();
 
                     files.AddRange(qf);
                 }
@@ -309,20 +295,20 @@ namespace Wexflow.Core
         /// <param name="files">Files to filter.</param>
         /// <param name="xSelectFile">selectFile as an XElement</param>
         /// <returns>A list of files from the tags in selectFiles setting.</returns>
-        public IEnumerable<FileInf> QueryFiles(IEnumerable<FileInf> files, XElement xSelectFile)
+        public static IEnumerable<FileInf> QueryFiles(IEnumerable<FileInf> files, XElement xSelectFile)
         {
-            var fl = new List<FileInf>();
+            List<FileInf> fl = new();
 
             if (xSelectFile.Attributes().Count(t => t.Name != "value") == 1)
             {
                 return files;
             }
 
-            foreach (var file in files)
+            foreach (FileInf file in files)
             {
                 // Check file tags
                 bool ok = true;
-                foreach (var xa in xSelectFile.Attributes())
+                foreach (XAttribute xa in xSelectFile.Attributes())
                 {
                     if (xa.Name != "name" && xa.Name != "value")
                     {
@@ -345,10 +331,10 @@ namespace Wexflow.Core
         /// <returns>A list of the entities loaded by this task through selectEntities setting.</returns>
         public Entity[] SelectEntities()
         {
-            var entities = new List<Entity>();
+            List<Entity> entities = new();
             foreach (string id in GetSettings("selectEntities"))
             {
-                var taskId = int.Parse(id);
+                int taskId = int.Parse(id);
                 entities.AddRange(Workflow.EntitiesPerTask[taskId]);
             }
             return entities.ToArray();
@@ -360,7 +346,7 @@ namespace Wexflow.Core
         /// <returns>An object from the Hashtable through selectObject setting.</returns>
         public object SelectObject()
         {
-            var key = GetSetting("selectObject");
+            string key = GetSetting("selectObject");
             if (SharedMemory.ContainsKey(key))
             {
                 return SharedMemory[key];
@@ -381,7 +367,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
             {
-                var message = BuildLogMsg(msg);
+                string message = BuildLogMsg(msg);
                 Logger.Info(message);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + message);
             }
@@ -396,7 +382,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
             {
-                var message = string.Format(BuildLogMsg(msg), args);
+                string message = string.Format(BuildLogMsg(msg), args);
                 Logger.Info(message);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + message);
             }
@@ -410,7 +396,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
             {
-                var message = BuildLogMsg(msg);
+                string message = BuildLogMsg(msg);
                 Logger.Debug(msg);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  DEBUG - " + message);
             }
@@ -425,7 +411,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
             {
-                var message = string.Format(BuildLogMsg(msg), args);
+                string message = string.Format(BuildLogMsg(msg), args);
                 Logger.DebugFormat(message);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  DEBUG - " + message);
             }
@@ -439,7 +425,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
-                var message = BuildLogMsg(msg);
+                string message = BuildLogMsg(msg);
                 Logger.Error(message);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message);
             }
@@ -454,7 +440,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
-                var message = string.Format(BuildLogMsg(msg), args);
+                string message = string.Format(BuildLogMsg(msg), args);
                 Logger.Error(message);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message);
             }
@@ -469,7 +455,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
-                var message = BuildLogMsg(msg);
+                string message = BuildLogMsg(msg);
                 Logger.Error(message, e);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message + "\r\n" + e);
             }
@@ -485,7 +471,7 @@ namespace Wexflow.Core
         {
             if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
-                var message = string.Format(BuildLogMsg(msg), args);
+                string message = string.Format(BuildLogMsg(msg), args);
                 Logger.Error(message, e);
                 Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + message + "\r\n" + e);
             }

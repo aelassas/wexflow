@@ -28,7 +28,7 @@ namespace Wexflow.Tests
         public void CronTest()
         {
             Thread.Sleep(90 * 1000); // 90 seconds
-            var files = GetFiles(CronFolder);
+            string[] files = GetFiles(CronFolder);
             Assert.AreEqual(1, files.Length);
         }
 

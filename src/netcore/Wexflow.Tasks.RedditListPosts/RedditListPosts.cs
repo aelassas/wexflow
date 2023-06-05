@@ -50,17 +50,17 @@ namespace Wexflow.Tasks.RedditListPosts
             {
                 // Retrieve the authenticated user's recent post history.
                 // Change "new" to "newForced" if you don't want older stickied profile posts to appear first.
-                var posts = reddit.Account.Me.GetPostHistory(sort: "new", limit: MaxResults, show: "all");
+                System.Collections.Generic.List<Reddit.Controllers.Post> posts = reddit.Account.Me.GetPostHistory(sort: "new", limit: MaxResults, show: "all");
 
-                var xdoc = new XDocument(new XElement("Posts"));
+                XDocument xdoc = new(new XElement("Posts"));
 
-                foreach (var post in posts)
+                foreach (Reddit.Controllers.Post post in posts)
                 {
-                    var xpost = new XElement("Post", new XAttribute("id", SecurityElement.Escape(post.Id)), new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit)), new XAttribute("title", SecurityElement.Escape(post.Title)), new XAttribute("upvotes", post.UpVotes), new XAttribute("downvotes", post.DownVotes));
+                    XElement xpost = new("Post", new XAttribute("id", SecurityElement.Escape(post.Id)), new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit)), new XAttribute("title", SecurityElement.Escape(post.Title)), new XAttribute("upvotes", post.UpVotes), new XAttribute("downvotes", post.DownVotes));
                     xdoc.Root.Add(xpost);
                 }
 
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "RedditListPosts", DateTime.Now));
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));

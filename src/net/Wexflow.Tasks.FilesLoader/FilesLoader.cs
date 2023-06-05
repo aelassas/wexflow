@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.FilesLoader
         {
             Info("Loading files...");
 
-            var success = true;
+            bool success = true;
 
             try
             {
@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.FilesLoader
                 success = false;
             }
 
-            var status = Status.Success;
+            Status status = Status.Success;
 
             if (!success)
             {
@@ -73,18 +73,18 @@ namespace Wexflow.Tasks.FilesLoader
 
         private bool LoadFiles()
         {
-            var success = true;
+            bool success = true;
             if (Recursive)
             {
                 foreach (string folder in Folders)
                 {
-                    var files = GetFilesRecursive(folder);
+                    string[] files = GetFilesRecursive(folder);
 
-                    foreach (var file in files)
+                    foreach (string file in files)
                     {
                         if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                         {
-                            var fi = new FileInf(file, Id);
+                            FileInf fi = new FileInf(file, Id);
                             Files.Add(fi);
                             InfoFormat("File loaded: {0}", file);
                         }
@@ -99,7 +99,7 @@ namespace Wexflow.Tasks.FilesLoader
                     {
                         if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                         {
-                            var fi = new FileInf(file, Id);
+                            FileInf fi = new FileInf(file, Id);
                             Files.Add(fi);
                             InfoFormat("File loaded: {0}", file);
                         }

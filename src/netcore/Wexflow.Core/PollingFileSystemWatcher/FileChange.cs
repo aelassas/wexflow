@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace System.IO
 {
 
-    public struct FileChange
+    public readonly struct FileChange
     {
         internal FileChange(string directory, string path, WatcherChangeTypes type)
         {

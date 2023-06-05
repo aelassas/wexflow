@@ -6,10 +6,10 @@ namespace Wexflow.Server
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // Initialize the service to start
-            var servicesToRun = new ServiceBase[]
+            ServiceBase[] servicesToRun = new ServiceBase[]
             {
                 new WexflowServer()
             };
@@ -43,10 +43,7 @@ namespace Wexflow.Server
             foreach (ServiceBase service in servicesToRun)
             {
                 Console.Write("Starting {0} ... ", service.ServiceName);
-                if (onStartMethod != null)
-                {
-                    onStartMethod.Invoke(service, new object[] { new string[] { } });
-                }
+                onStartMethod?.Invoke(service, new object[] { Array.Empty<string>() });
                 Console.WriteLine("Started");
             }
 
@@ -63,10 +60,7 @@ namespace Wexflow.Server
             foreach (ServiceBase service in servicesToRun)
             {
                 Console.Write("Stopping {0} ... ", service.ServiceName);
-                if (onStopMethod != null)
-                {
-                    onStopMethod.Invoke(service, null);
-                }
+                onStopMethod?.Invoke(service, null);
                 Console.WriteLine("Stopped");
             }
 

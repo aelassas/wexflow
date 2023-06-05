@@ -24,18 +24,16 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void ImagesOverlayTest()
         {
-            var images = GetFiles();
+            string[] images = GetFiles();
             Assert.AreEqual(0, images.Length);
             Helper.StartWorkflow(78);
             images = GetFiles();
             Assert.AreEqual(1, images.Length);
 
             // Checking the image size
-            using (Image image = Image.FromFile(images[0]))
-            {
-                Assert.AreEqual(1024, image.Width);
-                Assert.AreEqual(768, image.Height);
-            }
+            using Image image = Image.FromFile(images[0]);
+            Assert.AreEqual(1024, image.Width);
+            Assert.AreEqual(768, image.Height);
         }
 
         private string[] GetFiles()
@@ -45,11 +43,9 @@ namespace Wexflow.NetCore.Tests
 
         private void CheckImageSize(string path)
         {
-            using (Image image = Image.FromFile(path))
-            {
-                Assert.AreEqual(512, image.Width);
-                Assert.AreEqual(384, image.Height);
-            }
+            using Image image = Image.FromFile(path);
+            Assert.AreEqual(512, image.Width);
+            Assert.AreEqual(384, image.Height);
         }
 
     }
