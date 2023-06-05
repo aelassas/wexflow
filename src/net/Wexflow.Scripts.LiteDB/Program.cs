@@ -17,8 +17,7 @@ namespace Wexflow.Scripts.LiteDB
                 Helper.InsertRecords(db, "litedb");
                 db.Dispose();
 
-                var buildDevDatabase = false;
-                bool.TryParse(ConfigurationManager.AppSettings["buildDevDatabase"], out buildDevDatabase);
+                bool.TryParse(ConfigurationManager.AppSettings["buildDevDatabase"], out bool buildDevDatabase);
 
                 if (buildDevDatabase)
                 {
