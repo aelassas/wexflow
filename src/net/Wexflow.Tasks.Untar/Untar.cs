@@ -1,9 +1,10 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
+﻿using ICSharpCode.SharpZipLib.Tar;
+using System;
 using System.IO;
+using System.Text;
 using System.Threading;
-using ICSharpCode.SharpZipLib.Tar;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Untar
 {
@@ -114,7 +115,7 @@ namespace Wexflow.Tasks.Untar
         {
             using (FileStream fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read))
             {
-                TarInputStream tarIn = new TarInputStream(fsIn);
+                TarInputStream tarIn = new TarInputStream(fsIn, Encoding.UTF8);
                 TarEntry tarEntry;
                 while ((tarEntry = tarIn.GetNextEntry()) != null)
                 {

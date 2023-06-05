@@ -1,10 +1,11 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.IO;
-using System.Threading;
-using ICSharpCode.SharpZipLib.GZip;
+﻿using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Tgz
 {
@@ -58,7 +59,7 @@ namespace Wexflow.Tasks.Tgz
                 try
                 {
                     using (var gz = new GZipOutputStream(File.Create(tgzPath)))
-                    using (var tar = new TarOutputStream(gz))
+                    using (var tar = new TarOutputStream(gz, Encoding.UTF8))
                     {
                         foreach (FileInf file in files)
                         {

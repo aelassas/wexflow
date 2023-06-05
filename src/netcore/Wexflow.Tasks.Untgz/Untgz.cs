@@ -1,10 +1,11 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.IO;
-using System.Threading;
-using ICSharpCode.SharpZipLib.GZip;
+﻿using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Untgz
 {
@@ -96,7 +97,7 @@ namespace Wexflow.Tasks.Untgz
             Stream inStream = File.OpenRead(gzArchiveName);
             Stream gzipStream = new GZipInputStream(inStream);
 
-            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
+            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
             tarArchive.ExtractContents(destFolder);
             tarArchive.Close();
 

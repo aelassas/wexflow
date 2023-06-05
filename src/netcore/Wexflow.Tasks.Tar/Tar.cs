@@ -1,9 +1,10 @@
-﻿using System;
-using Wexflow.Core;
-using System.Xml.Linq;
-using System.Threading;
+﻿using ICSharpCode.SharpZipLib.Tar;
+using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Tar;
+using System.Text;
+using System.Threading;
+using System.Xml.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Tasks.Tar
 {
@@ -56,7 +57,7 @@ namespace Wexflow.Tasks.Tar
 
                 try
                 {
-                    using (var tar = new TarOutputStream(File.Create(tarPath)))
+                    using (var tar = new TarOutputStream(File.Create(tarPath), Encoding.UTF8))
                     {
                         foreach (FileInf file in files)
                         {
