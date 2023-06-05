@@ -140,7 +140,7 @@ namespace Wexflow.Core.Db
             var hashBytes = MD5.HashData(inputBytes);
 
             // Convert the byte array to hexadecimal string
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < hashBytes.Length; i++)
             {
                 sb.Append(hashBytes[i].ToString("x2"));
