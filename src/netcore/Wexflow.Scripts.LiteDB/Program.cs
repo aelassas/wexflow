@@ -23,10 +23,10 @@ namespace Wexflow.Scripts.LiteDB
                 Helper.InsertRecords(db, "litedb", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();
 
-                var buildAllDatabases = false;
-                bool.TryParse(config["buildAllDatabases"], out buildAllDatabases);
+                var buildDevDatabases = false;
+                bool.TryParse(config["buildDevDatabases"], out buildDevDatabases);
 
-                if (buildAllDatabases)
+                if (buildDevDatabases)
                 {
                     BuildDatabase("Windows", "windows");
                     BuildDatabase("Linux", "linux");
