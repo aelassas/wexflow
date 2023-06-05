@@ -92,7 +92,7 @@ namespace Wexflow.Tasks.Untgz
             return success;
         }
 
-        private void ExtractTGZ(String gzArchiveName, String destFolder)
+        private static void ExtractTGZ(String gzArchiveName, String destFolder)
         {
             Stream inStream = File.OpenRead(gzArchiveName);
             Stream gzipStream = new GZipInputStream(inStream);

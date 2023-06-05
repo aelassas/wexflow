@@ -111,7 +111,7 @@ namespace Wexflow.Tasks.Untar
                 // Remove any root e.g. '\' because a PathRooted filename defeats Path.Combine
                 if (Path.IsPathRooted(name))
                 {
-                    name = name.Substring(Path.GetPathRoot(name).Length);
+                    name = name[Path.GetPathRoot(name).Length..];
                 }
 
                 // Apply further name transformations here as necessary
@@ -120,7 +120,7 @@ namespace Wexflow.Tasks.Untar
                 string directoryName = Path.GetDirectoryName(outName);
                 Directory.CreateDirectory(directoryName);
 
-                FileStream outStr = new FileStream(outName, FileMode.Create);
+                var outStr = new FileStream(outName, FileMode.Create);
 
                 tarIn.CopyEntryContents(outStr);
 
