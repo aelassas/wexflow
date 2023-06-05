@@ -94,43 +94,42 @@ namespace Wexflow.Tasks.Untar
 
         private static void ExtractTarByEntry(string tarFileName, string targetDir)
         {
-            using (FileStream fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read))
+            using var fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read);
+
+            var tarIn = new TarInputStream(fsIn, Encoding.UTF8);
+            TarEntry tarEntry;
+            while ((tarEntry = tarIn.GetNextEntry()) != null)
             {
-                TarInputStream tarIn = new TarInputStream(fsIn, Encoding.UTF8);
-                TarEntry tarEntry;
-                while ((tarEntry = tarIn.GetNextEntry()) != null)
+                if (tarEntry.IsDirectory)
                 {
-                    if (tarEntry.IsDirectory)
-                    {
-                        continue;
-                    }
-                    // Converts the unix forward slashes in the filenames to windows backslashes
-                    //
-                    string name = tarEntry.Name.Replace('/', Path.DirectorySeparatorChar);
-
-                    // Remove any root e.g. '\' because a PathRooted filename defeats Path.Combine
-                    if (Path.IsPathRooted(name))
-                    {
-                        name = name.Substring(Path.GetPathRoot(name).Length);
-                    }
-
-                    // Apply further name transformations here as necessary
-                    string outName = Path.Combine(targetDir, name);
-
-                    string directoryName = Path.GetDirectoryName(outName);
-                    Directory.CreateDirectory(directoryName);
-
-                    FileStream outStr = new FileStream(outName, FileMode.Create);
-
-                    tarIn.CopyEntryContents(outStr);
-
-                    outStr.Close();
-                    // Set the modification date/time. This approach seems to solve timezone issues.
-                    DateTime myDt = DateTime.SpecifyKind(tarEntry.ModTime, DateTimeKind.Utc);
-                    File.SetLastWriteTime(outName, myDt);
+                    continue;
                 }
-                tarIn.Close();
+                // Converts the unix forward slashes in the filenames to windows backslashes
+                //
+                string name = tarEntry.Name.Replace('/', Path.DirectorySeparatorChar);
+
+                // Remove any root e.g. '\' because a PathRooted filename defeats Path.Combine
+                if (Path.IsPathRooted(name))
+                {
+                    name = name.Substring(Path.GetPathRoot(name).Length);
+                }
+
+                // Apply further name transformations here as necessary
+                string outName = Path.Combine(targetDir, name);
+
+                string directoryName = Path.GetDirectoryName(outName);
+                Directory.CreateDirectory(directoryName);
+
+                FileStream outStr = new FileStream(outName, FileMode.Create);
+
+                tarIn.CopyEntryContents(outStr);
+
+                outStr.Close();
+                // Set the modification date/time. This approach seems to solve timezone issues.
+                DateTime myDt = DateTime.SpecifyKind(tarEntry.ModTime, DateTimeKind.Utc);
+                File.SetLastWriteTime(outName, myDt);
             }
+            tarIn.Close();
         }
     }
 }
