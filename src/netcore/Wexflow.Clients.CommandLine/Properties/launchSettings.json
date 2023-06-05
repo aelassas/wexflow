@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Wexflow.Clients.CommandLine": {
+      "commandName": "Project",
+      "commandLineArgs": "-o start -i 41 -w"
+    }
+  }
+}
