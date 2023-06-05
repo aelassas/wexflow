@@ -302,10 +302,7 @@ namespace Wexflow.Core
                     break;
             }
 
-            if (Database != null)
-            {
-                Database.Init();
-            }
+            Database?.Init();
 
             LoadGlobalVariables();
 
@@ -1971,10 +1968,7 @@ namespace Wexflow.Core
             }
             finally
             {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
+                stream?.Close();
             }
 
             //file is not locked

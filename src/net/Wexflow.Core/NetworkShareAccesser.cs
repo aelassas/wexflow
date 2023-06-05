@@ -48,6 +48,7 @@ namespace Wexflow.Core
 
         #region Consts
 
+#pragma warning disable IDE0051 // Supprimer les membres privés non utilisés
         private const int RESOURCE_CONNECTED = 0x00000001;
         private const int RESOURCE_GLOBALNET = 0x00000002;
         private const int RESOURCE_REMEMBERED = 0x00000003;
@@ -102,7 +103,7 @@ namespace Wexflow.Core
         private const int ERROR_DEVICE_IN_USE = 2404;
         private const int ERROR_NOT_CONNECTED = 2250;
         private const int ERROR_OPEN_FILES = 2401;
-
+#pragma warning restore IDE0051 // Supprimer les membres privés non utilisés
         #endregion
 
         #region PInvoke Signatures

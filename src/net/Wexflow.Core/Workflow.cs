@@ -640,15 +640,12 @@ namespace Wexflow.Core
 
         private If XIfToIf(XElement xIf)
         {
-            XAttribute xId = xIf.Attribute("id");
-            if (xId == null) throw new Exception("If id attribute not found.");
-            int id = int.Parse(xId.Value);
-            XAttribute xParent = xIf.Attribute("parent");
-            if (xParent == null) throw new Exception("If parent attribute not found.");
+            XAttribute xId = xIf.Attribute("id") ?? throw new Exception("If id attribute not found.");
+            var id = int.Parse(xId.Value);
+            XAttribute xParent = xIf.Attribute("parent") ?? throw new Exception("If parent attribute not found.");
             int parentId = int.Parse(xParent.Value);
-            XAttribute xIfId = xIf.Attribute("if");
-            if (xIfId == null) throw new Exception("If attribute not found.");
-            int ifId = int.Parse(xIfId.Value);
+            XAttribute xIfId = xIf.Attribute("if") ?? throw new Exception("If attribute not found.");
+            var ifId = int.Parse(xIfId.Value);
 
             // Do nodes
             Node[] doNodes = xIf.XPathSelectElement("wf:Do", XmlNamespaceManager)
@@ -680,15 +677,12 @@ namespace Wexflow.Core
 
         private While XWhileToWhile(XElement xWhile)
         {
-            XAttribute xId = xWhile.Attribute("id");
-            if (xId == null) throw new Exception("While Id attribute not found.");
-            int id = int.Parse(xId.Value);
-            XAttribute xParent = xWhile.Attribute("parent");
-            if (xParent == null) throw new Exception("While parent attribute not found.");
+            XAttribute xId = xWhile.Attribute("id") ?? throw new Exception("While Id attribute not found.");
+            var id = int.Parse(xId.Value);
+            XAttribute xParent = xWhile.Attribute("parent") ?? throw new Exception("While parent attribute not found.");
             int parentId = int.Parse(xParent.Value);
-            XAttribute xWhileId = xWhile.Attribute("while");
-            if (xWhileId == null) throw new Exception("While attribute not found.");
-            int whileId = int.Parse(xWhileId.Value);
+            XAttribute xWhileId = xWhile.Attribute("while") ?? throw new Exception("While attribute not found.");
+            var whileId = int.Parse(xWhileId.Value);
 
             Node[] doNodes = xWhile
                 .Elements()
@@ -704,23 +698,19 @@ namespace Wexflow.Core
 
         private Switch XSwitchToSwitch(XElement xSwitch)
         {
-            XAttribute xId = xSwitch.Attribute("id");
-            if (xId == null) throw new Exception("Switch Id attribute not found.");
-            int id = int.Parse(xId.Value);
-            XAttribute xParent = xSwitch.Attribute("parent");
-            if (xParent == null) throw new Exception("Switch parent attribute not found.");
-            int parentId = int.Parse(xParent.Value);
-            XAttribute xSwitchId = xSwitch.Attribute("switch");
-            if (xSwitchId == null) throw new Exception("Switch attribute not found.");
+            XAttribute xId = xSwitch.Attribute("id") ?? throw new Exception("Switch Id attribute not found.");
+            var id = int.Parse(xId.Value);
+            XAttribute xParent = xSwitch.Attribute("parent") ?? throw new Exception("Switch parent attribute not found.");
+            var parentId = int.Parse(xParent.Value);
+            XAttribute xSwitchId = xSwitch.Attribute("switch") ?? throw new Exception("Switch attribute not found.");
             int switchId = int.Parse(xSwitchId.Value);
 
             IEnumerable<Case> cases = xSwitch
                 .XPathSelectElements("wf:Case", XmlNamespaceManager)
                 .Select(xCase =>
                 {
-                    XAttribute xValue = xCase.Attribute("value");
-                    if (xValue == null) throw new Exception("Case value attribute not found.");
-                    string val = xValue.Value;
+                    XAttribute xValue = xCase.Attribute("value") ?? throw new Exception("Case value attribute not found.");
+                    var val = xValue.Value;
 
                     Node[] nodes = xCase
                         .Elements()
@@ -758,15 +748,12 @@ namespace Wexflow.Core
             switch (xNode.Name.LocalName)
             {
                 case "Task":
-                    XAttribute xId = xNode.Attribute("id");
-                    if (xId == null) throw new Exception("Task id not found.");
+                    XAttribute xId = xNode.Attribute("id") ?? throw new Exception("Task id not found.");
                     int id = int.Parse(xId.Value);
 
                     XAttribute xParentId = xNode.XPathSelectElement("wf:Parent", XmlNamespaceManager)
-                        .Attribute("id");
-
-                    if (xParentId == null) throw new Exception("Parent id not found.");
-                    int parentId = int.Parse(xParentId.Value);
+                        .Attribute("id") ?? throw new Exception("Parent id not found.");
+                    var parentId = int.Parse(xParentId.Value);
 
                     Node node = new Node(id, parentId);
                     return node;
@@ -1230,9 +1217,9 @@ namespace Wexflow.Core
 
                     tasks.AddRange(ifTasks);
                 }
-                else if (node is While)
+                else if (node is While @while)
                 {
-                    tasks.AddRange(NodesToTasks(((While)node).Nodes));
+                    tasks.AddRange(NodesToTasks(@while.Nodes));
                 }
                 else if (node is Switch @switch)
                 {

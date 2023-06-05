@@ -92,17 +92,13 @@ namespace Wexflow.Core
             IsStopped = false;
             Logs = new List<string>();
             _xElement = xe;
-            XAttribute xId = xe.Attribute("id");
-            if (xId == null) throw new Exception("Task id attribute not found.");
+            XAttribute xId = xe.Attribute("id") ?? throw new Exception("Task id attribute not found.");
             Id = int.Parse(xId.Value);
-            XAttribute xName = xe.Attribute("name");
-            if (xName == null) throw new Exception("Task name attribute not found.");
+            XAttribute xName = xe.Attribute("name") ?? throw new Exception("Task name attribute not found.");
             Name = xName.Value;
-            XAttribute xDesc = xe.Attribute("description");
-            if (xDesc == null) throw new Exception("Task description attribute not found.");
+            XAttribute xDesc = xe.Attribute("description") ?? throw new Exception("Task description attribute not found.");
             Description = xDesc.Value;
-            XAttribute xEnabled = xe.Attribute("enabled");
-            if (xEnabled == null) throw new Exception("Task enabled attribute not found.");
+            XAttribute xEnabled = xe.Attribute("enabled") ?? throw new Exception("Task enabled attribute not found.");
             IsEnabled = bool.Parse(xEnabled.Value);
             IsWaitingForApproval = false;
             Workflow = wf;
@@ -115,8 +111,7 @@ namespace Wexflow.Core
             foreach (XElement xSetting in xe.XPathSelectElements("wf:Setting", Workflow.XmlNamespaceManager))
             {
                 // setting name
-                XAttribute xSettingName = xSetting.Attribute("name");
-                if (xSettingName == null) throw new Exception("Setting name not found");
+                XAttribute xSettingName = xSetting.Attribute("name") ?? throw new Exception("Setting name not found");
                 string settingName = xSettingName.Value;
 
                 // setting value
