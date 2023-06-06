@@ -8,7 +8,13 @@
   <Task id="$int" name="HttpPatch" description="$string" enabled="true|false">
     <!-- The URL. Ex: http://localhost:8000/wexflow/start/2 -->
     <Setting name="url" value="$string" />
-    <!-- The PATCH parameters. Ex: key1=value1&amp;key2=value2&amp;key3=value3-->
-    <Setting name="params" value="$string" />
+    <!-- Optional. Ex: Basic or Bearer.-->
+    <Setting name="authorizationScheme" value="$string" />
+    <!-- Optional. authorization parameter value.-->
+    <Setting name="authorizationParameter" value="$string" />
+    <!-- Optional. The payload.-->
+    <Setting name="payload" value="$string" />
+    <!-- Optional. The type. Defaults to application/json -->
+    <Setting name="type" value="$string" />
   </Task>
 </Tasks>
