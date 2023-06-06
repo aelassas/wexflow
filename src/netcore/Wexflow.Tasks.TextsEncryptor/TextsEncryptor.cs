@@ -88,9 +88,10 @@ namespace Wexflow.Tasks.TextsEncryptor
             var saltStringBytes = Generate128BitsOfRandomEntropy();
             var ivStringBytes = Generate128BitsOfRandomEntropy();
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, derivationIterations);
+            using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, derivationIterations, HashAlgorithmName.SHA256);
             var keyBytes = password.GetBytes(keySize / 8);
-            using RijndaelManaged symmetricKey = new();
+            //using RijndaelManaged symmetricKey = new();
+            using var symmetricKey = Aes.Create();
             symmetricKey.BlockSize = 128;
             symmetricKey.Mode = CipherMode.CBC;
             symmetricKey.Padding = PaddingMode.PKCS7;
@@ -111,7 +112,7 @@ namespace Wexflow.Tasks.TextsEncryptor
         private static byte[] Generate128BitsOfRandomEntropy()
         {
             var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
-            using (RNGCryptoServiceProvider rngCsp = new())
+            using (var rngCsp = RandomNumberGenerator.Create())
             {
                 // Fill the array with cryptographically secure random bytes.
                 rngCsp.GetBytes(randomBytes);

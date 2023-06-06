@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.TextsDecryptor
             }
         }
 
-        private string Decrypt(string cipherText, string passPhrase, int keysize, int derivationIterations)
+        private static string Decrypt(string cipherText, string passPhrase, int keysize, int derivationIterations)
         {
             // Get the complete stream of bytes that represent:
             // [32 bytes of Salt] + [32 bytes of IV] + [n bytes of CipherText]
@@ -88,9 +88,10 @@ namespace Wexflow.Tasks.TextsDecryptor
             // Get the actual cipher text bytes by removing the first 64 bytes from the cipherText string.
             var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip(keysize / 8 * 2).Take(cipherTextBytesWithSaltAndIv.Length - (keysize / 8 * 2)).ToArray();
 
-            using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, derivationIterations);
+            using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, derivationIterations, HashAlgorithmName.SHA256);
             var keyBytes = password.GetBytes(keysize / 8);
-            using RijndaelManaged symmetricKey = new();
+            //using RijndaelManaged symmetricKey = new();
+            using var symmetricKey = Aes.Create();
             symmetricKey.BlockSize = 128;
             symmetricKey.Mode = CipherMode.CBC;
             symmetricKey.Padding = PaddingMode.PKCS7;

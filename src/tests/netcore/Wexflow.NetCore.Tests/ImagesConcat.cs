@@ -36,17 +36,17 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(768, image.Height);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(DestFolder, "*.jpg");
         }
 
-        private void CheckImageSize(string path)
-        {
-            using var image = Image.FromFile(path);
-            Assert.AreEqual(512, image.Width);
-            Assert.AreEqual(384, image.Height);
-        }
+        //private static void CheckImageSize(string path)
+        //{
+        //    using var image = Image.FromFile(path);
+        //    Assert.AreEqual(512, image.Width);
+        //    Assert.AreEqual(384, image.Height);
+        //}
 
     }
 }

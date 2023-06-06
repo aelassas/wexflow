@@ -77,16 +77,14 @@ namespace Wexflow.Tasks.Sha256
 
         private static string GetSha1(string filePath)
         {
+            using var stream = File.OpenRead(filePath);
+            using var alg = SHA256.Create();
             StringBuilder sb = new();
-            using (SHA256Managed sha256 = new())
-            {
-                using var stream = File.OpenRead(filePath);
-                var bytes = sha256.ComputeHash(stream);
 
-                foreach (var bt in bytes)
-                {
-                    _ = sb.Append(bt.ToString("x2"));
-                }
+            var hashValue = alg.ComputeHash(stream);
+            foreach (var bt in hashValue)
+            {
+                _ = sb.Append(bt.ToString("x2"));
             }
             return sb.ToString();
         }

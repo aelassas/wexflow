@@ -1645,7 +1645,9 @@ namespace Wexflow.Core
                     _stopCalled = true;
                     if (_thread != null)
                     {
+#pragma warning disable SYSLIB0006 // Le type ou le membre est obsolète
                         _thread.Abort();
+#pragma warning restore SYSLIB0006 // Le type ou le membre est obsolète
                         _thread.Join();
                     }
                     foreach (var task in Tasks)
@@ -1710,9 +1712,9 @@ namespace Wexflow.Core
             {
                 try
                 {
-#pragma warning disable 618
+#pragma warning disable CS0618 // Le type ou le membre est obsolète
                     _thread.Suspend();
-#pragma warning restore 618
+#pragma warning restore CS0618 // Le type ou le membre est obsolète
                     IsPaused = true;
                     Database.IncrementPendingCount();
                     Database.DecrementRunningCount();
@@ -1745,9 +1747,9 @@ namespace Wexflow.Core
             {
                 try
                 {
-#pragma warning disable 618
+#pragma warning disable CS0618 // Le type ou le membre est obsolète
                     _thread.Resume();
-#pragma warning restore 618
+#pragma warning restore CS0618 // Le type ou le membre est obsolète
                     Database.IncrementRunningCount();
                     Database.DecrementPendingCount();
                     var entry = Database.GetEntry(Id, InstanceId);

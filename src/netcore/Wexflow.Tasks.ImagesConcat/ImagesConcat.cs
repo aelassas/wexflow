@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.ImagesConcat
 {
+    [SupportedOSPlatform("windows")]
     public class ImagesConcat : Task
     {
         public ImagesConcat(XElement xe, Workflow wf)

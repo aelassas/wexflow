@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.ImagesOverlay
 {
+    [SupportedOSPlatform("windows")]
     public class ImagesOverlay : Task
     {
         public ImagesOverlay(XElement xe, Workflow wf)

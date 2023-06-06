@@ -119,11 +119,13 @@ namespace Wexflow.Tasks.Sql
                     }
                     break;
                 case Type.Access:
+#pragma warning disable CA1416 // Valider la compatibilité de la plateforme
                     using (OleDbConnection conn = new(ConnectionString))
-                    {
-                        OleDbCommand comm = new(sql, conn);
-                        ExecSql(conn, comm);
-                    }
+                        {
+                            OleDbCommand comm = new(sql, conn);
+                            ExecSql(conn, comm);
+                        }
+#pragma warning restore CA1416 // Valider la compatibilité de la plateforme
                     break;
                 case Type.Oracle:
                     using (OracleConnection conn = new(ConnectionString))
@@ -170,7 +172,7 @@ namespace Wexflow.Tasks.Sql
             }
         }
 
-        private void ExecSql(DbConnection conn, DbCommand comm)
+        private static void ExecSql(DbConnection conn, DbCommand comm)
         {
             conn.Open();
             _ = comm.ExecuteNonQuery();

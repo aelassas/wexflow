@@ -2,9 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<DebugType>Full</DebugType>
-    <Platforms>AnyCPU;x64;x86</Platforms> 
+    <DebugType>Full</DebugType>
+    <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>6.7.0</Version>
+    <AssemblyVersion>6.7.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -3,12 +3,14 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.ImagesResizer
 {
+    [SupportedOSPlatform("windows")]
     public class ImagesResizer : Task
     {
         public int Width { get; set; }
@@ -86,7 +88,7 @@ namespace Wexflow.Tasks.ImagesResizer
             }
         }
 
-        private Bitmap ResizeImage(Image image, int width, int height)
+        private static Bitmap ResizeImage(Image image, int width, int height)
         {
             Rectangle destRect = new(0, 0, width, height);
             Bitmap destImage = new(width, height);

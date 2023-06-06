@@ -140,11 +140,15 @@ namespace Wexflow.Tasks.SqlToCsv
                     }
                     break;
                 case Type.Access:
+
+#pragma warning disable CA1416 // Valider la compatibilité de la plateforme
                     using (OleDbConnection connection = new(ConnectionString))
                     using (OleDbCommand command = new(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
+#pragma warning restore CA1416 // Valider la compatibilité de la plateforme
+
                     break;
                 case Type.Oracle:
                     using (OracleConnection connection = new(ConnectionString))

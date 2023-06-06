@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -21,6 +22,7 @@ namespace Wexflow.Tasks.ImagesTransformer
         Wmf
     }
 
+    [SupportedOSPlatform("windows")]
     public class ImagesTransformer : Task
     {
         public string OutputFilePattern { get; private set; }

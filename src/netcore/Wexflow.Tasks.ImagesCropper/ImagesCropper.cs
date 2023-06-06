@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.ImagesCropper
 {
+    [SupportedOSPlatform("windows")]
     public class ImagesCropper : Task
     {
         public int Width { get; set; }
@@ -88,7 +90,7 @@ namespace Wexflow.Tasks.ImagesCropper
             }
         }
 
-        private Image Crop(Image src, int x, int y, int width, int height)
+        private static Image Crop(Image src, int x, int y, int width, int height)
         {
             Rectangle cropRect = new(x, y, width, height);
             Bitmap target = new(cropRect.Width, cropRect.Height);

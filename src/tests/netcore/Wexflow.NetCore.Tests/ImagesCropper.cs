@@ -1,10 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace Wexflow.NetCore.Tests
 {
+
     [TestClass]
+    [SupportedOSPlatform("windows")]
     public class ImagesCropper
     {
         private static readonly string Dest1 = @"C:\WexflowTesting\ImagesCropperDest\image1.jpg";
@@ -66,7 +69,7 @@ namespace Wexflow.NetCore.Tests
             CheckImageSize(Dest3);
         }
 
-        private void CheckImageSize(string path)
+        private static void CheckImageSize(string path)
         {
             using var image = Image.FromFile(path);
             Assert.AreEqual(512, image.Width);
