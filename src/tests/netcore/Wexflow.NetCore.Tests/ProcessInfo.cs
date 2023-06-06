@@ -37,7 +37,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(1, count);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(ProcessInfoFolder, "ProcessInfo_*.xml");
         }

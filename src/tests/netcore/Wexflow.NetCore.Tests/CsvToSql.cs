@@ -42,12 +42,12 @@ namespace Wexflow.NetCore.Tests
             }
         }
 
-        private string[] GetSqlScripts()
+        private static string[] GetSqlScripts()
         {
             return Directory.GetFiles(Dest, "csv*.sql");
         }
 
-        private void DeleteSqlScripts()
+        private static void DeleteSqlScripts()
         {
             var files = GetSqlScripts();
             foreach (var file in files)

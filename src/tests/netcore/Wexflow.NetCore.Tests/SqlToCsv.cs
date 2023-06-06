@@ -39,7 +39,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(ExpectedResult, content);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(SqlToCsvFolder, "SqlToCsv_*.csv");
         }

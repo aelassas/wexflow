@@ -147,12 +147,12 @@ namespace Wexflow.Tasks.FilesLoaderEx
             }
         }
 
-        private string[] GetFilesRecursive(string dir)
+        private static string[] GetFilesRecursive(string dir)
         {
             return Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories).OrderBy(f => f).ToArray();
         }
 
-        private void RemoveRange(List<FileInf> items, IEnumerable<FileInf> remove)
+        private static void RemoveRange(List<FileInf> items, IEnumerable<FileInf> remove)
         {
             foreach (var r in remove)
             {

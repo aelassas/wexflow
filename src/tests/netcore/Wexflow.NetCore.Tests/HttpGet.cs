@@ -30,7 +30,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(1, files.Length);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Helper.GetFiles(DestDir, "*.*", SearchOption.TopDirectoryOnly);
         }

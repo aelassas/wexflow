@@ -34,7 +34,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(2, files.Length);
         }
 
-        private string[] GetFiles(string dir)
+        private static string[] GetFiles(string dir)
         {
             return Directory.GetFiles(dir);
         }

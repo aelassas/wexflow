@@ -61,7 +61,7 @@ namespace Wexflow.NetCore.Tests
             // TODO sftp and ftps
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(Temp, "ListFiles_*.xml", SearchOption.AllDirectories);
         }

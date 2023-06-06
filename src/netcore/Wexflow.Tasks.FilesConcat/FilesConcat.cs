@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.FilesConcat
                     _ = builder.Append(Path.GetFileNameWithoutExtension(file.FileName));
                     if (i < files.Length - 1)
                     {
-                        _ = builder.Append("_");
+                        _ = builder.Append('_');
                     }
                 }
 

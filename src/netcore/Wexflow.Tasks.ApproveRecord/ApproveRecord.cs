@@ -733,7 +733,7 @@ namespace Wexflow.Tasks.ApproveRecord
             return tasks.ToArray();
         }
 
-        private void Send(string host, int port, bool enableSsl, string user, string password, string to, string from, string subject, string body)
+        private static void Send(string host, int port, bool enableSsl, string user, string password, string to, string from, string subject, string body)
         {
             SmtpClient smtp = new()
             {

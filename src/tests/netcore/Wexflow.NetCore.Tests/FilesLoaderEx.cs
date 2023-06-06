@@ -101,7 +101,7 @@ namespace Wexflow.NetCore.Tests
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
 
-        public void TestInitialize(int workflowId)
+        public static void TestInitialize(int workflowId)
         {
             var tempFolder = Path.Combine(Helper.TempFolder, workflowId.ToString());
             if (!Directory.Exists(tempFolder))
@@ -117,7 +117,7 @@ namespace Wexflow.NetCore.Tests
         {
         }
 
-        public void Execute(int workflowId, string expectedResult)
+        public static void Execute(int workflowId, string expectedResult)
         {
             TestInitialize(workflowId);
             _ = Helper.StartWorkflow(workflowId);

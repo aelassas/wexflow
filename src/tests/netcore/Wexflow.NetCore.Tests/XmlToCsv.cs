@@ -39,12 +39,12 @@ namespace Wexflow.NetCore.Tests
             }
         }
 
-        private string[] GetCsvs()
+        private static string[] GetCsvs()
         {
             return Directory.GetFiles(Dest, "csv*.csv");
         }
 
-        private void DeleteCsvs()
+        private static void DeleteCsvs()
         {
             var files = GetCsvs();
             foreach (var file in files)

@@ -84,7 +84,7 @@ namespace Wexflow.Tasks.FilesEqual
             return new TaskStatus(status, false);
         }
 
-        private bool FileEquals(string path1, string path2)
+        private static bool FileEquals(string path1, string path2)
         {
             var file1 = File.ReadAllBytes(path1);
             var file2 = File.ReadAllBytes(path2);

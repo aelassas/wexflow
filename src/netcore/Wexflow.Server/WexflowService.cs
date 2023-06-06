@@ -2677,10 +2677,7 @@ namespace Wexflow.Server
             return xscase;
         }
 
-        private Core.ExecutionGraph.Node GetStartupNode(IEnumerable<Core.ExecutionGraph.Node> nodes)
-        {
-            return nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.StartId);
-        }
+        private static Core.ExecutionGraph.Node GetStartupNode(IEnumerable<Core.ExecutionGraph.Node> nodes) => nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.StartId);
 
         /// <summary>
         /// Returns status count.
@@ -3158,8 +3155,8 @@ namespace Wexflow.Server
         /// <returns></returns>
         private int GenerateRandomNumber()
         {
-            var _min = 1000;
-            var _max = 9999;
+            const int _min = 1000;
+            const int _max = 9999;
             Random _rdm = new();
             return _rdm.Next(_min, _max);
         }
@@ -3176,7 +3173,7 @@ namespace Wexflow.Server
         /// <param name="from"></param>
         /// <param name="subject"></param>
         /// <param name="body"></param>
-        private void Send(string host, int port, bool enableSsl, string user, string password, string to, string from, string subject, string body)
+        private static void Send(string host, int port, bool enableSsl, string user, string password, string to, string from, string subject, string body)
         {
             SmtpClient smtp = new()
             {
@@ -3607,7 +3604,7 @@ namespace Wexflow.Server
         /// </summary>
         /// <param name="filePath">File path.</param>
         /// <returns>File size.</returns>
-        private string GetFileSize(string filePath)
+        private static string GetFileSize(string filePath)
         {
             if (File.Exists(filePath))
             {

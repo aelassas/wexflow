@@ -30,7 +30,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(2, files.Length);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(MailsSenderFolder, "*.txt");
         }

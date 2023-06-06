@@ -34,7 +34,7 @@ namespace Wexflow.NetCore.Tests
             Assert.IsTrue(File.Exists(File2));
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Helper.GetFiles(DestDir, "*.*", SearchOption.TopDirectoryOnly);
         }

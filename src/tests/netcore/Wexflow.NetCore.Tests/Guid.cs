@@ -42,7 +42,7 @@ namespace Wexflow.NetCore.Tests
             }
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(GuidFolder, "Guid_*.xml");
         }

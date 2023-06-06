@@ -83,14 +83,14 @@ namespace Wexflow.Tasks.MailsSender
             var from = mailsSender.ParseVariables(xe.XPathSelectElement("From").Value);
             var to = mailsSender.ParseVariables(xe.XPathSelectElement("To").Value).Split(',');
 
-            string[] cc = { };
+            string[] cc = System.Array.Empty<string>();
             var ccElement = xe.XPathSelectElement("Cc");
             if (ccElement != null)
             {
                 cc = mailsSender.ParseVariables(ccElement.Value).Split(',');
             }
 
-            string[] bcc = { };
+            string[] bcc = System.Array.Empty<string>();
             var bccElement = xe.XPathSelectElement("Bcc");
             if (bccElement != null)
             {

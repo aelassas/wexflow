@@ -98,7 +98,7 @@ namespace Wexflow.Tasks.FilesLoader
             return new TaskStatus(status, false);
         }
 
-        private string[] GetFilesRecursive(string dir)
+        private static string[] GetFilesRecursive(string dir)
         {
             return Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
         }

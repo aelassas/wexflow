@@ -54,7 +54,7 @@ namespace Wexflow.NetCore.Tests
             }
         }
 
-        private void DeleteXmls()
+        private static void DeleteXmls()
         {
             foreach (var file in Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml"))
             {

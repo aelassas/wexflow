@@ -51,7 +51,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(_expectedResult, content);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(FilesInfoFolder, "FilesInfo_*.xml");
         }

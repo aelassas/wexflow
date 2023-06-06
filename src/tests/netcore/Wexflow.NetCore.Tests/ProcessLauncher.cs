@@ -32,7 +32,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(true, File.Exists(Dest));
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(Mp3Folder, "*.mp3");
         }

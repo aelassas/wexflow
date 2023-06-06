@@ -8,7 +8,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.ProcessLauncher
 {
-    public class ProcessLauncher : Task
+    public partial class ProcessLauncher : Task
     {
         public string ProcessPath { get; set; }
         public string ProcessCmd { get; set; }
@@ -58,8 +58,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                 {
                     cmd = ProcessCmd.Replace(string.Format("{{{0}}}", VarFilePath), string.Format("\"{0}\"", file.Path));
 
-                    const string outputRegexPattern = @"{\$output:(?:\$fileNameWithoutExtension|\$fileName)(?:[a-zA-Z0-9._-]*})";
-                    Regex outputRegex = new(outputRegexPattern);
+                    var outputRegex = OutputRegex();
                     var m = outputRegex.Match(cmd);
 
                     if (m.Success)
@@ -180,5 +179,8 @@ namespace Wexflow.Tasks.ProcessLauncher
         {
             ErrorFormat("{0}", outLine.Data);
         }
+
+        [GeneratedRegex("{\\$output:(?:\\$fileNameWithoutExtension|\\$fileName)(?:[a-zA-Z0-9._-]*})")]
+        private static partial Regex OutputRegex();
     }
 }

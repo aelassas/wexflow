@@ -13,7 +13,7 @@ namespace Wexflow.Server
 {
     public class Startup
     {
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -71,7 +71,7 @@ namespace Wexflow.Server
             });
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
             _ = services.Configure<KestrelServerOptions>(options =>
             {

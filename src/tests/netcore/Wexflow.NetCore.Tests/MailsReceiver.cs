@@ -30,7 +30,7 @@ namespace Wexflow.NetCore.Tests
             Assert.IsTrue(files.Length > 0);
         }
 
-        private string[] GetFiles()
+        private static string[] GetFiles()
         {
             return Directory.GetFiles(MailsReceiverFolder, "*.*");
         }

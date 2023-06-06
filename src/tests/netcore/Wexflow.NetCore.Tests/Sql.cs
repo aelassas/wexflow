@@ -61,7 +61,7 @@ namespace Wexflow.NetCore.Tests
             // TODO sqlserver|access|oracle|mysql|postgresql|teradata
         }
 
-        private void InitDataTable()
+        private static void InitDataTable()
         {
             const string sql =
                   "UPDATE Data SET Description = 'Hello World Description 1!' WHERE Id = 1;"

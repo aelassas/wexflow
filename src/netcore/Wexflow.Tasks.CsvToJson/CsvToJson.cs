@@ -85,7 +85,7 @@ namespace Wexflow.Tasks.CsvToJson
             return success;
         }
 
-        private string Convert(string path, string separator)
+        private static string Convert(string path, string separator)
         {
             List<string[]> csv = new();
             var lines = File.ReadAllLines(path);
