@@ -49,8 +49,10 @@ namespace Wexflow.Tasks.HttpPatch
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(AuthorizationScheme, AuthorizationParameter);
                     }
 
-                    var request = new HttpRequestMessage(new HttpMethod("PATCH"), Url);
-                    request.Content = httpContent;
+                    var request = new HttpRequestMessage(new HttpMethod("PATCH"), Url)
+                    {
+                        Content = httpContent
+                    };
                     var response = client.SendAsync(request).Result;
                     var responseString = response.Content.ReadAsStringAsync().Result;
 
