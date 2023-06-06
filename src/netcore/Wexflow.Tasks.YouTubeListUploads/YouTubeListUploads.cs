@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
         {
             Info("Listing uploads...");
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             try
             {
@@ -71,41 +71,41 @@ namespace Wexflow.Tasks.YouTubeListUploads
                 ApplicationName = ApplicationName
             });
 
-            ChannelsResource.ListRequest channelsListRequest = youtubeService.Channels.List("contentDetails");
+            var channelsListRequest = youtubeService.Channels.List("contentDetails");
             channelsListRequest.Mine = true;
 
             // Retrieve the contentDetails part of the channel resource for the authenticated user's channel.
-            Google.Apis.YouTube.v3.Data.ChannelListResponse channelsListResponse = await channelsListRequest.ExecuteAsync();
+            var channelsListResponse = await channelsListRequest.ExecuteAsync();
 
-            string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+            var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "YouTubeListUploads", DateTime.Now));
 
             XDocument xdoc = new(new XElement("YouTubeListUploads"));
             XElement xchannels = new("Channels");
 
-            foreach (Google.Apis.YouTube.v3.Data.Channel channel in channelsListResponse.Items)
+            foreach (var channel in channelsListResponse.Items)
             {
                 // From the API response, extract the playlist ID that identifies the list
                 // of videos uploaded to the authenticated user's channel.
-                string uploadsListId = channel.ContentDetails.RelatedPlaylists.Uploads;
+                var uploadsListId = channel.ContentDetails.RelatedPlaylists.Uploads;
 
                 InfoFormat("Videos in list {0}", uploadsListId);
 
                 XElement xchannel = new("Channel", new XAttribute("id", uploadsListId));
                 XElement xvideos = new("Videos");
 
-                string nextPageToken = "";
+                var nextPageToken = "";
                 while (nextPageToken != null)
                 {
-                    PlaylistItemsResource.ListRequest playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+                    var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
                     playlistItemsListRequest.PlaylistId = uploadsListId;
                     playlistItemsListRequest.MaxResults = 50;
                     playlistItemsListRequest.PageToken = nextPageToken;
 
                     // Retrieve the list of videos uploaded to the authenticated user's channel.
-                    Google.Apis.YouTube.v3.Data.PlaylistItemListResponse playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
+                    var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
 
-                    foreach (Google.Apis.YouTube.v3.Data.PlaylistItem playlistItem in playlistItemsListResponse.Items)
+                    foreach (var playlistItem in playlistItemsListResponse.Items)
                     {
                         // Print information about each video.
                         InfoFormat("{0} ({1})", playlistItem.Snippet.Title, playlistItem.Snippet.ResourceId.VideoId);

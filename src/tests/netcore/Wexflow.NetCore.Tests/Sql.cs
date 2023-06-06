@@ -23,18 +23,18 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void SqlTest()
         {
-            Helper.StartWorkflow(158);
+            _ = Helper.StartWorkflow(158);
 
             // sqlite
             const string sql = "select Id, Description from Data;";
             using SQLiteConnection conn = new(SqliteConnectionString);
             SQLiteCommand comm = new(sql, conn);
             conn.Open();
-            using SQLiteDataReader reader = comm.ExecuteReader();
+            using var reader = comm.ExecuteReader();
             while (reader.Read())
             {
-                int id = int.Parse(reader["Id"].ToString());
-                string desc = (string)reader["Description"];
+                var id = int.Parse(reader["Id"].ToString());
+                var desc = (string)reader["Description"];
 
                 if (id == 1)
                 {
@@ -73,7 +73,7 @@ namespace Wexflow.NetCore.Tests
             using SQLiteConnection conn = new(SqliteConnectionString);
             SQLiteCommand comm = new(sql, conn);
             conn.Open();
-            comm.ExecuteNonQuery();
+            _ = comm.ExecuteNonQuery();
         }
     }
 }

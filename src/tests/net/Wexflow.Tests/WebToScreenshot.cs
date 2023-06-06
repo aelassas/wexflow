@@ -23,9 +23,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void WebToScreenshotTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(96);
+            _ = Helper.StartWorkflow(96);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
         }

@@ -22,14 +22,14 @@ namespace Wexflow.Server
         {
             base.ConfigureApplicationContainer(container);
 
-            container.Register(_appConfig);
+            _ = container.Register(_appConfig);
         }
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
         {
             pipelines.AfterRequest += (ctx) =>
             {
-                ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
+                _ = ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
                     .WithHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS")
                     .WithHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             };

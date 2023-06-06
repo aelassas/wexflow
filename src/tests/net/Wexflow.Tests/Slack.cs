@@ -18,7 +18,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void SlackTest()
         {
-            Helper.StartWorkflow(130);
+            _ = Helper.StartWorkflow(130);
             // TODO
         }
     }

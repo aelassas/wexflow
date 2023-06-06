@@ -19,13 +19,13 @@ namespace Wexflow.Tests
         [TestMethod]
         public void FolderExistsTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(121);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(121);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            Helper.StartWorkflow(122);
+            _ = Helper.StartWorkflow(122);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

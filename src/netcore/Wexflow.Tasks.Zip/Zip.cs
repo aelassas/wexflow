@@ -21,27 +21,27 @@ namespace Wexflow.Tasks.Zip
         {
             Info("Zipping files...");
 
-            bool success = true;
+            var success = true;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
             if (files.Length > 0)
             {
-                string zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
+                var zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
 
                 try
                 {
                     using ZipArchive zip = new(File.Create(zipPath), ZipArchiveMode.Create, false);
 
-                    byte[] buffer = new byte[4096];
+                    var buffer = new byte[4096];
 
-                    foreach (FileInf file in files)
+                    foreach (var file in files)
                     {
                         // Using GetFileName makes the result compatible with XP
                         // as the resulting path is not absolute.
-                        ZipArchiveEntry entry = zip.CreateEntry(file.RenameToOrName);
+                        var entry = zip.CreateEntry(file.RenameToOrName);
 
-                        using FileStream fs = File.OpenRead(file.Path);
-                        using Stream entryStream = entry.Open();
+                        using var fs = File.OpenRead(file.Path);
+                        using var entryStream = entry.Open();
                         // Using a fixed size buffer here makes no noticeable difference for output
                         // but keeps a lid on memory usage.
                         int sourceBytes;
@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.Zip
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {

@@ -66,7 +66,7 @@ namespace Wexflow.Core.Db.Firebird
                     + statusCount.StoppedCount + ", "
                     + statusCount.RejectedCount + ");"
                     , conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
 
             // Entries
@@ -78,7 +78,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT COUNT(*) FROM " + Core.Db.User.DocumentName + ";", conn);
-                long usersCount = (long)command.ExecuteScalar();
+                var usersCount = (long)command.ExecuteScalar();
 
                 if (usersCount == 0)
                 {
@@ -99,7 +99,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " AND " + UserWorkflow.ColumnName_WorkflowId + "=" + int.Parse(workflowId)
                     + ";", conn);
 
-                long count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar();
 
                 return count > 0;
             }
@@ -113,7 +113,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Entry.DocumentName + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -125,7 +125,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.StatusCount.DocumentName + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -140,7 +140,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + User.ColumnName_Username + " = '" + username + "'"
                     + " AND " + User.ColumnName_Password + " = '" + password + "'"
                     + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -153,7 +153,7 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
                     + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId) + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -166,7 +166,7 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
                     + " WHERE " + UserWorkflow.ColumnName_WorkflowId + " = " + int.Parse(workflowDbId) + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -179,7 +179,7 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
                     + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -192,23 +192,16 @@ namespace Wexflow.Core.Db.Firebird
 
                 StringBuilder builder = new("(");
 
-                for (int i = 0; i < ids.Length; i++)
+                for (var i = 0; i < ids.Length; i++)
                 {
-                    string id = ids[i];
-                    builder.Append(id);
-                    if (i < ids.Length - 1)
-                    {
-                        builder.Append(", ");
-                    }
-                    else
-                    {
-                        builder.Append(')');
-                    }
+                    var id = ids[i];
+                    _ = builder.Append(id);
+                    _ = i < ids.Length - 1 ? builder.Append(", ") : builder.Append(')');
                 }
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
                     + " WHERE " + Workflow.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -235,7 +228,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                         + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         User admin = new()
@@ -278,7 +271,7 @@ namespace Wexflow.Core.Db.Firebird
                         + Entry.ColumnName_JobId
                         + " FROM " + Core.Db.Entry.DocumentName + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -331,70 +324,70 @@ namespace Wexflow.Core.Db.Firebird
                     {
                         case EntryOrderBy.StatusDateAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDateDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
                             break;
 
                         case EntryOrderBy.WorkflowIdAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
                             break;
 
                         case EntryOrderBy.WorkflowIdDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
                             break;
 
                         case EntryOrderBy.NameAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
                             break;
 
                         case EntryOrderBy.NameDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
                             break;
 
                         case EntryOrderBy.LaunchTypeAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
                             break;
 
                         case EntryOrderBy.LaunchTypeDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
                             break;
 
                         case EntryOrderBy.DescriptionAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
                             break;
 
                         case EntryOrderBy.DescriptionDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
                             break;
 
                         case EntryOrderBy.StatusAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
                             break;
                     }
 
-                    sqlBuilder.Append(';');
+                    _ = sqlBuilder.Append(';');
 
                     using FbCommand command = new(sqlBuilder.ToString(), conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -430,7 +423,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                     + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
                     + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn);
-                long count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar();
 
                 return count;
             }
@@ -455,7 +448,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE " + Entry.ColumnName_WorkflowId + " = " + workflowId + ";", conn);
 
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -498,7 +491,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
                     + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "');", conn);
 
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -533,10 +526,10 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " ORDER BY " + Entry.ColumnName_StatusDate + " DESC;", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        DateTime statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
 
                         return statusDate;
                     }
@@ -558,10 +551,10 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " ORDER BY " + Entry.ColumnName_StatusDate + " ASC;", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        DateTime statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
 
                         return statusDate;
                     }
@@ -591,7 +584,7 @@ namespace Wexflow.Core.Db.Firebird
                         + HistoryEntry.ColumnName_WorkflowId
                         + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -635,7 +628,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -682,7 +675,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'" + ";"
                         , conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -732,70 +725,70 @@ namespace Wexflow.Core.Db.Firebird
                     {
                         case EntryOrderBy.StatusDateAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDateDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
                             break;
 
                         case EntryOrderBy.WorkflowIdAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
                             break;
 
                         case EntryOrderBy.WorkflowIdDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
                             break;
 
                         case EntryOrderBy.NameAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
                             break;
 
                         case EntryOrderBy.NameDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
                             break;
 
                         case EntryOrderBy.LaunchTypeAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
                             break;
 
                         case EntryOrderBy.LaunchTypeDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
                             break;
 
                         case EntryOrderBy.DescriptionAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
                             break;
 
                         case EntryOrderBy.DescriptionDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
                             break;
 
                         case EntryOrderBy.StatusAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
                             break;
                     }
 
-                    sqlBuilder.Append(';');
+                    _ = sqlBuilder.Append(';');
 
                     using FbCommand command = new(sqlBuilder.ToString(), conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -830,7 +823,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
 
-                long count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar();
 
                 return count;
             }
@@ -848,7 +841,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
                     + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn);
-                long count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar();
 
                 return count;
             }
@@ -866,11 +859,11 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " DESC;", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        DateTime statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
 
                         return statusDate;
                     }
@@ -892,11 +885,11 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " ASC;", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        DateTime statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
 
                         return statusDate;
                     }
@@ -917,10 +910,10 @@ namespace Wexflow.Core.Db.Firebird
                     + " FROM " + Core.Db.User.DocumentName
                     + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
                     + ";", conn);
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    string password = (string)reader[User.ColumnName_Password];
+                    var password = (string)reader[User.ColumnName_Password];
 
                     return password;
                 }
@@ -947,7 +940,7 @@ namespace Wexflow.Core.Db.Firebird
                     + StatusCount.ColumnName_RejectedCount
                     + " FROM " + Core.Db.StatusCount.DocumentName
                     + ";", conn);
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -989,7 +982,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
                     + ";", conn);
 
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     User user = new()
@@ -1028,7 +1021,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + User.ColumnName_Id + " = '" + int.Parse(userId) + "'"
                     + ";", conn);
 
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -1070,7 +1063,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.User.DocumentName
                         + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -1115,7 +1108,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                         + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -1155,11 +1148,11 @@ namespace Wexflow.Core.Db.Firebird
                         + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
                         + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        int workflowId = (int)reader[UserWorkflow.ColumnName_WorkflowId];
+                        var workflowId = (int)reader[UserWorkflow.ColumnName_WorkflowId];
 
                         workflowIds.Add(workflowId.ToString());
                     }
@@ -1181,7 +1174,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " FROM " + Core.Db.Workflow.DocumentName
                     + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn);
 
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -1212,7 +1205,7 @@ namespace Wexflow.Core.Db.Firebird
                         + Workflow.ColumnName_Xml
                         + " FROM " + Core.Db.Workflow.DocumentName + ";", conn);
 
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -1238,7 +1231,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " + 1;", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1290,7 +1283,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " - 1;", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1330,7 +1323,7 @@ namespace Wexflow.Core.Db.Firebird
                     + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1358,7 +1351,7 @@ namespace Wexflow.Core.Db.Firebird
                     + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1384,7 +1377,7 @@ namespace Wexflow.Core.Db.Firebird
                     + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(dateTimeFormat) + "'") + ");"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1402,7 +1395,7 @@ namespace Wexflow.Core.Db.Firebird
                     + int.Parse(userWorkflow.WorkflowId) + ");"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1418,7 +1411,7 @@ namespace Wexflow.Core.Db.Firebird
                     + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + ") RETURNING " + Workflow.ColumnName_Id + "; "
                     , conn);
 
-                int id = (int)command.ExecuteScalar();
+                var id = (int)command.ExecuteScalar();
 
                 return id.ToString();
             }
@@ -1444,7 +1437,7 @@ namespace Wexflow.Core.Db.Firebird
                     + Entry.ColumnName_Id + " = " + int.Parse(id) + ";"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1461,7 +1454,7 @@ namespace Wexflow.Core.Db.Firebird
                     + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "';"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1483,7 +1476,7 @@ namespace Wexflow.Core.Db.Firebird
                     + User.ColumnName_Id + " = " + int.Parse(id) + ";"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1503,7 +1496,7 @@ namespace Wexflow.Core.Db.Firebird
                     + User.ColumnName_Id + " = " + int.Parse(userId) + ";"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1520,7 +1513,7 @@ namespace Wexflow.Core.Db.Firebird
                     + User.ColumnName_Id + " = " + int.Parse(dbId) + ";"
                     , conn);
 
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1536,10 +1529,10 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE "
                     + Entry.ColumnName_Id + " = " + int.Parse(entryId) + ";"
                     , conn);
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    string logs = (string)reader[Entry.ColumnName_Logs];
+                    var logs = (string)reader[Entry.ColumnName_Logs];
                     return logs;
                 }
 
@@ -1559,11 +1552,11 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE "
                     + HistoryEntry.ColumnName_Id + " = " + int.Parse(entryId) + ";"
                     , conn);
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
-                    string logs = (string)reader[HistoryEntry.ColumnName_Logs];
+                    var logs = (string)reader[HistoryEntry.ColumnName_Logs];
                     return logs;
                 }
 
@@ -1595,7 +1588,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " OR " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
                         + " ORDER BY " + User.ColumnName_Username
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -1656,7 +1649,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " RETURNING " + Record.ColumnName_Id
                     + ";"
                     , conn);
-                int id = (int)command.ExecuteScalar();
+                var id = (int)command.ExecuteScalar();
                 return id.ToString();
             }
         }
@@ -1684,7 +1677,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE "
                     + Record.ColumnName_Id + " = " + int.Parse(recordId) + ";"
                     , conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -1699,23 +1692,16 @@ namespace Wexflow.Core.Db.Firebird
 
                     StringBuilder builder = new("(");
 
-                    for (int i = 0; i < recordIds.Length; i++)
+                    for (var i = 0; i < recordIds.Length; i++)
                     {
-                        string id = recordIds[i];
-                        builder.Append(id);
-                        if (i < recordIds.Length - 1)
-                        {
-                            builder.Append(", ");
-                        }
-                        else
-                        {
-                            builder.Append(')');
-                        }
+                        var id = recordIds[i];
+                        _ = builder.Append(id);
+                        _ = i < recordIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                     }
 
                     using FbCommand command = new("DELETE FROM " + Core.Db.Record.DocumentName
                         + " WHERE " + Record.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
         }
@@ -1745,7 +1731,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " FROM " + Core.Db.Record.DocumentName
                     + " WHERE " + Record.ColumnName_Id + " = " + int.Parse(id)
                     + ";", conn);
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     Record record = new()
@@ -1803,7 +1789,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         Record record = new()
@@ -1861,7 +1847,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " WHERE " + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy)
                         + " ORDER BY " + Record.ColumnName_Name + " ASC"
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         Record record = new()
@@ -1921,7 +1907,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " AND (" + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy) + " OR " + Record.ColumnName_AssignedTo + " = " + int.Parse(assingedTo) + ")"
                         + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         Record record = new()
@@ -1968,7 +1954,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " RETURNING " + Version.ColumnName_Id
                     + ";"
                     , conn);
-                int id = (int)command.ExecuteScalar();
+                var id = (int)command.ExecuteScalar();
                 return id.ToString();
             }
         }
@@ -1986,7 +1972,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE "
                     + Version.ColumnName_Id + " = " + int.Parse(versionId) + ";"
                     , conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2001,23 +1987,16 @@ namespace Wexflow.Core.Db.Firebird
 
                     StringBuilder builder = new("(");
 
-                    for (int i = 0; i < versionIds.Length; i++)
+                    for (var i = 0; i < versionIds.Length; i++)
                     {
-                        string id = versionIds[i];
-                        builder.Append(id);
-                        if (i < versionIds.Length - 1)
-                        {
-                            builder.Append(", ");
-                        }
-                        else
-                        {
-                            builder.Append(')');
-                        }
+                        var id = versionIds[i];
+                        _ = builder.Append(id);
+                        _ = i < versionIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                     }
 
                     using FbCommand command = new("DELETE FROM " + Core.Db.Version.DocumentName
                         + " WHERE " + Version.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
         }
@@ -2040,7 +2019,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.Version.DocumentName
                         + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         Version version = new()
@@ -2075,7 +2054,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
                     + " ORDER BY " + Version.ColumnName_CreatedOn + " DESC"
                     + ";", conn);
-                using FbDataReader reader = command.ExecuteReader();
+                using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     Version version = new()
@@ -2115,7 +2094,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " RETURNING " + Notification.ColumnName_Id
                     + ";"
                     , conn);
-                int id = (int)command.ExecuteScalar();
+                var id = (int)command.ExecuteScalar();
                 return id.ToString();
             }
         }
@@ -2129,24 +2108,17 @@ namespace Wexflow.Core.Db.Firebird
 
                 StringBuilder builder = new("(");
 
-                for (int i = 0; i < notificationIds.Length; i++)
+                for (var i = 0; i < notificationIds.Length; i++)
                 {
-                    string id = notificationIds[i];
-                    builder.Append(id);
-                    if (i < notificationIds.Length - 1)
-                    {
-                        builder.Append(", ");
-                    }
-                    else
-                    {
-                        builder.Append(')');
-                    }
+                    var id = notificationIds[i];
+                    _ = builder.Append(id);
+                    _ = i < notificationIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                 }
 
                 using FbCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
                     + " SET " + Notification.ColumnName_IsRead + " = " + "TRUE"
                     + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2159,24 +2131,17 @@ namespace Wexflow.Core.Db.Firebird
 
                 StringBuilder builder = new("(");
 
-                for (int i = 0; i < notificationIds.Length; i++)
+                for (var i = 0; i < notificationIds.Length; i++)
                 {
-                    string id = notificationIds[i];
-                    builder.Append(id);
-                    if (i < notificationIds.Length - 1)
-                    {
-                        builder.Append(", ");
-                    }
-                    else
-                    {
-                        builder.Append(')');
-                    }
+                    var id = notificationIds[i];
+                    _ = builder.Append(id);
+                    _ = i < notificationIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                 }
 
                 using FbCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
                     + " SET " + Notification.ColumnName_IsRead + " = " + "FALSE"
                     + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2191,23 +2156,16 @@ namespace Wexflow.Core.Db.Firebird
 
                     StringBuilder builder = new("(");
 
-                    for (int i = 0; i < notificationIds.Length; i++)
+                    for (var i = 0; i < notificationIds.Length; i++)
                     {
-                        string id = notificationIds[i];
-                        builder.Append(id);
-                        if (i < notificationIds.Length - 1)
-                        {
-                            builder.Append(", ");
-                        }
-                        else
-                        {
-                            builder.Append(')');
-                        }
+                        var id = notificationIds[i];
+                        _ = builder.Append(id);
+                        _ = i < notificationIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                     }
 
                     using FbCommand command = new("DELETE FROM " + Core.Db.Notification.DocumentName
                         + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
         }
@@ -2234,7 +2192,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " AND " + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo) + ")"
                         + " ORDER BY " + Notification.ColumnName_AssignedOn + " DESC"
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         Notification notification = new()
@@ -2267,8 +2225,8 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE (" + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo)
                     + " AND " + Notification.ColumnName_IsRead + " = " + "FALSE" + ")"
                     + ";", conn);
-                long count = (long)command.ExecuteScalar();
-                bool hasNotifications = count > 0;
+                var count = (long)command.ExecuteScalar();
+                var hasNotifications = count > 0;
                 return hasNotifications;
             }
         }
@@ -2291,7 +2249,7 @@ namespace Wexflow.Core.Db.Firebird
                     + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'") + ") "
                     + "RETURNING " + Approver.ColumnName_Id + ";"
                     , conn);
-                int id = (int)command.ExecuteScalar();
+                var id = (int)command.ExecuteScalar();
                 return id.ToString();
             }
         }
@@ -2311,7 +2269,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " WHERE "
                     + Approver.ColumnName_Id + " = " + int.Parse(approverId) + ";"
                     , conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2324,7 +2282,7 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
                     + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId) + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2340,7 +2298,7 @@ namespace Wexflow.Core.Db.Firebird
                     + " AND " + Approver.ColumnName_Approved + " = " + "TRUE"
                     + ";"
                     , conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2353,7 +2311,7 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
                     + " WHERE " + Approver.ColumnName_UserId + " = " + int.Parse(userId) + ";", conn);
-                command.ExecuteNonQuery();
+                _ = command.ExecuteNonQuery();
             }
         }
 
@@ -2376,7 +2334,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.Approver.DocumentName
                         + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
                         + ";", conn);
-                    using FbDataReader reader = command.ExecuteReader();
+                    using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         Approver approver = new()

@@ -25,9 +25,9 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void ScssToCssTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(157);
+            _ = Helper.StartWorkflow(157);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

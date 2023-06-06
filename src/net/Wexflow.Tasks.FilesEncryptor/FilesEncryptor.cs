@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.FilesEncryptor
         {
             Info("Encrypting files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,15 +71,18 @@ namespace Wexflow.Tasks.FilesEncryptor
 
         private bool EncryptFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             try
             {
-                FileInf[] files = SelectFiles();
-                foreach (FileInf file in files)
+                var files = SelectFiles();
+                foreach (var file in files)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     success &= Encrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
-                    if (!atLeastOneSuccess && success) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && success)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
             }
             catch (ThreadAbortException)
@@ -99,25 +102,25 @@ namespace Wexflow.Tasks.FilesEncryptor
             try
             {
                 //byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
-                byte[] saltBytes = GenerateRandomSalt();
-                UnicodeEncoding ue = new UnicodeEncoding();
+                var saltBytes = GenerateRandomSalt();
+                var ue = new UnicodeEncoding();
 
-                string cryptFile = outputFile;
-                RijndaelManaged rmcrypto = new RijndaelManaged
+                var cryptFile = outputFile;
+                var rmcrypto = new RijndaelManaged
                 {
                     KeySize = 256,
                     BlockSize = 128
                 };
 
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                var key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
                 rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                 rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
                 rmcrypto.Padding = PaddingMode.Zeros;
                 rmcrypto.Mode = CipherMode.CBC;
 
-                using (FileStream fsCrypt = new FileStream(cryptFile, FileMode.Create))
-                using (CryptoStream cs = new CryptoStream(fsCrypt, rmcrypto.CreateEncryptor(), CryptoStreamMode.Write))
-                using (FileStream fsIn = new FileStream(inputFile, FileMode.Open))
+                using (var fsCrypt = new FileStream(cryptFile, FileMode.Create))
+                using (var cs = new CryptoStream(fsCrypt, rmcrypto.CreateEncryptor(), CryptoStreamMode.Write))
+                using (var fsIn = new FileStream(inputFile, FileMode.Open))
                 {
                     fsCrypt.Write(saltBytes, 0, saltBytes.Length);
                     int data;
@@ -141,11 +144,11 @@ namespace Wexflow.Tasks.FilesEncryptor
 
         private byte[] GenerateRandomSalt()
         {
-            byte[] data = new byte[32];
+            var data = new byte[32];
 
-            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            using (var rng = new RNGCryptoServiceProvider())
             {
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     rng.GetBytes(data);
                 }

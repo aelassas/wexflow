@@ -25,9 +25,9 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void UglifyCssTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(164);
+            _ = Helper.StartWorkflow(164);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

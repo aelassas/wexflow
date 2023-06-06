@@ -23,9 +23,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void UnzipTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(60);
+            _ = Helper.StartWorkflow(60);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

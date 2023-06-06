@@ -19,7 +19,7 @@ namespace Wexflow.Tests
         public void VimeoListUploadsTest()
         {
             // TODO
-            Helper.StartWorkflow(128);
+            _ = Helper.StartWorkflow(128);
         }
     }
 }

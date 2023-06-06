@@ -18,7 +18,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void CsvToJsonTest()
         {
-            Helper.StartWorkflow(175);
+            _ = Helper.StartWorkflow(175);
         }
     }
 }

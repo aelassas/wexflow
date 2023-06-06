@@ -18,18 +18,21 @@ namespace Wexflow.Tasks.FilesDecryptor
         public override TaskStatus Run()
         {
             Info("Decrypting files...");
-            Status status = Status.Success;
-            bool succeeded = true;
-            bool atLeastOneSuccess = false;
+            var status = Status.Success;
+            var succeeded = true;
+            var atLeastOneSuccess = false;
 
             try
             {
-                FileInf[] files = SelectFiles();
-                foreach (FileInf file in files)
+                var files = SelectFiles();
+                foreach (var file in files)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     succeeded &= Decrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
-                    if (!atLeastOneSuccess && succeeded) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && succeeded)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -61,8 +64,8 @@ namespace Wexflow.Tasks.FilesDecryptor
             {
                 using (FileStream fsCrypt = new(inputFile, FileMode.Open))
                 {
-                    byte[] saltBytes = new byte[32];
-                    fsCrypt.Read(saltBytes, 0, saltBytes.Length);
+                    var saltBytes = new byte[32];
+                    _ = fsCrypt.Read(saltBytes, 0, saltBytes.Length);
 
                     UnicodeEncoding ue = new();
 
@@ -84,7 +87,7 @@ namespace Wexflow.Tasks.FilesDecryptor
                     int data;
                     while ((data = cs.ReadByte()) != -1)
                     {
-                        byte b = (byte)data;
+                        var b = (byte)data;
                         fsOut.WriteByte(b);
                     }
                 }

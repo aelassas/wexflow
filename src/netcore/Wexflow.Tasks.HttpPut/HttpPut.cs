@@ -29,13 +29,13 @@ namespace Wexflow.Tasks.HttpPut
         public override TaskStatus Run()
         {
             Info("Executing PUT request...");
-            Status status = Status.Success;
+            var status = Status.Success;
             try
             {
-                System.Threading.Tasks.Task<string> putTask = Put(Url, AuthorizationScheme, AuthorizationParameter, Payload);
+                var putTask = Put(Url, AuthorizationScheme, AuthorizationParameter, Payload);
                 putTask.Wait();
-                string result = putTask.Result;
-                string destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPut_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                var result = putTask.Result;
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPut_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("PUT request {0} executed whith success -> {1}", Url, destFile);
@@ -63,10 +63,10 @@ namespace Wexflow.Tasks.HttpPut
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
                 }
 
-                HttpResponseMessage httpResponse = await httpClient.PutAsync(url, httpContent);
+                var httpResponse = await httpClient.PutAsync(url, httpContent);
                 if (httpResponse.Content != null)
                 {
-                    string responseContent = await httpResponse.Content.ReadAsStringAsync();
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
                     return responseContent;
                 }
             }

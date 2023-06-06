@@ -21,11 +21,11 @@ namespace Wexflow.Tasks.Wait
         {
             InfoFormat("Waiting for {0} ...", Duration);
 
-            bool success = true;
+            var success = true;
 
             try
             {
-                _cancellationTokenSource.Token.WaitHandle.WaitOne(Duration);
+                _ = _cancellationTokenSource.Token.WaitHandle.WaitOne(Duration);
             }
             catch (ThreadAbortException)
             {
@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.Wait
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {

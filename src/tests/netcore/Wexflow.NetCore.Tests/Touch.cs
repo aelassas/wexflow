@@ -12,8 +12,15 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(File1)) File.Delete(File1);
-            if (File.Exists(File2)) File.Delete(File2);
+            if (File.Exists(File1))
+            {
+                File.Delete(File1);
+            }
+
+            if (File.Exists(File2))
+            {
+                File.Delete(File2);
+            }
         }
 
         [TestCleanup]
@@ -28,7 +35,7 @@ namespace Wexflow.NetCore.Tests
         {
             Assert.AreEqual(false, File.Exists(File1));
             Assert.AreEqual(false, File.Exists(File2));
-            Helper.StartWorkflow(15);
+            _ = Helper.StartWorkflow(15);
             Assert.AreEqual(true, File.Exists(File1));
             Assert.AreEqual(true, File.Exists(File2));
         }

@@ -29,13 +29,13 @@ namespace Wexflow.Tasks.HttpPost
         public override TaskStatus Run()
         {
             Info("Executing POST request...");
-            Status status = Status.Success;
+            var status = Status.Success;
             try
             {
-                System.Threading.Tasks.Task<string> postTask = Post(Url, AuthorizationScheme, AuthorizationParameter, Payload);
+                var postTask = Post(Url, AuthorizationScheme, AuthorizationParameter, Payload);
                 postTask.Wait();
-                string result = postTask.Result;
-                string destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPost_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                var result = postTask.Result;
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPost_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("POST request {0} executed whith success -> {1}", Url, destFile);
@@ -55,18 +55,18 @@ namespace Wexflow.Tasks.HttpPost
 
         public async System.Threading.Tasks.Task<string> Post(string url, string authScheme, string authParam, string payload)
         {
-            using (StringContent httpContent = new StringContent(payload, Encoding.UTF8, Type))
-            using (HttpClient httpClient = new HttpClient())
+            using (var httpContent = new StringContent(payload, Encoding.UTF8, Type))
+            using (var httpClient = new HttpClient())
             {
                 if (!string.IsNullOrEmpty(authScheme) && !string.IsNullOrEmpty(authParam))
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
                 }
 
-                HttpResponseMessage httpResponse = await httpClient.PostAsync(url, httpContent);
+                var httpResponse = await httpClient.PostAsync(url, httpContent);
                 if (httpResponse.Content != null)
                 {
-                    string responseContent = await httpResponse.Content.ReadAsStringAsync();
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
                     return responseContent;
                 }
             }

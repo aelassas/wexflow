@@ -35,8 +35,8 @@ namespace Wexflow.Tasks.Unzip
         {
             Info("Extracting ZIP archives...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -62,7 +62,7 @@ namespace Wexflow.Tasks.Unzip
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -80,32 +80,38 @@ namespace Wexflow.Tasks.Unzip
 
         private bool UnzipFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] zips = SelectFiles();
+            var success = true;
+            var zips = SelectFiles();
 
             if (zips.Length > 0)
             {
-                foreach (FileInf zip in zips)
+                foreach (var zip in zips)
                 {
                     try
                     {
-                        string destFolder = CreateSubDirectoryWithDateTime
+                        var destFolder = CreateSubDirectoryWithDateTime
                             ? Path.Combine(DestDir,
                                 Path.GetFileNameWithoutExtension(zip.Path) + "_" +
                                 string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now))
                             : DestDir;
                         if (!Directory.Exists(destFolder))
-                            Directory.CreateDirectory(destFolder);
+                        {
+                            _ = Directory.CreateDirectory(destFolder);
+                        }
+
                         ExtractZipFile(zip.Path, Password, destFolder, Overwrite);
 
-                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
 
                         InfoFormat("ZIP {0} extracted to {1}", zip.Path, destFolder);
 
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -127,9 +133,9 @@ namespace Wexflow.Tasks.Unzip
             ZipFile zf = null;
             try
             {
-                FileStream fs = File.OpenRead(archiveFilenameIn);
+                var fs = File.OpenRead(archiveFilenameIn);
                 zf = new ZipFile(fs);
-                if (!String.IsNullOrEmpty(password))
+                if (!string.IsNullOrEmpty(password))
                 {
                     zf.Password = password;     // AES encrypted entries are handled automatically
                 }
@@ -139,27 +145,31 @@ namespace Wexflow.Tasks.Unzip
                     {
                         continue;           // Ignore directories
                     }
-                    String entryFileName = zipEntry.Name;
+                    var entryFileName = zipEntry.Name;
                     // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
                     // Optionally match entrynames against a selection list here to skip as desired.
                     // The unpacked length is available in the zipEntry.Size property.
 
-                    byte[] buffer = new byte[4096];     // 4K is optimum
-                    Stream zipStream = zf.GetInputStream(zipEntry);
+                    var buffer = new byte[4096];     // 4K is optimum
+                    var zipStream = zf.GetInputStream(zipEntry);
 
                     // Manipulate the output filename here as desired.
-                    String fullZipToPath = Path.Combine(outFolder, entryFileName);
-                    string directoryName = Path.GetDirectoryName(fullZipToPath);
+                    var fullZipToPath = Path.Combine(outFolder, entryFileName);
+                    var directoryName = Path.GetDirectoryName(fullZipToPath);
                     if (!string.IsNullOrEmpty(directoryName))
-                        Directory.CreateDirectory(directoryName);
+                    {
+                        _ = Directory.CreateDirectory(directoryName);
+                    }
 
                     if (overwrite && File.Exists(fullZipToPath))
+                    {
                         File.Delete(fullZipToPath);
+                    }
 
                     // Unzip file in buffered chunks. This is just as fast as unpacking to a buffer the full size
                     // of the file, but does not waste memory.
                     // The "using" will close the stream even if an exception occurs.
-                    using (FileStream streamWriter = File.Create(fullZipToPath))
+                    using (var streamWriter = File.Create(fullZipToPath))
                     {
                         StreamUtils.Copy(zipStream, streamWriter, buffer);
                     }

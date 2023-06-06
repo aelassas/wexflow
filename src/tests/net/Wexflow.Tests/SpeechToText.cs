@@ -25,7 +25,7 @@ namespace Wexflow.Tests
         public void SpeechToTextTest()
         {
             Assert.AreEqual(false, File.Exists(TextFile));
-            Helper.StartWorkflow(91);
+            _ = Helper.StartWorkflow(91);
             Assert.AreEqual(true, File.Exists(TextFile));
         }
     }

@@ -24,13 +24,13 @@ namespace Wexflow.Tasks.HttpGet
         public override TaskStatus Run()
         {
             Info("Executing GET request...");
-            Status status = Status.Success;
+            var status = Status.Success;
             try
             {
-                System.Threading.Tasks.Task<string> getTask = Post(Url, AuthorizationScheme, AuthorizationParameter);
+                var getTask = Post(Url, AuthorizationScheme, AuthorizationParameter);
                 getTask.Wait();
-                string result = getTask.Result;
-                string destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpGet_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                var result = getTask.Result;
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpGet_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("GET request {0} executed with success -> {1}", Url, destFile);
@@ -57,10 +57,10 @@ namespace Wexflow.Tasks.HttpGet
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
                 }
 
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(url);
+                var httpResponse = await httpClient.GetAsync(url);
                 if (httpResponse.Content != null)
                 {
-                    string responseContent = await httpResponse.Content.ReadAsStringAsync();
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
                     return responseContent;
                 }
             }

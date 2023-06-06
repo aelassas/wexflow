@@ -46,7 +46,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
         {
             Info("Loading files...");
 
-            bool success = true;
+            var success = true;
             List<FileInf> folderFiles = new();
 
             try
@@ -55,11 +55,11 @@ namespace Wexflow.Tasks.FilesLoaderEx
 
                 if (Recursive)
                 {
-                    foreach (string folder in Folders)
+                    foreach (var folder in Folders)
                     {
-                        string[] files = GetFilesRecursive(folder);
+                        var files = GetFilesRecursive(folder);
 
-                        foreach (string file in files)
+                        foreach (var file in files)
                         {
                             if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                             {
@@ -71,9 +71,9 @@ namespace Wexflow.Tasks.FilesLoaderEx
                 }
                 else
                 {
-                    foreach (string folder in Folders)
+                    foreach (var folder in Folders)
                     {
-                        foreach (string file in Directory.GetFiles(folder).OrderBy(f => f))
+                        foreach (var file in Directory.GetFiles(folder).OrderBy(f => f))
                         {
                             if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                             {
@@ -84,10 +84,12 @@ namespace Wexflow.Tasks.FilesLoaderEx
                     }
                 }
 
-                foreach (string file in FlFiles)
+                foreach (var file in FlFiles)
                 {
                     if (File.Exists(file))
+                    {
                         folderFiles.Add(new FileInf(file, Id));
+                    }
                     else
                     {
                         ErrorFormat("File not found: {0}", file);
@@ -125,7 +127,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {
@@ -138,7 +140,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
 
         private void AddFiles(IEnumerable<FileInf> files)
         {
-            foreach (FileInf file in files)
+            foreach (var file in files)
             {
                 Files.Add(file);
                 InfoFormat("File loaded: {0}", file);
@@ -152,8 +154,10 @@ namespace Wexflow.Tasks.FilesLoaderEx
 
         private void RemoveRange(List<FileInf> items, IEnumerable<FileInf> remove)
         {
-            foreach (FileInf r in remove)
-                items.Remove(r);
+            foreach (var r in remove)
+            {
+                _ = items.Remove(r);
+            }
         }
     }
 }

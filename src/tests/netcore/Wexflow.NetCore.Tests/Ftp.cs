@@ -29,7 +29,11 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (!Directory.Exists(Temp)) Directory.CreateDirectory(Temp);
+            if (!Directory.Exists(Temp))
+            {
+                _ = Directory.CreateDirectory(Temp);
+            }
+
             Helper.DeleteFilesAndFolders(Temp);
             Helper.DeleteFiles(FtpDownload);
         }
@@ -45,12 +49,12 @@ namespace Wexflow.NetCore.Tests
         {
             Assert.IsFalse(File.Exists(File1));
             Assert.IsFalse(File.Exists(File2));
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(55); // list+upload+download+delete
+            _ = Helper.StartWorkflow(55); // list+upload+download+delete
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResult, content);
             Assert.IsTrue(File.Exists(File1));
             Assert.IsTrue(File.Exists(File2));

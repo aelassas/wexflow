@@ -25,7 +25,7 @@ namespace Wexflow.NetCore.Tests
         public void TgzTest()
         {
             Assert.AreEqual(false, File.Exists(TgzFile));
-            Helper.StartWorkflow(162);
+            _ = Helper.StartWorkflow(162);
             Assert.AreEqual(true, File.Exists(TgzFile));
         }
     }

@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.HtmlToText
         {
             Info("Extracting text from HTML files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.HtmlToText
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,15 +71,15 @@ namespace Wexflow.Tasks.HtmlToText
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] htmlFiles = SelectFiles();
+            var success = true;
+            var htmlFiles = SelectFiles();
 
-            foreach (FileInf htmlFile in htmlFiles)
+            foreach (var htmlFile in htmlFiles)
             {
                 try
                 {
-                    string source = File.ReadAllText(htmlFile.Path);
-                    UglifyResult result = Uglify.HtmlToText(source);
+                    var source = File.ReadAllText(htmlFile.Path);
+                    var result = Uglify.HtmlToText(source);
                     if (result.HasErrors)
                     {
                         ErrorFormat("An error occured while extracting text from the HTML file {0}: {1}", htmlFile.Path, string.Concat(result.Errors.Select(e => e.Message + "\n").ToArray()));
@@ -87,11 +87,14 @@ namespace Wexflow.Tasks.HtmlToText
                         continue;
                     }
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(htmlFile.FileName) + ".txt");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(htmlFile.FileName) + ".txt");
                     File.WriteAllText(destPath, result.Code);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("Text has been extracted from the HTML file {0} -> {1}", htmlFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

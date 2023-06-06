@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.YouTubeSearch
         public override TaskStatus Run()
         {
             Info("Searching for content...");
-            Status status = Status.Success;
+            var status = Status.Success;
             try
             {
                 Search().Wait();
@@ -54,12 +54,12 @@ namespace Wexflow.Tasks.YouTubeSearch
                 ApplicationName = ApplicationName
             });
 
-            SearchResource.ListRequest searchListRequest = youtubeService.Search.List("snippet");
+            var searchListRequest = youtubeService.Search.List("snippet");
             searchListRequest.Q = Keyword;
             searchListRequest.MaxResults = MaxResults;
 
             // Call the search.list method to retrieve results matching the specified query term.
-            Google.Apis.YouTube.v3.Data.SearchListResponse searchListResponse = await searchListRequest.ExecuteAsync();
+            var searchListResponse = await searchListRequest.ExecuteAsync();
 
             List<string> videos = new();
             List<string> channels = new();
@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.YouTubeSearch
 
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
-            string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+            var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "YouTubeSearch", DateTime.Now));
 
             XDocument xdoc = new(new XElement("YouTubeSearch"));
@@ -75,7 +75,7 @@ namespace Wexflow.Tasks.YouTubeSearch
             XElement xchannels = new("Channels");
             XElement xplaylists = new("Playlists");
 
-            foreach (Google.Apis.YouTube.v3.Data.SearchResult searchResult in searchListResponse.Items)
+            foreach (var searchResult in searchListResponse.Items)
             {
                 switch (searchResult.Id.Kind)
                 {

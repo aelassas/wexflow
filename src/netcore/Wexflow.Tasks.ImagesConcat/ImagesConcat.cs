@@ -18,20 +18,20 @@ namespace Wexflow.Tasks.ImagesConcat
         public override TaskStatus Run()
         {
             Info("Concatenating images...");
-            Status status = Status.Success;
+            var status = Status.Success;
 
             try
             {
-                FileInf[] imageFiles = SelectFiles();
+                var imageFiles = SelectFiles();
 
                 if (imageFiles.Length >= 2)
                 {
-                    string extension = Path.GetExtension(imageFiles[0].FileName);
+                    var extension = Path.GetExtension(imageFiles[0].FileName);
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("ImagesConcat_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
-                    bool res = ConcatImages(imageFiles, destPath);
+                    var res = ConcatImages(imageFiles, destPath);
                     if (!res)
                     {
                         status = Status.Error;
@@ -62,25 +62,25 @@ namespace Wexflow.Tasks.ImagesConcat
             try
             {
                 List<int> imageHeights = new();
-                int nIndex = 0;
-                int width = 0;
-                foreach (FileInf imageFile in imageFiles)
+                var nIndex = 0;
+                var width = 0;
+                foreach (var imageFile in imageFiles)
                 {
-                    using Image img = Image.FromFile(imageFile.Path);
+                    using var img = Image.FromFile(imageFile.Path);
                     imageHeights.Add(img.Height);
                     width += img.Width;
                 }
                 imageHeights.Sort();
 
-                int height = imageHeights[^1];
+                var height = imageHeights[^1];
 
                 using (Bitmap finalImage = new(width, height))
-                using (Graphics graphics = Graphics.FromImage(finalImage))
+                using (var graphics = Graphics.FromImage(finalImage))
                 {
                     graphics.Clear(SystemColors.AppWorkspace);
-                    foreach (FileInf imageFile in imageFiles)
+                    foreach (var imageFile in imageFiles)
                     {
-                        using Image img = Image.FromFile(imageFile.Path);
+                        using var img = Image.FromFile(imageFile.Path);
                         if (nIndex == 0)
                         {
                             graphics.DrawImage(img, new Point(0, 0));

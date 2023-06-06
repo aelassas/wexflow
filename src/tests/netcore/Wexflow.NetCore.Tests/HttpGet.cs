@@ -23,9 +23,9 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void HttpGetTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(108);
+            _ = Helper.StartWorkflow(108);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
         }

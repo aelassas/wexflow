@@ -19,29 +19,32 @@ namespace Wexflow.Tasks.Md5
         {
             Info("Generating MD5 sums...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                string md5Path = Path.Combine(Workflow.WorkflowTempFolder,
+                var md5Path = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("MD5_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
                 XDocument xdoc = new(new XElement("Files"));
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
-                        string md5 = GetMd5(file.Path);
+                        var md5 = GetMd5(file.Path);
                         xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("md5", md5)));
                         InfoFormat("Md5 of the file {0} is {1}", file.Path, md5);
 
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -57,7 +60,7 @@ namespace Wexflow.Tasks.Md5
                 Files.Add(new FileInf(md5Path, Id));
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -75,14 +78,14 @@ namespace Wexflow.Tasks.Md5
         private static string GetMd5(string filePath)
         {
             StringBuilder sb = new();
-            using (MD5 md5 = MD5.Create())
+            using (var md5 = MD5.Create())
             {
-                using FileStream stream = File.OpenRead(filePath);
-                byte[] bytes = md5.ComputeHash(stream);
+                using var stream = File.OpenRead(filePath);
+                var bytes = md5.ComputeHash(stream);
 
-                foreach (byte bt in bytes)
+                foreach (var bt in bytes)
                 {
-                    sb.Append(bt.ToString("x2"));
+                    _ = sb.Append(bt.ToString("x2"));
                 }
             }
             return sb.ToString();

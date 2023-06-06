@@ -28,12 +28,12 @@ namespace Wexflow.Tasks.Xslt
         {
             Info("Transforming files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
-                string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format(OutputFormat, Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now, Extension));
 
                 try
@@ -63,26 +63,26 @@ namespace Wexflow.Tasks.Xslt
                     // Set renameTo and tags from /*//<WexflowProcessing>//<File> nodes
                     // Remove /*//<WexflowProcessing> nodes if necessary
 
-                    XDocument xdoc = XDocument.Load(destPath);
-                    XElement[] xWexflowProcessings = xdoc.Descendants("WexflowProcessing").ToArray();
-                    foreach (XElement xWexflowProcessing in xWexflowProcessings)
+                    var xdoc = XDocument.Load(destPath);
+                    var xWexflowProcessings = xdoc.Descendants("WexflowProcessing").ToArray();
+                    foreach (var xWexflowProcessing in xWexflowProcessings)
                     {
-                        System.Collections.Generic.IEnumerable<XElement> xFiles = xWexflowProcessing.Descendants("File");
-                        foreach (XElement xFile in xFiles)
+                        var xFiles = xWexflowProcessing.Descendants("File");
+                        foreach (var xFile in xFiles)
                         {
                             try
                             {
-                                int taskId = int.Parse(xFile.Attribute("taskId").Value);
-                                string fileName = xFile.Attribute("name").Value;
-                                XAttribute xRenameTo = xFile.Attribute("renameTo");
-                                string renameTo = xRenameTo != null ? xRenameTo.Value : string.Empty;
-                                System.Collections.Generic.List<Tag> tags = (from xTag in xFile.Attributes()
-                                                                             where xTag.Name != "taskId" && xTag.Name != "name" && xTag.Name != "renameTo" && xTag.Name != "path" && xTag.Name != "renameToOrName"
-                                                                             select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
+                                var taskId = int.Parse(xFile.Attribute("taskId").Value);
+                                var fileName = xFile.Attribute("name").Value;
+                                var xRenameTo = xFile.Attribute("renameTo");
+                                var renameTo = xRenameTo != null ? xRenameTo.Value : string.Empty;
+                                var tags = (from xTag in xFile.Attributes()
+                                            where xTag.Name != "taskId" && xTag.Name != "name" && xTag.Name != "renameTo" && xTag.Name != "path" && xTag.Name != "renameToOrName"
+                                            select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
 
-                                FileInf fileToEdit = (from f in Workflow.FilesPerTask[taskId]
-                                                      where f.FileName.Equals(fileName)
-                                                      select f).FirstOrDefault();
+                                var fileToEdit = (from f in Workflow.FilesPerTask[taskId]
+                                                  where f.FileName.Equals(fileName)
+                                                  select f).FirstOrDefault();
 
                                 if (fileToEdit != null)
                                 {
@@ -112,7 +112,10 @@ namespace Wexflow.Tasks.Xslt
                         xdoc.Save(destPath);
                     }
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -125,7 +128,7 @@ namespace Wexflow.Tasks.Xslt
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

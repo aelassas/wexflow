@@ -52,8 +52,8 @@ namespace Wexflow.Tasks.Sql
         {
             Info("Executing SQL scripts...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             // Execute SQL scripts
             try
@@ -80,7 +80,7 @@ namespace Wexflow.Tasks.Sql
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -97,7 +97,7 @@ namespace Wexflow.Tasks.Sql
 
         private bool ExecuteSqlFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
 
             // Execute SqlScript if necessary
             try
@@ -118,15 +118,18 @@ namespace Wexflow.Tasks.Sql
                 success = false;
             }
 
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string sql = File.ReadAllText(file.Path);
+                    var sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -146,58 +149,58 @@ namespace Wexflow.Tasks.Sql
             switch (DbType)
             {
                 case Type.SqlServer:
-                    using (SqlConnection conn = new SqlConnection(ConnectionString))
+                    using (var conn = new SqlConnection(ConnectionString))
                     {
-                        SqlCommand comm = new SqlCommand(sql, conn);
+                        var comm = new SqlCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Access:
-                    using (OleDbConnection conn = new OleDbConnection(ConnectionString))
+                    using (var conn = new OleDbConnection(ConnectionString))
                     {
-                        OleDbCommand comm = new OleDbCommand(sql, conn);
+                        var comm = new OleDbCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Oracle:
-                    using (OracleConnection conn = new OracleConnection(ConnectionString))
+                    using (var conn = new OracleConnection(ConnectionString))
                     {
-                        OracleCommand comm = new OracleCommand(sql, conn);
+                        var comm = new OracleCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.MySql:
-                    using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                    using (var conn = new MySqlConnection(ConnectionString))
                     {
-                        MySqlCommand comm = new MySqlCommand(sql, conn);
+                        var comm = new MySqlCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Sqlite:
-                    using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+                    using (var conn = new SQLiteConnection(ConnectionString))
                     {
-                        SQLiteCommand comm = new SQLiteCommand(sql, conn);
+                        var comm = new SQLiteCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.PostGreSql:
-                    using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
+                    using (var conn = new NpgsqlConnection(ConnectionString))
                     {
-                        NpgsqlCommand comm = new NpgsqlCommand(sql, conn);
+                        var comm = new NpgsqlCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Teradata:
-                    using (TdConnection conn = new TdConnection(ConnectionString))
+                    using (var conn = new TdConnection(ConnectionString))
                     {
-                        TdCommand comm = new TdCommand(sql, conn);
+                        var comm = new TdCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
                 case Type.Odbc:
-                    using (OdbcConnection conn = new OdbcConnection(ConnectionString))
+                    using (var conn = new OdbcConnection(ConnectionString))
                     {
-                        OdbcCommand comm = new OdbcCommand(sql, conn);
+                        var comm = new OdbcCommand(sql, conn);
                         ExecSql(conn, comm);
                     }
                     break;
@@ -207,7 +210,7 @@ namespace Wexflow.Tasks.Sql
         private void ExecSql(DbConnection conn, DbCommand comm)
         {
             conn.Open();
-            comm.ExecuteNonQuery();
+            _ = comm.ExecuteNonQuery();
         }
     }
 }

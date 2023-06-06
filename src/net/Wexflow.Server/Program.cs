@@ -9,7 +9,7 @@ namespace Wexflow.Server
         public static void Main()
         {
             // Initialize the service to start
-            ServiceBase[] servicesToRun = new ServiceBase[]
+            var servicesToRun = new ServiceBase[]
             {
                 new WexflowServer()
             };
@@ -37,30 +37,30 @@ namespace Wexflow.Server
             Console.WriteLine();
 
             // Get the method to invoke on each service to start it
-            MethodInfo onStartMethod = typeof(ServiceBase).GetMethod("OnStart", BindingFlags.Instance | BindingFlags.NonPublic);
+            var onStartMethod = typeof(ServiceBase).GetMethod("OnStart", BindingFlags.Instance | BindingFlags.NonPublic);
 
             // Start services loop
-            foreach (ServiceBase service in servicesToRun)
+            foreach (var service in servicesToRun)
             {
                 Console.Write("Starting {0} ... ", service.ServiceName);
-                onStartMethod?.Invoke(service, new object[] { Array.Empty<string>() });
+                _ = (onStartMethod?.Invoke(service, new object[] { Array.Empty<string>() }));
                 Console.WriteLine("Started");
             }
 
             // Waiting the end
             Console.WriteLine();
             Console.WriteLine("Press a key to stop services and finish process...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
             Console.WriteLine();
 
             // Get the method to invoke on each service to stop it
-            MethodInfo onStopMethod = typeof(ServiceBase).GetMethod("OnStop", BindingFlags.Instance | BindingFlags.NonPublic);
+            var onStopMethod = typeof(ServiceBase).GetMethod("OnStop", BindingFlags.Instance | BindingFlags.NonPublic);
 
             // Stop loop
-            foreach (ServiceBase service in servicesToRun)
+            foreach (var service in servicesToRun)
             {
                 Console.Write("Stopping {0} ... ", service.ServiceName);
-                onStopMethod?.Invoke(service, null);
+                _ = (onStopMethod?.Invoke(service, null));
                 Console.WriteLine("Stopped");
             }
 
@@ -72,7 +72,7 @@ namespace Wexflow.Server
             {
                 Console.WriteLine();
                 Console.WriteLine("=== Press a key to quit ===");
-                Console.ReadKey();
+                _ = Console.ReadKey();
             }
         }
     }

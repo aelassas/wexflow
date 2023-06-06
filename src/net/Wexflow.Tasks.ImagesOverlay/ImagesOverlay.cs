@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.ImagesOverlay
         public override TaskStatus Run()
         {
             Info("Overlaying images...");
-            bool success = true;
+            var success = true;
 
             try
             {
@@ -52,7 +52,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {
@@ -65,16 +65,16 @@ namespace Wexflow.Tasks.ImagesOverlay
 
         private bool Overlay()
         {
-            bool success = true;
+            var success = true;
             try
             {
-                FileInf[] imageFiles = SelectFiles();
+                var imageFiles = SelectFiles();
 
                 if (imageFiles.Length >= 2)
                 {
-                    string extension = Path.GetExtension(imageFiles[0].FileName);
+                    var extension = Path.GetExtension(imageFiles[0].FileName);
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("ImagesOverlay_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
                     success = OverlayImages(imageFiles, destPath);
@@ -101,12 +101,12 @@ namespace Wexflow.Tasks.ImagesOverlay
         {
             try
             {
-                List<int> imageHeights = new List<int>();
-                List<int> imageWidths = new List<int>();
+                var imageHeights = new List<int>();
+                var imageWidths = new List<int>();
 
-                foreach (FileInf imageFile in imageFiles)
+                foreach (var imageFile in imageFiles)
                 {
-                    using (Image img = Image.FromFile(imageFile.Path))
+                    using (var img = Image.FromFile(imageFile.Path))
                     {
                         imageHeights.Add(img.Height);
                         imageWidths.Add(img.Width);
@@ -115,16 +115,16 @@ namespace Wexflow.Tasks.ImagesOverlay
                 imageHeights.Sort();
                 imageWidths.Sort();
 
-                int height = imageHeights[imageHeights.Count - 1];
-                int width = imageWidths[imageWidths.Count - 1];
+                var height = imageHeights[imageHeights.Count - 1];
+                var width = imageWidths[imageWidths.Count - 1];
 
-                using (Bitmap finalImage = new Bitmap(width, height))
-                using (Graphics graphics = Graphics.FromImage(finalImage))
+                using (var finalImage = new Bitmap(width, height))
+                using (var graphics = Graphics.FromImage(finalImage))
                 {
                     graphics.Clear(SystemColors.AppWorkspace);
-                    foreach (FileInf imageFile in imageFiles)
+                    foreach (var imageFile in imageFiles)
                     {
-                        using (Image img = Image.FromFile(imageFile.Path))
+                        using (var img = Image.FromFile(imageFile.Path))
                         {
                             graphics.DrawImage(img, new Point(0, 0));
                         }

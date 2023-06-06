@@ -45,8 +45,8 @@ namespace Wexflow.Tasks.Sql
         {
             Info("Executing SQL scripts...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             // Execute SqlScript if necessary
             try
@@ -68,15 +68,18 @@ namespace Wexflow.Tasks.Sql
             }
 
             // Execute SQL files scripts
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string sql = File.ReadAllText(file.Path);
+                    var sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -89,7 +92,7 @@ namespace Wexflow.Tasks.Sql
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -170,7 +173,7 @@ namespace Wexflow.Tasks.Sql
         private void ExecSql(DbConnection conn, DbCommand comm)
         {
             conn.Open();
-            comm.ExecuteNonQuery();
+            _ = comm.ExecuteNonQuery();
         }
     }
 }

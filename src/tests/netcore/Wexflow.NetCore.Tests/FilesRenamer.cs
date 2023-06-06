@@ -13,8 +13,15 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (!File.Exists(Tmp)) File.Copy(Src, Tmp);
-            if (File.Exists(SrcRenamed)) File.Delete(SrcRenamed);
+            if (!File.Exists(Tmp))
+            {
+                File.Copy(Src, Tmp);
+            }
+
+            if (File.Exists(SrcRenamed))
+            {
+                File.Delete(SrcRenamed);
+            }
         }
 
         [TestCleanup]
@@ -29,7 +36,7 @@ namespace Wexflow.NetCore.Tests
         public void FilesRenamerTest()
         {
             Assert.AreEqual(false, File.Exists(SrcRenamed));
-            Helper.StartWorkflow(36);
+            _ = Helper.StartWorkflow(36);
             Assert.AreEqual(true, File.Exists(SrcRenamed));
         }
     }

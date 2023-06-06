@@ -12,23 +12,23 @@ namespace Wexflow.Scripts.Core
         {
             try
             {
-                string[] workflowFiles = Directory.GetFiles(workfowsFolder);
+                var workflowFiles = Directory.GetFiles(workfowsFolder);
 
                 db.Init();
 
                 Console.WriteLine("Creating workflows...");
-                foreach (string workflowFile in workflowFiles)
+                foreach (var workflowFile in workflowFiles)
                 {
                     XNamespace xn = "urn:wexflow-schema";
-                    XDocument xdoc1 = XDocument.Load(workflowFile);
-                    int workflowIdFromFile = int.Parse(xdoc1.Element(xn + "Workflow").Attribute("id").Value);
+                    var xdoc1 = XDocument.Load(workflowFile);
+                    var workflowIdFromFile = int.Parse(xdoc1.Element(xn + "Workflow").Attribute("id").Value);
 
-                    bool found = false;
-                    System.Collections.Generic.List<Workflow> workflows = db.GetWorkflows().ToList();
-                    foreach (Workflow workflow in workflows)
+                    var found = false;
+                    var workflows = db.GetWorkflows().ToList();
+                    foreach (var workflow in workflows)
                     {
-                        XDocument xdoc2 = XDocument.Parse(workflow.Xml);
-                        int workflowId = int.Parse(xdoc2.Element(xn + "Workflow").Attribute("id").Value);
+                        var xdoc2 = XDocument.Parse(workflow.Xml);
+                        var workflowId = int.Parse(xdoc2.Element(xn + "Workflow").Attribute("id").Value);
                         if (workflowIdFromFile == workflowId)
                         {
                             found = true;
@@ -41,7 +41,7 @@ namespace Wexflow.Scripts.Core
                     {
                         try
                         {
-                            db.InsertWorkflow(new Workflow { Xml = xdoc1.ToString() });
+                            _ = db.InsertWorkflow(new Workflow { Xml = xdoc1.ToString() });
                             Console.WriteLine("Workflow " + workflowIdFromFile + " inserted.");
                         }
                         catch (Exception e)
@@ -54,7 +54,7 @@ namespace Wexflow.Scripts.Core
                 Console.WriteLine();
 
                 Console.WriteLine("Creating wexflow user...");
-                User user = db.GetUser("wexflow");
+                var user = db.GetUser("wexflow");
                 if (user == null)
                 {
                     db.InsertUser(new User
@@ -66,14 +66,14 @@ namespace Wexflow.Scripts.Core
                     });
                     user = db.GetUser("wexflow");
 
-                    System.Collections.Generic.List<Workflow> workflows = db.GetWorkflows().ToList();
-                    foreach (Workflow workflow in workflows)
+                    var workflows = db.GetWorkflows().ToList();
+                    foreach (var workflow in workflows)
                     {
                         XNamespace xn = "urn:wexflow-schema";
-                        XDocument xdoc = XDocument.Parse(workflow.Xml);
-                        int workflowId = int.Parse(xdoc.Element(xn + "Workflow").Attribute("id").Value);
+                        var xdoc = XDocument.Parse(workflow.Xml);
+                        var workflowId = int.Parse(xdoc.Element(xn + "Workflow").Attribute("id").Value);
 
-                        if (workflowId != 170 && workflowId != 171 && workflowId != 172 && workflowId != 173 && workflowId != 174)
+                        if (workflowId is not 170 and not 171 and not 172 and not 173 and not 174)
                         {
                             db.InsertUserWorkflowRelation(new UserWorkflow
                             {
@@ -101,7 +101,7 @@ namespace Wexflow.Scripts.Core
         {
             Console.WriteLine("Inserting records...");
 
-            System.Collections.Generic.List<Record> records = db.GetRecords(string.Empty).ToList();
+            var records = db.GetRecords(string.Empty).ToList();
 
             // Insert document
             if (!records.Any(r => r.Name == "Document"))
@@ -168,8 +168,8 @@ namespace Wexflow.Scripts.Core
         {
             try
             {
-                User admin = db.GetUser("admin");
-                User wexflow = db.GetUser("wexflow");
+                var admin = db.GetUser("admin");
+                var wexflow = db.GetUser("wexflow");
 
                 Record record = new()
                 {
@@ -185,7 +185,7 @@ namespace Wexflow.Scripts.Core
                     EndDate = DateTime.Now.AddDays(30)
                 };
 
-                string recordId = db.InsertRecord(record);
+                var recordId = db.InsertRecord(record);
 
                 if (hasFile)
                 {
@@ -193,14 +193,14 @@ namespace Wexflow.Scripts.Core
                     {
                         RecordId = recordId
                     };
-                    string recordVersionId = db.InsertVersion(recordVersion);
+                    var recordVersionId = db.InsertVersion(recordVersion);
 
-                    string recordFileName = Path.GetFileName(recordSrc);
-                    string recordFolder = Path.Combine(recordsFolder, dbFolderName, recordId, recordVersionId);
-                    string recordFilePath = Path.Combine(recordFolder, recordFileName);
+                    var recordFileName = Path.GetFileName(recordSrc);
+                    var recordFolder = Path.Combine(recordsFolder, dbFolderName, recordId, recordVersionId);
+                    var recordFilePath = Path.Combine(recordFolder, recordFileName);
                     if (!Directory.Exists(recordFolder))
                     {
-                        Directory.CreateDirectory(recordFolder);
+                        _ = Directory.CreateDirectory(recordFolder);
                     }
                     if (File.Exists(recordFilePath))
                     {

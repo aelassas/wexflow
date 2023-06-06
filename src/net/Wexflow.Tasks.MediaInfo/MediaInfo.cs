@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.MediaInfo
                 _success = false;
             }
 
-            Status status = Core.Status.Success;
+            var status = Core.Status.Success;
 
             if (!_success && _atLeastOneSucceed)
             {
@@ -71,14 +71,14 @@ namespace Wexflow.Tasks.MediaInfo
 
         private void InformFiles()
         {
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                string mediaInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var mediaInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("MediaInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                XDocument xdoc = Inform(files);
+                var xdoc = Inform(files);
                 xdoc.Save(mediaInfoPath);
                 Files.Add(new FileInf(mediaInfoPath, Id));
             }
@@ -86,27 +86,27 @@ namespace Wexflow.Tasks.MediaInfo
 
         private XDocument Inform(FileInf[] files)
         {
-            XDocument xdoc = new XDocument(new XElement("Files"));
-            foreach (FileInf file in files)
+            var xdoc = new XDocument(new XElement("Files"));
+            foreach (var file in files)
             {
                 try
                 {
                     if (xdoc.Root != null)
                     {
-                        XElement xfile = new XElement("File",
+                        var xfile = new XElement("File",
                             new XAttribute("path", file.Path),
                             new XAttribute("name", file.FileName));
 
-                        MediaFile mediaFile = new MediaFile(file.Path);
-                        string info = mediaFile.Inform;
-                        string[] infos = info.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                        var mediaFile = new MediaFile(file.Path);
+                        var info = mediaFile.Inform;
+                        var infos = info.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                         XElement xgeneral = null;
                         XElement xaudio = null;
                         XElement xvideo = null;
 
                         // Build xgeneral
-                        foreach (string line in infos)
+                        foreach (var line in infos)
                         {
                             if (line == "General")
                             {
@@ -119,15 +119,15 @@ namespace Wexflow.Tasks.MediaInfo
                                 break;
                             }
 
-                            string[] tag = line.Split(':');
+                            var tag = line.Split(':');
                             xgeneral.Add(new XElement("Tag",
                                 new XAttribute("name", tag[0].Trim()),
                                 new XAttribute("value", tag[1].Trim())));
                         }
 
                         // Build xvideo
-                        bool xvideoFound = false;
-                        foreach (string line in infos)
+                        var xvideoFound = false;
+                        foreach (var line in infos)
                         {
                             if (line == "Video")
                             {
@@ -143,7 +143,7 @@ namespace Wexflow.Tasks.MediaInfo
                                     break;
                                 }
 
-                                string[] tag = line.Split(':');
+                                var tag = line.Split(':');
                                 xvideo.Add(new XElement("Tag",
                                     new XAttribute("name", tag[0].Trim()),
                                     new XAttribute("value", tag[1].Trim())));
@@ -151,8 +151,8 @@ namespace Wexflow.Tasks.MediaInfo
                         }
 
                         // Build xaudio
-                        bool xaudioFound = false;
-                        foreach (string line in infos)
+                        var xaudioFound = false;
+                        foreach (var line in infos)
                         {
                             if (line == "Audio")
                             {
@@ -168,7 +168,7 @@ namespace Wexflow.Tasks.MediaInfo
                                     break;
                                 }
 
-                                string[] tag = line.Split(':');
+                                var tag = line.Split(':');
                                 xaudio.Add(new XElement("Tag",
                                     new XAttribute("name", tag[0].Trim()),
                                     new XAttribute("value", tag[1].Trim())));
@@ -194,7 +194,10 @@ namespace Wexflow.Tasks.MediaInfo
                     }
                     InfoFormat("MediaInfo of the file {0} generated.", file.Path);
 
-                    if (!_atLeastOneSucceed) _atLeastOneSucceed = true;
+                    if (!_atLeastOneSucceed)
+                    {
+                        _atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

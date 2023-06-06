@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.YamlToJson
         {
             Info("Converting YAML files to JSON files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.YamlToJson
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,28 +71,31 @@ namespace Wexflow.Tasks.YamlToJson
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] yamlFiles = SelectFiles();
+            var success = true;
+            var yamlFiles = SelectFiles();
 
-            foreach (FileInf yamlFile in yamlFiles)
+            foreach (var yamlFile in yamlFiles)
             {
                 try
                 {
-                    string source = File.ReadAllText(yamlFile.Path);
+                    var source = File.ReadAllText(yamlFile.Path);
 
-                    Deserializer deserializer = new Deserializer();
-                    object yamlObject = deserializer.Deserialize(new StringReader(source));
+                    var deserializer = new Deserializer();
+                    var yamlObject = deserializer.Deserialize(new StringReader(source));
 
-                    JsonSerializer serializer = new JsonSerializer();
-                    StringWriter writer = new StringWriter();
+                    var serializer = new JsonSerializer();
+                    var writer = new StringWriter();
                     serializer.Serialize(writer, yamlObject);
-                    string json = writer.ToString();
+                    var json = writer.ToString();
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(yamlFile.FileName) + ".json");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(yamlFile.FileName) + ".json");
                     File.WriteAllText(destPath, json);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The YAML file {0} has been converted -> {1}", yamlFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

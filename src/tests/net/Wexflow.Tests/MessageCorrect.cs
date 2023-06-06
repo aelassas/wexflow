@@ -19,8 +19,8 @@ namespace Wexflow.Tests
         [TestMethod]
         public void MessageCorrectTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(117);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(117);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
         }

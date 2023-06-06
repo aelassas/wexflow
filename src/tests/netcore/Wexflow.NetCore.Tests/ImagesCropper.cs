@@ -14,17 +14,39 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(Dest1)) File.Delete(Dest1);
-            if (File.Exists(Dest2)) File.Delete(Dest2);
-            if (File.Exists(Dest3)) File.Delete(Dest3);
+            if (File.Exists(Dest1))
+            {
+                File.Delete(Dest1);
+            }
+
+            if (File.Exists(Dest2))
+            {
+                File.Delete(Dest2);
+            }
+
+            if (File.Exists(Dest3))
+            {
+                File.Delete(Dest3);
+            }
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            if (File.Exists(Dest1)) File.Delete(Dest1);
-            if (File.Exists(Dest2)) File.Delete(Dest2);
-            if (File.Exists(Dest3)) File.Delete(Dest3);
+            if (File.Exists(Dest1))
+            {
+                File.Delete(Dest1);
+            }
+
+            if (File.Exists(Dest2))
+            {
+                File.Delete(Dest2);
+            }
+
+            if (File.Exists(Dest3))
+            {
+                File.Delete(Dest3);
+            }
         }
 
         [TestMethod]
@@ -33,7 +55,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(false, File.Exists(Dest1));
             Assert.AreEqual(false, File.Exists(Dest2));
             Assert.AreEqual(false, File.Exists(Dest3));
-            Helper.StartWorkflow(74);
+            _ = Helper.StartWorkflow(74);
             Assert.AreEqual(true, File.Exists(Dest1));
             Assert.AreEqual(true, File.Exists(Dest2));
             Assert.AreEqual(true, File.Exists(Dest3));
@@ -46,7 +68,7 @@ namespace Wexflow.NetCore.Tests
 
         private void CheckImageSize(string path)
         {
-            using Image image = Image.FromFile(path);
+            using var image = Image.FromFile(path);
             Assert.AreEqual(512, image.Width);
             Assert.AreEqual(384, image.Height);
         }

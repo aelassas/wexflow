@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.FileContentMatch
         {
             Info("Checking file...");
 
-            bool success = true;
+            var success = true;
             TaskStatus status = null;
 
             try
@@ -68,13 +68,13 @@ namespace Wexflow.Tasks.FileContentMatch
 
         private bool CheckFile(ref TaskStatus status)
         {
-            bool success = true;
+            var success = true;
             try
             {
                 // Checking files
-                foreach (string file in FilesToCheck)
+                foreach (var file in FilesToCheck)
                 {
-                    bool res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
+                    var res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
 
                     if (res)
                     {
@@ -88,9 +88,9 @@ namespace Wexflow.Tasks.FileContentMatch
                 }
 
                 // Checking folders
-                foreach (string folder in FoldersToCheck)
+                foreach (var folder in FoldersToCheck)
                 {
-                    string[] files = Array.Empty<string>();
+                    var files = Array.Empty<string>();
                     if (Recursive)
                     {
                         files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories); ;
@@ -100,9 +100,9 @@ namespace Wexflow.Tasks.FileContentMatch
                         files = Directory.GetFiles(folder);
                     }
 
-                    foreach (string file in files)
+                    foreach (var file in files)
                     {
-                        bool res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
+                        var res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
 
                         if (res)
                         {

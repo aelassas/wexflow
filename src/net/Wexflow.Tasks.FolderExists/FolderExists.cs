@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.FolderExists
         {
             Info("Checking folder...");
 
-            bool success = false;
+            var success = false;
             TaskStatus status = null;
 
             try
@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.FolderExists
 
         private bool CheckFolder(ref TaskStatus status)
         {
-            bool success = false;
+            var success = false;
             try
             {
                 success = System.IO.Directory.Exists(Folder);

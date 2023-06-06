@@ -19,7 +19,7 @@ namespace Wexflow.NetCore.Tests
         public void VimeoTest()
         {
             // TODO
-            Helper.StartWorkflow(136);
+            _ = Helper.StartWorkflow(136);
         }
     }
 }

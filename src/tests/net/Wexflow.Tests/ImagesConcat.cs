@@ -24,14 +24,14 @@ namespace Wexflow.Tests
         [TestMethod]
         public void ImagesConcatTest()
         {
-            string[] images = GetFiles();
+            var images = GetFiles();
             Assert.AreEqual(0, images.Length);
-            Helper.StartWorkflow(77);
+            _ = Helper.StartWorkflow(77);
             images = GetFiles();
             Assert.AreEqual(1, images.Length);
 
             // Checking the image size
-            using (Image image = Image.FromFile(images[0]))
+            using (var image = Image.FromFile(images[0]))
             {
                 Assert.AreEqual(3072, image.Width);
                 Assert.AreEqual(768, image.Height);

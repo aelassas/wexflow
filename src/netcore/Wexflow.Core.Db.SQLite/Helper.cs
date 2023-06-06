@@ -27,7 +27,7 @@ namespace Wexflow.Core.Db.SQLite
 
             using SQLiteCommand command = new("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn);
 
-            command.ExecuteNonQuery();
+            _ = command.ExecuteNonQuery();
         }
 
     }

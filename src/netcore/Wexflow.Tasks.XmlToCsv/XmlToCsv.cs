@@ -23,20 +23,23 @@ namespace Wexflow.Tasks.XmlToCsv
         {
             Info("Creating csv files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string csvPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.csv", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
                     Files.Add(new FileInf(csvPath, Id));
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -49,7 +52,7 @@ namespace Wexflow.Tasks.XmlToCsv
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -66,12 +69,12 @@ namespace Wexflow.Tasks.XmlToCsv
 
         private void CreateCsv(string xmlPath, string csvPath)
         {
-            XDocument xdoc = XDocument.Load(xmlPath);
+            var xdoc = XDocument.Load(xmlPath);
 
             using StreamWriter sw = new(csvPath);
-            foreach (XElement xLine in xdoc.XPathSelectElements("Lines/Line"))
+            foreach (var xLine in xdoc.XPathSelectElements("Lines/Line"))
             {
-                foreach (XElement xColumn in xLine.XPathSelectElements("Column"))
+                foreach (var xColumn in xLine.XPathSelectElements("Column"))
                 {
                     sw.Write(string.Concat(Quote, xColumn.Value, Quote, Separator));
                 }

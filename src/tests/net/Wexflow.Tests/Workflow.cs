@@ -18,7 +18,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void WorkflowTest()
         {
-            Helper.StartWorkflow(45);
+            _ = Helper.StartWorkflow(45);
             // TODO
         }
     }

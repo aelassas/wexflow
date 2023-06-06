@@ -24,7 +24,7 @@ namespace Wexflow.Clients.Manager
 
         public int CompareTo(object obj)
         {
-            WorkflowDataInfo wf = (WorkflowDataInfo)obj;
+            var wf = (WorkflowDataInfo)obj;
             return wf.Id.CompareTo(Id);
         }
     }

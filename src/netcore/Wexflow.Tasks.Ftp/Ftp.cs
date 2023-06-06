@@ -32,25 +32,25 @@ namespace Wexflow.Tasks.Ftp
 
         public Ftp(XElement xe, Workflow wf) : base(xe, wf)
         {
-            string server = GetSetting("server");
-            int port = int.Parse(GetSetting("port"));
-            string user = GetSetting("user");
-            string password = GetSetting("password");
-            string path = GetSetting("path");
-            Protocol protocol = (Protocol)Enum.Parse(typeof(Protocol), GetSetting("protocol"), true);
-            bool debugLogs = bool.Parse(GetSetting("debugLogs", "false"));
+            var server = GetSetting("server");
+            var port = int.Parse(GetSetting("port"));
+            var user = GetSetting("user");
+            var password = GetSetting("password");
+            var path = GetSetting("path");
+            var protocol = (Protocol)Enum.Parse(typeof(Protocol), GetSetting("protocol"), true);
+            var debugLogs = bool.Parse(GetSetting("debugLogs", "false"));
             switch (protocol)
             {
                 case Protocol.Ftp:
                     _plugin = new PluginFtp(this, server, port, user, password, path, debugLogs);
                     break;
                 case Protocol.Ftps:
-                    EncryptionMode encryptionMode = (EncryptionMode)Enum.Parse(typeof(EncryptionMode), GetSetting("encryption"), true);
+                    var encryptionMode = (EncryptionMode)Enum.Parse(typeof(EncryptionMode), GetSetting("encryption"), true);
                     _plugin = new PluginFtps(this, server, port, user, password, path, encryptionMode, debugLogs);
                     break;
                 case Protocol.Sftp:
-                    string privateKeyPath = GetSetting("privateKeyPath", string.Empty);
-                    string passphrase = GetSetting("passphrase", string.Empty);
+                    var privateKeyPath = GetSetting("privateKeyPath", string.Empty);
+                    var passphrase = GetSetting("passphrase", string.Empty);
                     _plugin = new PluginSftp(this, server, port, user, password, path, privateKeyPath, passphrase);
                     break;
             }
@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.Ftp
         public override TaskStatus Run()
         {
             Info("Processing files...");
-            bool atLeastOneSuccess = false;
+            var atLeastOneSuccess = false;
 
 
             bool success;
@@ -84,7 +84,7 @@ namespace Wexflow.Tasks.Ftp
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -101,17 +101,21 @@ namespace Wexflow.Tasks.Ftp
 
         private bool DoWork(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             if (_cmd == FtpCommad.List)
             {
-                int r = 0;
+                var r = 0;
                 while (r <= _retryCount)
                 {
                     try
                     {
-                        FileInf[] files = _plugin.List();
+                        var files = _plugin.List();
                         Files.AddRange(files);
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
+
                         break;
                     }
                     catch (ThreadAbortException)
@@ -137,12 +141,12 @@ namespace Wexflow.Tasks.Ftp
             }
             else
             {
-                FileInf[] files = SelectFiles();
-                for (int i = files.Length - 1; i > -1; i--)
+                var files = SelectFiles();
+                for (var i = files.Length - 1; i > -1; i--)
                 {
-                    FileInf file = files[i];
+                    var file = files[i];
 
-                    int r = 0;
+                    var r = 0;
                     while (r <= _retryCount)
                     {
                         try
@@ -157,11 +161,15 @@ namespace Wexflow.Tasks.Ftp
                                     break;
                                 case FtpCommad.Delete:
                                     _plugin.Delete(file);
-                                    Workflow.FilesPerTask[file.TaskId].Remove(file);
+                                    _ = Workflow.FilesPerTask[file.TaskId].Remove(file);
                                     break;
                             }
 
-                            if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                            if (!atLeastOneSuccess)
+                            {
+                                atLeastOneSuccess = true;
+                            }
+
                             break;
                         }
                         catch (ThreadAbortException)

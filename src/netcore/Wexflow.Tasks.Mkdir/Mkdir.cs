@@ -20,17 +20,24 @@ namespace Wexflow.Tasks.Mkdir
         {
             Info("Creating folders...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            foreach (string folder in Folders)
+            foreach (var folder in Folders)
             {
                 try
                 {
-                    if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+                    if (!Directory.Exists(folder))
+                    {
+                        _ = Directory.CreateDirectory(folder);
+                    }
+
                     InfoFormat("Folder {0} created.", folder);
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -43,7 +50,7 @@ namespace Wexflow.Tasks.Mkdir
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

@@ -13,13 +13,13 @@ namespace Wexflow.Core.Db.Oracle
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {
-            using (OracleConnection conn = new OracleConnection(_connectionString))
+            using (var conn = new OracleConnection(_connectionString))
             {
                 conn.Open();
 
-                using (OracleCommand command = new OracleCommand("declare begin execute immediate 'CREATE TABLE " + tableName + tableStruct + "'; exception when others then if SQLCODE = -955 then null; else raise; end if; end;", conn))
+                using (var command = new OracleCommand("declare begin execute immediate 'CREATE TABLE " + tableName + tableStruct + "'; exception when others then if SQLCODE = -955 then null; else raise; end if; end;", conn))
                 {
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
         }

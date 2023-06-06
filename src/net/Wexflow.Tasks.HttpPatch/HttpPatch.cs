@@ -21,12 +21,12 @@ namespace Wexflow.Tasks.HttpPatch
         public HttpPatch(XElement xe, Workflow wf) : base(xe, wf)
         {
             Url = GetSetting("url");
-            string parameters = GetSetting("params");
-            string[] parametersArray = parameters.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            var parameters = GetSetting("params");
+            var parametersArray = parameters.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
             Params = new NameValueCollection();
-            foreach (string param in parametersArray)
+            foreach (var param in parametersArray)
             {
-                string[] paramKv = param.Split('=');
+                var paramKv = param.Split('=');
                 Params.Add(paramKv[0], paramKv[1]);
             }
         }
@@ -34,17 +34,17 @@ namespace Wexflow.Tasks.HttpPatch
         public override TaskStatus Run()
         {
             Info("Executing PATCH request...");
-            Status status = Status.Success;
+            var status = Status.Success;
             try
             {
-                using (WebClient client = new WebClient())
+                using (var client = new WebClient())
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = Tls12;
 
-                    byte[] response = client.UploadValues(Url, "PATCH", Params);
-                    string responseString = Encoding.Default.GetString(response);
-                    string destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPatch_{0:yyyy-MM-dd-HH-mm-ss-fff}.txt", DateTime.Now));
+                    var response = client.UploadValues(Url, "PATCH", Params);
+                    var responseString = Encoding.Default.GetString(response);
+                    var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPatch_{0:yyyy-MM-dd-HH-mm-ss-fff}.txt", DateTime.Now));
                     File.WriteAllText(destFile, responseString);
                     Files.Add(new FileInf(destFile, Id));
                     InfoFormat("PATCH request {0} executed whith success -> {1}", Url, destFile);

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Xml;
 using Wexflow.Core;
+using Wexflow.Core.PollingFileSystemWatcher;
 
 namespace Wexflow.Server
 {
@@ -29,22 +30,22 @@ namespace Wexflow.Server
 
             XmlDocument log4NetConfig = new();
             log4NetConfig.Load(File.OpenRead("log4net.config"));
-            log4net.Repository.ILoggerRepository repo = LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
-            XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
+            var repo = LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
+            _ = XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
 
             superAdminUsername = Config["SuperAdminUsername"];
 
-            string settingsFile = Config["WexflowSettingsFile"];
-            Core.LogLevel logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
-            bool enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
-            bool enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
-            bool enableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"]);
-            string smtpHost = Config["Smtp.Host"];
-            int smtpPort = int.Parse(Config["Smtp.Port"]);
-            bool smtpEnableSsl = bool.Parse(Config["Smtp.EnableSsl"]);
-            string smtpUser = Config["Smtp.User"];
-            string smtpPassword = Config["Smtp.Password"];
-            string smtpFrom = Config["Smtp.From"];
+            var settingsFile = Config["WexflowSettingsFile"];
+            var logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
+            var enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
+            var enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
+            var enableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"]);
+            var smtpHost = Config["Smtp.Host"];
+            var smtpPort = int.Parse(Config["Smtp.Port"]);
+            var smtpEnableSsl = bool.Parse(Config["Smtp.EnableSsl"]);
+            var smtpUser = Config["Smtp.User"];
+            var smtpPassword = Config["Smtp.Password"];
+            var smtpFrom = Config["Smtp.From"];
 
             WexflowEngine = new WexflowEngine(
                 settingsFile
@@ -72,9 +73,9 @@ namespace Wexflow.Server
             if (enableRecordsHotFolder)
             {
                 // On file found.
-                foreach (string file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
+                foreach (var file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
                 {
-                    string recordId = WexflowEngine.SaveRecordFromFile(file, superAdminUsername);
+                    var recordId = WexflowEngine.SaveRecordFromFile(file, superAdminUsername);
 
                     if (recordId != "-1")
                     {
@@ -96,9 +97,9 @@ namespace Wexflow.Server
 
             WexflowEngine.Run();
 
-            int port = int.Parse(Config["WexflowServicePort"]);
+            var port = int.Parse(Config["WexflowServicePort"]);
 
-            IWebHost host = new WebHostBuilder()
+            var host = new WebHostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseKestrel((context, options) =>
                 {
@@ -110,7 +111,7 @@ namespace Wexflow.Server
             host.Run();
 
             Console.Write("Press any key to stop Wexflow server...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
             WexflowEngine.Stop(true, true);
         }
 
@@ -131,9 +132,9 @@ namespace Wexflow.Server
 
         private static void OnWorkflowChanged(object source, PollingFileSystemEventArgs e)
         {
-            foreach (FileChange change in e.Changes)
+            foreach (var change in e.Changes)
             {
-                string path = Path.Combine(change.Directory, change.Name);
+                var path = Path.Combine(change.Directory, change.Name);
                 switch (change.ChangeType)
                 {
                     case WatcherChangeTypes.Created:
@@ -149,8 +150,8 @@ namespace Wexflow.Server
                             }
                             Logger.Info("Workflow.PollingFileSystemWatcher.OnCreated");
 
-                            Core.Db.User admin = WexflowEngine.GetUser(superAdminUsername);
-                            WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, path, true);
+                            var admin = WexflowEngine.GetUser(superAdminUsername);
+                            _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, path, true);
                         }
                         catch (Exception ex)
                         {
@@ -170,8 +171,8 @@ namespace Wexflow.Server
                             }
                             Logger.Info("Workflow.PollingFileSystemWatcher.OnChanged");
 
-                            Core.Db.User admin = WexflowEngine.GetUser(superAdminUsername);
-                            WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, path, true);
+                            var admin = WexflowEngine.GetUser(superAdminUsername);
+                            _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, path, true);
                         }
                         catch (Exception ex)
                         {
@@ -182,7 +183,7 @@ namespace Wexflow.Server
                         Logger.Info("Workflow.PollingFileSystemWatcher.OnDeleted");
                         try
                         {
-                            Workflow removedWorkflow = WexflowEngine.Workflows.SingleOrDefault(wf => wf.FilePath == path);
+                            var removedWorkflow = WexflowEngine.Workflows.SingleOrDefault(wf => wf.FilePath == path);
                             if (removedWorkflow != null)
                             {
                                 WexflowEngine.DeleteWorkflow(removedWorkflow.DbId);
@@ -214,9 +215,9 @@ namespace Wexflow.Server
 
         private static void OnRecordChanged(object source, PollingFileSystemEventArgs e)
         {
-            foreach (FileChange change in e.Changes)
+            foreach (var change in e.Changes)
             {
-                string path = Path.Combine(change.Directory, change.Name);
+                var path = Path.Combine(change.Directory, change.Name);
                 if (change.ChangeType == WatcherChangeTypes.Created)
                 {
                     try
@@ -232,7 +233,7 @@ namespace Wexflow.Server
                         Logger.Info("Record.PollingFileSystemWatcher.OnCreated");
 
                         Thread.Sleep(1000);
-                        string recordId = WexflowEngine.SaveRecordFromFile(path, superAdminUsername);
+                        var recordId = WexflowEngine.SaveRecordFromFile(path, superAdminUsername);
 
                         if (recordId != "-1")
                         {

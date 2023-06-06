@@ -9,9 +9,9 @@ using Wexflow.Core.Service.Contracts;
 
 namespace Wexflow.Clients.CommandLine
 {
-    class Program
+    internal class Program
     {
-        enum Operation
+        private enum Operation
         {
             Start,
             Suspend,
@@ -21,7 +21,7 @@ namespace Wexflow.Clients.CommandLine
             Reject
         }
 
-        class Options
+        private class Options
         {
             [Option('o', "operation", Required = true, HelpText = "start|suspend|resume|stop|approve|reject")]
             public Operation Operation { get; set; }
@@ -36,7 +36,7 @@ namespace Wexflow.Clients.CommandLine
             public bool Wait { get; set; }
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
@@ -45,14 +45,14 @@ namespace Wexflow.Clients.CommandLine
                 .Build();
 
                 Parser parser = new(cfg => cfg.CaseInsensitiveEnumValues = true);
-                ParserResult<Options> res = parser.ParseArguments<Options>(args)
+                var res = parser.ParseArguments<Options>(args)
                    .WithParsed(async o =>
                    {
                        WexflowServiceClient client = new(config["WexflowWebServiceUri"]);
-                       string username = config["Username"];
-                       string password = config["Password"];
+                       var username = config["Username"];
+                       var password = config["Password"];
 
-                       WorkflowInfo[] workflows = await client.Search(string.Empty, username, password);
+                       var workflows = await client.Search(string.Empty, username, password);
                        if (!workflows.Any(w => w.Id == o.WorkflowId))
                        {
                            Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
@@ -63,14 +63,14 @@ namespace Wexflow.Clients.CommandLine
                        switch (o.Operation)
                        {
                            case Operation.Start:
-                               Guid instanceId = await client.StartWorkflow(o.WorkflowId, username, password);
+                               var instanceId = await client.StartWorkflow(o.WorkflowId, username, password);
                                Console.WriteLine("JobId: {0}", instanceId);
 
                                if (o.Wait)
                                {
                                    Thread.Sleep(1000);
                                    workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                                   bool isRunning = workflow.IsRunning;
+                                   var isRunning = workflow.IsRunning;
                                    while (isRunning)
                                    {
                                        Thread.Sleep(100);
@@ -134,9 +134,9 @@ namespace Wexflow.Clients.CommandLine
 
                    });
 
-                res.WithNotParsed(errs =>
+                _ = res.WithNotParsed(errs =>
                 {
-                    HelpText helpText = HelpText.AutoBuild(res, h => h, e =>
+                    var helpText = HelpText.AutoBuild(res, h => h, e =>
                     {
                         return e;
                     });

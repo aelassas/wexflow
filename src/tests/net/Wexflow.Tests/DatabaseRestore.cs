@@ -12,7 +12,10 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(SuccessFile)) File.Delete(SuccessFile);
+            if (File.Exists(SuccessFile))
+            {
+                File.Delete(SuccessFile);
+            }
         }
 
         [TestCleanup]
@@ -25,7 +28,7 @@ namespace Wexflow.Tests
         public void DatabaseRestoreTest()
         {
             Assert.IsFalse(File.Exists(SuccessFile));
-            Helper.StartWorkflow(86);
+            _ = Helper.StartWorkflow(86);
             Assert.IsTrue(File.Exists(SuccessFile));
         }
 

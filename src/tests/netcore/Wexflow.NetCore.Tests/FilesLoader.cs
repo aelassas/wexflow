@@ -28,7 +28,11 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (!Directory.Exists(TempFolder)) Directory.CreateDirectory(TempFolder);
+            if (!Directory.Exists(TempFolder))
+            {
+                _ = Directory.CreateDirectory(TempFolder);
+            }
+
             Helper.DeleteFilesAndFolders(TempFolder);
         }
 
@@ -40,13 +44,13 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void FilesLoaderTest()
         {
-            Helper.StartWorkflow(3);
+            _ = Helper.StartWorkflow(3);
 
             // Check the workflow result
-            string[] files = Directory.GetFiles(TempFolder, "ListFiles*.xml", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(TempFolder, "ListFiles*.xml", SearchOption.AllDirectories);
             Assert.AreEqual(1, files.Length);
 
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResult, content);
         }
     }

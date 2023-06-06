@@ -31,12 +31,12 @@ namespace Wexflow.Tests
         [TestMethod]
         public void Md5Test()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(10);
+            _ = Helper.StartWorkflow(10);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResult, content);
         }
 

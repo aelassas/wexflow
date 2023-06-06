@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
@@ -19,11 +18,11 @@ namespace Wexflow.Tasks.ListFiles
             Info("Listing files...");
             //System.Threading.Thread.Sleep(10 * 1000);
 
-            bool success = true;
+            var success = true;
 
             try
             {
-                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("ListFiles_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
                 XDocument xdoc = new(new XElement("WexflowProcessing"));
@@ -34,9 +33,9 @@ namespace Wexflow.Tasks.ListFiles
                     new XAttribute("description", Workflow.Description));
 
                 XElement xFiles = new("Files");
-                foreach (List<FileInf> files in Workflow.FilesPerTask.Values)
+                foreach (var files in Workflow.FilesPerTask.Values)
                 {
-                    foreach (FileInf file in files)
+                    foreach (var file in files)
                     {
                         xFiles.Add(file.ToXElement());
                         Info(file.ToString());
@@ -61,7 +60,7 @@ namespace Wexflow.Tasks.ListFiles
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {

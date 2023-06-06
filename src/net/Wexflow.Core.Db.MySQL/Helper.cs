@@ -13,14 +13,14 @@ namespace Wexflow.Core.Db.MySQL
 
         public static void CreateDatabaseIfNotExists(string server, string userId, string password, string databaseName, int port)
         {
-            using (MySqlConnection conn = new MySqlConnection("Server=" + server + ";Uid=" + userId + ";Pwd=" + password + ";" + "Port=" + port))
+            using (var conn = new MySqlConnection("Server=" + server + ";Uid=" + userId + ";Pwd=" + password + ";" + "Port=" + port))
             {
                 conn.Open();
 
-                using (MySqlCommand command = new MySqlCommand("CREATE DATABASE IF NOT EXISTS " + databaseName + ";", conn))
+                using (var command = new MySqlCommand("CREATE DATABASE IF NOT EXISTS " + databaseName + ";", conn))
                 {
 
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
 
             }
@@ -28,14 +28,14 @@ namespace Wexflow.Core.Db.MySQL
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {
-            using (MySqlConnection conn = new MySqlConnection(_connectionString))
+            using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
 
-                using (MySqlCommand command = new MySqlCommand("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn))
+                using (var command = new MySqlCommand("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn))
                 {
 
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
         }

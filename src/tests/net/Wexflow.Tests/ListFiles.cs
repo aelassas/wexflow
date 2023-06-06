@@ -23,7 +23,11 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (!Directory.Exists(Temp)) Directory.CreateDirectory(Temp);
+            if (!Directory.Exists(Temp))
+            {
+                _ = Directory.CreateDirectory(Temp);
+            }
+
             Helper.DeleteFilesAndFolders(Temp);
         }
 
@@ -35,12 +39,12 @@ namespace Wexflow.Tests
         [TestMethod]
         public void ListFilesTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(8);
+            _ = Helper.StartWorkflow(8);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResult, content);
         }
 

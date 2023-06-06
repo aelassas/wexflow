@@ -25,9 +25,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void CsvToJsonTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(112);
+            _ = Helper.StartWorkflow(112);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

@@ -31,8 +31,8 @@ namespace Wexflow.Tasks.UnSevenZip
         {
             Info("Extracting 7Z archives...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.UnSevenZip
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -75,29 +75,32 @@ namespace Wexflow.Tasks.UnSevenZip
 
         private bool ExtractFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] rars = SelectFiles();
+            var success = true;
+            var rars = SelectFiles();
 
             if (rars.Length > 0)
             {
-                foreach (FileInf rar in rars)
+                foreach (var rar in rars)
                 {
                     try
                     {
-                        string destFolder = Path.Combine(DestDir
+                        var destFolder = Path.Combine(DestDir
                             , Path.GetFileNameWithoutExtension(rar.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
-                        Directory.CreateDirectory(destFolder);
+                        _ = Directory.CreateDirectory(destFolder);
 
                         Extract7Z(rar.Path, destFolder);
 
-                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
 
                         InfoFormat("7Z {0} extracted to {1}", rar.Path, destFolder);
 
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -115,9 +118,9 @@ namespace Wexflow.Tasks.UnSevenZip
 
         private void Extract7Z(string rarFileName, string targetDir)
         {
-            using (SevenZipArchive archive = SevenZipArchive.Open(rarFileName))
+            using (var archive = SevenZipArchive.Open(rarFileName))
             {
-                foreach (SevenZipArchiveEntry entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
                 {
                     entry.WriteToDirectory(targetDir, new ExtractionOptions()
                     {

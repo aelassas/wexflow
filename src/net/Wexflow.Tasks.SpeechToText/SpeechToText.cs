@@ -17,17 +17,17 @@ namespace Wexflow.Tasks.SpeechToText
         public override TaskStatus Run()
         {
             Info("Converting speech to text...");
-            Status status = Status.Success;
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var status = Status.Success;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
 
-            foreach (FileInf file in files)
+            foreach (var file in files)
             {
                 try
                 {
-                    using (SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new CultureInfo("en-US")))
+                    using (var sre = new SpeechRecognitionEngine(new CultureInfo("en-US")))
                     {
                         sre.SetInputToWaveFile(file.Path);
                         sre.LoadGrammar(new DictationGrammar());
@@ -37,14 +37,17 @@ namespace Wexflow.Tasks.SpeechToText
                         sre.EndSilenceTimeout = new TimeSpan(100000000);
                         sre.EndSilenceTimeoutAmbiguous = new TimeSpan(100000000);
 
-                        RecognitionResult result = sre.Recognize();
-                        string text = result.Text;
+                        var result = sre.Recognize();
+                        var text = result.Text;
 
-                        string destFile = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(file.FileName) + ".txt");
+                        var destFile = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(file.FileName) + ".txt");
                         File.WriteAllText(destFile, text);
                         Files.Add(new FileInf(destFile, Id));
                         InfoFormat("The file {0} was converted to a text file with success -> {1}", file.Path, destFile);
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                 }
                 catch (ThreadAbortException)

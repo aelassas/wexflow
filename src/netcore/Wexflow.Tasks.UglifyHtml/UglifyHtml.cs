@@ -19,7 +19,7 @@ namespace Wexflow.Tasks.UglifyHtml
             Info("Uglifying HTML files...");
 
             bool success;
-            bool atLeastOneSuccess = false;
+            var atLeastOneSuccess = false;
             try
             {
                 success = UglifyHtmlFiles(ref atLeastOneSuccess);
@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.UglifyHtml
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
             if (!success && atLeastOneSuccess)
             {
                 status = Status.Warning;
@@ -50,15 +50,15 @@ namespace Wexflow.Tasks.UglifyHtml
 
         private bool UglifyHtmlFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] htmlFiles = SelectFiles();
+            var success = true;
+            var htmlFiles = SelectFiles();
 
-            foreach (FileInf htmlFile in htmlFiles)
+            foreach (var htmlFile in htmlFiles)
             {
                 try
                 {
-                    string source = File.ReadAllText(htmlFile.Path);
-                    UglifyResult result = Uglify.Html(source);
+                    var source = File.ReadAllText(htmlFile.Path);
+                    var result = Uglify.Html(source);
                     if (result.HasErrors)
                     {
                         ErrorFormat("An error occured while uglifying the HTML file {0}: {1}", htmlFile.Path, string.Concat(result.Errors.Select(e => e.Message + "\n").ToArray()));
@@ -66,11 +66,14 @@ namespace Wexflow.Tasks.UglifyHtml
                         continue;
                     }
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(htmlFile.FileName) + ".min.html");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(htmlFile.FileName) + ".min.html");
                     File.WriteAllText(destPath, result.Code);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The HTML file {0} has been uglified -> {1}", htmlFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

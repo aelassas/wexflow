@@ -40,9 +40,9 @@ namespace Wexflow.Tasks.Ftp
 
         public override FileInf[] List()
         {
-            List<FileInf> files = new List<FileInf>();
+            var files = new List<FileInf>();
 
-            FtpClient client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
+            var client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
             if (DebugLogs)
             {
@@ -52,11 +52,13 @@ namespace Wexflow.Tasks.Ftp
             client.Connect();
             client.SetWorkingDirectory(Path);
 
-            FileInf[] ftpFiles = ListFiles(client, Task.Id);
+            var ftpFiles = ListFiles(client, Task.Id);
             files.AddRange(ftpFiles);
 
-            foreach (FileInf file in files)
+            foreach (var file in files)
+            {
                 Task.InfoFormat("[PluginFTP] file {0} found on {1}.", file.Path, Server);
+            }
 
             client.Disconnect();
 
@@ -65,11 +67,11 @@ namespace Wexflow.Tasks.Ftp
 
         public static FileInf[] ListFiles(FtpClient client, int taskId)
         {
-            List<FileInf> files = new List<FileInf>();
+            var files = new List<FileInf>();
 
-            FtpListItem[] ftpListItems = client.GetListing();
+            var ftpListItems = client.GetListing();
 
-            foreach (FtpListItem item in ftpListItems)
+            foreach (var item in ftpListItems)
             {
                 if (item.Type == FtpObjectType.File)
                 {
@@ -82,7 +84,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Upload(FileInf file)
         {
-            FtpClient client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
+            var client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
             if (DebugLogs)
             {
@@ -101,9 +103,9 @@ namespace Wexflow.Tasks.Ftp
         public static void UploadFile(FtpClient client, FileInf file)
         {
             using (Stream istream = File.Open(file.Path, FileMode.Open, FileAccess.Read))
-            using (Stream ostream = client.OpenWrite(file.RenameToOrName, FtpDataType.Binary))
+            using (var ostream = client.OpenWrite(file.RenameToOrName, FtpDataType.Binary))
             {
-                byte[] buffer = new byte[BufferSize];
+                var buffer = new byte[BufferSize];
                 int r;
 
                 while ((r = istream.Read(buffer, 0, BufferSize)) > 0)
@@ -115,7 +117,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Download(FileInf file)
         {
-            FtpClient client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
+            var client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
             if (DebugLogs)
             {
@@ -133,8 +135,8 @@ namespace Wexflow.Tasks.Ftp
 
         public static void DownloadFile(FtpClient client, FileInf file, Task task)
         {
-            string destFileName = System.IO.Path.Combine(task.Workflow.WorkflowTempFolder, file.FileName);
-            using (Stream istream = client.OpenRead(file.Path))
+            var destFileName = System.IO.Path.Combine(task.Workflow.WorkflowTempFolder, file.FileName);
+            using (var istream = client.OpenRead(file.Path))
             using (Stream ostream = File.Create(destFileName))
             {
                 // istream.Position is incremented accordingly to the reads you perform
@@ -144,7 +146,7 @@ namespace Wexflow.Tasks.Ftp
                 // recommended that you stick with Binary and worry about character encodings
                 // on your end of the connection.
                 const int bufferSize = 8192;
-                byte[] buffer = new byte[bufferSize];
+                var buffer = new byte[bufferSize];
                 int r;
 
                 while ((r = istream.Read(buffer, 0, bufferSize)) > 0)
@@ -157,7 +159,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Delete(FileInf file)
         {
-            FtpClient client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
+            var client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
             if (DebugLogs)
             {

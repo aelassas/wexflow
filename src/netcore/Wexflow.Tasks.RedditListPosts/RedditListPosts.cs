@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.RedditListPosts
         {
             Info("Retrieving post history...");
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             RedditClient reddit;
             try
@@ -50,17 +50,17 @@ namespace Wexflow.Tasks.RedditListPosts
             {
                 // Retrieve the authenticated user's recent post history.
                 // Change "new" to "newForced" if you don't want older stickied profile posts to appear first.
-                System.Collections.Generic.List<Reddit.Controllers.Post> posts = reddit.Account.Me.GetPostHistory(sort: "new", limit: MaxResults, show: "all");
+                var posts = reddit.Account.Me.GetPostHistory(sort: "new", limit: MaxResults, show: "all");
 
                 XDocument xdoc = new(new XElement("Posts"));
 
-                foreach (Reddit.Controllers.Post post in posts)
+                foreach (var post in posts)
                 {
                     XElement xpost = new("Post", new XAttribute("id", SecurityElement.Escape(post.Id)), new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit)), new XAttribute("title", SecurityElement.Escape(post.Title)), new XAttribute("upvotes", post.UpVotes), new XAttribute("downvotes", post.DownVotes));
                     xdoc.Root.Add(xpost);
                 }
 
-                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "RedditListPosts", DateTime.Now));
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));

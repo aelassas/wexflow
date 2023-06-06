@@ -12,20 +12,26 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(DownloadedFile)) File.Delete(DownloadedFile);
+            if (File.Exists(DownloadedFile))
+            {
+                File.Delete(DownloadedFile);
+            }
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            if (File.Exists(DownloadedFile)) File.Delete(DownloadedFile);
+            if (File.Exists(DownloadedFile))
+            {
+                File.Delete(DownloadedFile);
+            }
         }
 
         [TestMethod]
         public void TorrentTest()
         {
             Assert.IsFalse(File.Exists(DownloadedFile));
-            Helper.StartWorkflow(163);
+            _ = Helper.StartWorkflow(163);
             Assert.IsTrue(File.Exists(DownloadedFile));
             Thread.Sleep(30 * 1000);
         }

@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.FilesDecryptor
         {
             Info("Decrypting files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.FilesDecryptor
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,15 +71,18 @@ namespace Wexflow.Tasks.FilesDecryptor
 
         private bool DecryptFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             try
             {
-                FileInf[] files = SelectFiles();
-                foreach (FileInf file in files)
+                var files = SelectFiles();
+                foreach (var file in files)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     success &= Decrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
-                    if (!atLeastOneSuccess && success) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && success)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
             }
             catch (ThreadAbortException)
@@ -98,33 +101,33 @@ namespace Wexflow.Tasks.FilesDecryptor
         {
             try
             {
-                using (FileStream fsCrypt = new FileStream(inputFile, FileMode.Open))
+                using (var fsCrypt = new FileStream(inputFile, FileMode.Open))
                 {
-                    byte[] saltBytes = new byte[32];
-                    fsCrypt.Read(saltBytes, 0, saltBytes.Length);
+                    var saltBytes = new byte[32];
+                    _ = fsCrypt.Read(saltBytes, 0, saltBytes.Length);
 
-                    UnicodeEncoding ue = new UnicodeEncoding();
+                    var ue = new UnicodeEncoding();
 
-                    RijndaelManaged rmcrypto = new RijndaelManaged
+                    var rmcrypto = new RijndaelManaged
                     {
                         KeySize = 256,
                         BlockSize = 128
                     };
 
-                    Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                    var key = new Rfc2898DeriveBytes(ue.GetBytes(passphrase), saltBytes, derivationIterations);
                     rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                     rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
                     rmcrypto.Padding = PaddingMode.Zeros;
                     rmcrypto.Mode = CipherMode.CBC;
 
 
-                    using (CryptoStream cs = new CryptoStream(fsCrypt, rmcrypto.CreateDecryptor(), CryptoStreamMode.Read))
-                    using (FileStream fsOut = new FileStream(outputFile, FileMode.Create))
+                    using (var cs = new CryptoStream(fsCrypt, rmcrypto.CreateDecryptor(), CryptoStreamMode.Read))
+                    using (var fsOut = new FileStream(outputFile, FileMode.Create))
                     {
                         int data;
                         while ((data = cs.ReadByte()) != -1)
                         {
-                            byte b = (byte)data;
+                            var b = (byte)data;
                             fsOut.WriteByte(b);
                         }
                     }

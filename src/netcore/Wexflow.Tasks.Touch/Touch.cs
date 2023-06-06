@@ -20,10 +20,10 @@ namespace Wexflow.Tasks.Touch
         {
             Info("Touching files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            foreach (string file in Tfiles)
+            foreach (var file in Tfiles)
             {
                 try
                 {
@@ -31,7 +31,10 @@ namespace Wexflow.Tasks.Touch
                     InfoFormat("File {0} created.", file);
                     Files.Add(new FileInf(file, Id));
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -44,7 +47,7 @@ namespace Wexflow.Tasks.Touch
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

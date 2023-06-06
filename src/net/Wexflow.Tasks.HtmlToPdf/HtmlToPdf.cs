@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.HtmlToPdf
         {
             Info("Generating PDF files from HTML files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.HtmlToPdf
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -72,22 +72,22 @@ namespace Wexflow.Tasks.HtmlToPdf
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
+            var success = true;
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
-                        string pdfPath = Path.Combine(Workflow.WorkflowTempFolder,
+                        var pdfPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.pdf", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
 
-                        Document doc = new Document();
-                        PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));
+                        var doc = new Document();
+                        _ = PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));
 #pragma warning disable CS0612
-                        HTMLWorker worker = new HTMLWorker(doc);
+                        var worker = new HTMLWorker(doc);
 #pragma warning restore CS0612
                         doc.Open();
                         worker.StartDocument();
@@ -100,7 +100,10 @@ namespace Wexflow.Tasks.HtmlToPdf
                         Files.Add(new FileInf(pdfPath, Id));
                         InfoFormat("PDF {0} generated from the file {1}", pdfPath, file.Path);
 
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {

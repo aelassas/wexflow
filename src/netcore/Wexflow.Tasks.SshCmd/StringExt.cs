@@ -7,12 +7,16 @@ namespace Wexflow.Tasks.SshCmd
     {
         public static string StringAfter(this string str, string substring)
         {
-            int index = str.IndexOf(substring, StringComparison.Ordinal);
+            var index = str.IndexOf(substring, StringComparison.Ordinal);
 
             return index >= 0 ? str[(index + substring.Length)..] : string.Empty;
         }
 
-        public static string[] GetLines(this string str) => MyRegex().Split(str);
+        public static string[] GetLines(this string str)
+        {
+            return MyRegex().Split(str);
+        }
+
         [GeneratedRegex("\r\n|\r|\n")]
         private static partial Regex MyRegex();
     }

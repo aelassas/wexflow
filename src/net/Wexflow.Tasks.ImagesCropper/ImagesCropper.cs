@@ -34,8 +34,8 @@ namespace Wexflow.Tasks.ImagesCropper
         {
             Info("Cropping images...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.ImagesCropper
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -78,15 +78,18 @@ namespace Wexflow.Tasks.ImagesCropper
 
         private bool CropImages(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             try
             {
-                FileInf[] images = SelectFiles();
-                foreach (FileInf image in images)
+                var images = SelectFiles();
+                foreach (var image in images)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     success &= Crop(image.Path, destPath);
-                    if (!atLeastOneSuccess && success) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && success)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
             }
             catch (ThreadAbortException)
@@ -105,8 +108,8 @@ namespace Wexflow.Tasks.ImagesCropper
         {
             try
             {
-                using (Image src = Image.FromFile(srcPath))
-                using (Image dest = Crop(src, X, Y, Width, Height))
+                using (var src = Image.FromFile(srcPath))
+                using (var dest = Crop(src, X, Y, Width, Height))
                 {
                     dest.Save(destPath);
                     Files.Add(new FileInf(destPath, Id));
@@ -127,10 +130,10 @@ namespace Wexflow.Tasks.ImagesCropper
 
         private Image Crop(Image src, int x, int y, int width, int height)
         {
-            Rectangle cropRect = new Rectangle(x, y, width, height);
-            Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+            var cropRect = new Rectangle(x, y, width, height);
+            var target = new Bitmap(cropRect.Width, cropRect.Height);
 
-            using (Graphics g = Graphics.FromImage(target))
+            using (var g = Graphics.FromImage(target))
             {
                 g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
                                  cropRect,

@@ -16,13 +16,13 @@ namespace Wexflow.Tasks.Approval
         {
             Info("Approval process starting...");
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             try
             {
                 if (Workflow.IsApproval)
                 {
-                    string trigger = Path.Combine(Workflow.ApprovalFolder, Workflow.Id.ToString(), Workflow.InstanceId.ToString(), Id.ToString(), "task.approved");
+                    var trigger = Path.Combine(Workflow.ApprovalFolder, Workflow.Id.ToString(), Workflow.InstanceId.ToString(), Id.ToString(), "task.approved");
 
                     IsWaitingForApproval = true;
                     Workflow.IsWaitingForApproval = true;

@@ -23,7 +23,7 @@ namespace Wexflow.Tasks.Untgz
             Info("Extracting TAR.GZ archives...");
 
             bool success;
-            bool atLeastOneSuccess = false;
+            var atLeastOneSuccess = false;
             try
             {
                 success = ExtractFiles(ref atLeastOneSuccess);
@@ -38,7 +38,7 @@ namespace Wexflow.Tasks.Untgz
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -55,28 +55,31 @@ namespace Wexflow.Tasks.Untgz
 
         private bool ExtractFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] tgzs = SelectFiles();
+            var success = true;
+            var tgzs = SelectFiles();
 
             if (tgzs.Length > 0)
             {
-                foreach (FileInf tgz in tgzs)
+                foreach (var tgz in tgzs)
                 {
                     try
                     {
-                        string destFolder = Path.Combine(DestDir
+                        var destFolder = Path.Combine(DestDir
                             , Path.GetFileNameWithoutExtension(tgz.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
-                        Directory.CreateDirectory(destFolder);
+                        _ = Directory.CreateDirectory(destFolder);
                         ExtractTGZ(tgz.Path, destFolder);
 
-                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
 
                         InfoFormat("TAR.GZ {0} extracted to {1}", tgz.Path, destFolder);
 
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -92,12 +95,12 @@ namespace Wexflow.Tasks.Untgz
             return success;
         }
 
-        private static void ExtractTGZ(String gzArchiveName, String destFolder)
+        private static void ExtractTGZ(string gzArchiveName, string destFolder)
         {
             Stream inStream = File.OpenRead(gzArchiveName);
             Stream gzipStream = new GZipInputStream(inStream);
 
-            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
             tarArchive.ExtractContents(destFolder);
             tarArchive.Close();
 

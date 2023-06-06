@@ -63,7 +63,7 @@ namespace Wexflow.Core.Service.Contracts
 
         public int CompareTo(object obj)
         {
-            WorkflowInfo wfi = (WorkflowInfo)obj;
+            var wfi = (WorkflowInfo)obj;
             return wfi.Id.CompareTo(Id);
         }
     }

@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.Sha256
         {
             Info("Generating SHA-256 hashes...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.Sha256
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -71,27 +71,30 @@ namespace Wexflow.Tasks.Sha256
 
         private bool GenerateSha256(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
+            var success = true;
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                string md5Path = Path.Combine(Workflow.WorkflowTempFolder,
+                var md5Path = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("SHA256_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                XDocument xdoc = new XDocument(new XElement("Files"));
-                foreach (FileInf file in files)
+                var xdoc = new XDocument(new XElement("Files"));
+                foreach (var file in files)
                 {
                     try
                     {
-                        string sha1 = GetSha1(file.Path);
+                        var sha1 = GetSha1(file.Path);
                         xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("sha256", sha1)));
                         InfoFormat("SHA-256 hash of the file {0} is {1}", file.Path, sha1);
 
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -111,16 +114,16 @@ namespace Wexflow.Tasks.Sha256
 
         private string GetSha1(string filePath)
         {
-            StringBuilder sb = new StringBuilder();
-            using (SHA256Managed sha256 = new SHA256Managed())
+            var sb = new StringBuilder();
+            using (var sha256 = new SHA256Managed())
             {
-                using (FileStream stream = File.OpenRead(filePath))
+                using (var stream = File.OpenRead(filePath))
                 {
-                    byte[] bytes = sha256.ComputeHash(stream);
+                    var bytes = sha256.ComputeHash(stream);
 
-                    foreach (byte bt in bytes)
+                    foreach (var bt in bytes)
                     {
-                        sb.Append(bt.ToString("x2"));
+                        _ = sb.Append(bt.ToString("x2"));
                     }
                 }
             }

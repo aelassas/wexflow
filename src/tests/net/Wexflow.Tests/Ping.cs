@@ -19,13 +19,13 @@ namespace Wexflow.Tests
         [TestMethod]
         public void PingTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(94);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(94);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            Helper.StartWorkflow(95);
+            _ = Helper.StartWorkflow(95);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

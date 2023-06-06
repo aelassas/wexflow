@@ -18,7 +18,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void InstagramUploadImageTest()
         {
-            Helper.StartWorkflow(122);
+            _ = Helper.StartWorkflow(122);
             // TODO
         }
     }

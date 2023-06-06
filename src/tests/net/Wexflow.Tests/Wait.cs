@@ -19,8 +19,8 @@ namespace Wexflow.Tests
         [TestMethod]
         public void WaitTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(41);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(41);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 30000);
         }

@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
+using System.IO;
 using System.IO.Enumeration;
 
-namespace System.IO
+namespace Wexflow.Core.PollingFileSystemWatcher
 {
     internal class FileSystemChangeEnumerator : FileSystemEnumerator<string>
     {
@@ -21,7 +23,9 @@ namespace System.IO
         public FileChangeList Changes => _changes;
 
         protected override void OnDirectoryFinished(ReadOnlySpan<char> directory)
-            => _currentDirectory = null;
+        {
+            _currentDirectory = null;
+        }
 
         protected override string TransformEntry(ref FileSystemEntry entry)
         {
@@ -39,6 +43,8 @@ namespace System.IO
         }
 
         protected override bool ShouldRecurseIntoEntry(ref FileSystemEntry entry)
-            => _watcher.ShouldRecurseIntoEntry(ref entry);
+        {
+            return _watcher.ShouldRecurseIntoEntry(ref entry);
+        }
     }
 }

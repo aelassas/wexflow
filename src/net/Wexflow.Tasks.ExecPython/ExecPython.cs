@@ -19,18 +19,21 @@ namespace Wexflow.Tasks.ExecPython
         {
             Info("Executing python scripts...");
 
-            Status status = Status.Success;
-            bool success = true;
-            bool atLeastOneSuccess = false;
-            FileInf[] pythonFiles = SelectFiles();
+            var status = Status.Success;
+            var success = true;
+            var atLeastOneSuccess = false;
+            var pythonFiles = SelectFiles();
 
-            foreach (FileInf pythonFile in pythonFiles)
+            foreach (var pythonFile in pythonFiles)
             {
                 try
                 {
                     Exec(pythonFile.Path);
                     InfoFormat("The script {0} has been executed.", pythonFile.Path);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -58,7 +61,7 @@ namespace Wexflow.Tasks.ExecPython
 
         private void Exec(string pyScriptPath)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo(PythonPath, pyScriptPath)
+            var startInfo = new ProcessStartInfo(PythonPath, pyScriptPath)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
@@ -66,10 +69,10 @@ namespace Wexflow.Tasks.ExecPython
                 RedirectStandardError = true
             };
 
-            Process process = new Process { StartInfo = startInfo };
+            var process = new Process { StartInfo = startInfo };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
-            process.Start();
+            _ = process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process.WaitForExit();

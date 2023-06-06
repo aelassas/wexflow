@@ -26,18 +26,21 @@ namespace Wexflow.Tasks.ImagesCropper
         public override TaskStatus Run()
         {
             Info("Cropping images...");
-            Status status = Status.Success;
-            bool succeeded = true;
-            bool atLeastOneSuccess = false;
+            var status = Status.Success;
+            var succeeded = true;
+            var atLeastOneSuccess = false;
 
             try
             {
-                FileInf[] images = SelectFiles();
-                foreach (FileInf image in images)
+                var images = SelectFiles();
+                foreach (var image in images)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     succeeded &= Crop(image.Path, destPath);
-                    if (!atLeastOneSuccess && succeeded) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && succeeded)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -67,8 +70,8 @@ namespace Wexflow.Tasks.ImagesCropper
         {
             try
             {
-                using Image src = Image.FromFile(srcPath);
-                using Image dest = Crop(src, X, Y, Width, Height);
+                using var src = Image.FromFile(srcPath);
+                using var dest = Crop(src, X, Y, Width, Height);
                 dest.Save(destPath);
                 Files.Add(new FileInf(destPath, Id));
                 InfoFormat("The image {0} was cropped -> {3}", srcPath, Width, Height, destPath);
@@ -90,7 +93,7 @@ namespace Wexflow.Tasks.ImagesCropper
             Rectangle cropRect = new(x, y, width, height);
             Bitmap target = new(cropRect.Width, cropRect.Height);
 
-            using (Graphics g = Graphics.FromImage(target))
+            using (var g = Graphics.FromImage(target))
             {
                 g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
                                  cropRect,

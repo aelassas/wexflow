@@ -30,12 +30,12 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void SqlToCsvTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(159);
+            _ = Helper.StartWorkflow(159);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResult, content);
         }
 

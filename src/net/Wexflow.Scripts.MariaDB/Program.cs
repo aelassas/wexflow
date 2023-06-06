@@ -4,13 +4,13 @@ using Wexflow.Core.Db.MariaDB;
 
 namespace Wexflow.Scripts.MariaDB
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {
-                Db db = new Db(ConfigurationManager.AppSettings["connectionString"]);
+                var db = new Db(ConfigurationManager.AppSettings["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db);
                 Core.Helper.InsertRecords(db, "mariadb");
                 db.Dispose();
@@ -21,7 +21,7 @@ namespace Wexflow.Scripts.MariaDB
             }
 
             Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
     }
 }

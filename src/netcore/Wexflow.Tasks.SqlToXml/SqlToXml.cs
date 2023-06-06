@@ -51,8 +51,8 @@ namespace Wexflow.Tasks.SqlToXml
         {
             Info("Executing SQL scripts...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             // Execute SqlScript if necessary
             try
@@ -74,15 +74,18 @@ namespace Wexflow.Tasks.SqlToXml
             }
 
             // Execute SQL files scripts
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string sql = File.ReadAllText(file.Path);
+                    var sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -95,7 +98,7 @@ namespace Wexflow.Tasks.SqlToXml
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -176,18 +179,18 @@ namespace Wexflow.Tasks.SqlToXml
         private void ConvertToXml(DbConnection connection, DbCommand command)
         {
             connection.Open();
-            DbDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
 
             if (reader.HasRows)
             {
                 List<string> columns = new();
 
-                for (int i = 0; i < reader.FieldCount; i++)
+                for (var i = 0; i < reader.FieldCount; i++)
                 {
                     columns.Add(reader.GetName(i));
                 }
 
-                string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                                                string.Format("SqlToXml_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml",
                                                DateTime.Now));
                 XDocument xdoc = new();
@@ -197,13 +200,13 @@ namespace Wexflow.Tasks.SqlToXml
                 {
                     XElement xobject = new("Record");
 
-                    foreach (string column in columns)
+                    foreach (var column in columns)
                     {
-                        string xmlvalue = CleanInvalidXmlChars(reader[column].ToString());
-                        System.Type columntype = reader[column].GetType();
+                        var xmlvalue = CleanInvalidXmlChars(reader[column].ToString());
+                        var columntype = reader[column].GetType();
                         if (
-                            (columntype == typeof(Int32) && int.TryParse(xmlvalue, out int number) && number == 0) ||
-                            (columntype == typeof(Decimal) && decimal.TryParse(xmlvalue, out decimal decnumber) && decnumber == 0) ||
+                            (columntype == typeof(int) && int.TryParse(xmlvalue, out var number) && number == 0) ||
+                            (columntype == typeof(decimal) && decimal.TryParse(xmlvalue, out var decnumber) && decnumber == 0) ||
                             (columntype == typeof(DateTime) && (Convert.ToDateTime(xmlvalue) == SqlDateTime.MinValue || xmlvalue == "01-01-1900 00:00:00"))
                             )
                         {
@@ -230,7 +233,7 @@ namespace Wexflow.Tasks.SqlToXml
             // From xml spec valid chars: 
             // #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]     
             // any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. 
-            string re = @"[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD\x10000-x10FFFF]";
+            var re = @"[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD\x10000-x10FFFF]";
             return Regex.Replace(text, re, "");
         }
     }

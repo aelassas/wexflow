@@ -41,15 +41,15 @@ namespace Wexflow.Tasks.ProcessLauncher
                 return new TaskStatus(Status.Error, false);
             }
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             if (!GeneratesFiles)
             {
                 return StartProcess(ProcessPath, ProcessCmd, HideGui);
             }
 
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 string cmd;
                 string outputFilePath;
@@ -60,11 +60,11 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                     const string outputRegexPattern = @"{\$output:(?:\$fileNameWithoutExtension|\$fileName)(?:[a-zA-Z0-9._-]*})";
                     Regex outputRegex = new(outputRegexPattern);
-                    Match m = outputRegex.Match(cmd);
+                    var m = outputRegex.Match(cmd);
 
                     if (m.Success)
                     {
-                        string val = m.Value;
+                        var val = m.Value;
                         outputFilePath = val;
                         if (outputFilePath.Contains(VarFileNameWithoutExtension))
                         {
@@ -101,9 +101,9 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                     if (LoadAllFiles)
                     {
-                        string[] files = Directory.GetFiles(Workflow.WorkflowTempFolder, "*.*", SearchOption.AllDirectories);
+                        var files = Directory.GetFiles(Workflow.WorkflowTempFolder, "*.*", SearchOption.AllDirectories);
 
-                        foreach (string f in files)
+                        foreach (var f in files)
                         {
                             if (f != outputFilePath)
                             {
@@ -112,7 +112,10 @@ namespace Wexflow.Tasks.ProcessLauncher
                         }
                     }
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 else
                 {
@@ -120,7 +123,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -150,7 +153,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                 Process process = new() { StartInfo = startInfo };
                 process.OutputDataReceived += OutputHandler;
                 process.ErrorDataReceived += ErrorHandler;
-                process.Start();
+                _ = process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
                 process.WaitForExit();

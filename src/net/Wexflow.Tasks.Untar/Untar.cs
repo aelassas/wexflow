@@ -29,8 +29,8 @@ namespace Wexflow.Tasks.Untar
         {
             Info("Extracting TAR archives...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.Untar
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -73,28 +73,31 @@ namespace Wexflow.Tasks.Untar
 
         private bool UntarFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] tars = SelectFiles();
+            var success = true;
+            var tars = SelectFiles();
 
             if (tars.Length > 0)
             {
-                foreach (FileInf tar in tars)
+                foreach (var tar in tars)
                 {
                     try
                     {
-                        string destFolder = Path.Combine(DestDir
+                        var destFolder = Path.Combine(DestDir
                             , Path.GetFileNameWithoutExtension(tar.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
-                        Directory.CreateDirectory(destFolder);
+                        _ = Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 
-                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
 
                         InfoFormat("TAR {0} extracted to {1}", tar.Path, destFolder);
 
-                        if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                        if (!atLeastOneSuccess)
+                        {
+                            atLeastOneSuccess = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -113,9 +116,9 @@ namespace Wexflow.Tasks.Untar
 
         private void ExtractTarByEntry(string tarFileName, string targetDir)
         {
-            using (FileStream fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read))
+            using (var fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read))
             {
-                TarInputStream tarIn = new TarInputStream(fsIn, Encoding.UTF8);
+                var tarIn = new TarInputStream(fsIn, Encoding.UTF8);
                 TarEntry tarEntry;
                 while ((tarEntry = tarIn.GetNextEntry()) != null)
                 {
@@ -125,7 +128,7 @@ namespace Wexflow.Tasks.Untar
                     }
                     // Converts the unix forward slashes in the filenames to windows backslashes
                     //
-                    string name = tarEntry.Name.Replace('/', Path.DirectorySeparatorChar);
+                    var name = tarEntry.Name.Replace('/', Path.DirectorySeparatorChar);
 
                     // Remove any root e.g. '\' because a PathRooted filename defeats Path.Combine
                     if (Path.IsPathRooted(name))
@@ -134,18 +137,18 @@ namespace Wexflow.Tasks.Untar
                     }
 
                     // Apply further name transformations here as necessary
-                    string outName = Path.Combine(targetDir, name);
+                    var outName = Path.Combine(targetDir, name);
 
-                    string directoryName = Path.GetDirectoryName(outName);
-                    Directory.CreateDirectory(directoryName);
+                    var directoryName = Path.GetDirectoryName(outName);
+                    _ = Directory.CreateDirectory(directoryName);
 
-                    FileStream outStr = new FileStream(outName, FileMode.Create);
+                    var outStr = new FileStream(outName, FileMode.Create);
 
                     tarIn.CopyEntryContents(outStr);
 
                     outStr.Close();
                     // Set the modification date/time. This approach seems to solve timezone issues.
-                    DateTime myDt = DateTime.SpecifyKind(tarEntry.ModTime, DateTimeKind.Utc);
+                    var myDt = DateTime.SpecifyKind(tarEntry.ModTime, DateTimeKind.Utc);
                     File.SetLastWriteTime(outName, myDt);
                 }
                 tarIn.Close();

@@ -1,5 +1,4 @@
 ﻿using Renci.SshNet;
-using Renci.SshNet.Sftp;
 using System.Collections.Generic;
 using System.IO;
 using Wexflow.Core;
@@ -21,7 +20,7 @@ namespace Wexflow.Tasks.Ftp
         private ConnectionInfo GetConnectionInfo()
         {
             // Setup Credentials and Server Information
-            ConnectionInfo connInfo = !string.IsNullOrEmpty(PrivateKeyPath) && !string.IsNullOrEmpty(Passphrase)
+            var connInfo = !string.IsNullOrEmpty(PrivateKeyPath) && !string.IsNullOrEmpty(Passphrase)
                 ? new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password), new PrivateKeyAuthenticationMethod(User, new PrivateKeyFile(PrivateKeyPath, Passphrase)))
                 : new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password));
             return connInfo;
@@ -36,8 +35,8 @@ namespace Wexflow.Tasks.Ftp
                 client.Connect();
                 client.ChangeDirectory(Path);
 
-                IEnumerable<SftpFile> sftpFiles = client.ListDirectory(".");
-                foreach (SftpFile file in sftpFiles)
+                var sftpFiles = client.ListDirectory(".");
+                foreach (var file in sftpFiles)
                 {
                     if (file.IsRegularFile)
                     {
@@ -58,7 +57,7 @@ namespace Wexflow.Tasks.Ftp
             client.Connect();
             client.ChangeDirectory(Path);
 
-            using (FileStream fileStream = File.OpenRead(file.Path))
+            using (var fileStream = File.OpenRead(file.Path))
             {
                 client.UploadFile(fileStream, file.RenameToOrName, true);
             }
@@ -73,8 +72,8 @@ namespace Wexflow.Tasks.Ftp
             client.Connect();
             client.ChangeDirectory(Path);
 
-            string destFileName = System.IO.Path.Combine(Task.Workflow.WorkflowTempFolder, file.FileName);
-            using (FileStream ostream = File.Create(destFileName))
+            var destFileName = System.IO.Path.Combine(Task.Workflow.WorkflowTempFolder, file.FileName);
+            using (var ostream = File.Create(destFileName))
             {
                 client.DownloadFile(file.Path, ostream);
                 Task.Files.Add(new FileInf(destFileName, Task.Id));

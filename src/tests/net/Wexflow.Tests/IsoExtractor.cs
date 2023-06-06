@@ -23,9 +23,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void IsoExtractorTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(88);
+            _ = Helper.StartWorkflow(88);
             files = GetFiles();
             Assert.AreEqual(10, files.Length);
         }

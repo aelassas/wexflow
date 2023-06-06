@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.Movedir
         {
             Info("Moving directory...");
 
-            bool success = false;
+            var success = false;
             try
             {
                 if (!string.IsNullOrEmpty(SmbComputerName) && !string.IsNullOrEmpty(SmbUsername) && !string.IsNullOrEmpty(SmbPassword))
@@ -62,10 +62,10 @@ namespace Wexflow.Tasks.Movedir
 
         private bool MoveDirectory()
         {
-            bool success = false;
+            var success = false;
             try
             {
-                bool move = true;
+                var move = true;
                 if (Directory.Exists(DestinationFolder))
                 {
                     if (Overwrite)
@@ -99,11 +99,15 @@ namespace Wexflow.Tasks.Movedir
 
         private void DeleteRec(string dir)
         {
-            foreach (string file in Directory.GetFiles(dir))
+            foreach (var file in Directory.GetFiles(dir))
+            {
                 File.Delete(file);
+            }
 
-            foreach (string subdir in Directory.GetDirectories(dir))
+            foreach (var subdir in Directory.GetDirectories(dir))
+            {
                 DeleteRec(subdir);
+            }
 
             Directory.Delete(dir);
         }

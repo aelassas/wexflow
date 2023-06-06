@@ -20,17 +20,20 @@ namespace Wexflow.Tasks.Rmdir
         {
             Info("Removing folders...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            foreach (string folder in Folders)
+            foreach (var folder in Folders)
             {
                 try
                 {
                     RmdirRec(folder);
                     InfoFormat("Folder {0} deleted.", folder);
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -43,7 +46,7 @@ namespace Wexflow.Tasks.Rmdir
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -60,8 +63,16 @@ namespace Wexflow.Tasks.Rmdir
 
         private void RmdirRec(string folder)
         {
-            foreach (string file in Directory.GetFiles(folder)) File.Delete(file);
-            foreach (string dir in Directory.GetDirectories(folder)) RmdirRec(dir);
+            foreach (var file in Directory.GetFiles(folder))
+            {
+                File.Delete(file);
+            }
+
+            foreach (var dir in Directory.GetDirectories(folder))
+            {
+                RmdirRec(dir);
+            }
+
             Directory.Delete(folder);
         }
     }

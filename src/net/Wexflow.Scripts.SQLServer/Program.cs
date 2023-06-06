@@ -4,13 +4,13 @@ using Wexflow.Core.Db.SQLServer;
 
 namespace Wexflow.Scripts.SQLServer
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {
-                Db db = new Db(ConfigurationManager.AppSettings["connectionString"]);
+                var db = new Db(ConfigurationManager.AppSettings["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db);
                 Core.Helper.InsertRecords(db, "sqlserver");
                 db.Dispose();
@@ -21,7 +21,7 @@ namespace Wexflow.Scripts.SQLServer
             }
 
             Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
     }
 }

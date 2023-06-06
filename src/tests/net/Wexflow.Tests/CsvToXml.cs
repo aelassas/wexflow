@@ -41,22 +41,22 @@ namespace Wexflow.Tests
         [TestMethod]
         public void CsvToXmlTest()
         {
-            Helper.StartWorkflow(1);
+            _ = Helper.StartWorkflow(1);
 
             // Check the workflow result
-            string[] xmlFiles = Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml");
+            var xmlFiles = Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml");
             Assert.AreEqual(2, xmlFiles.Length);
 
-            foreach (string xmlFile in xmlFiles)
+            foreach (var xmlFile in xmlFiles)
             {
-                string xmlContent = File.ReadAllText(xmlFile);
+                var xmlContent = File.ReadAllText(xmlFile);
                 Assert.AreEqual(ExpectedResult, xmlContent);
             }
         }
 
         private void DeleteXmls()
         {
-            foreach (string file in Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml"))
+            foreach (var file in Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml"))
             {
                 File.Delete(file);
             }

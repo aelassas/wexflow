@@ -19,10 +19,7 @@ namespace Wexflow.Core
         /// </summary>
         public string Path
         {
-            get
-            {
-                return _path;
-            }
+            get => _path;
             set
             {
                 _path = value;
@@ -42,10 +39,7 @@ namespace Wexflow.Core
         /// </summary>
         public string RenameTo
         {
-            get
-            {
-                return _renameTo;
-            }
+            get => _renameTo;
             set
             {
                 _renameTo = value;

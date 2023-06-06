@@ -51,13 +51,13 @@ namespace Wexflow.NetCore.Tests
 
         public static System.Guid StartWorkflow(int workflowId)
         {
-            System.Guid instanceId = WexflowEngine.StartWorkflow("admin", workflowId);
+            var instanceId = WexflowEngine.StartWorkflow("admin", workflowId);
 
             // Wait until the workflow finishes
             Thread.Sleep(1000);
-            Workflow workflow = WexflowEngine.GetWorkflow(workflowId);
-            bool isRunning = workflow.IsRunning;
-            bool isWaitingForApproval = workflow.IsWaitingForApproval;
+            var workflow = WexflowEngine.GetWorkflow(workflowId);
+            var isRunning = workflow.IsRunning;
+            var isWaitingForApproval = workflow.IsWaitingForApproval;
             while (isRunning && !isWaitingForApproval)
             {
                 Thread.Sleep(100);
@@ -76,12 +76,12 @@ namespace Wexflow.NetCore.Tests
 
         public static void StopWorkflow(int workflowId, System.Guid instanceId)
         {
-            WexflowEngine.StopWorkflow(workflowId, instanceId, "admin");
+            _ = WexflowEngine.StopWorkflow(workflowId, instanceId, "admin");
         }
 
         public static void SuspendWorkflow(int workflowId, System.Guid instanceId)
         {
-            WexflowEngine.SuspendWorkflow(workflowId, instanceId);
+            _ = WexflowEngine.SuspendWorkflow(workflowId, instanceId);
         }
 
         public static void ResumeWorkflow(int workflowId, System.Guid instanceId)
@@ -91,12 +91,12 @@ namespace Wexflow.NetCore.Tests
 
         public static void ApproveWorkflow(int workflowId, System.Guid instanceId)
         {
-            WexflowEngine.ApproveWorkflow(workflowId, instanceId, "admin");
+            _ = WexflowEngine.ApproveWorkflow(workflowId, instanceId, "admin");
         }
 
         public static void RejectWorkflow(int workflowId, System.Guid instanceId)
         {
-            WexflowEngine.RejectWorkflow(workflowId, instanceId, "admin");
+            _ = WexflowEngine.RejectWorkflow(workflowId, instanceId, "admin");
         }
 
         public static Core.Workflow GetWorkflow(int workflowId)
@@ -106,10 +106,14 @@ namespace Wexflow.NetCore.Tests
 
         public static void DeleteFilesAndFolders(string folder)
         {
-            if (!Directory.Exists(folder)) return;
+            if (!Directory.Exists(folder))
+            {
+                return;
+            }
+
             DeleteFiles(folder);
 
-            foreach (string dir in Directory.GetDirectories(folder))
+            foreach (var dir in Directory.GetDirectories(folder))
             {
                 DeleteDirRec(dir);
             }
@@ -117,8 +121,12 @@ namespace Wexflow.NetCore.Tests
 
         public static void DeleteFiles(string dir)
         {
-            if (!Directory.Exists(dir)) return;
-            foreach (string file in Directory.GetFiles(dir))
+            if (!Directory.Exists(dir))
+            {
+                return;
+            }
+
+            foreach (var file in Directory.GetFiles(dir))
             {
                 File.Delete(file);
             }
@@ -131,7 +139,7 @@ namespace Wexflow.NetCore.Tests
             //    File.Delete(file);
             //}
 
-            foreach (string subdir in Directory.GetDirectories(dir))
+            foreach (var subdir in Directory.GetDirectories(dir))
             {
                 DeleteDirRec(subdir);
             }
@@ -141,17 +149,21 @@ namespace Wexflow.NetCore.Tests
 
         public static void CopyDirRec(string src, string dest)
         {
-            string dirName = Path.GetFileName(src);
-            string destDir = Path.Combine(dest, dirName);
-            Directory.CreateDirectory(destDir);
+            var dirName = Path.GetFileName(src);
+            var destDir = Path.Combine(dest, dirName);
+            _ = Directory.CreateDirectory(destDir);
 
             //Now Create all of the directories
-            foreach (string dirPath in Directory.GetDirectories(src, "*", SearchOption.AllDirectories))
-                Directory.CreateDirectory(dirPath.Replace(src, destDir));
+            foreach (var dirPath in Directory.GetDirectories(src, "*", SearchOption.AllDirectories))
+            {
+                _ = Directory.CreateDirectory(dirPath.Replace(src, destDir));
+            }
 
             //Copy all the files & Replaces any files with the same name
-            foreach (string newPath in Directory.GetFiles(src, "*.*", SearchOption.AllDirectories))
+            foreach (var newPath in Directory.GetFiles(src, "*.*", SearchOption.AllDirectories))
+            {
                 File.Copy(newPath, newPath.Replace(src, destDir), true);
+            }
         }
 
         public static void StartProcess(string name, string cmd, bool hideGui)
@@ -167,7 +179,7 @@ namespace Wexflow.NetCore.Tests
             Process process = new() { StartInfo = startInfo };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
-            process.Start();
+            _ = process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
         }

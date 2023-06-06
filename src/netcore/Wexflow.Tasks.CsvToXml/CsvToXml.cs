@@ -17,19 +17,22 @@ namespace Wexflow.Tasks.CsvToXml
         {
             Info("Creating XML files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateXml(file.Path, xmlPath);
                     Files.Add(new FileInf(xmlPath, Id));
                     InfoFormat("XML file {0} created from {1}", xmlPath, file.Path);
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -42,7 +45,7 @@ namespace Wexflow.Tasks.CsvToXml
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -61,14 +64,21 @@ namespace Wexflow.Tasks.CsvToXml
         {
             XDocument xdoc = new(new XElement("Lines"));
 
-            foreach (string line in File.ReadAllLines(csvPath))
+            foreach (var line in File.ReadAllLines(csvPath))
             {
                 XElement xLine = new("Line");
-                foreach (string col in line.Split(';'))
+                foreach (var col in line.Split(';'))
                 {
-                    if (!string.IsNullOrEmpty(col)) xLine.Add(new XElement("Column", col));
+                    if (!string.IsNullOrEmpty(col))
+                    {
+                        xLine.Add(new XElement("Column", col));
+                    }
                 }
-                if (xdoc.Root == null) throw new Exception("No root node found.");
+                if (xdoc.Root == null)
+                {
+                    throw new Exception("No root node found.");
+                }
+
                 xdoc.Root.Add(xLine);
             }
 

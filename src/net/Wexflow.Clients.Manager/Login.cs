@@ -46,25 +46,25 @@ namespace Wexflow.Clients.Manager
         {
             try
             {
-                string username = txtUserName.Text;
+                var username = txtUserName.Text;
                 if (string.IsNullOrEmpty(username))
                 {
-                    MessageBox.Show("Type a username.");
+                    _ = MessageBox.Show("Type a username.");
                 }
                 else
                 {
-                    string password = txtPassword.Text;
-                    User user = _wexflowServiceClient.GetUser(username, password, username);
+                    var password = txtPassword.Text;
+                    var user = _wexflowServiceClient.GetUser(username, password, username);
 
                     if (user == null)
                     {
-                        MessageBox.Show("Wrong credentials.");
+                        _ = MessageBox.Show("Wrong credentials.");
                     }
                     else
                     {
                         if (user.UserProfile == UserProfile.Restricted)
                         {
-                            MessageBox.Show("You do not have enough rights to access Wexflow Manager.");
+                            _ = MessageBox.Show("You do not have enough rights to access Wexflow Manager.");
                         }
                         else
                         {
@@ -73,13 +73,13 @@ namespace Wexflow.Clients.Manager
                                 Username = user.Username;
                                 Password = password;
 
-                                Manager manager = new Manager();
+                                var manager = new Manager();
                                 manager.Show();
                                 Hide();
                             }
                             else
                             {
-                                MessageBox.Show("The password is incorrect.");
+                                _ = MessageBox.Show("The password is incorrect.");
                             }
                         }
 
@@ -88,7 +88,7 @@ namespace Wexflow.Clients.Manager
             }
             catch (Exception)
             {
-                MessageBox.Show(@"An error occured during the authentication.", "Wexflow", MessageBoxButtons.OK);
+                _ = MessageBox.Show(@"An error occured during the authentication.", "Wexflow", MessageBoxButtons.OK);
             }
 
         }
@@ -96,16 +96,16 @@ namespace Wexflow.Clients.Manager
         public static string GetMd5(string input)
         {
             // Use input string to calculate MD5 hash
-            using (MD5 md5 = MD5.Create())
+            using (var md5 = MD5.Create())
             {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
+                var inputBytes = Encoding.ASCII.GetBytes(input);
+                var hashBytes = md5.ComputeHash(inputBytes);
 
                 // Convert the byte array to hexadecimal string
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
+                var sb = new StringBuilder();
+                for (var i = 0; i < hashBytes.Length; i++)
                 {
-                    sb.Append(hashBytes[i].ToString("x2"));
+                    _ = sb.Append(hashBytes[i].ToString("x2"));
                 }
                 return sb.ToString();
             }
@@ -115,7 +115,7 @@ namespace Wexflow.Clients.Manager
         {
             if (File.Exists(ForgotPasswordPage))
             {
-                Process.Start(ForgotPasswordPage, "");
+                _ = Process.Start(ForgotPasswordPage, "");
             }
         }
     }

@@ -18,20 +18,23 @@ namespace Wexflow.Tasks.ExecCs
         {
             Info("Executing cs scripts...");
 
-            Status status = Status.Success;
-            bool success = true;
-            bool atLeastOneSuccess = false;
-            FileInf[] csFiles = SelectFiles();
+            var status = Status.Success;
+            var success = true;
+            var atLeastOneSuccess = false;
+            var csFiles = SelectFiles();
 
-            foreach (FileInf csFile in csFiles)
+            foreach (var csFile in csFiles)
             {
                 try
                 {
-                    string exePath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csFile.FileName) + ".exe");
+                    var exePath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csFile.FileName) + ".exe");
                     Exec(csFile.Path, exePath);
                     Files.Add(new FileInf(exePath, Id));
                     InfoFormat("The script {0} has been executed -> {1}", csFile.Path, exePath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -59,16 +62,16 @@ namespace Wexflow.Tasks.ExecCs
 
         private void Exec(string csPath, string exePath)
         {
-            CompileExecutable(csPath, exePath);
+            _ = CompileExecutable(csPath, exePath);
             StartProcess(exePath, string.Empty, false);
         }
 
         private bool CompileExecutable(string sourceName, string exeName)
         {
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            var provider = CodeDomProvider.CreateProvider("CSharp");
             bool compileOk;
 
-            CompilerParameters cp = new CompilerParameters
+            var cp = new CompilerParameters
             {
                 // Generate an executable instead of 
                 // a class library.
@@ -85,7 +88,7 @@ namespace Wexflow.Tasks.ExecCs
             };
 
             // Invoke compilation of the source file.
-            CompilerResults cr = provider.CompileAssemblyFromFile(cp, sourceName);
+            var cr = provider.CompileAssemblyFromFile(cp, sourceName);
 
             if (cr.Errors.Count > 0)
             {
@@ -110,7 +113,7 @@ namespace Wexflow.Tasks.ExecCs
 
         private void StartProcess(string processPath, string processCmd, bool hideGui)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo(processPath, processCmd)
+            var startInfo = new ProcessStartInfo(processPath, processCmd)
             {
                 CreateNoWindow = hideGui,
                 UseShellExecute = false,
@@ -118,10 +121,10 @@ namespace Wexflow.Tasks.ExecCs
                 RedirectStandardError = true
             };
 
-            Process process = new Process { StartInfo = startInfo };
+            var process = new Process { StartInfo = startInfo };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
-            process.Start();
+            _ = process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process.WaitForExit();

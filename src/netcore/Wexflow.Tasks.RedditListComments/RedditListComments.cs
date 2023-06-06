@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.RedditListComments
         {
             Info("Retrieving comment history...");
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             RedditClient reddit;
             try
@@ -49,17 +49,17 @@ namespace Wexflow.Tasks.RedditListComments
             try
             {
                 // Retrieve the authenticated user's recent comment history.
-                System.Collections.Generic.List<Reddit.Controllers.Comment> comments = reddit.Account.Me.GetCommentHistory(sort: "new", limit: MaxResults, show: "all");
+                var comments = reddit.Account.Me.GetCommentHistory(sort: "new", limit: MaxResults, show: "all");
 
                 XDocument xdoc = new(new XElement("Comments"));
 
-                foreach (Reddit.Controllers.Comment comment in comments)
+                foreach (var comment in comments)
                 {
                     XElement xcomment = new("Comment", new XAttribute("id", SecurityElement.Escape(comment.Id)), new XAttribute("subreddit", SecurityElement.Escape(comment.Subreddit)), new XAttribute("author", SecurityElement.Escape(comment.Author)), new XAttribute("upvotes", comment.UpVotes), new XAttribute("downvotes", comment.DownVotes), new XCData(comment.BodyHTML));
                     xdoc.Root.Add(xcomment);
                 }
 
-                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "RedditListComments", DateTime.Now));
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));

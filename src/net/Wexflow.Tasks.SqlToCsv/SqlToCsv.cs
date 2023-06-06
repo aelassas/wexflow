@@ -52,8 +52,16 @@ namespace Wexflow.Tasks.SqlToCsv
             QuoteString = GetSetting("quote", string.Empty);
             EndOfLine = GetSetting("endline", "\r\n");
             Separator = QuoteString + GetSetting("separator", ";") + QuoteString;
-            if (bool.TryParse(GetSetting("headers", bool.TrueString), out bool result1)) Headers = result1;
-            if (bool.TryParse(GetSetting("singlerecordheaders", bool.TrueString), out bool result2)) SingleRecordHeaders = result2;
+            if (bool.TryParse(GetSetting("headers", bool.TrueString), out var result1))
+            {
+                Headers = result1;
+            }
+
+            if (bool.TryParse(GetSetting("singlerecordheaders", bool.TrueString), out var result2))
+            {
+                SingleRecordHeaders = result2;
+            }
+
             DoNotGenerateFilesIfEmpty = bool.Parse(GetSetting("doNotGenerateFilesIfEmpty", "false"));
             SmbComputerName = GetSetting("smbComputerName");
             SmbDomain = GetSetting("smbDomain");
@@ -65,8 +73,8 @@ namespace Wexflow.Tasks.SqlToCsv
         {
             Info("Executing SQL scripts...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -92,7 +100,7 @@ namespace Wexflow.Tasks.SqlToCsv
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -109,7 +117,7 @@ namespace Wexflow.Tasks.SqlToCsv
 
         private bool ExecuteSqlFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             // Execute SqlScript if necessary
             try
             {
@@ -130,15 +138,18 @@ namespace Wexflow.Tasks.SqlToCsv
             }
 
             // Execute SQL files scripts
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string sql = File.ReadAllText(file.Path);
+                    var sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -158,57 +169,57 @@ namespace Wexflow.Tasks.SqlToCsv
             switch (DbType)
             {
                 case Type.SqlServer:
-                    using (SqlConnection connection = new SqlConnection(ConnectionString))
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (var connection = new SqlConnection(ConnectionString))
+                    using (var command = new SqlCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Access:
-                    using (OleDbConnection connection = new OleDbConnection(ConnectionString))
-                    using (OleDbCommand command = new OleDbCommand(sql, connection))
+                    using (var connection = new OleDbConnection(ConnectionString))
+                    using (var command = new OleDbCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Oracle:
-                    using (OracleConnection connection = new OracleConnection(ConnectionString))
-                    using (OracleCommand command = new OracleCommand(sql, connection))
+                    using (var connection = new OracleConnection(ConnectionString))
+                    using (var command = new OracleCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.MySql:
-                    using (MySqlConnection connection = new MySqlConnection(ConnectionString))
-                    using (MySqlCommand command = new MySqlCommand(sql, connection))
+                    using (var connection = new MySqlConnection(ConnectionString))
+                    using (var command = new MySqlCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Sqlite:
-                    using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
-                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    using (var connection = new SQLiteConnection(ConnectionString))
+                    using (var command = new SQLiteCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.PostGreSql:
-                    using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-                    using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
+                    using (var connection = new NpgsqlConnection(ConnectionString))
+                    using (var command = new NpgsqlCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Teradata:
-                    using (TdConnection connection = new TdConnection(ConnectionString))
-                    using (TdCommand command = new TdCommand(sql, connection))
+                    using (var connection = new TdConnection(ConnectionString))
+                    using (var command = new TdCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
                     break;
                 case Type.Odbc:
-                    using (OdbcConnection connection = new OdbcConnection(ConnectionString))
-                    using (OdbcCommand command = new OdbcCommand(sql, connection))
+                    using (var connection = new OdbcConnection(ConnectionString))
+                    using (var command = new OdbcCommand(sql, connection))
                     {
                         ConvertToCsv(connection, command);
                     }
@@ -219,20 +230,20 @@ namespace Wexflow.Tasks.SqlToCsv
         private void ConvertToCsv(DbConnection conn, DbCommand comm)
         {
             conn.Open();
-            DbDataReader reader = comm.ExecuteReader();
-            string destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
+            var reader = comm.ExecuteReader();
+            var destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
 
-            using (StreamWriter sw = new StreamWriter(destPath))
+            using (var sw = new StreamWriter(destPath))
             {
-                bool hasRows = reader.HasRows;
+                var hasRows = reader.HasRows;
 
                 while (hasRows)
                 {
-                    List<string> columns = new List<string>();
-                    List<string> values = new List<string>();
-                    bool readColumns = false;
-                    bool headerDone = false;
-                    bool readRecord = false;
+                    var columns = new List<string>();
+                    var values = new List<string>();
+                    var readColumns = false;
+                    var headerDone = false;
+                    var readRecord = false;
                     while (reader.Read())
                     {
                         if (readRecord)

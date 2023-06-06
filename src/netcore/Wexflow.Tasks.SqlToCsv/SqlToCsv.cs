@@ -49,8 +49,16 @@ namespace Wexflow.Tasks.SqlToCsv
             QuoteString = GetSetting("quote", string.Empty);
             EndOfLine = GetSetting("endline", "\r\n");
             Separator = QuoteString + GetSetting("separator", ";") + QuoteString;
-            if (bool.TryParse(GetSetting("headers", bool.TrueString), out bool result1)) Headers = result1;
-            if (bool.TryParse(GetSetting("singlerecordheaders", bool.TrueString), out bool result2)) SingleRecordHeaders = result2;
+            if (bool.TryParse(GetSetting("headers", bool.TrueString), out var result1))
+            {
+                Headers = result1;
+            }
+
+            if (bool.TryParse(GetSetting("singlerecordheaders", bool.TrueString), out var result2))
+            {
+                SingleRecordHeaders = result2;
+            }
+
             DoNotGenerateFilesIfEmpty = bool.Parse(GetSetting("doNotGenerateFilesIfEmpty", "false"));
         }
 
@@ -58,8 +66,8 @@ namespace Wexflow.Tasks.SqlToCsv
         {
             Info("Executing SQL scripts...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             // Execute SqlScript if necessary
             try
@@ -81,15 +89,18 @@ namespace Wexflow.Tasks.SqlToCsv
             }
 
             // Execute SQL files scripts
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string sql = File.ReadAllText(file.Path);
+                    var sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -102,7 +113,7 @@ namespace Wexflow.Tasks.SqlToCsv
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -183,20 +194,20 @@ namespace Wexflow.Tasks.SqlToCsv
         private void ConvertToCsv(DbConnection conn, DbCommand comm)
         {
             conn.Open();
-            DbDataReader reader = comm.ExecuteReader();
-            string destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
+            var reader = comm.ExecuteReader();
+            var destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
 
             using (StreamWriter sw = new(destPath))
             {
-                bool hasRows = reader.HasRows;
+                var hasRows = reader.HasRows;
 
                 while (hasRows)
                 {
                     List<string> columns = new();
                     List<string> values = new();
-                    bool readColumns = false;
-                    bool headerDone = false;
-                    bool readRecord = false;
+                    var readColumns = false;
+                    var headerDone = false;
+                    var readRecord = false;
                     while (reader.Read())
                     {
                         if (readRecord)

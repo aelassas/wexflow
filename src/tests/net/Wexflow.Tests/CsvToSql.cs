@@ -30,14 +30,14 @@ namespace Wexflow.Tests
         [TestMethod]
         public void CsvToSqlTest()
         {
-            string[] files = GetSqlScripts();
+            var files = GetSqlScripts();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(76);
+            _ = Helper.StartWorkflow(76);
             files = GetSqlScripts();
             Assert.AreEqual(2, files.Length);
-            foreach (string file in files)
+            foreach (var file in files)
             {
-                string content = File.ReadAllText(file);
+                var content = File.ReadAllText(file);
                 Assert.AreEqual(ExpectedResult, content);
             }
         }
@@ -49,8 +49,8 @@ namespace Wexflow.Tests
 
         private void DeleteSqlScripts()
         {
-            string[] files = GetSqlScripts();
-            foreach (string file in files)
+            var files = GetSqlScripts();
+            foreach (var file in files)
             {
                 File.Delete(file);
             }

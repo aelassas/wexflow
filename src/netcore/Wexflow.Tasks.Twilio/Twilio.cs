@@ -29,13 +29,13 @@ namespace Wexflow.Tasks.Twilio
         {
             Info("Sending SMS...");
 
-            bool success = true;
+            var success = true;
 
             try
             {
                 TwilioClient.Init(AccountSid, AuthToken);
 
-                MessageResource message = MessageResource.Create(
+                var message = MessageResource.Create(
                     body: Message,
                     from: new PhoneNumber(From),
                     to: new PhoneNumber(To)
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.Twilio
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {

@@ -51,11 +51,11 @@ namespace Wexflow.Tasks.Ping
 
         private bool PingHost(string server)
         {
-            bool pingable = false;
+            var pingable = false;
 
-            using (System.Net.NetworkInformation.Ping pinger = new System.Net.NetworkInformation.Ping())
+            using (var pinger = new System.Net.NetworkInformation.Ping())
             {
-                PingReply reply = pinger.Send(server);
+                var reply = pinger.Send(server);
                 pingable = reply.Status == IPStatus.Success;
             }
 

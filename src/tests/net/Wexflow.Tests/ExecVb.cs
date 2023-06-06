@@ -27,9 +27,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void ExecVbTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(99);
+            _ = Helper.StartWorkflow(99);
             files = GetFiles();
             Assert.AreEqual(4, files.Length);
             Assert.IsTrue(File.Exists(File1));

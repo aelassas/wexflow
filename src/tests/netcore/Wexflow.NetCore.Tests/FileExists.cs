@@ -19,13 +19,13 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void FileExistsTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(49);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(49);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            Helper.StartWorkflow(50);
+            _ = Helper.StartWorkflow(50);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

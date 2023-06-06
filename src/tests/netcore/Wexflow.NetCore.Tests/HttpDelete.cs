@@ -18,7 +18,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void HttpDeleteTest()
         {
-            Helper.StartWorkflow(103);
+            _ = Helper.StartWorkflow(103);
             // TODO
         }
     }

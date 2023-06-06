@@ -18,7 +18,7 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void HttpPatchTest()
         {
-            Helper.StartWorkflow(102);
+            _ = Helper.StartWorkflow(102);
             // TODO
         }
     }

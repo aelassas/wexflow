@@ -17,20 +17,23 @@ namespace Wexflow.Tasks.FilesRemover
         {
             Info("Removing files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
-            for (int i = files.Length - 1; i > -1; i--)
+            var files = SelectFiles();
+            for (var i = files.Length - 1; i > -1; i--)
             {
-                FileInf file = files[i];
+                var file = files[i];
 
                 try
                 {
                     File.Delete(file.Path);
-                    Workflow.FilesPerTask[file.TaskId].Remove(file);
+                    _ = Workflow.FilesPerTask[file.TaskId].Remove(file);
                     InfoFormat("File removed: {0}", file.Path);
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -43,7 +46,7 @@ namespace Wexflow.Tasks.FilesRemover
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

@@ -22,14 +22,14 @@ namespace Wexflow.Core.Db.SQLite
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(_connectionString))
+            using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
 
-                using (SQLiteCommand command = new SQLiteCommand("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn))
+                using (var command = new SQLiteCommand("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn))
                 {
 
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
         }

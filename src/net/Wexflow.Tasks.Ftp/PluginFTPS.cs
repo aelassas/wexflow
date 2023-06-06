@@ -49,9 +49,9 @@ namespace Wexflow.Tasks.Ftp
 
         public override FileInf[] List()
         {
-            List<FileInf> files = new List<FileInf>();
+            var files = new List<FileInf>();
 
-            FtpClient client = new FtpClient
+            var client = new FtpClient
             {
                 Host = Server,
                 Port = Port,
@@ -70,11 +70,13 @@ namespace Wexflow.Tasks.Ftp
             client.Connect();
             client.SetWorkingDirectory(Path);
 
-            FileInf[] ftpFiles = PluginFtp.ListFiles(client, Task.Id);
+            var ftpFiles = PluginFtp.ListFiles(client, Task.Id);
             files.AddRange(ftpFiles);
 
-            foreach (FileInf file in files)
+            foreach (var file in files)
+            {
                 Task.InfoFormat("[PluginFTPS] file {0} found on {1}.", file.Path, Server);
+            }
 
             client.Disconnect();
 
@@ -83,7 +85,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Upload(FileInf file)
         {
-            FtpClient client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
+            var client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
             if (DebugLogs)
             {
@@ -110,7 +112,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Download(FileInf file)
         {
-            FtpClient client = new FtpClient
+            var client = new FtpClient
             {
                 Host = Server,
                 Port = Port,
@@ -136,7 +138,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Delete(FileInf file)
         {
-            FtpClient client = new FtpClient
+            var client = new FtpClient
             {
                 Host = Server,
                 Port = Port,

@@ -19,7 +19,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void ExecCsTest()
         {
-            Helper.StartWorkflow(152);
+            _ = Helper.StartWorkflow(152);
             // TODO
         }
     }

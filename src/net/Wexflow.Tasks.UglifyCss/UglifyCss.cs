@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.UglifyCss
             Info("Uglifying CSS files...");
 
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.UglifyCss
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -72,15 +72,15 @@ namespace Wexflow.Tasks.UglifyCss
 
         private bool UglifyCssFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] cssFiles = SelectFiles();
+            var success = true;
+            var cssFiles = SelectFiles();
 
-            foreach (FileInf cssFile in cssFiles)
+            foreach (var cssFile in cssFiles)
             {
                 try
                 {
-                    string source = File.ReadAllText(cssFile.Path);
-                    UglifyResult result = Uglify.Css(source);
+                    var source = File.ReadAllText(cssFile.Path);
+                    var result = Uglify.Css(source);
                     if (result.HasErrors)
                     {
                         ErrorFormat("An error occured while uglifying the CSS file {0}: {1}", cssFile.Path, string.Concat(result.Errors.Select(e => e.Message + "\n").ToArray()));
@@ -88,11 +88,14 @@ namespace Wexflow.Tasks.UglifyCss
                         continue;
                     }
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(cssFile.FileName) + ".min.css");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(cssFile.FileName) + ".min.css");
                     File.WriteAllText(destPath, result.Code);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The CSS file {0} has been uglified -> {1}", cssFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

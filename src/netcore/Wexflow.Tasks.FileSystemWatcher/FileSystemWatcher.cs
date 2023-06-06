@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
+using Wexflow.Core.PollingFileSystemWatcher;
 
 namespace Wexflow.Tasks.FileSystemWatcher
 {
@@ -47,9 +48,9 @@ namespace Wexflow.Tasks.FileSystemWatcher
                 }
 
                 Info("Checking existing files...");
-                string[] files = GetFiles();
+                var files = GetFiles();
 
-                foreach (string file in files)
+                foreach (var file in files)
                 {
                     InfoFormat("FileSystemWatcher.OnFound started for {0}", file);
                     try
@@ -64,14 +65,14 @@ namespace Wexflow.Tasks.FileSystemWatcher
                         }
                         ClearFiles();
                         Files.Add(new FileInf(file, Id));
-                        Task[] tasks = GetTasks(OnFileFound);
-                        foreach (Task task in tasks)
+                        var tasks = GetTasks(OnFileFound);
+                        foreach (var task in tasks)
                         {
                             task.Logs.Clear();
-                            task.Run();
+                            _ = task.Run();
                             CurrentLogs.AddRange(task.Logs);
                         }
-                        Files.RemoveAll(f => f.Path == file);
+                        _ = Files.RemoveAll(f => f.Path == file);
                     }
                     catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32)
                     {
@@ -87,7 +88,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                     }
                     try
                     {
-                        Core.Db.Entry entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
+                        var entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
                         entry.Logs = string.Join("\r\n", CurrentLogs);
                         Workflow.Database.UpdateEntry(entry.GetDbId(), entry);
                     }
@@ -132,9 +133,9 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
         private void OnChanged(object source, PollingFileSystemEventArgs e)
         {
-            foreach (FileChange change in e.Changes)
+            foreach (var change in e.Changes)
             {
-                string path = Path.Combine(change.Directory, change.Name);
+                var path = Path.Combine(change.Directory, change.Name);
                 switch (change.ChangeType)
                 {
                     case WatcherChangeTypes.Created:
@@ -151,14 +152,14 @@ namespace Wexflow.Tasks.FileSystemWatcher
                             }
                             ClearFiles();
                             Files.Add(new FileInf(path, Id));
-                            Task[] tasks = GetTasks(OnFileCreated);
-                            foreach (Task task in tasks)
+                            var tasks = GetTasks(OnFileCreated);
+                            foreach (var task in tasks)
                             {
                                 task.Logs.Clear();
-                                task.Run();
+                                _ = task.Run();
                                 CurrentLogs.AddRange(task.Logs);
                             }
-                            Files.RemoveAll(f => f.Path == path);
+                            _ = Files.RemoveAll(f => f.Path == path);
                         }
                         catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32)
                         {
@@ -172,7 +173,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
                         try
                         {
-                            Core.Db.Entry entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
+                            var entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
                             entry.Logs = string.Join("\r\n", CurrentLogs);
                             Workflow.Database.UpdateEntry(entry.GetDbId(), entry);
                         }
@@ -195,14 +196,14 @@ namespace Wexflow.Tasks.FileSystemWatcher
                             }
                             ClearFiles();
                             Files.Add(new FileInf(path, Id));
-                            Task[] tasks = GetTasks(OnFileChanged);
-                            foreach (Task task in tasks)
+                            var tasks = GetTasks(OnFileChanged);
+                            foreach (var task in tasks)
                             {
                                 task.Logs.Clear();
-                                task.Run();
+                                _ = task.Run();
                                 CurrentLogs.AddRange(task.Logs);
                             }
-                            Files.RemoveAll(f => f.Path == path);
+                            _ = Files.RemoveAll(f => f.Path == path);
                         }
                         catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32)
                         {
@@ -216,7 +217,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
                         try
                         {
-                            Core.Db.Entry entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
+                            var entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
                             entry.Logs = string.Join("\r\n", CurrentLogs);
                             Workflow.Database.UpdateEntry(entry.GetDbId(), entry);
                         }
@@ -231,14 +232,14 @@ namespace Wexflow.Tasks.FileSystemWatcher
                         {
                             ClearFiles();
                             Files.Add(new FileInf(path, Id));
-                            Task[] tasks = GetTasks(OnFileDeleted);
-                            foreach (Task task in tasks)
+                            var tasks = GetTasks(OnFileDeleted);
+                            foreach (var task in tasks)
                             {
                                 task.Logs.Clear();
-                                task.Run();
+                                _ = task.Run();
                                 CurrentLogs.AddRange(task.Logs);
                             }
-                            Files.RemoveAll(f => f.Path == path);
+                            _ = Files.RemoveAll(f => f.Path == path);
                         }
                         catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32)
                         {
@@ -252,7 +253,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
                         try
                         {
-                            Core.Db.Entry entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
+                            var entry = Workflow.Database.GetEntry(Workflow.Id, Workflow.InstanceId);
                             entry.Logs = string.Join("\r\n", CurrentLogs);
                             Workflow.Database.UpdateEntry(entry.GetDbId(), entry);
                         }
@@ -278,11 +279,11 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
             if (!string.IsNullOrEmpty(evt))
             {
-                string[] ids = evt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string id in ids)
+                var ids = evt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var id in ids)
                 {
-                    int taskId = int.Parse(id.Trim());
-                    Task task = Workflow.Tasks.First(t => t.Id == taskId);
+                    var taskId = int.Parse(id.Trim());
+                    var task = Workflow.Tasks.First(t => t.Id == taskId);
                     tasks.Add(task);
                 }
             }
@@ -292,7 +293,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
         private void ClearFiles()
         {
-            foreach (Task task in Workflow.Tasks)
+            foreach (var task in Workflow.Tasks)
             {
                 task.Files.Clear();
             }

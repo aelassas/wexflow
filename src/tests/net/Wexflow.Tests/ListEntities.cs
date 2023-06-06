@@ -18,7 +18,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void ListEntitiesTest()
         {
-            Helper.StartWorkflow(7);
+            _ = Helper.StartWorkflow(7);
             // TODO
         }
     }

@@ -19,15 +19,15 @@ namespace Wexflow.Core.Db.RavenDB
 
         public Db(string connectionString) : base(connectionString)
         {
-            string ravenUrl = string.Empty;
-            string database = string.Empty;
+            var ravenUrl = string.Empty;
+            var database = string.Empty;
 
-            string[] connectionStringParts = ConnectionString.Split(';');
-            foreach (string part in connectionStringParts)
+            var connectionStringParts = ConnectionString.Split(';');
+            foreach (var part in connectionStringParts)
             {
                 if (!string.IsNullOrEmpty(part.Trim()))
                 {
-                    string connPart = part.TrimStart(' ').TrimEnd(' ');
+                    var connPart = part.TrimStart(' ').TrimEnd(' ');
                     if (connPart.StartsWith("Database="))
                     {
                         database = connPart.Replace("Database=", string.Empty);
@@ -45,18 +45,18 @@ namespace Wexflow.Core.Db.RavenDB
                 Database = database
             };
 
-            store.Initialize();
+            _ = store.Initialize();
 
             // Create database if it does not exist
             try
             {
-                store.Maintenance.ForDatabase(store.Database).Send(new GetStatisticsOperation());
+                _ = store.Maintenance.ForDatabase(store.Database).Send(new GetStatisticsOperation());
             }
             catch (DatabaseDoesNotExistException)
             {
                 try
                 {
-                    store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
+                    _ = store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
                 }
                 catch (ConcurrencyException)
                 {
@@ -67,7 +67,7 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void Init()
         {
-            using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+            using var session = store.OpenSession();
             // StatusCount
             ClearStatusCount();
 
@@ -89,7 +89,7 @@ namespace Wexflow.Core.Db.RavenDB
             ClearEntries();
 
             // Insert default user if necessary
-            Raven.Client.Documents.Linq.IRavenQueryable<User> usersCol = session.Query<User>();
+            var usersCol = session.Query<User>();
             try
             {
                 if (!usersCol.Any())
@@ -108,7 +108,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                store.Operations
+                _ = store.Operations
              .Send(new DeleteByQueryOperation(new IndexQuery
              {
                  Query = "from " + documentName
@@ -129,11 +129,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<UserWorkflow> col = session.Query<UserWorkflow>();
-                    UserWorkflow res = col.FirstOrDefault(uw => uw.UserId == userId && uw.WorkflowId == workflowId);
+                    var col = session.Query<UserWorkflow>();
+                    var res = col.FirstOrDefault(uw => uw.UserId == userId && uw.WorkflowId == workflowId);
                     return res != null;
                 }
                 catch (Exception)
@@ -157,9 +157,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.PendingCount--;
@@ -173,9 +173,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.RunningCount--;
@@ -189,9 +189,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                User user = col.FirstOrDefault(u => u.Username == username);
+                using var session = store.OpenSession();
+                var col = session.Query<User>();
+                var user = col.FirstOrDefault(u => u.Username == username);
                 if (user != null && user.Password == password)
                 {
                     session.Delete(user);
@@ -210,10 +210,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<UserWorkflow> col = session.Query<UserWorkflow>();
-                UserWorkflow[] rels = col.Where(uw => uw.UserId == userId).ToArray();
-                foreach (UserWorkflow rel in rels)
+                using var session = store.OpenSession();
+                var col = session.Query<UserWorkflow>();
+                var rels = col.Where(uw => uw.UserId == userId).ToArray();
+                foreach (var rel in rels)
                 {
                     session.Delete(rel);
                 }
@@ -226,10 +226,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<UserWorkflow> col = session.Query<UserWorkflow>();
-                UserWorkflow[] rels = col.Where(uw => uw.WorkflowId == workflowDbId).ToArray();
-                foreach (UserWorkflow rel in rels)
+                using var session = store.OpenSession();
+                var col = session.Query<UserWorkflow>();
+                var rels = col.Where(uw => uw.WorkflowId == workflowDbId).ToArray();
+                foreach (var rel in rels)
                 {
                     session.Delete(rel);
                 }
@@ -242,9 +242,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Workflow> col = session.Query<Workflow>();
-                Workflow wf = col.FirstOrDefault(e => e.Id == id);
+                using var session = store.OpenSession();
+                var col = session.Query<Workflow>();
+                var wf = col.FirstOrDefault(e => e.Id == id);
                 if (wf != null)
                 {
                     session.Delete(wf);
@@ -258,12 +258,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Workflow> col = session.Query<Workflow>();
+                using var session = store.OpenSession();
+                var col = session.Query<Workflow>();
 
-                foreach (string id in ids)
+                foreach (var id in ids)
                 {
-                    Workflow wf = col.FirstOrDefault(w => w.Id == id);
+                    var wf = col.FirstOrDefault(w => w.Id == id);
                     if (wf != null)
                     {
                         session.Delete(wf);
@@ -279,11 +279,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<User>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
 
                     switch (uo)
                     {
@@ -316,10 +316,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Entry[] col = session.Query<Entry>().ToArray();
+                    var col = session.Query<Entry>().ToArray();
                     return col;
                 }
                 catch (Exception)
@@ -333,12 +333,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    int skip = (page - 1) * entriesCount;
+                    var col = session.Query<Entry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var skip = (page - 1) * entriesCount;
 
                     switch (eo)
                     {
@@ -489,11 +489,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<Entry>();
 
                     return col
                         .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
@@ -511,10 +511,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
+                    var col = session.Query<Entry>();
                     return col.FirstOrDefault(e => e.WorkflowId == workflowId);
                 }
                 catch (Exception)
@@ -529,10 +529,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
+                    var col = session.Query<Entry>();
                     return col.FirstOrDefault(e => e.WorkflowId == workflowId && e.JobId == jobId.ToString());
                 }
                 catch (Exception)
@@ -546,11 +546,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
-                    IOrderedQueryable<Entry> q = col.OrderByDescending(e => e.StatusDate);
+                    var col = session.Query<Entry>();
+                    var q = col.OrderByDescending(e => e.StatusDate);
                     return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
@@ -564,11 +564,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
-                    IOrderedQueryable<Entry> q = col.OrderBy(e => e.StatusDate);
+                    var col = session.Query<Entry>();
+                    var q = col.OrderBy(e => e.StatusDate);
                     return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
@@ -582,10 +582,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    HistoryEntry[] col = session.Query<HistoryEntry>().ToArray();
+                    var col = session.Query<HistoryEntry>().ToArray();
                     return col;
                 }
                 catch (Exception)
@@ -599,11 +599,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<HistoryEntry>();
                     return col
                         .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
                         .Search(e => e.Description, keywordToLower)
@@ -620,11 +620,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<HistoryEntry>();
                     return col
                         .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
                         .Search(e => e.Description, keywordToLower)
@@ -641,12 +641,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    int skip = (page - 1) * entriesCount;
+                    var col = session.Query<HistoryEntry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var skip = (page - 1) * entriesCount;
 
                     switch (heo)
                     {
@@ -797,11 +797,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<HistoryEntry>();
                     return col
                         .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
                         .Search(e => e.Description, keywordToLower)
@@ -818,11 +818,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<HistoryEntry>();
 
                     return col
                         .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
@@ -840,11 +840,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
-                    IOrderedQueryable<HistoryEntry> q = col.OrderByDescending(e => e.StatusDate);
+                    var col = session.Query<HistoryEntry>();
+                    var q = col.OrderByDescending(e => e.StatusDate);
                     return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
@@ -858,11 +858,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
-                    IOrderedQueryable<HistoryEntry> q = col.OrderBy(e => e.StatusDate);
+                    var col = session.Query<HistoryEntry>();
+                    var q = col.OrderBy(e => e.StatusDate);
                     return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
                 }
                 catch (Exception)
@@ -876,11 +876,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                    User user = col.First(u => u.Username == username);
+                    var col = session.Query<User>();
+                    var user = col.First(u => u.Username == username);
                     return user.Password;
                 }
                 catch (Exception)
@@ -894,11 +894,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                    StatusCount statusCount = col.FirstOrDefault();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
                     return statusCount;
                 }
                 catch (Exception)
@@ -912,11 +912,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                    User user = col.FirstOrDefault(u => u.Username == username);
+                    var col = session.Query<User>();
+                    var user = col.FirstOrDefault(u => u.Username == username);
                     return user;
                 }
                 catch (Exception)
@@ -930,11 +930,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                    User user = col.FirstOrDefault(u => u.Id == userId);
+                    var col = session.Query<User>();
+                    var user = col.FirstOrDefault(u => u.Id == userId);
                     return user;
                 }
                 catch (Exception)
@@ -948,10 +948,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
+                    var col = session.Query<User>();
                     return col.ToArray();
                 }
                 catch (Exception)
@@ -965,11 +965,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                    string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var col = session.Query<User>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
 
                     switch (uo)
                     {
@@ -994,10 +994,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<UserWorkflow> col = session.Query<UserWorkflow>();
+                    var col = session.Query<UserWorkflow>();
                     return col.Where(uw => uw.UserId == userId).Select(uw => uw.WorkflowId).ToArray();
                 }
                 catch (Exception)
@@ -1011,10 +1011,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Workflow> col = session.Query<Workflow>();
+                    var col = session.Query<Workflow>();
                     return col.FirstOrDefault(w => w.Id == id);
                 }
                 catch (Exception)
@@ -1028,10 +1028,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 try
                 {
-                    Raven.Client.Documents.Linq.IRavenQueryable<Workflow> col = session.Query<Workflow>();
+                    var col = session.Query<Workflow>();
                     return col.ToArray();
                 }
                 catch (Exception)
@@ -1045,9 +1045,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.DisabledCount++;
@@ -1061,9 +1061,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.RejectedCount++;
@@ -1077,9 +1077,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.DoneCount++;
@@ -1093,9 +1093,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.FailedCount++;
@@ -1109,9 +1109,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.PendingCount++;
@@ -1125,9 +1125,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.RunningCount++;
@@ -1141,9 +1141,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.StoppedCount++;
@@ -1157,9 +1157,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<StatusCount> col = session.Query<StatusCount>();
-                StatusCount statusCount = col.FirstOrDefault();
+                using var session = store.OpenSession();
+                var col = session.Query<StatusCount>();
+                var statusCount = col.FirstOrDefault();
                 if (statusCount != null)
                 {
                     statusCount.WarningCount++;
@@ -1173,7 +1173,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 Entry ie = new()
                 {
                     Description = entry.Description,
@@ -1195,7 +1195,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 HistoryEntry he = new()
                 {
                     Description = entry.Description,
@@ -1216,7 +1216,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 user.CreatedOn = DateTime.Now;
                 User nu = new()
                 {
@@ -1237,7 +1237,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 UserWorkflow uw = new()
                 {
                     UserId = userWorkflow.UserId,
@@ -1253,7 +1253,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 Workflow wf = new() { Xml = workflow.Xml };
                 session.Store(wf);
                 session.SaveChanges();
@@ -1266,9 +1266,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
-                Entry ue = col.First(e => e.Id == id);
+                using var session = store.OpenSession();
+                var col = session.Query<Entry>();
+                var ue = col.First(e => e.Id == id);
                 ue.Name = entry.Name;
                 ue.Description = entry.Description;
                 ue.LaunchType = entry.LaunchType;
@@ -1287,9 +1287,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                User dbUser = col.First(u => u.Username == username);
+                using var session = store.OpenSession();
+                var col = session.Query<User>();
+                var dbUser = col.First(u => u.Username == username);
                 dbUser.Password = password;
 
                 session.SaveChanges();
@@ -1301,9 +1301,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                User uu = col.First(u => u.Id == id);
+                using var session = store.OpenSession();
+                var col = session.Query<User>();
+                var uu = col.First(u => u.Id == id);
                 uu.ModifiedOn = DateTime.Now;
                 uu.Username = user.Username;
                 uu.Password = user.Password;
@@ -1319,9 +1319,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                User uu = col.First(u => u.Id == userId);
+                using var session = store.OpenSession();
+                var col = session.Query<User>();
+                var uu = col.First(u => u.Id == userId);
                 uu.ModifiedOn = DateTime.Now;
                 uu.Username = username;
                 uu.UserProfile = up;
@@ -1336,9 +1336,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Workflow> col = session.Query<Workflow>();
-                Workflow wf = col.First(w => w.Id == dbId);
+                using var session = store.OpenSession();
+                var col = session.Query<Workflow>();
+                var wf = col.First(w => w.Id == dbId);
                 wf.Xml = workflow.Xml;
 
                 session.SaveChanges();
@@ -1350,9 +1350,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Entry> col = session.Query<Entry>();
-                Entry entry = col.First(e => e.Id == entryId);
+                using var session = store.OpenSession();
+                var col = session.Query<Entry>();
+                var entry = col.First(e => e.Id == entryId);
                 return entry.Logs;
             }
         }
@@ -1361,9 +1361,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<HistoryEntry> col = session.Query<HistoryEntry>();
-                HistoryEntry entry = col.First(e => e.Id == entryId);
+                using var session = store.OpenSession();
+                var col = session.Query<HistoryEntry>();
+                var entry = col.First(e => e.Id == entryId);
                 return entry.Logs;
             }
         }
@@ -1372,10 +1372,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
 
-                Raven.Client.Documents.Linq.IRavenQueryable<User> col = session.Query<User>();
-                List<User> users = col.Where(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username).ToList();
+                var col = session.Query<User>();
+                var users = col.Where(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username).ToList();
                 return users;
             }
         }
@@ -1384,7 +1384,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 Record r = new()
                 {
                     Approved = record.Approved,
@@ -1410,9 +1410,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Record> col = session.Query<Record>();
-                Record recordFromDb = col.First(r => r.Id == recordId);
+                using var session = store.OpenSession();
+                var col = session.Query<Record>();
+                var recordFromDb = col.First(r => r.Id == recordId);
 
                 recordFromDb.Approved = record.Approved;
                 recordFromDb.AssignedOn = record.AssignedOn;
@@ -1437,12 +1437,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Record> col = session.Query<Record>();
+                using var session = store.OpenSession();
+                var col = session.Query<Record>();
 
-                foreach (string id in recordIds)
+                foreach (var id in recordIds)
                 {
-                    Record record = col.FirstOrDefault(r => r.Id == id);
+                    var record = col.FirstOrDefault(r => r.Id == id);
                     if (record != null)
                     {
                         session.Delete(record);
@@ -1458,9 +1458,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Record> col = session.Query<Record>();
-                Record record = col.FirstOrDefault(r => r.Id == id);
+                using var session = store.OpenSession();
+                var col = session.Query<Record>();
+                var record = col.FirstOrDefault(r => r.Id == id);
                 return record;
             }
         }
@@ -1469,10 +1469,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Record> col = session.Query<Record>();
-                string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                List<Record> records = col
+                using var session = store.OpenSession();
+                var col = session.Query<Record>();
+                var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                var records = col
                     .Search(r => r.Name, keywordToLower, options: SearchOptions.Or)
                     .Search(r => r.Description, keywordToLower)
                     .OrderByDescending(r => r.CreatedOn)
@@ -1485,9 +1485,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Record> col = session.Query<Record>();
-                List<Record> records = col.Where(r => r.CreatedBy == createdBy).OrderBy(r => r.Name).ToList();
+                using var session = store.OpenSession();
+                var col = session.Query<Record>();
+                var records = col.Where(r => r.CreatedBy == createdBy).OrderBy(r => r.Name).ToList();
                 return records;
             }
         }
@@ -1496,11 +1496,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Record> col = session.Query<Record>();
-                string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                using var session = store.OpenSession();
+                var col = session.Query<Record>();
+                var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
 
-                List<Record> records = col
+                var records = col
                     .Where(r => r.CreatedBy == createdBy || r.AssignedTo == assingedTo)
                     .Search(r => r.Name, keywordToLower, options: SearchOptions.Or)
                     .Search(r => r.Description, keywordToLower)
@@ -1514,7 +1514,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 Version v = new()
                 {
                     RecordId = version.RecordId,
@@ -1532,9 +1532,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Version> col = session.Query<Version>();
-                Version versionFromDb = col.First(v => v.Id == versionId);
+                using var session = store.OpenSession();
+                var col = session.Query<Version>();
+                var versionFromDb = col.First(v => v.Id == versionId);
 
                 versionFromDb.RecordId = version.RecordId;
                 versionFromDb.CreatedOn = versionFromDb.CreatedOn;
@@ -1549,12 +1549,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Version> col = session.Query<Version>();
+                using var session = store.OpenSession();
+                var col = session.Query<Version>();
 
-                foreach (string id in versionIds)
+                foreach (var id in versionIds)
                 {
-                    Version version = col.FirstOrDefault(v => v.Id == id);
+                    var version = col.FirstOrDefault(v => v.Id == id);
                     if (version != null)
                     {
                         session.Delete(version);
@@ -1570,10 +1570,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Version> col = session.Query<Version>();
+                using var session = store.OpenSession();
+                var col = session.Query<Version>();
 
-                List<Version> versions = col.Where(v => v.RecordId == recordId).OrderBy(r => r.CreatedOn).ToList();
+                var versions = col.Where(v => v.RecordId == recordId).OrderBy(r => r.CreatedOn).ToList();
                 return versions;
             }
         }
@@ -1582,10 +1582,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Version> col = session.Query<Version>();
+                using var session = store.OpenSession();
+                var col = session.Query<Version>();
 
-                Version version = col.Where(v => v.RecordId == recordId).OrderByDescending(r => r.CreatedOn).FirstOrDefault();
+                var version = col.Where(v => v.RecordId == recordId).OrderByDescending(r => r.CreatedOn).FirstOrDefault();
                 return version;
             }
         }
@@ -1594,8 +1594,8 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Notification> col = session.Query<Notification>();
+                using var session = store.OpenSession();
+                var col = session.Query<Notification>();
                 Notification n = new()
                 {
                     AssignedBy = notification.AssignedBy,
@@ -1616,12 +1616,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Notification> col = session.Query<Notification>();
+                using var session = store.OpenSession();
+                var col = session.Query<Notification>();
 
-                foreach (string id in notificationIds)
+                foreach (var id in notificationIds)
                 {
-                    Notification notification = col.FirstOrDefault(n => n.Id == id);
+                    var notification = col.FirstOrDefault(n => n.Id == id);
                     if (notification != null)
                     {
                         notification.IsRead = true;
@@ -1637,12 +1637,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Notification> col = session.Query<Notification>();
+                using var session = store.OpenSession();
+                var col = session.Query<Notification>();
 
-                foreach (string id in notificationIds)
+                foreach (var id in notificationIds)
                 {
-                    Notification notification = col.FirstOrDefault(n => n.Id == id);
+                    var notification = col.FirstOrDefault(n => n.Id == id);
                     if (notification != null)
                     {
                         notification.IsRead = false;
@@ -1658,12 +1658,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Notification> col = session.Query<Notification>();
+                using var session = store.OpenSession();
+                var col = session.Query<Notification>();
 
-                foreach (string id in notificationIds)
+                foreach (var id in notificationIds)
                 {
-                    Notification notification = col.FirstOrDefault(n => n.Id == id);
+                    var notification = col.FirstOrDefault(n => n.Id == id);
                     if (notification != null)
                     {
                         session.Delete(notification);
@@ -1679,10 +1679,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Notification> col = session.Query<Notification>();
-                string keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                List<Notification> notifications = col
+                using var session = store.OpenSession();
+                var col = session.Query<Notification>();
+                var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                var notifications = col
                     .Where(n => n.AssignedTo == assignedTo)
                     .Search(n => n.Message, keywordToLower)
                     .OrderByDescending(n => n.AssignedOn)
@@ -1695,10 +1695,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Notification> col = session.Query<Notification>();
-                IQueryable<Notification> notifications = col.Where(n => n.AssignedTo == assignedTo && !n.IsRead);
-                bool hasNotifications = notifications.Any();
+                using var session = store.OpenSession();
+                var col = session.Query<Notification>();
+                var notifications = col.Where(n => n.AssignedTo == assignedTo && !n.IsRead);
+                var hasNotifications = notifications.Any();
                 return hasNotifications;
             }
         }
@@ -1707,7 +1707,7 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
+                using var session = store.OpenSession();
                 Approver a = new()
                 {
                     UserId = approver.UserId,
@@ -1726,9 +1726,9 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Approver> col = session.Query<Approver>();
-                Approver ua = col.First(a => a.Id == approverId);
+                using var session = store.OpenSession();
+                var col = session.Query<Approver>();
+                var ua = col.First(a => a.Id == approverId);
                 ua.UserId = approver.UserId;
                 ua.RecordId = approver.RecordId;
                 ua.Approved = approver.Approved;
@@ -1743,10 +1743,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Approver> col = session.Query<Approver>();
-                Approver[] approvers = col.Where(a => a.RecordId == recordId).ToArray();
-                foreach (Approver approver in approvers)
+                using var session = store.OpenSession();
+                var col = session.Query<Approver>();
+                var approvers = col.Where(a => a.RecordId == recordId).ToArray();
+                foreach (var approver in approvers)
                 {
                     session.Delete(approver);
                 }
@@ -1759,10 +1759,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Approver> col = session.Query<Approver>();
-                Approver[] approvers = col.Where(a => a.Approved && a.RecordId == recordId).ToArray();
-                foreach (Approver approver in approvers)
+                using var session = store.OpenSession();
+                var col = session.Query<Approver>();
+                var approvers = col.Where(a => a.Approved && a.RecordId == recordId).ToArray();
+                foreach (var approver in approvers)
                 {
                     session.Delete(approver);
                 }
@@ -1775,10 +1775,10 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Approver> col = session.Query<Approver>();
-                Approver[] approvers = col.Where(a => a.UserId == userId).ToArray();
-                foreach (Approver approver in approvers)
+                using var session = store.OpenSession();
+                var col = session.Query<Approver>();
+                var approvers = col.Where(a => a.UserId == userId).ToArray();
+                foreach (var approver in approvers)
                 {
                     session.Delete(approver);
                 }
@@ -1791,8 +1791,8 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (padlock)
             {
-                using Raven.Client.Documents.Session.IDocumentSession session = store.OpenSession();
-                Raven.Client.Documents.Linq.IRavenQueryable<Approver> col = session.Query<Approver>();
+                using var session = store.OpenSession();
+                var col = session.Query<Approver>();
                 return col.Where(a => a.RecordId == recordId).ToList();
             }
         }

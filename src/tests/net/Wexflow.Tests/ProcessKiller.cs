@@ -21,8 +21,8 @@ namespace Wexflow.Tests
         [TestMethod]
         public void ProcessKillerTest()
         {
-            Helper.StartWorkflow(58);
-            Process[] notepadProcesses = Process.GetProcessesByName("notepad");
+            _ = Helper.StartWorkflow(58);
+            var notepadProcesses = Process.GetProcessesByName("notepad");
             Assert.IsTrue(notepadProcesses.Length == 0);
         }
     }

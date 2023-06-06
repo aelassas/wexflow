@@ -22,8 +22,8 @@ namespace Wexflow.Tests
         {
             const string dateFormat = @"MM\/dd\/yyyy HH:mm.ss";
             Helper.DeleteFiles(FilesInfoFolder);
-            FileInfo info1 = new FileInfo(File1);
-            FileInfo info2 = new FileInfo(File2);
+            var info1 = new FileInfo(File1);
+            var info2 = new FileInfo(File2);
             _expectedResult = string.Format(_expectedResult
                 , info1.CreationTime.ToString(dateFormat)
                 , info1.LastWriteTime.ToString(dateFormat)
@@ -42,12 +42,12 @@ namespace Wexflow.Tests
         [TestMethod]
         public void FilesInfoTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(54);
+            _ = Helper.StartWorkflow(54);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(_expectedResult, content);
         }
 

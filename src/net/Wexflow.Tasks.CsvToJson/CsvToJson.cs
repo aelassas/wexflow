@@ -29,8 +29,8 @@ namespace Wexflow.Tasks.CsvToJson
         {
             Info("Converting CSV files to JSON files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.CsvToJson
             }
 
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -74,19 +74,22 @@ namespace Wexflow.Tasks.CsvToJson
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] csvFiles = SelectFiles();
+            var success = true;
+            var csvFiles = SelectFiles();
 
-            foreach (FileInf csvFile in csvFiles)
+            foreach (var csvFile in csvFiles)
             {
                 try
                 {
-                    string json = Convert(csvFile.Path, Separator);
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csvFile.FileName) + ".json");
+                    var json = Convert(csvFile.Path, Separator);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csvFile.FileName) + ".json");
                     File.WriteAllText(destPath, json);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The CSV file {0} has been converted -> {1}", csvFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -104,22 +107,22 @@ namespace Wexflow.Tasks.CsvToJson
 
         private string Convert(string path, string separator)
         {
-            List<string[]> csv = new List<string[]>();
-            string[] lines = File.ReadAllLines(path);
+            var csv = new List<string[]>();
+            var lines = File.ReadAllLines(path);
 
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
                 csv.Add(line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries));
             }
 
-            string[] properties = lines[0].Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+            var properties = lines[0].Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
 
-            List<Dictionary<string, string>> listObjResult = new List<Dictionary<string, string>>();
+            var listObjResult = new List<Dictionary<string, string>>();
 
-            for (int i = 1; i < lines.Length; i++)
+            for (var i = 1; i < lines.Length; i++)
             {
-                Dictionary<string, string> objResult = new Dictionary<string, string>();
-                for (int j = 0; j < properties.Length; j++)
+                var objResult = new Dictionary<string, string>();
+                for (var j = 0; j < properties.Length; j++)
                 {
                     objResult.Add(properties[j], csv[i][j]);
                 }

@@ -25,7 +25,11 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (!Directory.Exists(TempFolder)) Directory.CreateDirectory(TempFolder);
+            if (!Directory.Exists(TempFolder))
+            {
+                _ = Directory.CreateDirectory(TempFolder);
+            }
+
             Helper.DeleteFilesAndFolders(TempFolder);
         }
 
@@ -37,13 +41,13 @@ namespace Wexflow.Tests
         [TestMethod]
         public void FilesDiffTest()
         {
-            Helper.StartWorkflow(71);
+            _ = Helper.StartWorkflow(71);
 
             // Check the workflow result
-            string[] files = Directory.GetFiles(TempFolder, "FilesDiff*.diff", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(TempFolder, "FilesDiff*.diff", SearchOption.AllDirectories);
             Assert.AreEqual(files.Length, 1);
 
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResult, content);
         }
     }

@@ -18,7 +18,7 @@ namespace Wexflow.Core.Db.MySQL
 
             using MySqlCommand command = new("CREATE DATABASE IF NOT EXISTS " + databaseName + ";", conn);
 
-            command.ExecuteNonQuery();
+            _ = command.ExecuteNonQuery();
         }
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
@@ -28,7 +28,7 @@ namespace Wexflow.Core.Db.MySQL
 
             using MySqlCommand command = new("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn);
 
-            command.ExecuteNonQuery();
+            _ = command.ExecuteNonQuery();
         }
 
     }

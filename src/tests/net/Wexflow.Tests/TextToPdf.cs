@@ -23,9 +23,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void TextToPdfTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(64);
+            _ = Helper.StartWorkflow(64);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
         }

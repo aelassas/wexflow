@@ -23,9 +23,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void UnrarTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(79);
+            _ = Helper.StartWorkflow(79);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

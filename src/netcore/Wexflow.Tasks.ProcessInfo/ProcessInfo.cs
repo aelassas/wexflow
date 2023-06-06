@@ -22,13 +22,13 @@ namespace Wexflow.Tasks.ProcessInfo
             {
                 Info("Generating process information...");
 
-                Process[] processes = Process.GetProcessesByName(ProcessName);
+                var processes = Process.GetProcessesByName(ProcessName);
 
-                string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("ProcessInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
                 XElement xprocesses = new("Processes");
-                foreach (Process process in processes)
+                foreach (var process in processes)
                 {
                     XElement xprocess = new("Process"
                         , new XAttribute("id", process.Id)

@@ -21,26 +21,30 @@ namespace Wexflow.Tasks.Wmi
         {
             Info("Running WMI query...");
 
-            bool success = true;
+            var success = true;
 
             try
             {
-                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("WMI_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("WMI_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                XDocument xdoc = new XDocument(new XElement("Objects"));
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(Query);
-                ManagementObjectCollection collection = searcher.Get();
+                var xdoc = new XDocument(new XElement("Objects"));
+                var searcher = new ManagementObjectSearcher(Query);
+                var collection = searcher.Get();
 
-                foreach (ManagementBaseObject o in collection)
+                foreach (var o in collection)
                 {
-                    ManagementObject obj = (ManagementObject)o;
-                    XElement xObj = new XElement("Object");
-                    foreach (PropertyData prop in obj.Properties)
+                    var obj = (ManagementObject)o;
+                    var xObj = new XElement("Object");
+                    foreach (var prop in obj.Properties)
                     {
-                        XElement xProp = new XElement("Property", new XAttribute("name", prop.Name), new XAttribute("value", prop.Value ?? string.Empty));
+                        var xProp = new XElement("Property", new XAttribute("name", prop.Name), new XAttribute("value", prop.Value ?? string.Empty));
                         xObj.Add(xProp);
                     }
-                    if (xdoc.Root == null) throw new Exception("Root node does not exist.");
+                    if (xdoc.Root == null)
+                    {
+                        throw new Exception("Root node does not exist.");
+                    }
+
                     xdoc.Root.Add(xObj);
                 }
                 xdoc.Save(xmlPath);
@@ -57,7 +61,7 @@ namespace Wexflow.Tasks.Wmi
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {

@@ -11,7 +11,10 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(IsoPath)) File.Delete(IsoPath);
+            if (File.Exists(IsoPath))
+            {
+                File.Delete(IsoPath);
+            }
         }
 
         [TestCleanup]
@@ -24,7 +27,7 @@ namespace Wexflow.Tests
         public void IsoCreatorTest()
         {
             Assert.IsFalse(File.Exists(IsoPath));
-            Helper.StartWorkflow(87);
+            _ = Helper.StartWorkflow(87);
             Assert.IsTrue(File.Exists(IsoPath));
         }
 

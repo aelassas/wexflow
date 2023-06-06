@@ -19,17 +19,17 @@ namespace Wexflow.Tasks.Guid
         {
             Info("Generating Guids...");
 
-            string guidPath = Path.Combine(Workflow.WorkflowTempFolder,
+            var guidPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("Guid_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-            XElement xguids = new XElement("Guids");
+            var xguids = new XElement("Guids");
 
-            for (int i = 0; i < GuidCount; i++)
+            for (var i = 0; i < GuidCount; i++)
             {
                 xguids.Add(new XElement("Guid", System.Guid.NewGuid()));
             }
 
-            XDocument xdoc = new XDocument(xguids);
+            var xdoc = new XDocument(xguids);
             xdoc.Save(guidPath);
             Files.Add(new FileInf(guidPath, Id));
 

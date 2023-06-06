@@ -23,22 +23,22 @@ namespace Wexflow.Tasks.VimeoListUploads
         {
             Info("Listing uploads...");
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             try
             {
-                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                 string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "VimeoListUploads", DateTime.Now));
 
-                XDocument xdoc = new XDocument(new XElement("VimeoListUploads"));
-                XElement xvideos = new XElement("Videos");
+                var xdoc = new XDocument(new XElement("VimeoListUploads"));
+                var xvideos = new XElement("Videos");
 
-                VimeoClient vimeoApi = new VimeoClient(Token);
-                System.Threading.Tasks.Task<VimeoDotNet.Models.Paginated<VimeoDotNet.Models.Video>> videosTask = vimeoApi.GetVideosAsync(UserId, null, null);
+                var vimeoApi = new VimeoClient(Token);
+                var videosTask = vimeoApi.GetVideosAsync(UserId, null, null);
                 videosTask.Wait();
-                System.Collections.Generic.List<VimeoDotNet.Models.Video> videos = videosTask.Result.Data;
+                var videos = videosTask.Result.Data;
 
-                foreach (VimeoDotNet.Models.Video d in videos)
+                foreach (var d in videos)
                 {
                     xvideos.Add(new XElement("Video"
                         , new XAttribute("title", SecurityElement.Escape(d.Name))

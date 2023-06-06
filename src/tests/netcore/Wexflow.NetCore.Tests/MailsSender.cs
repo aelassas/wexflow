@@ -23,9 +23,9 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void MailsSenderTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(9);
+            _ = Helper.StartWorkflow(9);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
         }

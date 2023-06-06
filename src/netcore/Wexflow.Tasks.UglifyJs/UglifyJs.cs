@@ -19,7 +19,7 @@ namespace Wexflow.Tasks.UglifyJs
             Info("Uglifying JavaScript files...");
 
             bool success;
-            bool atLeastOneSuccess = false;
+            var atLeastOneSuccess = false;
             try
             {
                 success = UglifyScripts(ref atLeastOneSuccess);
@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.UglifyJs
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -51,15 +51,15 @@ namespace Wexflow.Tasks.UglifyJs
 
         private bool UglifyScripts(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] jsFiles = SelectFiles();
+            var success = true;
+            var jsFiles = SelectFiles();
 
-            foreach (FileInf jsFile in jsFiles)
+            foreach (var jsFile in jsFiles)
             {
                 try
                 {
-                    string source = File.ReadAllText(jsFile.Path);
-                    UglifyResult result = Uglify.Js(source);
+                    var source = File.ReadAllText(jsFile.Path);
+                    var result = Uglify.Js(source);
                     if (result.HasErrors)
                     {
                         ErrorFormat("An error occured while uglifying the script {0}: {1}", jsFile.Path, string.Concat(result.Errors.Select(e => e.Message + "\n").ToArray()));
@@ -67,11 +67,14 @@ namespace Wexflow.Tasks.UglifyJs
                         continue;
                     }
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(jsFile.FileName) + ".min.js");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(jsFile.FileName) + ".min.js");
                     File.WriteAllText(destPath, result.Code);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The script {0} has been uglified -> {1}", jsFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

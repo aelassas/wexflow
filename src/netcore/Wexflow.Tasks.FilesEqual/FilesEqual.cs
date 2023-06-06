@@ -22,7 +22,7 @@ namespace Wexflow.Tasks.FilesEqual
         {
             Info("Checking...");
 
-            bool success = true;
+            var success = true;
 
             try
             {
@@ -38,7 +38,7 @@ namespace Wexflow.Tasks.FilesEqual
                     return new TaskStatus(Status.Error, false);
                 }
 
-                string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                        string.Format("FilesEqual_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
                 XDocument xdoc = new(new XElement("Root"));
                 XElement xFiles = new("Files");
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.FilesEqual
                 {
                     xdoc.Root.Add(xFiles);
 
-                    bool res = FileEquals(File1, File2);
+                    var res = FileEquals(File1, File2);
                     xdoc.Root.Add(new XElement("Result", res.ToString().ToLower()));
                 }
 
@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.FilesEqual
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {
@@ -86,11 +86,11 @@ namespace Wexflow.Tasks.FilesEqual
 
         private bool FileEquals(string path1, string path2)
         {
-            byte[] file1 = File.ReadAllBytes(path1);
-            byte[] file2 = File.ReadAllBytes(path2);
+            var file1 = File.ReadAllBytes(path1);
+            var file2 = File.ReadAllBytes(path2);
             if (file1.Length == file2.Length)
             {
-                for (int i = 0; i < file1.Length; i++)
+                for (var i = 0; i < file1.Length; i++)
                 {
                     if (file1[i] != file2[i])
                     {

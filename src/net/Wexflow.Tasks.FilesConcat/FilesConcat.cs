@@ -26,8 +26,8 @@ namespace Wexflow.Tasks.FilesConcat
         {
             Info("Concatenating files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             try
             {
@@ -53,7 +53,7 @@ namespace Wexflow.Tasks.FilesConcat
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -70,41 +70,44 @@ namespace Wexflow.Tasks.FilesConcat
 
         private bool ConcatFiles(ref bool atLeastOneSucceed)
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
+            var success = true;
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < files.Length; i++)
+                var builder = new StringBuilder();
+                for (var i = 0; i < files.Length; i++)
                 {
-                    FileInf file = files[i];
-                    builder.Append(Path.GetFileNameWithoutExtension(file.FileName));
+                    var file = files[i];
+                    _ = builder.Append(Path.GetFileNameWithoutExtension(file.FileName));
                     if (i < files.Length - 1)
                     {
-                        builder.Append("_");
+                        _ = builder.Append("_");
                     }
                 }
 
-                string concatPath = Path.Combine(Workflow.WorkflowTempFolder, builder.ToString());
+                var concatPath = Path.Combine(Workflow.WorkflowTempFolder, builder.ToString());
 
                 if (File.Exists(concatPath))
                 {
                     File.Delete(concatPath);
                 }
 
-                using (FileStream output = File.Create(concatPath))
+                using (var output = File.Create(concatPath))
                 {
-                    foreach (FileInf file in files)
+                    foreach (var file in files)
                     {
                         try
                         {
-                            using (FileStream input = File.OpenRead(file.Path))
+                            using (var input = File.OpenRead(file.Path))
                             {
                                 input.CopyTo(output);
                             }
 
-                            if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                            if (!atLeastOneSucceed)
+                            {
+                                atLeastOneSucceed = true;
+                            }
                         }
                         catch (ThreadAbortException)
                         {

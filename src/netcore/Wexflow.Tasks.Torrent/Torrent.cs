@@ -20,7 +20,7 @@ namespace Wexflow.Tasks.Torrent
             Info("Downloading torrents...");
 
             bool success;
-            bool atLeastOneSuccess = false;
+            var atLeastOneSuccess = false;
             try
             {
                 success = Download(ref atLeastOneSuccess);
@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.Torrent
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -52,14 +52,17 @@ namespace Wexflow.Tasks.Torrent
 
         private bool Download(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             try
             {
-                FileInf[] torrents = SelectFiles();
-                foreach (FileInf torrent in torrents)
+                var torrents = SelectFiles();
+                foreach (var torrent in torrents)
                 {
                     success &= DownloadTorrent(torrent.Path);
-                    if (!atLeastOneSuccess && success) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && success)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
 
             }
@@ -85,10 +88,10 @@ namespace Wexflow.Tasks.Torrent
                 {
                     MaximumConnections = 60,
                 };
-                System.Threading.Tasks.Task<TorrentManager> managerTask = engine.AddAsync(path, SaveFolder, settingsBuilder.ToSettings());
+                var managerTask = engine.AddAsync(path, SaveFolder, settingsBuilder.ToSettings());
                 managerTask.Wait();
-                TorrentManager manager = managerTask.Result;
-                System.Threading.Tasks.Task task = manager.StartAsync();
+                var manager = managerTask.Result;
+                var task = manager.StartAsync();
                 task.Wait();
 
                 while (engine.IsRunning)
@@ -98,7 +101,7 @@ namespace Wexflow.Tasks.Torrent
                     if (manager.Progress == 100.0)
                     {
                         // If we want to stop a torrent, or the engine for whatever reason, we call engine.StopAll()
-                        engine.StopAllAsync();
+                        _ = engine.StopAllAsync();
                         break;
                     }
                 }

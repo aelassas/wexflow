@@ -24,27 +24,30 @@ namespace Wexflow.Tasks.Http
         {
             Info("Downloading files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             using (WebClient webClient = new())
             {
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = Tls12;
 
-                foreach (string url in Urls)
+                foreach (var url in Urls)
                 {
                     try
                     {
-                        string fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
-                        string destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
+                        var fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
+                        var destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
 
                         webClient.DownloadFile(url, destPath);
 
                         InfoFormat("File {0} downlaoded as {1}", url, destPath);
                         Files.Add(new FileInf(destPath, Id));
 
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -58,7 +61,7 @@ namespace Wexflow.Tasks.Http
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

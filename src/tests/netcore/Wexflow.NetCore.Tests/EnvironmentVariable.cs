@@ -20,11 +20,11 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void EnvironmentVariableTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(116);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(116);
             stopwatch.Stop();
 
-            string varValue = Environment.GetEnvironmentVariable("OS");
+            var varValue = Environment.GetEnvironmentVariable("OS");
             switch (varValue)
             {
                 case "Windows_NT":

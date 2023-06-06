@@ -21,8 +21,8 @@ namespace Wexflow.Tasks.FilesInfo
         {
             Info("Generating files informations...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             try
             {
@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.FilesInfo
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -65,24 +65,24 @@ namespace Wexflow.Tasks.FilesInfo
 
         private bool GenerateInfo(ref bool atLeastOneSucceed)
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
+            var success = true;
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                string filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("FilesInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                XDocument xdoc = new XDocument(new XElement("Files"));
-                foreach (FileInf file in files)
+                var xdoc = new XDocument(new XElement("Files"));
+                foreach (var file in files)
                 {
                     try
                     {
                         if (xdoc.Root != null)
                         {
                             const string dateFormat = @"MM\/dd\/yyyy HH:mm.ss";
-                            FileInfo fileInfo = new FileInfo(file.Path);
-                            XElement xfile = new XElement("File",
+                            var fileInfo = new FileInfo(file.Path);
+                            var xfile = new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
                                 new XAttribute("renameToOrName", file.RenameToOrName),
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.FilesInfo
                                 new XAttribute("attributes", fileInfo.Attributes)
                                 );
 
-                            foreach (Tag tag in file.Tags)
+                            foreach (var tag in file.Tags)
                             {
                                 xfile.SetAttributeValue(tag.Key, tag.Value);
                             }
@@ -105,7 +105,10 @@ namespace Wexflow.Tasks.FilesInfo
                         }
                         InfoFormat("File information of the file {0} generated.", file.Path);
 
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {

@@ -18,12 +18,12 @@ namespace Wexflow.Core.Db.PostgreSQL
 
             using NpgsqlCommand command1 = new("SELECT COUNT(*) FROM pg_database WHERE datname = '" + databaseName + "'", conn);
 
-            long count = (long)command1.ExecuteScalar();
+            var count = (long)command1.ExecuteScalar();
 
             if (count == 0)
             {
                 using NpgsqlCommand command2 = new("CREATE DATABASE " + databaseName + ";", conn);
-                command2.ExecuteNonQuery();
+                _ = command2.ExecuteNonQuery();
             }
         }
 
@@ -33,7 +33,7 @@ namespace Wexflow.Core.Db.PostgreSQL
             conn.Open();
 
             using NpgsqlCommand command = new("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn);
-            command.ExecuteNonQuery();
+            _ = command.ExecuteNonQuery();
         }
 
     }

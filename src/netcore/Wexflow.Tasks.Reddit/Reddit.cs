@@ -22,10 +22,10 @@ namespace Wexflow.Tasks.Reddit
         {
             Info("Posting on Reddit...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
             if (files.Length > 0)
             {
                 RedditClient reddit;
@@ -46,21 +46,21 @@ namespace Wexflow.Tasks.Reddit
                     return new TaskStatus(Status.Error);
                 }
 
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
-                        XDocument xdoc = XDocument.Load(file.Path);
+                        var xdoc = XDocument.Load(file.Path);
 
                         // Self posts
-                        foreach (XElement xPost in xdoc.XPathSelectElements("Reddit/SelfPosts/SelfPost"))
+                        foreach (var xPost in xdoc.XPathSelectElements("Reddit/SelfPosts/SelfPost"))
                         {
-                            string subreddit = xPost.Attribute("subreddit").Value;
-                            string title = xPost.Attribute("title").Value;
-                            string text = xPost.Attribute("text").Value;
+                            var subreddit = xPost.Attribute("subreddit").Value;
+                            var title = xPost.Attribute("title").Value;
+                            var text = xPost.Attribute("text").Value;
 
-                            global::Reddit.Controllers.Subreddit sub = reddit.Subreddit(subreddit);
-                            global::Reddit.Controllers.SelfPost selfPost = sub.SelfPost(title, text).Submit();
+                            var sub = reddit.Subreddit(subreddit);
+                            var selfPost = sub.SelfPost(title, text).Submit();
 
                             if (selfPost == null)
                             {
@@ -71,19 +71,22 @@ namespace Wexflow.Tasks.Reddit
                             {
                                 InfoFormat("Post '{0}' sent. Id: {1}", title, selfPost.Id);
 
-                                if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                                if (!atLeastOneSucceed)
+                                {
+                                    atLeastOneSucceed = true;
+                                }
                             }
                         }
 
                         // Link posts
-                        foreach (XElement xLink in xdoc.XPathSelectElements("Reddit/LinkPosts/LinkPost"))
+                        foreach (var xLink in xdoc.XPathSelectElements("Reddit/LinkPosts/LinkPost"))
                         {
-                            string subreddit = xLink.Attribute("subreddit").Value;
-                            string title = xLink.Attribute("title").Value;
-                            string url = xLink.Attribute("url").Value;
+                            var subreddit = xLink.Attribute("subreddit").Value;
+                            var title = xLink.Attribute("title").Value;
+                            var url = xLink.Attribute("url").Value;
 
-                            global::Reddit.Controllers.Subreddit sub = reddit.Subreddit(subreddit);
-                            global::Reddit.Controllers.LinkPost linkPost = sub.LinkPost(title, url).Submit();
+                            var sub = reddit.Subreddit(subreddit);
+                            var linkPost = sub.LinkPost(title, url).Submit();
 
                             if (linkPost == null)
                             {
@@ -94,8 +97,10 @@ namespace Wexflow.Tasks.Reddit
                             {
                                 InfoFormat("Link post '{0}' sent. Id: {1}", title, linkPost.Id);
 
-                                if (!atLeastOneSucceed) atLeastOneSucceed = true;
-
+                                if (!atLeastOneSucceed)
+                                {
+                                    atLeastOneSucceed = true;
+                                }
                             }
                         }
 
@@ -112,7 +117,7 @@ namespace Wexflow.Tasks.Reddit
                 }
             }
 
-            Status tstatus = Status.Success;
+            var tstatus = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

@@ -18,13 +18,13 @@ namespace Wexflow.Core.Db.SQLServer
 
             using SqlCommand command1 = new("SELECT COUNT(*) FROM master.dbo.sysdatabases WHERE name = N'" + databaseName + "'", conn);
 
-            int count = (int)command1.ExecuteScalar();
+            var count = (int)command1.ExecuteScalar();
 
             if (count == 0)
             {
                 using SqlCommand command2 = new("CREATE DATABASE " + databaseName + ";", conn);
 
-                command2.ExecuteNonQuery();
+                _ = command2.ExecuteNonQuery();
             }
         }
 
@@ -35,7 +35,7 @@ namespace Wexflow.Core.Db.SQLServer
 
             using SqlCommand command = new("IF NOT EXISTS (SELECT [name] FROM sys.tables WHERE [name] = '" + tableName + "') CREATE TABLE " + tableName + tableStruct + ";", conn);
 
-            command.ExecuteNonQuery();
+            _ = command.ExecuteNonQuery();
         }
 
     }

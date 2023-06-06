@@ -45,15 +45,15 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void FilesJoinerTest()
         {
-            string[] files = Directory.GetFiles(SourceFilesFolder);
+            var files = Directory.GetFiles(SourceFilesFolder);
             Assert.AreEqual(16, files.Length);
 
-            Helper.StartWorkflow(147);
+            _ = Helper.StartWorkflow(147);
 
             files = Directory.GetFiles(TempFolder, "*", SearchOption.AllDirectories).OrderBy(f => f).ToArray();
             Assert.AreEqual(4, files.Length);
 
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(ExpectedResultFileA, content);
 
             content = File.ReadAllText(files[1]);

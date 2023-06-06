@@ -21,30 +21,30 @@ namespace Wexflow.Tasks.PdfToText
         {
             Info("Extract TEXT from PDF files ...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                foreach (FileInf pdfFile in files)
+                foreach (var pdfFile in files)
                 {
                     try
                     {
-                        string textPath = Path.Combine(Workflow.WorkflowTempFolder,
+                        var textPath = Path.Combine(Workflow.WorkflowTempFolder,
                             string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.txt", Path.GetFileNameWithoutExtension(pdfFile.FileName), DateTime.Now));
 
                         //Document doc = new Document();
-                        using (StreamWriter doc = new StreamWriter(textPath))
+                        using (var doc = new StreamWriter(textPath))
                         {
-                            PdfReader pdfReader = new PdfReader(pdfFile.Path);
+                            var pdfReader = new PdfReader(pdfFile.Path);
 
                             // Add the text file contents
-                            for (int page = 1; page <= pdfReader.NumberOfPages; page++)
+                            for (var page = 1; page <= pdfReader.NumberOfPages; page++)
                             {
                                 ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
-                                string currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, strategy);
+                                var currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, strategy);
 
                                 currentText = Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
                                 doc.Write(currentText);
@@ -54,7 +54,10 @@ namespace Wexflow.Tasks.PdfToText
                             InfoFormat("Textfile {0} generated from the file {1}", textPath, pdfFile.Path);
 
                         }
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -68,7 +71,7 @@ namespace Wexflow.Tasks.PdfToText
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

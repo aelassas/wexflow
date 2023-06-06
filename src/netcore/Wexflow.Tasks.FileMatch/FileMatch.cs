@@ -24,15 +24,15 @@ namespace Wexflow.Tasks.FileMatch
         {
             Info("Checking file...");
 
-            bool success = false;
-            string fileFound = string.Empty;
+            var success = false;
+            var fileFound = string.Empty;
 
             try
             {
-                string[] files = Recursive
+                var files = Recursive
                     ? Directory.GetFiles(Dir, "*.*", SearchOption.AllDirectories)
                     : Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
-                foreach (string file in files)
+                foreach (var file in files)
                 {
                     if (Regex.Match(Path.GetFileName(file), Pattern).Success)
                     {

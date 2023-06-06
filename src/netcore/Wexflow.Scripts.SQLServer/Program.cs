@@ -4,9 +4,9 @@ using Wexflow.Core.Db.SQLServer;
 
 namespace Wexflow.Scripts.SQLServer
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {
@@ -14,7 +14,7 @@ namespace Wexflow.Scripts.SQLServer
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                string workflowsFolder = config["workflowsFolder"];
+                var workflowsFolder = config["workflowsFolder"];
                 Db db = new(config["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Core.Helper.InsertRecords(db, "sqlserver", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
@@ -26,7 +26,7 @@ namespace Wexflow.Scripts.SQLServer
             }
 
             Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
     }
 }

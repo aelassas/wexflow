@@ -24,10 +24,10 @@ namespace Wexflow.Tasks.Movedir
         {
             Info("Moving directory...");
 
-            bool succeeded = false;
+            var succeeded = false;
             try
             {
-                bool move = true;
+                var move = true;
                 if (Directory.Exists(DestinationFolder))
                 {
                     if (Overwrite)
@@ -63,11 +63,15 @@ namespace Wexflow.Tasks.Movedir
 
         private void DeleteRec(string dir)
         {
-            foreach (string file in Directory.GetFiles(dir))
+            foreach (var file in Directory.GetFiles(dir))
+            {
                 File.Delete(file);
+            }
 
-            foreach (string subdir in Directory.GetDirectories(dir))
+            foreach (var subdir in Directory.GetDirectories(dir))
+            {
                 DeleteRec(subdir);
+            }
 
             Directory.Delete(dir);
         }

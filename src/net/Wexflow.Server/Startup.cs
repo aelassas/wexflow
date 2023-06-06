@@ -6,7 +6,7 @@ namespace Wexflow.Server
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseNancy();
+            _ = app.UseNancy();
         }
     }
 }

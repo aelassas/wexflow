@@ -19,25 +19,28 @@ namespace Wexflow.Tasks.WebToHtml
         public override TaskStatus Run()
         {
             Info("Getting HTML sources...");
-            Status status = Status.Success;
+            var status = Status.Success;
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
-            foreach (string url in Urls)
+            foreach (var url in Urls)
             {
                 try
                 {
-                    ChromeDriver driver = new ChromeDriver();
+                    var driver = new ChromeDriver();
                     driver.Navigate().GoToUrl(url);
 
-                    string destFile = Path.Combine(Workflow.WorkflowTempFolder,
+                    var destFile = Path.Combine(Workflow.WorkflowTempFolder,
                          string.Format("WebToHtml_{0:yyyy-MM-dd-HH-mm-ss-fff}.html", DateTime.Now));
 
-                    string source = driver.PageSource;
+                    var source = driver.PageSource;
                     File.WriteAllText(destFile, source);
 
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
 
                     InfoFormat("HTML source of {0} retrieved with success -> {1}", url, destFile);
                     Files.Add(new FileInf(destFile, Id));

@@ -17,14 +17,11 @@ namespace Wexflow.Core
         /// </summary>
         public string RemoteComputerName
         {
-            get
-            {
-                return this._remoteComputerName;
-            }
+            get => _remoteComputerName;
             set
             {
-                this._remoteComputerName = value;
-                this._remoteUncName = @"\\" + this._remoteComputerName;
+                _remoteComputerName = value;
+                _remoteUncName = @"\\" + _remoteComputerName;
             }
         }
 
@@ -183,7 +180,7 @@ namespace Wexflow.Core
         {
             RemoteComputerName = remoteComputerName;
 
-            this.ConnectToShare(this._remoteUncName, null, null, true);
+            ConnectToShare(_remoteUncName, null, null, true);
         }
 
         private NetworkShareAccesser(string remoteComputerName, string userName, string password)
@@ -192,18 +189,18 @@ namespace Wexflow.Core
             Username = userName;
             Password = password;
 
-            this.ConnectToShare(this._remoteUncName, this.Username, this.Password, false);
+            ConnectToShare(_remoteUncName, Username, Password, false);
         }
 
         private void ConnectToShare(string remoteUnc, string username, string password, bool promptUser)
         {
-            NETRESOURCE nr = new NETRESOURCE
+            var nr = new NETRESOURCE
             {
                 dwType = RESOURCETYPE_DISK,
                 lpRemoteName = remoteUnc
             };
 
-            int result = promptUser
+            var result = promptUser
                 ? WNetUseConnection(IntPtr.Zero, nr, "", "", CONNECT_INTERACTIVE | CONNECT_PROMPT, null, null, null)
                 : WNetUseConnection(IntPtr.Zero, nr, password, username, 0, null, null, null);
             if (result != NO_ERROR)
@@ -214,7 +211,7 @@ namespace Wexflow.Core
 
         private void DisconnectFromShare(string remoteUnc)
         {
-            int result = WNetCancelConnection2(remoteUnc, CONNECT_UPDATE_PROFILE, false);
+            var result = WNetCancelConnection2(remoteUnc, CONNECT_UPDATE_PROFILE, false);
             if (result != NO_ERROR)
             {
                 throw new Win32Exception(result);
@@ -227,7 +224,7 @@ namespace Wexflow.Core
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            this.DisconnectFromShare(this._remoteUncName);
+            DisconnectFromShare(_remoteUncName);
         }
     }
 }

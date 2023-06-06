@@ -15,37 +15,37 @@ namespace Wexflow.Server
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            IConfigurationBuilder builder = new ConfigurationBuilder()
+            var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .SetBasePath(env.ContentRootPath);
 
-            IConfigurationRoot config = builder.Build();
+            var config = builder.Build();
 
             AppConfiguration appConfig = new();
             ConfigurationBinder.Bind(config, appConfig);
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                _ = app.UseDeveloperExceptionPage();
             }
 
             //
             // Swagger UI
             //
-            WebApplicationBuilder webBuilder = WebApplication.CreateBuilder();
-            string path = Path.Combine(webBuilder.Environment.ContentRootPath, "swagger-ui");
+            var webBuilder = WebApplication.CreateBuilder();
+            var path = Path.Combine(webBuilder.Environment.ContentRootPath, "swagger-ui");
 
             FileExtensionContentTypeProvider extensionProvider = new();
             extensionProvider.Mappings.Add(".yaml", "application/x-yaml");
             extensionProvider.Mappings.Add(".yml", "application/x-yaml");
 
             PhysicalFileProvider fileProvider = new(path);
-            app.UseDefaultFiles(new DefaultFilesOptions
+            _ = app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = fileProvider,
                 RequestPath = new PathString("")
             });
-            app.UseStaticFiles(new StaticFileOptions
+            _ = app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = fileProvider,
                 ContentTypeProvider = extensionProvider,
@@ -55,16 +55,16 @@ namespace Wexflow.Server
             //
             // Wexflow Service
             //
-            app.UseMiddleware<WexflowMiddleware>();
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseCors(builder => builder
+            _ = app.UseMiddleware<WexflowMiddleware>();
+            _ = app.UseRouting();
+            _ = app.UseAuthorization();
+            _ = app.UseCors(builder => builder
             .AllowAnyHeader()
             .AllowAnyMethod()
             .SetIsOriginAllowed((host) => true)
             .AllowCredentials()
             );
-            app.UseEndpoints(endpoints =>
+            _ = app.UseEndpoints(endpoints =>
             {
                 WexflowService wexflowService = new(endpoints);
                 wexflowService.Map();
@@ -73,12 +73,12 @@ namespace Wexflow.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<KestrelServerOptions>(options =>
+            _ = services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
-            services.AddCors();
-            services.AddControllers();
+            _ = services.AddCors();
+            _ = services.AddControllers();
         }
     }
 }

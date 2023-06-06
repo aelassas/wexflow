@@ -18,7 +18,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void TwilioTest()
         {
-            Helper.StartWorkflow(141);
+            _ = Helper.StartWorkflow(141);
             // TODO
         }
     }

@@ -12,7 +12,11 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (!Directory.Exists(Temp)) Directory.CreateDirectory(Temp);
+            if (!Directory.Exists(Temp))
+            {
+                _ = Directory.CreateDirectory(Temp);
+            }
+
             Helper.CopyDirRec(Src, Temp);
         }
 
@@ -26,7 +30,7 @@ namespace Wexflow.Tests
         public void RmdirTest()
         {
             Assert.AreEqual(true, Directory.Exists(Src));
-            Helper.StartWorkflow(14);
+            _ = Helper.StartWorkflow(14);
             Assert.AreEqual(false, Directory.Exists(Src));
         }
     }

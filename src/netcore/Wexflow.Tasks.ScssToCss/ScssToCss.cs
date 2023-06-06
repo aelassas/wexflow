@@ -18,8 +18,8 @@ namespace Wexflow.Tasks.ScssToCss
             Info("Converting SCSS files to CSS files...");
 
             bool success;
-            Status status = Status.Success;
-            bool atLeastOneSuccess = false;
+            var status = Status.Success;
+            var atLeastOneSuccess = false;
             try
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
@@ -49,21 +49,24 @@ namespace Wexflow.Tasks.ScssToCss
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] scssFiles = SelectFiles();
+            var success = true;
+            var scssFiles = SelectFiles();
 
-            foreach (FileInf scssFile in scssFiles)
+            foreach (var scssFile in scssFiles)
             {
                 try
                 {
-                    string source = File.ReadAllText(scssFile.Path);
-                    ScssResult result = Scss.ConvertToCss(source);
+                    var source = File.ReadAllText(scssFile.Path);
+                    var result = Scss.ConvertToCss(source);
 
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(scssFile.FileName) + ".css");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(scssFile.FileName) + ".css");
                     File.WriteAllText(destPath, result.Css);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("The SCSS file {0} has been converted -> {1}", scssFile.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

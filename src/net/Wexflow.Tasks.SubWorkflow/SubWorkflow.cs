@@ -36,12 +36,12 @@ namespace Wexflow.Tasks.SubWorkflow
         {
             InfoFormat("Processing the sub workflow {0} ...", WorkflowId);
 
-            bool success = true;
-            bool warning = false;
+            var success = true;
+            var warning = false;
 
             try
             {
-                Workflow workflow = Workflow.WexflowEngine.GetWorkflow(WorkflowId);
+                var workflow = Workflow.WexflowEngine.GetWorkflow(WorkflowId);
                 if (workflow != null)
                 {
                     switch (Action)
@@ -53,7 +53,7 @@ namespace Wexflow.Tasks.SubWorkflow
                                     success = workflow.StartSync(Workflow.StartedBy, Guid.NewGuid(), ref warning);
                                     break;
                                 case KickOffMode.Async:
-                                    workflow.StartAsync(Workflow.StartedBy);
+                                    _ = workflow.StartAsync(Workflow.StartedBy);
                                     break;
                             }
                             break;
@@ -116,7 +116,7 @@ namespace Wexflow.Tasks.SubWorkflow
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {

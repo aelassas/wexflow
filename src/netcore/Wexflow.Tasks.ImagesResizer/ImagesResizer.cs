@@ -24,18 +24,21 @@ namespace Wexflow.Tasks.ImagesResizer
         public override TaskStatus Run()
         {
             Info("Resizing images...");
-            Status status = Status.Success;
-            bool succeeded = true;
-            bool atLeastOneSuccess = false;
+            var status = Status.Success;
+            var succeeded = true;
+            var atLeastOneSuccess = false;
 
             try
             {
-                FileInf[] images = SelectFiles();
-                foreach (FileInf image in images)
+                var images = SelectFiles();
+                foreach (var image in images)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     succeeded &= Resize(image.Path, destPath);
-                    if (!atLeastOneSuccess && succeeded) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && succeeded)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -65,7 +68,7 @@ namespace Wexflow.Tasks.ImagesResizer
         {
             try
             {
-                using Image src = Image.FromFile(srcPath);
+                using var src = Image.FromFile(srcPath);
                 using Image dest = ResizeImage(src, Width, Height);
                 dest.Save(destPath);
                 Files.Add(new FileInf(destPath, Id));
@@ -90,7 +93,7 @@ namespace Wexflow.Tasks.ImagesResizer
 
             destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
-            using (Graphics graphics = Graphics.FromImage(destImage))
+            using (var graphics = Graphics.FromImage(destImage))
             {
                 graphics.CompositingMode = CompositingMode.SourceCopy;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;

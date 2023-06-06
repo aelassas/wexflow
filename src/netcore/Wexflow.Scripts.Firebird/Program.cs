@@ -4,9 +4,9 @@ using Wexflow.Core.Db.Firebird;
 
 namespace Wexflow.Scripts.Firebird
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {
@@ -14,7 +14,7 @@ namespace Wexflow.Scripts.Firebird
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                string workflowsFolder = config["workflowsFolder"];
+                var workflowsFolder = config["workflowsFolder"];
                 Db db = new(config["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Core.Helper.InsertRecords(db, "firebird", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
@@ -26,7 +26,7 @@ namespace Wexflow.Scripts.Firebird
             }
 
             Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
     }
 }

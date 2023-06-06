@@ -11,7 +11,10 @@ namespace Wexflow.NetCore.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(Dest)) File.Delete(Dest);
+            if (File.Exists(Dest))
+            {
+                File.Delete(Dest);
+            }
         }
 
         [TestCleanup]
@@ -24,7 +27,7 @@ namespace Wexflow.NetCore.Tests
         public void HttpTest()
         {
             Assert.AreEqual(false, File.Exists(Dest));
-            Helper.StartWorkflow(25);
+            _ = Helper.StartWorkflow(25);
             Assert.AreEqual(true, File.Exists(Dest));
         }
     }

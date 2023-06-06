@@ -21,30 +21,30 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void NowTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(51);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(51);
             stopwatch.Stop();
 
-            string day = string.Format(new CultureInfo("en-US"), "{0:dddd}", DateTime.Now);
+            var day = string.Format(new CultureInfo("en-US"), "{0:dddd}", DateTime.Now);
             switch (day)
             {
                 case "Monday":
-                    Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000 && stopwatch.ElapsedMilliseconds < 2000);
+                    Assert.IsTrue(stopwatch.ElapsedMilliseconds is > 1000 and < 2000);
                     break;
                 case "Tuesday":
-                    Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000 && stopwatch.ElapsedMilliseconds < 3000);
+                    Assert.IsTrue(stopwatch.ElapsedMilliseconds is > 2000 and < 3000);
                     break;
                 case "Wednesday":
-                    Assert.IsTrue(stopwatch.ElapsedMilliseconds > 3000 && stopwatch.ElapsedMilliseconds < 4000);
+                    Assert.IsTrue(stopwatch.ElapsedMilliseconds is > 3000 and < 4000);
                     break;
                 case "Thursday":
-                    Assert.IsTrue(stopwatch.ElapsedMilliseconds > 4000 && stopwatch.ElapsedMilliseconds < 5000);
+                    Assert.IsTrue(stopwatch.ElapsedMilliseconds is > 4000 and < 5000);
                     break;
                 case "Friday":
-                    Assert.IsTrue(stopwatch.ElapsedMilliseconds > 5000 && stopwatch.ElapsedMilliseconds < 6000);
+                    Assert.IsTrue(stopwatch.ElapsedMilliseconds is > 5000 and < 6000);
                     break;
                 case "Saturday":
-                    Assert.IsTrue(stopwatch.ElapsedMilliseconds > 6000 && stopwatch.ElapsedMilliseconds < 7000);
+                    Assert.IsTrue(stopwatch.ElapsedMilliseconds is > 6000 and < 7000);
                     break;
                 case "Sunday":
                     Assert.IsTrue(stopwatch.ElapsedMilliseconds > 7000);

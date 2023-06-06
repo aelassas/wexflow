@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Zip
         {
             Info("Zipping files...");
 
-            bool success = true;
+            var success = true;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.Zip
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success)
             {
@@ -67,25 +67,25 @@ namespace Wexflow.Tasks.Zip
 
         private bool ZipFiles()
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
+            var success = true;
+            var files = SelectFiles();
             if (files.Length > 0)
             {
-                string zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
+                var zipPath = Path.Combine(Workflow.WorkflowTempFolder, ZipFileName);
 
                 try
                 {
-                    using (ZipOutputStream s = new ZipOutputStream(File.Create(zipPath)))
+                    using (var s = new ZipOutputStream(File.Create(zipPath)))
                     {
                         s.SetLevel(9); // 0 - store only to 9 - means best compression
 
-                        byte[] buffer = new byte[4096];
+                        var buffer = new byte[4096];
 
-                        foreach (FileInf file in files)
+                        foreach (var file in files)
                         {
                             // Using GetFileName makes the result compatible with XP
                             // as the resulting path is not absolute.
-                            ZipEntry entry = new ZipEntry(file.RenameToOrName) { DateTime = DateTime.Now };
+                            var entry = new ZipEntry(file.RenameToOrName) { DateTime = DateTime.Now };
 
                             // Setup the entry data as required.
 
@@ -95,7 +95,7 @@ namespace Wexflow.Tasks.Zip
                             // Could also use the last write time or similar for the file.
                             s.PutNextEntry(entry);
 
-                            using (FileStream fs = File.OpenRead(file.Path))
+                            using (var fs = File.OpenRead(file.Path))
                             {
                                 // Using a fixed size buffer here makes no noticeable difference for output
                                 // but keeps a lid on memory usage.

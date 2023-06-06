@@ -44,9 +44,9 @@ namespace Wexflow.NetCore.Tests
         public void FilesConcatTest()
         {
             Assert.IsFalse(File.Exists(FilesConcatFile));
-            Helper.StartWorkflow(53);
+            _ = Helper.StartWorkflow(53);
             Assert.IsTrue(File.Exists(FilesConcatFile));
-            string content = File.ReadAllText(FilesConcatFile);
+            var content = File.ReadAllText(FilesConcatFile);
             Assert.AreEqual(ExpectedResult, content);
         }
     }

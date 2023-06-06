@@ -47,18 +47,18 @@ namespace Wexflow.Tasks.FilesDiff
 
         private void CheckFiles()
         {
-            string oldText = File.ReadAllText(OldFile);
-            string newText = File.ReadAllText(NewFile);
+            var oldText = File.ReadAllText(OldFile);
+            var newText = File.ReadAllText(NewFile);
 
             InlineDiffBuilder diffBuilder = new(new Differ());
-            DiffPaneModel diff = diffBuilder.BuildDiffModel(oldText, newText);
+            var diff = diffBuilder.BuildDiffModel(oldText, newText);
 
-            string resultPath = Path.Combine(Workflow.WorkflowTempFolder,
+            var resultPath = Path.Combine(Workflow.WorkflowTempFolder,
                    string.Format("FilesDiff_{0:yyyy-MM-dd-HH-mm-ss-fff}.diff", DateTime.Now));
 
             using (StreamWriter sw = new(resultPath))
             {
-                foreach (DiffPiece line in diff.Lines)
+                foreach (var line in diff.Lines)
                 {
                     switch (line.Type)
                     {

@@ -25,7 +25,7 @@ namespace Wexflow.NetCore.Tests
         public void TarTest()
         {
             Assert.AreEqual(false, File.Exists(TarFile));
-            Helper.StartWorkflow(161);
+            _ = Helper.StartWorkflow(161);
             Assert.AreEqual(true, File.Exists(TarFile));
         }
     }

@@ -20,8 +20,8 @@ namespace Wexflow.Tasks.Now
         public override TaskStatus Run()
         {
             Info("Getting current date...");
-            string value = string.Empty;
-            bool succeeded = false;
+            var value = string.Empty;
+            var succeeded = false;
             try
             {
                 value = string.Format(new CultureInfo(Cultre), "{0:" + Format + "}", DateTime.Now);

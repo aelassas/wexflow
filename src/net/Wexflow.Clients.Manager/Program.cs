@@ -30,7 +30,7 @@ namespace Wexflow.Clients.Manager
 
         public static bool IsWexflowWindowsServiceRunning()
         {
-            ServiceController sc = new ServiceController(WexflowServiceName);
+            var sc = new ServiceController(WexflowServiceName);
             return sc.Status == ServiceControllerStatus.Running;
         }
     }

@@ -5,13 +5,13 @@ using Wexflow.Scripts.Core;
 
 namespace Wexflow.Scripts.RavenDB
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {
-                Db db = new Db(ConfigurationManager.AppSettings["connectionString"]);
+                var db = new Db(ConfigurationManager.AppSettings["connectionString"]);
                 Helper.InsertWorkflowsAndUser(db);
                 Helper.InsertRecords(db, "ravendb");
                 db.Dispose();
@@ -22,7 +22,7 @@ namespace Wexflow.Scripts.RavenDB
             }
 
             Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
     }
 }

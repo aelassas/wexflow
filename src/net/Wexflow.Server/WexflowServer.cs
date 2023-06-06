@@ -49,7 +49,7 @@ namespace Wexflow.Server
         {
             InitializeComponent();
             ServiceName = "Wexflow";
-            Thread startThread = new Thread(StartThread) { IsBackground = true };
+            var startThread = new Thread(StartThread) { IsBackground = true };
             startThread.Start();
         }
 
@@ -67,9 +67,9 @@ namespace Wexflow.Server
             if (enableRecordsHotFolder)
             {
                 // On file found.
-                foreach (string file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
+                foreach (var file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
                 {
-                    string recordId = WexflowEngine.SaveRecordFromFile(file, superAdminUsername);
+                    var recordId = WexflowEngine.SaveRecordFromFile(file, superAdminUsername);
 
                     if (recordId != "-1")
                     {
@@ -96,8 +96,8 @@ namespace Wexflow.Server
         {
             _webApp?.Dispose();
 
-            int port = int.Parse(Config["WexflowServicePort"]);
-            string url = "http://+:" + port;
+            var port = int.Parse(Config["WexflowServicePort"]);
+            var url = "http://+:" + port;
             _webApp = WebApp.Start<Startup>(url);
         }
 
@@ -152,8 +152,8 @@ namespace Wexflow.Server
                 {
                     Logger.Info("Workflow.FileSystemWatcher.OnCreated");
 
-                    Core.Db.User admin = WexflowEngine.GetUser(superAdminUsername);
-                    WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
+                    var admin = WexflowEngine.GetUser(superAdminUsername);
+                    _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
 
                 }
             }
@@ -181,8 +181,8 @@ namespace Wexflow.Server
                     Logger.Info("Workflow.FileSystemWatcher.OnChanged");
 
                     Thread.Sleep(500);
-                    Core.Db.User admin = WexflowEngine.GetUser(superAdminUsername);
-                    WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
+                    var admin = WexflowEngine.GetUser(superAdminUsername);
+                    _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
 
                 }
             }
@@ -197,7 +197,7 @@ namespace Wexflow.Server
             Logger.Info("Workflow.FileSystemWatcher.OnDeleted");
             try
             {
-                Workflow removedWorkflow = WexflowEngine.Workflows.SingleOrDefault(wf => wf.FilePath == e.FullPath);
+                var removedWorkflow = WexflowEngine.Workflows.SingleOrDefault(wf => wf.FilePath == e.FullPath);
                 if (removedWorkflow != null)
                 {
                     WexflowEngine.DeleteWorkflow(removedWorkflow.DbId);
@@ -248,7 +248,7 @@ namespace Wexflow.Server
                     Logger.Info("Record.FileSystemWatcher.OnCreated");
 
                     Thread.Sleep(1000);
-                    string recordId = WexflowEngine.SaveRecordFromFile(e.FullPath, superAdminUsername);
+                    var recordId = WexflowEngine.SaveRecordFromFile(e.FullPath, superAdminUsername);
                     if (recordId != "-1")
                     {
                         Logger.Info($"Record inserted from file {e.FullPath}. RecordId: {recordId}");

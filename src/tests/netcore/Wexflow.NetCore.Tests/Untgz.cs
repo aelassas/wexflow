@@ -23,9 +23,9 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void UntgzTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(168);
+            _ = Helper.StartWorkflow(168);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

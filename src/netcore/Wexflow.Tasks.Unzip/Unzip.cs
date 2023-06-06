@@ -25,35 +25,40 @@ namespace Wexflow.Tasks.Unzip
         {
             Info("Extracting ZIP archives...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] zips = SelectFiles();
+            var zips = SelectFiles();
 
             if (zips.Length > 0)
             {
-                foreach (FileInf zip in zips)
+                foreach (var zip in zips)
                 {
                     try
                     {
-                        string destFolder = CreateSubDirectoryWithDateTime
+                        var destFolder = CreateSubDirectoryWithDateTime
                             ? Path.Combine(DestDir,
                                 Path.GetFileNameWithoutExtension(zip.Path) + "_" +
                                 string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now))
                             : DestDir;
                         if (!Directory.Exists(destFolder))
-                            Directory.CreateDirectory(destFolder);
+                        {
+                            _ = Directory.CreateDirectory(destFolder);
+                        }
 
                         ZipFile.ExtractToDirectory(zip.Path, destFolder, Overwrite);
 
-                        foreach (string file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
 
                         InfoFormat("ZIP {0} extracted to {1}", zip.Path, destFolder);
 
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -67,7 +72,7 @@ namespace Wexflow.Tasks.Unzip
                 }
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

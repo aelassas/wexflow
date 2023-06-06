@@ -15,19 +15,19 @@ namespace Wexflow.Core.Db.PostgreSQL
         public Db(string connectionString) : base(connectionString)
         {
             Db.connectionString = connectionString;
-            string server = string.Empty;
-            string userId = string.Empty;
-            string password = string.Empty;
-            string database = string.Empty;
-            int port = 5432;
+            var server = string.Empty;
+            var userId = string.Empty;
+            var password = string.Empty;
+            var database = string.Empty;
+            var port = 5432;
 
-            string[] connectionStringParts = ConnectionString.Split(';');
+            var connectionStringParts = ConnectionString.Split(';');
 
-            foreach (string part in connectionStringParts)
+            foreach (var part in connectionStringParts)
             {
                 if (!string.IsNullOrEmpty(part.Trim()))
                 {
-                    string connPart = part.TrimStart(' ').TrimEnd(' ');
+                    var connPart = part.TrimStart(' ').TrimEnd(' ');
                     if (connPart.StartsWith("Server="))
                     {
                         server = connPart.Replace("Server=", string.Empty);
@@ -51,7 +51,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                 }
             }
 
-            Helper helper = new Helper(connectionString);
+            var helper = new Helper(connectionString);
             Helper.CreateDatabaseIfNotExists(server, userId, password, database, port);
             helper.CreateTableIfNotExists(Core.Db.Entry.DocumentName, Entry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DocumentName, HistoryEntry.TableStruct);
@@ -70,7 +70,7 @@ namespace Wexflow.Core.Db.PostgreSQL
             // StatusCount
             ClearStatusCount();
 
-            StatusCount statusCount = new StatusCount
+            var statusCount = new StatusCount
             {
                 PendingCount = 0,
                 RunningCount = 0,
@@ -81,11 +81,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                 StoppedCount = 0
             };
 
-            using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
 
-                using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.StatusCount.DocumentName + "("
+                using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.StatusCount.DocumentName + "("
                     + StatusCount.ColumnName_PendingCount + ", "
                     + StatusCount.ColumnName_RunningCount + ", "
                     + StatusCount.ColumnName_DoneCount + ", "
@@ -105,7 +105,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     , conn))
                 {
 
-                    command.ExecuteNonQuery();
+                    _ = command.ExecuteNonQuery();
                 }
             }
 
@@ -113,14 +113,14 @@ namespace Wexflow.Core.Db.PostgreSQL
             ClearEntries();
 
             // Insert default user if necessary
-            using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
 
-                using (NpgsqlCommand command = new NpgsqlCommand("SELECT COUNT(*) FROM " + Core.Db.User.DocumentName + ";", conn))
+                using (var command = new NpgsqlCommand("SELECT COUNT(*) FROM " + Core.Db.User.DocumentName + ";", conn))
                 {
 
-                    long usersCount = (long)command.ExecuteScalar();
+                    var usersCount = (long)command.ExecuteScalar();
 
                     if (usersCount == 0)
                     {
@@ -134,17 +134,17 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT COUNT(*) FROM " + Core.Db.UserWorkflow.DocumentName
+                    using (var command = new NpgsqlCommand("SELECT COUNT(*) FROM " + Core.Db.UserWorkflow.DocumentName
                         + " WHERE " + UserWorkflow.ColumnName_UserId + "=" + int.Parse(userId)
                         + " AND " + UserWorkflow.ColumnName_WorkflowId + "=" + int.Parse(workflowId)
                         + ";", conn))
                     {
 
-                        long count = (long)command.ExecuteScalar();
+                        var count = (long)command.ExecuteScalar();
 
                         return count > 0;
                     }
@@ -157,14 +157,14 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Entry.DocumentName + ";", conn))
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Entry.DocumentName + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -174,14 +174,14 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.StatusCount.DocumentName + ";", conn))
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.StatusCount.DocumentName + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -191,17 +191,17 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.User.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.User.DocumentName
                         + " WHERE " + User.ColumnName_Username + " = '" + username + "'"
                         + " AND " + User.ColumnName_Password + " = '" + password + "'"
                         + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -211,15 +211,15 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
                         + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId) + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -229,15 +229,15 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
                         + " WHERE " + UserWorkflow.ColumnName_WorkflowId + " = " + int.Parse(workflowDbId) + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -247,15 +247,15 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
                          + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -265,31 +265,24 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    StringBuilder builder = new StringBuilder("(");
+                    var builder = new StringBuilder("(");
 
-                    for (int i = 0; i < ids.Length; i++)
+                    for (var i = 0; i < ids.Length; i++)
                     {
-                        string id = ids[i];
-                        builder.Append(id);
-                        if (i < ids.Length - 1)
-                        {
-                            builder.Append(", ");
-                        }
-                        else
-                        {
-                            builder.Append(')');
-                        }
+                        var id = ids[i];
+                        _ = builder.Append(id);
+                        _ = i < ids.Length - 1 ? builder.Append(", ") : builder.Append(')');
                     }
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
                         + " WHERE " + Workflow.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -299,13 +292,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<User> admins = new List<User>();
+                var admins = new List<User>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
                         + User.ColumnName_Email + ", "
@@ -319,12 +312,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                User admin = new User
+                                var admin = new User
                                 {
                                     Id = (int)reader[User.ColumnName_Id],
                                     Username = (string)reader[User.ColumnName_Username],
@@ -350,13 +343,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Entry> entries = new List<Entry>();
+                var entries = new List<Entry>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Entry.ColumnName_Id + ", "
                         + Entry.ColumnName_Name + ", "
                         + Entry.ColumnName_Description + ", "
@@ -368,12 +361,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " FROM " + Core.Db.Entry.DocumentName + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                Entry entry = new Entry
+                                var entry = new Entry
                                 {
                                     Id = (int)reader[Entry.ColumnName_Id],
                                     Name = (string)reader[Entry.ColumnName_Name],
@@ -399,13 +392,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Entry> entries = new List<Entry>();
+                var entries = new List<Entry>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    StringBuilder sqlBuilder = new StringBuilder("SELECT "
+                    var sqlBuilder = new StringBuilder("SELECT "
                         + Entry.ColumnName_Id + ", "
                         + Entry.ColumnName_Name + ", "
                         + Entry.ColumnName_Description + ", "
@@ -424,76 +417,76 @@ namespace Wexflow.Core.Db.PostgreSQL
                     {
                         case EntryOrderBy.StatusDateAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDateDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
                             break;
 
                         case EntryOrderBy.WorkflowIdAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
                             break;
 
                         case EntryOrderBy.WorkflowIdDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
                             break;
 
                         case EntryOrderBy.NameAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
                             break;
 
                         case EntryOrderBy.NameDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
                             break;
 
                         case EntryOrderBy.LaunchTypeAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
                             break;
 
                         case EntryOrderBy.LaunchTypeDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
                             break;
 
                         case EntryOrderBy.DescriptionAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
                             break;
 
                         case EntryOrderBy.DescriptionDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
                             break;
 
                         case EntryOrderBy.StatusAscending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDescending:
 
-                            sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
                             break;
                     }
 
-                    sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
+                    _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
 
-                    using (NpgsqlCommand command = new NpgsqlCommand(sqlBuilder.ToString(), conn))
+                    using (var command = new NpgsqlCommand(sqlBuilder.ToString(), conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                Entry entry = new Entry
+                                var entry = new Entry
                                 {
                                     Id = (int)reader[Entry.ColumnName_Id],
                                     Name = (string)reader[Entry.ColumnName_Name],
@@ -519,18 +512,18 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT COUNT(*)"
+                    using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
                         + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "'::timestamp AND '" + to.ToString(dateTimeFormat) + "'::timestamp);", conn))
                     {
 
-                        long count = (long)command.ExecuteScalar();
+                        var count = (long)command.ExecuteScalar();
 
                         return count;
                     }
@@ -542,11 +535,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Entry.ColumnName_Id + ", "
                         + Entry.ColumnName_Name + ", "
                         + Entry.ColumnName_Description + ", "
@@ -559,12 +552,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " WHERE " + Entry.ColumnName_WorkflowId + " = " + workflowId + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                Entry entry = new Entry
+                                var entry = new Entry
                                 {
                                     Id = (int)reader[Entry.ColumnName_Id],
                                     Name = (string)reader[Entry.ColumnName_Name],
@@ -591,11 +584,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Entry.ColumnName_Id + ", "
                         + Entry.ColumnName_Name + ", "
                         + Entry.ColumnName_Description + ", "
@@ -609,12 +602,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "');", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                Entry entry = new Entry
+                                var entry = new Entry
                                 {
                                     Id = (int)reader[Entry.ColumnName_Id],
                                     Name = (string)reader[Entry.ColumnName_Name],
@@ -641,21 +634,21 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + Entry.ColumnName_StatusDate
+                    using (var command = new NpgsqlCommand("SELECT " + Entry.ColumnName_StatusDate
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " ORDER BY " + Entry.ColumnName_StatusDate + " DESC LIMIT 1;", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                DateTime statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
+                                var statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
 
                                 return statusDate;
                             }
@@ -671,21 +664,21 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + Entry.ColumnName_StatusDate
+                    using (var command = new NpgsqlCommand("SELECT " + Entry.ColumnName_StatusDate
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " ORDER BY " + Entry.ColumnName_StatusDate + " ASC LIMIT 1;", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                DateTime statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
+                                var statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
 
                                 return statusDate;
                             }
@@ -701,13 +694,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                var entries = new List<HistoryEntry>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + HistoryEntry.ColumnName_Id + ", "
                         + HistoryEntry.ColumnName_Name + ", "
                         + HistoryEntry.ColumnName_Description + ", "
@@ -718,12 +711,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                HistoryEntry entry = new HistoryEntry
+                                var entry = new HistoryEntry
                                 {
                                     Id = (int)reader[HistoryEntry.ColumnName_Id],
                                     Name = (string)reader[HistoryEntry.ColumnName_Name],
@@ -748,13 +741,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                var entries = new List<HistoryEntry>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + HistoryEntry.ColumnName_Id + ", "
                         + HistoryEntry.ColumnName_Name + ", "
                         + HistoryEntry.ColumnName_Description + ", "
@@ -767,12 +760,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                HistoryEntry entry = new HistoryEntry
+                                var entry = new HistoryEntry
                                 {
                                     Id = (int)reader[HistoryEntry.ColumnName_Id],
                                     Name = (string)reader[HistoryEntry.ColumnName_Name],
@@ -797,13 +790,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                var entries = new List<HistoryEntry>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + HistoryEntry.ColumnName_Id + ", "
                         + HistoryEntry.ColumnName_Name + ", "
                         + HistoryEntry.ColumnName_Description + ", "
@@ -818,12 +811,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         , conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                HistoryEntry entry = new HistoryEntry
+                                var entry = new HistoryEntry
                                 {
                                     Id = (int)reader[HistoryEntry.ColumnName_Id],
                                     Name = (string)reader[HistoryEntry.ColumnName_Name],
@@ -848,13 +841,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<HistoryEntry> entries = new List<HistoryEntry>();
+                var entries = new List<HistoryEntry>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    StringBuilder sqlBuilder = new StringBuilder("SELECT "
+                    var sqlBuilder = new StringBuilder("SELECT "
                         + HistoryEntry.ColumnName_Id + ", "
                         + HistoryEntry.ColumnName_Name + ", "
                         + HistoryEntry.ColumnName_Description + ", "
@@ -872,76 +865,76 @@ namespace Wexflow.Core.Db.PostgreSQL
                     {
                         case EntryOrderBy.StatusDateAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDateDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
                             break;
 
                         case EntryOrderBy.WorkflowIdAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
                             break;
 
                         case EntryOrderBy.WorkflowIdDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
                             break;
 
                         case EntryOrderBy.NameAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
                             break;
 
                         case EntryOrderBy.NameDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
                             break;
 
                         case EntryOrderBy.LaunchTypeAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
                             break;
 
                         case EntryOrderBy.LaunchTypeDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
                             break;
 
                         case EntryOrderBy.DescriptionAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
                             break;
 
                         case EntryOrderBy.DescriptionDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
                             break;
 
                         case EntryOrderBy.StatusAscending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDescending:
 
-                            sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
                             break;
                     }
 
-                    sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
+                    _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
 
-                    using (NpgsqlCommand command = new NpgsqlCommand(sqlBuilder.ToString(), conn))
+                    using (var command = new NpgsqlCommand(sqlBuilder.ToString(), conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                HistoryEntry entry = new HistoryEntry
+                                var entry = new HistoryEntry
                                 {
                                     Id = (int)reader[HistoryEntry.ColumnName_Id],
                                     Name = (string)reader[HistoryEntry.ColumnName_Name],
@@ -966,17 +959,17 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT COUNT(*)"
+                    using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
                     {
 
-                        long count = (long)command.ExecuteScalar();
+                        var count = (long)command.ExecuteScalar();
 
                         return count;
                     }
@@ -988,18 +981,18 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT COUNT(*)"
+                    using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
                         + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "'::timestamp AND '" + to.ToString(dateTimeFormat) + "'::timestamp);", conn))
                     {
 
-                        long count = (long)command.ExecuteScalar();
+                        var count = (long)command.ExecuteScalar();
 
                         return count;
                     }
@@ -1011,21 +1004,21 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnName_StatusDate
+                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnName_StatusDate
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " DESC LIMIT 1;", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                DateTime statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
+                                var statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
 
                                 return statusDate;
                             }
@@ -1041,21 +1034,21 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnName_StatusDate
+                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnName_StatusDate
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " ASC LIMIT 1;", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                DateTime statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
+                                var statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
 
                                 return statusDate;
                             }
@@ -1071,22 +1064,22 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + User.ColumnName_Password
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnName_Password
                          + " FROM " + Core.Db.User.DocumentName
                          + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
                          + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                string password = (string)reader[User.ColumnName_Password];
+                                var password = (string)reader[User.ColumnName_Password];
 
                                 return password;
                             }
@@ -1102,11 +1095,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + StatusCount.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + StatusCount.ColumnName_Id + ", "
                         + StatusCount.ColumnName_PendingCount + ", "
                         + StatusCount.ColumnName_RunningCount + ", "
                         + StatusCount.ColumnName_DoneCount + ", "
@@ -1119,12 +1112,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                StatusCount statusCount = new StatusCount
+                                var statusCount = new StatusCount
                                 {
                                     Id = (int)reader[StatusCount.ColumnName_Id],
                                     PendingCount = (int)reader[StatusCount.ColumnName_PendingCount],
@@ -1151,11 +1144,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
                         + User.ColumnName_Email + ", "
@@ -1167,12 +1160,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                User user = new User
+                                var user = new User
                                 {
                                     Id = (int)reader[User.ColumnName_Id],
                                     Username = (string)reader[User.ColumnName_Username],
@@ -1197,11 +1190,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
                         + User.ColumnName_Email + ", "
@@ -1213,12 +1206,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                User user = new User
+                                var user = new User
                                 {
                                     Id = (int)reader[User.ColumnName_Id],
                                     Username = (string)reader[User.ColumnName_Username],
@@ -1243,13 +1236,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<User> users = new List<User>();
+                var users = new List<User>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
                         + User.ColumnName_Email + ", "
@@ -1260,12 +1253,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                User user = new User
+                                var user = new User
                                 {
                                     Id = (int)reader[User.ColumnName_Id],
                                     Username = (string)reader[User.ColumnName_Username],
@@ -1290,13 +1283,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<User> users = new List<User>();
+                var users = new List<User>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnName_Id + ", "
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
                         + User.ColumnName_Email + ", "
@@ -1309,12 +1302,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                User user = new User
+                                var user = new User
                                 {
                                     Id = (int)reader[User.ColumnName_Id],
                                     Username = (string)reader[User.ColumnName_Username],
@@ -1339,13 +1332,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<string> workflowIds = new List<string>();
+                var workflowIds = new List<string>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + UserWorkflow.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + UserWorkflow.ColumnName_Id + ", "
                         + UserWorkflow.ColumnName_UserId + ", "
                         + UserWorkflow.ColumnName_WorkflowId
                         + " FROM " + Core.Db.UserWorkflow.DocumentName
@@ -1353,12 +1346,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                int workflowId = (int)reader[UserWorkflow.ColumnName_WorkflowId];
+                                var workflowId = (int)reader[UserWorkflow.ColumnName_WorkflowId];
 
                                 workflowIds.Add(workflowId.ToString());
                             }
@@ -1374,22 +1367,22 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + Workflow.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + Workflow.ColumnName_Id + ", "
                         + Workflow.ColumnName_Xml
                         + " FROM " + Core.Db.Workflow.DocumentName
                         + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                Workflow workflow = new Workflow
+                                var workflow = new Workflow
                                 {
                                     Id = (int)reader[Workflow.ColumnName_Id],
                                     Xml = (string)reader[Workflow.ColumnName_Xml]
@@ -1409,23 +1402,23 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Core.Db.Workflow> workflows = new List<Core.Db.Workflow>();
+                var workflows = new List<Core.Db.Workflow>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + Workflow.ColumnName_Id + ", "
+                    using (var command = new NpgsqlCommand("SELECT " + Workflow.ColumnName_Id + ", "
                         + Workflow.ColumnName_Xml
                         + " FROM " + Core.Db.Workflow.DocumentName + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                Workflow workflow = new Workflow
+                                var workflow = new Workflow
                                 {
                                     Id = (int)reader[Workflow.ColumnName_Id],
                                     Xml = (string)reader[Workflow.ColumnName_Xml]
@@ -1445,13 +1438,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " + 1;", conn))
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " + 1;", conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1501,13 +1494,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " - 1;", conn))
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " - 1;", conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1527,11 +1520,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.Entry.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Entry.DocumentName + "("
                         + Entry.ColumnName_Name + ", "
                         + Entry.ColumnName_Description + ", "
                         + Entry.ColumnName_LaunchType + ", "
@@ -1551,7 +1544,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1561,11 +1554,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.HistoryEntry.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.HistoryEntry.DocumentName + "("
                          + HistoryEntry.ColumnName_Name + ", "
                          + HistoryEntry.ColumnName_Description + ", "
                          + HistoryEntry.ColumnName_LaunchType + ", "
@@ -1583,7 +1576,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                          , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1593,11 +1586,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.User.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.User.DocumentName + "("
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
                         + User.ColumnName_UserProfile + ", "
@@ -1613,7 +1606,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1623,11 +1616,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.UserWorkflow.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.UserWorkflow.DocumentName + "("
                         + UserWorkflow.ColumnName_UserId + ", "
                         + UserWorkflow.ColumnName_WorkflowId + ") VALUES("
                         + int.Parse(userWorkflow.UserId) + ", "
@@ -1635,7 +1628,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1645,17 +1638,17 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
                         + Workflow.ColumnName_Xml + ") VALUES("
                         + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + ") RETURNING " + Workflow.ColumnName_Id + ";"
                         , conn))
                     {
 
-                        int id = (int)command.ExecuteScalar();
+                        var id = (int)command.ExecuteScalar();
 
                         return id.ToString();
                     }
@@ -1667,11 +1660,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Entry.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Entry.DocumentName + " SET "
                         + Entry.ColumnName_Name + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
                         + Entry.ColumnName_Description + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
                         + Entry.ColumnName_LaunchType + " = " + (int)entry.LaunchType + ", "
@@ -1685,7 +1678,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1695,18 +1688,18 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
                         + User.ColumnName_Password + " = '" + (password ?? "").Replace("'", "''") + "'"
                         + " WHERE "
                         + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "';"
                         , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1716,11 +1709,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
                          + User.ColumnName_Username + " = '" + (user.Username ?? "").Replace("'", "''") + "', "
                          + User.ColumnName_Password + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
                          + User.ColumnName_UserProfile + " = " + (int)user.UserProfile + ", "
@@ -1732,7 +1725,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                          , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1742,11 +1735,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
                         + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "', "
                         + User.ColumnName_UserProfile + " = " + (int)up + ", "
                         + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''") + "', "
@@ -1756,7 +1749,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1766,18 +1759,18 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
                          + Workflow.ColumnName_Xml + " = '" + (workflow.Xml ?? "").Replace("'", "''") + "'"
                          + " WHERE "
                          + User.ColumnName_Id + " = " + int.Parse(dbId) + ";"
                          , conn))
                     {
 
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1787,23 +1780,23 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + Entry.ColumnName_Logs
+                    using (var command = new NpgsqlCommand("SELECT " + Entry.ColumnName_Logs
                          + " FROM " + Core.Db.Entry.DocumentName
                          + " WHERE "
                          + Entry.ColumnName_Id + " = " + int.Parse(entryId) + ";"
                          , conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                string logs = (string)reader[Entry.ColumnName_Logs];
+                                var logs = (string)reader[Entry.ColumnName_Logs];
                                 return logs;
                             }
                         }
@@ -1819,23 +1812,23 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnName_Logs
+                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnName_Logs
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE "
                         + HistoryEntry.ColumnName_Id + " = " + int.Parse(entryId) + ";"
                         , conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             if (reader.Read())
                             {
-                                string logs = (string)reader[HistoryEntry.ColumnName_Logs];
+                                var logs = (string)reader[HistoryEntry.ColumnName_Logs];
                                 return logs;
                             }
                         }
@@ -1851,13 +1844,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<User> users = new List<User>();
+                var users = new List<User>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + User.ColumnName_Id + ", "
                         + User.ColumnName_Username + ", "
                         + User.ColumnName_Password + ", "
@@ -1872,12 +1865,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + ";", conn))
                     {
 
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
 
                             while (reader.Read())
                             {
-                                User admin = new User
+                                var admin = new User
                                 {
                                     Id = (int)reader[User.ColumnName_Id],
                                     Username = (string)reader[User.ColumnName_Username],
@@ -1902,11 +1895,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.Record.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Record.DocumentName + "("
                         + Record.ColumnName_Name + ", "
                         + Record.ColumnName_Description + ", "
                         + Record.ColumnName_Approved + ", "
@@ -1936,7 +1929,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + "RETURNING " + Record.ColumnName_Id + ";"
                         , conn))
                     {
-                        int id = (int)command.ExecuteScalar();
+                        var id = (int)command.ExecuteScalar();
                         return id.ToString();
                     }
                 }
@@ -1947,11 +1940,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Record.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Record.DocumentName + " SET "
                         + Record.ColumnName_Name + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_Description + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_Approved + " = " + (record.Approved ? "TRUE" : "FALSE") + ", "
@@ -1968,7 +1961,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + Record.ColumnName_Id + " = " + int.Parse(recordId) + ";"
                         , conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -1980,30 +1973,23 @@ namespace Wexflow.Core.Db.PostgreSQL
             {
                 if (recordIds.Length > 0)
                 {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                    using (var conn = new NpgsqlConnection(connectionString))
                     {
                         conn.Open();
 
-                        StringBuilder builder = new StringBuilder("(");
+                        var builder = new StringBuilder("(");
 
-                        for (int i = 0; i < recordIds.Length; i++)
+                        for (var i = 0; i < recordIds.Length; i++)
                         {
-                            string id = recordIds[i];
-                            builder.Append(id);
-                            if (i < recordIds.Length - 1)
-                            {
-                                builder.Append(", ");
-                            }
-                            else
-                            {
-                                builder.Append(')');
-                            }
+                            var id = recordIds[i];
+                            _ = builder.Append(id);
+                            _ = i < recordIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                         }
 
-                        using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Record.DocumentName
+                        using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Record.DocumentName
                             + " WHERE " + Record.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
                         {
-                            command.ExecuteNonQuery();
+                            _ = command.ExecuteNonQuery();
                         }
                     }
                 }
@@ -2014,11 +2000,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Record.ColumnName_Id + ", "
                         + Record.ColumnName_Name + ", "
                         + Record.ColumnName_Description + ", "
@@ -2037,11 +2023,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " WHERE " + Record.ColumnName_Id + " = " + int.Parse(id)
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                Record record = new Record
+                                var record = new Record
                                 {
                                     Id = (int)reader[Record.ColumnName_Id],
                                     Name = (string)reader[Record.ColumnName_Name],
@@ -2073,13 +2059,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Record> records = new List<Record>();
+                var records = new List<Record>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Record.ColumnName_Id + ", "
                         + Record.ColumnName_Name + ", "
                         + Record.ColumnName_Description + ", "
@@ -2100,11 +2086,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Record record = new Record
+                                var record = new Record
                                 {
                                     Id = (int)reader[Record.ColumnName_Id],
                                     Name = (string)reader[Record.ColumnName_Name],
@@ -2136,13 +2122,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Record> records = new List<Record>();
+                var records = new List<Record>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Record.ColumnName_Id + ", "
                         + Record.ColumnName_Name + ", "
                         + Record.ColumnName_Description + ", "
@@ -2162,11 +2148,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " ORDER BY " + Record.ColumnName_Name + " ASC"
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Record record = new Record
+                                var record = new Record
                                 {
                                     Id = (int)reader[Record.ColumnName_Id],
                                     Name = (string)reader[Record.ColumnName_Name],
@@ -2198,13 +2184,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Record> records = new List<Record>();
+                var records = new List<Record>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Record.ColumnName_Id + ", "
                         + Record.ColumnName_Name + ", "
                         + Record.ColumnName_Description + ", "
@@ -2226,11 +2212,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Record record = new Record
+                                var record = new Record
                                 {
                                     Id = (int)reader[Record.ColumnName_Id],
                                     Name = (string)reader[Record.ColumnName_Name],
@@ -2262,11 +2248,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.Version.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Version.DocumentName + "("
                         + Version.ColumnName_RecordId + ", "
                         + Version.ColumnName_FilePath + ", "
                         + Version.ColumnName_CreatedOn + ") VALUES("
@@ -2276,7 +2262,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + "RETURNING " + Version.ColumnName_Id + ";"
                         , conn))
                     {
-                        int id = (int)command.ExecuteScalar();
+                        var id = (int)command.ExecuteScalar();
                         return id.ToString();
                     }
                 }
@@ -2287,18 +2273,18 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Version.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Version.DocumentName + " SET "
                         + Version.ColumnName_RecordId + " = " + int.Parse(version.RecordId) + ", "
                         + Version.ColumnName_FilePath + " = '" + (version.FilePath ?? "").Replace("'", "''") + "'"
                         + " WHERE "
                         + Version.ColumnName_Id + " = " + int.Parse(versionId) + ";"
                         , conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2310,30 +2296,23 @@ namespace Wexflow.Core.Db.PostgreSQL
             {
                 if (versionIds.Length > 0)
                 {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                    using (var conn = new NpgsqlConnection(connectionString))
                     {
                         conn.Open();
 
-                        StringBuilder builder = new StringBuilder("(");
+                        var builder = new StringBuilder("(");
 
-                        for (int i = 0; i < versionIds.Length; i++)
+                        for (var i = 0; i < versionIds.Length; i++)
                         {
-                            string id = versionIds[i];
-                            builder.Append(id);
-                            if (i < versionIds.Length - 1)
-                            {
-                                builder.Append(", ");
-                            }
-                            else
-                            {
-                                builder.Append(')');
-                            }
+                            var id = versionIds[i];
+                            _ = builder.Append(id);
+                            _ = i < versionIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                         }
 
-                        using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Version.DocumentName
+                        using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Version.DocumentName
                             + " WHERE " + Version.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
                         {
-                            command.ExecuteNonQuery();
+                            _ = command.ExecuteNonQuery();
                         }
                     }
                 }
@@ -2344,13 +2323,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Version> versions = new List<Version>();
+                var versions = new List<Version>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Version.ColumnName_Id + ", "
                         + Version.ColumnName_RecordId + ", "
                         + Version.ColumnName_FilePath + ", "
@@ -2359,11 +2338,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Version version = new Version
+                                var version = new Version
                                 {
                                     Id = (int)reader[Version.ColumnName_Id],
                                     RecordId = ((int)reader[Version.ColumnName_RecordId]).ToString(),
@@ -2385,11 +2364,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Version.ColumnName_Id + ", "
                         + Version.ColumnName_RecordId + ", "
                         + Version.ColumnName_FilePath + ", "
@@ -2400,11 +2379,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " LIMIT 1"
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                Version version = new Version
+                                var version = new Version
                                 {
                                     Id = (int)reader[Version.ColumnName_Id],
                                     RecordId = ((int)reader[Version.ColumnName_RecordId]).ToString(),
@@ -2426,11 +2405,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.Notification.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Notification.DocumentName + "("
                         + Notification.ColumnName_AssignedBy + ", "
                         + Notification.ColumnName_AssignedOn + ", "
                         + Notification.ColumnName_AssignedTo + ", "
@@ -2444,7 +2423,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + "RETURNING " + Notification.ColumnName_Id + ";"
                         , conn))
                     {
-                        int id = (int)command.ExecuteScalar();
+                        var id = (int)command.ExecuteScalar();
                         return id.ToString();
                     }
                 }
@@ -2455,31 +2434,24 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    StringBuilder builder = new StringBuilder("(");
+                    var builder = new StringBuilder("(");
 
-                    for (int i = 0; i < notificationIds.Length; i++)
+                    for (var i = 0; i < notificationIds.Length; i++)
                     {
-                        string id = notificationIds[i];
-                        builder.Append(id);
-                        if (i < notificationIds.Length - 1)
-                        {
-                            builder.Append(", ");
-                        }
-                        else
-                        {
-                            builder.Append(')');
-                        }
+                        var id = notificationIds[i];
+                        _ = builder.Append(id);
+                        _ = i < notificationIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                     }
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Notification.DocumentName
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Notification.DocumentName
                         + " SET " + Notification.ColumnName_IsRead + " = " + "TRUE"
                         + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2489,31 +2461,24 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    StringBuilder builder = new StringBuilder("(");
+                    var builder = new StringBuilder("(");
 
-                    for (int i = 0; i < notificationIds.Length; i++)
+                    for (var i = 0; i < notificationIds.Length; i++)
                     {
-                        string id = notificationIds[i];
-                        builder.Append(id);
-                        if (i < notificationIds.Length - 1)
-                        {
-                            builder.Append(", ");
-                        }
-                        else
-                        {
-                            builder.Append(')');
-                        }
+                        var id = notificationIds[i];
+                        _ = builder.Append(id);
+                        _ = i < notificationIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                     }
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Notification.DocumentName
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Notification.DocumentName
                         + " SET " + Notification.ColumnName_IsRead + " = " + "FALSE"
                         + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2525,30 +2490,23 @@ namespace Wexflow.Core.Db.PostgreSQL
             {
                 if (notificationIds.Length > 0)
                 {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                    using (var conn = new NpgsqlConnection(connectionString))
                     {
                         conn.Open();
 
-                        StringBuilder builder = new StringBuilder("(");
+                        var builder = new StringBuilder("(");
 
-                        for (int i = 0; i < notificationIds.Length; i++)
+                        for (var i = 0; i < notificationIds.Length; i++)
                         {
-                            string id = notificationIds[i];
-                            builder.Append(id);
-                            if (i < notificationIds.Length - 1)
-                            {
-                                builder.Append(", ");
-                            }
-                            else
-                            {
-                                builder.Append(')');
-                            }
+                            var id = notificationIds[i];
+                            _ = builder.Append(id);
+                            _ = i < notificationIds.Length - 1 ? builder.Append(", ") : builder.Append(')');
                         }
 
-                        using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Notification.DocumentName
+                        using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Notification.DocumentName
                             + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
                         {
-                            command.ExecuteNonQuery();
+                            _ = command.ExecuteNonQuery();
                         }
                     }
                 }
@@ -2559,13 +2517,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Notification> notifications = new List<Notification>();
+                var notifications = new List<Notification>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Notification.ColumnName_Id + ", "
                         + Notification.ColumnName_AssignedBy + ", "
                         + Notification.ColumnName_AssignedOn + ", "
@@ -2578,11 +2536,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " ORDER BY " + Notification.ColumnName_AssignedOn + " DESC"
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Notification notification = new Notification
+                                var notification = new Notification
                                 {
                                     Id = (int)reader[Notification.ColumnName_Id],
                                     AssignedBy = ((int)reader[Notification.ColumnName_AssignedBy]).ToString(),
@@ -2606,18 +2564,18 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT COUNT(*)"
+                    using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.Notification.DocumentName
                         + " WHERE (" + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo)
                         + " AND " + Notification.ColumnName_IsRead + " = " + "FALSE" + ")"
                         + ";", conn))
                     {
-                        long count = (long)command.ExecuteScalar();
-                        bool hasNotifications = count > 0;
+                        var count = (long)command.ExecuteScalar();
+                        var hasNotifications = count > 0;
                         return hasNotifications;
                     }
                 }
@@ -2628,11 +2586,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("INSERT INTO " + Core.Db.Approver.DocumentName + "("
+                    using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Approver.DocumentName + "("
                         + Approver.ColumnName_UserId + ", "
                         + Approver.ColumnName_RecordId + ", "
                         + Approver.ColumnName_Approved + ", "
@@ -2644,7 +2602,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + "RETURNING " + Approver.ColumnName_Id + ";"
                         , conn))
                     {
-                        int id = (int)command.ExecuteScalar();
+                        var id = (int)command.ExecuteScalar();
                         return id.ToString();
                     }
                 }
@@ -2655,11 +2613,11 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("UPDATE " + Core.Db.Approver.DocumentName + " SET "
+                    using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Approver.DocumentName + " SET "
                         + Approver.ColumnName_UserId + " = " + int.Parse(approver.UserId) + ", "
                         + Approver.ColumnName_RecordId + " = " + int.Parse(approver.RecordId) + ", "
                         + Approver.ColumnName_Approved + " = " + (approver.Approved ? "TRUE" : "FALSE") + ", "
@@ -2668,7 +2626,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + Approver.ColumnName_Id + " = " + int.Parse(approverId) + ";"
                         , conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2678,14 +2636,14 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
                         + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId) + ";", conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2695,17 +2653,17 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
                         + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
                         + " AND " + Approver.ColumnName_Approved + " = " + "TRUE"
                         + ";"
                         , conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2715,14 +2673,14 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
+                    using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
                         + " WHERE " + Approver.ColumnName_UserId + " = " + int.Parse(userId) + ";", conn))
                     {
-                        command.ExecuteNonQuery();
+                        _ = command.ExecuteNonQuery();
                     }
                 }
             }
@@ -2732,13 +2690,13 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (padlock)
             {
-                List<Approver> approvers = new List<Approver>();
+                var approvers = new List<Approver>();
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("SELECT "
+                    using (var command = new NpgsqlCommand("SELECT "
                         + Approver.ColumnName_Id + ", "
                         + Approver.ColumnName_UserId + ", "
                         + Approver.ColumnName_RecordId + ", "
@@ -2748,11 +2706,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                         + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
                         + ";", conn))
                     {
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Approver approver = new Approver
+                                var approver = new Approver
                                 {
                                     Id = (int)reader[Approver.ColumnName_Id],
                                     UserId = ((int)reader[Approver.ColumnName_UserId]).ToString(),

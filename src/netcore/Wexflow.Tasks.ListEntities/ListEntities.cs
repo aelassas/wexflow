@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Wexflow.Core;
 
 namespace Wexflow.Tasks.ListEntities
@@ -15,9 +14,9 @@ namespace Wexflow.Tasks.ListEntities
         {
             Info("Listing entities...");
 
-            foreach (List<Entity> entities in Workflow.EntitiesPerTask.Values)
+            foreach (var entities in Workflow.EntitiesPerTask.Values)
             {
-                foreach (Entity entity in entities)
+                foreach (var entity in entities)
                 {
                     InfoFormat("{{taskId: {0}, entity: {1}}}", entity.TaskId, entity);
                 }

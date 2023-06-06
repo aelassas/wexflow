@@ -26,17 +26,17 @@ namespace Wexflow.Tests
         [TestMethod]
         public void GuidTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(68);
+            _ = Helper.StartWorkflow(68);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            XDocument xdoc = XDocument.Load(files[0]);
-            System.Collections.Generic.List<XElement> xguids = xdoc.Descendants("Guid").ToList();
+            var xdoc = XDocument.Load(files[0]);
+            var xguids = xdoc.Descendants("Guid").ToList();
             Assert.AreEqual(3, xguids.Count);
-            string regexPattern = @"^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$";
+            var regexPattern = @"^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$";
 
-            foreach (XElement xguid in xguids)
+            foreach (var xguid in xguids)
             {
                 Assert.IsTrue(Regex.IsMatch(xguid.Value, regexPattern));
             }

@@ -12,8 +12,15 @@ namespace Wexflow.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            if (Directory.Exists(Folder1)) Directory.Delete(Folder1);
-            if (Directory.Exists(Folder2)) Directory.Delete(Folder2);
+            if (Directory.Exists(Folder1))
+            {
+                Directory.Delete(Folder1);
+            }
+
+            if (Directory.Exists(Folder2))
+            {
+                Directory.Delete(Folder2);
+            }
         }
 
         [TestCleanup]
@@ -28,7 +35,7 @@ namespace Wexflow.Tests
         {
             Assert.AreEqual(false, Directory.Exists(Folder1));
             Assert.AreEqual(false, Directory.Exists(Folder2));
-            Helper.StartWorkflow(11);
+            _ = Helper.StartWorkflow(11);
             Assert.AreEqual(true, Directory.Exists(Folder1));
             Assert.AreEqual(true, Directory.Exists(Folder2));
         }

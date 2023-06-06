@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.FilesSplitter
         {
             Info("Splitting files into chunks...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             try
             {
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.FilesSplitter
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -71,25 +71,25 @@ namespace Wexflow.Tasks.FilesSplitter
 
         private bool SplitFiles(ref bool atLeastOneSucceed)
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
+            var success = true;
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
-                        int index = 0;
+                        var index = 0;
 
                         const int bufferSize = 20 * 1024;
-                        byte[] buffer = new byte[bufferSize];
+                        var buffer = new byte[bufferSize];
 
                         using (Stream input = File.OpenRead(file.Path))
                         {
                             while (input.Position < input.Length)
                             {
-                                string chunkPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName + "_" + (index + 1));
+                                var chunkPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName + "_" + (index + 1));
                                 using (Stream output = File.Create(chunkPath))
                                 {
                                     int remaining = ChunkSize, bytesRead;
@@ -107,7 +107,10 @@ namespace Wexflow.Tasks.FilesSplitter
 
                         InfoFormat("The file {0} was splitted into {1} chunks.", file.Path, index + 1);
 
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {

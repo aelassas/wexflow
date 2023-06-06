@@ -21,8 +21,8 @@ namespace Wexflow.Tasks.CsvToXml
         {
             Info("Creating XML files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.CsvToXml
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -65,17 +65,20 @@ namespace Wexflow.Tasks.CsvToXml
 
         private bool CreateXmls(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            foreach (FileInf file in SelectFiles())
+            var success = true;
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateXml(file.Path, xmlPath);
                     Files.Add(new FileInf(xmlPath, Id));
                     InfoFormat("XML file {0} created from {1}", xmlPath, file.Path);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -92,16 +95,23 @@ namespace Wexflow.Tasks.CsvToXml
 
         private void CreateXml(string csvPath, string xmlPath)
         {
-            XDocument xdoc = new XDocument(new XElement("Lines"));
+            var xdoc = new XDocument(new XElement("Lines"));
 
-            foreach (string line in File.ReadAllLines(csvPath))
+            foreach (var line in File.ReadAllLines(csvPath))
             {
-                XElement xLine = new XElement("Line");
-                foreach (string col in line.Split(';'))
+                var xLine = new XElement("Line");
+                foreach (var col in line.Split(';'))
                 {
-                    if (!string.IsNullOrEmpty(col)) xLine.Add(new XElement("Column", col));
+                    if (!string.IsNullOrEmpty(col))
+                    {
+                        xLine.Add(new XElement("Column", col));
+                    }
                 }
-                if (xdoc.Root == null) throw new Exception("No root node found.");
+                if (xdoc.Root == null)
+                {
+                    throw new Exception("No root node found.");
+                }
+
                 xdoc.Root.Add(xLine);
             }
 

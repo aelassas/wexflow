@@ -19,13 +19,13 @@ namespace Wexflow.Tests
         [TestMethod]
         public void FileContentMatchTest()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Helper.StartWorkflow(123);
+            var stopwatch = Stopwatch.StartNew();
+            _ = Helper.StartWorkflow(123);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            Helper.StartWorkflow(124);
+            _ = Helper.StartWorkflow(124);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

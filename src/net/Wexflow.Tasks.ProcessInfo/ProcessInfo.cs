@@ -22,15 +22,15 @@ namespace Wexflow.Tasks.ProcessInfo
             {
                 Info("Generating process information...");
 
-                Process[] processes = Process.GetProcessesByName(ProcessName);
+                var processes = Process.GetProcessesByName(ProcessName);
 
-                string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("ProcessInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
-                XElement xprocesses = new XElement("Processes");
-                foreach (Process process in processes)
+                var xprocesses = new XElement("Processes");
+                foreach (var process in processes)
                 {
-                    XElement xprocess = new XElement("Process"
+                    var xprocess = new XElement("Process"
                         , new XAttribute("id", process.Id)
                         , new XAttribute("processName", process.ProcessName)
                         , new XAttribute("fileName", process.MainModule.FileName)
@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.ProcessInfo
                     xprocesses.Add(xprocess);
                 }
 
-                XDocument xdoc = new XDocument(xprocesses);
+                var xdoc = new XDocument(xprocesses);
                 xdoc.Save(destPath);
                 Files.Add(new FileInf(destPath, Id));
                 Info("Task finished.");

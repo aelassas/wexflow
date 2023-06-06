@@ -27,17 +27,17 @@ namespace Wexflow.Tasks.Twitter
         {
             Info("Sending tweets...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
 
             TwitterClient client;
             if (files.Length > 0)
             {
                 try
                 {
-                    TwitterCredentials credentials = new TwitterCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
+                    var credentials = new TwitterCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
                     client = new TwitterClient(credentials);
 
                     //TweetinviConfig.ApplicationSettings.HttpRequestTimeout = 20000;
@@ -66,24 +66,27 @@ namespace Wexflow.Tasks.Twitter
                     return new TaskStatus(Status.Error);
                 }
 
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
-                        XDocument xdoc = XDocument.Load(file.Path);
-                        foreach (XElement xTweet in xdoc.XPathSelectElements("Tweets/Tweet"))
+                        var xdoc = XDocument.Load(file.Path);
+                        foreach (var xTweet in xdoc.XPathSelectElements("Tweets/Tweet"))
                         {
-                            string status = xTweet.Value;
+                            var status = xTweet.Value;
                             //var tweet = Tweet.PublishTweet(status);
-                            System.Threading.Tasks.Task<ITweet> tweetTask = client.Tweets.PublishTweetAsync(status);
+                            var tweetTask = client.Tweets.PublishTweetAsync(status);
                             tweetTask.Wait();
-                            ITweet tweet = tweetTask.Result;
+                            var tweet = tweetTask.Result;
 
                             if (tweet != null)
                             {
                                 InfoFormat("Tweet '{0}' sent. Id: {1}", status, tweet.Id);
 
-                                if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                                if (!atLeastOneSucceed)
+                                {
+                                    atLeastOneSucceed = true;
+                                }
                             }
                             else
                             {
@@ -105,7 +108,7 @@ namespace Wexflow.Tasks.Twitter
                 }
             }
 
-            Status tstatus = Status.Success;
+            var tstatus = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

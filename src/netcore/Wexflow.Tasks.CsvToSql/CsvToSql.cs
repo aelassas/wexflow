@@ -23,19 +23,22 @@ namespace Wexflow.Tasks.CsvToSql
         {
             Info("Converting CSV to SQL...");
 
-            bool succeeded = true;
-            bool atLeastOneSucceed = false;
+            var succeeded = true;
+            var atLeastOneSucceed = false;
 
             try
             {
-                FileInf[] csvFiles = SelectFiles();
+                var csvFiles = SelectFiles();
 
-                foreach (FileInf csvFile in csvFiles)
+                foreach (var csvFile in csvFiles)
                 {
-                    string sqlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var sqlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.sql", Path.GetFileNameWithoutExtension(csvFile.FileName), DateTime.Now));
                     succeeded &= ConvertCsvToSql(csvFile.Path, sqlPath, TableName, Separator);
-                    if (succeeded && !atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (succeeded && !atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
 
             }
@@ -49,7 +52,7 @@ namespace Wexflow.Tasks.CsvToSql
                 return new TaskStatus(Status.Error);
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!succeeded && atLeastOneSucceed)
             {
@@ -70,24 +73,24 @@ namespace Wexflow.Tasks.CsvToSql
             {
                 using StreamReader sr = new(csvPath);
                 using StreamWriter sw = new(sqlPath);
-                string columnsLine = sr.ReadLine(); // First line contains columns
+                var columnsLine = sr.ReadLine(); // First line contains columns
                 string line;
                 while (!string.IsNullOrEmpty(line = sr.ReadLine()))
                 {
                     sw.Write("INSERT INTO " + tableName + "(" + columnsLine.Replace(separator, ",").TrimEnd(',') + ")" + " VALUES ");
                     sw.Write("(");
-                    string[] values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string value in values)
+                    var values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var value in values)
                     {
-                        if (int.TryParse(value, out int i))
+                        if (int.TryParse(value, out var i))
                         {
                             sw.Write(i);
                         }
-                        else if (double.TryParse(value, out double d))
+                        else if (double.TryParse(value, out var d))
                         {
                             sw.Write(d);
                         }
-                        else if (float.TryParse(value, out float f))
+                        else if (float.TryParse(value, out var f))
                         {
                             sw.Write(f);
                         }

@@ -17,18 +17,18 @@ namespace Wexflow.Tasks.FilesInfo
         {
             Info("Generating files informations...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
-            FileInf[] files = SelectFiles();
+            var files = SelectFiles();
 
             if (files.Length > 0)
             {
-                string filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format("FilesInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
 
                 XDocument xdoc = new(new XElement("Files"));
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
@@ -50,7 +50,7 @@ namespace Wexflow.Tasks.FilesInfo
                                 new XAttribute("attributes", fileInfo.Attributes)
                                 );
 
-                            foreach (Tag tag in file.Tags)
+                            foreach (var tag in file.Tags)
                             {
                                 xfile.SetAttributeValue(tag.Key, tag.Value);
                             }
@@ -59,7 +59,10 @@ namespace Wexflow.Tasks.FilesInfo
                         }
                         InfoFormat("File information of the file {0} generated.", file.Path);
 
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -75,7 +78,7 @@ namespace Wexflow.Tasks.FilesInfo
                 Files.Add(new FileInf(filesInfoPath, Id));
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {

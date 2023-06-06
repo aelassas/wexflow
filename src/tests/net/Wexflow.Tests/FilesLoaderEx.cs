@@ -103,8 +103,12 @@ namespace Wexflow.Tests
 
         public void TestInitialize(int workflowId)
         {
-            string tempFolder = Path.Combine(Helper.TempFolder, workflowId.ToString());
-            if (!Directory.Exists(tempFolder)) Directory.CreateDirectory(tempFolder);
+            var tempFolder = Path.Combine(Helper.TempFolder, workflowId.ToString());
+            if (!Directory.Exists(tempFolder))
+            {
+                _ = Directory.CreateDirectory(tempFolder);
+            }
+
             Helper.DeleteFilesAndFolders(tempFolder);
         }
 
@@ -116,41 +120,65 @@ namespace Wexflow.Tests
         public void Execute(int workflowId, string expectedResult)
         {
             TestInitialize(workflowId);
-            Helper.StartWorkflow(workflowId);
+            _ = Helper.StartWorkflow(workflowId);
 
             // Check the workflow result
-            string[] files = Directory.GetFiles(
+            var files = Directory.GetFiles(
                 Path.Combine(Helper.TempFolder, workflowId.ToString()),
                 "ListFiles*.xml",
                 SearchOption.AllDirectories);
             Assert.AreEqual(1, files.Length);
 
-            string content = File.ReadAllText(files[0]);
+            var content = File.ReadAllText(files[0]);
             Assert.AreEqual(expectedResult, content);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_132AddMaxCreateDate() => Execute(132, ExpectedResult138AddMaxCreateDate);
+        public void FilesLoaderExTest_132AddMaxCreateDate()
+        {
+            Execute(132, ExpectedResult138AddMaxCreateDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_133AddMinCreateDate() => Execute(133, ExpectedResult139AddMinCreateDate);
+        public void FilesLoaderExTest_133AddMinCreateDate()
+        {
+            Execute(133, ExpectedResult139AddMinCreateDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_134AddMaxModifyDate() => Execute(134, ExpectedResult140AddMaxModifyDate);
+        public void FilesLoaderExTest_134AddMaxModifyDate()
+        {
+            Execute(134, ExpectedResult140AddMaxModifyDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_135AddMinModifyDate() => Execute(135, ExpectedResult141AddMinModifyDate);
+        public void FilesLoaderExTest_135AddMinModifyDate()
+        {
+            Execute(135, ExpectedResult141AddMinModifyDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_136RemoveMaxCreateDate() => Execute(136, ExpectedResult142RemoveMaxCreateDate);
+        public void FilesLoaderExTest_136RemoveMaxCreateDate()
+        {
+            Execute(136, ExpectedResult142RemoveMaxCreateDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_137RemoveMinCreateDate() => Execute(137, ExpectedResult143RemoveMinCreateDate);
+        public void FilesLoaderExTest_137RemoveMinCreateDate()
+        {
+            Execute(137, ExpectedResult143RemoveMinCreateDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_138RemoveMaxModifyDate() => Execute(138, ExpectedResult144RemoveMaxModifyDate);
+        public void FilesLoaderExTest_138RemoveMaxModifyDate()
+        {
+            Execute(138, ExpectedResult144RemoveMaxModifyDate);
+        }
 
         [TestMethod]
-        public void FilesLoaderExTest_139RemoveMinModifyDate() => Execute(139, ExpectedResult145RemoveMinModifyDate);
+        public void FilesLoaderExTest_139RemoveMinModifyDate()
+        {
+            Execute(139, ExpectedResult145RemoveMinModifyDate);
+        }
     }
 }

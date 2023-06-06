@@ -30,8 +30,8 @@ namespace Wexflow.Tasks.XmlToCsv
         {
             Info("Creating csv files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.XmlToCsv
             }
 
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -75,19 +75,22 @@ namespace Wexflow.Tasks.XmlToCsv
 
         private bool CreateCsvs(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
 
-            foreach (FileInf file in SelectFiles())
+            foreach (var file in SelectFiles())
             {
                 try
                 {
-                    string csvPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
                         string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.csv", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
                     Files.Add(new FileInf(csvPath, Id));
 
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -105,13 +108,13 @@ namespace Wexflow.Tasks.XmlToCsv
 
         private void CreateCsv(string xmlPath, string csvPath)
         {
-            XDocument xdoc = XDocument.Load(xmlPath);
+            var xdoc = XDocument.Load(xmlPath);
 
-            using (StreamWriter sw = new StreamWriter(csvPath))
+            using (var sw = new StreamWriter(csvPath))
             {
-                foreach (XElement xLine in xdoc.XPathSelectElements("Lines/Line"))
+                foreach (var xLine in xdoc.XPathSelectElements("Lines/Line"))
                 {
-                    foreach (XElement xColumn in xLine.XPathSelectElements("Column"))
+                    foreach (var xColumn in xLine.XPathSelectElements("Column"))
                     {
                         sw.Write(string.Concat(Quote, xColumn.Value, Quote, Separator));
                     }

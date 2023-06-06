@@ -2,10 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace System.IO
+namespace Wexflow.Core.PollingFileSystemWatcher
 {
     // this is a quick an dirty hashtable optimized for the PollingFileSystemWatcher
     // It allows mutating struct values (FileState) contained in the hashtable
@@ -14,7 +15,7 @@ namespace System.IO
     [Serializable]
     internal class PathToFileStateHashtable
     {
-        int _nextValuesIndex = 1; // the first Values slot is reserved so that default(Bucket) knows that it is not pointing to any value.
+        private int _nextValuesIndex = 1; // the first Values slot is reserved so that default(Bucket) knows that it is not pointing to any value.
         public FileState[] Values { get; private set; }
         private Bucket[] Buckets;
 
@@ -38,7 +39,7 @@ namespace System.IO
             }
 
             Values[_nextValuesIndex] = value;
-            int bucket = ComputeBucket(file);
+            var bucket = ComputeBucket(file);
 
             while (true)
             {
@@ -55,7 +56,7 @@ namespace System.IO
 
         public void Remove(string directory, string file)
         {
-            int index = IndexOf(directory, file);
+            var index = IndexOf(directory, file);
             Debug.Assert(index != -1, "this should never happen");
 
             Values[index].Path = null;
@@ -65,10 +66,10 @@ namespace System.IO
 
         public int IndexOf(string directory, ReadOnlySpan<char> file)
         {
-            int bucket = ComputeBucket(file);
+            var bucket = ComputeBucket(file);
             while (true)
             {
-                int valueIndex = Buckets[bucket].ValuesIndex;
+                var valueIndex = Buckets[bucket].ValuesIndex;
                 if (valueIndex == 0)
                 {
                     return -1; // not found
@@ -76,7 +77,10 @@ namespace System.IO
 
                 if (Equal(Buckets[bucket].Key, directory, file))
                 {
-                    if (Values[valueIndex].Path != null) return valueIndex;
+                    if (Values[valueIndex].Path != null)
+                    {
+                        return valueIndex;
+                    }
                 }
                 bucket = NextCandidateBucket(bucket);
             }
@@ -96,47 +100,53 @@ namespace System.IO
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe bool Equal(FullPath fullPath, string directory, ReadOnlySpan<char> file)
         {
-            return String.Equals(fullPath.Directory, directory, StringComparison.Ordinal)
+            return string.Equals(fullPath.Directory, directory, StringComparison.Ordinal)
 && file.Equals((ReadOnlySpan<char>)fullPath.File, StringComparison.Ordinal);
         }
 
         private static unsafe int GetHashCode(ReadOnlySpan<char> path)
         {
-            int code = 0;
-            for (int index = 0; index < path.Length; index++)
+            var code = 0;
+            for (var index = 0; index < path.Length; index++)
             {
-                char next = path[index];
+                var next = path[index];
                 code |= next;
                 code <<= 8;
-                if (index > 8) break;
+                if (index > 8)
+                {
+                    break;
+                }
             }
             return code;
         }
 
         private int ComputeBucket(ReadOnlySpan<char> file)
         {
-            int hash = GetHashCode(file);
-            if (hash == Int32.MinValue) hash = Int32.MaxValue;
+            var hash = GetHashCode(file);
+            if (hash == int.MinValue)
+            {
+                hash = int.MaxValue;
+            }
 
-            int bucket = Math.Abs(hash) % Buckets.Length;
+            var bucket = Math.Abs(hash) % Buckets.Length;
             return bucket;
         }
 
         private void Resize()
         {
             // this is because sometimes we just need to garbade collect instead of increase size
-            int newSize = Math.Max(Count * 2, 4);
+            var newSize = Math.Max(Count * 2, 4);
 
             PathToFileStateHashtable bigger = new(newSize);
 
-            foreach (FileState existingValue in this)
+            foreach (var existingValue in this)
             {
                 bigger.Add(existingValue.Directory, existingValue.Path, existingValue);
             }
             Values = bigger.Values;
             Buckets = bigger.Buckets;
-            this._nextValuesIndex = bigger._nextValuesIndex;
-            this.Count = bigger.Count;
+            _nextValuesIndex = bigger._nextValuesIndex;
+            Count = bigger.Count;
         }
 
         private static readonly int[] primes = {
@@ -150,11 +160,13 @@ namespace System.IO
         {
             if ((candidate & 1) != 0)
             {
-                int limit = (int)Math.Sqrt(candidate);
-                for (int divisor = 3; divisor <= limit; divisor += 2)
+                var limit = (int)Math.Sqrt(candidate);
+                for (var divisor = 3; divisor <= limit; divisor += 2)
                 {
-                    if ((candidate % divisor) == 0)
+                    if (candidate % divisor == 0)
+                    {
                         return false;
+                    }
                 }
                 return true;
             }
@@ -163,18 +175,23 @@ namespace System.IO
 
         private static int GetPrime(int min)
         {
-            for (int i = 0; i < primes.Length; i++)
+            for (var i = 0; i < primes.Length; i++)
             {
-                int prime = primes[i];
-                if (prime >= min) return prime;
+                var prime = primes[i];
+                if (prime >= min)
+                {
+                    return prime;
+                }
             }
 
             //outside of our predefined table. 
             //compute the hard way. 
-            for (int i = min | 1; i < Int32.MaxValue; i += 2)
+            for (var i = min | 1; i < int.MaxValue; i += 2)
             {
                 if (IsPrime(i))
+                {
                     return i;
+                }
             }
             return min;
         }
@@ -186,8 +203,8 @@ namespace System.IO
 
         public struct Enumerator
         {
-            readonly PathToFileStateHashtable _table;
-            int _index;
+            private readonly PathToFileStateHashtable _table;
+            private int _index;
 
             public Enumerator(PathToFileStateHashtable table)
             {
@@ -207,10 +224,7 @@ namespace System.IO
                 return true;
             }
 
-            public readonly FileState Current
-            {
-                get { return _table.Values[_index]; }
-            }
+            public readonly FileState Current => _table.Values[_index];
         }
 
         public override string ToString()
@@ -219,7 +233,7 @@ namespace System.IO
         }
 
         [Serializable]
-        struct Bucket
+        private struct Bucket
         {
             public FullPath Key;
             public int ValuesIndex;
@@ -230,7 +244,7 @@ namespace System.IO
                 Key.File = file;
                 ValuesIndex = valueIndex;
             }
-            public readonly bool IsEmpty { get { return ValuesIndex == 0; } }
+            public readonly bool IsEmpty => ValuesIndex == 0;
 
             public override readonly string ToString()
             {
@@ -239,7 +253,7 @@ namespace System.IO
         }
 
         [Serializable]
-        struct FullPath
+        private struct FullPath
         {
             public string Directory;
             public string File;

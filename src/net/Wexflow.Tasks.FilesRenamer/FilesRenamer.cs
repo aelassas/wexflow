@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.FilesRenamer
         {
             Info("Renaming files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.FilesRenamer
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -72,15 +72,15 @@ namespace Wexflow.Tasks.FilesRenamer
 
         private bool RenameFiles(ref bool atLeastOneSucceed)
         {
-            bool success = true;
-            foreach (FileInf file in SelectFiles())
+            var success = true;
+            foreach (var file in SelectFiles())
             {
                 try
                 {
                     if (!string.IsNullOrEmpty(file.RenameTo))
                     {
-                        string dirName = Path.GetDirectoryName(file.Path) ?? throw new Exception("File directory is null");
-                        string destPath = Path.Combine(dirName, file.RenameTo);
+                        var dirName = Path.GetDirectoryName(file.Path) ?? throw new Exception("File directory is null");
+                        var destPath = Path.Combine(dirName, file.RenameTo);
 
                         if (File.Exists(destPath))
                         {
@@ -108,7 +108,11 @@ namespace Wexflow.Tasks.FilesRenamer
                         InfoFormat("File {0} renamed to {1}", file.Path, file.RenameTo);
                         file.Path = destPath;
                         file.RenameTo = string.Empty;
-                        if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                        if (!atLeastOneSucceed)
+                        {
+                            atLeastOneSucceed = true;
+                        }
+
                         Files.Add(new FileInf(destPath, file.TaskId));
                     }
                 }

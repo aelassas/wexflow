@@ -19,13 +19,13 @@ namespace Wexflow.Tests
         [TestMethod]
         public void StopTest()
         {
-            int workflowId = 41;
-            System.Guid instanceId = Helper.StartWorkflowAsync(workflowId);
+            var workflowId = 41;
+            var instanceId = Helper.StartWorkflowAsync(workflowId);
 
             try
             {
                 Thread.Sleep(500);
-                Core.Workflow workflow = Helper.GetWorkflow(workflowId);
+                var workflow = Helper.GetWorkflow(workflowId);
                 Assert.IsTrue(workflow.IsRunning);
                 Helper.StopWorkflow(workflowId, instanceId);
                 Thread.Sleep(500);

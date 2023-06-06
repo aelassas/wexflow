@@ -27,13 +27,13 @@ namespace Wexflow.NetCore.Tests
         [TestMethod]
         public void ProcessInfoTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(63);
+            _ = Helper.StartWorkflow(63);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
-            XDocument xdoc = XDocument.Load(files[0]);
-            int count = xdoc.Descendants("Process").Count();
+            var xdoc = XDocument.Load(files[0]);
+            var count = xdoc.Descendants("Process").Count();
             Assert.AreEqual(1, count);
         }
 

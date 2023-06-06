@@ -18,7 +18,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void TwitterTest()
         {
-            Helper.StartWorkflow(16);
+            _ = Helper.StartWorkflow(16);
             // TODO
         }
     }

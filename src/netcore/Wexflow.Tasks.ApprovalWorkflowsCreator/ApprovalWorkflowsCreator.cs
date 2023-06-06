@@ -27,8 +27,8 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
         {
             Info("Creating and starting approval workflows for records...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -40,17 +40,17 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                 }
                 else
                 {
-                    string[] recordIds = (string[])SharedMemory[smKey];
+                    var recordIds = (string[])SharedMemory[smKey];
 
-                    foreach (string recordId in recordIds)
+                    foreach (var recordId in recordIds)
                     {
                         try
                         {
-                            Core.Db.Record record = Workflow.Database.GetRecord(recordId);
-                            int workflowId = Workflow.WexflowEngine.Workflows.Select(w => w.Id).Max() + 1;
-                            string workflowName = $"Workflow_ApproveRecord_{SecurityElement.Escape(Approver)}_{SecurityElement.Escape(record.Name)}";
+                            var record = Workflow.Database.GetRecord(recordId);
+                            var workflowId = Workflow.WexflowEngine.Workflows.Select(w => w.Id).Max() + 1;
+                            var workflowName = $"Workflow_ApproveRecord_{SecurityElement.Escape(Approver)}_{SecurityElement.Escape(record.Name)}";
 
-                            string xml = $"<Workflow xmlns='urn:wexflow-schema' id='{workflowId}' name='{workflowName}' description='{workflowName}'>\r\n"
+                            var xml = $"<Workflow xmlns='urn:wexflow-schema' id='{workflowId}' name='{workflowName}' description='{workflowName}'>\r\n"
                                     + "	 <Settings>\r\n"
                                     + "    <Setting name='launchType' value='trigger' />\r\n"
                                     + "    <Setting name='enabled' value='true' />\r\n"
@@ -67,23 +67,23 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                     + "  </Tasks>\r\n"
                                     + "</Workflow>\r\n";
 
-                            Core.Db.User approver = Workflow.WexflowEngine.GetUser(Approver);
-                            string workflowDbId = Workflow.WexflowEngine.SaveWorkflow(approver.GetDbId(), approver.UserProfile, xml, false);
+                            var approver = Workflow.WexflowEngine.GetUser(Approver);
+                            var workflowDbId = Workflow.WexflowEngine.SaveWorkflow(approver.GetDbId(), approver.UserProfile, xml, false);
 
                             if (workflowDbId != "-1")
                             {
-                                Workflow workflow = Workflow.WexflowEngine.GetWorkflow(workflowId);
+                                var workflow = Workflow.WexflowEngine.GetWorkflow(workflowId);
 
                                 if (Workflow.WexflowEngine.EnableWorkflowsHotFolder)
                                 {
-                                    string filePath = Path.Combine(Workflow.WexflowEngine.WorkflowsFolder, "Workflow_" + workflowId + ".xml");
-                                    XDocument xdoc = XDocument.Parse(xml);
+                                    var filePath = Path.Combine(Workflow.WexflowEngine.WorkflowsFolder, "Workflow_" + workflowId + ".xml");
+                                    var xdoc = XDocument.Parse(xml);
                                     xdoc.Save(filePath);
                                     Thread.Sleep(5 * 1000); // Wait until the workflow get reloaded in the system
                                     workflow = Workflow.WexflowEngine.GetWorkflow(workflowId); // Reload the workflow
                                 }
 
-                                workflow.StartAsync(Approver);
+                                _ = workflow.StartAsync(Approver);
                                 Info($"Approval Workflow of the record {recordId} - {record.Name} created and started successfully.");
                                 if (!atLeastOneSuccess)
                                 {
@@ -118,7 +118,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {

@@ -8,7 +8,7 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesJoiner
 {
-    class GroupedFile
+    internal class GroupedFile
     {
         public string FileName { get; set; }
         public List<FileInf> Files { get; set; }
@@ -35,19 +35,27 @@ namespace Wexflow.Tasks.FilesJoiner
 
         private int GetNumberPartInt(string path)
         {
-            int lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
-            if (lastUnderscoreIndex == -1) return -1;
-            string substring = path.Substring(lastUnderscoreIndex + 1, path.Length - lastUnderscoreIndex - 1);
-            int part = int.TryParse(substring, out int result) ? result : -1;
+            var lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
+            if (lastUnderscoreIndex == -1)
+            {
+                return -1;
+            }
+
+            var substring = path.Substring(lastUnderscoreIndex + 1, path.Length - lastUnderscoreIndex - 1);
+            var part = int.TryParse(substring, out var result) ? result : -1;
             return part == -1 ? (-1) : part;
         }
 
         private string GetNumberPartString(string path)
         {
-            int lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
-            if (lastUnderscoreIndex == -1) return path;
-            string substring = path.Substring(lastUnderscoreIndex + 1, path.Length - lastUnderscoreIndex - 1);
-            int part = int.TryParse(substring, out int result) ? result : -1;
+            var lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
+            if (lastUnderscoreIndex == -1)
+            {
+                return path;
+            }
+
+            var substring = path.Substring(lastUnderscoreIndex + 1, path.Length - lastUnderscoreIndex - 1);
+            var part = int.TryParse(substring, out var result) ? result : -1;
             return part == -1 ? path : path.Remove(lastUnderscoreIndex);
         }
 
@@ -55,8 +63,8 @@ namespace Wexflow.Tasks.FilesJoiner
         {
             var files = SelectFiles().Select(f =>
             {
-                int infoInt = GetNumberPartInt(f.Path);
-                string infoString = GetNumberPartString(f.Path);
+                var infoInt = GetNumberPartInt(f.Path);
+                var infoString = GetNumberPartString(f.Path);
                 return new
                 {
                     infoString,
@@ -65,7 +73,7 @@ namespace Wexflow.Tasks.FilesJoiner
                 };
             });
 
-            GroupedFile[] groupedFiles = files
+            var groupedFiles = files
                 .GroupBy(f => f.infoString)
                 .Select(g =>
                     new GroupedFile
@@ -86,8 +94,8 @@ namespace Wexflow.Tasks.FilesJoiner
         {
             Info("Concatenating files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             try
             {
@@ -113,7 +121,7 @@ namespace Wexflow.Tasks.FilesJoiner
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
             if (!success && atLeastOneSucceed)
             {
                 status = Status.Warning;
@@ -129,8 +137,8 @@ namespace Wexflow.Tasks.FilesJoiner
 
         private bool JoinFiles(ref bool atLeastOneSucceed)
         {
-            bool success = true;
-            foreach (GroupedFile file in GetFiles())
+            var success = true;
+            foreach (var file in GetFiles())
             {
                 if (JoinFiles(file.FileName, file.Files.ToArray()))
                 {
@@ -152,11 +160,11 @@ namespace Wexflow.Tasks.FilesJoiner
         /// <returns></returns>
         private bool JoinFiles(string fileName, FileInf[] files)
         {
-            bool success = true;
+            var success = true;
             if (files.Length > 0)
             {
-                string tempPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
-                string destFilePath = string.IsNullOrEmpty(DestFolder)
+                var tempPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
+                var destFilePath = string.IsNullOrEmpty(DestFolder)
                     ? tempPath
                     : Path.Combine(Path.Combine(DestFolder, fileName));
 
@@ -167,16 +175,18 @@ namespace Wexflow.Tasks.FilesJoiner
                 }
 
                 if (File.Exists(tempPath))
-                    File.Delete(tempPath);
-
-                using (FileStream output = new FileStream(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                 {
-                    foreach (FileInf file in files)
+                    File.Delete(tempPath);
+                }
+
+                using (var output = new FileStream(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                {
+                    foreach (var file in files)
                     {
                         Info("Joiner " + file.Path);
                         try
                         {
-                            using (FileStream input = File.OpenRead(file.Path))
+                            using (var input = File.OpenRead(file.Path))
                             {
                                 input.CopyTo(output);
                             }

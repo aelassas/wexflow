@@ -17,11 +17,11 @@ namespace Wexflow.Core.Db.Firebird
             conn.Open();
 
             using FbCommand command = new("select 1 from rdb$relations where rdb$relation_name = '" + tableName.ToUpper() + "';", conn);
-            object res = command.ExecuteScalar();
+            var res = command.ExecuteScalar();
             if (res == null)
             {
                 using FbCommand cmd = new("create table " + tableName + tableStruct + ";", conn);
-                cmd.ExecuteNonQuery();
+                _ = cmd.ExecuteNonQuery();
             }
         }
 

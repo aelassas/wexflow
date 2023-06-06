@@ -23,20 +23,20 @@ namespace Wexflow.Tests
         [TestMethod]
         public void SqlTest()
         {
-            Helper.StartWorkflow(22);
+            _ = Helper.StartWorkflow(22);
 
             // sqlite
             const string sql = "select Id, Description from Data;";
-            using (SQLiteConnection conn = new SQLiteConnection(SqliteConnectionString))
+            using (var conn = new SQLiteConnection(SqliteConnectionString))
             {
-                SQLiteCommand comm = new SQLiteCommand(sql, conn);
+                var comm = new SQLiteCommand(sql, conn);
                 conn.Open();
-                using (SQLiteDataReader reader = comm.ExecuteReader())
+                using (var reader = comm.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        int id = int.Parse(reader["Id"].ToString());
-                        string desc = (string)reader["Description"];
+                        var id = int.Parse(reader["Id"].ToString());
+                        var desc = (string)reader["Description"];
 
                         if (id == 1)
                         {
@@ -74,11 +74,11 @@ namespace Wexflow.Tests
                 + "UPDATE Data SET Description = 'Hello World Description 4!' WHERE Id = 4;"
                 + "UPDATE Data SET Description = 'Hello World Description 5!' WHERE Id = 5;";
 
-            using (SQLiteConnection conn = new SQLiteConnection(SqliteConnectionString))
+            using (var conn = new SQLiteConnection(SqliteConnectionString))
             {
-                SQLiteCommand comm = new SQLiteCommand(sql, conn);
+                var comm = new SQLiteCommand(sql, conn);
                 conn.Open();
-                comm.ExecuteNonQuery();
+                _ = comm.ExecuteNonQuery();
             }
         }
     }

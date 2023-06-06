@@ -25,13 +25,13 @@ namespace Wexflow.Tasks.HttpDelete
         public override TaskStatus Run()
         {
             Info("Executing DELETE request...");
-            Status status = Status.Success;
+            var status = Status.Success;
             try
             {
-                System.Threading.Tasks.Task<string> deleteTask = Delete(Url, AuthorizationScheme, AuthorizationParameter);
+                var deleteTask = Delete(Url, AuthorizationScheme, AuthorizationParameter);
                 deleteTask.Wait();
-                string result = deleteTask.Result;
-                string destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpDelete_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                var result = deleteTask.Result;
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpDelete_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("DELETE request {0} executed whith success -> {1}", Url, destFile);
@@ -58,10 +58,10 @@ namespace Wexflow.Tasks.HttpDelete
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
                 }
 
-                HttpResponseMessage httpResponse = await httpClient.DeleteAsync(url);
+                var httpResponse = await httpClient.DeleteAsync(url);
                 if (httpResponse.Content != null)
                 {
-                    string responseContent = await httpResponse.Content.ReadAsStringAsync();
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
                     return responseContent;
                 }
             }

@@ -4,11 +4,11 @@ using Wexflow.Scripts.Core;
 
 namespace Wexflow.Scripts.LiteDB
 {
-    class Program
+    internal class Program
     {
         private static IConfiguration? config;
 
-        static void Main()
+        private static void Main()
         {
             try
             {
@@ -17,13 +17,13 @@ namespace Wexflow.Scripts.LiteDB
                 //.AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                string? workflowsFolder = config["workflowsFolder"];
+                var workflowsFolder = config["workflowsFolder"];
                 Db db = new(config["connectionString"]);
                 Helper.InsertWorkflowsAndUser(db, workflowsFolder);
                 Helper.InsertRecords(db, "litedb", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
                 db.Dispose();
 
-                _ = bool.TryParse(config["buildDevDatabases"], out bool buildDevDatabases);
+                _ = bool.TryParse(config["buildDevDatabases"], out var buildDevDatabases);
 
                 if (buildDevDatabases && config != null)
                 {
@@ -38,31 +38,42 @@ namespace Wexflow.Scripts.LiteDB
             }
 
             Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
 
         private static void BuildDatabase(string info, string platformFolder, IConfiguration config)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            string path1 = Path.Combine(
+            var path1 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow.db");
-            string path2 = Path.Combine(
+            var path2 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow-log.db");
-            string connString = "Filename=" + path1 + "; Connection=direct";
+            var connString = "Filename=" + path1 + "; Connection=direct";
 
-            string workflowsFolder = Path.Combine(
+            var workflowsFolder = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Workflows");
 
-            if (!Directory.Exists(workflowsFolder)) throw new DirectoryNotFoundException("Invalid workflows folder: " + workflowsFolder);
-            if (File.Exists(path1)) File.Delete(path1);
-            if (File.Exists(path2)) File.Delete(path2);
+            if (!Directory.Exists(workflowsFolder))
+            {
+                throw new DirectoryNotFoundException("Invalid workflows folder: " + workflowsFolder);
+            }
+
+            if (File.Exists(path1))
+            {
+                File.Delete(path1);
+            }
+
+            if (File.Exists(path2))
+            {
+                File.Delete(path2);
+            }
 
             Db db = new(connString);
             Helper.InsertWorkflowsAndUser(db, workflowsFolder);
-            string? recordsFolder = config["recordsFolder"];
+            var recordsFolder = config["recordsFolder"];
             if (platformFolder == "linux")
             {
                 recordsFolder = "/opt/wexflow/Wexflow/Records";
@@ -71,7 +82,7 @@ namespace Wexflow.Scripts.LiteDB
             {
                 recordsFolder = "/Applications/wexflow/Wexflow/Records";
             }
-            bool isUnix = platformFolder == "linux" || platformFolder == "macos";
+            var isUnix = platformFolder is "linux" or "macos";
             Helper.InsertRecords(db, "litedb", recordsFolder, config["documentFile"], config["invoiceFile"], config["timesheetFile"], isUnix);
             db.Dispose();
         }

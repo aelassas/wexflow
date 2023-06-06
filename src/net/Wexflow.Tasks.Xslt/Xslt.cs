@@ -37,8 +37,8 @@ namespace Wexflow.Tasks.Xslt
         {
             Info("Transforming files...");
 
-            bool success = true;
-            bool atLeastOneSucceed = false;
+            var success = true;
+            var atLeastOneSucceed = false;
 
             try
             {
@@ -65,7 +65,7 @@ namespace Wexflow.Tasks.Xslt
             }
 
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
@@ -82,10 +82,10 @@ namespace Wexflow.Tasks.Xslt
 
         private bool TransformFiles(ref bool atLeastOneSucceed)
         {
-            bool success = true;
-            foreach (FileInf file in SelectFiles())
+            var success = true;
+            foreach (var file in SelectFiles())
             {
-                string destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format(OutputFormat, Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now, Extension));
 
                 try
@@ -95,27 +95,27 @@ namespace Wexflow.Tasks.Xslt
                     switch (Version)
                     {
                         case "1.0":
-                            XslCompiledTransform xslt = new XslCompiledTransform();
+                            var xslt = new XslCompiledTransform();
                             xslt.Load(XsltPath);
                             xslt.Transform(file.Path, destPath);
                             InfoFormat("File transformed (XSLT 1.0): {0} -> {1}", file.Path, destPath);
                             Files.Add(new FileInf(destPath, Id));
                             break;
                         case "2.0":
-                            FileInfo xsl = new FileInfo(XsltPath);
-                            FileInfo input = new FileInfo(file.Path);
-                            FileInfo output = new FileInfo(destPath);
+                            var xsl = new FileInfo(XsltPath);
+                            var input = new FileInfo(file.Path);
+                            var output = new FileInfo(destPath);
 
                             // Compile stylesheet
-                            Processor processor = new Processor();
-                            XsltCompiler compiler = processor.NewXsltCompiler();
-                            XsltExecutable executable = compiler.Compile(new Uri(xsl.FullName));
+                            var processor = new Processor();
+                            var compiler = processor.NewXsltCompiler();
+                            var executable = compiler.Compile(new Uri(xsl.FullName));
 
                             // Do transformation to a destination
-                            DomDestination destination = new DomDestination();
-                            using (FileStream inputStream = input.OpenRead())
+                            var destination = new DomDestination();
+                            using (var inputStream = input.OpenRead())
                             {
-                                XsltTransformer transformer = executable.Load();
+                                var transformer = executable.Load();
                                 transformer.SetInputStream(inputStream, new Uri(input.DirectoryName));
                                 transformer.Run(destination);
                             }
@@ -127,19 +127,19 @@ namespace Wexflow.Tasks.Xslt
                             Files.Add(new FileInf(destPath, Id));
                             break;
                         case "3.0":
-                            FileInfo xsl3 = new FileInfo(XsltPath);
-                            FileInfo input3 = new FileInfo(file.Path);
-                            FileInfo output3 = new FileInfo(destPath);
+                            var xsl3 = new FileInfo(XsltPath);
+                            var input3 = new FileInfo(file.Path);
+                            var output3 = new FileInfo(destPath);
 
-                            Processor processor3 = new Processor(false);
-                            XsltCompiler compiler3 = processor3.NewXsltCompiler();
-                            XsltExecutable stylesheet = compiler3.Compile(new Uri(xsl3.FullName));
-                            Serializer serializer = processor3.NewSerializer();
+                            var processor3 = new Processor(false);
+                            var compiler3 = processor3.NewXsltCompiler();
+                            var stylesheet = compiler3.Compile(new Uri(xsl3.FullName));
+                            var serializer = processor3.NewSerializer();
                             serializer.SetOutputFile(output3.FullName);
 
-                            using (FileStream inputStream = input3.OpenRead())
+                            using (var inputStream = input3.OpenRead())
                             {
-                                Xslt30Transformer transformer3 = stylesheet.Load30();
+                                var transformer3 = stylesheet.Load30();
                                 transformer3.Transform(inputStream, serializer);
                                 serializer.Close();
                             }
@@ -156,26 +156,26 @@ namespace Wexflow.Tasks.Xslt
                     // Set renameTo and tags from /*//<WexflowProcessing>//<File> nodes
                     // Remove /*//<WexflowProcessing> nodes if necessary
 
-                    XDocument xdoc = XDocument.Load(destPath);
-                    XElement[] xWexflowProcessings = xdoc.Descendants("WexflowProcessing").ToArray();
-                    foreach (XElement xWexflowProcessing in xWexflowProcessings)
+                    var xdoc = XDocument.Load(destPath);
+                    var xWexflowProcessings = xdoc.Descendants("WexflowProcessing").ToArray();
+                    foreach (var xWexflowProcessing in xWexflowProcessings)
                     {
-                        System.Collections.Generic.IEnumerable<XElement> xFiles = xWexflowProcessing.Descendants("File");
-                        foreach (XElement xFile in xFiles)
+                        var xFiles = xWexflowProcessing.Descendants("File");
+                        foreach (var xFile in xFiles)
                         {
                             try
                             {
-                                int taskId = int.Parse(xFile.Attribute("taskId").Value);
-                                string fileName = xFile.Attribute("name").Value;
-                                XAttribute xRenameTo = xFile.Attribute("renameTo");
-                                string renameTo = xRenameTo != null ? xRenameTo.Value : string.Empty;
-                                System.Collections.Generic.List<Tag> tags = (from xTag in xFile.Attributes()
-                                                                             where xTag.Name != "taskId" && xTag.Name != "name" && xTag.Name != "renameTo" && xTag.Name != "path" && xTag.Name != "renameToOrName"
-                                                                             select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
+                                var taskId = int.Parse(xFile.Attribute("taskId").Value);
+                                var fileName = xFile.Attribute("name").Value;
+                                var xRenameTo = xFile.Attribute("renameTo");
+                                var renameTo = xRenameTo != null ? xRenameTo.Value : string.Empty;
+                                var tags = (from xTag in xFile.Attributes()
+                                            where xTag.Name != "taskId" && xTag.Name != "name" && xTag.Name != "renameTo" && xTag.Name != "path" && xTag.Name != "renameToOrName"
+                                            select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
 
-                                FileInf fileToEdit = (from f in Workflow.FilesPerTask[taskId]
-                                                      where f.FileName.Equals(fileName)
-                                                      select f).FirstOrDefault();
+                                var fileToEdit = (from f in Workflow.FilesPerTask[taskId]
+                                                  where f.FileName.Equals(fileName)
+                                                  select f).FirstOrDefault();
 
                                 if (fileToEdit != null)
                                 {
@@ -205,7 +205,10 @@ namespace Wexflow.Tasks.Xslt
                         xdoc.Save(destPath);
                     }
 
-                    if (!atLeastOneSucceed) atLeastOneSucceed = true;
+                    if (!atLeastOneSucceed)
+                    {
+                        atLeastOneSucceed = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

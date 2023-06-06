@@ -33,8 +33,8 @@ namespace Wexflow.Tasks.FilesCopier
         {
             Info("Copying files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.FilesCopier
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -77,15 +77,15 @@ namespace Wexflow.Tasks.FilesCopier
 
         private bool CopyFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
-            FileInf[] files = SelectFiles();
-            foreach (FileInf file in files)
+            var success = true;
+            var files = SelectFiles();
+            foreach (var file in files)
             {
                 string destPath;
                 if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                     file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    string preservedFolderStruct = Path.GetDirectoryName(file.Path);
+                    var preservedFolderStruct = Path.GetDirectoryName(file.Path);
                     preservedFolderStruct = preservedFolderStruct.Length > PreserveFolderStructFrom.Length
                         ? preservedFolderStruct.Remove(0, PreserveFolderStructFrom.Length)
                         : string.Empty;
@@ -107,13 +107,16 @@ namespace Wexflow.Tasks.FilesCopier
                     if (AllowCreateDirectory && !Directory.Exists(Path.GetDirectoryName(destPath)))
                     {
                         InfoFormat("Creating directory: {0}", Path.GetDirectoryName(destPath));
-                        Directory.CreateDirectory(Path.GetDirectoryName(destPath));
+                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destPath));
                     }
 
                     File.Copy(file.Path, destPath, Overwrite);
                     Files.Add(new FileInf(destPath, Id));
                     InfoFormat("File copied: {0} -> {1}", file.Path, destPath);
-                    if (!atLeastOneSuccess) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
                 catch (ThreadAbortException)
                 {

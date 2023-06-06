@@ -18,8 +18,8 @@ namespace Wexflow.Tasks.EnvironmentVariable
         {
             Info("Getting environment variable...");
 
-            string value = string.Empty;
-            bool succeeded = false;
+            var value = string.Empty;
+            var succeeded = false;
             try
             {
                 value = Environment.GetEnvironmentVariable(VariableName);

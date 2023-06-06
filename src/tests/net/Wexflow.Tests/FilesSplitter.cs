@@ -23,9 +23,9 @@ namespace Wexflow.Tests
         [TestMethod]
         public void FilesSplitterTest()
         {
-            string[] files = GetFiles();
+            var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            Helper.StartWorkflow(57);
+            _ = Helper.StartWorkflow(57);
             files = GetFiles();
             Assert.AreEqual(510, files.Length);
         }

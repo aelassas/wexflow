@@ -36,33 +36,36 @@ namespace Wexflow.Tasks.YouTube
         {
             Info("Uploading videos...");
 
-            bool succeeded = true;
-            bool atLeastOneSucceed = false;
+            var succeeded = true;
+            var atLeastOneSucceed = false;
 
             try
             {
-                FileInf[] files = SelectFiles();
+                var files = SelectFiles();
 
-                foreach (FileInf file in files)
+                foreach (var file in files)
                 {
                     try
                     {
-                        XDocument xdoc = XDocument.Load(file.Path);
+                        var xdoc = XDocument.Load(file.Path);
 
-                        foreach (XElement xvideo in xdoc.XPathSelectElements("/Videos/Video"))
+                        foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
                         {
-                            string title = xvideo.Element("Title").Value;
-                            string desc = xvideo.Element("Description").Value;
-                            string[] tags = xvideo.Element("Tags").Value.Split(',');
-                            string categoryId = xvideo.Element("CategoryId").Value;
-                            PrivacyStatus ps = (PrivacyStatus)Enum.Parse(typeof(PrivacyStatus), xvideo.Element("PrivacyStatus").Value, true);
-                            string filePath = xvideo.Element("FilePath").Value;
+                            var title = xvideo.Element("Title").Value;
+                            var desc = xvideo.Element("Description").Value;
+                            var tags = xvideo.Element("Tags").Value.Split(',');
+                            var categoryId = xvideo.Element("CategoryId").Value;
+                            var ps = (PrivacyStatus)Enum.Parse(typeof(PrivacyStatus), xvideo.Element("PrivacyStatus").Value, true);
+                            var filePath = xvideo.Element("FilePath").Value;
 
-                            System.Threading.Tasks.Task<bool> succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);
+                            var succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);
                             succeededTask.Wait();
                             succeeded &= succeededTask.Result;
 
-                            if (succeeded && !atLeastOneSucceed) atLeastOneSucceed = true;
+                            if (succeeded && !atLeastOneSucceed)
+                            {
+                                atLeastOneSucceed = true;
+                            }
                         }
                     }
                     catch (ThreadAbortException)
@@ -87,7 +90,7 @@ namespace Wexflow.Tasks.YouTube
                 return new TaskStatus(Status.Error);
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!succeeded && atLeastOneSucceed)
             {
@@ -145,10 +148,10 @@ namespace Wexflow.Tasks.YouTube
 
                 using (FileStream fileStream = new(filePath, FileMode.Open))
                 {
-                    VideosResource.InsertMediaUpload videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                    var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
                     videosInsertRequest.ResponseReceived += VideosInsertRequest_ResponseReceived;
 
-                    Google.Apis.Upload.IUploadProgress res = videosInsertRequest.Upload();
+                    var res = videosInsertRequest.Upload();
 
                     if (res.Exception != null)
                     {

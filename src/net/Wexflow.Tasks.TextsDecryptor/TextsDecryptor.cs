@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.TextsDecryptor
         {
             Info("Decrypting files...");
 
-            bool success = true;
-            bool atLeastOneSuccess = false;
+            var success = true;
+            var atLeastOneSuccess = false;
 
             try
             {
@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.TextsDecryptor
                 success = false;
             }
 
-            Status status = Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSuccess)
             {
@@ -72,15 +72,18 @@ namespace Wexflow.Tasks.TextsDecryptor
 
         private bool DecryptFiles(ref bool atLeastOneSuccess)
         {
-            bool success = true;
+            var success = true;
             try
             {
-                FileInf[] files = SelectFiles();
-                foreach (FileInf file in files)
+                var files = SelectFiles();
+                foreach (var file in files)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     success &= Decrypt(file.Path, destPath, Workflow.PassPhrase);
-                    if (!atLeastOneSuccess && success) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && success)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
             }
             catch (ThreadAbortException)
@@ -99,8 +102,8 @@ namespace Wexflow.Tasks.TextsDecryptor
         {
             try
             {
-                string srcStr = File.ReadAllText(inputFile);
-                string destStr = Decrypt(srcStr, passphrase, Workflow.KeySize, Workflow.DerivationIterations);
+                var srcStr = File.ReadAllText(inputFile);
+                var destStr = Decrypt(srcStr, passphrase, Workflow.KeySize, Workflow.DerivationIterations);
                 File.WriteAllText(outputFile, destStr);
                 InfoFormat("The file {0} has been decrypted -> {1}", inputFile, outputFile);
                 Files.Add(new FileInf(outputFile, Id));
@@ -117,30 +120,30 @@ namespace Wexflow.Tasks.TextsDecryptor
         {
             // Get the complete stream of bytes that represent:
             // [32 bytes of Salt] + [32 bytes of IV] + [n bytes of CipherText]
-            byte[] cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
+            var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
             // Get the saltbytes by extracting the first 32 bytes from the supplied cipherText bytes.
-            byte[] saltStringBytes = cipherTextBytesWithSaltAndIv.Take(keysize / 8).ToArray();
+            var saltStringBytes = cipherTextBytesWithSaltAndIv.Take(keysize / 8).ToArray();
             // Get the IV bytes by extracting the next 32 bytes from the supplied cipherText bytes.
-            byte[] ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(keysize / 8).Take(keysize / 8).ToArray();
+            var ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(keysize / 8).Take(keysize / 8).ToArray();
             // Get the actual cipher text bytes by removing the first 64 bytes from the cipherText string.
-            byte[] cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip(keysize / 8 * 2).Take(cipherTextBytesWithSaltAndIv.Length - (keysize / 8 * 2)).ToArray();
+            var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip(keysize / 8 * 2).Take(cipherTextBytesWithSaltAndIv.Length - (keysize / 8 * 2)).ToArray();
 
-            using (Rfc2898DeriveBytes password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, derivationIterations))
+            using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, derivationIterations))
             {
-                byte[] keyBytes = password.GetBytes(keysize / 8);
-                using (RijndaelManaged symmetricKey = new RijndaelManaged())
+                var keyBytes = password.GetBytes(keysize / 8);
+                using (var symmetricKey = new RijndaelManaged())
                 {
                     symmetricKey.BlockSize = 128;
                     symmetricKey.Mode = CipherMode.CBC;
                     symmetricKey.Padding = PaddingMode.PKCS7;
-                    using (ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, ivStringBytes))
+                    using (var decryptor = symmetricKey.CreateDecryptor(keyBytes, ivStringBytes))
                     {
-                        using (MemoryStream memoryStream = new MemoryStream(cipherTextBytes))
+                        using (var memoryStream = new MemoryStream(cipherTextBytes))
                         {
-                            using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                            using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                             {
-                                byte[] plainTextBytes = new byte[cipherTextBytes.Length];
-                                int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+                                var plainTextBytes = new byte[cipherTextBytes.Length];
+                                var decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
                                 memoryStream.Close();
                                 cryptoStream.Close();
                                 return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);

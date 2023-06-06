@@ -18,18 +18,21 @@ namespace Wexflow.Tasks.FilesEncryptor
         public override TaskStatus Run()
         {
             Info("Encrypting files...");
-            Status status = Status.Success;
-            bool succeeded = true;
-            bool atLeastOneSuccess = false;
+            var status = Status.Success;
+            var succeeded = true;
+            var atLeastOneSuccess = false;
 
             try
             {
-                FileInf[] files = SelectFiles();
-                foreach (FileInf file in files)
+                var files = SelectFiles();
+                foreach (var file in files)
                 {
-                    string destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     succeeded &= Encrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
-                    if (!atLeastOneSuccess && succeeded) atLeastOneSuccess = true;
+                    if (!atLeastOneSuccess && succeeded)
+                    {
+                        atLeastOneSuccess = true;
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -60,10 +63,10 @@ namespace Wexflow.Tasks.FilesEncryptor
             try
             {
                 //byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
-                byte[] saltBytes = GenerateRandomSalt();
+                var saltBytes = GenerateRandomSalt();
                 UnicodeEncoding ue = new();
 
-                string cryptFile = outputFile;
+                var cryptFile = outputFile;
                 RijndaelManaged rmcrypto = new()
                 {
                     KeySize = 256,
@@ -102,11 +105,11 @@ namespace Wexflow.Tasks.FilesEncryptor
 
         private static byte[] GenerateRandomSalt()
         {
-            byte[] data = new byte[32];
+            var data = new byte[32];
 
             using (RNGCryptoServiceProvider rng = new())
             {
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     rng.GetBytes(data);
                 }
