@@ -70,7 +70,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(209, 20);
             this.txtPassword.TabIndex = 3;
-            this.txtPassword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtPassword_KeyUp);
+            this.txtPassword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TxtPassword_KeyUp);
             // 
             // btnLogin
             // 
@@ -80,7 +80,7 @@
             this.btnLogin.TabIndex = 4;
             this.btnLogin.Text = "Sign in";
             this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // lnkForgotPassword
             // 
@@ -91,7 +91,7 @@
             this.lnkForgotPassword.TabIndex = 5;
             this.lnkForgotPassword.TabStop = true;
             this.lnkForgotPassword.Text = "Forgot password?";
-            this.lnkForgotPassword.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkForgotPassword_LinkClicked);
+            this.lnkForgotPassword.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkForgotPassword_LinkClicked);
             // 
             // Login
             // 

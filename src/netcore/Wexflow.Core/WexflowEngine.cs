@@ -371,7 +371,7 @@ namespace Wexflow.Core
             GlobalVariables = variables.ToArray();
         }
 
-        private string GetWexflowSetting(XDocument xdoc, string name)
+        private static string GetWexflowSetting(XDocument xdoc, string name)
         {
             try
             {
@@ -405,7 +405,7 @@ namespace Wexflow.Core
         /// Stops cron jobs.
         /// </summary>
         /// <param name="workflowId">Workflow Id.</param>
-        public void StopCronJobs(int workflowId)
+        public static void StopCronJobs(int workflowId)
         {
             var jobIdentity = "Workflow Job " + workflowId;
             JobKey jobKey = new(jobIdentity);
@@ -1497,7 +1497,7 @@ namespace Wexflow.Core
         /// </summary>
         /// <param name="path">Directory path.</param>
         /// <returns>Result.</returns>
-        public bool IsDirectoryEmpty(string path)
+        public static bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
         }

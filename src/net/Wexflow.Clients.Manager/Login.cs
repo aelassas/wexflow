@@ -29,12 +29,12 @@ namespace Wexflow.Clients.Manager
             _wexflowServiceClient = new WexflowServiceClient(WexflowWebServiceUri);
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
             Authenticate();
         }
 
-        private void txtPassword_KeyUp(object sender, KeyEventArgs e)
+        private void TxtPassword_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -111,7 +111,7 @@ namespace Wexflow.Clients.Manager
             }
         }
 
-        private void lnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (File.Exists(ForgotPasswordPage))
             {
