@@ -67,16 +67,18 @@ namespace Wexflow.Tasks.FilesEncryptor
                 UnicodeEncoding ue = new();
 
                 var cryptFile = outputFile;
-                RijndaelManaged rmcrypto = new()
-                {
-                    KeySize = 256,
-                    BlockSize = 128
-                };
-
-                Rfc2898DeriveBytes key = new(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                //RijndaelManaged rmcrypto = new()
+                //{
+                //    KeySize = 256,
+                //    BlockSize = 128
+                //};
+                using var rmcrypto = Aes.Create();
+                rmcrypto.KeySize = 256;
+                rmcrypto.BlockSize = 128;
+                Rfc2898DeriveBytes key = new(ue.GetBytes(passphrase), saltBytes, derivationIterations, HashAlgorithmName.SHA256);
                 rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                 rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
-                rmcrypto.Padding = PaddingMode.Zeros;
+                rmcrypto.Padding = PaddingMode.PKCS7;
                 rmcrypto.Mode = CipherMode.CBC;
 
                 using (FileStream fsCrypt = new(cryptFile, FileMode.Create))
@@ -105,16 +107,14 @@ namespace Wexflow.Tasks.FilesEncryptor
 
         private static byte[] GenerateRandomSalt()
         {
-            var data = new byte[32];
+            var randomBytes = new byte[32];
 
-            using (RNGCryptoServiceProvider rng = new())
+            using (var rngCsp = RandomNumberGenerator.Create())
             {
-                for (var i = 0; i < 10; i++)
-                {
-                    rng.GetBytes(data);
-                }
+                // Fill the array with cryptographically secure random bytes.
+                rngCsp.GetBytes(randomBytes);
             }
-            return data;
+            return randomBytes;
         }
 
     }

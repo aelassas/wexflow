@@ -69,18 +69,19 @@ namespace Wexflow.Tasks.FilesDecryptor
 
                     UnicodeEncoding ue = new();
 
-                    RijndaelManaged rmcrypto = new()
-                    {
-                        KeySize = 256,
-                        BlockSize = 128
-                    };
-
-                    Rfc2898DeriveBytes key = new(ue.GetBytes(passphrase), saltBytes, derivationIterations);
+                    //RijndaelManaged rmcrypto = new()
+                    //{
+                    //    KeySize = 256,
+                    //    BlockSize = 128
+                    //};
+                    using var rmcrypto = Aes.Create();
+                    rmcrypto.KeySize = 256;
+                    rmcrypto.BlockSize = 128;
+                    Rfc2898DeriveBytes key = new(ue.GetBytes(passphrase), saltBytes, derivationIterations, HashAlgorithmName.SHA256);
                     rmcrypto.Key = key.GetBytes(rmcrypto.KeySize / 8);
                     rmcrypto.IV = key.GetBytes(rmcrypto.BlockSize / 8);
-                    rmcrypto.Padding = PaddingMode.Zeros;
+                    rmcrypto.Padding = PaddingMode.PKCS7;
                     rmcrypto.Mode = CipherMode.CBC;
-
 
                     using CryptoStream cs = new(fsCrypt, rmcrypto.CreateDecryptor(), CryptoStreamMode.Read);
                     using FileStream fsOut = new(outputFile, FileMode.Create);

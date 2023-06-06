@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace Wexflow.NetCore.Tests
 {
     [TestClass]
+    [SupportedOSPlatform("windows")]
     public class ImagesConcat
     {
         private static readonly string DestFolder = @"C:\WexflowTesting\ImagesConcatDest\";
