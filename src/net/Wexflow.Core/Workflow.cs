@@ -164,7 +164,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Log tag.
         /// </summary>
-        public string LogTag => string.Format("[{0} / {1}]", Name, JobId);
+        public string LogTag => $"[{Name} / {JobId}]";
         /// <summary>
         /// Xml Namespace Manager.
         /// </summary>
