@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Authentication;
 using System.Threading;
 using System.Xml.Linq;
@@ -27,37 +28,35 @@ namespace Wexflow.Tasks.Http
             var success = true;
             var atLeastOneSucceed = false;
 
-            using (WebClient webClient = new())
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = Tls12;
+
+            foreach (var url in Urls)
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = Tls12;
-
-                foreach (var url in Urls)
+                try
                 {
-                    try
-                    {
-                        var fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
-                        var destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
+                    var fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
+                    var destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
 
-                        webClient.DownloadFile(url, destPath);
+                    //webClient.DownloadFile(url, destPath);
+                    DownloadFile(url, destPath);
 
-                        InfoFormat("File {0} downlaoded as {1}", url, destPath);
-                        Files.Add(new FileInf(destPath, Id));
+                    InfoFormat("File {0} downlaoded as {1}", url, destPath);
+                    Files.Add(new FileInf(destPath, Id));
 
-                        if (!atLeastOneSucceed)
-                        {
-                            atLeastOneSucceed = true;
-                        }
-                    }
-                    catch (ThreadAbortException)
+                    if (!atLeastOneSucceed)
                     {
-                        throw;
+                        atLeastOneSucceed = true;
                     }
-                    catch (Exception e)
-                    {
-                        ErrorFormat("An error occured while downloading the file: {0}. Error: {1}", url, e.Message);
-                        success = false;
-                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    ErrorFormat("An error occured while downloading the file: {0}. Error: {1}", url, e.Message);
+                    success = false;
                 }
             }
 
@@ -74,6 +73,14 @@ namespace Wexflow.Tasks.Http
 
             Info("Task finished.");
             return new TaskStatus(status, false);
+        }
+
+        private static void DownloadFile(string url, string path)
+        {
+            using HttpClient client = new();
+            var response = client.GetAsync(url).Result;
+            using FileStream fs = new(path, FileMode.CreateNew);
+            response.Content.CopyToAsync(fs).Wait();
         }
     }
 }
