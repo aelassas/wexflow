@@ -13,7 +13,7 @@ namespace Wexflow.Core.Db.PostgreSQL
 
         public static void CreateDatabaseIfNotExists(string server, string userId, string password, string databaseName, int port)
         {
-            using (var conn = new NpgsqlConnection("Server=" + server + ";User Id=" + userId + ";Password=" + password + ";Database=postgres" + ";Port=" + port))
+            using (var conn = new NpgsqlConnection("Server=" + server + ";User Id=" + userId + ";Password=" + password + ";Database=postgres" + ";Port=" + port + ";"))
             {
                 conn.Open();
 
