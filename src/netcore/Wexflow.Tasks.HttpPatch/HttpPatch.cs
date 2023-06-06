@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading;
@@ -37,12 +38,14 @@ namespace Wexflow.Tasks.HttpPatch
             var status = Status.Success;
             try
             {
-                using WebClient client = new();
+                using HttpClient client = new();
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = Tls12;
 
-                var response = client.UploadValues(Url, "PATCH", Params);
-                var responseString = Encoding.Default.GetString(response);
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), Url);
+                var response = client.Send(request);
+                var responseString = response.Content.ReadAsStringAsync().Result;
+
                 var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPatch_{0:yyyy-MM-dd-HH-mm-ss-fff}.txt", DateTime.Now));
                 File.WriteAllText(destFile, responseString);
                 Files.Add(new FileInf(destFile, Id));
