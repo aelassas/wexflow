@@ -38,8 +38,7 @@ namespace Wexflow.Tasks.Http
                     var fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
 
-                    //webClient.DownloadFile(url, destPath);
-                    DownloadFile(url, destPath);
+                    DownloadFile(url, destPath).Wait();
 
                     InfoFormat("File {0} downlaoded as {1}", url, destPath);
                     Files.Add(new FileInf(destPath, Id));
@@ -75,12 +74,12 @@ namespace Wexflow.Tasks.Http
             return new TaskStatus(status, false);
         }
 
-        private static void DownloadFile(string url, string path)
+        private static async System.Threading.Tasks.Task DownloadFile(string url, string path)
         {
             using HttpClient client = new();
-            var response = client.GetAsync(url).Result;
+            var response = await client.GetAsync(url);
             using FileStream fs = new(path, FileMode.CreateNew);
-            response.Content.CopyToAsync(fs).Wait();
+            await response.Content.CopyToAsync(fs);
         }
     }
 }
