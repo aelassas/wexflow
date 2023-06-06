@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading;
@@ -17,19 +18,18 @@ namespace Wexflow.Tasks.HttpPatch
         private const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
 
         public string Url { get; private set; }
-        public NameValueCollection Params { get; private set; }
+        public string Payload { get; private set; }
+        public string AuthorizationScheme { get; private set; }
+        public string AuthorizationParameter { get; private set; }
+        public string Type { get; private set; }
 
         public HttpPatch(XElement xe, Workflow wf) : base(xe, wf)
         {
             Url = GetSetting("url");
-            var parameters = GetSetting("params");
-            var parametersArray = parameters.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
-            Params = new NameValueCollection();
-            foreach (var param in parametersArray)
-            {
-                var paramKv = param.Split('=');
-                Params.Add(paramKv[0], paramKv[1]);
-            }
+            Payload = GetSetting("payload");
+            AuthorizationScheme = GetSetting("authorizationScheme");
+            AuthorizationParameter = GetSetting("authorizationParameter");
+            Type = GetSetting("type", "application/json");
         }
 
         public override TaskStatus Run()
@@ -39,11 +39,17 @@ namespace Wexflow.Tasks.HttpPatch
             try
             {
                 using HttpClient client = new();
+                using StringContent httpContent = new(Payload, Encoding.UTF8, Type);
+
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = Tls12;
 
-                var request = new HttpRequestMessage(new HttpMethod("PATCH"), Url);
-                var response = client.Send(request);
+                if (!string.IsNullOrEmpty(AuthorizationScheme) && !string.IsNullOrEmpty(AuthorizationParameter))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(AuthorizationScheme, AuthorizationParameter);
+                }
+
+                var response = client.PatchAsync(Url, httpContent).Result;
                 var responseString = response.Content.ReadAsStringAsync().Result;
 
                 var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPatch_{0:yyyy-MM-dd-HH-mm-ss-fff}.txt", DateTime.Now));
