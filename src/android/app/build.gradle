@@ -33,4 +33,5 @@ dependencies {
     })
     api 'androidx.appcompat:appcompat:1.6.1'
     testImplementation 'junit:junit:4.12'
+    implementation 'androidx.preference:preference:1.2.0'
 }
