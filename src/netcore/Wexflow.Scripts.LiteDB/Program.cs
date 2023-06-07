@@ -50,7 +50,7 @@ namespace Wexflow.Scripts.LiteDB
             var path2 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow-log.db");
-            var connString = "Filename=" + path1 + "; Connection=direct";
+            var connString = $"Filename={path1}; Connection=direct";
 
             var workflowsFolder = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
@@ -58,7 +58,7 @@ namespace Wexflow.Scripts.LiteDB
 
             if (!Directory.Exists(workflowsFolder))
             {
-                throw new DirectoryNotFoundException("Invalid workflows folder: " + workflowsFolder);
+                throw new DirectoryNotFoundException($"Invalid workflows folder: {workflowsFolder}");
             }
 
             if (File.Exists(path1))
