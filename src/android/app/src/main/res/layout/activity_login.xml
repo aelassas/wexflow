@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/email_login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    >
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        style="@style/width_match_parent_max_320"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_email">
 
@@ -29,7 +33,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        style="@style/width_match_parent_max_320"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_password">
 
@@ -50,8 +54,7 @@
 
     <Button
         android:id="@+id/email_sign_in_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
+        style="@style/width_match_parent_max_320"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/action_sign_in"
@@ -59,11 +62,9 @@
 
     <Button
         android:id="@+id/settings"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
+        style="@style/width_match_parent_max_320"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/action_settings"
         android:textStyle="bold" />
-
 </LinearLayout>

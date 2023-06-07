@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="width_match_parent_max_488">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 </resources>
