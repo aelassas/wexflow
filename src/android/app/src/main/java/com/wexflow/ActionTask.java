@@ -51,7 +51,7 @@ class ActionTask {
     private void onPostExecute() {
         if (this.exception != null) {
             Log.e("Wexflow", this.exception.toString());
-            Toast.makeText(this.activity.getBaseContext(), "An error occured: " + this.exception.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this.activity.getBaseContext(), "An error occurred: " + this.exception.toString(), Toast.LENGTH_LONG).show();
         } else {
             if (this.actionType == ActionType.Suspend || this.actionType == ActionType.Stop) {
                 UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(this.activity);
@@ -96,17 +96,9 @@ class ActionTask {
     void execute(final ActionType at){
         final Handler handler = new Handler();
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                doInBackground(at);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onPostExecute();
-                    }
-                });
-            }
+        Thread thread = new Thread(() -> {
+            doInBackground(at);
+            handler.post(this::onPostExecute);
         });
         thread.start();
     }
