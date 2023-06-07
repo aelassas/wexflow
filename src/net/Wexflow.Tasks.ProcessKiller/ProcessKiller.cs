@@ -19,7 +19,7 @@ namespace Wexflow.Tasks.ProcessKiller
         {
             try
             {
-                var processCmd = "/im \"" + ProcessName + "\" /f";
+                var processCmd = $"/im \"{ProcessName}\" /f";
                 var startInfo = new ProcessStartInfo("taskkill", processCmd)
                 {
                     CreateNoWindow = true,
