@@ -20,7 +20,7 @@ namespace Wexflow.Core.Service.Client
         private static async Task<string> DownloadStringAsync(HttpClient client, string url, string username, string password)
         {
             HttpRequestMessage request = new(HttpMethod.Get, url);
-            request.Headers.Add("Authorization", $"Basic {Base64Encode(username + ":" + GetMd5(password))}");
+            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
             var response = client.Send(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
@@ -30,7 +30,7 @@ namespace Wexflow.Core.Service.Client
         private static async Task<string> UploadStringAsync(HttpClient client, string url, string username, string password)
         {
             HttpRequestMessage request = new(HttpMethod.Post, url);
-            request.Headers.Add("Authorization", $"Basic {Base64Encode(username + ":" + GetMd5(password))}");
+            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
             var response = client.Send(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
