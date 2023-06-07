@@ -4,7 +4,7 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.wexflow"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
         versionName "6.7"
