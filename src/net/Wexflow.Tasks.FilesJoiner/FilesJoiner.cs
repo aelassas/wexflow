@@ -183,7 +183,7 @@ namespace Wexflow.Tasks.FilesJoiner
                 {
                     foreach (var file in files)
                     {
-                        Info("Joiner " + file.Path);
+                        Info($"Joiner {file.Path}");
                         try
                         {
                             using (var input = File.OpenRead(file.Path))
