@@ -3521,7 +3521,7 @@ namespace Wexflow.Server
                         var newPasswordHash = Db.GetMd5(newPassword);
 
                         // Send email
-                        string subject = $"Wexflow - Password reset of user {username}";
+                        var subject = $"Wexflow - Password reset of user {username}";
                         var body = $"Your new password is: {newPassword}";
 
                         var host = WexflowServer.Config["Smtp.Host"];

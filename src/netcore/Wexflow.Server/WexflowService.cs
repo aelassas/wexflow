@@ -2677,7 +2677,10 @@ namespace Wexflow.Server
             return xscase;
         }
 
-        private static Core.ExecutionGraph.Node GetStartupNode(IEnumerable<Core.ExecutionGraph.Node> nodes) => nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.StartId);
+        private static Core.ExecutionGraph.Node GetStartupNode(IEnumerable<Core.ExecutionGraph.Node> nodes)
+        {
+            return nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.StartId);
+        }
 
         /// <summary>
         /// Returns status count.
