@@ -42,7 +42,7 @@ namespace Wexflow.Core.Service.Client
 
         public WorkflowInfo[] Search(string keyword, string username, string password)
         {
-            var uri = Uri + "/search?s=" + keyword;
+            var uri = $"{Uri}/search?s={keyword}";
             var webClient = new WebClient { Encoding = Encoding.UTF8 };
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             var response = webClient.DownloadString(uri);
@@ -52,7 +52,7 @@ namespace Wexflow.Core.Service.Client
 
         public Guid StartWorkflow(int id, string username, string password)
         {
-            var uri = Uri + "/start?w=" + id;
+            var uri = $"{Uri}/start?w={id}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             var instanceId = webClient.UploadString(uri, string.Empty);
@@ -61,7 +61,7 @@ namespace Wexflow.Core.Service.Client
 
         public void StopWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/stop?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/stop?w={id}&i={instanceId}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             _ = webClient.UploadString(uri, string.Empty);
@@ -69,7 +69,7 @@ namespace Wexflow.Core.Service.Client
 
         public void SuspendWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/suspend?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/suspend?w={id}&i={instanceId}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             _ = webClient.UploadString(uri, string.Empty);
@@ -77,7 +77,7 @@ namespace Wexflow.Core.Service.Client
 
         public void ResumeWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/resume?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/resume?w={id}&i={instanceId}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             _ = webClient.UploadString(uri, string.Empty);
@@ -85,7 +85,7 @@ namespace Wexflow.Core.Service.Client
 
         public void ApproveWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/approve?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/approve?w={id}&i={instanceId}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             _ = webClient.UploadString(uri, string.Empty);
@@ -93,7 +93,7 @@ namespace Wexflow.Core.Service.Client
 
         public void RejectWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/reject?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/reject?w={id}&i={instanceId}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             _ = webClient.UploadString(uri, string.Empty);
@@ -101,7 +101,7 @@ namespace Wexflow.Core.Service.Client
 
         public WorkflowInfo GetWorkflow(string username, string password, int id)
         {
-            var uri = Uri + "/workflow?w=" + id;
+            var uri = $"{Uri}/workflow?w={id}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
             var response = webClient.DownloadString(uri);
@@ -111,7 +111,7 @@ namespace Wexflow.Core.Service.Client
 
         public User GetUser(string qusername, string qpassword, string username)
         {
-            var uri = Uri + "/user?username=" + username;
+            var uri = $"{Uri}/user?username={username}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(qusername + ":" + GetMd5(qpassword)));
             var response = webClient.DownloadString(uri);
