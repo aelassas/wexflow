@@ -122,7 +122,7 @@ namespace Wexflow.Core.Service.Client
 
         public async Task<User> GetUser(string qusername, string qpassword, string username)
         {
-            var uri = $"{Uri}/user?username={username}";
+            var uri = $"{Uri}/user?username={System.Uri.EscapeDataString(username)}";
             using HttpClient webClient = new();
             var response = await DownloadStringAsync(webClient, uri, qusername, qpassword);
             var user = JsonConvert.DeserializeObject<User>(response);
