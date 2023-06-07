@@ -48,7 +48,7 @@ namespace Wexflow.Scripts.SQLite
             var path1 = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
                 "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow.sqlite");
-            var connString = "Data Source=" + path1 + ";Version=3;";
+            var connString = $"Data Source={path1};Version=3;";
 
             var workflowsFolder = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
@@ -56,7 +56,7 @@ namespace Wexflow.Scripts.SQLite
 
             if (!Directory.Exists(workflowsFolder))
             {
-                throw new DirectoryNotFoundException("Invalid workflows folder: " + workflowsFolder);
+                throw new DirectoryNotFoundException($"Invalid workflows folder: {workflowsFolder}");
             }
 
             if (File.Exists(path1))
