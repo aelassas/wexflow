@@ -77,14 +77,14 @@ class WorkflowsTask {
                             @Override
                             public void run() {
                                 UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
-                                updateButtonsTask.execute(false, handler);
+                                updateButtonsTask.execute(handler);
                             }
                         }, 0, 500);
                         UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
-                        updateButtonsTask.executeAsync(true);
+                        updateButtonsTask.executeAsync();
                     } else {
                         UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
-                        updateButtonsTask.executeAsync(true);
+                        updateButtonsTask.executeAsync();
                     }
 
                     if(workflow.getRunning()){

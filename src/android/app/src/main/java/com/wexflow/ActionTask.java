@@ -55,7 +55,7 @@ class ActionTask {
         } else {
             if (this.actionType == ActionType.Suspend || this.actionType == ActionType.Stop) {
                 UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(this.activity);
-                updateButtonsTask.executeAsync(true);
+                updateButtonsTask.executeAsync();
             }
 
             StringBuilder stringBuilder = new StringBuilder();
