@@ -60,7 +60,7 @@ namespace Wexflow.Core.Service.Client
 
         public async Task<WorkflowInfo[]> Search(string keyword, string username, string password)
         {
-            var uri = Uri + "/search?s=" + keyword;
+            var uri = $"{Uri}/search?s={keyword}";
             using HttpClient webClient = new();
 
             var response = await DownloadStringAsync(webClient, uri, username, password);
@@ -70,7 +70,7 @@ namespace Wexflow.Core.Service.Client
 
         public async Task<Guid> StartWorkflow(int id, string username, string password)
         {
-            var uri = Uri + "/start?w=" + id;
+            var uri = $"{Uri}/start?w={id}";
             using HttpClient webClient = new();
             var instanceId = await UploadStringAsync(webClient, uri, username, password);
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
@@ -78,42 +78,42 @@ namespace Wexflow.Core.Service.Client
 
         public async Task StopWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/stop?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/stop?w={id}&i={instanceId}";
             using HttpClient webClient = new();
             _ = await UploadStringAsync(webClient, uri, username, password);
         }
 
         public async Task SuspendWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/suspend?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/suspend?w={id}&i={instanceId}";
             using HttpClient webClient = new();
             _ = await UploadStringAsync(webClient, uri, username, password);
         }
 
         public async Task ResumeWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/resume?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/resume?w={id}&i={instanceId}";
             using HttpClient webClient = new();
             _ = await UploadStringAsync(webClient, uri, username, password);
         }
 
         public async Task ApproveWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/approve?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/approve?w={id}&i={instanceId}";
             using HttpClient webClient = new();
             _ = await UploadStringAsync(webClient, uri, username, password);
         }
 
         public async Task RejectWorkflow(int id, Guid instanceId, string username, string password)
         {
-            var uri = Uri + "/reject?w=" + id + "&i=" + instanceId;
+            var uri = $"{Uri}/reject?w={id}&i={instanceId}";
             using HttpClient webClient = new();
             _ = await UploadStringAsync(webClient, uri, username, password);
         }
 
         public async Task<WorkflowInfo> GetWorkflow(string username, string password, int id)
         {
-            var uri = Uri + "/workflow?w=" + id;
+            var uri = $"{Uri}/workflow?w={id}";
             using HttpClient webClient = new();
             var response = await DownloadStringAsync(webClient, uri, username, password);
             var workflow = JsonConvert.DeserializeObject<WorkflowInfo>(response);
@@ -122,7 +122,7 @@ namespace Wexflow.Core.Service.Client
 
         public async Task<User> GetUser(string qusername, string qpassword, string username)
         {
-            var uri = Uri + "/user?username=" + username;
+            var uri = $"{Uri}/user?username={username}";
             using HttpClient webClient = new();
             var response = await DownloadStringAsync(webClient, uri, qusername, qpassword);
             var user = JsonConvert.DeserializeObject<User>(response);
