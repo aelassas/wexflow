@@ -10,9 +10,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
@@ -35,10 +35,9 @@ class WexflowServiceClient {
         disableKeepAlive();
     }
 
-    private static String toBase64(String str) throws UnsupportedEncodingException {
-        byte[] data = str.getBytes("UTF-8");
-        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-        return base64;
+    private static String toBase64(String str) {
+        byte[] data = str.getBytes(StandardCharsets.UTF_8);
+        return Base64.encodeToString(data, Base64.DEFAULT);
     }
 
     private static String post(String urlString, String username, String password) throws IOException {
@@ -58,16 +57,14 @@ class WexflowServiceClient {
         urlConnection.setDoInput(true);
         urlConnection.connect();
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "utf-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8));
         StringBuilder sb = new StringBuilder();
         String responseLine;
         while ((responseLine = br.readLine()) != null) {
             sb.append(responseLine.trim());
         }
 
-        String response = sb.toString();
-
-        return response;
+        return sb.toString();
     }
 
 

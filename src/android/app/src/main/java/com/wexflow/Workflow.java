@@ -8,9 +8,9 @@ class Workflow {
     private final Boolean isEnabled;
     private final Boolean isApproval;
     private Boolean isWaitingForApproval;
-    private int id;
-    private String instanceId;
-    private String name;
+    private final int id;
+    private final String instanceId;
+    private final String name;
     //private String description;
     private Boolean isRunning;
     private Boolean isPaused;
