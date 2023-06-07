@@ -311,7 +311,7 @@ namespace Wexflow.Core
 
             if (!string.IsNullOrEmpty(msg))
             {
-                throw new Exception("The workflow XML document is not valid. Error: " + msg);
+                throw new Exception($"The workflow XML document is not valid. Error: {msg}");
             }
         }
 
@@ -326,7 +326,7 @@ namespace Wexflow.Core
             }
             else
             {
-                throw new Exception("xmlNameTable of " + Id + " is null");
+                throw new Exception($"xmlNameTable of {Id} is null");
             }
 
             var xdoc = XDocument.Parse(Xml);
@@ -365,7 +365,7 @@ namespace Wexflow.Core
                 {
                     foreach (var variable in GlobalVariables)
                     {
-                        line = line.Replace("$" + variable.Key, variable.Value);
+                        line = line.Replace($"${variable.Key}", variable.Value);
                     }
                     sw.WriteLine(line);
                 }
@@ -386,7 +386,7 @@ namespace Wexflow.Core
                 }
                 else
                 {
-                    throw new Exception("xmlNameTable of " + Id + " is null");
+                    throw new Exception($"xmlNameTable of {Id} is null");
                 }
 
                 var xdoc = XDocument.Parse(dest);
@@ -429,7 +429,7 @@ namespace Wexflow.Core
                     }
                     foreach (var variable in localVariablesParsed)
                     {
-                        line = line.Replace("$" + variable.Key, variable.Value);
+                        line = line.Replace($"${variable.Key}", variable.Value);
                     }
                     sw.WriteLine(line);
                 }
@@ -450,7 +450,7 @@ namespace Wexflow.Core
                     {
                         if (variable != null)
                         {
-                            line = line.Replace("$" + variable.Key, variable.Value);
+                            line = line.Replace($"${variable.Key}", variable.Value);
                         }
                     }
                     sw.WriteLine(line);
@@ -475,7 +475,7 @@ namespace Wexflow.Core
             }
             else
             {
-                throw new Exception("xmlNameTable of " + Id + " is null");
+                throw new Exception($"xmlNameTable of {Id} is null");
             }
 
             // Loading settings
@@ -500,7 +500,7 @@ namespace Wexflow.Core
                 CronExpression = cronexp;
                 if (!WexflowEngine.IsCronExpressionValid(CronExpression))
                 {
-                    throw new Exception("The cron expression '" + CronExpression + "' is not valid.");
+                    throw new Exception($"The cron expression '{CronExpression}' is not valid.");
                 }
             }
             IsEnabled = bool.Parse(GetWorkflowSetting(xdoc, "enabled", true));
@@ -525,8 +525,8 @@ namespace Wexflow.Core
                 {
                     Type type = null;
                     var name = xAttribute.Value;
-                    var assemblyName = "Wexflow.Tasks." + name;
-                    var typeName = "Wexflow.Tasks." + name + "." + name + ", " + assemblyName;
+                    var assemblyName = $"Wexflow.Tasks.{name}";
+                    var typeName = $"Wexflow.Tasks.{name}.{name}, {assemblyName}";
 
                     // Try to load from root
                     type = Type.GetType(typeName);
@@ -537,7 +537,7 @@ namespace Wexflow.Core
                         if (File.Exists(taskAssemblyFile))
                         {
                             var taskAssembly = Assembly.LoadFile(taskAssemblyFile);
-                            var typeFullName = "Wexflow.Tasks." + name + "." + name;
+                            var typeFullName = $"Wexflow.Tasks.{name}.{name}";
                             type = taskAssembly.GetType(typeFullName);
                         }
                     }
@@ -549,12 +549,12 @@ namespace Wexflow.Core
                     }
                     else
                     {
-                        throw new Exception("The type of the task " + name + " could not be loaded.");
+                        throw new Exception($"The type of the task {name} could not be loaded.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Name attribute of the task " + xTask + " does not exist.");
+                    throw new Exception($"Name attribute of the task {xTask} does not exist.");
                 }
             }
             Tasks = tasks.ToArray();
@@ -718,9 +718,9 @@ namespace Wexflow.Core
                         .ToArray();
 
                     var nodeName = string.Format("Switch>Case(value={0})", val);
-                    CheckStartupNode(nodes, "Startup node with parentId=-1 not found in " + nodeName + " execution graph.");
-                    CheckParallelTasks(nodes, "Parallel tasks execution detected in " + nodeName + " execution graph.");
-                    CheckInfiniteLoop(nodes, "Infinite loop detected in " + nodeName + " execution graph.");
+                    CheckStartupNode(nodes, $"Startup node with parentId=-1 not found in {nodeName} execution graph.");
+                    CheckParallelTasks(nodes, $"Parallel tasks execution detected in {nodeName} execution graph.");
+                    CheckInfiniteLoop(nodes, $"Infinite loop detected in {nodeName} execution graph.");
 
                     return new Case(val, nodes);
                 });
@@ -847,7 +847,7 @@ namespace Wexflow.Core
         private string GetWorkflowAttribute(XDocument xdoc, string attr)
         {
             var xAttribute = xdoc.XPathSelectElement("/wf:Workflow", XmlNamespaceManager).Attribute(attr);
-            return xAttribute != null ? xAttribute.Value : throw new Exception("Workflow attribute " + attr + "not found.");
+            return xAttribute != null ? xAttribute.Value : throw new Exception($"Workflow attribute {attr}not found.");
         }
 
         private string GetWorkflowSetting(XDocument xdoc, string name, bool throwExceptionIfNotFound)
@@ -866,12 +866,12 @@ namespace Wexflow.Core
                 }
                 else if (throwExceptionIfNotFound)
                 {
-                    throw new Exception("Workflow setting " + name + " not found.");
+                    throw new Exception($"Workflow setting {name} not found.");
                 }
             }
             else if (throwExceptionIfNotFound)
             {
-                throw new Exception("Workflow setting " + name + " not found.");
+                throw new Exception($"Workflow setting {name} not found.");
             }
 
             return string.Empty;
@@ -953,7 +953,7 @@ namespace Wexflow.Core
             {
                 var msg = string.Format("{0} Workflow started - Instance Id: {1}", LogTag, InstanceId);
                 Logger.Info(msg);
-                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  INFO - " + msg);
+                Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  INFO - {msg}");
             }
 
             Database.IncrementRunningCount();
@@ -1149,7 +1149,7 @@ namespace Wexflow.Core
                 {
                     var emsg = string.Format("An error occured while running the workflow. Error: {0}", this);
                     Logger.Error(emsg, e);
-                    Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + emsg + "\r\n" + e);
+                    Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {emsg}\r\n{e}");
                 }
                 Database.DecrementRunningCount();
                 Database.IncrementFailedCount();
@@ -1211,7 +1211,7 @@ namespace Wexflow.Core
             {
                 var msg = string.Format("{0} Workflow finished.", LogTag);
                 Logger.Info(msg);
-                Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + " INFO  - " + msg);
+                Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)} INFO  - {msg}");
             }
         }
 
@@ -1264,7 +1264,7 @@ namespace Wexflow.Core
                     }
                     else
                     {
-                        throw new Exception("Task " + node.Id + " not found.");
+                        throw new Exception($"Task {node.Id} not found.");
                     }
                 }
             }
@@ -1436,7 +1436,7 @@ namespace Wexflow.Core
                                     }
                                     else
                                     {
-                                        throw new Exception("Task " + childNode.Id + " not found.");
+                                        throw new Exception($"Task {childNode.Id} not found.");
                                     }
                                 }
                             }
@@ -1444,7 +1444,7 @@ namespace Wexflow.Core
                     }
                     else
                     {
-                        throw new Exception("Task " + node.Id + " not found.");
+                        throw new Exception($"Task {node.Id} not found.");
                     }
                 }
             }
@@ -1509,7 +1509,7 @@ namespace Wexflow.Core
             }
             else
             {
-                throw new Exception("Task " + @if.Id + " not found.");
+                throw new Exception($"Task {@if.Id} not found.");
             }
         }
 
@@ -1563,7 +1563,7 @@ namespace Wexflow.Core
             }
             else
             {
-                throw new Exception("Task " + @while.Id + " not found.");
+                throw new Exception($"Task {@while.Id} not found.");
             }
         }
 
@@ -1695,7 +1695,7 @@ namespace Wexflow.Core
                     {
                         var msg = string.Format("An error occured while stopping the workflow : {0}", this);
                         Logger.Error(msg, e);
-                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                        Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {msg}\r\n{e}");
                     }
                 }
             }
@@ -1730,7 +1730,7 @@ namespace Wexflow.Core
                     {
                         var msg = string.Format("An error occured while suspending the workflow : {0}", this);
                         Logger.Error(msg, e);
-                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                        Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {msg}\r\n{e}");
                     }
                 }
             }
@@ -1763,7 +1763,7 @@ namespace Wexflow.Core
                     {
                         var msg = string.Format("An error occured while resuming the workflow : {0}", this);
                         Logger.Error(msg, e);
-                        Logs.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) + "  ERROR - " + msg + "\r\n" + e);
+                        Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {msg}\r\n{e}");
                     }
                 }
                 finally
@@ -1785,7 +1785,7 @@ namespace Wexflow.Core
                 var task = Tasks.Where(t => t.IsWaitingForApproval).First();
                 var dir = Path.Combine(ApprovalFolder, Id.ToString(), InstanceId.ToString(), task.Id.ToString());
                 _ = Directory.CreateDirectory(dir);
-                File.WriteAllText(Path.Combine(dir, "task.approved"), "Task " + task.Id + " of the workflow " + Id + " approved.");
+                File.WriteAllText(Path.Combine(dir, "task.approved"), $"Task {task.Id} of the workflow {Id} approved.");
                 IsRejected = false;
             }
         }
