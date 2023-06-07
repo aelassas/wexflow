@@ -55,7 +55,7 @@ namespace Wexflow.Core.Service.Client
         private static string Base64Encode(string plainText)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            return Convert.ToBase64String(plainTextBytes);
         }
 
         public async Task<WorkflowInfo[]> Search(string keyword, string username, string password)
