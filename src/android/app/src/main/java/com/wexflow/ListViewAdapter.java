@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.wexflow.Constants.COL_ID;
 import static com.wexflow.Constants.COL_LAUNCHTYPE;
@@ -20,9 +21,6 @@ class ListViewAdapter extends BaseAdapter {
     private final ArrayList<HashMap<String, String>> list;
     private final Activity activity;
     private int selectedPos = NOT_SELECTED;
-    private TextView txtId;
-    private TextView txtName;
-    private TextView txtLaunchType;
 
     ListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> list) {
         super();
@@ -53,7 +51,7 @@ class ListViewAdapter extends BaseAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public long getItemId(int position) {
-        return Long.valueOf(((HashMap<String, String>) getItem(position)).get(COL_ID));
+        return Long.parseLong(Objects.requireNonNull(((HashMap<String, String>) getItem(position)).get(COL_ID)));
     }
 
     @Override
@@ -66,6 +64,7 @@ class ListViewAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -74,9 +73,9 @@ class ListViewAdapter extends BaseAdapter {
         //if (convertView == null) {
         convertView = inflater.inflate(R.layout.row, parent, false);
 
-        txtId = convertView.findViewById(R.id.txtId);
-        txtName = convertView.findViewById(R.id.txtName);
-        txtLaunchType = convertView.findViewById(R.id.txtLaunchType);
+        TextView txtId = convertView.findViewById(R.id.txtId);
+        TextView txtName = convertView.findViewById(R.id.txtName);
+        TextView txtLaunchType = convertView.findViewById(R.id.txtLaunchType);
         //}
 
         if (position == selectedPos) {
