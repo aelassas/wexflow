@@ -20,7 +20,7 @@ namespace Wexflow.Tasks.MessageCorrect
                 var o = SharedMemory["message"];
                 var message = o == null ? string.Empty : o.ToString();
                 var result = message.IndexOf(CheckString) >= 0;
-                Info("The result is " + result);
+                Info($"The result is {result}");
 
                 return new TaskStatus(result ? Status.Success : Status.Error, result, message);
             }
