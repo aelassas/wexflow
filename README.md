@@ -1,6 +1,5 @@
 [![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![GitHub all releases](https://img.shields.io/github/downloads/aelassas/wexflow/total?color=32c955&logo=github)](https://wexflow.github.io/release-stats/) [![open in vscode](https://img.shields.io/badge/open%20in-vscode-1f425f.svg)](https://vscode.dev/github/aelassas/wexflow)
 
-
 Wexflow is an open source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
 
 Wexflow provides a cross-platform workflow server, a backend for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
