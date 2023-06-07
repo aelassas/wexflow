@@ -85,7 +85,7 @@ namespace Wexflow.Tasks.Unrar
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , Path.GetFileNameWithoutExtension(rar.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                            , $"{Path.GetFileNameWithoutExtension(rar.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
                         _ = Directory.CreateDirectory(destFolder);
 
                         ExtractRar(rar.Path, destFolder);
