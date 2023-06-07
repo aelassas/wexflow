@@ -4,12 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class User {
-    private String username;
-    private String password;
-    private UserProfile userProfile;
+    private final String password;
+    private final UserProfile userProfile;
 
     public User(String username, String password, UserProfile userProfile){
-        this.username = username;
         this.password = password;
         this.userProfile = userProfile;
     }
