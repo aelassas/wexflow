@@ -33,7 +33,7 @@ namespace Wexflow.Scripts.Core
                         if (workflowIdFromFile == workflowId)
                         {
                             found = true;
-                            Console.WriteLine("Workflow " + workflowIdFromFile + " already in database.");
+                            Console.WriteLine($"Workflow {workflowIdFromFile} already in database.");
                             break;
                         }
                     }
@@ -43,7 +43,7 @@ namespace Wexflow.Scripts.Core
                         try
                         {
                             _ = db.InsertWorkflow(new Workflow { Xml = xdoc1.ToString() });
-                            Console.WriteLine("Workflow " + workflowIdFromFile + " inserted.");
+                            Console.WriteLine($"Workflow {workflowIdFromFile} inserted.");
                         }
                         catch (Exception e)
                         {
