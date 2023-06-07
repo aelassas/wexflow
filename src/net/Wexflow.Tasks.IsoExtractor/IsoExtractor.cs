@@ -83,7 +83,7 @@ namespace Wexflow.Tasks.IsoExtractor
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , Path.GetFileNameWithoutExtension(iso.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                            , $"{Path.GetFileNameWithoutExtension(iso.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
                         _ = Directory.CreateDirectory(destFolder);
 
                         ExtractIso(iso.Path, destFolder);
@@ -125,7 +125,7 @@ namespace Wexflow.Tasks.IsoExtractor
                 {
                     using (var stream = cd.OpenFile(file, FileMode.Open))
                     {
-                        var destFile = destDir.TrimEnd('\\') + "\\" + Regex.Replace(file.Replace("/", "\\"), @";\d*$", "").TrimStart('\\');
+                        var destFile = $"{destDir.TrimEnd('\\')}\\{Regex.Replace(file.Replace("/", "\\"), @";\d*$", "").TrimStart('\\')}";
 
                         // Create directories
                         var destFolder = Path.GetDirectoryName(destFile);
