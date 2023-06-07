@@ -1514,7 +1514,7 @@ namespace Wexflow.Server
                         {
                             if (string.IsNullOrEmpty(path))
                             {
-                                path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, "Workflow_" + workflowId.ToString() + ".xml");
+                                path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                                 WexflowServer.WexflowEngine.GetWorkflow(workflowId).FilePath = path;
                             }
                             var xdoc = XDocument.Parse(xml);
@@ -1825,7 +1825,7 @@ namespace Wexflow.Server
 
                 if (workflowLaunchType == LaunchType.Cron && !WexflowEngine.IsCronExpressionValid(cronExpression))
                 {
-                    throw new Exception("The cron expression '" + cronExpression + "' is not valid.");
+                    throw new Exception($"The cron expression '{cronExpression}' is not valid.");
                 }
 
                 var isWorkflowEnabled = (bool)wi.SelectToken("IsEnabled");
@@ -1978,7 +1978,7 @@ namespace Wexflow.Server
                     path = (string)wi.SelectToken("FilePath");
                     if (string.IsNullOrEmpty(path))
                     {
-                        path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, "Workflow_" + workflowId.ToString() + ".xml");
+                        path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                         WexflowServer.WexflowEngine.GetWorkflow(workflowId).FilePath = path;
                     }
                     xdoc.Save(path);
@@ -2005,7 +2005,7 @@ namespace Wexflow.Server
                     if (workflowLaunchType == LaunchType.Cron &&
                         !WexflowEngine.IsCronExpressionValid(cronExpression))
                     {
-                        throw new Exception("The cron expression '" + cronExpression + "' is not valid.");
+                        throw new Exception($"The cron expression '{cronExpression}' is not valid.");
                     }
 
                     var isWorkflowEnabled = (bool)wi.SelectToken("IsEnabled");
@@ -2218,7 +2218,7 @@ namespace Wexflow.Server
                         path = (string)wi.SelectToken("FilePath");
                         if (string.IsNullOrEmpty(path))
                         {
-                            path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, "Workflow_" + workflowId.ToString() + ".xml");
+                            path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                             WexflowServer.WexflowEngine.GetWorkflow(workflowId).FilePath = path;
                         }
                         xdoc.Save(path);
@@ -2666,7 +2666,7 @@ namespace Wexflow.Server
                         foreach (var node in wf.ExecutionGraph.Nodes)
                         {
                             var task = wf.Tasks.FirstOrDefault(t => t.Id == node.Id);
-                            var nodeName = "Task " + node.Id + (task != null ? ": " + task.Description : "");
+                            var nodeName = $"Task {node.Id}{(task != null ? ": " + task.Description : "")}";
 
                             if (node is If)
                             {
@@ -2681,8 +2681,8 @@ namespace Wexflow.Server
                                 nodeName = "Switch...EndSwitch";
                             }
 
-                            var nodeId = "n" + node.Id;
-                            var parentId = "n" + node.ParentId;
+                            var nodeId = $"n{node.Id}";
+                            var parentId = $"n{node.ParentId}";
 
                             nodes.Add(new Node(nodeId, nodeName, parentId));
                         }
@@ -3517,12 +3517,12 @@ namespace Wexflow.Server
                 {
                     try
                     {
-                        var newPassword = "wexflow" + GenerateRandomNumber();
+                        var newPassword = $"wexflow{GenerateRandomNumber()}";
                         var newPasswordHash = Db.GetMd5(newPassword);
 
                         // Send email
-                        string subject = "Wexflow - Password reset of user " + username;
-                        var body = "Your new password is: " + newPassword;
+                        string subject = $"Wexflow - Password reset of user {username}";
+                        var body = $"Your new password is: {newPassword}";
 
                         var host = WexflowServer.Config["Smtp.Host"];
                         var port = int.Parse(WexflowServer.Config["Smtp.Port"]);
@@ -5100,7 +5100,7 @@ namespace Wexflow.Server
                 var enableEmailNotifications = bool.Parse(WexflowServer.Config["EnableEmailNotifications"]);
                 if (enableEmailNotifications)
                 {
-                    var subject = "Wexflow notification from " + assignedBy.Username;
+                    var subject = $"Wexflow notification from {assignedBy.Username}";
                     var body = message;
 
                     var host = WexflowServer.Config["Smtp.Host"];
