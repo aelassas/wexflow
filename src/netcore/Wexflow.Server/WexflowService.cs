@@ -1348,7 +1348,7 @@ namespace Wexflow.Server
                         {
                             if (string.IsNullOrEmpty(path))
                             {
-                                path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId.ToString()}.xml");
+                                path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                                 WexflowServer.WexflowEngine.GetWorkflow(workflowId).FilePath = path;
                             }
                             var xdoc = XDocument.Parse(xml);
@@ -1784,7 +1784,7 @@ namespace Wexflow.Server
                     path = (string)wi.SelectToken("FilePath");
                     if (string.IsNullOrEmpty(path))
                     {
-                        path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId.ToString()}.xml");
+                        path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                         WexflowServer.WexflowEngine.GetWorkflow(workflowId).FilePath = path;
                     }
                     xdoc.Save(path);
@@ -2024,7 +2024,7 @@ namespace Wexflow.Server
                         path = (string)wi.SelectToken("FilePath");
                         if (string.IsNullOrEmpty(path))
                         {
-                            path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId.ToString()}.xml");
+                            path = Path.Combine(WexflowServer.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                             WexflowServer.WexflowEngine.GetWorkflow(workflowId).FilePath = path;
                         }
                         xdoc.Save(path);
