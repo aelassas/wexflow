@@ -111,7 +111,7 @@ namespace Wexflow.Core.Service.Client
 
         public User GetUser(string qusername, string qpassword, string username)
         {
-            var uri = $"{Uri}/user?username={username}";
+            var uri = $"{Uri}/user?username={System.Uri.EscapeDataString(username)}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode($"{qusername}:{GetMd5(qpassword)}"));
             var response = webClient.DownloadString(uri);
