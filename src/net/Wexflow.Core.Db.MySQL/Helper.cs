@@ -13,7 +13,7 @@ namespace Wexflow.Core.Db.MySQL
 
         public static void CreateDatabaseIfNotExists(string server, string userId, string password, string databaseName, int port)
         {
-            using (var conn = new MySqlConnection("Server=" + server + ";Uid=" + userId + ";Pwd=" + password + ";" + "Port=" + port))
+            using (var conn = new MySqlConnection("Server=" + server + ";Uid=" + userId + ";Pwd=" + password + ";" + "Port=" + port + ";"))
             {
                 conn.Open();
 

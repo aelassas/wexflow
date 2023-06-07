@@ -30,7 +30,7 @@ namespace Wexflow.Server
             pipelines.AfterRequest += (ctx) =>
             {
                 _ = ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
-                    .WithHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS")
+                    .WithHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS,HEAD,PATCH")
                     .WithHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             };
         }
