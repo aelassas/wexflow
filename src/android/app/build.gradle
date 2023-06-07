@@ -4,11 +4,11 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.wexflow"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
         versionName "6.7"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -26,11 +26,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
     api fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    api 'com.android.support:appcompat-v7:26.1.0'
+    api 'androidx.appcompat:appcompat:1.0.0'
     testImplementation 'junit:junit:4.12'
 }
