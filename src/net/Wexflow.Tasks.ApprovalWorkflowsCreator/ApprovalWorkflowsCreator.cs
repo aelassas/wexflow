@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
 
                                 if (Workflow.WexflowEngine.EnableWorkflowsHotFolder)
                                 {
-                                    var filePath = Path.Combine(Workflow.WexflowEngine.WorkflowsFolder, "Workflow_" + workflowId + ".xml");
+                                    var filePath = Path.Combine(Workflow.WexflowEngine.WorkflowsFolder, $"Workflow_{workflowId}.xml");
                                     var xdoc = XDocument.Parse(xml);
                                     xdoc.Save(filePath);
                                     Thread.Sleep(5 * 1000); // Wait until the workflow get reloaded in the system
