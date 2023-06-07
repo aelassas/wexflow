@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.MailsReceiver
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
                                 var message = client.Inbox.GetMessage(uids[i]);
-                                var messageFileName = "message_" + i + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", message.Date);
+                                var messageFileName = $"message_{i}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", message.Date)}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
                                 Files.Add(new FileInf(messagePath, Id));
@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.MailsReceiver
                                 {
                                     if (attachment.IsAttachment)
                                     {
-                                        var attachmentPath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + "_" + (attachment is MessagePart ? ++j + ".eml" : ((MimePart)attachment).FileName));
+                                        var attachmentPath = Path.Combine(Workflow.WorkflowTempFolder, $"{messageFileName}_{(attachment is MessagePart ? ++j + ".eml" : ((MimePart)attachment).FileName)}");
 
                                         if (attachment is MessagePart part)
                                         {
@@ -136,7 +136,7 @@ namespace Wexflow.Tasks.MailsReceiver
                                 {
                                     if (attachment.IsAttachment)
                                     {
-                                        var attachmentPath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + "_" + attachment.ContentId);
+                                        var attachmentPath = Path.Combine(Workflow.WorkflowTempFolder, $"{messageFileName}_{attachment.ContentId}");
                                         attachment.WriteTo(attachmentPath);
                                         Files.Add(new FileInf(attachmentPath, Id));
                                         InfoFormat("Attachment {0} of mail {1} received. Path: {2}", attachment.ContentId, i, attachmentPath);
