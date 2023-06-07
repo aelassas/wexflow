@@ -411,7 +411,7 @@ namespace Wexflow.Core
         /// <param name="workflowId">Workflow Id.</param>
         public void StopCronJobs(int workflowId)
         {
-            var jobIdentity = "Workflow Job " + workflowId;
+            var jobIdentity = $"Workflow Job {workflowId}";
             var jobKey = new JobKey(jobIdentity);
             if (QuartzScheduler.CheckExists(jobKey).Result)
             {
@@ -843,7 +843,7 @@ namespace Wexflow.Core
                             { "workflow", wf }
                         };
 
-                        var jobIdentity = "Workflow Job " + wf.Id;
+                        var jobIdentity = $"Workflow Job {wf.Id}";
                         var jobDetail = JobBuilder.Create<WorkflowJob>()
                             .WithIdentity(jobIdentity)
                             .SetJobData(new JobDataMap(map))
@@ -852,7 +852,7 @@ namespace Wexflow.Core
                         var trigger = TriggerBuilder.Create()
                             .ForJob(jobDetail)
                             .WithSimpleSchedule(x => x.WithInterval(wf.Period).RepeatForever())
-                            .WithIdentity("Workflow Trigger " + wf.Id)
+                            .WithIdentity($"Workflow Trigger {wf.Id}")
                             .StartNow()
                             .Build();
 
@@ -872,7 +872,7 @@ namespace Wexflow.Core
                             { "workflow", wf }
                         };
 
-                        var jobIdentity = "Workflow Job " + wf.Id;
+                        var jobIdentity = $"Workflow Job {wf.Id}";
                         var jobDetail = JobBuilder.Create<WorkflowJob>()
                             .WithIdentity(jobIdentity)
                             .SetJobData(new JobDataMap(map))
@@ -881,7 +881,7 @@ namespace Wexflow.Core
                         var trigger = TriggerBuilder.Create()
                             .ForJob(jobDetail)
                             .WithCronSchedule(wf.CronExpression)
-                            .WithIdentity("Workflow Trigger " + wf.Id)
+                            .WithIdentity($"Workflow Trigger {wf.Id}")
                             .StartNow()
                             .Build();
 
