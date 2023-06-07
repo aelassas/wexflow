@@ -14,7 +14,7 @@ namespace Wexflow.Tasks.SshCmd
     {
         public static readonly Regex Prompt = MyRegex();
         public static readonly Regex PwdPrompt = MyRegex1();
-        public static readonly Regex PromptOrPwd = new(Prompt + "|" + PwdPrompt, RegexOptions.Compiled);
+        public static readonly Regex PromptOrPwd = new($"{Prompt}|{PwdPrompt}", RegexOptions.Compiled);
 
         public string Host { get; private set; }
         public int Port { get; private set; }

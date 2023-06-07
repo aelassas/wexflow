@@ -73,10 +73,10 @@ namespace Wexflow.Tasks.ProcessLauncher
                         {
                             outputFilePath = outputFilePath.Replace(VarFileName, file.FileName);
                         }
-                        outputFilePath = outputFilePath.Replace("{" + VarOutput + ":", Workflow.WorkflowTempFolder.Trim('\\') + "\\");
+                        outputFilePath = outputFilePath.Replace($"{{{VarOutput}:", Workflow.WorkflowTempFolder.Trim('\\') + "\\");
                         outputFilePath = outputFilePath.Trim('}');
 
-                        cmd = cmd.Replace(val, "\"" + outputFilePath + "\"");
+                        cmd = cmd.Replace(val, $"\"{outputFilePath}\"");
                     }
                     else
                     {

@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.CsvToSql
                 string line;
                 while (!string.IsNullOrEmpty(line = sr.ReadLine()))
                 {
-                    sw.Write("INSERT INTO " + tableName + "(" + columnsLine.Replace(separator, ",").TrimEnd(',') + ")" + " VALUES ");
+                    sw.Write($"INSERT INTO {tableName}({columnsLine.Replace(separator, ",").TrimEnd(',')}) VALUES ");
                     sw.Write("(");
                     var values = line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var value in values)
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.CsvToSql
                         }
                         else
                         {
-                            sw.Write("'" + value + "'");
+                            sw.Write($"'{value}'");
                         }
 
                         if (!values.Last().Equals(value))

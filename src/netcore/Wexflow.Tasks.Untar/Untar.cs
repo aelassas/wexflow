@@ -64,7 +64,7 @@ namespace Wexflow.Tasks.Untar
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , Path.GetFileNameWithoutExtension(tar.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
                         _ = Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 

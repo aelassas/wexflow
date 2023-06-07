@@ -138,7 +138,7 @@ namespace Wexflow.Tasks.MailsSender
                     }
                     foreach (var variable in Workflow.LocalVariables)
                     {
-                        line = line.Replace("$" + variable.Key, variable.Value);
+                        line = line.Replace($"${variable.Key}", variable.Value);
                     }
                     sw.WriteLine(line);
                 }
@@ -159,7 +159,7 @@ namespace Wexflow.Tasks.MailsSender
                     {
                         if (variable != null)
                         {
-                            line = line.Replace("$" + variable.Key, variable.Value);
+                            line = line.Replace($"${variable.Key}", variable.Value);
                         }
                     }
                     sw.WriteLine(line);

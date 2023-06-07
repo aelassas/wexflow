@@ -65,7 +65,7 @@ namespace Wexflow.Tasks.Untgz
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , Path.GetFileNameWithoutExtension(tgz.Path) + "_" + string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                            , $"{Path.GetFileNameWithoutExtension(tgz.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
                         _ = Directory.CreateDirectory(destFolder);
                         ExtractTGZ(tgz.Path, destFolder);
 
