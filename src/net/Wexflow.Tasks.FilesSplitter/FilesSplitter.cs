@@ -89,7 +89,7 @@ namespace Wexflow.Tasks.FilesSplitter
                         {
                             while (input.Position < input.Length)
                             {
-                                var chunkPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName + "_" + (index + 1));
+                                var chunkPath = Path.Combine(Workflow.WorkflowTempFolder, $"{file.FileName}_{index + 1}");
                                 using (Stream output = File.Create(chunkPath))
                                 {
                                     int remaining = ChunkSize, bytesRead;
