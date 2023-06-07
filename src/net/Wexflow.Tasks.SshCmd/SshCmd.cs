@@ -14,7 +14,7 @@ namespace Wexflow.Tasks.SshCmd
     {
         public static readonly Regex Prompt = new Regex("[a-zA-Z0-9_.-]*\\@[a-zA-Z0-9_.-]*\\:\\~[#$] ", RegexOptions.Compiled);
         public static readonly Regex PwdPrompt = new Regex("password for .*\\:", RegexOptions.Compiled);
-        public static readonly Regex PromptOrPwd = new Regex(Prompt + "|" + PwdPrompt, RegexOptions.Compiled);
+        public static readonly Regex PromptOrPwd = new Regex($"{Prompt}|{PwdPrompt}", RegexOptions.Compiled);
 
         public string Host { get; private set; }
         public int Port { get; private set; }
