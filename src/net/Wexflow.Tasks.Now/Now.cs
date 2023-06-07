@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.Now
             var succeeded = false;
             try
             {
-                value = string.Format(new CultureInfo(Cultre), "{0:" + Format + "}", DateTime.Now);
+                value = string.Format(new CultureInfo(Cultre), $"{{0:{Format}}}", DateTime.Now);
                 InfoFormat("The value is: {0}", value);
                 succeeded = true;
             }
