@@ -22,35 +22,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/btnStart"
-            android:src="@drawable/ic_action_start" />
+            android:src="@drawable/ic_action_start"
+            android:backgroundTint="@color/button_bg_color"
+            />
 
         <ImageButton
             android:id="@+id/btnSuspend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/btnSuspend"
-            android:src="@drawable/ic_action_suspend" />
+            android:src="@drawable/ic_action_suspend"
+            android:backgroundTint="@color/button_bg_color"
+            />
 
         <ImageButton
             android:id="@+id/btnResume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/btnResume"
-            android:src="@drawable/ic_action_resume" />
+            android:src="@drawable/ic_action_resume"
+            android:backgroundTint="@color/button_bg_color"
+            />
 
         <ImageButton
             android:id="@+id/btnStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/btnStop"
-            android:src="@drawable/ic_action_stop" />
+            android:src="@drawable/ic_action_stop"
+            android:backgroundTint="@color/button_bg_color"
+            />
 
         <Button
             android:id="@+id/btnRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btnRefresh" />
+            android:text="@string/btnRefresh"
+            android:backgroundTint="@color/button_bg_color"
+            android:textColor="@color/button_txt_color"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -62,13 +73,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btnApprove" />
+            android:text="@string/btnApprove"
+            android:backgroundTint="@color/button_bg_color"
+            android:textColor="@color/button_txt_color"
+            />
         <Button
             android:id="@+id/btnDisapprove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btnDisapprove" />
+            android:text="@string/btnDisapprove"
+            android:backgroundTint="@color/button_bg_color"
+            android:textColor="@color/button_txt_color"
+            />
     </LinearLayout>
 
     <TextView
@@ -76,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/txtInfo_bg"
+        android:textColor="@color/txtInfo_txt_color"
         android:padding="@dimen/txtInfo_margin" />
 
     <ListView

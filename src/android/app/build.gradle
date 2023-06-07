@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '29.0.2'
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.wexflow"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 31
         versionCode 1
-        versionName "5.8"
+        versionName "6.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,6 +22,7 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    namespace 'com.wexflow'
 }
 
 dependencies {
