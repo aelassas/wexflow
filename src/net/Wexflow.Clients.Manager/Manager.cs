@@ -430,7 +430,7 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonLog_Click(object sender, EventArgs e)
         {
-            var logFile = @"..\" + _logfile;
+            var logFile = $@"..\{_logfile}";
             if (File.Exists(logFile))
             {
                 _ = Process.Start("notepad.exe", logFile);
@@ -485,7 +485,7 @@ namespace Wexflow.Clients.Manager
 
             if (!_serviceRestarted)
             {
-                _ = MessageBox.Show("An error occurred while restoring Wexflow server: " + errorMsg);
+                _ = MessageBox.Show($"An error occurred while restoring Wexflow server: {errorMsg}");
             }
         }
 
