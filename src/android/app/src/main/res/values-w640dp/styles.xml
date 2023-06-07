@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="width_match_parent_max_640">
+        <item name="android:layout_width">640dp</item>
+    </style>
+
+</resources>
