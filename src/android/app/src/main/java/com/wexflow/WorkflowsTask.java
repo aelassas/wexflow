@@ -1,9 +1,11 @@
 package com.wexflow;
 
+import static com.wexflow.Constants.COL_ID;
+import static com.wexflow.Constants.COL_LAUNCHTYPE;
+import static com.wexflow.Constants.COL_NAME;
+
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -12,10 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.wexflow.Constants.COL_ID;
-import static com.wexflow.Constants.COL_LAUNCHTYPE;
-import static com.wexflow.Constants.COL_NAME;
 
 class WorkflowsTask {
 
@@ -58,57 +56,46 @@ class WorkflowsTask {
             ListView lvWorkflows = this.activity.getLvWorkflows();
             lvWorkflows.setAdapter(adapter);
 
-            lvWorkflows.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    adapter.setSelection(position);
-                    activity.setWorkflowId((int) id);
+            lvWorkflows.setOnItemClickListener((parent, view, position, id) -> {
+                adapter.setSelection(position);
+                activity.setWorkflowId((int) id);
 
-                    if (timer != null) {
-                        timer.cancel();
-                        timer.purge();
-                    }
-
-                    Workflow workflow = activity.getWorkflows().get((int) id);
-                    if (workflow.getEnabled()) {
-                        timer = new Timer();
-                        final Handler handler = new Handler();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
-                                updateButtonsTask.execute(handler);
-                            }
-                        }, 0, 500);
-                        UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
-                        updateButtonsTask.executeAsync();
-                    } else {
-                        UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
-                        updateButtonsTask.executeAsync();
-                    }
-
-                    if(workflow.getRunning()){
-                        WexflowServiceClient.JOBS.put(workflow.getId(), workflow.getInstanceId());
-                    }
-
+                if (timer != null) {
+                    timer.cancel();
+                    timer.purge();
                 }
+
+                Workflow workflow = activity.getWorkflows().get((int) id);
+                if (workflow.getEnabled()) {
+                    timer = new Timer();
+                    final Handler handler = new Handler();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
+                            updateButtonsTask.execute(handler);
+                        }
+                    }, 0, 500);
+                    UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
+                    updateButtonsTask.executeAsync();
+                } else {
+                    UpdateButtonsTask updateButtonsTask = new UpdateButtonsTask(activity);
+                    updateButtonsTask.executeAsync();
+                }
+
+                if(workflow.getRunning()){
+                    WexflowServiceClient.JOBS.put(workflow.getId(), workflow.getInstanceId());
+                }
+
             });
         }
     }
 
     void execute(){
         final Handler handler = new Handler();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final List<Workflow> workflows = doInBackground();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onPostExecute(workflows);
-                    }
-                });
-            }
+        Thread thread = new Thread(() -> {
+            final List<Workflow> workflows = doInBackground();
+            handler.post(() -> onPostExecute(workflows));
         });
         thread.start();
     }
