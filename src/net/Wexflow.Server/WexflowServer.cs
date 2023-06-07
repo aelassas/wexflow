@@ -97,7 +97,7 @@ namespace Wexflow.Server
             _webApp?.Dispose();
 
             var port = int.Parse(Config["WexflowServicePort"]);
-            var url = "http://+:" + port;
+            var url = $"http://+:{port}";
             _webApp = WebApp.Start<Startup>(url);
         }
 
