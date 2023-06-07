@@ -285,7 +285,7 @@ namespace Wexflow.Core
                 var ok = true;
                 foreach (var xa in xSelectFile.Attributes())
                 {
-                    if (xa.Name != "name" && xa.Name != "value")
+                    if (xa.Name is not (XName)"name" and not (XName)"value")
                     {
                         ok &= file.Tags.Any(tag => tag.Key == xa.Name && tag.Value == xa.Value);
                     }
