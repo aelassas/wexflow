@@ -98,7 +98,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                 if (Workflow.WexflowEngine.EnableEmailNotifications)
                                 {
-                                    var subject = "Wexflow notification from " + approverUser.Username;
+                                    var subject = $"Wexflow notification from {approverUser.Username}";
                                     var body = notificationMessage;
 
                                     var host = Workflow.WexflowEngine.SmptHost;
@@ -182,7 +182,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                 if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                 {
-                                                    var subject = "Wexflow notification from " + approverUser.Username;
+                                                    var subject = $"Wexflow notification from {approverUser.Username}";
                                                     var body = notificationMessage;
 
                                                     var host = Workflow.WexflowEngine.SmptHost;
@@ -224,7 +224,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                 if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                 {
-                                                    var subject = "Wexflow notification from " + approverUser.Username;
+                                                    var subject = $"Wexflow notification from {approverUser.Username}";
                                                     var body = notificationMessage;
 
                                                     var host = Workflow.WexflowEngine.SmptHost;
@@ -310,7 +310,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                     if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                     {
-                                                        var subject = "Wexflow notification on the record " + record.Name;
+                                                        var subject = $"Wexflow notification on the record {record.Name}";
                                                         var body = notificationMessage;
 
                                                         var host = Workflow.WexflowEngine.SmptHost;
@@ -339,7 +339,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                         if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                         {
-                                                            var subject = "Wexflow notification on the record " + record.Name;
+                                                            var subject = $"Wexflow notification on the record {record.Name}";
                                                             var body = notificationMessage;
 
                                                             var host = Workflow.WexflowEngine.SmptHost;
@@ -393,7 +393,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                 if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                 {
-                                                    var subject = "Wexflow notification from " + approverUser.Username;
+                                                    var subject = $"Wexflow notification from {approverUser.Username}";
                                                     var body = notificationMessage;
 
                                                     var host = Workflow.WexflowEngine.SmptHost;
@@ -468,7 +468,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                 if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                 {
-                                                    var subject = "Wexflow notification on the record " + record.Name;
+                                                    var subject = $"Wexflow notification on the record {record.Name}";
                                                     var body = notificationMessage;
 
                                                     var host = Workflow.WexflowEngine.SmptHost;
@@ -530,7 +530,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                                                 if (Workflow.WexflowEngine.EnableEmailNotifications)
                                                 {
-                                                    var subject = "Wexflow notification on the record " + record.Name;
+                                                    var subject = $"Wexflow notification on the record {record.Name}";
                                                     var body = notificationMessage;
 
                                                     var host = Workflow.WexflowEngine.SmptHost;
@@ -660,7 +660,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
                         if (Workflow.WexflowEngine.EnableEmailNotifications)
                         {
-                            var subject = "Wexflow notification from " + assignedBy.Username;
+                            var subject = $"Wexflow notification from {assignedBy.Username}";
                             var body = notificationMessage;
 
                             var host = Workflow.WexflowEngine.SmptHost;
