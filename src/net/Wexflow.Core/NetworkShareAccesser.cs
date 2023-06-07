@@ -21,7 +21,7 @@ namespace Wexflow.Core
             set
             {
                 _remoteComputerName = value;
-                _remoteUncName = @"\\" + _remoteComputerName;
+                _remoteUncName = $@"\\{_remoteComputerName}";
             }
         }
 
@@ -159,7 +159,7 @@ namespace Wexflow.Core
         public static NetworkShareAccesser Access(string remoteComputerName, string domainOrComuterName, string userName, string password)
         {
             return new NetworkShareAccesser(remoteComputerName,
-                                            domainOrComuterName + @"\" + userName,
+                                            $@"{domainOrComuterName}\{userName}",
                                             password);
         }
 
