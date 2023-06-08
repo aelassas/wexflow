@@ -39,7 +39,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
         }else{
-            self.WexflowServerUrl = "http://aelassas-pc:8000/wexflow/"
+            self.WexflowServerUrl = "http://192.168.100.207:8000/wexflow/"
         }
         
         self.startButton.isEnabled = false
@@ -49,13 +49,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.ApproveButton.isEnabled = false
         self.DisapproveButton.isEnabled = false
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
         
         tableView.delegate = self
         tableView.dataSource = self
         
         loadWorkflows()
-        
     }
     
     func registerSettingsBundle(){
@@ -63,7 +62,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         UserDefaults.standard.register(defaults: appDefaults)
     }
     
-    func defaultsChanged(){
+    @objc func defaultsChanged(notification: Notification){
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
         }
@@ -74,7 +73,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func onSettingsClick(_ sender: UIButton) {
-        let settings_app: URL = URL(string: UIApplicationOpenSettingsURLString)!
+        let settings_app: URL = URL(string: UIApplication.openSettingsURLString)!
         UIApplication.shared.open(settings_app)
     }
     
@@ -151,7 +150,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    func timerAction() {
+    @objc func timerAction() {
         self.updateButtons(force: false)
     }
     
@@ -492,7 +491,7 @@ extension UIViewController {
     
     func cleanupUrl(url: String) -> String{
         let regex = try! NSRegularExpression(pattern: "/+$", options: NSRegularExpression.Options.caseInsensitive)
-        let range = NSMakeRange(0, url.characters.count)
+        let range = NSMakeRange(0, url.count)
         let cleanUrl = regex.stringByReplacingMatches(in: url, options: [], range: range, withTemplate: "")
         return cleanUrl + "/"
     }

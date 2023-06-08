@@ -14,7 +14,7 @@
 			<key>Key</key>
 			<string>wexflow_server_url_preference</string>
 			<key>DefaultValue</key>
-			<string>http://aelassas-pc:8000/wexflow/</string>
+			<string>http://192.168.100.207:8000/wexflow/</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>KeyboardType</key>

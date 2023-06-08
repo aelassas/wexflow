@@ -8,6 +8,7 @@
 
 import UIKit
 
+//@available(iOS, deprecated: 13.0)
 class LoginViewController: UIViewController {
 
     static var Username = ""
@@ -24,13 +25,13 @@ class LoginViewController: UIViewController {
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
         }else{
-            self.WexflowServerUrl = "http://aelassas-pc:8000/wexflow/"
+            self.WexflowServerUrl = "http://192.168.100.207:8000/wexflow/"
         }
         
         usernameTextField.text = ""
         passwordTextField.text = ""
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.defaultsChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
         
     }
 
@@ -39,7 +40,7 @@ class LoginViewController: UIViewController {
         UserDefaults.standard.register(defaults: appDefaults)
     }
     
-    func defaultsChanged(){
+   @objc func defaultsChanged(notification: Notification){
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
         }
@@ -79,11 +80,12 @@ class LoginViewController: UIViewController {
                 if data != nil && data!.count > 0 {
                     let jsonResponse = try! JSONSerialization.jsonObject(with: data!, options: [])
                     let user = jsonResponse as? [String: Any]
+                    let username = user!["Username"] as! String
                     let password = user!["Password"] as! String
                     let userProfile = user!["UserProfile"] as! Int
 
                     if (userProfile == 0 || userProfile == 1) && pass == password {
-                        LoginViewController.Username = self.usernameTextField.text!
+                        LoginViewController.Username = username
                         LoginViewController.Password = password
                         DispatchQueue.main.async{
                             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -123,7 +125,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func onSettingsClick(_ sender: UIButton) {
-        let settings_app: URL = URL(string: UIApplicationOpenSettingsURLString)!
+        let settings_app: URL = URL(string: UIApplication.openSettingsURLString)!
         UIApplication.shared.open(settings_app)
     }
     
@@ -133,21 +135,16 @@ class LoginViewController: UIViewController {
         let res = base64.replacingOccurrences(of: "\n", with: "")
         return res
     }
-    
+        
     func md5(string: String) -> String {
-        let messageData = string.data(using:.utf8)!
-        var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
-        
-        _ = digestData.withUnsafeMutableBytes {digestBytes in
-            messageData.withUnsafeBytes {messageBytes in
-                CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
-            }
+        let data = string.data(using:.utf8)!
+        let hash = data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> [UInt8] in
+            var hash = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
+            CC_MD5(bytes.baseAddress, CC_LONG(data.count), &hash)
+            return hash
         }
-        
-        return String(digestData.map { String(format: "%02hhx", $0) }.joined())
+        return hash.map { String(format: "%02x", $0) }.joined()
     }
-
-
     
     /*
     // MARK: - Navigation
