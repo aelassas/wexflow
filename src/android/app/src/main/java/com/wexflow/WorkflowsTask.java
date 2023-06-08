@@ -5,6 +5,7 @@ import static com.wexflow.Constants.COL_LAUNCHTYPE;
 import static com.wexflow.Constants.COL_NAME;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -68,7 +69,7 @@ class WorkflowsTask {
                 Workflow workflow = activity.getWorkflows().get((int) id);
                 if (workflow.getEnabled()) {
                     timer = new Timer();
-                    final Handler handler = new Handler();
+                    final Handler handler = new Handler(Looper.getMainLooper());
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -83,7 +84,7 @@ class WorkflowsTask {
                     updateButtonsTask.executeAsync();
                 }
 
-                if(workflow.getRunning()){
+                if (workflow.getRunning()) {
                     WexflowServiceClient.JOBS.put(workflow.getId(), workflow.getInstanceId());
                 }
 
@@ -91,8 +92,8 @@ class WorkflowsTask {
         }
     }
 
-    void execute(){
-        final Handler handler = new Handler();
+    void execute() {
+        final Handler handler = new Handler(Looper.getMainLooper());
         Thread thread = new Thread(() -> {
             final List<Workflow> workflows = doInBackground();
             handler.post(() -> onPostExecute(workflows));

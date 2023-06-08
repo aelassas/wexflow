@@ -2,6 +2,7 @@ package com.wexflow;
 
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 class UpdateButtonsTask {
@@ -47,9 +48,9 @@ class UpdateButtonsTask {
                 this.activity.getBtnApprove().setEnabled(workflow.getApproval() && workflow.getWaitingForApproval());
                 this.activity.getBtnDisapprove().setEnabled(workflow.getApproval() && workflow.getWaitingForApproval());
 
-                if(workflow.getApproval() && workflow.getWaitingForApproval() && !workflow.getPaused()){
+                if (workflow.getApproval() && workflow.getWaitingForApproval() && !workflow.getPaused()) {
                     this.activity.getTxtInfo().setText(R.string.workflow_waiting_for_approval);
-                }else{
+                } else {
                     if (workflow.getRunning() && !workflow.getPaused()) {
                         this.activity.getTxtInfo().setText(R.string.workflow_running);
                     } else if (workflow.getPaused()) {
@@ -63,8 +64,8 @@ class UpdateButtonsTask {
         }
     }
 
-    void executeAsync(){
-        final Handler handler = new Handler();
+    void executeAsync() {
+        final Handler handler = new Handler(Looper.getMainLooper());
         Thread thread = new Thread(() -> {
             final Workflow workflow = doInBackground(true);
             handler.post(() -> onPostExecute(workflow));
@@ -72,7 +73,7 @@ class UpdateButtonsTask {
         thread.start();
     }
 
-    void execute(Handler handler){
+    void execute(Handler handler) {
         final Workflow workflow = doInBackground(false);
         handler.post(() -> onPostExecute(workflow));
     }

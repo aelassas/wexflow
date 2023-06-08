@@ -1,6 +1,7 @@
 package com.wexflow;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ class ActionTask {
             this.actionType = actionType;
             switch (this.actionType) {
                 case Start:
-                   this.client.start(this.activity.getWorkflowId());
+                    this.client.start(this.activity.getWorkflowId());
                     succeeded = true;
                     break;
                 case Suspend:
@@ -84,17 +85,17 @@ class ActionTask {
                     break;
             }
 
-            if(succeeded){
+            if (succeeded) {
                 Toast.makeText(this.activity.getBaseContext(), stringBuilder.toString(), Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(this.activity.getBaseContext(), "Not supported.", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
-    void execute(final ActionType at){
-        final Handler handler = new Handler();
+    void execute(final ActionType at) {
+        final Handler handler = new Handler(Looper.getMainLooper());
 
         Thread thread = new Thread(() -> {
             doInBackground(at);
