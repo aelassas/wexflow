@@ -11,12 +11,20 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RESULT_SETTINGS = 1;
+    //private static final int RESULT_SETTINGS = 1;
+
+    private final ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // Add same code that you want to add in onActivityResult method
+            });
 
     private String uri;
     private ImageButton btnStart;
@@ -91,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         loadWorkflows();
     }
 
-    private void loadWorkflows(){
+    private void loadWorkflows() {
         this.txtInfo.setText("");
         WorkflowsTask workflowsTask = new WorkflowsTask(this);
         workflowsTask.execute();
@@ -107,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
-            startActivityForResult(i, RESULT_SETTINGS);
+            //startActivityForResult(i, RESULT_SETTINGS);
+            startActivityIntent.launch(i);
         }
 
         return true;
