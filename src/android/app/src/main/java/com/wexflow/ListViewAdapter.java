@@ -1,7 +1,9 @@
 package com.wexflow;
 
 import android.app.Activity;
+
 import androidx.core.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,10 @@ class ListViewAdapter extends BaseAdapter {
     private final ArrayList<HashMap<String, String>> list;
     private final Activity activity;
     private int selectedPos = NOT_SELECTED;
+
+    private TextView txtId;
+    private TextView txtName;
+    private TextView txtLaunchType;
 
     ListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> list) {
         super();
@@ -70,13 +76,12 @@ class ListViewAdapter extends BaseAdapter {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        //if (convertView == null) {
-        convertView = inflater.inflate(R.layout.row, parent, false);
-
-        TextView txtId = convertView.findViewById(R.id.txtId);
-        TextView txtName = convertView.findViewById(R.id.txtName);
-        TextView txtLaunchType = convertView.findViewById(R.id.txtLaunchType);
-        //}
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.row, parent, false);
+            txtId = convertView.findViewById(R.id.txtId);
+            txtName = convertView.findViewById(R.id.txtName);
+            txtLaunchType = convertView.findViewById(R.id.txtLaunchType);
+        }
 
         if (position == selectedPos) {
             txtId.setTextColor(ContextCompat.getColor(txtId.getContext(), R.color.list_row_selected_text));
