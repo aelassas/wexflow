@@ -5,6 +5,7 @@
 	<DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms> 
     <Version>6.7.0</Version>
+    <AssemblyVersion>6.7.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
