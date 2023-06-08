@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
 
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    Handler handler = new Handler(Looper.getMainLooper());
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
