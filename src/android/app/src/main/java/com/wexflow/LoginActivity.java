@@ -2,8 +2,9 @@ package com.wexflow;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -16,6 +17,8 @@ import org.json.JSONException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A login screen that offers login via email/password.
@@ -30,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Button mSettingsButton = findViewById(R.id.settings);
         mSettingsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginActivity.this, SettingsActivity.class );
+            Intent intent = new Intent(LoginActivity.this, SettingsActivity.class);
             LoginActivity.this.startActivity(intent);
         });
 
@@ -65,19 +71,22 @@ public class LoginActivity extends AppCompatActivity {
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        if(username.isEmpty()){
+        if (username.isEmpty()) {
             mUsernameView.setError(getString(R.string.error_field_required));
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             mPasswordView.setError(getString(R.string.error_field_required));
         }
 
-        if(!username.isEmpty() && !password.isEmpty()){
+        if (!username.isEmpty() && !password.isEmpty()) {
             Username = username;
             Password = md5(password);
             UserLoginTask task = new UserLoginTask(username, password);
-            task.execute();
+            executor.execute(() -> {
+                Boolean success = task.doInBackground();
+                handler.post(() -> task.onPostExecute(success));
+            });
         }
     }
 
@@ -110,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
      * Represents an asynchronous login task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask {
 
         private final String mUsername;
         private final String mPassword;
@@ -126,32 +135,28 @@ public class LoginActivity extends AppCompatActivity {
             userNotFound = false;
         }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground() {
 
             try {
                 String uri = sharedPref.getString(SettingsActivity.KEY_PREF_WEXFLOW_URI, getResources().getString(R.string.pref_wexflow_defualt_value));
                 WexflowServiceClient client = new WexflowServiceClient(uri);
                 String passwordHash = md5(this.mPassword);
-                User user = client.getUser(mUsername, passwordHash,  mUsername);
+                User user = client.getUser(mUsername, passwordHash, mUsername);
 
                 String password = user.getPassword();
                 UserProfile up = user.getUserProfile();
 
-                if((up.equals(UserProfile.SuperAdministrator) || up.equals(UserProfile.Administrator)) &&  password.equals(passwordHash))
-                {
+                if ((up.equals(UserProfile.SuperAdministrator) || up.equals(UserProfile.Administrator)) && password.equals(passwordHash)) {
                     return true;
-                }
-                else
-                {
-                    if(up.equals(UserProfile.Restricted)){
+                } else {
+                    if (up.equals(UserProfile.Restricted)) {
                         restrictedAccess = true;
                     }
 
                     return false;
                 }
 
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 userNotFound = true;
                 return false;
             } catch (Exception e) {
@@ -161,21 +166,20 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class );
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 LoginActivity.this.startActivity(intent);
             } else {
 
-                if(userNotFound) {
+                if (userNotFound) {
                     mUsernameView.setError(getString(R.string.error_user_not_found));
                     mUsernameView.requestFocus();
-                }else{
-                    if(errorOccurred){
+                } else {
+                    if (errorOccurred) {
                         mPasswordView.setError(getString(R.string.error_exception));
-                    }else{
-                        if(restrictedAccess)
+                    } else {
+                        if (restrictedAccess)
                             mPasswordView.setError(getString(R.string.error_restricted_access));
                         else {
                             mPasswordView.setError(getString(R.string.error_incorrect_password));
