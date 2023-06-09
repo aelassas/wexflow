@@ -1,0 +1,23 @@
+{
+  "configurations" : [
+    {
+      "id" : "315AC5D2-E44F-4D64-8A21-9FFA0502584E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Wexflow.xcodeproj",
+      "identifier" : "39D3ECC323151B2A006A4BEB",
+      "name" : "Wexflow"
+    }
+  },
+  "testTargets" : [
+
+  ],
+  "version" : 1
+}

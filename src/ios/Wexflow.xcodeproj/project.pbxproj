@@ -31,6 +31,7 @@
 		39D3ECD123151B2A006A4BEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39D3ECD323151B2A006A4BEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39D3ECD923158A4A006A4BEB /* WorkflowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkflowTableViewCell.swift; sourceTree = "<group>"; };
+		39F0451E2A32F2A300D57673 /* Wexflow.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Wexflow.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 				39D3ECCB23151B2A006A4BEB /* Main.storyboard */,
 				39A13AB92316CBDD00778758 /* Settings.bundle */,
 				39A13ABB2316CDD900778758 /* SettingsBundleHelper.swift */,
+				39F0451E2A32F2A300D57673 /* Wexflow.xctestplan */,
 				39D3ECC923151B2A006A4BEB /* ViewController.swift */,
 				39D3ECD923158A4A006A4BEB /* WorkflowTableViewCell.swift */,
 			);
