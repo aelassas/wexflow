@@ -26,10 +26,11 @@ Wexflow automates the process of organizing, storing, manipulating files, provid
 # Resources
 
 * [Download](https://github.com/aelassas/wexflow/releases/latest)
+* [Installation Instructions](https://github.com/aelassas/wexflow/wiki/Installation)
+* [Get Started](https://github.com/aelassas/wexflow/wiki/Get-Started)
 * [Documentation](https://github.com/aelassas/wexflow/wiki)
-* [Installation instructions](https://github.com/aelassas/wexflow/wiki/Installation)
-* [Docker image](https://github.com/aelassas/wexflow/wiki/Docker)
-* [Run from source code](https://github.com/aelassas/wexflow/wiki/Run-From-Code)
+* [Docker Image](https://github.com/aelassas/wexflow/wiki/Docker)
+* [Run from Source Code](https://github.com/aelassas/wexflow/wiki/Run-From-Code)
 
 # Credentials
 
