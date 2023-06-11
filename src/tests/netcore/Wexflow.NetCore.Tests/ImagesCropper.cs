@@ -5,7 +5,6 @@ using System.Runtime.Versioning;
 
 namespace Wexflow.NetCore.Tests
 {
-
     [TestClass]
     [SupportedOSPlatform("windows")]
     public class ImagesCropper

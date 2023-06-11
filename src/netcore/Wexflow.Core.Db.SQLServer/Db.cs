@@ -276,7 +276,6 @@ namespace Wexflow.Core.Db.SQLServer
                     + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -322,7 +321,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         Entry entry = new()
@@ -440,7 +438,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         Entry entry = new()
@@ -640,7 +637,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -685,7 +681,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -734,7 +729,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -851,7 +845,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -921,7 +914,6 @@ namespace Wexflow.Core.Db.SQLServer
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
                     + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " DESC;", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     if (reader.Read())
@@ -1127,7 +1119,6 @@ namespace Wexflow.Core.Db.SQLServer
                     + " FROM " + Core.Db.User.DocumentName
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1172,7 +1163,6 @@ namespace Wexflow.Core.Db.SQLServer
                     + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1212,7 +1202,6 @@ namespace Wexflow.Core.Db.SQLServer
                     + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1270,7 +1259,6 @@ namespace Wexflow.Core.Db.SQLServer
                     + " FROM " + Core.Db.Workflow.DocumentName
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())

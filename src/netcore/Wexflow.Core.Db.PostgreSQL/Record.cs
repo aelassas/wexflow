@@ -2,7 +2,6 @@
 {
     public class Record : Core.Db.Record
     {
-
         public static readonly string ColumnName_Id = "ID";
         public static readonly string ColumnName_Name = "NAME";
         public static readonly string ColumnName_Description = "DESCRIPTION";

@@ -49,7 +49,6 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void Init()
         {
-
             // StatusCount
             ClearStatusCount();
 
@@ -124,7 +123,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " AND " + UserWorkflow.ColumnName_WorkflowId + "=" + int.Parse(workflowId)
                         + ";", conn))
                     {
-
                         var count = (long)command.ExecuteScalar();
 
                         return count > 0;
@@ -285,7 +283,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -332,10 +329,8 @@ namespace Wexflow.Core.Db.SQLite
                         + Entry.ColumnName_JobId
                         + " FROM " + Core.Db.Entry.DocumentName + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var entry = new Entry
@@ -452,10 +447,8 @@ namespace Wexflow.Core.Db.SQLite
 
                     using (var command = new SQLiteCommand(sqlBuilder.ToString(), conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var entry = new Entry
@@ -495,7 +488,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
                         + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn))
                     {
-
                         var count = (long)command.ExecuteScalar();
 
                         return count;
@@ -524,10 +516,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE " + Entry.ColumnName_WorkflowId + " = " + workflowId + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var entry = new Entry
@@ -574,10 +564,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
                         + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "');", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var entry = new Entry
@@ -615,7 +603,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " ORDER BY " + Entry.ColumnName_StatusDate + " DESC LIMIT 1;", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -644,7 +631,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " ORDER BY " + Entry.ColumnName_StatusDate + " ASC LIMIT 1;", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -681,7 +667,6 @@ namespace Wexflow.Core.Db.SQLite
                         + HistoryEntry.ColumnName_WorkflowId
                         + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -730,10 +715,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var entry = new HistoryEntry
@@ -783,10 +766,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " LIMIT " + entriesCount + " OFFSET " + ((page - 1) * entriesCount) + ";"
                         , conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var entry = new HistoryEntry
@@ -901,10 +882,8 @@ namespace Wexflow.Core.Db.SQLite
 
                     using (var command = new SQLiteCommand(sqlBuilder.ToString(), conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var entry = new HistoryEntry
@@ -941,7 +920,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
                     {
-
                         var count = (long)command.ExecuteScalar();
 
                         return count;
@@ -964,7 +942,6 @@ namespace Wexflow.Core.Db.SQLite
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
                         + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn))
                     {
-
                         var count = (long)command.ExecuteScalar();
 
                         return count;
@@ -985,10 +962,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " DESC LIMIT 1;", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var statusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]);
@@ -1015,10 +990,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " ASC LIMIT 1;", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var statusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]);
@@ -1046,10 +1019,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var password = (string)reader[User.ColumnName_Password];
@@ -1086,7 +1057,6 @@ namespace Wexflow.Core.Db.SQLite
                     {
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var statusCount = new StatusCount
@@ -1131,10 +1101,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var user = new User
@@ -1177,10 +1145,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE " + User.ColumnName_Id + " = '" + int.Parse(userId) + "'"
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var user = new User
@@ -1224,10 +1190,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.User.DocumentName
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var user = new User
@@ -1273,10 +1237,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var user = new User
@@ -1317,10 +1279,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
                         + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var workflowId = (long)reader[UserWorkflow.ColumnName_WorkflowId];
@@ -1348,10 +1308,8 @@ namespace Wexflow.Core.Db.SQLite
                         + " FROM " + Core.Db.Workflow.DocumentName
                         + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var workflow = new Workflow
@@ -1384,10 +1342,8 @@ namespace Wexflow.Core.Db.SQLite
                         + Workflow.ColumnName_Xml
                         + " FROM " + Core.Db.Workflow.DocumentName + ";", conn))
                     {
-
                         using (var reader = command.ExecuteReader())
                         {
-
                             while (reader.Read())
                             {
                                 var workflow = new Workflow
@@ -1515,7 +1471,6 @@ namespace Wexflow.Core.Db.SQLite
                         + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1547,7 +1502,6 @@ namespace Wexflow.Core.Db.SQLite
                         + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1577,7 +1531,6 @@ namespace Wexflow.Core.Db.SQLite
                         + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(dateTimeFormat) + "'") + ");"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1599,7 +1552,6 @@ namespace Wexflow.Core.Db.SQLite
                         + int.Parse(userWorkflow.WorkflowId) + ");"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1619,7 +1571,6 @@ namespace Wexflow.Core.Db.SQLite
                         + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + "); SELECT last_insert_rowid(); "
                         , conn))
                     {
-
                         var id = (long)command.ExecuteScalar();
 
                         return id.ToString();
@@ -1649,7 +1600,6 @@ namespace Wexflow.Core.Db.SQLite
                         + Entry.ColumnName_Id + " = " + int.Parse(id) + ";"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1670,7 +1620,6 @@ namespace Wexflow.Core.Db.SQLite
                         + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "';"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1696,7 +1645,6 @@ namespace Wexflow.Core.Db.SQLite
                         + User.ColumnName_Id + " = " + int.Parse(id) + ";"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1720,7 +1668,6 @@ namespace Wexflow.Core.Db.SQLite
                         + User.ColumnName_Id + " = " + int.Parse(userId) + ";"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1741,7 +1688,6 @@ namespace Wexflow.Core.Db.SQLite
                         + User.ColumnName_Id + " = " + int.Parse(dbId) + ";"
                         , conn))
                     {
-
                         _ = command.ExecuteNonQuery();
                     }
                 }
@@ -1794,7 +1740,6 @@ namespace Wexflow.Core.Db.SQLite
                     {
                         using (var reader = command.ExecuteReader())
                         {
-
                             if (reader.Read())
                             {
                                 var logs = (string)reader[HistoryEntry.ColumnName_Logs];

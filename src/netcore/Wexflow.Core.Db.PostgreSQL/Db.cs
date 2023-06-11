@@ -434,7 +434,6 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         Entry entry = new()
@@ -634,7 +633,6 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -679,7 +677,6 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -726,7 +723,6 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -1116,7 +1112,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                     + " FROM " + Core.Db.User.DocumentName
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1161,7 +1156,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                     + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1201,7 +1195,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                     + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1258,7 +1251,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                     + Workflow.ColumnName_Xml
                     + " FROM " + Core.Db.Workflow.DocumentName + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())

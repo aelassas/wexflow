@@ -68,7 +68,6 @@ namespace Wexflow.Tasks.FilesEqual
 
         private bool CheckFiles()
         {
-
             if (!File.Exists(File1))
             {
                 Logger.ErrorFormat("The file {0} does not exist.", File1);

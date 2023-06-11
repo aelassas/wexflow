@@ -7,7 +7,6 @@ using System.IO;
 
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
-
     public readonly struct FileChange
     {
         internal FileChange(string directory, string path, WatcherChangeTypes type)

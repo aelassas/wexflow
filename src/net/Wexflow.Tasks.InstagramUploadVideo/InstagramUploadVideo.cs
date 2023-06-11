@@ -82,7 +82,6 @@ namespace Wexflow.Tasks.InstagramUploadVideo
             var success = true;
             try
             {
-
                 var authTask = Authenticate();
                 authTask.Wait();
 

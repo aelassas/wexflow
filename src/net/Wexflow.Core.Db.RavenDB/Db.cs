@@ -1474,7 +1474,6 @@ namespace Wexflow.Core.Db.RavenDB
             {
                 using (var session = store.OpenSession())
                 {
-
                     var col = session.Query<User>();
                     var users = col.Where(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username).ToList();
                     return users;

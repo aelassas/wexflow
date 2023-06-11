@@ -10,7 +10,6 @@ namespace Wexflow.Tasks.FilesDecryptor
 {
     public class FilesDecryptor : Task
     {
-
         public FilesDecryptor(XElement xe, Workflow wf) : base(xe, wf)
         {
         }

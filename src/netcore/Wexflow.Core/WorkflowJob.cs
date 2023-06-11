@@ -7,7 +7,6 @@ namespace Wexflow.Core
     /// </summary>
     public class WorkflowJob : IJob
     {
-
         /// <summary>
         /// Executes workflow the job
         /// </summary>

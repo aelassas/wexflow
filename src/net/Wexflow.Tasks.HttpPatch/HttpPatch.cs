@@ -40,7 +40,6 @@ namespace Wexflow.Tasks.HttpPatch
                 using (var client = new HttpClient())
                 using (var httpContent = new StringContent(Payload, Encoding.UTF8, Type))
                 {
-
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = Tls12;
 

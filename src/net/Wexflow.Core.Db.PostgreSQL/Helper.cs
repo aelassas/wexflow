@@ -19,7 +19,6 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                 using (var command1 = new NpgsqlCommand("SELECT COUNT(*) FROM pg_database WHERE datname = '" + databaseName + "'", conn))
                 {
-
                     var count = (long)command1.ExecuteScalar();
 
                     if (count == 0)

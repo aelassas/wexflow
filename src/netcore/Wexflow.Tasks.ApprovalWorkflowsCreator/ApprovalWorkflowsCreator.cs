@@ -32,7 +32,6 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
 
             try
             {
-
                 if (!SharedMemory.ContainsKey(smKey))
                 {
                     Error($"Shared memory key {smKey} not found.");

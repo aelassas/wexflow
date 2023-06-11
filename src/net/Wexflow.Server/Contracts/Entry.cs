@@ -13,7 +13,6 @@
 
     public class Entry
     {
-
         public string Id { get; set; }
 
         public int WorkflowId { get; set; }

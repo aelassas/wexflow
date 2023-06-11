@@ -30,7 +30,6 @@ namespace Wexflow.Tasks.FileExists
 
             try
             {
-
                 try
                 {
                     if (!string.IsNullOrEmpty(SmbComputerName) && !string.IsNullOrEmpty(SmbUsername) && !string.IsNullOrEmpty(SmbPassword))

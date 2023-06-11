@@ -114,7 +114,6 @@ namespace Wexflow.Tasks.YouTube
                 UserCredential credential;
                 using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
                 {
-
 #pragma warning disable CS0618 // Le type ou le membre est obsolète
                     credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                         GoogleClientSecrets.Load(stream).Secrets,

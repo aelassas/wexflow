@@ -49,7 +49,6 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void Init()
         {
-
             // StatusCount
             ClearStatusCount();
 

@@ -264,7 +264,6 @@ namespace Wexflow.Core.Db.MySQL
                     + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
@@ -309,7 +308,6 @@ namespace Wexflow.Core.Db.MySQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         Entry entry = new()
@@ -624,7 +622,6 @@ namespace Wexflow.Core.Db.MySQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -669,7 +666,6 @@ namespace Wexflow.Core.Db.MySQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -829,7 +825,6 @@ namespace Wexflow.Core.Db.MySQL
 
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         HistoryEntry entry = new()
@@ -1107,7 +1102,6 @@ namespace Wexflow.Core.Db.MySQL
                     + " FROM " + Core.Db.User.DocumentName
                     + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1249,7 +1243,6 @@ namespace Wexflow.Core.Db.MySQL
                     + Workflow.ColumnName_Xml
                     + " FROM " + Core.Db.Workflow.DocumentName + ";", conn))
                 {
-
                     using var reader = command.ExecuteReader();
 
                     while (reader.Read())
