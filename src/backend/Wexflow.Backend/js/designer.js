@@ -394,7 +394,7 @@
             }
         }
 
-        function snapping(drag, first) {
+        function snapping(drag) {
             let grab = drag.querySelector(".grabme");
             grab.parentNode.removeChild(grab);
             let blockin = drag.querySelector(".blockin");
@@ -562,6 +562,13 @@
             }
         }
 
+        function openInNewTab(url) {
+            let win = window.open(url, "_blank");
+            if (typeof win !== "undefined" && win !== null) {
+                win.focus();
+            }
+        }
+
         document.getElementById("close").addEventListener("click", function () {
             closeTaskSettings();
         });
@@ -654,10 +661,10 @@
         });
 
         let aclick = false;
-        let beginTouch = function (event) {
+        let beginTouch = function () {
             aclick = true;
         }
-        let checkTouch = function (event) {
+        let checkTouch = function () {
             aclick = false;
         }
 
@@ -703,13 +710,6 @@
                         let url = "https://github.com/aelassas/wexflow/wiki/" + taskname;
                         openInNewTab(url);
                     };
-
-                    function openInNewTab(url) {
-                        let win = window.open(url, "_blank");
-                        if (typeof win !== "undefined" && win !== null) {
-                            win.focus();
-                        }
-                    }
 
                     let index = parseInt(event.target.closest(".block").querySelector(".blockid").value);
                     if (!tasks[index] && isNaN(index) === false) {
@@ -1953,7 +1953,7 @@
                     let removeButton = removeButtons[i];
                     removeButton.onclick = function () {
                         let blockid = parseInt(this.closest(".block").querySelector(".blockid").value);
-                        let taskName = blocks[blockid].data[0].value;
+                        //let taskName = blocks[blockid].data[0].value;
 
                         let res = confirm(language.get("confirm-delete-task"));
 
@@ -2272,7 +2272,7 @@
         document.getElementById("run").onclick = () => {
             save(() => {
                 let startUri = uri + "/start?w=" + workflow.WorkflowInfo.Id;
-                Common.post(startUri, function (res) {
+                Common.post(startUri, function () {
                     Common.toastSuccess(language.get("toast-save-and-run"));
                 }, function () { }, "", auth);
             });
@@ -2615,7 +2615,7 @@
                     document.getElementById("rightswitch").style.backgroundColor = "transparent";
 
 
-                    let onresize = function (e) {
+                    let onresize = function () {
                         // Compute the absolute coordinates and dimensions of blocklyArea.
                         let element = blocklyArea;
                         let x = 0;
@@ -2720,7 +2720,7 @@
             editor.focus();
             editor.getSession().getUndoManager().reset();
 
-            editor.on("change", function (e) {
+            editor.on("change", function () {
                 jsonEditorChanged = true;
                 xmlEditorChanged = false;
             });
@@ -2930,11 +2930,11 @@
             editor.focus();
             editor.getSession().getUndoManager().reset();
 
-            editor.on("change", function (e) {
+            editor.on("change", function () {
                 xmlEditorChanged = true;
                 jsonEditorChanged = false;
             });
-        };
+        }
 
         document.getElementById("rightswitch").onclick = function () {
 
