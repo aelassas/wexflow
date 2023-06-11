@@ -333,7 +333,6 @@ namespace Wexflow.Server
                             }
                         }
                     }
-
                 }
 
                 return new Response()
@@ -406,7 +405,6 @@ namespace Wexflow.Server
                             }
                         }
                     }
-
                 }
 
                 return new Response()
@@ -474,7 +472,6 @@ namespace Wexflow.Server
                             }
                         }
                     }
-
                 }
 
                 var emptyJobsStr = JsonConvert.SerializeObject(Array.Empty<WorkflowInfo>());
@@ -885,7 +882,6 @@ namespace Wexflow.Server
                             ContentType = "application/json",
                             Contents = s => s.Write(tasksBytes, 0, tasksBytes.Length)
                         };
-
                     }
                 }
 
@@ -1355,7 +1351,6 @@ namespace Wexflow.Server
                 }
 
                 return GetFalseResponse();
-
             });
         }
 
@@ -1692,7 +1687,6 @@ namespace Wexflow.Server
                             xcase.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
                                 new XElement(xn + "Parent", new XAttribute("id", parentId))));
                         }
-
                     }
 
                     xswitch.Add(xcase);
@@ -3019,7 +3013,6 @@ namespace Wexflow.Server
                             ContentType = "application/json",
                             Contents = s => s.Write(uBytes, 0, uBytes.Length)
                         };
-
                     }
                 }
 
@@ -3262,7 +3255,6 @@ namespace Wexflow.Server
                     catch (Exception e)
                     {
                         Console.WriteLine("An error occured while retrieving user workflows: ", e);
-
                     }
                 }
 
