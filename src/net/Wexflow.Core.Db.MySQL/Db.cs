@@ -551,7 +551,6 @@ namespace Wexflow.Core.Db.MySQL
 
                                 return entry;
                             }
-
                         }
                     }
 
