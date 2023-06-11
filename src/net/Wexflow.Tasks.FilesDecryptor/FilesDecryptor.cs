@@ -120,7 +120,6 @@ namespace Wexflow.Tasks.FilesDecryptor
                     rmcrypto.Padding = PaddingMode.Zeros;
                     rmcrypto.Mode = CipherMode.CBC;
 
-
                     using (var cs = new CryptoStream(fsCrypt, rmcrypto.CreateDecryptor(), CryptoStreamMode.Read))
                     using (var fsOut = new FileStream(outputFile, FileMode.Create))
                     {

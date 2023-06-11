@@ -622,7 +622,6 @@ namespace Wexflow.Core
                     onRejected = new GraphEvent(onRejectedNodes);
                 }
 
-
                 ExecutionGraph = new Graph(taskNodes, onSuccess, onWarning, onError, onRejected);
             }
         }

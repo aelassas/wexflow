@@ -89,7 +89,6 @@ namespace Wexflow.Tasks.FilesJoiner
             return groupedFiles;
         }
 
-
         public override TaskStatus Run()
         {
             Info("Concatenating files...");

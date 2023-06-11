@@ -57,7 +57,6 @@ namespace Wexflow.Tasks.XmlToCsv
                 success = false;
             }
 
-
             var status = Status.Success;
 
             if (!success && atLeastOneSuccess)

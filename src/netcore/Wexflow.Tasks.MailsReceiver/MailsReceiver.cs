@@ -96,7 +96,6 @@ namespace Wexflow.Tasks.MailsReceiver
                                     }
                                 }
 
-
                                 if (!atLeastOneSucceed)
                                 {
                                     atLeastOneSucceed = true;

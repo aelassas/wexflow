@@ -84,7 +84,6 @@ namespace Wexflow.Core.Db.RavenDB
             session.Store(statusCount);
             session.SaveChanges();
 
-
             // Entries
             ClearEntries();
 
@@ -523,7 +522,6 @@ namespace Wexflow.Core.Db.RavenDB
                 }
             }
         }
-
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {

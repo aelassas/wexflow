@@ -746,7 +746,6 @@ namespace Wexflow.Core.Db.SQLServer
                     }
                 }
 
-
                 return entries;
             }
         }

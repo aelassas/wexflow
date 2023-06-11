@@ -29,7 +29,6 @@ namespace Wexflow.Tasks.Vimeo
             Info("Uploading videos...");
             var atLeastOneSuccess = false;
 
-
             bool success;
             try
             {

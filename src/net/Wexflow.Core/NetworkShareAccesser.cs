@@ -64,7 +64,6 @@ namespace Wexflow.Core
         private const int RESOURCEUSAGE_CONNECTABLE = 0x00000001;
         private const int RESOURCEUSAGE_CONTAINER = 0x00000002;
 
-
         private const int CONNECT_INTERACTIVE = 0x00000008;
         private const int CONNECT_PROMPT = 0x00000010;
         private const int CONNECT_REDIRECT = 0x00000080;

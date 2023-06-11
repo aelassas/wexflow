@@ -56,7 +56,6 @@ namespace Wexflow.Tasks.WebToHtml
                 }
             }
 
-
             if (!success && atLeastOneSuccess)
             {
                 status = Status.Warning;

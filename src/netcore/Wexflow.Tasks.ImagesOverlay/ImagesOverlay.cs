@@ -58,7 +58,6 @@ namespace Wexflow.Tasks.ImagesOverlay
             return new TaskStatus(status);
         }
 
-
         private bool OverlayImages(FileInf[] imageFiles, string destPath)
         {
             try

@@ -45,7 +45,6 @@ namespace Wexflow.Tasks.RedditListPosts
                 return new TaskStatus(Status.Error);
             }
 
-
             try
             {
                 // Retrieve the authenticated user's recent post history.

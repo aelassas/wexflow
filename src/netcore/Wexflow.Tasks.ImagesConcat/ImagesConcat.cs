@@ -58,7 +58,6 @@ namespace Wexflow.Tasks.ImagesConcat
             return new TaskStatus(status);
         }
 
-
         private bool ConcatImages(FileInf[] imageFiles, string destPath)
         {
             try

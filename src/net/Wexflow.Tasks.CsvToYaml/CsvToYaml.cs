@@ -29,7 +29,6 @@ namespace Wexflow.Tasks.CsvToYaml
         {
             Info("Converting CSV files to YAML files...");
 
-
             var success = true;
             var atLeastOneSuccess = false;
 
@@ -71,7 +70,6 @@ namespace Wexflow.Tasks.CsvToYaml
             Info("Task finished.");
             return new TaskStatus(status);
         }
-
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {

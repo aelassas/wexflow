@@ -29,7 +29,6 @@ namespace Wexflow.Tasks.MediaInfo
         {
             Info("Generating MediaInfo informations...");
 
-
             try
             {
                 if (!string.IsNullOrEmpty(SmbComputerName) && !string.IsNullOrEmpty(SmbUsername) && !string.IsNullOrEmpty(SmbPassword))

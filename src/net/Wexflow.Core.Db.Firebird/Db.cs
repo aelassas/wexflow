@@ -1734,7 +1734,6 @@ namespace Wexflow.Core.Db.Firebird
             }
         }
 
-
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
             lock (padlock)

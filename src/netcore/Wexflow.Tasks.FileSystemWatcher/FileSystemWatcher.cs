@@ -99,7 +99,6 @@ namespace Wexflow.Tasks.FileSystemWatcher
                 }
                 Info("Checking existing files finished.");
 
-
                 Info("Initializing PollingFileSystemWatcher...");
                 Watcher = new PollingFileSystemWatcher(FolderToWatch, Filter, new EnumerationOptions { RecurseSubdirectories = IncludeSubFolders });
 

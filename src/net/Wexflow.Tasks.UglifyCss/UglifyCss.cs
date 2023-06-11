@@ -27,7 +27,6 @@ namespace Wexflow.Tasks.UglifyCss
         {
             Info("Uglifying CSS files...");
 
-
             var success = true;
             var atLeastOneSuccess = false;
 

@@ -58,7 +58,6 @@ namespace Wexflow.Tasks.WebToScreenshot
                 }
             }
 
-
             if (!success && atLeastOneSuccess)
             {
                 status = Status.Warning;

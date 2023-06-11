@@ -64,7 +64,6 @@ namespace Wexflow.Tasks.Xslt
                 success = false;
             }
 
-
             var status = Status.Success;
 
             if (!success && atLeastOneSucceed)

@@ -322,7 +322,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                     }
                 }
 
-
                 return admins;
             }
         }

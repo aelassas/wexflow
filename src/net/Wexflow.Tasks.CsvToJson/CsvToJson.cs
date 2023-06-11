@@ -56,7 +56,6 @@ namespace Wexflow.Tasks.CsvToJson
                 success = false;
             }
 
-
             var status = Status.Success;
 
             if (!success && atLeastOneSuccess)

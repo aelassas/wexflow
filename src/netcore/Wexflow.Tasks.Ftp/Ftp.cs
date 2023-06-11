@@ -68,7 +68,6 @@ namespace Wexflow.Tasks.Ftp
             Info("Processing files...");
             var atLeastOneSuccess = false;
 
-
             bool success;
             try
             {

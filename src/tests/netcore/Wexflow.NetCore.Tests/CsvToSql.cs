@@ -14,7 +14,6 @@ namespace Wexflow.NetCore.Tests
           + "INSERT INTO HelloWorld(Id,Title,Description) VALUES (4, 'Hello World 4!', 'Hello World Description 4!');\r\n"
           + "INSERT INTO HelloWorld(Id,Title,Description) VALUES (5, 'Hello World 5!', 'Hello World Description 5!');\r\n";
 
-
         [TestInitialize]
         public void TestInitialize()
         {

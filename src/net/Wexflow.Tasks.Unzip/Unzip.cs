@@ -77,7 +77,6 @@ namespace Wexflow.Tasks.Unzip
             return new TaskStatus(status, false);
         }
 
-
         private bool UnzipFiles(ref bool atLeastOneSuccess)
         {
             var success = true;

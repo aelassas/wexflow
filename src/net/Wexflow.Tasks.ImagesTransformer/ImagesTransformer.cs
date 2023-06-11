@@ -71,7 +71,6 @@ namespace Wexflow.Tasks.ImagesTransformer
                 success = false;
             }
 
-
             var status = Status.Success;
 
             if (!success && atLeastOneSuccess)

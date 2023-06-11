@@ -52,7 +52,6 @@ namespace Wexflow.Tasks.CsvToYaml
             return new TaskStatus(status);
         }
 
-
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
             var success = true;

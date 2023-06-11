@@ -1241,7 +1241,6 @@ namespace Wexflow.Server
             });
         }
 
-
         /// <summary>
         /// Checks if the XML of a workflow is valid.
         /// </summary>

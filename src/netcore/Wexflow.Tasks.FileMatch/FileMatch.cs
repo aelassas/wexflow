@@ -42,7 +42,6 @@ namespace Wexflow.Tasks.FileMatch
                     }
                 }
 
-
                 if (success)
                 {
                     InfoFormat("A file matching the pattern {0} was found in the directory {1} -> {2}.", Pattern, Dir, fileFound);
