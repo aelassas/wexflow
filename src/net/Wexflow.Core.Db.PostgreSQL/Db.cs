@@ -145,7 +145,6 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                         return count > 0;
                     }
-
                 }
             }
         }
@@ -553,7 +552,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1731,7 +1729,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1761,7 +1758,6 @@ namespace Wexflow.Core.Db.PostgreSQL
                             }
                         }
                     }
-
                 }
 
                 return null;

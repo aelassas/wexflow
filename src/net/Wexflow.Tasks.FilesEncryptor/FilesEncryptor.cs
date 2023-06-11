@@ -128,7 +128,6 @@ namespace Wexflow.Tasks.FilesEncryptor
                     {
                         cs.WriteByte((byte)data);
                     }
-
                 }
 
                 InfoFormat("The file {0} has been encrypted -> {1}", inputFile, outputFile);

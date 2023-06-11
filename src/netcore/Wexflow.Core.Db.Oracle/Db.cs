@@ -640,7 +640,6 @@ namespace Wexflow.Core.Db.Oracle
 
                         entries.Add(entry);
                     }
-
                 }
 
                 return entries;

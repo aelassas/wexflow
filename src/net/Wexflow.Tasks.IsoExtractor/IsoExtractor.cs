@@ -153,7 +153,6 @@ namespace Wexflow.Tasks.IsoExtractor
                             }
                         }
                     }
-
                 }
 
             }

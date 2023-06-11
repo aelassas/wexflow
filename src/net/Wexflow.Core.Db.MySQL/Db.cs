@@ -938,7 +938,6 @@ namespace Wexflow.Core.Db.MySQL
 
                         return count;
                     }
-
                 }
             }
         }
@@ -1733,7 +1732,6 @@ namespace Wexflow.Core.Db.MySQL
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1763,7 +1761,6 @@ namespace Wexflow.Core.Db.MySQL
                             }
                         }
                     }
-
                 }
 
                 return null;

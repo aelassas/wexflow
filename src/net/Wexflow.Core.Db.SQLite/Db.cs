@@ -127,7 +127,6 @@ namespace Wexflow.Core.Db.SQLite
 
                         return count > 0;
                     }
-
                 }
             }
         }
@@ -536,7 +535,6 @@ namespace Wexflow.Core.Db.SQLite
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -584,7 +582,6 @@ namespace Wexflow.Core.Db.SQLite
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -735,7 +732,6 @@ namespace Wexflow.Core.Db.SQLite
                         }
 
                     }
-
                 }
 
                 return entries;
@@ -1717,7 +1713,6 @@ namespace Wexflow.Core.Db.SQLite
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1747,7 +1742,6 @@ namespace Wexflow.Core.Db.SQLite
                             }
                         }
                     }
-
                 }
 
                 return null;

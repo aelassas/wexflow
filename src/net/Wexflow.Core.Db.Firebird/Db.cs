@@ -108,7 +108,6 @@ namespace Wexflow.Core.Db.Firebird
 
                         return count > 0;
                     }
-
                 }
             }
         }
@@ -517,7 +516,6 @@ namespace Wexflow.Core.Db.Firebird
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -565,7 +563,6 @@ namespace Wexflow.Core.Db.Firebird
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -716,7 +713,6 @@ namespace Wexflow.Core.Db.Firebird
                         }
 
                     }
-
                 }
 
                 return entries;
@@ -1697,7 +1693,6 @@ namespace Wexflow.Core.Db.Firebird
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1727,7 +1722,6 @@ namespace Wexflow.Core.Db.Firebird
                             }
                         }
                     }
-
                 }
 
                 return null;

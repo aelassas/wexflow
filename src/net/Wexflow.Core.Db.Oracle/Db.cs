@@ -1716,7 +1716,6 @@ namespace Wexflow.Core.Db.Oracle
                             }
                         }
                     }
-
                 }
 
                 return null;

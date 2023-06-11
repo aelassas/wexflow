@@ -257,7 +257,6 @@ namespace Wexflow.Server
                     {
                         Logger.Error($"An error occured while inserting a record from the file {e.FullPath}.");
                     }
-
                 }
             }
             catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32)

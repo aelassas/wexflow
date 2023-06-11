@@ -148,7 +148,6 @@ namespace Wexflow.Core.Db.SQLServer
 
                         return count > 0;
                     }
-
                 }
             }
         }
@@ -558,7 +557,6 @@ namespace Wexflow.Core.Db.SQLServer
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -606,7 +604,6 @@ namespace Wexflow.Core.Db.SQLServer
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1099,7 +1096,6 @@ namespace Wexflow.Core.Db.SQLServer
                             }
                         }
                     }
-
                 }
                 return null;
             }
@@ -1742,7 +1738,6 @@ namespace Wexflow.Core.Db.SQLServer
                             }
                         }
                     }
-
                 }
 
                 return null;
@@ -1772,7 +1767,6 @@ namespace Wexflow.Core.Db.SQLServer
                             }
                         }
                     }
-
                 }
 
                 return null;
