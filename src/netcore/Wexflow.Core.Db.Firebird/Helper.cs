@@ -24,6 +24,5 @@ namespace Wexflow.Core.Db.Firebird
                 _ = cmd.ExecuteNonQuery();
             }
         }
-
     }
 }

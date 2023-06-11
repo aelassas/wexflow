@@ -269,6 +269,5 @@ namespace Wexflow.Server
                 Logger.ErrorFormat("Error while creating the record {0}", ex, e.FullPath);
             }
         }
-
     }
 }

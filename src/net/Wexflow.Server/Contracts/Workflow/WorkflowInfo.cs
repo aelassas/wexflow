@@ -13,6 +13,5 @@
         public string Period { get; set; }
         public string CronExpression { get; set; }
         public Variable[] LocalVariables { get; set; }
-
     }
 }

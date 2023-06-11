@@ -39,6 +39,5 @@ namespace Wexflow.Core.Db
         {
             return "-1";
         }
-
     }
 }

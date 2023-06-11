@@ -167,6 +167,5 @@ namespace Wexflow.Tasks.TextsEncryptor
             }
             return randomBytes;
         }
-
     }
 }

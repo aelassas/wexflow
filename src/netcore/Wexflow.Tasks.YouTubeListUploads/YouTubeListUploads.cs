@@ -126,6 +126,5 @@ namespace Wexflow.Tasks.YouTubeListUploads
             Files.Add(new FileInf(xmlPath, Id));
             InfoFormat("Results written in {0}", xmlPath);
         }
-
     }
 }

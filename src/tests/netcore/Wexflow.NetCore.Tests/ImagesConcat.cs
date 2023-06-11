@@ -49,6 +49,5 @@ namespace Wexflow.NetCore.Tests
         //    Assert.AreEqual(512, image.Width);
         //    Assert.AreEqual(384, image.Height);
         //}
-
     }
 }

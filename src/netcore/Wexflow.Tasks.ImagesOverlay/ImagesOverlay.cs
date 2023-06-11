@@ -105,6 +105,5 @@ namespace Wexflow.Tasks.ImagesOverlay
                 return false;
             }
         }
-
     }
 }

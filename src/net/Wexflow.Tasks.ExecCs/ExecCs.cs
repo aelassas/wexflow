@@ -139,6 +139,5 @@ namespace Wexflow.Tasks.ExecCs
         {
             ErrorFormat("{0}", outLine.Data);
         }
-
     }
 }

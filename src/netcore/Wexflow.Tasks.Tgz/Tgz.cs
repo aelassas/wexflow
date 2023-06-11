@@ -116,6 +116,5 @@ namespace Wexflow.Tasks.Tgz
             }
             return success;
         }
-
     }
 }

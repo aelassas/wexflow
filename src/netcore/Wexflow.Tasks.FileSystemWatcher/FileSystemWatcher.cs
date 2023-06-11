@@ -297,6 +297,5 @@ namespace Wexflow.Tasks.FileSystemWatcher
                 task.Files.Clear();
             }
         }
-
     }
 }

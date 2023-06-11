@@ -130,6 +130,5 @@ namespace Wexflow.Tasks.FilesConcat
             }
             return success;
         }
-
     }
 }

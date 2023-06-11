@@ -37,6 +37,5 @@ namespace Wexflow.Core.Db.SQLServer
 
             _ = command.ExecuteNonQuery();
         }
-
     }
 }

@@ -128,6 +128,5 @@ namespace Wexflow.Tasks.FilesLoader
         {
             return Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
         }
-
     }
 }

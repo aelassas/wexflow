@@ -149,6 +149,5 @@ namespace Wexflow.Tasks.ImagesTransformer
             }
             return success;
         }
-
     }
 }

@@ -86,6 +86,5 @@ namespace Wexflow.Tasks.Unzip
             Info("Task finished.");
             return new TaskStatus(status);
         }
-
     }
 }

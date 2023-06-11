@@ -35,6 +35,5 @@ namespace Wexflow.Core.Db.PostgreSQL
             using NpgsqlCommand command = new("CREATE TABLE IF NOT EXISTS " + tableName + tableStruct + ";", conn);
             _ = command.ExecuteNonQuery();
         }
-
     }
 }

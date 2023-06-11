@@ -1990,6 +1990,5 @@ namespace Wexflow.Core
             //file is not locked
             return false;
         }
-
     }
 }

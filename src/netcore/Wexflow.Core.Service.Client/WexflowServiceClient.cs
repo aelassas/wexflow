@@ -128,6 +128,5 @@ namespace Wexflow.Core.Service.Client
             var user = JsonConvert.DeserializeObject<User>(response);
             return user;
         }
-
     }
 }

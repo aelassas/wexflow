@@ -60,6 +60,5 @@ namespace Wexflow.Scripts.LiteDB
             Helper.InsertRecords(db, "litedb");
             db.Dispose();
         }
-
     }
 }

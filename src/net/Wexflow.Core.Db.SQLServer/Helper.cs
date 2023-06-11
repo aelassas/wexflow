@@ -45,6 +45,5 @@ namespace Wexflow.Core.Db.SQLServer
                 }
             }
         }
-
     }
 }

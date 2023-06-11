@@ -192,6 +192,5 @@ namespace Wexflow.Tasks.InstagramUploadVideo
             }
 
         }
-
     }
 }

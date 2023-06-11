@@ -30,6 +30,5 @@ namespace Wexflow.Core.Db.Firebird
                 }
             }
         }
-
     }
 }

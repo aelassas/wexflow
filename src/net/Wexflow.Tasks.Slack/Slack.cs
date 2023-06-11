@@ -132,6 +132,5 @@ namespace Wexflow.Tasks.Slack
 
             return success;
         }
-
     }
 }

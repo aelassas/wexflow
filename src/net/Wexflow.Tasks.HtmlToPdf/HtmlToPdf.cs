@@ -118,6 +118,5 @@ namespace Wexflow.Tasks.HtmlToPdf
             }
             return success;
         }
-
     }
 }

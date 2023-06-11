@@ -155,6 +155,5 @@ namespace Wexflow.Tasks.FilesEncryptor
             }
             return data;
         }
-
     }
 }

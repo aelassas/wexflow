@@ -40,6 +40,5 @@ namespace Wexflow.Server
             base.ConfigureConventions(nancyConventions);
             nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("swagger-ui"));
         }
-
     }
 }

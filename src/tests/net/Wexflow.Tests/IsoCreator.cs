@@ -30,6 +30,5 @@ namespace Wexflow.Tests
             _ = Helper.StartWorkflow(87);
             Assert.IsTrue(File.Exists(IsoPath));
         }
-
     }
 }

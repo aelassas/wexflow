@@ -40,6 +40,5 @@ namespace Wexflow.NetCore.Tests
         {
             return Directory.GetFiles(dir);
         }
-
     }
 }

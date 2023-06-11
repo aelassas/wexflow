@@ -139,6 +139,5 @@ namespace Wexflow.Tasks.ExecVb
         {
             ErrorFormat("{0}", outLine.Data);
         }
-
     }
 }

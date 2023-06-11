@@ -381,6 +381,5 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
             return isDir;
         }
-
     }
 }

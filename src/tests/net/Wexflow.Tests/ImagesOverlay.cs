@@ -51,6 +51,5 @@ namespace Wexflow.Tests
         //        Assert.AreEqual(384, image.Height);
         //    }
         //}
-
     }
 }

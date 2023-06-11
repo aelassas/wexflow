@@ -150,6 +150,5 @@ namespace Wexflow.Tasks.ImagesResizer
 
             return destImage;
         }
-
     }
 }

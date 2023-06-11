@@ -61,6 +61,5 @@ namespace Wexflow.Tasks.Ping
 
             return pingable;
         }
-
     }
 }

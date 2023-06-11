@@ -87,6 +87,5 @@ namespace Wexflow.Tasks.ExecPython
         {
             ErrorFormat("{0}", outLine.Data);
         }
-
     }
 }

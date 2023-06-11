@@ -120,6 +120,5 @@ namespace Wexflow.Tasks.CsvToSql
                 return false;
             }
         }
-
     }
 }

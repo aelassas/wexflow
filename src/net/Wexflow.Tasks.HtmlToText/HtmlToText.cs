@@ -108,6 +108,5 @@ namespace Wexflow.Tasks.HtmlToText
             }
             return success;
         }
-
     }
 }

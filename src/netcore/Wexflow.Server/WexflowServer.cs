@@ -252,6 +252,5 @@ namespace Wexflow.Server
                 }
             }
         }
-
     }
 }

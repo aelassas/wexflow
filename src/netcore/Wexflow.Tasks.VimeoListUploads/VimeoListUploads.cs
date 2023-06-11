@@ -66,6 +66,5 @@ namespace Wexflow.Tasks.VimeoListUploads
             Info("Task finished.");
             return new TaskStatus(status);
         }
-
     }
 }

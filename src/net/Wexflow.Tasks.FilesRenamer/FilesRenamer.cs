@@ -128,6 +128,5 @@ namespace Wexflow.Tasks.FilesRenamer
             }
             return success;
         }
-
     }
 }

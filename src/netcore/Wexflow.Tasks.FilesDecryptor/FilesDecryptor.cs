@@ -102,6 +102,5 @@ namespace Wexflow.Tasks.FilesDecryptor
                 return false;
             }
         }
-
     }
 }

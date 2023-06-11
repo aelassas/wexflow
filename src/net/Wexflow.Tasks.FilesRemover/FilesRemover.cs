@@ -98,6 +98,5 @@ namespace Wexflow.Tasks.FilesRemover
 
             return success;
         }
-
     }
 }

@@ -29,6 +29,5 @@ namespace Wexflow.Core.Db.SQLite
 
             _ = command.ExecuteNonQuery();
         }
-
     }
 }

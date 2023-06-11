@@ -112,6 +112,5 @@ namespace Wexflow.Tasks.CsvToJson
 
             return JsonConvert.SerializeObject(listObjResult);
         }
-
     }
 }

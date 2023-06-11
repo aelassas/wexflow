@@ -94,6 +94,5 @@ namespace Wexflow.Tasks.Slack
             Info("Task finished.");
             return new TaskStatus(tstatus);
         }
-
     }
 }

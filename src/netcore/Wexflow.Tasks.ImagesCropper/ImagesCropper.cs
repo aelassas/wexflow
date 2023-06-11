@@ -103,6 +103,5 @@ namespace Wexflow.Tasks.ImagesCropper
             }
             return target;
         }
-
     }
 }

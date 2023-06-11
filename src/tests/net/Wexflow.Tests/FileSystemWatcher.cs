@@ -21,6 +21,5 @@ namespace Wexflow.Tests
             // TODO
             _ = Helper.StartWorkflow(144);
         }
-
     }
 }

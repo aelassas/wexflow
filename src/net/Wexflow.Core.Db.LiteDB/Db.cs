@@ -1761,6 +1761,5 @@ namespace Wexflow.Core.Db.LiteDB
         {
             db.Dispose();
         }
-
     }
 }

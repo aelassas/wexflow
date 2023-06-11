@@ -31,6 +31,5 @@ namespace Wexflow.Tests
             _ = Helper.StartWorkflow(85);
             Assert.IsTrue(File.Exists(BackupFilePath));
         }
-
     }
 }

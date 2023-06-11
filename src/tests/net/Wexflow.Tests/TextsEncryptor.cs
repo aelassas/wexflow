@@ -38,6 +38,5 @@ namespace Wexflow.Tests
         {
             return Directory.GetFiles(dir);
         }
-
     }
 }

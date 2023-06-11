@@ -108,6 +108,5 @@ namespace Wexflow.Tasks.JsonToYaml
             }
             return success;
         }
-
     }
 }

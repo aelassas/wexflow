@@ -37,6 +37,5 @@ namespace Wexflow.Core.Db.MariaDB
                 }
             }
         }
-
     }
 }

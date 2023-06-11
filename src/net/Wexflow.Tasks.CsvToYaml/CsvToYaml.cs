@@ -133,6 +133,5 @@ namespace Wexflow.Tasks.CsvToYaml
             var yaml = serializer.Serialize(listObjResult);
             return yaml;
         }
-
     }
 }

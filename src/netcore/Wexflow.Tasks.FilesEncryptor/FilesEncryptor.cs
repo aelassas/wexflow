@@ -115,6 +115,5 @@ namespace Wexflow.Tasks.FilesEncryptor
             }
             return randomBytes;
         }
-
     }
 }

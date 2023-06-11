@@ -213,6 +213,5 @@ namespace Wexflow.Scripts.Core
                 Console.WriteLine("An error occured while creating the record {0}: {1}", name, e);
             }
         }
-
     }
 }

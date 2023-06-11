@@ -179,6 +179,5 @@ namespace Wexflow.Tasks.YouTube
         {
             InfoFormat("The video '{0}' was successfully uploaded. Id: '{1}' ", video.Snippet.Title, video.Id);
         }
-
     }
 }

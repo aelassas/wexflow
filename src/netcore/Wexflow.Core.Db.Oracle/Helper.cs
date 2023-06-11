@@ -19,6 +19,5 @@ namespace Wexflow.Core.Db.Oracle
             using OracleCommand command = new("declare begin execute immediate 'CREATE TABLE " + tableName + tableStruct + "'; exception when others then if SQLCODE = -955 then null; else raise; end if; end;", conn);
             _ = command.ExecuteNonQuery();
         }
-
     }
 }

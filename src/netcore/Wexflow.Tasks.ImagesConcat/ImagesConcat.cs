@@ -113,6 +113,5 @@ namespace Wexflow.Tasks.ImagesConcat
                 return false;
             }
         }
-
     }
 }

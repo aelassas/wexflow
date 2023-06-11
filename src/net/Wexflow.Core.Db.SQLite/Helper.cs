@@ -32,6 +32,5 @@ namespace Wexflow.Core.Db.SQLite
                 }
             }
         }
-
     }
 }

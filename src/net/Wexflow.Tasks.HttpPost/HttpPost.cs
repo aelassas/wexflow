@@ -72,6 +72,5 @@ namespace Wexflow.Tasks.HttpPost
             }
             return string.Empty;
         }
-
     }
 }

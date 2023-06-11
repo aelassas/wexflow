@@ -114,6 +114,5 @@ namespace Wexflow.Tasks.Tar
             }
             return success;
         }
-
     }
 }

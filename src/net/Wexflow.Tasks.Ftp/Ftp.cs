@@ -206,6 +206,5 @@ namespace Wexflow.Tasks.Ftp
             }
             return success;
         }
-
     }
 }

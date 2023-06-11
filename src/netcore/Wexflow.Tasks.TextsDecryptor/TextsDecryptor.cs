@@ -104,6 +104,5 @@ namespace Wexflow.Tasks.TextsDecryptor
             cryptoStream.Close();
             return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
         }
-
     }
 }

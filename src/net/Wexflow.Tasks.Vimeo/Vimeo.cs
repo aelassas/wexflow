@@ -135,6 +135,5 @@ namespace Wexflow.Tasks.Vimeo
             }
             return success;
         }
-
     }
 }

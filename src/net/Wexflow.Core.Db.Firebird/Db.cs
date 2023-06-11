@@ -2629,6 +2629,5 @@ namespace Wexflow.Core.Db.Firebird
         public override void Dispose()
         {
         }
-
     }
 }
