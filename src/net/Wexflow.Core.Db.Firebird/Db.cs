@@ -446,7 +446,6 @@ namespace Wexflow.Core.Db.Firebird
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
 
@@ -663,7 +662,6 @@ namespace Wexflow.Core.Db.Firebird
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
 
@@ -711,7 +709,6 @@ namespace Wexflow.Core.Db.Firebird
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
 
@@ -760,7 +757,6 @@ namespace Wexflow.Core.Db.Firebird
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
                 return entries;

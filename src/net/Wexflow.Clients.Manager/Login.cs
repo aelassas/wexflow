@@ -82,7 +82,6 @@ namespace Wexflow.Clients.Manager
                                 _ = MessageBox.Show("The password is incorrect.");
                             }
                         }
-
                     }
                 }
             }

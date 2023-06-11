@@ -243,7 +243,6 @@ namespace Wexflow.Server
                         {
                             Logger.Error($"An error occured while inserting a record from the file {path}.");
                         }
-
                     }
                     catch (Exception ex)
                     {

@@ -103,7 +103,6 @@ namespace Wexflow.Tasks.Reddit
                                 }
                             }
                         }
-
                     }
                     catch (ThreadAbortException)
                     {

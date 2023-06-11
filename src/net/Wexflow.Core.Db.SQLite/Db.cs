@@ -465,7 +465,6 @@ namespace Wexflow.Core.Db.SQLite
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
 
@@ -682,7 +681,6 @@ namespace Wexflow.Core.Db.SQLite
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
 
@@ -730,7 +728,6 @@ namespace Wexflow.Core.Db.SQLite
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
 
@@ -780,7 +777,6 @@ namespace Wexflow.Core.Db.SQLite
                                 entries.Add(entry);
                             }
                         }
-
                     }
                 }
                 return entries;

@@ -1503,7 +1503,6 @@ namespace Wexflow.Server
                             xcase.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
                                 new XElement(xn + "Parent", new XAttribute("id", parentId))));
                         }
-
                     }
 
                     xswitch.Add(xcase);

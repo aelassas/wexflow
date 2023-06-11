@@ -94,7 +94,6 @@ namespace Wexflow.Tasks.Twitter
                                 success = false;
                             }
                         }
-
                     }
                     catch (ThreadAbortException)
                     {
