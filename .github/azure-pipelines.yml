@@ -21,7 +21,7 @@ steps:
     packageType: sdk
     version: 7.x
     installationPath: $(Agent.ToolsDirectory)/dotnet
-    
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
