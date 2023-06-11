@@ -64,7 +64,6 @@ namespace Wexflow.Tasks.RedditListPosts
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Post history written in {0}", xmlPath);
-
             }
             catch (ThreadAbortException)
             {

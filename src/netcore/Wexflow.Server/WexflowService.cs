@@ -2867,7 +2867,6 @@ namespace Wexflow.Server
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(q));
-
             });
         }
 

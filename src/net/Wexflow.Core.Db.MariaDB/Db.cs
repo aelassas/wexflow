@@ -660,7 +660,6 @@ namespace Wexflow.Core.Db.MariaDB
                 }
 
                 return DateTime.Now;
-
             }
         }
 

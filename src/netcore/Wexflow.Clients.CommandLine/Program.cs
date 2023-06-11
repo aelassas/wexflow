@@ -142,7 +142,6 @@ namespace Wexflow.Clients.CommandLine
                     });
                     Console.WriteLine(helpText);
                 });
-
             }
             catch (Exception e)
             {

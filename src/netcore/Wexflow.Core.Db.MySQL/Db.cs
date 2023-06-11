@@ -597,7 +597,6 @@ namespace Wexflow.Core.Db.MySQL
                 }
 
                 return DateTime.Now;
-
             }
         }
 

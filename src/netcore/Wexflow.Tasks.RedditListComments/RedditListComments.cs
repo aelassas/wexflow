@@ -63,7 +63,6 @@ namespace Wexflow.Tasks.RedditListComments
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Comment history written in {0}", xmlPath);
-
             }
             catch (ThreadAbortException)
             {
