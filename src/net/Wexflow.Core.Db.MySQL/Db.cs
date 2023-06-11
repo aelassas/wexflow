@@ -1372,7 +1372,6 @@ namespace Wexflow.Core.Db.MySQL
                     }
 
                     return workflows;
-
                 }
             }
         }

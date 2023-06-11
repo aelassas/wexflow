@@ -179,7 +179,6 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                 {
                     InfoFormat("Unable to upload video: {0}", result.Info.Message);
                     return false;
-
                 }
 
                 InfoFormat("Media created: {0}, {1}", result.Value.Pk, result.Value.Caption.Text);

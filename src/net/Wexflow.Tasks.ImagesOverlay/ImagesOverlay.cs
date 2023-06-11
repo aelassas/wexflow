@@ -78,7 +78,6 @@ namespace Wexflow.Tasks.ImagesOverlay
                             string.Format("ImagesOverlay_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
 
                     success = OverlayImages(imageFiles, destPath);
-
                 }
                 else if (imageFiles.Length == 1)
                 {

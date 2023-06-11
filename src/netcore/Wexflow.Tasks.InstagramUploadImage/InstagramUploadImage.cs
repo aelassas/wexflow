@@ -180,7 +180,6 @@ namespace Wexflow.Tasks.InstagramUploadImage
                 {
                     InfoFormat("Unable to upload image: {0}", result.Info.Message);
                     return false;
-
                 }
 
                 InfoFormat("Media created: {0}, {1}", result.Value.Pk, result.Value.Caption.Text);

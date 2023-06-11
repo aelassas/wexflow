@@ -154,7 +154,6 @@ namespace Wexflow.Server
 
                     var admin = WexflowEngine.GetUser(superAdminUsername);
                     _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
-
                 }
             }
             catch (Exception ex)
@@ -183,7 +182,6 @@ namespace Wexflow.Server
                     Thread.Sleep(500);
                     var admin = WexflowEngine.GetUser(superAdminUsername);
                     _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
-
                 }
             }
             catch (Exception ex)
