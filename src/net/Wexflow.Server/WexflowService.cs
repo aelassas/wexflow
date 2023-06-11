@@ -3971,7 +3971,6 @@ namespace Wexflow.Server
                                         Console.WriteLine(e);
                                         tres &= false;
                                     }
-
                                 }
                             }
                             res = tres;
@@ -3986,7 +3985,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4956,7 +4954,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
