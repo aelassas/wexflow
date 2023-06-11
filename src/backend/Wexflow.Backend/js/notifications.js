@@ -116,73 +116,155 @@
             }, function () {
                 logout();
             }, auth);
+    }
 
-        function loadNotifications() {
-            Common.get(uri + "/searchNotifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {
+    function loadNotifications() {
+        Common.get(uri + "/searchNotifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {
 
-                let items = [];
-                for (let i = 0; i < notifications.length; i++) {
-                    let notification = notifications[i];
-                    items.push("<tr>"
-                        + "<td class='check'><input type='checkbox'></td>"
-                        + "<td class='id'>" + notification.Id + "</td>"
-                        + "<td class='assigned-by " + (notification.IsRead === false ? "bold" : "") + "'>" + notification.AssignedBy + "</td>"
-                        + "<td class='assigned-on " + (notification.IsRead === false ? "bold" : "") + "'>" + notification.AssignedOn + "</td>"
-                        + "<td class='message " + (notification.IsRead === false ? "bold" : "") + "'>" + notification.Message + "</td>"
-                        + "</tr>");
+            let items = [];
+            for (let i = 0; i < notifications.length; i++) {
+                let notification = notifications[i];
+                items.push("<tr>"
+                    + "<td class='check'><input type='checkbox'></td>"
+                    + "<td class='id'>" + notification.Id + "</td>"
+                    + "<td class='assigned-by " + (notification.IsRead === false ? "bold" : "") + "'>" + notification.AssignedBy + "</td>"
+                    + "<td class='assigned-on " + (notification.IsRead === false ? "bold" : "") + "'>" + notification.AssignedOn + "</td>"
+                    + "<td class='message " + (notification.IsRead === false ? "bold" : "") + "'>" + notification.Message + "</td>"
+                    + "</tr>");
 
-                }
+            }
 
-                let table = "<table id='notifications-table' class='table'>"
-                    + "<thead class='thead-dark'>"
-                    + "<tr>"
-                    + "<th class='check'><input id='check-all' type='checkbox'></th>"
-                    + "<th class='id'></th>"
-                    + "<th id='th-assigned-by' class='assigned-by'>" + "Assigned by" + "</th>"
-                    + "<th id='th-assigned-on' class='assigned-on'>" + "Assigned on" + "</th>"
-                    + "<th id='th-message' class='message'>" + "Message" + "</th>"
-                    + "</tr>"
-                    + "</thead>"
-                    + "<tbody>"
-                    + items.join("")
-                    + "</tbody>"
-                    + "</table>";
+            let table = "<table id='notifications-table' class='table'>"
+                + "<thead class='thead-dark'>"
+                + "<tr>"
+                + "<th class='check'><input id='check-all' type='checkbox'></th>"
+                + "<th class='id'></th>"
+                + "<th id='th-assigned-by' class='assigned-by'>" + "Assigned by" + "</th>"
+                + "<th id='th-assigned-on' class='assigned-on'>" + "Assigned on" + "</th>"
+                + "<th id='th-message' class='message'>" + "Message" + "</th>"
+                + "</tr>"
+                + "</thead>"
+                + "<tbody>"
+                + items.join("")
+                + "</tbody>"
+                + "</table>";
 
-                let divNotifications = document.getElementById("content");
-                divNotifications.innerHTML = table;
+            let divNotifications = document.getElementById("content");
+            divNotifications.innerHTML = table;
 
-                translateTable();
+            translateTable();
 
-                let notificationsTable = document.getElementById("notifications-table");
-                let rows = notificationsTable.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-                let notificationIds = [];
-                for (let i = 0; i < rows.length; i++) {
-                    let row = rows[i];
-                    let checkBox = row.getElementsByClassName("check")[0].firstChild;
-                    checkBox.onchange = function () {
-                        let currentRow = this.parentElement.parentElement;
-                        let notificationId = currentRow.getElementsByClassName("id")[0].innerHTML;
-                        if (this.checked === true) {
-                            notificationIds.push(notificationId);
-                        } else {
-                            notificationIds = Common.removeItemOnce(notificationIds, notificationId);
-                        }
-                    };
-                }
+            let notificationsTable = document.getElementById("notifications-table");
+            let rows = notificationsTable.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            let notificationIds = [];
+            for (let i = 0; i < rows.length; i++) {
+                let row = rows[i];
+                let checkBox = row.getElementsByClassName("check")[0].firstChild;
+                checkBox.onchange = function () {
+                    let currentRow = this.parentElement.parentElement;
+                    let notificationId = currentRow.getElementsByClassName("id")[0].innerHTML;
+                    if (this.checked === true) {
+                        notificationIds.push(notificationId);
+                    } else {
+                        notificationIds = Common.removeItemOnce(notificationIds, notificationId);
+                    }
+                };
+            }
 
-                document.getElementById("btn-mark-as-read").onclick = function () {
-                    Common.post(uri + "/markNotificationsAsRead", function (res) {
-                        if (res === true) {
-                            Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
-                                for (let i = 0; i < notificationIds.length; i++) {
+            document.getElementById("btn-mark-as-read").onclick = function () {
+                Common.post(uri + "/markNotificationsAsRead", function (res) {
+                    if (res === true) {
+                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                            for (let i = 0; i < notificationIds.length; i++) {
+                                let notificationId = notificationIds[i];
+                                for (let j = 0; j < rows.length; j++) {
+                                    let row = rows[j];
+                                    let id = row.getElementsByClassName("id")[0].innerHTML;
+                                    if (notificationId === id) {
+                                        row.getElementsByClassName("assigned-by")[0].classList.remove("bold");
+                                        row.getElementsByClassName("assigned-on")[0].classList.remove("bold");
+                                        row.getElementsByClassName("message")[0].classList.remove("bold");
+
+                                        // Notify assignedBy
+                                        //for (let k = 0; k < notifications.length; k++) {
+                                        //    let notification = notifications[k];
+                                        //    if (notificationId === notification.Id) {
+
+                                        //        let message = "The user " + username + " has read his notification: " + notification.Message;
+                                        //        Common.post(uri + "/notify?a=" + encodeURIComponent(notification.AssignedBy) + "&m=" + encodeURIComponent(message), function (notifyRes) {
+                                        //            if (notifyRes === true) {
+                                        //                Common.toastInfo("The assignor was notified that you read the notifictaion assigned on " + notification.AssignedOn + ".");
+                                        //            } else {
+                                        //                Common.toastError("An error occured while notifying the assignor.");
+                                        //            }
+                                        //        }, function () { }, "", auth);
+
+                                        //        break;
+                                        //    }
+                                        //}
+                                    }
+                                }
+
+                                if (hasNotifications === true) {
+                                    imgNotifications.src = "images/notification-active.png";
+                                } else {
+                                    imgNotifications.src = "images/notification.png";
+                                }
+                            }
+                        }, function () { }, auth);
+                    }
+                }, function () { }, notificationIds, auth);
+            };
+
+            document.getElementById("btn-mark-as-unread").onclick = function () {
+                Common.post(uri + "/markNotificationsAsUnread", function (res) {
+                    if (res === true) {
+                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                            for (let i = 0; i < notificationIds.length; i++) {
+                                let notificationId = notificationIds[i];
+                                for (let j = 0; j < rows.length; j++) {
+                                    let row = rows[j];
+                                    let id = row.getElementsByClassName("id")[0].innerHTML;
+                                    if (notificationId === id) {
+                                        if (row.getElementsByClassName("assigned-by")[0].classList.contains("bold") === false) {
+                                            row.getElementsByClassName("assigned-by")[0].classList.add("bold");
+                                        }
+                                        if (row.getElementsByClassName("assigned-on")[0].classList.contains("bold") === false) {
+                                            row.getElementsByClassName("assigned-on")[0].classList.add("bold");
+                                        }
+                                        if (row.getElementsByClassName("message")[0].classList.contains("bold") === false) {
+                                            row.getElementsByClassName("message")[0].classList.add("bold");
+                                        }
+                                    }
+                                }
+
+                                if (hasNotifications === true) {
+                                    imgNotifications.src = "images/notification-active.png";
+                                } else {
+                                    imgNotifications.src = "images/notification.png";
+                                }
+                            }
+                        }, function () { }, auth);
+                    }
+                }, function () { }, notificationIds, auth);
+            };
+
+            document.getElementById("btn-delete").onclick = function () {
+                if (notificationIds.length === 0) {
+                    Common.toastInfo(language.get("toast-select-notifications"));
+                } else {
+                    let cres = confirm(notificationIds.length == 1 ? language.get("confirm-delete-notification") : language.get("confirm-delete-notifications"));
+                    if (cres === true) {
+                        Common.post(uri + "/deleteNotifications", function (res) {
+                            if (res === true) {
+                                for (let i = notificationIds.length - 1; i >= 0; i--) {
                                     let notificationId = notificationIds[i];
                                     for (let j = 0; j < rows.length; j++) {
                                         let row = rows[j];
                                         let id = row.getElementsByClassName("id")[0].innerHTML;
                                         if (notificationId === id) {
-                                            row.getElementsByClassName("assigned-by")[0].classList.remove("bold");
-                                            row.getElementsByClassName("assigned-on")[0].classList.remove("bold");
-                                            row.getElementsByClassName("message")[0].classList.remove("bold");
+                                            notificationIds = Common.removeItemOnce(notificationIds, notificationId);
+                                            row.remove();
 
                                             // Notify assignedBy
                                             //for (let k = 0; k < notifications.length; k++) {
@@ -201,115 +283,32 @@
                                             //        break;
                                             //    }
                                             //}
+
                                         }
                                     }
-
-                                    if (hasNotifications === true) {
-                                        imgNotifications.src = "images/notification-active.png";
-                                    } else {
-                                        imgNotifications.src = "images/notification.png";
-                                    }
                                 }
-                            }, function () { }, auth);
-                        }
-                    }, function () { }, notificationIds, auth);
-                };
+                            }
+                        }, function () { }, notificationIds, auth);
+                    }
+                }
+            };
 
-                document.getElementById("btn-mark-as-unread").onclick = function () {
-                    Common.post(uri + "/markNotificationsAsUnread", function (res) {
-                        if (res === true) {
-                            Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
-                                for (let i = 0; i < notificationIds.length; i++) {
-                                    let notificationId = notificationIds[i];
-                                    for (let j = 0; j < rows.length; j++) {
-                                        let row = rows[j];
-                                        let id = row.getElementsByClassName("id")[0].innerHTML;
-                                        if (notificationId === id) {
-                                            if (row.getElementsByClassName("assigned-by")[0].classList.contains("bold") === false) {
-                                                row.getElementsByClassName("assigned-by")[0].classList.add("bold");
-                                            }
-                                            if (row.getElementsByClassName("assigned-on")[0].classList.contains("bold") === false) {
-                                                row.getElementsByClassName("assigned-on")[0].classList.add("bold");
-                                            }
-                                            if (row.getElementsByClassName("message")[0].classList.contains("bold") === false) {
-                                                row.getElementsByClassName("message")[0].classList.add("bold");
-                                            }
-                                        }
-                                    }
+            document.getElementById("check-all").onchange = function () {
+                for (let i = 0; i < rows.length; i++) {
+                    let row = rows[i];
+                    let checkBox = row.getElementsByClassName("check")[0].firstChild;
+                    let notificationId = row.getElementsByClassName("id")[0].innerHTML;
 
-                                    if (hasNotifications === true) {
-                                        imgNotifications.src = "images/notification-active.png";
-                                    } else {
-                                        imgNotifications.src = "images/notification.png";
-                                    }
-                                }
-                            }, function () { }, auth);
-                        }
-                    }, function () { }, notificationIds, auth);
-                };
-
-                document.getElementById("btn-delete").onclick = function () {
-                    if (notificationIds.length === 0) {
-                        Common.toastInfo(language.get("toast-select-notifications"));
+                    if (checkBox.checked === true) {
+                        checkBox.checked = false;
+                        notificationIds = Common.removeItemOnce(notificationIds, notificationId);
                     } else {
-                        let cres = confirm(notificationIds.length == 1 ? language.get("confirm-delete-notification") : language.get("confirm-delete-notifications"));
-                        if (cres === true) {
-                            Common.post(uri + "/deleteNotifications", function (res) {
-                                if (res === true) {
-                                    for (let i = notificationIds.length - 1; i >= 0; i--) {
-                                        let notificationId = notificationIds[i];
-                                        for (let j = 0; j < rows.length; j++) {
-                                            let row = rows[j];
-                                            let id = row.getElementsByClassName("id")[0].innerHTML;
-                                            if (notificationId === id) {
-                                                notificationIds = Common.removeItemOnce(notificationIds, notificationId);
-                                                row.remove();
-
-                                                // Notify assignedBy
-                                                //for (let k = 0; k < notifications.length; k++) {
-                                                //    let notification = notifications[k];
-                                                //    if (notificationId === notification.Id) {
-
-                                                //        let message = "The user " + username + " has read his notification: " + notification.Message;
-                                                //        Common.post(uri + "/notify?a=" + encodeURIComponent(notification.AssignedBy) + "&m=" + encodeURIComponent(message), function (notifyRes) {
-                                                //            if (notifyRes === true) {
-                                                //                Common.toastInfo("The assignor was notified that you read the notifictaion assigned on " + notification.AssignedOn + ".");
-                                                //            } else {
-                                                //                Common.toastError("An error occured while notifying the assignor.");
-                                                //            }
-                                                //        }, function () { }, "", auth);
-
-                                                //        break;
-                                                //    }
-                                                //}
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }, function () { }, notificationIds, auth);
-                        }
+                        checkBox.checked = true;
+                        notificationIds.push(notificationId);
                     }
-                };
+                }
+            };
 
-                document.getElementById("check-all").onchange = function () {
-                    for (let i = 0; i < rows.length; i++) {
-                        let row = rows[i];
-                        let checkBox = row.getElementsByClassName("check")[0].firstChild;
-                        let notificationId = row.getElementsByClassName("id")[0].innerHTML;
-
-                        if (checkBox.checked === true) {
-                            checkBox.checked = false;
-                            notificationIds = Common.removeItemOnce(notificationIds, notificationId);
-                        } else {
-                            checkBox.checked = true;
-                            notificationIds.push(notificationId);
-                        }
-                    }
-                };
-
-            }, function () { }, auth);
-        }
+        }, function () { }, auth);
     }
-
 };

@@ -545,7 +545,7 @@
 
                 startButton.onclick = function () {
                     let startUri = uri + "/start?w=" + selectedId;
-                    Common.post(startUri, function (res) {
+                    Common.post(startUri, function () {
                     }, function () { }, "", auth);
                 };
 
