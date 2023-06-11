@@ -211,7 +211,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(workflowsBytes, 0, workflowsBytes.Length)
                 };
-
             });
         }
 
@@ -878,7 +877,6 @@ namespace Wexflow.Server
                             taskInfos.Add(taskInfo);
                         }
 
-
                         var tasksStr = JsonConvert.SerializeObject(taskInfos);
                         var tasksBytes = Encoding.UTF8.GetBytes(tasksStr);
 
@@ -1094,7 +1092,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -1143,7 +1140,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -1389,10 +1385,8 @@ namespace Wexflow.Server
                 }
 
                 return GetFalseResponse();
-
             });
         }
-
 
         /// <summary>
         /// Checks if the XML of a workflow is valid.
@@ -2981,7 +2975,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3034,7 +3027,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3080,7 +3072,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(qBytes, 0, qBytes.Length)
                 };
-
             });
         }
 
@@ -3124,7 +3115,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(qBytes, 0, qBytes.Length)
                 };
-
             });
         }
 
@@ -3172,7 +3162,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(qBytes, 0, qBytes.Length)
                 };
-
             });
         }
 
@@ -3236,7 +3225,6 @@ namespace Wexflow.Server
                     };
                 }
             });
-
         }
 
         /// <summary>
@@ -3288,7 +3276,6 @@ namespace Wexflow.Server
                 };
             });
         }
-
 
         /// <summary>
         /// Inserts a user.
@@ -3392,7 +3379,6 @@ namespace Wexflow.Server
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
                 }
-
             });
         }
 
@@ -3445,7 +3431,6 @@ namespace Wexflow.Server
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
                 }
-
             });
         }
 
@@ -3496,7 +3481,6 @@ namespace Wexflow.Server
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
                 }
-
             });
         }
 
@@ -3566,7 +3550,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
                 };
-
             });
         }
 
@@ -3672,7 +3655,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3730,7 +3712,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3771,7 +3752,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3812,7 +3792,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3918,7 +3897,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -3954,7 +3932,6 @@ namespace Wexflow.Server
                 {
                     ContentType = "application/json"
                 };
-
             });
         }
 
@@ -4033,7 +4010,6 @@ namespace Wexflow.Server
                     };
                 }
             });
-
         }
 
         /// <summary>
@@ -4065,7 +4041,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4081,7 +4056,6 @@ namespace Wexflow.Server
                     };
                 }
             });
-
         }
 
         /// <summary>
@@ -4113,7 +4087,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4129,7 +4102,6 @@ namespace Wexflow.Server
                     };
                 }
             });
-
         }
 
         /// <summary>
@@ -4304,7 +4276,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4385,7 +4356,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4481,7 +4451,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4530,7 +4499,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4640,7 +4608,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(recordsBytes, 0, recordsBytes.Length)
                 };
-
             });
         }
 
@@ -4737,7 +4704,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(recordsBytes, 0, recordsBytes.Length)
                 };
-
             });
         }
 
@@ -4837,7 +4803,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(recordsBytes, 0, recordsBytes.Length)
                 };
-
             });
         }
 
@@ -4871,7 +4836,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
                 };
-
             });
         }
 
@@ -4905,7 +4869,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -4953,7 +4916,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -5068,7 +5030,6 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(notificationsBytes, 0, notificationsBytes.Length)
                 };
-
             });
         }
 
@@ -5146,7 +5107,6 @@ namespace Wexflow.Server
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
                     };
-
                 }
                 catch (Exception e)
                 {
@@ -5217,6 +5177,5 @@ namespace Wexflow.Server
                 }
             });
         }
-
     }
 }
