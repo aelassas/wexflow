@@ -28,10 +28,10 @@
         document.getElementById("confirm-password-text-label").innerHTML = language.get("confirm-password-text-label");
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
 
     let lnkRecords = document.getElementById("lnk-records");
     let lnkManager = document.getElementById("lnk-manager");
@@ -88,7 +88,7 @@
     let suser = getUser();
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -96,13 +96,13 @@
         qpassword = user.Password;
         auth = "Basic " + btoa(qusername + ":" + qpassword);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else if (u.UserProfile === 0 || u.UserProfile === 1) {
 
-                    Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
 
                         logedinUser = u.Username;
                         logedinUserProfile = u.UserProfile;
@@ -128,8 +128,8 @@
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
                         btnLogout.onclick = function () {
-                            deleteUser();
-                            Common.redirectToLoginPage();
+                            new window.deleteUser();
+                            window.Common.redirectToLoginPage();
                         };
 
                         if (u.UserProfile === 1) {
@@ -140,11 +140,11 @@
 
                     }, function () { }, auth);
                 } else {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 }
 
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
@@ -160,7 +160,7 @@
     };
 
     function loadUsers(usernameToSelect, scroll) {
-        Common.get(uri + "/searchUsers?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
+        window.Common.get(uri + "/searchUsers?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
             function (data) {
 
                 let items = [];
@@ -332,17 +332,17 @@
             oldPasswordTr.style.display = "none";
         }
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
             function (u) {
                 txtId.value = u.Id;
-                //txtCreatedOn.value = Common.formatDate(new Date(u.CreatedOn));
+                //txtCreatedOn.value = window.Common.formatDate(new Date(u.CreatedOn));
                 txtCreatedOn.value = u.CreatedOn;
 
                 //if (u.ModifiedOn === -62135596800000) {
                 if (u.ModifiedOn.indexOf("0001") > -1) {
                     txtModifiedOn.value = "-";
                 } else {
-                    //txtModifiedOn.value = Common.formatDate(new Date(u.ModifiedOn));
+                    //txtModifiedOn.value = window.Common.formatDate(new Date(u.ModifiedOn));
                     txtModifiedOn.value = u.ModifiedOn;
                 }
 
@@ -459,17 +459,17 @@
         if (r === true) {
             if (selectedUsername !== logedinUser) {
 
-                Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
+                window.Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
                     function (u) {
-                        Common.post(uri + "/deleteUser?username=" + encodeURIComponent(selectedUsername) + "&password=" + encodeURIComponent(u.Password),
+                        window.Common.post(uri + "/deleteUser?username=" + encodeURIComponent(selectedUsername) + "&password=" + encodeURIComponent(u.Password),
                             function (val) {
                                 if (val === true) {
-                                    Common.toastSuccess(language.get("toast-user-deleted"));
+                                    window.Common.toastSuccess(language.get("toast-user-deleted"));
                                     loadUsers();
                                     divUserActions.style.display = "none";
                                     divUserProfile.style.display = "none";
                                 } else {
-                                    Common.toastError(language.get("toast-user-delete-error"));
+                                    window.Common.toastError(language.get("toast-user-delete-error"));
                                 }
                             },
                             function () { }, "", auth);
@@ -503,30 +503,30 @@
             let confirmedPassword = confirmPasswordText.value;
 
             if (username === "") {
-                Common.toastInfo(language.get("toast-username"));
+                window.Common.toastInfo(language.get("toast-username"));
             } else {
-                Common.get(uri + "/user?username=" + encodeURIComponent(username),
+                window.Common.get(uri + "/user?username=" + encodeURIComponent(username),
                     function (u) {
                         if (typeof u === "undefined") {
                             if (up === -1) {
-                                Common.toastInfo(language.get("toast-userprofile"));
+                                window.Common.toastInfo(language.get("toast-userprofile"));
                             } else {
                                 if (password === "" || confirmedPassword === "") {
-                                    Common.toastInfo(language.get("toast-password"));
+                                    window.Common.toastInfo(language.get("toast-password"));
                                 } else {
                                     if (password !== confirmedPassword) {
-                                        Common.toastInfo(language.get("toast-password-error"));
+                                        window.Common.toastInfo(language.get("toast-password-error"));
                                     } else if (emailText.value === "" || validateEmail(emailText.value) === false) {
-                                        Common.toastInfo(language.get("toast-email-error"));
+                                        window.Common.toastInfo(language.get("toast-email-error"));
                                     } else {
-                                        let hashedPass = MD5(password);
-                                        Common.post(
+                                        let hashedPass = new window.MD5(password);
+                                        window.Common.post(
                                             uri + "/insertUser?username=" + encodeURIComponent(username) + "&password=" + hashedPass + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
                                             function (val) {
                                                 if (val === true) {
-                                                    Common.toastSuccess(language.get("toast-user-created"));
+                                                    window.Common.toastSuccess(language.get("toast-user-created"));
 
-                                                    Common.get(uri + "/user?username=" + encodeURIComponent(username),
+                                                    window.Common.get(uri + "/user?username=" + encodeURIComponent(username),
                                                         function (user) {
 
                                                             selectedUserId = user.Id;
@@ -552,7 +552,7 @@
                                                             trCreatedOn.style.display = "table-row";
                                                             trModifiedOn.style.display = "table-row";
                                                             txtId.value = user.Id;
-                                                            //txtCreatedOn.value = Common.formatDate(new Date(user.CreatedOn));
+                                                            //txtCreatedOn.value = window.Common.formatDate(new Date(user.CreatedOn));
                                                             txtCreatedOn.value = user.CreatedOn;
                                                             txtModifiedOn.value = "-";
 
@@ -560,7 +560,7 @@
                                                         function () { }, auth);
 
                                                 } else {
-                                                    Common.toastError(language.get("toast-user-create-error"));
+                                                    window.Common.toastError(language.get("toast-user-create-error"));
                                                 }
                                             },
                                             function () { }, "", auth);
@@ -569,7 +569,7 @@
 
                             }
                         } else {
-                            Common.toastInfo(language.get("toast-username-exists"));
+                            window.Common.toastInfo(language.get("toast-username-exists"));
                         }
 
                     },
@@ -580,27 +580,27 @@
             let up2 = parseInt(getSelectedProfile());
             if (changePassword === false) {
                 if (txtUsername.value === "") {
-                    Common.toastInfo(language.get("toast-username"));
+                    window.Common.toastInfo(language.get("toast-username"));
                 } else if (emailText.value === "" || validateEmail(emailText.value) === false) {
-                    Common.toastInfo(language.get("toast-email-error"));
+                    window.Common.toastInfo(language.get("toast-email-error"));
                 } else if (up2 === -1) {
-                    Common.toastInfo(language.get("toast-userprofile"));
+                    window.Common.toastInfo(language.get("toast-userprofile"));
                 } else {
-                    Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
+                    window.Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
                         function (u) {
                             if (typeof u !== "undefined" && u !== null && u.Username !== selectedUsername) {
-                                Common.toastInfo(language.get("toast-username-exists"));
+                                window.Common.toastInfo(language.get("toast-username-exists"));
                             } else {
 
                                 if (selectedUsername !== logedinUser && selectedUserProfile === 0) {
 
                                     if (newPasswordText.value === "") {
-                                        Common.toastInfo(language.get("toast-password"));
+                                        window.Common.toastInfo(language.get("toast-password"));
                                     } else {
-                                        let pass = MD5(newPasswordText.value);
+                                        let pass = new window.MD5(newPasswordText.value);
 
                                         if (pass !== u.Password) {
-                                            Common.toastInfo(language.get("toast-password-incorrect"));
+                                            window.Common.toastInfo(language.get("toast-password-incorrect"));
                                         } else {
                                             updateUsernameAndPassword();
                                         }
@@ -618,47 +618,47 @@
 
 
             } else {
-                Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
+                window.Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
                     function (u) {
-                        let oldPassword = MD5(oldPasswordText.value);
+                        let oldPassword = new window.MD5(oldPasswordText.value);
                         if (u.UserProfile === 0 && u.Password !== oldPassword) {
-                            Common.toastInfo(language.get("toast-old-password-incorrect"));
+                            window.Common.toastInfo(language.get("toast-old-password-incorrect"));
                         } else {
 
                             if (newPasswordText.value !== confirmPasswordText.value) {
-                                Common.toastInfo(language.get("toast-new-password-error"));
+                                window.Common.toastInfo(language.get("toast-new-password-error"));
                             } else if (newPasswordText.value === "" || confirmPasswordText.value === "") {
-                                Common.toastInfo(language.get("toast-new-password"));
+                                window.Common.toastInfo(language.get("toast-new-password"));
                             } else {
-                                let newPassword = MD5(newPasswordText.value);
+                                let newPassword = new window.MD5(newPasswordText.value);
                                 let up = getSelectedProfile();
 
                                 if (txtUsername.value === "") {
-                                    Common.toastInfo(language.get("toast-username"));
+                                    window.Common.toastInfo(language.get("toast-username"));
                                 } else if (emailText.value === "" || validateEmail(emailText.value) === false) {
-                                    Common.toastInfo(language.get("toast-email-error"));
+                                    window.Common.toastInfo(language.get("toast-email-error"));
                                 } else if (up === -1) {
-                                    Common.toastInfo(language.get("toast-userprofile"));
+                                    window.Common.toastInfo(language.get("toast-userprofile"));
                                 } else {
-                                    Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
+                                    window.Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
                                         function (u) {
                                             if (typeof u !== "undefined" &&
                                                 u !== null &&
                                                 u.Username !== selectedUsername) {
-                                                Common.toastInfo(language.get("toast-username-exists"));
+                                                window.Common.toastInfo(language.get("toast-username-exists"));
                                             } else {
 
-                                                Common.post(uri + "/updateUser?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&password=" + encodeURIComponent(newPassword) + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
+                                                window.Common.post(uri + "/updateUser?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&password=" + encodeURIComponent(newPassword) + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
                                                     function (val) {
                                                         if (val === true) {
                                                             auth = "Basic " + btoa(qusername + ":" + (selectedUsername === logedinUser ? newPassword : qpassword));
-                                                            Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
+                                                            window.Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
                                                                 function (user) {
                                                                     if (selectedUsername === logedinUser) {
                                                                         qpassword = user.Password;
                                                                         auth = "Basic " + btoa(qusername + ":" + qpassword);
-                                                                        deleteUser();
-                                                                        authorize(txtUsername.value, user.Password, user.UserProfile);
+                                                                        new window.deleteUser();
+                                                                        new window.authorize(txtUsername.value, user.Password, user.UserProfile);
 
                                                                         btnLogout.innerHTML = "Logout (" + txtUsername.value + ")";
                                                                     }
@@ -675,9 +675,9 @@
                                                                     trCreatedOn.style.display = "table-row";
                                                                     trModifiedOn.style.display = "table-row";
                                                                     txtId.value = user.Id;
-                                                                    //txtCreatedOn.value = Common.formatDate(new Date(user.CreatedOn));
+                                                                    //txtCreatedOn.value = window.Common.formatDate(new Date(user.CreatedOn));
                                                                     txtCreatedOn.value = user.CreatedOn;
-                                                                    //txtModifiedOn.value = Common.formatDate(new Date(user.ModifiedOn));
+                                                                    //txtModifiedOn.value = window.Common.formatDate(new Date(user.ModifiedOn));
                                                                     txtModifiedOn.value = user.ModifiedOn;
 
                                                                     if (logedinUser !== selectedUsername && user.UserProfile === 0) {
@@ -688,11 +688,11 @@
                                                                         changePass.style.display = "none";
                                                                     }
 
-                                                                    Common.toastSuccess(language.get("toast-user-updated"));
+                                                                    window.Common.toastSuccess(language.get("toast-user-updated"));
                                                                 },
                                                                 function () { }, auth);
                                                         } else {
-                                                            Common.toastError(language.get("toast-user-update-error"));
+                                                            window.Common.toastError(language.get("toast-user-update-error"));
                                                         }
                                                     },
                                                     function () { }, "", auth);
@@ -715,21 +715,21 @@
     function updateUsernameAndPassword() {
         let up = parseInt(getSelectedProfile());
 
-        Common.post(uri + "/updateUsernameAndEmailAndUserProfile?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&email=" + encodeURIComponent(emailText.value) + "&up=" + up,
+        window.Common.post(uri + "/updateUsernameAndEmailAndUserProfile?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&email=" + encodeURIComponent(emailText.value) + "&up=" + up,
             function (val) {
                 if (val === true) {
-                    Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
+                    window.Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
                         function (user) {
                             if (logedinUser === selectedUsername) {
                                 qpassword = user.Password;
                                 //btnLogout.innerHTML = "Logout (" + txtUsername.value + ")";
                                 document.getElementById("spn-username").innerHTML = " (" + txtUsername.Username + ")";
 
-                                deleteUser();
-                                authorize(txtUsername.value, user.Password, user.UserProfile);
+                                new window.deleteUser();
+                                new window.authorize(txtUsername.value, user.Password, user.UserProfile);
 
                             }
-                            Common.toastSuccess(language.get("toast-user-updated"));
+                            window.Common.toastSuccess(language.get("toast-user-updated"));
                             selectedUsernameTd.innerHTML = txtUsername.value;
                             selectedUserProfileTd.innerHTML = userProfileToText(user.UserProfile);
 
@@ -743,9 +743,9 @@
                             trCreatedOn.style.display = "table-row";
                             trModifiedOn.style.display = "table-row";
                             txtId.value = user.Id;
-                            //txtCreatedOn.value = Common.formatDate(new Date(user.CreatedOn));
+                            //txtCreatedOn.value = window.Common.formatDate(new Date(user.CreatedOn));
                             txtCreatedOn.value = user.CreatedOn;
-                            //txtModifiedOn.value = Common.formatDate(new Date(user.ModifiedOn));
+                            //txtModifiedOn.value = window.Common.formatDate(new Date(user.ModifiedOn));
                             txtModifiedOn.value = user.ModifiedOn;
 
                             if (logedinUser !== selectedUsername && user.UserProfile === 0) {
@@ -762,7 +762,7 @@
                         },
                         function () { }, auth);
                 } else {
-                    Common.toastError(language.get("toast-user-update-error"));
+                    window.Common.toastError(language.get("toast-user-update-error"));
                 }
             },
             function () { }, "", auth);

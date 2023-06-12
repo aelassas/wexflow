@@ -1,4 +1,4 @@
-﻿function Profiles() {
+﻿window.Profiles = function () {
     "use strict";
 
     let updateLanguage = function (language) {
@@ -36,10 +36,10 @@
         }
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let lnkRecords = document.getElementById("lnk-records");
     let lnkManager = document.getElementById("lnk-manager");
     let lnkDesigner = document.getElementById("lnk-designer");
@@ -67,7 +67,7 @@
     let auth = "";
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -75,12 +75,12 @@
         password = user.Password;
         auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else if (u.UserProfile === 0) {
-                    Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                         divProfiles.style.display = "block";
                         lnkRecords.style.display = "inline";
                         lnkManager.style.display = "inline";
@@ -99,18 +99,18 @@
                         }
 
                         btnLogout.onclick = function () {
-                            deleteUser();
-                            Common.redirectToLoginPage();
+                            new window.deleteUser();
+                            window.Common.redirectToLoginPage();
                         };
 
                         loadUsers();
                     }, function () { }, auth);
                 } else {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 }
 
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
@@ -125,7 +125,7 @@
     }
 
     function loadUsers(usernameToSelect, scroll) {
-        Common.get(uri + "/searchAdmins?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
+        window.Common.get(uri + "/searchAdmins?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
             function (data) {
 
                 let items = [];
@@ -231,7 +231,7 @@
     }
 
     function loadRightPanel() {
-        Common.get(uri + "/search?s=",
+        window.Common.get(uri + "/search?s=",
             function (data) {
                 btnSave.style.display = "block";
 
@@ -332,7 +332,7 @@
                 }
 
                 // Check the boxes from the relations in db
-                Common.get(uri + "/userWorkflows?u=" + selectedUserId,
+                window.Common.get(uri + "/userWorkflows?u=" + selectedUserId,
                     function (res) {
 
                         let workflowsTable = document.getElementById("wf-workflows-table");
@@ -353,7 +353,7 @@
                             }
                         }
                     }, function () {
-                        Common.toastError("An error occured while retrieving user workflows.");
+                        window.Common.toastError("An error occured while retrieving user workflows.");
                     }, auth);
 
                 document.getElementById("check-all").onchange = function () {
@@ -392,7 +392,7 @@
 
                 // End of get workflows
             }, function () {
-                Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
+                window.Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
             }, auth);
 
     }
@@ -422,14 +422,14 @@
     }
 
     btnSave.onclick = function () {
-        Common.post(uri + "/saveUserWorkflows", function (res) {
+        window.Common.post(uri + "/saveUserWorkflows", function (res) {
             if (res === true) {
-                Common.toastSuccess("Workflow relations saved with success.");
+                window.Common.toastSuccess("Workflow relations saved with success.");
             } else {
-                Common.toastError("An error occured while saving workflow relations.");
+                window.Common.toastError("An error occured while saving workflow relations.");
             }
         }, function () {
-            Common.toastError("An error occured while saving workflow relations.");
+            window.Common.toastError("An error occured while saving workflow relations.");
         }, { "UserId": selectedUserId, "UserWorkflows": userWorkflows }, auth);
     };
 

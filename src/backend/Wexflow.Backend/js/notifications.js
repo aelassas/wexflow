@@ -33,10 +33,10 @@
         translateTable();
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let lnkRecords = document.getElementById("lnk-records");
     let lnkManager = document.getElementById("lnk-manager");
     let lnkDesigner = document.getElementById("lnk-designer");
@@ -53,7 +53,7 @@
     let suser = getUser();
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         user = JSON.parse(suser);
 
@@ -61,13 +61,13 @@
         let password = user.Password;
         auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
-                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -90,8 +90,8 @@
                             document.getElementById("content").style.display = "block";
 
                             btnLogout.onclick = function () {
-                                deleteUser();
-                                Common.redirectToLoginPage();
+                                new window.deleteUser();
+                                window.Common.redirectToLoginPage();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
@@ -109,17 +109,17 @@
 
                         }, function () { }, auth);
                     } else {
-                        Common.redirectToLoginPage();
+                        window.Common.redirectToLoginPage();
                     }
 
                 }
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
     function loadNotifications() {
-        Common.get(uri + "/searchNotifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {
+        window.Common.get(uri + "/searchNotifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {
 
             let items = [];
             for (let i = 0; i < notifications.length; i++) {
@@ -166,15 +166,15 @@
                     if (this.checked === true) {
                         notificationIds.push(notificationId);
                     } else {
-                        notificationIds = Common.removeItemOnce(notificationIds, notificationId);
+                        notificationIds = window.Common.removeItemOnce(notificationIds, notificationId);
                     }
                 };
             }
 
             document.getElementById("btn-mark-as-read").onclick = function () {
-                Common.post(uri + "/markNotificationsAsRead", function (res) {
+                window.Common.post(uri + "/markNotificationsAsRead", function (res) {
                     if (res === true) {
-                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             for (let i = 0; i < notificationIds.length; i++) {
                                 let notificationId = notificationIds[i];
                                 for (let j = 0; j < rows.length; j++) {
@@ -191,11 +191,11 @@
                                         //    if (notificationId === notification.Id) {
 
                                         //        let message = "The user " + username + " has read his notification: " + notification.Message;
-                                        //        Common.post(uri + "/notify?a=" + encodeURIComponent(notification.AssignedBy) + "&m=" + encodeURIComponent(message), function (notifyRes) {
+                                        //        window.Common.post(uri + "/notify?a=" + encodeURIComponent(notification.AssignedBy) + "&m=" + encodeURIComponent(message), function (notifyRes) {
                                         //            if (notifyRes === true) {
-                                        //                Common.toastInfo("The assignor was notified that you read the notifictaion assigned on " + notification.AssignedOn + ".");
+                                        //                window.Common.toastInfo("The assignor was notified that you read the notifictaion assigned on " + notification.AssignedOn + ".");
                                         //            } else {
-                                        //                Common.toastError("An error occured while notifying the assignor.");
+                                        //                window.Common.toastError("An error occured while notifying the assignor.");
                                         //            }
                                         //        }, function () { }, "", auth);
 
@@ -217,9 +217,9 @@
             };
 
             document.getElementById("btn-mark-as-unread").onclick = function () {
-                Common.post(uri + "/markNotificationsAsUnread", function (res) {
+                window.Common.post(uri + "/markNotificationsAsUnread", function (res) {
                     if (res === true) {
-                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             for (let i = 0; i < notificationIds.length; i++) {
                                 let notificationId = notificationIds[i];
                                 for (let j = 0; j < rows.length; j++) {
@@ -251,11 +251,11 @@
 
             document.getElementById("btn-delete").onclick = function () {
                 if (notificationIds.length === 0) {
-                    Common.toastInfo(language.get("toast-select-notifications"));
+                    window.Common.toastInfo(language.get("toast-select-notifications"));
                 } else {
                     let cres = confirm(notificationIds.length == 1 ? language.get("confirm-delete-notification") : language.get("confirm-delete-notifications"));
                     if (cres === true) {
-                        Common.post(uri + "/deleteNotifications", function (res) {
+                        window.Common.post(uri + "/deleteNotifications", function (res) {
                             if (res === true) {
                                 for (let i = notificationIds.length - 1; i >= 0; i--) {
                                     let notificationId = notificationIds[i];
@@ -263,7 +263,7 @@
                                         let row = rows[j];
                                         let id = row.getElementsByClassName("id")[0].innerHTML;
                                         if (notificationId === id) {
-                                            notificationIds = Common.removeItemOnce(notificationIds, notificationId);
+                                            notificationIds = window.Common.removeItemOnce(notificationIds, notificationId);
                                             row.remove();
 
                                             // Notify assignedBy
@@ -272,11 +272,11 @@
                                             //    if (notificationId === notification.Id) {
 
                                             //        let message = "The user " + username + " has read his notification: " + notification.Message;
-                                            //        Common.post(uri + "/notify?a=" + encodeURIComponent(notification.AssignedBy) + "&m=" + encodeURIComponent(message), function (notifyRes) {
+                                            //        window.Common.post(uri + "/notify?a=" + encodeURIComponent(notification.AssignedBy) + "&m=" + encodeURIComponent(message), function (notifyRes) {
                                             //            if (notifyRes === true) {
-                                            //                Common.toastInfo("The assignor was notified that you read the notifictaion assigned on " + notification.AssignedOn + ".");
+                                            //                window.Common.toastInfo("The assignor was notified that you read the notifictaion assigned on " + notification.AssignedOn + ".");
                                             //            } else {
-                                            //                Common.toastError("An error occured while notifying the assignor.");
+                                            //                window.Common.toastError("An error occured while notifying the assignor.");
                                             //            }
                                             //        }, function () { }, "", auth);
 
@@ -301,7 +301,7 @@
 
                     if (checkBox.checked === true) {
                         checkBox.checked = false;
-                        notificationIds = Common.removeItemOnce(notificationIds, notificationId);
+                        notificationIds = window.Common.removeItemOnce(notificationIds, notificationId);
                     } else {
                         checkBox.checked = true;
                         notificationIds.push(notificationId);

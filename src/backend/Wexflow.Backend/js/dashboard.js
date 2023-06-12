@@ -1,4 +1,4 @@
-﻿function Dashboard() {
+﻿window.Dashboard = function () {
     "use strict";
 
     let updateLanguage = function (language) {
@@ -59,10 +59,10 @@
         }
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let refreshTimeout = 1000;
     let statusPending = document.getElementById("status-pending-value");
     let statusRunning = document.getElementById("status-running-value");
@@ -103,7 +103,7 @@
     let auth = "";
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -111,20 +111,20 @@
         qpassword = user.Password;
         auth = "Basic " + btoa(qusername + ":" + qpassword);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else {
 
-                    Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
 
                         divStatus.style.display = "block";
                         divEntries.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            deleteUser();
-                            Common.redirectToLoginPage();
+                            new window.deleteUser();
+                            window.Common.redirectToLoginPage();
                         };
 
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
@@ -148,9 +148,9 @@
                             imgNotifications.src = "images/notification.png";
                         }
 
-                        Common.get(uri + "/entryStatusDateMin",
+                        window.Common.get(uri + "/entryStatusDateMin",
                             function (dateMin) {
-                                Common.get(uri + "/entryStatusDateMax",
+                                window.Common.get(uri + "/entryStatusDateMax",
                                     function (dateMax) {
 
                                         from = new Date(dateMin);
@@ -159,7 +159,7 @@
                                         from = new Date(from.getFullYear(), from.getMonth(), from.getDate(), 0, 0, 0);
                                         to.setDate(to.getDate() + 1);
 
-                                        Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+                                        window.Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
                                             function (count) {
 
                                                 updateStatusCount();
@@ -197,29 +197,29 @@
                                                 btnNextPage.onclick = function () {
                                                     page++;
                                                     if (page > 1) {
-                                                        Common.disableButton(btnPreviousPage, false);
+                                                        window.Common.disableButton(btnPreviousPage, false);
                                                     }
 
                                                     if (page >= numberOfPages) {
-                                                        Common.disableButton(btnNextPage, true);
+                                                        window.Common.disableButton(btnNextPage, true);
                                                     } else {
-                                                        Common.disableButton(btnNextPage, false);
+                                                        window.Common.disableButton(btnNextPage, false);
                                                     }
 
                                                     lblPages.innerHTML = page + " / " + numberOfPages;
                                                     loadEntries();
                                                 };
 
-                                                Common.disableButton(btnPreviousPage, true);
+                                                window.Common.disableButton(btnPreviousPage, true);
 
                                                 btnPreviousPage.onclick = function () {
                                                     page--;
                                                     if (page === 1) {
-                                                        Common.disableButton(btnPreviousPage, true);
+                                                        window.Common.disableButton(btnPreviousPage, true);
                                                     }
 
                                                     if (page < numberOfPages) {
-                                                        Common.disableButton(btnNextPage, false);
+                                                        window.Common.disableButton(btnNextPage, false);
                                                     }
 
                                                     lblPages.innerHTML = page + " / " + numberOfPages;
@@ -263,12 +263,12 @@
                     }, function () { }, auth);
                 }
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
     function updateStatusCount() {
-        Common.get(uri + "/statusCount", function (data) {
+        window.Common.get(uri + "/statusCount", function (data) {
             statusPending.innerHTML = data.PendingCount;
             statusRunning.innerHTML = data.RunningCount;
             statusDone.innerHTML = data.DoneCount;
@@ -283,7 +283,7 @@
 
     function updatePager() {
 
-        Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+        window.Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
             function (count) {
                 updatePagerControls(count);
             },
@@ -306,13 +306,13 @@
         lblPages.innerHTML = page + " / " + numberOfPages;
 
         if (page >= numberOfPages) {
-            Common.disableButton(btnNextPage, true);
+            window.Common.disableButton(btnNextPage, true);
         } else {
-            Common.disableButton(btnNextPage, false);
+            window.Common.disableButton(btnNextPage, false);
         }
 
         if (page === 1) {
-            Common.disableButton(btnPreviousPage, true);
+            window.Common.disableButton(btnPreviousPage, true);
         }
     }
 
@@ -328,14 +328,14 @@
 
         let entriesCount = getEntriesCount();
 
-        Common.get(uri + "/searchEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
+        window.Common.get(uri + "/searchEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
             function (data) {
 
                 let items = [];
                 for (let i = 0; i < data.length; i++) {
                     let val = data[i];
-                    let lt = Common.launchType(val.LaunchType);
-                    let estatus = Common.status(language, val.Status);
+                    let lt = window.Common.launchType(val.LaunchType);
+                    let estatus = window.Common.status(language, val.Status);
                     items.push("<tr>"
                         + "<input type='hidden' class='entryId' value='" + val.Id + "'>"
                         + "<td class='status'>" + estatus + "</td>"
@@ -395,9 +395,9 @@
 
                         let entryId = this.getElementsByClassName("entryId")[0].value;
 
-                        Common.get(uri + "/entryLogs?id=" + entryId, function (logs) {
+                        window.Common.get(uri + "/entryLogs?id=" + entryId, function (logs) {
                             let grabMe = document.getElementById("grabMe");
-                            grabMe.innerHTML = Common.escape(logs).replace(/\r\n/g, "<br>");
+                            grabMe.innerHTML = window.Common.escape(logs).replace(/\r\n/g, "<br>");
 
                             new jBox('Modal', {
                                 width: 800,
@@ -407,7 +407,7 @@
                             }).open();
 
                         }, function () {
-                            Common.toastError("An error occured while retrieving logs.");
+                            window.Common.toastError("An error occured while retrieving logs.");
                         }, auth);
 
                     };
@@ -566,7 +566,7 @@
                 };
 
             }, function () {
-                Common.toastError("An error occured while retrieving entries. Check that Wexflow server is running correctly.");
+                window.Common.toastError("An error occured while retrieving entries. Check that Wexflow server is running correctly.");
             }, auth);
     }
 

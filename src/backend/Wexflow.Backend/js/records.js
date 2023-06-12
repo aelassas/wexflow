@@ -75,10 +75,10 @@
         translateRecordsTable();
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let lnkRecords = document.getElementById("lnk-records");
     let lnkManager = document.getElementById("lnk-manager");
     let lnkDesigner = document.getElementById("lnk-designer");
@@ -97,7 +97,7 @@
     let suser = getUser();
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -105,13 +105,13 @@
         password = user.Password;
         auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
-                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -139,8 +139,8 @@
                             document.getElementById("content").style.display = "block";
 
                             btnLogout.onclick = function () {
-                                deleteUser();
-                                Common.redirectToLoginPage();
+                                new window.deleteUser();
+                                window.Common.redirectToLoginPage();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
@@ -158,12 +158,12 @@
 
                         }, function () { }, auth);
                     } else {
-                        Common.redirectToLoginPage();
+                        window.Common.redirectToLoginPage();
                     }
 
                 }
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
@@ -231,7 +231,7 @@
                     if (this.checked === true) {
                         recordIds.push(recordId);
                     } else {
-                        recordIds = Common.removeItemOnce(recordIds, recordId);
+                        recordIds = window.Common.removeItemOnce(recordIds, recordId);
                     }
                 };
 
@@ -335,7 +335,7 @@
                                             break;
                                         }
                                     }
-                                    let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + Settings.Hostname + ":" + Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(version.FilePath);
+                                    let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(version.FilePath);
                                     window.open(url, "_self");
                                 };
                             }
@@ -372,7 +372,7 @@
                             let filedialog = document.getElementById("file-dialog");
                             let uploadFileVersion = function (fd) {
                                 jBoxContent.querySelector(".spn-upload-version").innerHTML = language.get("uploading");
-                                Common.post(uri + "/uploadVersion?r=" + recordId, function (res) {
+                                window.Common.post(uri + "/uploadVersion?r=" + recordId, function (res) {
                                     if (res.Result === true) {
                                         editedRecord.Versions.push({
                                             RecordId: recordId,
@@ -404,13 +404,13 @@
 
                                         // Download version
                                         cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                            let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + Settings.Hostname + ":" + Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(res.FilePath);
+                                            let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(res.FilePath);
                                             window.open(url, "_self");
                                         };
 
                                         cell5.querySelector(".btn-delete-version").onclick = function () {
                                             // Delete file
-                                            Common.post(uri + "/deleteTempVersionFile?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
+                                            window.Common.post(uri + "/deleteTempVersionFile?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
                                                 if (deleteRes === true) {
                                                     let versionIndex = -1;
                                                     for (let j = 0; j < editedRecord.Versions.length; j++) {
@@ -423,11 +423,11 @@
                                                         editedRecord.Versions.splice(versionIndex, 1);
                                                         // Update versions table
                                                         row.remove();
-                                                        Common.toastSuccess(language.get("toast-version-file-deleted"));
+                                                        window.Common.toastSuccess(language.get("toast-version-file-deleted"));
                                                     }
 
                                                 } else {
-                                                    Common.toastError(language.get("toast-version-file-delete-error"));
+                                                    window.Common.toastError(language.get("toast-version-file-delete-error"));
                                                 }
 
                                             }, function () { }, "", auth);
@@ -483,46 +483,46 @@
                                 editedRecord.EndDate = jBoxContent.querySelector(".record-end-date").value;
                                 editedRecord.Comments = jBoxContent.querySelector(".record-comments").value;
                                 editedRecord.ManagerComments = jBoxContent.querySelector(".record-manager-comments").value;
-                                Common.post(uri + "/saveRecord", function (res) {
+                                window.Common.post(uri + "/saveRecord", function (res) {
                                     if (res === true) {
                                         if (username !== record.CreatedBy) {
                                             // Notify approvers
                                             let message = "The record " + record.Name + " was updated by the user " + username + ".";
-                                            Common.post(uri + "/notifyApprovers?r=" + encodeURIComponent(record.Id) + "&m=" + encodeURIComponent(message), function (notifyRes) {
+                                            window.Common.post(uri + "/notifyApprovers?r=" + encodeURIComponent(record.Id) + "&m=" + encodeURIComponent(message), function (notifyRes) {
                                                 if (notifyRes === true) {
-                                                    Common.toastInfo(language.get("toast-approvers-notified"));
+                                                    window.Common.toastInfo(language.get("toast-approvers-notified"));
                                                 } else {
-                                                    Common.toastError(language.get("toast-approvers-notify-error"));
+                                                    window.Common.toastError(language.get("toast-approvers-notify-error"));
                                                 }
                                             }, function () { }, "", auth);
                                         }
                                         // Notify record.AssignedTo
                                         if (record.AssignedTo !== "" && username !== record.AssignedTo) {
                                             let message = "The record " + record.Name + " was updated by the user " + username + ".";
-                                            Common.post(uri + "/notify?a=" + encodeURIComponent(record.AssignedTo) + "&m=" + encodeURIComponent(message), function (notifyRes) {
+                                            window.Common.post(uri + "/notify?a=" + encodeURIComponent(record.AssignedTo) + "&m=" + encodeURIComponent(message), function (notifyRes) {
                                                 if (notifyRes === true) {
-                                                    Common.toastInfo(language.get("toast-assigned-to-notified"));
+                                                    window.Common.toastInfo(language.get("toast-assigned-to-notified"));
                                                 } else {
-                                                    Common.toastError(language.get("toast-assigned-to-notify-error"));
+                                                    window.Common.toastError(language.get("toast-assigned-to-notify-error"));
                                                 }
                                             }, function () { }, "", auth);
                                         }
                                         modal.close();
                                         modal.destroy();
                                         loadRecords();
-                                        Common.toastSuccess(language.get("toast-record-saved"));
+                                        window.Common.toastSuccess(language.get("toast-record-saved"));
                                     } else {
-                                        Common.toastError(language.get("toast-record-save-error"));
+                                        window.Common.toastError(language.get("toast-record-save-error"));
                                     }
                                 }, function () { }, editedRecord, auth);
                             };
 
                             jBoxFooter.querySelector(".record-cancel").onclick = function () {
-                                Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                                window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
                                     if (res === true) {
-                                        Common.toastSuccess(language.get("toast-modifications-canceled"));
+                                        window.Common.toastSuccess(language.get("toast-modifications-canceled"));
                                     } else {
-                                        Common.toastError(language.get("toast-modifications-cancel-error"));
+                                        window.Common.toastError(language.get("toast-modifications-cancel-error"));
                                     }
                                     modal.close();
                                     modal.destroy();
@@ -532,13 +532,13 @@
                             jBoxFooter.querySelector(".record-delete").onclick = function () {
                                 let cres = confirm(language.get("confirm-delete-record"));
                                 if (cres === true) {
-                                    Common.post(uri + "/deleteRecords", function (res) {
+                                    window.Common.post(uri + "/deleteRecords", function (res) {
                                         if (res === true) {
                                             for (let i = 0; i < rows.length; i++) {
                                                 let row = rows[i];
                                                 let id = row.getElementsByClassName("id")[0].innerHTML;
                                                 if (recordId === id) {
-                                                    recordIds = Common.removeItemOnce(recordIds, recordId);
+                                                    recordIds = window.Common.removeItemOnce(recordIds, recordId);
                                                     row.remove();
                                                     modal.destroy();
                                                 }
@@ -550,9 +550,9 @@
                             };
                         },
                         onClose: function () {
-                            Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                            window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
                                 if (res === false) {
-                                    Common.toastError(language.get("toast-modifications-cancel-error"));
+                                    window.Common.toastError(language.get("toast-modifications-cancel-error"));
                                 }
                             }, function () { }, editedRecord, auth);
                         }
@@ -569,7 +569,7 @@
 
                     if (checkBox.checked === true) {
                         checkBox.checked = false;
-                        recordIds = Common.removeItemOnce(recordIds, recordId);
+                        recordIds = window.Common.removeItemOnce(recordIds, recordId);
                     } else {
                         checkBox.checked = true;
                         recordIds.push(recordId);
@@ -579,11 +579,11 @@
 
             document.getElementById("btn-delete").onclick = function () {
                 if (recordIds.length === 0) {
-                    Common.toastInfo(language.get("toast-select-records"));
+                    window.Common.toastInfo(language.get("toast-select-records"));
                 } else {
                     let cres = confirm((recordIds.length == 1 ? language.get("confirm-delete-record") : language.get("confirm-delete-records")));
                     if (cres === true) {
-                        Common.post(uri + "/deleteRecords", function (res) {
+                        window.Common.post(uri + "/deleteRecords", function (res) {
                             if (res === true) {
                                 for (let i = recordIds.length - 1; i >= 0; i--) {
                                     let recordId = recordIds[i];
@@ -591,7 +591,7 @@
                                         let row = rows[i];
                                         let id = row.getElementsByClassName("id")[0].innerHTML;
                                         if (recordId === id) {
-                                            recordIds = Common.removeItemOnce(recordIds, recordId);
+                                            recordIds = window.Common.removeItemOnce(recordIds, recordId);
                                             row.remove();
                                         }
                                     }
@@ -643,7 +643,7 @@
                         // Upload version
                         let filedialog = document.getElementById("file-dialog");
                         let uploadFileVersion = function (fd) {
-                            Common.post(uri + "/uploadVersion?r=-1", function (res) {
+                            window.Common.post(uri + "/uploadVersion?r=-1", function (res) {
                                 if (res.Result === true) {
                                     newRecord.Versions.push({
                                         RecordId: "-1",
@@ -675,13 +675,13 @@
                                     goToBottom(jBoxContent);
 
                                     cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                        let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + Settings.Hostname + ":" + Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(res.FilePath);
+                                        let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(res.FilePath);
                                         window.open(url, "_self");
                                     };
 
                                     cell5.querySelector(".btn-delete-version").onclick = function () {
                                         // Delete file
-                                        Common.post(uri + "/deleteTempVersionFile?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
+                                        window.Common.post(uri + "/deleteTempVersionFile?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
                                             if (deleteRes === true) {
                                                 let versionIndex = -1;
                                                 for (let j = 0; j < newRecord.Versions.length; j++) {
@@ -694,11 +694,11 @@
                                                     newRecord.Versions.splice(versionIndex, 1);
                                                     // Update versions table
                                                     row.remove();
-                                                    Common.toastSuccess(language.get("toast-version-file-deleted"));
+                                                    window.Common.toastSuccess(language.get("toast-version-file-deleted"));
                                                 }
 
                                             } else {
-                                                Common.toastError(language.get("toast-version-file-delete-error"));
+                                                window.Common.toastError(language.get("toast-version-file-delete-error"));
                                             }
 
                                         }, function () { }, "", auth);
@@ -750,7 +750,7 @@
                         jBoxFooter.querySelector(".record-save").onclick = function () {
 
                             if (jBoxContent.querySelector(".record-name").value === "") {
-                                Common.toastInfo(language.get("toast-record-name"));
+                                window.Common.toastInfo(language.get("toast-record-name"));
                                 return;
                             }
 
@@ -768,24 +768,24 @@
                             newRecord.CreatedOn = "";
                             newRecord.AssignedTo = "";
                             newRecord.AssignedOn = "";
-                            Common.post(uri + "/saveRecord", function (res) {
+                            window.Common.post(uri + "/saveRecord", function (res) {
                                 if (res === true) {
                                     modal.close();
                                     modal.destroy();
                                     loadRecords();
-                                    Common.toastSuccess(language.get("toast-record-saved"));
+                                    window.Common.toastSuccess(language.get("toast-record-saved"));
                                 } else {
-                                    Common.toastError(language.get("toast-record-save-error"));
+                                    window.Common.toastError(language.get("toast-record-save-error"));
                                 }
                             }, function () { }, newRecord, auth);
                         };
 
                         jBoxFooter.querySelector(".record-cancel").onclick = function () {
-                            Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                            window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
                                 if (res === true) {
-                                    Common.toastSuccess(language.get("toast-modifications-canceled"));
+                                    window.Common.toastSuccess(language.get("toast-modifications-canceled"));
                                 } else {
-                                    Common.toastError(language.get("toast-modifications-cancel-error"));
+                                    window.Common.toastError(language.get("toast-modifications-cancel-error"));
                                 }
                                 modal.close();
                                 modal.destroy();
@@ -795,9 +795,9 @@
                         jBoxFooter.querySelector(".record-delete").style.display = "none";
                     },
                     onClose: function () {
-                        Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                        window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
                             if (res === false) {
-                                Common.toastError(language.get("toast-modifications-cancel-error"));
+                                window.Common.toastError(language.get("toast-modifications-cancel-error"));
                             }
                         }, function () { }, newRecord, auth);
                     }
@@ -810,11 +810,11 @@
 
         // Load records
         if (userProfile === 0) {
-            Common.get(uri + "/searchRecords?s=" + encodeURIComponent(searchText.value), function (records) {
+            window.Common.get(uri + "/searchRecords?s=" + encodeURIComponent(searchText.value), function (records) {
                 loadRecordsTable(records);
             }, function () { }, auth);
         } else if (userProfile === 1) {
-            Common.get(uri + "/searchRecordsCreatedByOrAssignedTo?s=" + encodeURIComponent(searchText.value) + "&c=" + encodeURIComponent(username) + "&a=" + encodeURIComponent(username), function (records) {
+            window.Common.get(uri + "/searchRecordsCreatedByOrAssignedTo?s=" + encodeURIComponent(searchText.value) + "&c=" + encodeURIComponent(username) + "&a=" + encodeURIComponent(username), function (records) {
                 loadRecordsTable(records);
             }, function () { }, auth);
         }

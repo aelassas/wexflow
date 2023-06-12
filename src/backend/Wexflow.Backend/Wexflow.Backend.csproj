@@ -133,7 +133,6 @@
     <Content Include="js\ext-settings_menu.js" />
     <Content Include="js\flowy.js" />
     <Content Include="js\forgot-password.js" />
-    <Content Include="js\history.min.js" />
     <Content Include="js\jquery.toast.min.js" />
     <Content Include="js\language.js" />
     <Content Include="js\language.core.js" />

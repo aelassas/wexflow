@@ -1,4 +1,4 @@
-﻿function History() {
+﻿window.History = function () {
     "use strict";
 
     let updateLanguage = function (language) {
@@ -50,10 +50,10 @@
         }
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let divEntries = document.getElementById("entries");
     let divEntriesAction = document.getElementById("entries-action");
     let btnLogout = document.getElementById("btn-logout");
@@ -86,7 +86,7 @@
     let auth = "";
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -94,12 +94,12 @@
         password = user.Password;
         auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else {
-                    Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                         if (u.UserProfile === 0 || u.UserProfile === 1) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
@@ -123,15 +123,15 @@
                         divEntriesAction.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            deleteUser();
-                            Common.redirectToLoginPage();
+                            new window.deleteUser();
+                            window.Common.redirectToLoginPage();
                         };
 
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
-                        Common.get(uri + "/historyEntryStatusDateMin",
+                        window.Common.get(uri + "/historyEntryStatusDateMin",
                             function (dateMin) {
-                                Common.get(uri + "/historyEntryStatusDateMax",
+                                window.Common.get(uri + "/historyEntryStatusDateMax",
                                     function (dateMax) {
 
                                         from = new Date(dateMin);
@@ -140,7 +140,7 @@
                                         from = new Date(from.getFullYear(), from.getMonth(), from.getDate(), 0, 0, 0);
                                         to.setDate(to.getDate() + 1);
 
-                                        Common.get(uri + "/historyEntriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+                                        window.Common.get(uri + "/historyEntriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
                                             function (count) {
 
                                                 $(txtFrom).datepicker({
@@ -170,29 +170,29 @@
                                                 btnNextPage.onclick = function () {
                                                     page++;
                                                     if (page > 1) {
-                                                        Common.disableButton(btnPreviousPage, false);
+                                                        window.Common.disableButton(btnPreviousPage, false);
                                                     }
 
                                                     if (page >= numberOfPages) {
-                                                        Common.disableButton(btnNextPage, true);
+                                                        window.Common.disableButton(btnNextPage, true);
                                                     } else {
-                                                        Common.disableButton(btnNextPage, false);
+                                                        window.Common.disableButton(btnNextPage, false);
                                                     }
 
                                                     lblPages.innerHTML = page + " / " + numberOfPages;
                                                     loadEntries();
                                                 };
 
-                                                Common.disableButton(btnPreviousPage, true);
+                                                window.Common.disableButton(btnPreviousPage, true);
 
                                                 btnPreviousPage.onclick = function () {
                                                     page--;
                                                     if (page === 1) {
-                                                        Common.disableButton(btnPreviousPage, true);
+                                                        window.Common.disableButton(btnPreviousPage, true);
                                                     }
 
                                                     if (page < numberOfPages) {
-                                                        Common.disableButton(btnNextPage, false);
+                                                        window.Common.disableButton(btnNextPage, false);
                                                     }
 
                                                     lblPages.innerHTML = page + " / " + numberOfPages;
@@ -236,13 +236,13 @@
                     }, function () { }, auth);
                 }
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
     function updatePager() {
 
-        Common.get(uri + "/historyEntriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+        window.Common.get(uri + "/historyEntriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
             function (count) {
                 updatePagerControls(count);
             },
@@ -265,13 +265,13 @@
         lblPages.innerHTML = page + " / " + numberOfPages;
 
         if (page >= numberOfPages) {
-            Common.disableButton(btnNextPage, true);
+            window.Common.disableButton(btnNextPage, true);
         } else {
-            Common.disableButton(btnNextPage, false);
+            window.Common.disableButton(btnNextPage, false);
         }
 
         if (page === 1) {
-            Common.disableButton(btnPreviousPage, true);
+            window.Common.disableButton(btnPreviousPage, true);
         }
     }
 
@@ -286,14 +286,14 @@
     function loadEntries() {
         let entriesCount = getEntriesCount();
 
-        Common.get(uri + "/searchHistoryEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
+        window.Common.get(uri + "/searchHistoryEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
             function (data) {
                 let items = [];
 
                 for (let i = 0; i < data.length; i++) {
                     let val = data[i];
-                    let lt = Common.launchType(val.LaunchType);
-                    let entryStatus = Common.status(language, val.Status);
+                    let lt = window.Common.launchType(val.LaunchType);
+                    let entryStatus = window.Common.status(language, val.Status);
                     items.push("<tr>"
                         + "<input type='hidden' class='entryId' value='" + val.Id + "'>"
                         + "<td class='status'>" + entryStatus + "</td>"
@@ -353,9 +353,9 @@
 
                         let entryId = this.getElementsByClassName("entryId")[0].value;
 
-                        Common.get(uri + "/historyEntryLogs?id=" + entryId, function (logs) {
+                        window.Common.get(uri + "/historyEntryLogs?id=" + entryId, function (logs) {
                             let grabMe = document.getElementById("grabMe");
-                            grabMe.innerHTML = Common.escape(logs).replace(/\r\n/g, "<br>");
+                            grabMe.innerHTML = window.Common.escape(logs).replace(/\r\n/g, "<br>");
 
                             new jBox('Modal', {
                                 width: 800,
@@ -365,7 +365,7 @@
                             }).open();
 
                         }, function () {
-                            Common.toastError("An error occured while retrieving logs.");
+                            window.Common.toastError("An error occured while retrieving logs.");
                         }, auth);
                     };
                 }

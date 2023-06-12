@@ -1,12 +1,12 @@
-﻿function authorize(username, password, userProfile) {
+﻿window.authorize = function (username, password, userProfile) {
     set("wf-authorize", '{"Username": "' + username + '", "Password":"' + password + '","UserProfile":' + userProfile + '}');
 }
 
-function getUser() {
+window.getUser = function () {
     return get("wf-authorize");
 }
 
-function deleteUser() {
+window.deleteUser = function () {
     remove("wf-authorize");
 }
 

@@ -1,4 +1,4 @@
-﻿function ForgotPassword() {
+﻿window.ForgotPassword = function () {
     "use strict";
 
     let updateLanguage = function (language) {
@@ -8,10 +8,10 @@
         document.getElementById("btn-submit").value = language.get("submit");
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let txtUsername = document.getElementById("txt-username");
     let btnSubmit = document.getElementById("btn-submit");
 
@@ -32,19 +32,19 @@
         let username = txtUsername.value;
 
         if (username === "") {
-            Common.toastInfo(language.get("enter-username"));
+            window.Common.toastInfo(language.get("enter-username"));
             btnSubmit.disabled = false;
             return;
         }
 
-        Common.post(uri + "/resetPassword?u=" + encodeURIComponent(username), function (val) {
+        window.Common.post(uri + "/resetPassword?u=" + encodeURIComponent(username), function (val) {
             if (val === true) {
-                Common.toastSuccess(language.get("fp-success") + username);
+                window.Common.toastSuccess(language.get("fp-success") + username);
                 setTimeout(function () {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 }, 5000);
             } else {
-                Common.toastError(language.get("fp-error"));
+                window.Common.toastError(language.get("fp-error"));
                 btnSubmit.disabled = false;
             }
         });

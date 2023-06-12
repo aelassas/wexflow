@@ -1,4 +1,4 @@
-﻿function WexflowApproval() {
+﻿window.WexflowApproval = function () {
     "use strict";
 
     let updateLanguage = function (language) {
@@ -65,11 +65,11 @@
         }
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
     let id = "wf-approval";
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let lnkRecords = document.getElementById("lnk-records");
     let lnkManager = document.getElementById("lnk-manager");
     let lnkDesigner = document.getElementById("lnk-designer");
@@ -139,7 +139,7 @@
 
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -147,13 +147,13 @@
         password = user.Password;
         auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
-                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -176,27 +176,27 @@
                             divWorkflows.style.display = "block";
 
                             btnLogout.onclick = function () {
-                                deleteUser();
-                                Common.redirectToLoginPage();
+                                new window.deleteUser();
+                                window.Common.redirectToLoginPage();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
-                            Common.disableButton(startButton, true);
-                            Common.disableButton(suspendButton, true);
-                            Common.disableButton(resumeButton, true);
-                            Common.disableButton(stopButton, true);
-                            Common.disableButton(approveButton, true);
-                            Common.disableButton(rejectButton, true);
+                            window.Common.disableButton(startButton, true);
+                            window.Common.disableButton(suspendButton, true);
+                            window.Common.disableButton(resumeButton, true);
+                            window.Common.disableButton(stopButton, true);
+                            window.Common.disableButton(approveButton, true);
+                            window.Common.disableButton(rejectButton, true);
 
                             searchButton.onclick = function () {
                                 loadWorkflows();
                                 notify("");
-                                Common.disableButton(startButton, true);
-                                Common.disableButton(suspendButton, true);
-                                Common.disableButton(resumeButton, true);
-                                Common.disableButton(stopButton, true);
-                                Common.disableButton(approveButton, true);
-                                Common.disableButton(rejectButton, true);
+                                window.Common.disableButton(startButton, true);
+                                window.Common.disableButton(suspendButton, true);
+                                window.Common.disableButton(resumeButton, true);
+                                window.Common.disableButton(stopButton, true);
+                                window.Common.disableButton(approveButton, true);
+                                window.Common.disableButton(rejectButton, true);
                             };
 
                             searchText.onkeyup = function (event) {
@@ -205,12 +205,12 @@
                                 if (event.keyCode === 13) { // Enter
                                     loadWorkflows();
                                     notify("");
-                                    Common.disableButton(startButton, true);
-                                    Common.disableButton(suspendButton, true);
-                                    Common.disableButton(resumeButton, true);
-                                    Common.disableButton(stopButton, true);
-                                    Common.disableButton(approveButton, true);
-                                    Common.disableButton(rejectButton, true);
+                                    window.Common.disableButton(startButton, true);
+                                    window.Common.disableButton(suspendButton, true);
+                                    window.Common.disableButton(resumeButton, true);
+                                    window.Common.disableButton(stopButton, true);
+                                    window.Common.disableButton(approveButton, true);
+                                    window.Common.disableButton(rejectButton, true);
                                 }
                             };
 
@@ -218,12 +218,12 @@
 
                         }, function () { }, auth);
                     } else {
-                        Common.redirectToLoginPage();
+                        window.Common.redirectToLoginPage();
                     }
 
                 }
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
@@ -252,7 +252,7 @@
     }
 
     function loadWorkflows() {
-        Common.get(uri + "/searchApprovalWorkflows?s=" + encodeURIComponent(searchText.value),
+        window.Common.get(uri + "/searchApprovalWorkflows?s=" + encodeURIComponent(searchText.value),
             function (data) {
                 data.sort(compareById);
                 let items = [];
@@ -308,7 +308,7 @@
                 }
 
                 function getWorkflow(wid, func) {
-                    Common.get(uri + "/workflow?w=" + wid, function (d) {
+                    window.Common.get(uri + "/workflow?w=" + wid, function (d) {
                         func(d);
                     },
                         function () { }, auth);
@@ -318,18 +318,18 @@
                     getWorkflow(wid, function (workflow) {
                         if (workflow.IsEnabled === false) {
                             notify("This workflow is disabled.");
-                            Common.disableButton(startButton, true);
-                            Common.disableButton(suspendButton, true);
-                            Common.disableButton(resumeButton, true);
-                            Common.disableButton(stopButton, true);
-                            Common.disableButton(approveButton, true);
-                            Common.disableButton(rejectButton, true);
+                            window.Common.disableButton(startButton, true);
+                            window.Common.disableButton(suspendButton, true);
+                            window.Common.disableButton(resumeButton, true);
+                            window.Common.disableButton(stopButton, true);
+                            window.Common.disableButton(approveButton, true);
+                            window.Common.disableButton(rejectButton, true);
                             clearInterval(workflowTimer);
                         }
                         else {
                             if (force === false && workflowStatusChanged(workflow) === false) return;
 
-                            Common.disableButton(startButton, false);
+                            window.Common.disableButton(startButton, false);
 
                             notify("");
                         }
@@ -343,15 +343,15 @@
                 }
 
                 function updateJobButtons(wid, jobId, force) {
-                    Common.get(uri + "/job?w=" + wid + "&i=" + jobId, function (job) {
+                    window.Common.get(uri + "/job?w=" + wid + "&i=" + jobId, function (job) {
                         if (job) {
                             if (force === false && jobStatusChanged(job) === false) return;
 
-                            Common.disableButton(stopButton, !(job.IsRunning && !job.IsPaused));
-                            Common.disableButton(suspendButton, !(job.IsRunning && !job.IsPaused));
-                            Common.disableButton(resumeButton, !job.IsPaused);
-                            Common.disableButton(approveButton, !(job.IsWaitingForApproval && job.IsApproval));
-                            Common.disableButton(rejectButton, !(job.IsWaitingForApproval && job.IsApproval));
+                            window.Common.disableButton(stopButton, !(job.IsRunning && !job.IsPaused));
+                            window.Common.disableButton(suspendButton, !(job.IsRunning && !job.IsPaused));
+                            window.Common.disableButton(resumeButton, !job.IsPaused);
+                            window.Common.disableButton(approveButton, !(job.IsWaitingForApproval && job.IsApproval));
+                            window.Common.disableButton(rejectButton, !(job.IsWaitingForApproval && job.IsApproval));
 
                             if (job.IsApproval === true && job.IsWaitingForApproval === true && job.IsPaused === false) {
                                 notify("This job is waiting for approval...");
@@ -367,9 +367,9 @@
                             }
                         } else {
                             clearInterval(jobTimer);
-                            Common.disableButton(stopButton, true);
-                            Common.disableButton(suspendButton, true);
-                            Common.disableButton(resumeButton, true);
+                            window.Common.disableButton(stopButton, true);
+                            window.Common.disableButton(suspendButton, true);
+                            window.Common.disableButton(resumeButton, true);
                             notify("");
                         }
                     }, function () { }, auth);
@@ -407,7 +407,7 @@
                                 updateButtons(selectedId, false);
 
                                 // Jobs
-                                Common.get(uri + "/jobs?w=" + selectedId, function (data) {
+                                window.Common.get(uri + "/jobs?w=" + selectedId, function (data) {
                                     if (data) {
                                         workflowJobs = {};
                                         let currentJobs = [];
@@ -540,7 +540,7 @@
 
                 startButton.onclick = function () {
                     let startUri = uri + "/start?w=" + selectedId;
-                    Common.post(startUri, function () {
+                    window.Common.post(startUri, function () {
                     }, function () { }, "", auth);
                 };
 
@@ -549,11 +549,11 @@
                     let jobId = selectedJob.querySelector(".wf-jobId").innerHTML;
 
                     let suspendUri = uri + "/suspend?w=" + selectedId + "&i=" + jobId;
-                    Common.post(suspendUri, function (res) {
+                    window.Common.post(suspendUri, function (res) {
                         if (res === true) {
                             updateJobButtons(selectedId, jobId, true);
                         } else {
-                            Common.toastInfo(language.get("op-not-supported"));
+                            window.Common.toastInfo(language.get("op-not-supported"));
                         }
                     }, function () { }, "", auth);
                 };
@@ -563,7 +563,7 @@
                     let jobId = selectedJob.querySelector(".wf-jobId").innerHTML;
 
                     let resumeUri = uri + "/resume?w=" + selectedId + "&i=" + jobId;
-                    Common.post(resumeUri, function () {
+                    window.Common.post(resumeUri, function () {
                         updateJobButtons(selectedId, jobId, true);
                     }, function () { }, "", auth);
                 };
@@ -573,54 +573,54 @@
                     let jobId = selectedJob.querySelector(".wf-jobId").innerHTML;
 
                     let stopUri = uri + "/stop?w=" + selectedId + "&i=" + jobId;
-                    Common.post(stopUri,
+                    window.Common.post(stopUri,
                         function (res) {
                             if (res === true) {
                                 updateJobButtons(selectedId, jobId, true);
                             } else {
-                                Common.toastInfo(language.get("op-not-supported"));
+                                window.Common.toastInfo(language.get("op-not-supported"));
                             }
                         },
                         function () { }, "", auth);
                 };
 
                 approveButton.onclick = function () {
-                    Common.disableButton(approveButton, true);
-                    Common.disableButton(stopButton, true);
+                    window.Common.disableButton(approveButton, true);
+                    window.Common.disableButton(stopButton, true);
                     let selectedJob = document.getElementById("wf-jobs-table").querySelector(".selected");
                     let jobId = selectedJob.querySelector(".wf-jobId").innerHTML;
                     let approveUri = uri + "/approve?w=" + selectedId + "&i=" + jobId;
-                    Common.post(approveUri,
+                    window.Common.post(approveUri,
                         function (res) {
                             if (res === true) {
                                 updateJobButtons(selectedId, jobId, true);
-                                Common.toastSuccess(language.get("job-part-1") + jobId + language.get("job-approved"));
+                                window.Common.toastSuccess(language.get("job-part-1") + jobId + language.get("job-approved"));
                             } else {
-                                Common.disableButton(approveButton, false);
-                                Common.disableButton(stopButton, false);
-                                Common.toastError(language.get("job-approved-error-part-1") + jobId + language.get("job-approved-error-part-2") + selectedId + ".");
+                                window.Common.disableButton(approveButton, false);
+                                window.Common.disableButton(stopButton, false);
+                                window.Common.toastError(language.get("job-approved-error-part-1") + jobId + language.get("job-approved-error-part-2") + selectedId + ".");
                             }
                         },
                         function () { }, "", auth);
                 };
 
                 rejectButton.onclick = function () {
-                    Common.disableButton(rejectButton, true);
-                    Common.disableButton(approveButton, true);
-                    Common.disableButton(stopButton, true);
+                    window.Common.disableButton(rejectButton, true);
+                    window.Common.disableButton(approveButton, true);
+                    window.Common.disableButton(stopButton, true);
                     let selectedJob = document.getElementById("wf-jobs-table").querySelector(".selected");
                     let jobId = selectedJob.querySelector(".wf-jobId").innerHTML;
                     let rejectUri = uri + "/reject?w=" + selectedId + "&i=" + jobId;
-                    Common.post(rejectUri,
+                    window.Common.post(rejectUri,
                         function (res) {
                             if (res === true) {
                                 updateJobButtons(selectedId, jobId, true);
-                                Common.toastSuccess(language.get("job-part-1") + jobId + language.get("job-rejected"));
+                                window.Common.toastSuccess(language.get("job-part-1") + jobId + language.get("job-rejected"));
                             } else {
-                                Common.disableButton(disapproveButton, true);
-                                Common.disableButton(approveButton, false);
-                                Common.disableButton(stopButton, false);
-                                Common.toastError(language.get("job-rejected-error-part-1") + jobId + language.get("job-approved-error-part-2") + selectedId + ".");
+                                window.Common.disableButton(disapproveButton, true);
+                                window.Common.disableButton(approveButton, false);
+                                window.Common.disableButton(stopButton, false);
+                                window.Common.toastError(language.get("job-rejected-error-part-1") + jobId + language.get("job-approved-error-part-2") + selectedId + ".");
                             }
                         },
                         function () { }, "", auth);
@@ -629,7 +629,7 @@
                 // End of get workflows
             },
             function () {
-                Common.toastError(language.get("workflows-server-error"));
+                window.Common.toastError(language.get("workflows-server-error"));
             }, auth);
     }
 

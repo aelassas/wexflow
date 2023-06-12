@@ -1,4 +1,4 @@
-﻿function MD5(d) {
+﻿window.MD5 = function (d) {
     result = M(V(Y(X(d), 8 * d.length)));
     return result.toLowerCase();
 }

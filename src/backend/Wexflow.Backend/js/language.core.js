@@ -1,10 +1,10 @@
-const Language = function (domId, updateLanguage) {
+window.Language = function (domId, updateLanguage) {
     "use strict";
 
     let self = this;
 
     this.get = function (keyword) {
-        return languageModule.languages[self.getLanguage()][keyword] || languageModule.languages["en"][keyword];
+        return window.languageModule.languages[self.getLanguage()][keyword] || window.languageModule.languages["en"][keyword];
     };
 
     this.setLanguage = function (code) {
@@ -37,8 +37,8 @@ const Language = function (domId, updateLanguage) {
             + '</button>'
             + '<ul class="dropdown-menu" role="menu">';
 
-        for (let i = 0; i < languageModule.codes.length; i++) { // 8
-            html += '<li><div class="lang"><img src="' + languageModule.codes[i].Icon + '" alt="">&nbsp;' + languageModule.codes[i].Name + '<input type="hidden" class="lang-code" value="' + languageModule.codes[i].Code + '" /></div></li>';
+        for (let i = 0; i < window.languageModule.codes.length; i++) { // 8
+            html += '<li><div class="lang"><img src="' + window.languageModule.codes[i].Icon + '" alt="">&nbsp;' + window.languageModule.codes[i].Name + '<input type="hidden" class="lang-code" value="' + window.languageModule.codes[i].Code + '" /></div></li>';
         }
         html += ' </ul>';
 

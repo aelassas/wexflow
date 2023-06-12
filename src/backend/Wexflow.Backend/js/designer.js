@@ -65,10 +65,10 @@
         btnRun.title = language.get("run-action-title");
     };
 
-    let language = new Language("lang", updateLanguage);
+    let language = new window.Language("lang", updateLanguage);
     language.init();
 
-    let uri = Common.trimEnd(Settings.Uri, "/");
+    let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let lnkDashoard = document.getElementById("lnk-dashboard");
     let lnkRecords = document.getElementById("lnk-records");
     let lnkManager = document.getElementById("lnk-manager");
@@ -93,7 +93,7 @@
     let auth = "";
 
     if (suser === null || suser === "") {
-        Common.redirectToLoginPage();
+        window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
@@ -101,15 +101,15 @@
         password = user.Password;
         auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u || user.Password !== u.Password) {
-                    Common.redirectToLoginPage();
+                    window.Common.redirectToLoginPage();
                 } else {
 
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
 
-                        Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -141,12 +141,12 @@
 
                         }, function () { }, auth);
                     } else {
-                        Common.redirectToLoginPage();
+                        window.Common.redirectToLoginPage();
                     }
 
                 }
             }, function () {
-                logout();
+                new window.logout();
             }, auth);
     }
 
@@ -261,8 +261,8 @@
         btnLogout.onclick = function () {
 
             let redirect = function () {
-                deleteUser();
-                Common.redirectToLoginPage();
+                new window.deleteUser();
+                window.Common.redirectToLoginPage();
             }
 
             saveChanges(function () {
@@ -275,7 +275,7 @@
         flowy(canvas, drag, release, snapping, drop);
 
         function loadTasks() {
-            Common.get(uri + "/searchTaskNames?s=" + searchtasks.value,
+            window.Common.get(uri + "/searchTaskNames?s=" + searchtasks.value,
                 function (taskNames) {
                     let blockelements = "";
                     for (let i = 0; i < taskNames.length; i++) {
@@ -286,7 +286,7 @@
                     blocklist.innerHTML = blockelements;
                 },
                 function () {
-                    Common.toastError(language.get("toast-task-names-error"));
+                    window.Common.toastError(language.get("toast-task-names-error"));
                 }, auth);
         }
         loadTasks();
@@ -299,7 +299,7 @@
         };
 
         document.getElementById("newworkflow").onclick = function () {
-            Common.get(uri + "/workflowId",
+            window.Common.get(uri + "/workflowId",
                 function (res) {
 
                     openSavePopup = true;
@@ -381,7 +381,7 @@
 
                 },
                 function () {
-                    Common.toastError(language.get("toast-workflow-id-error"));
+                    window.Common.toastError(language.get("toast-workflow-id-error"));
                 }, auth);
 
 
@@ -603,10 +603,10 @@
             let workflowId = document.getElementById("wfid").value;
             let confirmRes = confirm(language.get("confirm-delete-workflow"));
             if (confirmRes === true) {
-                Common.post(uri + "/delete?w=" + workflowId,
+                window.Common.post(uri + "/delete?w=" + workflowId,
                     function (res) {
                         if (res === true) {
-                            Common.toastSuccess(language.get("toast-workflow-deleted"));
+                            window.Common.toastSuccess(language.get("toast-workflow-deleted"));
                             workflowDeleted = true;
 
                             flowy.deleteBlocks();
@@ -652,10 +652,10 @@
                             tasks = {};
 
                         } else {
-                            Common.toastError(language.get("toast-workflow-delete-error"));
+                            window.Common.toastError(language.get("toast-workflow-delete-error"));
                         }
                     }, function () {
-                        Common.toastError(language.get("toast-workflow-delete-error"));
+                        window.Common.toastError(language.get("toast-workflow-delete-error"));
                     }, "", auth);
             }
         });
@@ -732,7 +732,7 @@
                         // Add setting
                         let newSettingButton = document.getElementsByClassName("wf-new-setting")[0];
                         newSettingButton.onclick = function () {
-                            Common.get(uri + "/settings/" + taskname,
+                            window.Common.get(uri + "/settings/" + taskname,
                                 function (settings) {
 
                                     let settingsTable = document.getElementById("task-settings-table");
@@ -824,7 +824,7 @@
                                                     val = defaultValue;
                                                     tasks[index].Settings[sIndex].Value = val;
                                                 }
-                                                settingValueHtml += '<input class="form-control wf-setting-value" type="text" value="' + Common.escape(val) + '" />';
+                                                settingValueHtml += '<input class="form-control wf-setting-value" type="text" value="' + window.Common.escape(val) + '" />';
                                             } else if (settingType === "password") {
                                                 settingValueHtml += '<input class="form-control wf-setting-value" type="password" value="" />';
                                             }
@@ -937,16 +937,16 @@
 
                                         if (settingType === "record") {
                                             if (userProfile === 0) { // super-admin
-                                                Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
                                                     loadSettingValue(records, []);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
                                                     loadSettingValue(records, []);
                                                 }, function () { }, auth);
                                             }
                                         } else if (settingType === "user") {
-                                            Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                            window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                 loadSettingValue([], users);
                                             }, function () { }, auth);
                                         } else {
@@ -977,7 +977,7 @@
 
                                     goToBottom("proplist");
                                 }, function () {
-                                    Common.toastError(language.get("toast-settings-error"));
+                                    window.Common.toastError(language.get("toast-settings-error"));
                                 }, auth);
 
                             return false;
@@ -985,7 +985,7 @@
 
                         // Load settings
                         if (checkId === true) {
-                            Common.get(uri + "/settings/" + taskname,
+                            window.Common.get(uri + "/settings/" + taskname,
                                 function (defaultSettings) {
 
                                     if (tasks[index]) {
@@ -1314,30 +1314,30 @@
 
                                         if (hasRecordSetting === true && hasUserSetting === true) {
                                             if (userProfile === 0) { // super-admin
-                                                Common.get(uri + "/searchRecords?s=", function (records) {
-                                                    Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
-                                                    Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             }
                                         } else if (hasRecordSetting === true && hasUserSetting === false) {
                                             if (userProfile === 0) { // super-admin
-                                                Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             }
                                         } else if (hasRecordSetting === false && hasUserSetting === true) {
-                                            Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                            window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                 loadSettings([], users);
                                             }, function () { }, auth);
                                         } else {
@@ -1378,10 +1378,10 @@
                                     }
                                 },
                                 function () {
-                                    Common.toastError(language.get("toast-settings-error"));
+                                    window.Common.toastError(language.get("toast-settings-error"));
                                 }, auth);
                         } else {
-                            Common.get(uri + "/settings/" + taskname,
+                            window.Common.get(uri + "/settings/" + taskname,
                                 function (defaultSettings) {
 
                                     if (tasks[index]) {
@@ -1433,9 +1433,9 @@
                                                 taskSettings += '<input class="wf-setting-type" type="hidden" value="' + settingType + '">';
 
                                                 if (settingType === "string" || settingType === "int") {
-                                                    taskSettings += '<input class="form-control wf-setting-value" type="text" value="' + Common.escape(settingValue) + '" />';
+                                                    taskSettings += '<input class="form-control wf-setting-value" type="text" value="' + window.Common.escape(settingValue) + '" />';
                                                 } else if (settingType === "password") {
-                                                    taskSettings += '<input class="form-control wf-setting-value" type="password" value="' + Common.escape(settingValue) + '" />';
+                                                    taskSettings += '<input class="form-control wf-setting-value" type="password" value="' + window.Common.escape(settingValue) + '" />';
                                                 }
                                                 else if (settingType === "bool") {
                                                     let checked = false;
@@ -1709,30 +1709,30 @@
 
                                         if (hasRecordSetting === true && hasUserSetting === true) {
                                             if (userProfile === 0) { // super-admin
-                                                Common.get(uri + "/searchRecords?s=", function (records) {
-                                                    Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
-                                                    Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             }
                                         } else if (hasRecordSetting === true && hasUserSetting === false) {
                                             if (userProfile === 0) { // super-admin
-                                                Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             }
                                         } else if (hasRecordSetting === false && hasUserSetting === true) {
-                                            Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                            window.Common.get(uri + "/nonRestrictedUsers", function (users) {
                                                 loadSettings([], users);
                                             }, function () { }, auth);
                                         } else {
@@ -1774,7 +1774,7 @@
                                     }
                                 },
                                 function () {
-                                    Common.toastError(language.get("toast-settings-error"));
+                                    window.Common.toastError(language.get("toast-settings-error"));
                                 }, auth);
 
                         }
@@ -2049,7 +2049,7 @@
                 updateTasks();
 
                 let saveFunc = function () {
-                    Common.post(uri + "/save", function (res) {
+                    window.Common.post(uri + "/save", function (res) {
                         if (res.Result === true) {
                             workflow.WorkflowInfo.FilePath = res.FilePath;
                             initialWorkflow = JSON.parse(JSON.stringify(workflow));
@@ -2061,13 +2061,13 @@
                             if (callback) {
                                 callback();
                             } else {
-                                Common.toastSuccess(language.get("toast-save-workflow-diag"));
+                                window.Common.toastSuccess(language.get("toast-save-workflow-diag"));
                             }
                         } else {
-                            Common.toastError(language.get("toast-save-workflow-diag-error"));
+                            window.Common.toastError(language.get("toast-save-workflow-diag-error"));
                         }
                     }, function () {
-                        Common.toastError(language.get("toast-save-workflow-diag-error"));
+                        window.Common.toastError(language.get("toast-save-workflow-diag-error"));
                     }, workflow, auth);
                 };
 
@@ -2076,32 +2076,32 @@
                     let workflowId = parseInt(wfIdStr);
 
                     if (checkId === true) {
-                        Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                        window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
                             function (res) {
                                 if (res === true) {
                                     if (document.getElementById("wfname").value === "") {
-                                        Common.toastInfo(language.get("toast-workflow-name"));
+                                        window.Common.toastInfo(language.get("toast-workflow-name"));
                                     } else {
                                         let lt = document.getElementById("wflaunchtype").value;
                                         if (lt === "") {
-                                            Common.toastInfo(language.get("toast-workflow-launchType"));
+                                            window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                         } else {
                                             if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                Common.toastInfo(language.get("toast-workflow-period"));
+                                                window.Common.toastInfo(language.get("toast-workflow-period"));
                                             } else {
                                                 if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-cron"));
+                                                    window.Common.toastInfo(language.get("toast-workflow-cron"));
                                                 } else {
 
                                                     // Period validation
                                                     if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                         let period = document.getElementById("wfperiod").value;
-                                                        Common.get(uri + "/isPeriodValid/" + period,
+                                                        window.Common.get(uri + "/isPeriodValid/" + period,
                                                             function (res) {
                                                                 if (res === true) {
                                                                     saveFunc();
                                                                 } else {
-                                                                    Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                    window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                 }
                                                             },
                                                             function () { }, auth
@@ -2111,7 +2111,7 @@
                                                         let expression = document.getElementById("wfcronexp").value;
                                                         let expressionEncoded = encodeURIComponent(expression);
 
-                                                        Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                        window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                             function (res) {
                                                                 if (res === true) {
                                                                     saveFunc();
@@ -2132,7 +2132,7 @@
                                         }
                                     }
                                 } else {
-                                    Common.toastInfo(language.get("toast-workflow-id"));
+                                    window.Common.toastInfo(language.get("toast-workflow-id"));
                                 }
                             },
                             function () { }, auth
@@ -2140,28 +2140,28 @@
                     } else {
 
                         if (document.getElementById("wfname").value === "") {
-                            Common.toastInfo(language.get("toast-workflow-name"));
+                            window.Common.toastInfo(language.get("toast-workflow-name"));
                         } else {
                             let lt = document.getElementById("wflaunchtype").value;
                             if (lt === "") {
-                                Common.toastInfo(language.get("toast-workflow-launchType"));
+                                window.Common.toastInfo(language.get("toast-workflow-launchType"));
                             } else {
                                 if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                    Common.toastInfo(language.get("toast-workflow-period"));
+                                    window.Common.toastInfo(language.get("toast-workflow-period"));
                                 } else {
                                     if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                        Common.toastInfo(language.get("toast-workflow-cron"));
+                                        window.Common.toastInfo(language.get("toast-workflow-cron"));
                                     } else {
 
                                         // Period validation
                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                             let period = document.getElementById("wfperiod").value;
-                                            Common.get(uri + "/isPeriodValid/" + period,
+                                            window.Common.get(uri + "/isPeriodValid/" + period,
                                                 function (res) {
                                                     if (res === true) {
                                                         saveFunc();
                                                     } else {
-                                                        Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                        window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                     }
                                                 },
                                                 function () { }, auth
@@ -2171,7 +2171,7 @@
                                             let expression = document.getElementById("wfcronexp").value;
                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                            Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                 function (res) {
                                                     if (res === true) {
                                                         saveFunc();
@@ -2195,12 +2195,12 @@
                     }
 
                 } else {
-                    Common.toastInfo(language.get("toast-workflow-id-error"));
+                    window.Common.toastInfo(language.get("toast-workflow-id-error"));
                 }
 
             } else if (json === true) {
                 let json = JSON.parse(editor.getValue());
-                Common.post(uri + "/save", function (res) {
+                window.Common.post(uri + "/save", function (res) {
                     if (res.Result === true) {
                         checkId = false;
                         openSavePopup = false;
@@ -2213,13 +2213,13 @@
                         if (callback) {
                             callback();
                         } else {
-                            Common.toastSuccess(language.get("toast-save-workflow-json"));
+                            window.Common.toastSuccess(language.get("toast-save-workflow-json"));
                         }
                     } else {
-                        Common.toastError(language.get("toast-save-workflow-json-error"));
+                        window.Common.toastError(language.get("toast-save-workflow-json-error"));
                     }
                 }, function () {
-                    Common.toastError(language.get("toast-save-workflow-json-error"));
+                    window.Common.toastError(language.get("toast-save-workflow-json-error"));
                 }, json, auth);
             } else if (xml === true) {
                 let json = {
@@ -2227,7 +2227,7 @@
                     filePath: workflow.WorkflowInfo.FilePath,
                     xml: editor.getValue()
                 };
-                Common.post(uri + "/saveXml", function (res) {
+                window.Common.post(uri + "/saveXml", function (res) {
                     if (res.Result === true) {
                         checkId = false;
                         openSavePopup = false;
@@ -2241,13 +2241,13 @@
                         if (callback) {
                             callback();
                         } else {
-                            Common.toastSuccess(language.get("toast-save-workflow-xml"));
+                            window.Common.toastSuccess(language.get("toast-save-workflow-xml"));
                         }
                     } else {
-                        Common.toastError(language.get("toast-save-workflow-xml-error"));
+                        window.Common.toastError(language.get("toast-save-workflow-xml-error"));
                     }
                 }, function () {
-                    Common.toastError(language.get("toast-save-workflow-xml-error"));
+                    window.Common.toastError(language.get("toast-save-workflow-xml-error"));
                 }, json, auth);
             }
         }
@@ -2272,8 +2272,8 @@
         document.getElementById("run").onclick = () => {
             save(() => {
                 let startUri = uri + "/start?w=" + workflow.WorkflowInfo.Id;
-                Common.post(startUri, function () {
-                    Common.toastSuccess(language.get("toast-save-and-run"));
+                window.Common.post(startUri, function () {
+                    window.Common.toastSuccess(language.get("toast-save-and-run"));
                 }, function () { }, "", auth);
             });
         };
@@ -2587,7 +2587,7 @@
             };
 
             if (checkId === false) {
-                Common.get(uri + "/graphBlockly/" + workflowId, function (blocklyXml) {
+                window.Common.get(uri + "/graphBlockly/" + workflowId, function (blocklyXml) {
                     let blocklyArea = document.getElementById('blocklyArea');
                     let blocklyDiv = document.getElementById('blocklyDiv');
                     blocklyDiv.innerHTML = "";
@@ -2637,11 +2637,11 @@
                     onresize();
                     Blockly.svgResize(workspace);
                 }, function () {
-                    Common.toastInfo(language.get("toast-graph-error"));
+                    window.Common.toastInfo(language.get("toast-graph-error"));
                 }, auth);
 
             } else {
-                Common.toastInfo(language.get("toast-graph-save-error"));
+                window.Common.toastInfo(language.get("toast-graph-save-error"));
             }
         }
 
@@ -2653,7 +2653,7 @@
                     let workflowId = parseInt(wfid);
                     openGraph(workflowId);
                 } else {
-                    Common.toastInfo(language.get("toast-workflow-id-error"));
+                    window.Common.toastInfo(language.get("toast-workflow-id-error"));
                 }
             };
 
@@ -2737,32 +2737,32 @@
                         let workflowId = parseInt(wfIdStr);
 
                         if (checkId === true) {
-                            Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
                                 function (res) {
                                     if (res === true) {
                                         if (document.getElementById("wfname").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-name"));
+                                            window.Common.toastInfo(language.get("toast-workflow-name"));
                                         } else {
                                             let lt = document.getElementById("wflaunchtype").value;
                                             if (lt === "") {
-                                                Common.toastInfo(language.get("toast-workflow-launchType"));
+                                                window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                             } else {
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-period"));
+                                                    window.Common.toastInfo(language.get("toast-workflow-period"));
                                                 } else {
                                                     if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                        Common.toastInfo(language.get("toast-workflow-cron"));
+                                                        window.Common.toastInfo(language.get("toast-workflow-cron"));
                                                     } else {
 
                                                         // Period validation
                                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                             let period = document.getElementById("wfperiod").value;
-                                                            Common.get(uri + "/isPeriodValid/" + period,
+                                                            window.Common.get(uri + "/isPeriodValid/" + period,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         openJsonView(jsonVal);
                                                                     } else {
-                                                                        Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                        window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                     }
                                                                 },
                                                                 function () { }, auth
@@ -2772,7 +2772,7 @@
                                                             let expression = document.getElementById("wfcronexp").value;
                                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                                            Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         openJsonView(jsonVal);
@@ -2793,7 +2793,7 @@
                                             }
                                         }
                                     } else {
-                                        Common.toastInfo(language.get("toast-workflow-id"));
+                                        window.Common.toastInfo(language.get("toast-workflow-id"));
                                     }
                                 },
                                 function () { }, auth
@@ -2801,28 +2801,28 @@
                         } else {
 
                             if (document.getElementById("wfname").value === "") {
-                                Common.toastInfo(language.get("toast-workflow-name"));
+                                window.Common.toastInfo(language.get("toast-workflow-name"));
                             } else {
                                 let lt = document.getElementById("wflaunchtype").value;
                                 if (lt === "") {
-                                    Common.toastInfo(language.get("toast-workflow-launchType"));
+                                    window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                 } else {
                                     if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                        Common.toastInfo(language.get("toast-workflow-period"));
+                                        window.Common.toastInfo(language.get("toast-workflow-period"));
                                     } else {
                                         if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-cron"));
+                                            window.Common.toastInfo(language.get("toast-workflow-cron"));
                                         } else {
 
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                 let period = document.getElementById("wfperiod").value;
-                                                Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/isPeriodValid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             openJsonView(jsonVal);
                                                         } else {
-                                                            Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                            window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                         }
                                                     },
                                                     function () { }, auth
@@ -2832,7 +2832,7 @@
                                                 let expression = document.getElementById("wfcronexp").value;
                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             openJsonView(jsonVal);
@@ -2856,7 +2856,7 @@
                         }
 
                     } else {
-                        Common.toastInfo(language.get("toast-workflow-id-error"));
+                        window.Common.toastInfo(language.get("toast-workflow-id-error"));
                     }
                 }
                 else {
@@ -2940,17 +2940,17 @@
 
             let openXml = function () {
 
-                Common.get(uri + "/graphXml/" + (workflow.WorkflowInfo.Id ? workflow.WorkflowInfo.Id : 0), function (val) {
+                window.Common.get(uri + "/graphXml/" + (workflow.WorkflowInfo.Id ? workflow.WorkflowInfo.Id : 0), function (val) {
                     function getXml() {
                         let graph = val;
 
-                        let xmlVal = '<Workflow xmlns="urn:wexflow-schema" id="' + workflow.WorkflowInfo.Id + '" name="' + Common.escape(workflow.WorkflowInfo.Name) + '" description="' + Common.escape(workflow.WorkflowInfo.Description) + '">\r\n';
+                        let xmlVal = '<Workflow xmlns="urn:wexflow-schema" id="' + workflow.WorkflowInfo.Id + '" name="' + window.Common.escape(workflow.WorkflowInfo.Name) + '" description="' + window.Common.escape(workflow.WorkflowInfo.Description) + '">\r\n';
                         xmlVal += '\t<Settings>\r\n\t\t<Setting name="launchType" value="' + launchType(workflow.WorkflowInfo.LaunchType) + '" />' + (workflow.WorkflowInfo.Period !== '' && workflow.WorkflowInfo.Period !== '00:00:00' ? ('\r\n\t\t<Setting name="period" value="' + workflow.WorkflowInfo.Period + '" />') : '') + (workflow.WorkflowInfo.CronExpression !== '' && workflow.WorkflowInfo.CronExpression !== null ? ('\r\n\t\t<Setting name="cronExpression" value="' + workflow.WorkflowInfo.CronExpression + '" />') : '') + '\r\n\t\t<Setting name="enabled" value="' + workflow.WorkflowInfo.IsEnabled + '" />\r\n\t\t<Setting name="approval" value="' + workflow.WorkflowInfo.IsApproval + '" />\r\n\t\t<Setting name="enableParallelJobs" value="' + workflow.WorkflowInfo.EnableParallelJobs + '" />\r\n\t</Settings>\r\n';
                         if (workflow.WorkflowInfo.LocalVariables.length > 0) {
                             xmlVal += '\t<LocalVariables>\r\n';
                             for (let i = 0; i < workflow.WorkflowInfo.LocalVariables.length; i++) {
                                 if (workflow.WorkflowInfo.LocalVariables[i].Key !== "") {
-                                    xmlVal += '\t\t<Variable name="' + Common.escape(workflow.WorkflowInfo.LocalVariables[i].Key) + '" value="' + Common.escape(workflow.WorkflowInfo.LocalVariables[i].Value) + '" />\r\n'
+                                    xmlVal += '\t\t<Variable name="' + window.Common.escape(workflow.WorkflowInfo.LocalVariables[i].Key) + '" value="' + window.Common.escape(workflow.WorkflowInfo.LocalVariables[i].Value) + '" />\r\n'
                                 }
                             }
                             xmlVal += '\t</LocalVariables>\r\n';
@@ -2961,13 +2961,13 @@
                             xmlVal += '\t<Tasks>\r\n';
                             for (let i = 0; i < workflow.Tasks.length; i++) {
                                 let task = workflow.Tasks[i];
-                                xmlVal += '\t\t<Task id="' + task.Id + '" name="' + Common.escape(task.Name) + '" description="' + Common.escape(task.Description) + '" enabled="' + task.IsEnabled + '">\r\n';
+                                xmlVal += '\t\t<Task id="' + task.Id + '" name="' + window.Common.escape(task.Name) + '" description="' + window.Common.escape(task.Description) + '" enabled="' + task.IsEnabled + '">\r\n';
                                 for (let j = 0; j < task.Settings.length; j++) {
                                     let setting = task.Settings[j];
-                                    xmlVal += '\t\t\t<Setting name="' + Common.escape(setting.Name) + '"' + ((setting.Name === "selectFiles" || setting.Name === "selectAttachments") && setting.Value === "" ? " " : ' value="' + Common.escape(setting.Value) + '" ');
+                                    xmlVal += '\t\t\t<Setting name="' + window.Common.escape(setting.Name) + '"' + ((setting.Name === "selectFiles" || setting.Name === "selectAttachments") && setting.Value === "" ? " " : ' value="' + window.Common.escape(setting.Value) + '" ');
                                     for (let k = 0; k < setting.Attributes.length; k++) {
                                         let attr = setting.Attributes[k];
-                                        xmlVal += attr.Name + '="' + Common.escape(attr.Value) + '" ';
+                                        xmlVal += attr.Name + '="' + window.Common.escape(attr.Value) + '" ';
                                     }
                                     xmlVal += '/>\r\n';
                                 }
@@ -2991,32 +2991,32 @@
                         if (isInt(wfIdStr)) {
                             let workflowId = parseInt(wfIdStr);
                             if (checkId === true) {
-                                Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                                window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
                                     function (res) {
                                         if (res === true) {
                                             if (document.getElementById("wfname").value === "") {
-                                                Common.toastInfo(language.get("toast-workflow-name"));
+                                                window.Common.toastInfo(language.get("toast-workflow-name"));
                                             } else {
                                                 let lt = document.getElementById("wflaunchtype").value;
                                                 if (lt === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-launchType"));
+                                                    window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                                 } else {
                                                     if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                        Common.toastInfo(language.get("toast-workflow-period"));
+                                                        window.Common.toastInfo(language.get("toast-workflow-period"));
                                                     } else {
                                                         if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                            Common.toastInfo(language.get("toast-workflow-cron"));
+                                                            window.Common.toastInfo(language.get("toast-workflow-cron"));
                                                         } else {
 
                                                             // Period validation
                                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                                 let period = document.getElementById("wfperiod").value;
-                                                                Common.get(uri + "/isPeriodValid/" + period,
+                                                                window.Common.get(uri + "/isPeriodValid/" + period,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             openXmlView(getXml());
                                                                         } else {
-                                                                            Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                            window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                         }
                                                                     },
                                                                     function () { }, auth
@@ -3026,7 +3026,7 @@
                                                                 let expression = document.getElementById("wfcronexp").value;
                                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                                Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             openXmlView(getXml());
@@ -3047,7 +3047,7 @@
                                                 }
                                             }
                                         } else {
-                                            Common.toastInfo(language.get("toast-workflow-id"));
+                                            window.Common.toastInfo(language.get("toast-workflow-id"));
                                         }
                                     },
                                     function () { }, auth
@@ -3055,28 +3055,28 @@
                             } else {
 
                                 if (document.getElementById("wfname").value === "") {
-                                    Common.toastInfo(language.get("toast-workflow-name"));
+                                    window.Common.toastInfo(language.get("toast-workflow-name"));
                                 } else {
                                     let lt = document.getElementById("wflaunchtype").value;
                                     if (lt === "") {
-                                        Common.toastInfo(language.get("toast-workflow-launchType"));
+                                        window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                     } else {
                                         if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-period"));
+                                            window.Common.toastInfo(language.get("toast-workflow-period"));
                                         } else {
                                             if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                Common.toastInfo(language.get("toast-workflow-cron"));
+                                                window.Common.toastInfo(language.get("toast-workflow-cron"));
                                             } else {
 
                                                 // Period validation
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                     let period = document.getElementById("wfperiod").value;
-                                                    Common.get(uri + "/isPeriodValid/" + period,
+                                                    window.Common.get(uri + "/isPeriodValid/" + period,
                                                         function (res) {
                                                             if (res === true) {
                                                                 openXmlView(getXml());
                                                             } else {
-                                                                Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                             }
                                                         },
                                                         function () { }, auth
@@ -3086,7 +3086,7 @@
                                                     let expression = document.getElementById("wfcronexp").value;
                                                     let expressionEncoded = encodeURIComponent(expression);
 
-                                                    Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                    window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                         function (res) {
                                                             if (res === true) {
                                                                 openXmlView(getXml());
@@ -3110,7 +3110,7 @@
                             }
 
                         } else {
-                            Common.toastInfo(language.get("toast-workflow-id-error"));
+                            window.Common.toastInfo(language.get("toast-workflow-id-error"));
                         }
                     }
                     else {
@@ -3123,7 +3123,7 @@
             //saveChanges(function () {
             //    // onSave getXml
             //    let workflowId = parseInt(document.getElementById("wfid").value);
-            //    Common.get(uri + "/xml/" + workflowId, function (val) {
+            //    window.Common.get(uri + "/xml/" + workflowId, function (val) {
             //        openXmlView(val);
             //    }, function () { }, auth);
             //}, function () {
@@ -3140,7 +3140,7 @@
         let exportModal = null;
 
         function loadDiagram(workflowId, filePath) {
-            Common.get(uri + "/json/" + workflowId,
+            window.Common.get(uri + "/json/" + workflowId,
                 function (val) {
                     if (val) {
                         workflow = val;
@@ -3307,7 +3307,7 @@
         function browse() {
             if (browserOpen === false) {
                 document.getElementById("overlay").style.display = "block";
-                Common.get(uri + "/search?s=",
+                window.Common.get(uri + "/search?s=",
                     function (data) {
 
                         data.sort(compareById);
@@ -3383,7 +3383,7 @@
                             if (event.keyCode === 13) { // Enter
                                 let jbox = document.getElementsByClassName("jBox-content")[0];
 
-                                Common.get(uri + "/search?s=" + searchworkflows.value,
+                                window.Common.get(uri + "/search?s=" + searchworkflows.value,
                                     function (wfs) {
                                         wfs.sort(compareById);
 
@@ -3447,7 +3447,7 @@
                                         };
 
                                     }, function () {
-                                        Common.toastError(language.get("workflows-server-error"));
+                                        window.Common.toastError(language.get("workflows-server-error"));
                                     }, auth);
                             }
                         };
@@ -3526,9 +3526,9 @@
                             if (workflowsToDelete.length > 0) {
                                 let confirmRes = confirm(language.get("confirm-delete-workflows"));
                                 if (confirmRes === true) {
-                                    Common.post(uri + "/deleteWorkflows", function (res) {
+                                    window.Common.post(uri + "/deleteWorkflows", function (res) {
                                         if (res === true) {
-                                            Common.toastSuccess(language.get("toast-workflows-deleted"));
+                                            window.Common.toastSuccess(language.get("toast-workflows-deleted"));
                                             if (isNaN(parseInt(workflow.WorkflowInfo.Id)) === false && workflows[workflow.WorkflowInfo.Id] && workflowsToDelete.includes(workflows[workflow.WorkflowInfo.Id].DbId)) {
                                                 checkId = true;
                                                 openSavePopup = false;
@@ -3613,7 +3613,7 @@
                                             // Reload workfows
                                             let jbox = document.getElementsByClassName("jBox-content")[0];
 
-                                            Common.get(uri + "/search?s=" + searchworkflows.value,
+                                            window.Common.get(uri + "/search?s=" + searchworkflows.value,
                                                 function (wfs) {
                                                     wfs.sort(compareById);
 
@@ -3677,20 +3677,20 @@
                                                     };
 
                                                 }, function () {
-                                                    Common.toastError(language.get("workflows-server-error"));
+                                                    window.Common.toastError(language.get("workflows-server-error"));
                                                 }, auth);
 
                                         } else {
-                                            Common.toastError(language.get("toast-workflows-delete-error"));
+                                            window.Common.toastError(language.get("toast-workflows-delete-error"));
                                         }
                                     }, function () {
-                                        Common.toastError(language.get("toast-workflows-delete-error"));
+                                        window.Common.toastError(language.get("toast-workflows-delete-error"));
                                     }, {
                                         "WorkflowsToDelete": workflowsToDelete
                                     }, auth);
                                 }
                             } else {
-                                Common.toastInfo(language.get("toast-workflows-delete-info"));
+                                window.Common.toastInfo(language.get("toast-workflows-delete-info"));
                             }
                         };
 
@@ -3703,7 +3703,7 @@
                     },
                     function () {
                         document.getElementById("overlay").style.display = "none";
-                        Common.toastError(language.get("workflows-server-error"));
+                        window.Common.toastError(language.get("workflows-server-error"));
                     }, auth);
             }
         }
@@ -3714,7 +3714,7 @@
 
         function openWorkflow() {
             if (document.getElementsByClassName("selected").length === 0) {
-                Common.toastInfo(language.get("toast-open-workflow-info"));
+                window.Common.toastInfo(language.get("toast-open-workflow-info"));
             } else {
                 saveChanges(function () {
                     workflowDeleted = false;
@@ -3755,7 +3755,7 @@
                         updateTasks();
 
                         let saveFunc = function () {
-                            Common.post(uri + "/save", function (res) {
+                            window.Common.post(uri + "/save", function (res) {
                                 if (res.Result === true) {
                                     checkId = false;
                                     removeworkflow.style.display = "block";
@@ -3767,16 +3767,16 @@
                                             openGraph(id);
                                         }
                                     }
-                                    Common.toastSuccess(language.get("toast-save-workflow-diag"));
+                                    window.Common.toastSuccess(language.get("toast-save-workflow-diag"));
 
                                     if (onSave) {
                                         onSave();
                                     }
                                 } else {
-                                    Common.toastError(language.get("toast-save-workflow-diag-error"));
+                                    window.Common.toastError(language.get("toast-save-workflow-diag-error"));
                                 }
                             }, function () {
-                                Common.toastError(language.get("toast-save-workflow-diag-error"));
+                                window.Common.toastError(language.get("toast-save-workflow-diag-error"));
                             }, workflow, auth);
                         };
 
@@ -3785,32 +3785,32 @@
                             let workflowId = parseInt(wfIdStr);
 
                             if (checkId === true) {
-                                Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                                window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
                                     function (res) {
                                         if (res === true) {
                                             if (document.getElementById("wfname").value === "") {
-                                                Common.toastInfo(language.get("toast-workflow-name"));
+                                                window.Common.toastInfo(language.get("toast-workflow-name"));
                                             } else {
                                                 let lt = document.getElementById("wflaunchtype").value;
                                                 if (lt === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-launchType"));
+                                                    window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                                 } else {
                                                     if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                        Common.toastInfo(language.get("toast-workflow-period"));
+                                                        window.Common.toastInfo(language.get("toast-workflow-period"));
                                                     } else {
                                                         if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                            Common.toastInfo(language.get("toast-workflow-cron"));
+                                                            window.Common.toastInfo(language.get("toast-workflow-cron"));
                                                         } else {
 
                                                             // Period validation
                                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                                 let period = document.getElementById("wfperiod").value;
-                                                                Common.get(uri + "/isPeriodValid/" + period,
+                                                                window.Common.get(uri + "/isPeriodValid/" + period,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             saveFunc();
                                                                         } else {
-                                                                            Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                            window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                         }
                                                                     },
                                                                     function () { }, auth
@@ -3820,7 +3820,7 @@
                                                                 let expression = document.getElementById("wfcronexp").value;
                                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                                Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             saveFunc();
@@ -3841,7 +3841,7 @@
                                                 }
                                             }
                                         } else {
-                                            Common.toastInfo(language.get("toast-workflow-id"));
+                                            window.Common.toastInfo(language.get("toast-workflow-id"));
                                         }
                                     },
                                     function () { }, auth
@@ -3849,28 +3849,28 @@
                             } else {
 
                                 if (document.getElementById("wfname").value === "") {
-                                    Common.toastInfo(language.get("toast-workflow-name"));
+                                    window.Common.toastInfo(language.get("toast-workflow-name"));
                                 } else {
                                     let lt = document.getElementById("wflaunchtype").value;
                                     if (lt === "") {
-                                        Common.toastInfo(language.get("toast-workflow-launchType"));
+                                        window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                     } else {
                                         if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-period"));
+                                            window.Common.toastInfo(language.get("toast-workflow-period"));
                                         } else {
                                             if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                Common.toastInfo(language.get("toast-workflow-cron"));
+                                                window.Common.toastInfo(language.get("toast-workflow-cron"));
                                             } else {
 
                                                 // Period validation
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                     let period = document.getElementById("wfperiod").value;
-                                                    Common.get(uri + "/isPeriodValid/" + period,
+                                                    window.Common.get(uri + "/isPeriodValid/" + period,
                                                         function (res) {
                                                             if (res === true) {
                                                                 saveFunc();
                                                             } else {
-                                                                Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                             }
                                                         },
                                                         function () { }, auth
@@ -3880,7 +3880,7 @@
                                                     let expression = document.getElementById("wfcronexp").value;
                                                     let expressionEncoded = encodeURIComponent(expression);
 
-                                                    Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                    window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                         function (res) {
                                                             if (res === true) {
                                                                 saveFunc();
@@ -3904,38 +3904,38 @@
                             }
 
                         } else {
-                            Common.toastInfo(language.get("toast-workflow-id-error"));
+                            window.Common.toastInfo(language.get("toast-workflow-id-error"));
                         }
 
                     } else if (json === true) {
                         let json = JSON.parse(editor.getValue());
-                        Common.post(uri + "/save", function (res) {
+                        window.Common.post(uri + "/save", function (res) {
                             if (res.Result === true) {
                                 if (id > -1) {
-                                    Common.get(uri + "/json/" + id,
+                                    window.Common.get(uri + "/json/" + id,
                                         function (val) {
                                             workflow.WorkflowInfo.FilePath = res.FilePath;
                                             openJsonView(JSON.stringify(val, null, '\t'));
                                             jsonEditorChanged = false;
                                             loadDiagram(id, res.FilePath);
                                             removeworkflow.style.display = "block";
-                                            Common.toastSuccess(language.get("toast-save-workflow-json"));
+                                            window.Common.toastSuccess(language.get("toast-save-workflow-json"));
                                         }, function () { }, auth);
                                 } else {
                                     let wfId = parseInt(document.getElementById("wfid").value);
                                     loadDiagram(wfId, res.FilePath);
                                     removeworkflow.style.display = "block";
-                                    Common.toastSuccess(language.get("toast-save-workflow-json"));
+                                    window.Common.toastSuccess(language.get("toast-save-workflow-json"));
                                 }
 
                                 if (onSave) {
                                     onSave();
                                 }
                             } else {
-                                Common.toastError(language.get("toast-save-workflow-json-error"));
+                                window.Common.toastError(language.get("toast-save-workflow-json-error"));
                             }
                         }, function () {
-                            Common.toastError(language.get("toast-save-workflow-json-error"));
+                            window.Common.toastError(language.get("toast-save-workflow-json-error"));
                         }, json, auth);
                     } else if (xml === true) {
                         let json = {
@@ -3943,11 +3943,11 @@
                             filePath: workflow.WorkflowInfo.FilePath,
                             xml: editor.getValue()
                         };
-                        Common.post(uri + "/saveXml", function (res) {
+                        window.Common.post(uri + "/saveXml", function (res) {
                             if (res.Result === true) {
                                 let wfId = parseInt(document.getElementById("wfid").value);
                                 if (id > -1) {
-                                    Common.get(uri + "/xml/" + id,
+                                    window.Common.get(uri + "/xml/" + id,
                                         function (val) {
                                             //workflow.WorkflowInfo.FilePath = res.FilePath.replace(/\\/g, "\\\\");
                                             workflow.WorkflowInfo.FilePath = res.FilePath;
@@ -3955,16 +3955,16 @@
                                             xmlEditorChanged = false;
                                             loadDiagram(id, res.FilePath);
                                             removeworkflow.style.display = "block";
-                                            Common.toastSuccess(language.get("toast-save-workflow-xml"));
+                                            window.Common.toastSuccess(language.get("toast-save-workflow-xml"));
                                         }, function () { }, auth);
                                 } else {
                                     loadDiagram(wfId, res.FilePath);
                                     removeworkflow.style.display = "block";
-                                    Common.toastSuccess(language.get("toast-save-workflow-xml"));
+                                    window.Common.toastSuccess(language.get("toast-save-workflow-xml"));
                                 }
 
                                 if (onSave) {
-                                    Common.get(uri + "/json/" + wfId,
+                                    window.Common.get(uri + "/json/" + wfId,
                                         function (val) {
                                             if (val) {
                                                 workflow = val;
@@ -3975,23 +3975,23 @@
                                         }, function () { }, auth);
                                 }
                             } else {
-                                Common.toastError(language.get("toast-save-workflow-xml-error"));
+                                window.Common.toastError(language.get("toast-save-workflow-xml-error"));
                             }
                         }, function () {
-                            Common.toastError(language.get("toast-save-workflow-xml-error"));
+                            window.Common.toastError(language.get("toast-save-workflow-xml-error"));
                         }, json, auth);
                     }
                 } else {
                     // load view
                     if (id > -1) {
                         if (json === true) {
-                            Common.get(uri + "/json/" + id,
+                            window.Common.get(uri + "/json/" + id,
                                 function (val) {
                                     openJsonView(JSON.stringify(val, null, '\t'));
                                     jsonEditorChanged = false;
                                 }, function () { }, auth);
                         } else if (xml === true) {
-                            Common.get(uri + "/xml/" + id,
+                            window.Common.get(uri + "/xml/" + id,
                                 function (val) {
                                     openXmlView(val);
                                     xmlEditorChanged = false;
@@ -4012,13 +4012,13 @@
                 // load view
                 if (id > -1) {
                     if (json === true) {
-                        Common.get(uri + "/json/" + id,
+                        window.Common.get(uri + "/json/" + id,
                             function (val) {
                                 openJsonView(JSON.stringify(val, null, '\t'));
                                 jsonEditorChanged = false;
                             }, function () { }, auth);
                     } else if (xml === true) {
-                        Common.get(uri + "/xml/" + id,
+                        window.Common.get(uri + "/xml/" + id,
                             function (val) {
                                 openXmlView(val);
                                 xmlEditorChanged = false;
@@ -4087,36 +4087,36 @@
                         let workflowId = parseInt(wfIdStr);
 
                         if (checkId === true) {
-                            Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
                                 function (res) {
                                     if (res === true) {
                                         if (document.getElementById("wfname").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-name"));
+                                            window.Common.toastInfo(language.get("toast-workflow-name"));
                                             exportModal.close();
                                         } else {
                                             let lt = document.getElementById("wflaunchtype").value;
                                             if (lt === "") {
-                                                Common.toastInfo(language.get("toast-workflow-launchType"));
+                                                window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                                 exportModal.close();
                                             } else {
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-period"));
+                                                    window.Common.toastInfo(language.get("toast-workflow-period"));
                                                     exportModal.close();
                                                 } else {
                                                     if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                        Common.toastInfo(language.get("toast-workflow-cron"));
+                                                        window.Common.toastInfo(language.get("toast-workflow-cron"));
                                                         exportModal.close();
                                                     } else {
 
                                                         // Period validation
                                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                             let period = document.getElementById("wfperiod").value;
-                                                            Common.get(uri + "/isPeriodValid/" + period,
+                                                            window.Common.get(uri + "/isPeriodValid/" + period,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadJson();
                                                                     } else {
-                                                                        Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                        window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                         exportModal.close();
                                                                     }
                                                                 },
@@ -4127,7 +4127,7 @@
                                                             let expression = document.getElementById("wfcronexp").value;
                                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                                            Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadJson();
@@ -4149,38 +4149,38 @@
                                             }
                                         }
                                     } else {
-                                        Common.toastInfo(language.get("toast-workflow-id"));
+                                        window.Common.toastInfo(language.get("toast-workflow-id"));
                                     }
                                 },
                                 function () { }, auth);
                         } else {
 
                             if (document.getElementById("wfname").value === "") {
-                                Common.toastInfo(language.get("toast-workflow-name"));
+                                window.Common.toastInfo(language.get("toast-workflow-name"));
                             } else {
                                 let lt = document.getElementById("wflaunchtype").value;
                                 if (lt === "") {
-                                    Common.toastInfo(language.get("toast-workflow-launchType"));
+                                    window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                     exportModal.close();
                                 } else {
                                     if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                        Common.toastInfo(language.get("toast-workflow-period"));
+                                        window.Common.toastInfo(language.get("toast-workflow-period"));
                                         exportModal.close();
                                     } else {
                                         if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-cron"));
+                                            window.Common.toastInfo(language.get("toast-workflow-cron"));
                                             exportModal.close();
                                         } else {
 
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                 let period = document.getElementById("wfperiod").value;
-                                                Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/isPeriodValid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadJson();
                                                         } else {
-                                                            Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                            window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                             exportModal.close();
                                                         }
                                                     },
@@ -4191,7 +4191,7 @@
                                                 let expression = document.getElementById("wfcronexp").value;
                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadJson();
@@ -4216,7 +4216,7 @@
                         }
 
                     } else {
-                        Common.toastInfo(language.get("toast-workflow-id-error"));
+                        window.Common.toastInfo(language.get("toast-workflow-id-error"));
                         exportModal.close();
                     }
 
@@ -4226,7 +4226,7 @@
                             download(editor.getValue(), 'workflow-' + document.getElementById("wfid").value + '.xml', 'text/xml')
                             exportModal.close();
                         } else {
-                            Common.get(uri + "/graphXml/" + workflow.WorkflowInfo.Id, function (val) {
+                            window.Common.get(uri + "/graphXml/" + workflow.WorkflowInfo.Id, function (val) {
                                 let graph = val;
 
                                 let xmlVal = '<Workflow xmlns="urn:wexflow-schema" id="' + workflow.WorkflowInfo.Id + '" name="' + workflow.WorkflowInfo.Name + '" description="' + workflow.WorkflowInfo.Description + '">\r\n';
@@ -4275,36 +4275,36 @@
                         let workflowId = parseInt(wfIdStr);
 
                         if (checkId === true) {
-                            Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
                                 function (res) {
                                     if (res === true) {
                                         if (document.getElementById("wfname").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-name"));
+                                            window.Common.toastInfo(language.get("toast-workflow-name"));
                                             exportModal.close();
                                         } else {
                                             let lt = document.getElementById("wflaunchtype").value;
                                             if (lt === "") {
-                                                Common.toastInfo(language.get("toast-workflow-launchType"));
+                                                window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                                 exportModal.close();
                                             } else {
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                                    Common.toastInfo(language.get("toast-workflow-period"));
+                                                    window.Common.toastInfo(language.get("toast-workflow-period"));
                                                     exportModal.close();
                                                 } else {
                                                     if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                                        Common.toastInfo(language.get("toast-workflow-cron"));
+                                                        window.Common.toastInfo(language.get("toast-workflow-cron"));
                                                         exportModal.close();
                                                     } else {
 
                                                         // Period validation
                                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                             let period = document.getElementById("wfperiod").value;
-                                                            Common.get(uri + "/isPeriodValid/" + period,
+                                                            window.Common.get(uri + "/isPeriodValid/" + period,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadXml();
                                                                     } else {
-                                                                        Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                                        window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                         exportModal.close();
                                                                     }
                                                                 },
@@ -4315,7 +4315,7 @@
                                                             let expression = document.getElementById("wfcronexp").value;
                                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                                            Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadXml();
@@ -4337,39 +4337,39 @@
                                             }
                                         }
                                     } else {
-                                        Common.toastInfo(language.get("toast-workflow-id"));
+                                        window.Common.toastInfo(language.get("toast-workflow-id"));
                                     }
                                 },
                                 function () { }, auth);
                         } else {
 
                             if (document.getElementById("wfname").value === "") {
-                                Common.toastInfo(language.get("toast-workflow-name"));
+                                window.Common.toastInfo(language.get("toast-workflow-name"));
                                 exportModal.close();
                             } else {
                                 let lt = document.getElementById("wflaunchtype").value;
                                 if (lt === "") {
-                                    Common.toastInfo(language.get("toast-workflow-launchType"));
+                                    window.Common.toastInfo(language.get("toast-workflow-launchType"));
                                     exportModal.close();
                                 } else {
                                     if (lt === "periodic" && document.getElementById("wfperiod").value === "") {
-                                        Common.toastInfo(language.get("toast-workflow-period"));
+                                        window.Common.toastInfo(language.get("toast-workflow-period"));
                                         exportModal.close();
                                     } else {
                                         if (lt === "cron" && document.getElementById("wfcronexp").value === "") {
-                                            Common.toastInfo(language.get("toast-workflow-cron"));
+                                            window.Common.toastInfo(language.get("toast-workflow-cron"));
                                             exportModal.close();
                                         } else {
 
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                 let period = document.getElementById("wfperiod").value;
-                                                Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/isPeriodValid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadXml();
                                                         } else {
-                                                            Common.toastInfo(language.get("toast-workflow-period-error"));
+                                                            window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                             exportModal.close();
                                                         }
                                                     },
@@ -4380,7 +4380,7 @@
                                                 let expression = document.getElementById("wfcronexp").value;
                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadXml();
@@ -4405,7 +4405,7 @@
                         }
 
                     } else {
-                        Common.toastInfo(language.get("toast-workflow-id-error"));
+                        window.Common.toastInfo(language.get("toast-workflow-id-error"));
                         exportModal.close();
                     }
                 }
@@ -4433,16 +4433,16 @@
                 let fd = new FormData();
                 fd.append("file", file);
 
-                Common.post(uri + "/upload", function (res) {
+                window.Common.post(uri + "/upload", function (res) {
                     if (res.WorkflowId > -1) {
                         workflow.WorkflowInfo.FilePath = res.SaveResult.FilePath;
                         if (json === true) {
-                            Common.get(uri + "/json/" + res.WorkflowId,
+                            window.Common.get(uri + "/json/" + res.WorkflowId,
                                 function (val) {
                                     openJsonView(JSON.stringify(val, null, '\t'));
                                 }, function () { }, auth);
                         } else if (xml === true) {
-                            Common.get(uri + "/xml/" + res.WorkflowId,
+                            window.Common.get(uri + "/xml/" + res.WorkflowId,
                                 function (val) {
                                     openXmlView(val);
                                 }, function () { }, auth);
@@ -4454,14 +4454,14 @@
                         loadDiagram(res.WorkflowId, res.SaveResult.FilePath);
 
                         filedialog.value = "";
-                        Common.toastSuccess(file.name + language.get("toast-upload-success"));
+                        window.Common.toastSuccess(file.name + language.get("toast-upload-success"));
                     } else {
                         filedialog.value = "";
-                        Common.toastError(file.name + language.get("toast-upload-not-valid"));
+                        window.Common.toastError(file.name + language.get("toast-upload-not-valid"));
                     }
                 }, function () {
                     filedialog.value = "";
-                    Common.toastError(language.get("toast-upload-error") + file.name);
+                    window.Common.toastError(language.get("toast-upload-error") + file.name);
                 }, fd, auth, true);
 
             };
