@@ -336,7 +336,6 @@
             this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

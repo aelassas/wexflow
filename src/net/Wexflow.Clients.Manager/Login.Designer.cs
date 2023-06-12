@@ -110,7 +110,6 @@
             this.Text = "Wexflow";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

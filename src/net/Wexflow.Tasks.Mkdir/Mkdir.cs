@@ -99,7 +99,6 @@ namespace Wexflow.Tasks.Mkdir
                 }
             }
             return success;
-
         }
     }
 }

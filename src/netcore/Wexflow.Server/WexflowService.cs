@@ -2907,7 +2907,6 @@ namespace Wexflow.Server
                     await Error(context, e);
                 }
             });
-
         }
 
         /// <summary>
@@ -3518,7 +3517,6 @@ namespace Wexflow.Server
                     await Error(context, e);
                 }
             });
-
         }
 
         /// <summary>
@@ -3549,7 +3547,6 @@ namespace Wexflow.Server
                     await Error(context, e);
                 }
             });
-
         }
 
         /// <summary>
@@ -3585,7 +3582,6 @@ namespace Wexflow.Server
                     await WriteEmpty(context);
                 }
             });
-
         }
 
         /// <summary>

@@ -32,7 +32,6 @@
             // WexflowWindowsService
             // 
             this.ServiceName = "Wexflow";
-
         }
 
         #endregion

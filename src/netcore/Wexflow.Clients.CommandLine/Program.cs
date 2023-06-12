@@ -129,9 +129,7 @@ namespace Wexflow.Clients.CommandLine
                                }
                                await client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
                                break;
-
                        }
-
                    });
 
                 _ = res.WithNotParsed(errs =>

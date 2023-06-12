@@ -157,7 +157,6 @@ namespace Wexflow.Tasks.FilesMover
             }
 
             return success;
-
         }
     }
 }

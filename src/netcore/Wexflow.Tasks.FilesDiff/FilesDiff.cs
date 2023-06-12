@@ -42,7 +42,6 @@ namespace Wexflow.Tasks.FilesDiff
 
             Info("Task finished.");
             return ts;
-
         }
 
         private void CheckFiles()
@@ -82,7 +81,6 @@ namespace Wexflow.Tasks.FilesDiff
 
             Files.Add(new FileInf(resultPath, Id));
             InfoFormat("The diff of the old file '{0}' and the new file '{1}' was calculated with success.", Path.GetFileName(OldFile), Path.GetFileName(NewFile));
-
         }
     }
 }

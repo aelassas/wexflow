@@ -63,7 +63,6 @@ namespace Wexflow.Tasks.YouTubeListUploads
                     new FileDataStore(GetType().ToString())
                 );
 #pragma warning restore CS0618 // Le type ou le membre est obsolète
-
             }
 
             YouTubeService youtubeService = new(new BaseClientService.Initializer()

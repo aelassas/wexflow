@@ -123,7 +123,6 @@ namespace Wexflow.Tasks.YouTube
                         CancellationToken.None
                         );
 #pragma warning restore CS0618 // Le type ou le membre est obsolète
-
                 }
                 Info("Authentication succeeded.");
 
