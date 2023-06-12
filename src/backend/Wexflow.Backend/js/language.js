@@ -1,4 +1,4 @@
-﻿u(function () {
+﻿const languageModule = (function () {
     "use strict";
 
     const codes = [
