@@ -247,11 +247,14 @@
     <Compile Include="Contracts\Workflow\WorkflowInfo.cs" />
     <Compile Include="IAppConfiguration.cs" />
     <Compile Include="Contracts\Notification.cs" />
+    <Compile Include="Logging.cs" />
+    <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Smtp.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="WexflowService.cs" />
     <Compile Include="WexflowServer.cs">
