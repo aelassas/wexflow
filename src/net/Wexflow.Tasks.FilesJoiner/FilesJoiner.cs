@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -8,12 +7,6 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.FilesJoiner
 {
-    internal class GroupedFile
-    {
-        public string FileName { get; set; }
-        public List<FileInf> Files { get; set; }
-    }
-
     public class FilesJoiner : Task
     {
         public string DestFolder { get; }
