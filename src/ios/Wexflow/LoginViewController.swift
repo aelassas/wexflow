@@ -68,7 +68,7 @@ class LoginViewController: UIViewController {
             let auth = "Basic " + LoginViewController.toBase64(str: usernameTextField.text! + ":" + pass)
             request.setValue(auth, forHTTPHeaderField: "Authorization")
             
-            session.dataTask(with: request as URLRequest) { (data, response, error) in
+            session.dataTask(with: request as URLRequest) { (data, _, error) in
                 if error != nil {
                     //print(error!)
                     DispatchQueue.main.async{

@@ -156,7 +156,7 @@
                                         from = new Date(dateMin);
                                         to = new Date(dateMax);
 
-                                        from = new Date(from.getFullYear(), from.getMonth(), from.getDate(), 0, 0, 0);;
+                                        from = new Date(from.getFullYear(), from.getMonth(), from.getDate(), 0, 0, 0);
                                         to.setDate(to.getDate() + 1);
 
                                         Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
