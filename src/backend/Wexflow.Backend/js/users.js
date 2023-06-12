@@ -1,4 +1,4 @@
-﻿function Users() {
+﻿window.Users = function () {
     "use strict";
 
     let updateLanguage = function (language) {
