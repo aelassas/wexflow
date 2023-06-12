@@ -23,7 +23,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * RESTful API
 * Extensible
 
-# Resources
+# Links
 
 * [Download](https://github.com/aelassas/wexflow/releases/latest)
 * [Installation Instructions](https://github.com/aelassas/wexflow/wiki/Installation)
