@@ -398,7 +398,6 @@ namespace Wexflow.Core
                     Workflows.Add(wf);
                 }
             }
-
         }
 
         /// <summary>

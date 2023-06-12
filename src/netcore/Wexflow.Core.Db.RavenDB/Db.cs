@@ -100,7 +100,6 @@ namespace Wexflow.Core.Db.RavenDB
             {
                 InsertDefaultUser();
             }
-
         }
 
         private static void DeleteAll(string documentName)

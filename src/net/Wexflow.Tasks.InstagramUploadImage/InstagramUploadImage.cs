@@ -231,7 +231,6 @@ namespace Wexflow.Tasks.InstagramUploadImage
                 ErrorFormat("An error occured while uploading the image: {0}", e, filePath);
                 return false;
             }
-
         }
     }
 }

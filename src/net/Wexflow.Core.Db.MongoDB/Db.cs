@@ -83,7 +83,6 @@ namespace Wexflow.Core.Db.MongoDB
             {
                 InsertDefaultUser();
             }
-
         }
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()

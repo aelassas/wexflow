@@ -189,7 +189,6 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                 ErrorFormat("An error occured while uploading the video: {0}", e, filePath);
                 return false;
             }
-
         }
     }
 }

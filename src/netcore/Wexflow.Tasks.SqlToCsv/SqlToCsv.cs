@@ -269,7 +269,6 @@ namespace Wexflow.Tasks.SqlToCsv
                 Files.Add(new FileInf(destPath, Id));
                 InfoFormat("CSV file generated: {0}", destPath);
             }
-
         }
     }
 }

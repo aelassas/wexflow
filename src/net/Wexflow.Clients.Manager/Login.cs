@@ -89,7 +89,6 @@ namespace Wexflow.Clients.Manager
             {
                 _ = MessageBox.Show(@"An error occured during the authentication.", "Wexflow", MessageBoxButtons.OK);
             }
-
         }
 
         public static string GetMd5(string input)
