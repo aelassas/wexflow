@@ -471,13 +471,11 @@ extension UITableView {
                     let indexPath = IndexPath(row: 0, section: 0)
                     self.scrollToRow(at: indexPath, at: .top, animated: animated)
                 }
-                break
             case .bottom:
                 if numberOfRows > 0 {
                     let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
                     self.scrollToRow(at: indexPath, at: .bottom, animated: animated)
                 }
-                break
             }
         }
     }

@@ -77,7 +77,7 @@ class LoginViewController: UIViewController {
                     return
                 }
                 
-                if data != nil && data!.count > 0 {
+                if data != nil && !data!.isEmpty {
                     let jsonResponse = try! JSONSerialization.jsonObject(with: data!, options: [])
                     let user = jsonResponse as? [String: Any]
                     let username = user!["Username"] as! String
