@@ -51,7 +51,7 @@ namespace Wexflow.Tasks.FileContentMatch
                     var files = Array.Empty<string>();
                     if (Recursive)
                     {
-                        files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories); ;
+                        files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
                     }
                     else
                     {
