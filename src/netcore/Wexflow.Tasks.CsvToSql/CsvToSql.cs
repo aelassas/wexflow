@@ -40,7 +40,6 @@ namespace Wexflow.Tasks.CsvToSql
                         atLeastOneSucceed = true;
                     }
                 }
-
             }
             catch (ThreadAbortException)
             {

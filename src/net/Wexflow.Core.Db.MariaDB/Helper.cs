@@ -21,7 +21,6 @@ namespace Wexflow.Core.Db.MariaDB
                 {
                     _ = command.ExecuteNonQuery();
                 }
-
             }
         }
 

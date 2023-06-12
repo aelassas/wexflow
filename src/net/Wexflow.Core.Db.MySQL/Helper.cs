@@ -21,7 +21,6 @@ namespace Wexflow.Core.Db.MySQL
                 {
                     _ = command.ExecuteNonQuery();
                 }
-
             }
         }
 

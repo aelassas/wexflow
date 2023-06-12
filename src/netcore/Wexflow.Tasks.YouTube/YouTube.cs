@@ -78,7 +78,6 @@ namespace Wexflow.Tasks.YouTube
                         succeeded = false;
                     }
                 }
-
             }
             catch (ThreadAbortException)
             {

@@ -120,7 +120,6 @@ namespace Wexflow.Tasks.FileContentMatch
                 {
                     success = false;
                 }
-
             }
             catch (ThreadAbortException)
             {

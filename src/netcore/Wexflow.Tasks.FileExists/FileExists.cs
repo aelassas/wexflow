@@ -32,7 +32,6 @@ namespace Wexflow.Tasks.FileExists
                 {
                     InfoFormat("The file {0} does not exists.", File);
                 }
-
             }
             catch (ThreadAbortException)
             {

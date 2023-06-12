@@ -154,7 +154,6 @@ namespace Wexflow.Tasks.IsoExtractor
                         }
                     }
                 }
-
             }
         }
     }

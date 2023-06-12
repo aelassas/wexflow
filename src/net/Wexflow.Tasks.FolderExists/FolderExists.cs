@@ -73,7 +73,6 @@ namespace Wexflow.Tasks.FolderExists
                 {
                     InfoFormat("The folder {0} does not exist.", Folder);
                 }
-
             }
             catch (ThreadAbortException)
             {

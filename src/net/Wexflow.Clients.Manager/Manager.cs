@@ -377,7 +377,6 @@ namespace Wexflow.Clients.Manager
                             : workflow.IsRunning && !workflow.IsPaused
                                 ? @"This workflow is running..."
                                 : workflow.IsPaused ? @"This workflow is suspended." : "";
-
                     }
                 }
                 else

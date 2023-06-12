@@ -992,7 +992,6 @@ namespace Wexflow.Server
                 {
                     await Unauthorized(context);
                 }
-
             });
         }
 
@@ -1033,7 +1032,6 @@ namespace Wexflow.Server
                 {
                     await Unauthorized(context);
                 }
-
             });
         }
 
@@ -1212,7 +1210,6 @@ namespace Wexflow.Server
                 {
                     await Unauthorized(context);
                 }
-
             });
         }
 
@@ -1237,7 +1234,6 @@ namespace Wexflow.Server
                 {
                     await Unauthorized(context);
                 }
-
             });
         }
 
@@ -3025,7 +3021,6 @@ namespace Wexflow.Server
                 {
                     await Error(context, e);
                 }
-
             });
         }
 
@@ -3061,7 +3056,6 @@ namespace Wexflow.Server
                 {
                     await Error(context, e);
                 }
-
             });
         }
 
@@ -3095,7 +3089,6 @@ namespace Wexflow.Server
                 {
                     await Error(context, e);
                 }
-
             });
         }
 
@@ -3320,7 +3313,6 @@ namespace Wexflow.Server
                 {
                     await Unauthorized(context);
                 }
-
             });
         }
 
@@ -3461,7 +3453,6 @@ namespace Wexflow.Server
                 {
                     await Unauthorized(context);
                 }
-
             });
         }
 

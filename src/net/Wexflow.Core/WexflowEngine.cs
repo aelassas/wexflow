@@ -562,7 +562,6 @@ namespace Wexflow.Core
                         }
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -634,7 +633,6 @@ namespace Wexflow.Core
                         }
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -863,7 +861,6 @@ namespace Wexflow.Core
                         }
 
                         QuartzScheduler.ScheduleJob(jobDetail, trigger).Wait();
-
                     }
                     else if (wf.LaunchType == LaunchType.Cron)
                     {

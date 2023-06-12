@@ -122,7 +122,6 @@ namespace Wexflow.Tasks.Vimeo
                         success = false;
                     }
                 }
-
             }
             catch (ThreadAbortException)
             {

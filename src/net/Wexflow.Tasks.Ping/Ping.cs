@@ -32,7 +32,6 @@ namespace Wexflow.Tasks.Ping
                 {
                     InfoFormat("The server {0} did not respond to the ping request.", Server);
                 }
-
             }
             catch (ThreadAbortException)
             {

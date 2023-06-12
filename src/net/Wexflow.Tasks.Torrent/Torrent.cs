@@ -64,7 +64,6 @@ namespace Wexflow.Tasks.Torrent
                         atLeastOneSuccess = true;
                     }
                 }
-
             }
             catch (ThreadAbortException)
             {

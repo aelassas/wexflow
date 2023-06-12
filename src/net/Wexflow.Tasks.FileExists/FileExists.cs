@@ -53,7 +53,6 @@ namespace Wexflow.Tasks.FileExists
                     ErrorFormat("An error occured while checking the file.", e);
                     success = false;
                 }
-
             }
             catch (ThreadAbortException)
             {

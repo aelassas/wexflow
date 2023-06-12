@@ -79,7 +79,6 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                         succeeded = false;
                     }
                 }
-
             }
             catch (ThreadAbortException)
             {

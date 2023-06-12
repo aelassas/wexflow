@@ -1202,7 +1202,6 @@ namespace Wexflow.Core
                     }
                     RestVariables.Clear();
                 }
-
             }
 
             return resultSuccess;
