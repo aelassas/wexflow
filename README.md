@@ -4,7 +4,7 @@ Wexflow is an open source and cross-platform workflow engine and automation plat
 
 Wexflow provides a cross-platform workflow server, a backend for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
-Wexflow provides 100+ activities for different kind of tasks and allows custom integration with other solutions through custom activities or Wexflow API.
+Wexflow provides 100+ activities for different kind of tasks and allows custom integration with other solutions through custom activities and Wexflow API.
 
 # Features
 
