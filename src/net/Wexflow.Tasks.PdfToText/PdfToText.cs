@@ -52,7 +52,6 @@ namespace Wexflow.Tasks.PdfToText
                             pdfReader.Close();
                             Files.Add(new FileInf(textPath, Id));
                             InfoFormat("Textfile {0} generated from the file {1}", textPath, pdfFile.Path);
-
                         }
                         if (!atLeastOneSucceed)
                         {
