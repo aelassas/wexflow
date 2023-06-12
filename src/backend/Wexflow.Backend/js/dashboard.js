@@ -123,7 +123,7 @@
                         divEntries.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            new window.deleteUser();
+                            window.deleteUser();
                             window.Common.redirectToLoginPage();
                         };
 
@@ -263,7 +263,7 @@
                     }, function () { }, auth);
                 }
             }, function () {
-                new window.logout();
+                window.logout();
             }, auth);
     }
 

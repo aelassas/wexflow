@@ -128,7 +128,7 @@
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
                         btnLogout.onclick = function () {
-                            new window.deleteUser();
+                            window.deleteUser();
                             window.Common.redirectToLoginPage();
                         };
 
@@ -144,7 +144,7 @@
                 }
 
             }, function () {
-                new window.logout();
+                window.logout();
             }, auth);
     }
 
@@ -519,7 +519,7 @@
                                     } else if (emailText.value === "" || validateEmail(emailText.value) === false) {
                                         window.Common.toastInfo(language.get("toast-email-error"));
                                     } else {
-                                        let hashedPass = new window.MD5(password);
+                                        let hashedPass = window.MD5(password);
                                         window.Common.post(
                                             uri + "/insertUser?username=" + encodeURIComponent(username) + "&password=" + hashedPass + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
                                             function (val) {
@@ -597,7 +597,7 @@
                                     if (newPasswordText.value === "") {
                                         window.Common.toastInfo(language.get("toast-password"));
                                     } else {
-                                        let pass = new window.MD5(newPasswordText.value);
+                                        let pass = window.MD5(newPasswordText.value);
 
                                         if (pass !== u.Password) {
                                             window.Common.toastInfo(language.get("toast-password-incorrect"));
@@ -620,7 +620,7 @@
             } else {
                 window.Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
                     function (u) {
-                        let oldPassword = new window.MD5(oldPasswordText.value);
+                        let oldPassword = window.MD5(oldPasswordText.value);
                         if (u.UserProfile === 0 && u.Password !== oldPassword) {
                             window.Common.toastInfo(language.get("toast-old-password-incorrect"));
                         } else {
@@ -630,7 +630,7 @@
                             } else if (newPasswordText.value === "" || confirmPasswordText.value === "") {
                                 window.Common.toastInfo(language.get("toast-new-password"));
                             } else {
-                                let newPassword = new window.MD5(newPasswordText.value);
+                                let newPassword = window.MD5(newPasswordText.value);
                                 let up = getSelectedProfile();
 
                                 if (txtUsername.value === "") {
@@ -657,8 +657,8 @@
                                                                     if (selectedUsername === logedinUser) {
                                                                         qpassword = user.Password;
                                                                         auth = "Basic " + btoa(qusername + ":" + qpassword);
-                                                                        new window.deleteUser();
-                                                                        new window.authorize(txtUsername.value, user.Password, user.UserProfile);
+                                                                        window.deleteUser();
+                                                                        window.authorize(txtUsername.value, user.Password, user.UserProfile);
 
                                                                         btnLogout.innerHTML = "Logout (" + txtUsername.value + ")";
                                                                     }
@@ -725,8 +725,8 @@
                                 //btnLogout.innerHTML = "Logout (" + txtUsername.value + ")";
                                 document.getElementById("spn-username").innerHTML = " (" + txtUsername.Username + ")";
 
-                                new window.deleteUser();
-                                new window.authorize(txtUsername.value, user.Password, user.UserProfile);
+                                window.deleteUser();
+                                window.authorize(txtUsername.value, user.Password, user.UserProfile);
 
                             }
                             window.Common.toastSuccess(language.get("toast-user-updated"));

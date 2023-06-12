@@ -1,4 +1,4 @@
-function new window.Login() {
+window.Login = function () {
 
     var uri = window.Common.trimEnd(window.Settings.Uri, "/");
     var loginBtn = document.getElementById("btn-login");
@@ -22,7 +22,7 @@ function new window.Login() {
 
         var username = usernameTxt.value;
         var password = passwordTxt.value;
-        var passwordHash = new window.MD5(password);
+        var passwordHash = window.MD5(password);
         auth = "Basic " + btoa(username + ":" + passwordHash);
 
         if (username === "" || password === "") {
@@ -33,7 +33,7 @@ function new window.Login() {
                     alert("Wrong credentials.");
                 } else {
                     if (passwordHash === user.Password) {
-                        new window.authorize(username, passwordHash, user.UserProfile);
+                        window.authorize(username, passwordHash, user.UserProfile);
                         window.location.replace("doc.html");
                     } else {
                         alert("The password is incorrect.");

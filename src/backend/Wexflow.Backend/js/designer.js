@@ -146,7 +146,7 @@
 
                 }
             }, function () {
-                new window.logout();
+                window.logout();
             }, auth);
     }
 
@@ -261,7 +261,7 @@
         btnLogout.onclick = function () {
 
             let redirect = function () {
-                new window.deleteUser();
+                window.deleteUser();
                 window.Common.redirectToLoginPage();
             }
 

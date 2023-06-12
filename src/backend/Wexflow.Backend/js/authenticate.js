@@ -11,7 +11,7 @@ window.deleteUser = function () {
 }
 
 window.logout = function (callback) {
-    new window.deleteUser();
+    window.deleteUser();
     if (callback) {
         callback();
     } else {

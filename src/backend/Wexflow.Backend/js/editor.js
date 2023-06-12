@@ -1,4 +1,4 @@
-﻿function WexflowEditor() {
+﻿window.WexflowEditor = function () {
     "use strict";
 
     hljs.initHighlightingOnLoad();
@@ -48,7 +48,7 @@
                         divDesigner.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            new window.deleteUser();
+                            window.deleteUser();
                             window.Common.redirectToLoginPage();
                         };
 
@@ -251,7 +251,7 @@
                 loadXmlCalled = false;
                 loadJsonCalled = false;
                 var res = false;
-                
+
                 var xmlContainer = document.getElementById("wf-xml-container");
                 var workflowEditor = getEditor(editorWorkflowId);
                 //if (typeof workflowEditor !== "undefined") {

@@ -99,7 +99,7 @@
                         }
 
                         btnLogout.onclick = function () {
-                            new window.deleteUser();
+                            window.deleteUser();
                             window.Common.redirectToLoginPage();
                         };
 
@@ -110,7 +110,7 @@
                 }
 
             }, function () {
-                new window.logout();
+                window.logout();
             }, auth);
     }
 

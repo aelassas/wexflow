@@ -2,7 +2,7 @@ window.Login = function () {
 
     let auth = "";
     let uri = window.Common.trimEnd(window.Settings.Uri, "/");
-    let suser = getUser();
+    let suser = window.getUser();
 
     document.body.style.display = 'none';
     const load = () => document.body.style.display = 'block';
@@ -15,7 +15,7 @@ window.Login = function () {
         auth = "Basic " + btoa(qusername + ":" + qpassword);
 
         const _logout = () => {
-            new window.logout(() => {
+            window.logout(() => {
                 load();
             });
         };
@@ -25,10 +25,10 @@ window.Login = function () {
                 if (u && user.Password === u.Password) {
                     window.location.replace("dashboard.html");
                 } else {
-                    _new window.logout();
+                    _logout();
                 }
             }, function () {
-                _new window.logout();
+                _logout();
             }, auth);
     } else {
         load();
@@ -66,7 +66,7 @@ window.Login = function () {
 
         let username = usernameTxt.value;
         let password = passwordTxt.value;
-        let passwordHash = new window.MD5(password);
+        let passwordHash = window.MD5(password);
         auth = "Basic " + btoa(username + ":" + passwordHash);
 
         if (username === "" || password === "") {
@@ -77,7 +77,7 @@ window.Login = function () {
                     window.Common.toastError(language.get("wrong-credentials"));
                 } else {
                     if (passwordHash === user.Password) {
-                        new window.authorize(username, passwordHash, user.UserProfile);
+                        window.authorize(username, passwordHash, user.UserProfile);
                         window.location.replace("dashboard.html");
                     } else {
                         window.Common.toastError(language.get("wrong-password"));

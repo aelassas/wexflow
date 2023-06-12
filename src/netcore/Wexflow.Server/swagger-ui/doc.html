@@ -99,7 +99,7 @@
 
                                 var btnLogout = document.getElementById("btn-logout");
                                 btnLogout.onclick = function () {
-                                    new window.deleteUser();
+                                    window.deleteUser();
                                     window.Common.redirectToLoginPage();
                                 };
                                 btnLogout.innerHTML = "Logout (" + user.Username + ")";

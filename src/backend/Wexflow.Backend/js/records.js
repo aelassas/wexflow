@@ -139,7 +139,7 @@
                             document.getElementById("content").style.display = "block";
 
                             btnLogout.onclick = function () {
-                                new window.deleteUser();
+                                window.deleteUser();
                                 window.Common.redirectToLoginPage();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
@@ -163,7 +163,7 @@
 
                 }
             }, function () {
-                new window.logout();
+                window.logout();
             }, auth);
     }
 
