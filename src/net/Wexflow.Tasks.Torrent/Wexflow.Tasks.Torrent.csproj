@@ -80,20 +80,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Nat, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6c9468a3c21bc6d1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Mono.Nat.3.0.4\lib\netstandard2.0\Mono.Nat.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoTorrent, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MonoTorrent.2.0.7\lib\netstandard2.0\MonoTorrent.dll</HintPath>
-    </Reference>
-    <Reference Include="ReusableTasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\ReusableTasks.2.0.2\lib\netstandard2.0\ReusableTasks.dll</HintPath>
-    </Reference>
+    
+    
+    
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
+    
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -117,14 +109,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.Nat">
+      <Version>3.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="MonoTorrent">
+      <Version>2.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="ReusableTasks">
+      <Version>2.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\packages\ReusableTasks.2.0.2\build\ReusableTasks.targets" Condition="Exists('..\..\..\packages\ReusableTasks.2.0.2\build\ReusableTasks.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\ReusableTasks.2.0.2\build\ReusableTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\ReusableTasks.2.0.2\build\ReusableTasks.targets'))" />
-  </Target>
 </Project>

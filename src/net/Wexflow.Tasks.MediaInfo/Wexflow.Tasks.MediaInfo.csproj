@@ -67,9 +67,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MediaInfoDotNet, Version=0.7.79.40925, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MediaInfoDotNet.0.7.79.40925\lib\net45\MediaInfoDotNet.dll</HintPath>
-    </Reference>
+    
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -90,19 +88,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MediaInfo.xml" />
-    <Content Include="x64\MediaInfo.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\MediaInfo.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="MediaInfoDotNet.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediaInfoDotNet">
+      <Version>0.7.79.40925</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
