@@ -26,8 +26,8 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 # Links
 
 * [Download](https://github.com/aelassas/wexflow/releases/latest)
-* [Installation Instructions](https://github.com/aelassas/wexflow/wiki/Installation)
-* [Get Started](https://github.com/aelassas/wexflow/wiki/Get-Started)
+* [Installing](https://github.com/aelassas/wexflow/wiki/Installation)
+* [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
 * [Documentation](https://github.com/aelassas/wexflow/wiki)
 * [Docker Image](https://github.com/aelassas/wexflow/wiki/Docker)
-* [Run from Code](https://github.com/aelassas/wexflow/wiki/Run-From-Code)
+* [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
