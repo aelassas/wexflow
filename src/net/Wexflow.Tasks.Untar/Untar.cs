@@ -118,7 +118,7 @@ namespace Wexflow.Tasks.Untar
         {
             using (var fsIn = new FileStream(tarFileName, FileMode.Open, FileAccess.Read))
             {
-                var tarIn = new TarInputStream(fsIn, Encoding.UTF8);
+                var tarIn = new TarInputStream(fsIn);
                 TarEntry tarEntry;
                 while ((tarEntry = tarIn.GetNextEntry()) != null)
                 {

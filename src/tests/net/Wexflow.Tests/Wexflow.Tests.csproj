@@ -101,8 +101,6 @@
     <Compile Include="CsvToSql.cs" />
     <Compile Include="CsvToXml.cs" />
     <Compile Include="CsvToYaml.cs" />
-    <Compile Include="DatabaseBackup.cs" />
-    <Compile Include="DatabaseRestore.cs" />
     <Compile Include="Disapproval.cs" />
     <Compile Include="EnvironmentVariable.cs" />
     <Compile Include="ExecCs.cs" />
@@ -163,7 +161,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resume.cs" />
     <Compile Include="Rmdir.cs" />
-    <Compile Include="ScssToCss.cs" />
     <Compile Include="SevenZIp.cs" />
     <Compile Include="Sha1.cs" />
     <Compile Include="Sha256.cs" />
@@ -174,7 +171,6 @@
     <Compile Include="SqlToXml.cs" />
     <Compile Include="Stop.cs" />
     <Compile Include="Suspend.cs" />
-    <Compile Include="Sync.cs" />
     <Compile Include="Tar.cs" />
     <Compile Include="TextsDecryptor.cs" />
     <Compile Include="TextsEncryptor.cs" />
@@ -207,9 +203,21 @@
       <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
       <Name>Wexflow.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ApprovalRecordsCreator\Wexflow.Tasks.ApprovalRecordsCreator.csproj">
+      <Project>{5aee3696-ff81-423f-ab21-550aa85b0ccb}</Project>
+      <Name>Wexflow.Tasks.ApprovalRecordsCreator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ApprovalWorkflowsCreator\Wexflow.Tasks.ApprovalWorkflowsCreator.csproj">
+      <Project>{a175634e-7ee6-426a-a1f7-f1b90dbcc1e3}</Project>
+      <Name>Wexflow.Tasks.ApprovalWorkflowsCreator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Approval\Wexflow.Tasks.Approval.csproj">
       <Project>{8bff752c-4eb0-49cb-a367-92046d78d010}</Project>
       <Name>Wexflow.Tasks.Approval</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ApproveRecord\Wexflow.Tasks.ApproveRecord.csproj">
+      <Project>{69f2479a-876c-4f75-ac5e-585761bb5a17}</Project>
+      <Name>Wexflow.Tasks.ApproveRecord</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.CsvToJson\Wexflow.Tasks.CsvToJson.csproj">
       <Project>{dd553a49-a5ad-4f12-91cb-9fba28777ed2}</Project>
@@ -234,6 +242,10 @@
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ExecCs\Wexflow.Tasks.ExecCs.csproj">
       <Project>{485bbbd8-4ad9-4088-a91d-2766cc5cfa0e}</Project>
       <Name>Wexflow.Tasks.ExecCs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj">
+      <Project>{5abbae16-18e6-442a-a668-d3922fdacb63}</Project>
+      <Name>Wexflow.Tasks.ExecPython</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ExecVb\Wexflow.Tasks.ExecVb.csproj">
       <Project>{25c5c91b-91b9-4cc6-9ce0-4d7cf9312496}</Project>
@@ -439,6 +451,10 @@
       <Project>{f2f1e7e2-2707-40a7-a98d-b5bbd27c0787}</Project>
       <Name>Wexflow.Tasks.Now</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.PdfToText\Wexflow.Tasks.PdfToText.csproj">
+      <Project>{6c663245-2ce9-4996-bd01-edfc36d9384f}</Project>
+      <Name>Wexflow.Tasks.PdfToText</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Ping\Wexflow.Tasks.Ping.csproj">
       <Project>{e9d7c7a8-6e79-4cc5-8ab1-f359290d70d0}</Project>
       <Name>Wexflow.Tasks.Ping</Name>
@@ -458,10 +474,6 @@
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Rmdir\Wexflow.Tasks.Rmdir.csproj">
       <Project>{f3f7276b-ac03-4db2-a1d8-28738434c72e}</Project>
       <Name>Wexflow.Tasks.Rmdir</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ScssToCss\Wexflow.Tasks.ScssToCss.csproj">
-      <Project>{ab4ce02a-1cb1-46b3-82fa-535d740f8efc}</Project>
-      <Name>Wexflow.Tasks.ScssToCss</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SevenZip\Wexflow.Tasks.SevenZip.csproj">
       <Project>{fa30208c-6aaa-4bbd-9932-79e2bcd17ede}</Project>
@@ -625,18 +637,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>3.0.4</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
       <Version>3.0.4</Version>
     </PackageReference>
+    <PackageReference Include="SevenZipSharp.Interop">
+      <Version>19.0.2</Version>
+    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

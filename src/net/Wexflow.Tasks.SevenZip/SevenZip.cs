@@ -77,7 +77,8 @@ namespace Wexflow.Tasks.SevenZip
 
                 try
                 {
-                    var assembly = Assembly.GetEntryAssembly();
+                    //var assembly = Assembly.GetEntryAssembly();
+                    var assembly = typeof(SevenZip).Assembly;
                     var libraryPath = Path.GetDirectoryName(assembly.Location);
 #if DEBUG
                     var processorArch = assembly.GetName().ProcessorArchitecture;

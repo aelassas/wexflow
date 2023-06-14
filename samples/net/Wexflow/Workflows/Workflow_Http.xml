@@ -5,7 +5,7 @@
 	</Settings>
 	<Tasks>
 		<Task id="1" name="Http" description="Downloading files" enabled="true">
-			<Setting name="url" value="https://aelassas.github.io/wexflow/images/logo.png" />
+			<Setting name="url" value="https://wexflow.github.io/images/wexflow-cover.png" />
 		</Task>
 		<Task id="2" name="FilesMover" description="Moving files to Http folder" enabled="true">
 			<Setting name="selectFiles" value="1" />

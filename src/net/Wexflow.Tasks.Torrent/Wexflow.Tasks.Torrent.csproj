@@ -80,12 +80,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    
-    
-    
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -108,20 +104,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Mono.Nat">
-      <Version>3.0.4</Version>
-    </PackageReference>
     <PackageReference Include="MonoTorrent">
       <Version>2.0.7</Version>
-    </PackageReference>
-    <PackageReference Include="ReusableTasks">
-      <Version>2.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

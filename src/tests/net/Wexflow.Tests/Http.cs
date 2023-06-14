@@ -6,7 +6,7 @@ namespace Wexflow.Tests
     [TestClass]
     public class Http
     {
-        private static readonly string Dest = @"C:\WexflowTesting\Http\logo.png";
+        private static readonly string Dest = @"C:\WexflowTesting\Http\wexflow-cover.png";
 
         [TestInitialize]
         public void TestInitialize()

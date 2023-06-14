@@ -187,8 +187,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.HtmlToText", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.HttpGet", "src\net\Wexflow.Tasks.HttpGet\Wexflow.Tasks.HttpGet.csproj", "{85A03AEA-B876-4009-AC26-6CD1AF34C6D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.ScssToCss", "src\net\Wexflow.Tasks.ScssToCss\Wexflow.Tasks.ScssToCss.csproj", "{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.YamlToJson", "src\net\Wexflow.Tasks.YamlToJson\Wexflow.Tasks.YamlToJson.csproj", "{4EE9980E-E749-427D-846F-DE3773D65263}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.JsonToYaml", "src\net\Wexflow.Tasks.JsonToYaml\Wexflow.Tasks.JsonToYaml.csproj", "{57EDB875-BB62-42B2-8851-8CE774B13457}"
@@ -573,7 +571,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.ExecPython", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.ExecPython", "src\netcore\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj", "{34BAC520-3470-4F98-9A4D-88369933088A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Scripts.LiteDB", "src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj", "{3D72AA8F-410B-41F1-8E5E-EB1BE517621B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Scripts.LiteDB", "src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj", "{3D72AA8F-410B-41F1-8E5E-EB1BE517621B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{CBF733C9-E197-44FA-837B-1FE4F5923FD9}"
+	ProjectSection(SolutionItems) = preProject
+		.github\azure-pipelines.yml = .github\azure-pipelines.yml
+		.github\dependabot.yml = .github\dependabot.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C9DA2491-E6D6-4D3A-B6A1-413BD0B0C989}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\android.yml = .github\workflows\android.yml
+		.github\workflows\ios.yml = .github\workflows\ios.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2011,22 +2021,6 @@ Global
 		{85A03AEA-B876-4009-AC26-6CD1AF34C6D0}.Release|x64.Build.0 = Release|x64
 		{85A03AEA-B876-4009-AC26-6CD1AF34C6D0}.Release|x86.ActiveCfg = Release|x86
 		{85A03AEA-B876-4009-AC26-6CD1AF34C6D0}.Release|x86.Build.0 = Release|x86
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|x64.ActiveCfg = Debug|x64
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|x64.Build.0 = Debug|x64
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|x86.ActiveCfg = Debug|x86
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Debug|x86.Build.0 = Debug|x86
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|x64.ActiveCfg = Release|x64
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|x64.Build.0 = Release|x64
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|x86.ActiveCfg = Release|x86
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC}.Release|x86.Build.0 = Release|x86
 		{4EE9980E-E749-427D-846F-DE3773D65263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4EE9980E-E749-427D-846F-DE3773D65263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EE9980E-E749-427D-846F-DE3773D65263}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -4924,7 +4918,6 @@ Global
 		{DB83CB0F-9ED6-4EC3-8735-4D1D0D5E4CE7} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{142396BC-6475-4678-A4A4-B5175F49E660} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{85A03AEA-B876-4009-AC26-6CD1AF34C6D0} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
-		{AB4CE02A-1CB1-46B3-82FA-535D740F8EFC} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{4EE9980E-E749-427D-846F-DE3773D65263} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{57EDB875-BB62-42B2-8851-8CE774B13457} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{DD553A49-A5AD-4F12-91CB-9FBA28777ED2} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
@@ -5111,6 +5104,7 @@ Global
 		{5ABBAE16-18E6-442A-A668-D3922FDACB63} = {E0CB0ECF-B3C8-47F6-8DB9-3B2D45E653AB}
 		{34BAC520-3470-4F98-9A4D-88369933088A} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
 		{3D72AA8F-410B-41F1-8E5E-EB1BE517621B} = {16281492-0F39-4C01-9FAA-281650F28ADB}
+		{C9DA2491-E6D6-4D3A-B6A1-413BD0B0C989} = {CBF733C9-E197-44FA-837B-1FE4F5923FD9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {694D69C8-AA13-4F54-BAAA-5B967F1A8F9C}

@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.Tar
 
                 try
                 {
-                    using (var tar = new TarOutputStream(File.Create(tarPath), Encoding.UTF8))
+                    using (var tar = new TarOutputStream(File.Create(tarPath)))
                     {
                         foreach (var file in files)
                         {

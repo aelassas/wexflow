@@ -90,8 +90,8 @@
     <Content Include="Untar.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SharpZipLib">
-      <Version>1.4.2</Version>
+    <PackageReference Include="ICSharpCode.SharpZipLib">
+      <Version>0.86.0.518</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

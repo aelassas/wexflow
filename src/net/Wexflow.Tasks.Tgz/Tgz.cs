@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.Tgz
                 try
                 {
                     using (var gz = new GZipOutputStream(File.Create(tgzPath)))
-                    using (var tar = new TarOutputStream(gz, Encoding.UTF8))
+                    using (var tar = new TarOutputStream(gz))
                     {
                         foreach (var file in files)
                         {

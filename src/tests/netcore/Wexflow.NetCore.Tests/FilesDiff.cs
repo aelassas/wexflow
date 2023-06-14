@@ -6,7 +6,7 @@ namespace Wexflow.NetCore.Tests
     [TestClass]
     public class FilesDiff
     {
-        private static readonly string TempFolder = @"C:\Wexflow\Temp\71";
+        private static readonly string TempFolder = @"C:\Wexflow-netcore\Temp\155";
 
         private static readonly string ExpectedResult =
               "  We the people\r\n"

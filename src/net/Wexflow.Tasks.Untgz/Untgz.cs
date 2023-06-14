@@ -119,7 +119,7 @@ namespace Wexflow.Tasks.Untgz
             Stream inStream = File.OpenRead(gzArchiveName);
             Stream gzipStream = new GZipInputStream(inStream);
 
-            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
             tarArchive.ExtractContents(destFolder);
             tarArchive.Close();
 

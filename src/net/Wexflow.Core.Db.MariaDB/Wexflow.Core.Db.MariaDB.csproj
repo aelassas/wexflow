@@ -108,9 +108,6 @@
     <PackageReference Include="MySqlConnector">
       <Version>2.2.6</Version>
     </PackageReference>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource">
-      <Version>7.0.2</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

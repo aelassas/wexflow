@@ -7,32 +7,32 @@ namespace Wexflow.Tests
     [TestClass]
     public class Torrent
     {
-        private static readonly string DownloadedFile = @"C:\WexflowTesting\Torrent\A Kernel Two-Sample Test.pdf";
+        private static readonly string DownloadedFolder = @"C:\WexflowTesting\Torrent\The WIRED CD - Rip. Sample. Mash. Share";
 
         [TestInitialize]
         public void TestInitialize()
         {
-            if (File.Exists(DownloadedFile))
+            if (Directory.Exists(DownloadedFolder))
             {
-                File.Delete(DownloadedFile);
+                Helper.DeleteFilesAndFolders(DownloadedFolder);
             }
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            if (File.Exists(DownloadedFile))
+            if (File.Exists(DownloadedFolder))
             {
-                File.Delete(DownloadedFile);
+                File.Delete(DownloadedFolder);
             }
         }
 
         [TestMethod]
         public void TorrentTest()
         {
-            Assert.IsFalse(File.Exists(DownloadedFile));
+            Assert.IsFalse(File.Exists(DownloadedFolder));
             _ = Helper.StartWorkflow(72);
-            Assert.IsTrue(File.Exists(DownloadedFile));
+            Assert.IsTrue(Directory.Exists(DownloadedFolder));
             Thread.Sleep(30 * 1000);
         }
     }

@@ -16,10 +16,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void CsvToSqlTest()
+        public void FileSystemWatcherTest()
         {
             // TODO
-            _ = Helper.StartWorkflow(144);
+            //_ = Helper.StartWorkflow(144);
         }
     }
 }

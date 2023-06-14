@@ -16,8 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void CsvToJsonTest()
+        public void ExecPythonTest()
         {
+            // TODO
             _ = Helper.StartWorkflow(175);
         }
     }

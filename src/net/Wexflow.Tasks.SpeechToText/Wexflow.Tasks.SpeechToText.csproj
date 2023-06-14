@@ -90,8 +90,5 @@
   <ItemGroup>
     <Content Include="SpeechToText.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

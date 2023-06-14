@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-	<DebugType>Full</DebugType>
-    <Platforms>AnyCPU;x64;x86</Platforms> 
+    <DebugType>Full</DebugType>
+    <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>6.8.0</Version>
     <StartupObject>Wexflow.Server.WexflowServer</StartupObject>
   </PropertyGroup>
@@ -108,7 +108,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="7.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -224,6 +223,10 @@
     </None>
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 
 </Project>

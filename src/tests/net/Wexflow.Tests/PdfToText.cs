@@ -7,17 +7,18 @@ namespace Wexflow.Tests
     public class PdfToText
     {
         private static readonly string PdfToTextFolder = @"C:\WexflowTesting\PdfToText\";
+        private static readonly string SearchPattern = "*.txt";
 
         [TestInitialize]
         public void TestInitialize()
         {
-            Helper.DeleteFiles(PdfToTextFolder);
+            Helper.DeleteFiles(PdfToTextFolder, SearchPattern);
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            Helper.DeleteFiles(PdfToTextFolder);
+            Helper.DeleteFiles(PdfToTextFolder, SearchPattern);
         }
 
         [TestMethod]
@@ -25,14 +26,14 @@ namespace Wexflow.Tests
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(64);
+            _ = Helper.StartWorkflow(151);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
         }
 
         private string[] GetFiles()
         {
-            return Directory.GetFiles(PdfToTextFolder, "*.txt");
+            return Directory.GetFiles(PdfToTextFolder, SearchPattern);
         }
     }
 }

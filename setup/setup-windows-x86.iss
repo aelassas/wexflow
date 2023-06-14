@@ -42,15 +42,17 @@ Name: "samples"; Description: "Workflow samples"; Types: full
 
 [Files]
 ; Wexflow server
+;Source: "..\src\net\Wexflow.Core.Db.MongoDB\bin\x86\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Core.Db.SQLite\bin\x86\Release\x86\SQLite.Interop.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Server\bin\Release\Wexflow.Server.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Server\bin\Release\Wexflow.Server.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Server\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Server\bin\Release\swagger-ui\*"; DestDir: "{app}\swagger-ui"; Flags: ignoreversion recursesubdirs
-Source: "..\src\net\Wexflow.Core.Db.SQLite\bin\x86\Release\x86\SQLite.Interop.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Server\bin\Release\x86\7z.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Server\bin\Release\x86\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "..\src\net\Wexflow.Server\bin\Release\x86\7z.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.SevenZip\bin\x86\Release\x86\7z.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "..\src\net\Wexflow.Server\bin\Release\x86\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.MediaInfo\bin\x86\Release\x86\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\libs\chromedriver.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Core.Db.MongoDB\bin\x86\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Wexflow Manager
 Source: "..\src\net\Wexflow.Clients.Manager\bin\Release\Wexflow.Clients.Manager.exe"; DestDir: "{app}\Manager"; Flags: ignoreversion
@@ -162,7 +164,7 @@ Source: "..\src\net\Wexflow.Tasks.UglifyCss\UglifyCss.xml"; DestDir: "{app}\Docu
 Source: "..\src\net\Wexflow.Tasks.UglifyHtml\UglifyHtml.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.HtmlToText\HtmlToText.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.HttpGet\HttpGet.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Tasks.ScssToCss\ScssToCss.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+;Source: "..\src\net\Wexflow.Tasks.ScssToCss\ScssToCss.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.YamlToJson\YamlToJson.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.JsonToYaml\JsonToYaml.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.CsvToJson\CsvToJson.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion

@@ -438,10 +438,6 @@
       <Project>{f3f7276b-ac03-4db2-a1d8-28738434c72e}</Project>
       <Name>Wexflow.Tasks.Rmdir</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wexflow.Tasks.ScssToCss\Wexflow.Tasks.ScssToCss.csproj">
-      <Project>{ab4ce02a-1cb1-46b3-82fa-535d740f8efc}</Project>
-      <Name>Wexflow.Tasks.ScssToCss</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Wexflow.Tasks.SevenZip\Wexflow.Tasks.SevenZip.csproj">
       <Project>{fa30208c-6aaa-4bbd-9932-79e2bcd17ede}</Project>
       <Name>Wexflow.Tasks.SevenZip</Name>

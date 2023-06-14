@@ -105,12 +105,17 @@ namespace Wexflow.Tests
 
         public static void DeleteFiles(string dir)
         {
+            DeleteFiles(dir, "*.*");
+        }
+
+        public static void DeleteFiles(string dir, string searchPattern)
+        {
             if (!Directory.Exists(dir))
             {
                 return;
             }
 
-            foreach (var file in Directory.GetFiles(dir))
+            foreach (var file in Directory.GetFiles(dir, searchPattern))
             {
                 File.Delete(file);
             }

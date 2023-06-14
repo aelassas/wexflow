@@ -93,9 +93,6 @@
     <Content Include="FilesDiff.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="DiffPlex">
       <Version>1.7.1</Version>
     </PackageReference>

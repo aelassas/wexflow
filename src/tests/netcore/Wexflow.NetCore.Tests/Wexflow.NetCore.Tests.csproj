@@ -23,12 +23,14 @@
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.CsvToXml\Wexflow.Tasks.CsvToXml.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.CsvToYaml\Wexflow.Tasks.CsvToYaml.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.EnvironmentVariable\Wexflow.Tasks.EnvironmentVariable.csproj" />
+    <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FileContentMatch\Wexflow.Tasks.FileContentMatch.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FileExists\Wexflow.Tasks.FileExists.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FileMatch\Wexflow.Tasks.FileMatch.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesConcat\Wexflow.Tasks.FilesConcat.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesCopier\Wexflow.Tasks.FilesCopier.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesDecryptor\Wexflow.Tasks.FilesDecryptor.csproj" />
+    <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesDiff\Wexflow.Tasks.FilesDiff.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesEncryptor\Wexflow.Tasks.FilesEncryptor.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesEqual\Wexflow.Tasks.FilesEqual.csproj" />
     <ProjectReference Include="..\..\..\netcore\Wexflow.Tasks.FilesExist\Wexflow.Tasks.FilesExist.csproj" />
