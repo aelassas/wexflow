@@ -14,16 +14,16 @@ namespace Wexflow.NetCore.Tests
         {
             if (Directory.Exists(DownloadedFolder))
             {
-                Helper.DeleteFilesAndFolders(DownloadedFolder);
+                Helper.DeleteDirRec(DownloadedFolder);
             }
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            if (File.Exists(DownloadedFolder))
+            if (Directory.Exists(DownloadedFolder))
             {
-                File.Delete(DownloadedFolder);
+                Helper.DeleteDirRec(DownloadedFolder);
             }
         }
 

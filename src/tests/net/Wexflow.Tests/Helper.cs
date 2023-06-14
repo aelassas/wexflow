@@ -121,7 +121,7 @@ namespace Wexflow.Tests
             }
         }
 
-        private static void DeleteDirRec(string dir)
+        public static void DeleteDirRec(string dir)
         {
             //foreach (var file in Directory.GetFiles(dir))
             //{
