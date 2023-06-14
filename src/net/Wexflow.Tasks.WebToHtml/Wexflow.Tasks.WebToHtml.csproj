@@ -78,7 +78,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WebToHtml.cs" />
@@ -94,9 +93,6 @@
     <Content Include="WebToHtml.xml">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Selenium.WebDriver">

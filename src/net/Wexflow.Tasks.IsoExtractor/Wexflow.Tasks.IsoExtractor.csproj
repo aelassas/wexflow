@@ -90,9 +90,6 @@
     <Content Include="IsoExtractor.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="DiscUtils">
       <Version>0.16.13</Version>
     </PackageReference>

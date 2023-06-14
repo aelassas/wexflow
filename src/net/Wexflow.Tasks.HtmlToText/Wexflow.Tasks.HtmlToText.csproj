@@ -92,9 +92,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NUglify">
       <Version>1.20.7</Version>
     </PackageReference>

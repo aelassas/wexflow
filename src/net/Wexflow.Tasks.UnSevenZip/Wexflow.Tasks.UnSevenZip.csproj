@@ -68,16 +68,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    
     <Reference Include="System" />
-    
     <Reference Include="System.Core" />
-    
     <Reference Include="System.Numerics" />
-    
-    
-    
-    
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -96,9 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="UnSevenZip.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SharpCompress">

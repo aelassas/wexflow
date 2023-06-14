@@ -120,13 +120,5 @@
       <Name>Wexflow.Scripts.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource">
-      <Version>7.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.4</Version>
-    </PackageReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

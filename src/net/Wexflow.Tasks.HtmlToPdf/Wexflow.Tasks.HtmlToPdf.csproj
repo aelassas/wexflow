@@ -89,9 +89,6 @@
     <Content Include="HtmlToPdf.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="iTextSharp">
       <Version>5.5.13.3</Version>
     </PackageReference>
