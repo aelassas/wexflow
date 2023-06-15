@@ -7,7 +7,9 @@ using System.IO;
 
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     public readonly struct FileChange
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     {
         internal FileChange(string directory, string path, WatcherChangeTypes type)
         {
@@ -17,8 +19,14 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             ChangeType = type;
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public string Directory { get; }
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public string Name { get; }
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public WatcherChangeTypes ChangeType { get; }
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     }
 }

@@ -39,7 +39,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         /// </summary>
         /// <param name="path">The path to watch.</param>
         /// <param name="filter">The type of files to watch. For example, "*.txt" watches for changes to all text files.</param>
+#pragma warning disable CS1573 // Le paramètre n'a pas de balise param correspondante dans le commentaire XML (contrairement à d'autres paramètres)
         public PollingFileSystemWatcher(string path, string filter = "*", EnumerationOptions options = null)
+#pragma warning restore CS1573 // Le paramètre n'a pas de balise param correspondante dans le commentaire XML (contrairement à d'autres paramètres)
         {
             if (path == null)
             {
@@ -69,9 +71,15 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             _ = _timer.Change(PollingInterval, Timeout.Infinite);
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public EnumerationOptions EnumerationOptions { get; set; } = new EnumerationOptions();
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public string Filter { get; set; }
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public string Path { get; set; }
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
 
         /// <summary>
         /// The number of milliseconds to wait until checking the file system again
@@ -89,7 +97,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             }
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public void Start()
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             if (_disposed)
             {
@@ -130,7 +140,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             return changes;
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         protected internal virtual bool ShouldIncludeEntry(ref FileSystemEntry entry)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             if (entry.IsDirectory)
             {
@@ -146,7 +158,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             return FileSystemName.MatchesSimpleExpression(Filter, entry.FileName, ignoreCase: ignoreCase);
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         protected internal virtual bool ShouldRecurseIntoEntry(ref FileSystemEntry entry)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             return true;
         }
@@ -186,9 +200,13 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         /// </summary>
         public event EventHandler Changed;
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public event PollingFileSystemEventHandler ChangedDetailed;
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public event ErrorEventHandler Error;
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
 
         /// <summary>
         /// Disposes the timer used for polling.
@@ -201,7 +219,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             GC.SuppressFinalize(this);
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public bool Dispose(WaitHandle notifyObject)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             _disposed = true;
             var isSuccess = _timer.Dispose(notifyObject);
@@ -213,7 +233,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             return isSuccess;
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         protected virtual void Dispose(bool disposing)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
         }
 
@@ -242,7 +264,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
         #region Serializable
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         protected PollingFileSystemWatcher(SerializationInfo info, StreamingContext context)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             _state = (PathToFileStateHashtable)info.GetValue(nameof(_state), typeof(PathToFileStateHashtable));
             _version = info.GetInt64(nameof(_version));
@@ -257,7 +281,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             PollingInterval = info.GetInt32(nameof(PollingInterval));
         }
 
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         public void GetObjectData(SerializationInfo info, StreamingContext context)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             info.AddValue(nameof(_state), _state);
             info.AddValue(nameof(_version), _version);
