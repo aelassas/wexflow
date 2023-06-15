@@ -5,6 +5,7 @@
 	<DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>6.8.0</Version>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

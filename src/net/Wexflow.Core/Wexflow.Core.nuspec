@@ -32,6 +32,7 @@
     <file src=".\docs\README.md" target="docs\" />
 
     <file src=".\bin\Debug\Wexflow.Core.dll" target="lib\net48" />
+    <file src=".\bin\Debug\Wexflow.Core.xml" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.LiteDB.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.MongoDB.dll" target="lib\net48" />
@@ -45,6 +46,7 @@
     <file src=".\bin\Debug\Wexflow.Core.Db.MariaDB.dll" target="lib\net48" />
 
     <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.dll" target="lib\net7.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.xml" target="lib\net7.0" />
     <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.dll" target="lib\net7.0" />
     <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.LiteDB.dll" target="lib\net7.0" />
     <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.MongoDB.dll" target="lib\net7.0" />
