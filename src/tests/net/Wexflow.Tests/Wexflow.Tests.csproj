@@ -199,6 +199,10 @@
     <Compile Include="Zip.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\net\Wexflow.Core.Db\Wexflow.Core.Db.csproj">
+      <Project>{ffe105a5-1c72-4e7d-bc48-5f5902376893}</Project>
+      <Name>Wexflow.Core.Db</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\net\Wexflow.Core\Wexflow.Core.csproj">
       <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
       <Name>Wexflow.Core</Name>

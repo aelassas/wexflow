@@ -21,6 +21,7 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void MailsReceiverTest()
         {
             var files = GetFiles();

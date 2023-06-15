@@ -16,7 +16,7 @@ namespace Wexflow.NetCore.Tests
                : @"C:\Wexflow-netcore\Wexflow.xml")
             , LogLevel.All
             , false
-            , "admin"
+            , Username
             , false
             , string.Empty
             , 0
@@ -39,6 +39,13 @@ namespace Wexflow.NetCore.Tests
                ? "/Applications/wexflow/WexflowTesting/"
                : @"C:\WexflowTesting\");
 
+        private static readonly string Username = "admin";
+
+        public static void SaveWorkflow(string xml, bool schedule)
+        {
+            WexflowEngine.SaveWorkflow(Username, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
+        }
+
         public static void Run()
         {
             WexflowEngine.Run();
@@ -51,7 +58,7 @@ namespace Wexflow.NetCore.Tests
 
         public static System.Guid StartWorkflow(int workflowId)
         {
-            var instanceId = WexflowEngine.StartWorkflow("admin", workflowId);
+            var instanceId = WexflowEngine.StartWorkflow(Username, workflowId);
 
             // Wait until the workflow finishes
             Thread.Sleep(1000);
@@ -71,12 +78,12 @@ namespace Wexflow.NetCore.Tests
 
         public static System.Guid StartWorkflowAsync(int workflowId)
         {
-            return WexflowEngine.StartWorkflow("admin", workflowId);
+            return WexflowEngine.StartWorkflow(Username, workflowId);
         }
 
         public static void StopWorkflow(int workflowId, System.Guid instanceId)
         {
-            _ = WexflowEngine.StopWorkflow(workflowId, instanceId, "admin");
+            _ = WexflowEngine.StopWorkflow(workflowId, instanceId, Username);
         }
 
         public static void SuspendWorkflow(int workflowId, System.Guid instanceId)
@@ -91,12 +98,12 @@ namespace Wexflow.NetCore.Tests
 
         public static void ApproveWorkflow(int workflowId, System.Guid instanceId)
         {
-            _ = WexflowEngine.ApproveWorkflow(workflowId, instanceId, "admin");
+            _ = WexflowEngine.ApproveWorkflow(workflowId, instanceId, Username);
         }
 
         public static void RejectWorkflow(int workflowId, System.Guid instanceId)
         {
-            _ = WexflowEngine.RejectWorkflow(workflowId, instanceId, "admin");
+            _ = WexflowEngine.RejectWorkflow(workflowId, instanceId, Username);
         }
 
         public static Core.Workflow GetWorkflow(int workflowId)

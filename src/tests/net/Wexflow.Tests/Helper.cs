@@ -14,7 +14,7 @@ namespace Wexflow.Tests
             @"C:\Wexflow\Wexflow.xml"
             , LogLevel.All
             , false
-            , "admin"
+            , Username
             , false
             , string.Empty
             , 0
@@ -22,6 +22,13 @@ namespace Wexflow.Tests
             , string.Empty
             , string.Empty
             , string.Empty);
+
+        private static readonly string Username = "admin";
+
+        public static void SaveWorkflow(string xml, bool schedule)
+        {
+            WexflowEngine.SaveWorkflow(Username, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
+        }
 
         public static void Run()
         {

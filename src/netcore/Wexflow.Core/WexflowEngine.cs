@@ -815,6 +815,28 @@ namespace Wexflow.Core
             Logger.InfoFormat("Scheduling {0} workflows finished.", Workflows.Count);
         }
 
+        private string GetJobIdentity(Workflow wf)
+        {
+            return $"job_{wf.Id}";
+        }
+
+        private string GetTriggerIdentity(Workflow wf)
+        {
+            return $"trigger_{wf.Id}";
+        }
+
+        private void DeleteJob(Workflow wf)
+        {
+            var jobIdentity = GetJobIdentity(wf);
+            var jobKey = new JobKey(jobIdentity);
+            var deleted = QuartzScheduler.DeleteJob(jobKey).Result;
+
+            if (deleted)
+            {
+                Logger.InfoFormat("Workflow Job {0} was found and deleted ({1} - {2}).", jobIdentity, wf.Id, wf.Name);
+            }
+        }
+
         private void ScheduleWorkflow(Workflow wf)
         {
             try
@@ -832,25 +854,21 @@ namespace Wexflow.Core
                             { "workflow", wf }
                         };
 
-                        var jobIdentity = $"Workflow Job {wf.Id}";
+                        var jobIdentity = GetJobIdentity(wf);
                         var jobDetail = JobBuilder.Create<WorkflowJob>()
                             .WithIdentity(jobIdentity)
                             .SetJobData(new JobDataMap(map))
                             .Build();
 
+                        var triggerIdentity = GetTriggerIdentity(wf);
                         var trigger = TriggerBuilder.Create()
                             .ForJob(jobDetail)
                             .WithSimpleSchedule(x => x.WithInterval(wf.Period).RepeatForever())
-                            .WithIdentity($"Workflow Trigger {wf.Id}")
+                            .WithIdentity(triggerIdentity)
                             .StartNow()
                             .Build();
 
-                        JobKey jobKey = new(jobIdentity);
-                        if (QuartzScheduler.CheckExists(jobKey).Result)
-                        {
-                            _ = QuartzScheduler.DeleteJob(jobKey);
-                        }
-
+                        DeleteJob(wf);
                         QuartzScheduler.ScheduleJob(jobDetail, trigger).Wait();
                     }
                     else if (wf.LaunchType == LaunchType.Cron)
@@ -860,27 +878,27 @@ namespace Wexflow.Core
                             { "workflow", wf }
                         };
 
-                        var jobIdentity = $"Workflow Job {wf.Id}";
+                        var jobIdentity = GetJobIdentity(wf);
                         var jobDetail = JobBuilder.Create<WorkflowJob>()
                             .WithIdentity(jobIdentity)
                             .SetJobData(new JobDataMap(map))
                             .Build();
 
+                        var triggerIdentity = GetTriggerIdentity(wf);
                         var trigger = TriggerBuilder.Create()
                             .ForJob(jobDetail)
                             .WithCronSchedule(wf.CronExpression)
-                            .WithIdentity($"Workflow Trigger {wf.Id}")
+                            .WithIdentity(triggerIdentity)
                             .StartNow()
                             .Build();
 
-                        JobKey jobKey = new(jobIdentity);
-                        if (QuartzScheduler.CheckExists(jobKey).Result)
-                        {
-                            _ = QuartzScheduler.DeleteJob(jobKey);
-                        }
-
+                        DeleteJob(wf);
                         QuartzScheduler.ScheduleJob(jobDetail, trigger).Wait();
                     }
+                }
+                else
+                {
+                    DeleteJob(wf);
                 }
             }
             catch (Exception e)
