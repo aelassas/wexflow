@@ -404,7 +404,7 @@
 
                                         // Download version
                                         cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                            let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(res.FilePath);
+                                            let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/download-file?p=" + encodeURIComponent(res.FilePath);
                                             window.open(url, "_self");
                                         };
 
