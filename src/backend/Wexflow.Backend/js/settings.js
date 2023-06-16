@@ -5,6 +5,6 @@
     return {
         Hostname: hostname,
         Port: port,
-        Uri: "http://" + hostname + ":" + port + "/wexflow/"
+        Uri: "http://" + hostname + ":" + port + "/api/v1/"
     };
 })();

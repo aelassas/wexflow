@@ -6,13 +6,13 @@ info:
     email: akram.elassas@gmail.com
   license:
     name: MIT
-    url: https://github.com/aelassas/Wexflow/wiki/License
+    url: https://github.com/aelassas/wexflow/wiki/License
   version: 6.8
 externalDocs:
   description: Find out more about Wexflow
   url: https://wexflow.github.io
 servers:
-- url: //localhost:8000/wexflow
+- url: //localhost:8000/api/v1
 tags:
 - name: Dashboard
   description: Operations about dashboard

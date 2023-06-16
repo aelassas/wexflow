@@ -29,7 +29,7 @@ namespace Wexflow.Server
 {
     public sealed partial class WexflowService
     {
-        private const string Root = "wexflow";
+        private const string Root = "api/v1";
         private static readonly XNamespace xn = "urn:wexflow-schema";
 
         private readonly IEndpointRouteBuilder _endpoints;
