@@ -29,7 +29,7 @@ namespace Wexflow.Server
 {
     public sealed partial class WexflowService
     {
-        private const string Root = "/wexflow/";
+        private const string Root = "wexflow";
         private static readonly XNamespace xn = "urn:wexflow-schema";
 
         private readonly IEndpointRouteBuilder _endpoints;
@@ -150,6 +150,8 @@ namespace Wexflow.Server
             NotifyApprovers();
         }
 
+        private static string GetPattern(string pattern) => $"/{Root}/{pattern}";
+
         private static async System.Threading.Tasks.Task WriteFalse(HttpContext context)
         {
             await context.Response.WriteAsync(JsonConvert.SerializeObject(false));
@@ -188,7 +190,7 @@ namespace Wexflow.Server
         /// </summary>
         private void Search()
         {
-            _ = _endpoints.MapGet(Root + "search", async context =>
+            _ = _endpoints.MapGet(GetPattern("search"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -244,7 +246,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchApprovalWorkflows()
         {
-            _ = _endpoints.MapGet(Root + "searchApprovalWorkflows", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchApprovalWorkflows"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -302,7 +304,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetWorkflow()
         {
-            _ = _endpoints.MapGet(Root + "workflow", async context =>
+            _ = _endpoints.MapGet(GetPattern("workflow"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -350,7 +352,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetJob()
         {
-            _ = _endpoints.MapGet(Root + "job", async context =>
+            _ = _endpoints.MapGet(GetPattern("job"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -407,7 +409,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetJobs()
         {
-            _ = _endpoints.MapGet(Root + "jobs", async context =>
+            _ = _endpoints.MapGet(GetPattern("jobs"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -459,7 +461,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StartWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "start", async context =>
+            _ = _endpoints.MapPost(GetPattern("start"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -508,7 +510,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StartWorkflowWithVariables()
         {
-            _ = _endpoints.MapPost(Root + "startWithVariables", async context =>
+            _ = _endpoints.MapPost(GetPattern("startWithVariables"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -564,7 +566,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StopWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "stop", async context =>
+            _ = _endpoints.MapPost(GetPattern("stop"), async context =>
             {
                 var res = false;
 
@@ -606,7 +608,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SuspendWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "suspend", async context =>
+            _ = _endpoints.MapPost(GetPattern("suspend"), async context =>
             {
                 var res = false;
 
@@ -648,7 +650,7 @@ namespace Wexflow.Server
         /// </summary>
         private void ResumeWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "resume", async context =>
+            _ = _endpoints.MapPost(GetPattern("resume"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -688,7 +690,7 @@ namespace Wexflow.Server
         /// </summary>
         private void ApproveWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "approve", async context =>
+            _ = _endpoints.MapPost(GetPattern("approve"), async context =>
             {
                 var res = false;
 
@@ -726,7 +728,7 @@ namespace Wexflow.Server
         /// </summary>
         private void RejectWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "reject", async context =>
+            _ = _endpoints.MapPost(GetPattern("reject"), async context =>
             {
                 var res = false;
 
@@ -764,7 +766,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetTasks()
         {
-            _ = _endpoints.MapGet(Root + "tasks/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("tasks/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -820,7 +822,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetNewWorkflowId()
         {
-            _ = _endpoints.MapGet(Root + "workflowId", async context =>
+            _ = _endpoints.MapGet(GetPattern("workflowId"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -858,7 +860,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetWorkflowXml()
         {
-            _ = _endpoints.MapGet(Root + "xml/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("xml/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -889,7 +891,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetWorkflowJson()
         {
-            _ = _endpoints.MapGet(Root + "json/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("json/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -965,7 +967,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetTaskNames()
         {
-            _ = _endpoints.MapGet(Root + "taskNames", async context =>
+            _ = _endpoints.MapGet(GetPattern("taskNames"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -1000,7 +1002,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchTaskNames()
         {
-            _ = _endpoints.MapGet(Root + "searchTaskNames", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchTaskNames"), async context =>
             {
                 var keywordToUpper = context.Request.Query["s"].ToString().ToUpper();
 
@@ -1040,7 +1042,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetSettings()
         {
-            _ = _endpoints.MapGet(Root + "settings/{taskName}", async context =>
+            _ = _endpoints.MapGet(GetPattern("settings/{taskName}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -1076,7 +1078,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetTaskXml()
         {
-            _ = _endpoints.MapPost(Root + "taskToXml", async context =>
+            _ = _endpoints.MapPost(GetPattern("taskToXml"), async context =>
             {
                 try
                 {
@@ -1160,7 +1162,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsWorkflowIdValid()
         {
-            _ = _endpoints.MapGet(Root + "isWorkflowIdValid/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("isWorkflowIdValid/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -1193,7 +1195,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsCronExpressionValid()
         {
-            _ = _endpoints.MapGet(Root + "isCronExpressionValid", async context =>
+            _ = _endpoints.MapGet(GetPattern("isCronExpressionValid"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -1218,7 +1220,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsPeriodValid()
         {
-            _ = _endpoints.MapGet(Root + "isPeriodValid/{period}", async context =>
+            _ = _endpoints.MapGet(GetPattern("isPeriodValid/{period}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -1242,7 +1244,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsXmlWorkflowValid()
         {
-            _ = _endpoints.MapPost(Root + "isXmlWorkflowValid", async context =>
+            _ = _endpoints.MapPost(GetPattern("isXmlWorkflowValid"), async context =>
             {
                 try
                 {
@@ -1291,7 +1293,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveXmlWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "saveXml", async context =>
+            _ = _endpoints.MapPost(GetPattern("saveXml"), async context =>
             {
                 try
                 {
@@ -2038,7 +2040,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "save", async context =>
+            _ = _endpoints.MapPost(GetPattern("save"), async context =>
             {
                 try
                 {
@@ -2094,7 +2096,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DisableWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "disable/{id}", async context =>
+            _ = _endpoints.MapPost(GetPattern("disable/{id}"), async context =>
             {
                 try
                 {
@@ -2163,7 +2165,7 @@ namespace Wexflow.Server
         /// </summary>
         private void EnableWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "enable/{id}", async context =>
+            _ = _endpoints.MapPost(GetPattern("enable/{id}"), async context =>
             {
                 try
                 {
@@ -2232,7 +2234,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UploadWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "upload", async context =>
+            _ = _endpoints.MapPost(GetPattern("upload"), async context =>
             {
                 try
                 {
@@ -2337,7 +2339,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteWorkflow()
         {
-            _ = _endpoints.MapPost(Root + "delete", async context =>
+            _ = _endpoints.MapPost(GetPattern("delete"), async context =>
             {
                 try
                 {
@@ -2395,7 +2397,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetExecutionGraph()
         {
-            _ = _endpoints.MapGet(Root + "graph/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("graph/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -2448,7 +2450,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetExecutionGraphAsXml()
         {
-            _ = _endpoints.MapGet(Root + "graphXml/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("graphXml/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -2491,7 +2493,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetExecutionGraphAsBlockly()
         {
-            _ = _endpoints.MapGet(Root + "graphBlockly/{id}", async context =>
+            _ = _endpoints.MapGet(GetPattern("graphBlockly/{id}"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -2679,7 +2681,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetStatusCount()
         {
-            _ = _endpoints.MapGet(Root + "statusCount", async context =>
+            _ = _endpoints.MapGet(GetPattern("statusCount"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -2715,7 +2717,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetUser()
         {
-            _ = _endpoints.MapGet(Root + "user", async context =>
+            _ = _endpoints.MapGet(GetPattern("user"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -2758,7 +2760,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchUsers()
         {
-            _ = _endpoints.MapGet(Root + "searchUsers", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchUsers"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -2796,7 +2798,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetNonRestrictedUsers()
         {
-            _ = _endpoints.MapGet(Root + "nonRestrictedUsers", async context =>
+            _ = _endpoints.MapGet(GetPattern("nonRestrictedUsers"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -2832,7 +2834,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchAdministrators()
         {
-            _ = _endpoints.MapGet(Root + "searchAdmins", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchAdmins"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -2871,7 +2873,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveUserWorkflows()
         {
-            _ = _endpoints.MapPost(Root + "saveUserWorkflows", async context =>
+            _ = _endpoints.MapPost(GetPattern("saveUserWorkflows"), async context =>
             {
                 try
                 {
@@ -2914,7 +2916,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetUserWorkflows()
         {
-            _ = _endpoints.MapGet(Root + "userWorkflows", async context =>
+            _ = _endpoints.MapGet(GetPattern("userWorkflows"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -2957,7 +2959,7 @@ namespace Wexflow.Server
         /// </summary>
         private void InsertUser()
         {
-            _ = _endpoints.MapPost(Root + "insertUser", async context =>
+            _ = _endpoints.MapPost(GetPattern("insertUser"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -2992,7 +2994,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UpdateUser()
         {
-            _ = _endpoints.MapPost(Root + "updateUser", async context =>
+            _ = _endpoints.MapPost(GetPattern("updateUser"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -3028,7 +3030,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UpdateUsernameAndEmailAndUserProfile()
         {
-            _ = _endpoints.MapPost(Root + "updateUsernameAndEmailAndUserProfile", async context =>
+            _ = _endpoints.MapPost(GetPattern("updateUsernameAndEmailAndUserProfile"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -3063,7 +3065,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteUser()
         {
-            _ = _endpoints.MapPost(Root + "deleteUser", async context =>
+            _ = _endpoints.MapPost(GetPattern("deleteUser"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var qusername = auth.Username;
@@ -3096,7 +3098,7 @@ namespace Wexflow.Server
         /// </summary>
         private void ResetPassword()
         {
-            _ = _endpoints.MapPost(Root + "resetPassword", async context =>
+            _ = _endpoints.MapPost(GetPattern("resetPassword"), async context =>
             {
                 var username = context.Request.Query["u"].ToString();
 
@@ -3189,7 +3191,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchHistoryEntriesByPageOrderBy()
         {
-            _ = _endpoints.MapGet(Root + "searchHistoryEntriesByPageOrderBy", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchHistoryEntriesByPageOrderBy"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3239,7 +3241,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchEntriesByPageOrderBy()
         {
-            _ = _endpoints.MapGet(Root + "searchEntriesByPageOrderBy", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchEntriesByPageOrderBy"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3288,7 +3290,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntriesCountByDate()
         {
-            _ = _endpoints.MapGet(Root + "historyEntriesCountByDate", async context =>
+            _ = _endpoints.MapGet(GetPattern("historyEntriesCountByDate"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3320,7 +3322,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntriesCountByDate()
         {
-            _ = _endpoints.MapGet(Root + "entriesCountByDate", async context =>
+            _ = _endpoints.MapGet(GetPattern("entriesCountByDate"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3352,7 +3354,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntryStatusDateMin()
         {
-            _ = _endpoints.MapGet(Root + "historyEntryStatusDateMin", async context =>
+            _ = _endpoints.MapGet(GetPattern("historyEntryStatusDateMin"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3379,7 +3381,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntryStatusDateMax()
         {
-            _ = _endpoints.MapGet(Root + "historyEntryStatusDateMax", async context =>
+            _ = _endpoints.MapGet(GetPattern("historyEntryStatusDateMax"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3406,7 +3408,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntryStatusDateMin()
         {
-            _ = _endpoints.MapGet(Root + "entryStatusDateMin", async context =>
+            _ = _endpoints.MapGet(GetPattern("entryStatusDateMin"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3433,7 +3435,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntryStatusDateMax()
         {
-            _ = _endpoints.MapGet(Root + "entryStatusDateMax", async context =>
+            _ = _endpoints.MapGet(GetPattern("entryStatusDateMax"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3460,7 +3462,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteWorkflows()
         {
-            _ = _endpoints.MapPost(Root + "deleteWorkflows", async context =>
+            _ = _endpoints.MapPost(GetPattern("deleteWorkflows"), async context =>
             {
                 try
                 {
@@ -3524,7 +3526,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntryLogs()
         {
-            _ = _endpoints.MapGet(Root + "entryLogs", async context =>
+            _ = _endpoints.MapGet(GetPattern("entryLogs"), async context =>
             {
                 try
                 {
@@ -3554,7 +3556,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntryLogs()
         {
-            _ = _endpoints.MapGet(Root + "historyEntryLogs", async context =>
+            _ = _endpoints.MapGet(GetPattern("historyEntryLogs"), async context =>
             {
                 try
                 {
@@ -3617,7 +3619,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UploadVersion()
         {
-            _ = _endpoints.MapPost(Root + "uploadVersion", async context =>
+            _ = _endpoints.MapPost(GetPattern("uploadVersion"), async context =>
             {
                 try
                 {
@@ -3664,7 +3666,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DownloadFile()
         {
-            _ = _endpoints.MapGet(Root + "downloadFile", async context =>
+            _ = _endpoints.MapGet(GetPattern("downloadFile"), async context =>
             {
                 try
                 {
@@ -3685,7 +3687,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteTempVersionFile()
         {
-            _ = _endpoints.MapPost(Root + "deleteTempVersionFile", async context =>
+            _ = _endpoints.MapPost(GetPattern("deleteTempVersionFile"), async context =>
             {
                 try
                 {
@@ -3736,7 +3738,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteTempVersionFiles()
         {
-            _ = _endpoints.MapPost(Root + "deleteTempVersionFiles", async context =>
+            _ = _endpoints.MapPost(GetPattern("deleteTempVersionFiles"), async context =>
             {
                 try
                 {
@@ -3801,7 +3803,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveRecord()
         {
-            _ = _endpoints.MapPost(Root + "saveRecord", async context =>
+            _ = _endpoints.MapPost(GetPattern("saveRecord"), async context =>
             {
                 try
                 {
@@ -3880,7 +3882,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteRecords()
         {
-            _ = _endpoints.MapPost(Root + "deleteRecords", async context =>
+            _ = _endpoints.MapPost(GetPattern("deleteRecords"), async context =>
             {
                 try
                 {
@@ -3912,7 +3914,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchRecords()
         {
-            _ = _endpoints.MapGet(Root + "searchRecords", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchRecords"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4000,7 +4002,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetRecordsCreatedBy()
         {
-            _ = _endpoints.MapGet(Root + "recordsCreatedBy", async context =>
+            _ = _endpoints.MapGet(GetPattern("recordsCreatedBy"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4089,7 +4091,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchRecordsCreatedByOrAssignedTo()
         {
-            _ = _endpoints.MapGet(Root + "searchRecordsCreatedByOrAssignedTo", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchRecordsCreatedByOrAssignedTo"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4181,7 +4183,7 @@ namespace Wexflow.Server
         /// </summary>
         private void HasNotifications()
         {
-            _ = _endpoints.MapGet(Root + "hasNotifications", async context =>
+            _ = _endpoints.MapGet(GetPattern("hasNotifications"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4207,7 +4209,7 @@ namespace Wexflow.Server
         /// </summary>
         private void MarkNotificationsAsRead()
         {
-            _ = _endpoints.MapPost(Root + "markNotificationsAsRead", async context =>
+            _ = _endpoints.MapPost(GetPattern("markNotificationsAsRead"), async context =>
             {
                 try
                 {
@@ -4238,7 +4240,7 @@ namespace Wexflow.Server
         /// </summary>
         private void MarkNotificationsAsUnread()
         {
-            _ = _endpoints.MapPost(Root + "markNotificationsAsUnread", async context =>
+            _ = _endpoints.MapPost(GetPattern("markNotificationsAsUnread"), async context =>
             {
                 try
                 {
@@ -4269,7 +4271,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteNotifications()
         {
-            _ = _endpoints.MapPost(Root + "deleteNotifications", async context =>
+            _ = _endpoints.MapPost(GetPattern("deleteNotifications"), async context =>
             {
                 try
                 {
@@ -4301,7 +4303,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchNotifications()
         {
-            _ = _endpoints.MapGet(Root + "searchNotifications", async context =>
+            _ = _endpoints.MapGet(GetPattern("searchNotifications"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4387,7 +4389,7 @@ namespace Wexflow.Server
         /// </summary>
         private void Notify()
         {
-            _ = _endpoints.MapPost(Root + "notify", async context =>
+            _ = _endpoints.MapPost(GetPattern("notify"), async context =>
             {
                 try
                 {
@@ -4420,7 +4422,7 @@ namespace Wexflow.Server
         /// </summary>
         private void NotifyApprovers()
         {
-            _ = _endpoints.MapPost(Root + "notifyApprovers", async context =>
+            _ = _endpoints.MapPost(GetPattern("notifyApprovers"), async context =>
             {
                 try
                 {
