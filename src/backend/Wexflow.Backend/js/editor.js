@@ -162,7 +162,7 @@
         if (workflowsToDelete.length > 0) {
             var confirmRes = confirm("Are you sure you want to delete selected workflows?");
             if (confirmRes === true) {
-                window.Common.post(uri + "/deleteWorkflows", function (res) {
+                window.Common.post(uri + "/delete-workflows", function (res) {
                     if (res === true) {
                         window.Common.toastSuccess("Workflows deleted with success.");
                         workflowsToDelete = [];
@@ -245,7 +245,7 @@
 
     document.getElementById("wf-add-workflow").onclick = function () {
 
-        window.Common.get(uri + "/workflowId",
+        window.Common.get(uri + "/workflow-id",
             function (newWorkflowId) {
                 newWorkflow = true;
                 loadXmlCalled = false;
@@ -490,7 +490,7 @@
                         }
                     };
 
-                    window.Common.get(uri + "/taskNames",
+                    window.Common.get(uri + "/task-names",
                         function (taskNames) {
                             document.getElementById("wf-add-task").onclick = function () {
 
@@ -526,7 +526,7 @@
             var workflowId = parseInt(wfIdStr);
 
             if (checkId === true) {
-                window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                     function (res) {
                         if (res === true || saveCalled === true) {
                             if (document.getElementById("wf-name").value === "") {
@@ -564,7 +564,7 @@
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wf-period").value !== "") {
                                                 var period = document.getElementById("wf-period").value;
-                                                window.Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/is-period-valid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             saveFunc();
@@ -579,7 +579,7 @@
                                                 var expression = document.getElementById("wf-cron").value;
                                                 var expressionEncoded = encodeURIComponent(expression);
 
-                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             saveFunc();
@@ -642,7 +642,7 @@
                                 // Period validation
                                 if (lt === "periodic" && document.getElementById("wf-period").value !== "") {
                                     var period = document.getElementById("wf-period").value;
-                                    window.Common.get(uri + "/isPeriodValid/" + period,
+                                    window.Common.get(uri + "/is-period-valid/" + period,
                                         function (res) {
                                             if (res === true) {
                                                 saveFunc();
@@ -657,7 +657,7 @@
                                     var expression = document.getElementById("wf-cron").value;
                                     var expressionEncoded = encodeURIComponent(expression);
 
-                                    window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                    window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                         function (res) {
                                             if (res === true) {
                                                 saveFunc();
@@ -705,7 +705,7 @@
 
         //console.log("workflowId: " + workflowId + ", editXml: " + editXml + ", workflowEditor: " + workflowEditor);
         if (editXml === true && typeof workflowEditor !== "undefined") { // XML editing
-            //console.log("saveXml");
+            //console.log("save-xml");
             var editor = workflowEditor.editor;
             var xml = editor.getValue();
             validateAndSaveXml(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback);
@@ -723,7 +723,7 @@
     }
 
     function validateAndSaveXml(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback) {
-        window.Common.post(uri + "/isXmlWorkflowValid", function (res) {
+        window.Common.post(uri + "/is-xml-workflow-valid", function (res) {
             if (res === true) {
                 saveXml(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback);
                 retries = 0;
@@ -751,13 +751,13 @@
     }
 
     function saveXml(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback) {
-        //console.log("saveXml");
+        //console.log("save-xml");
         var parser = new DOMParser();
         var xmlDoc = parser.parseFromString(xml, "text/xml");
         var vcurrentWorkflowId = parseInt(xmlDoc.getElementsByTagName("Workflow")[0].getAttribute("id"));
 
         if (vcurrentWorkflowId !== selectedWorkflowId) {  // Check currentWorkflowId.
-            window.Common.get(uri + "/isWorkflowIdValid/" + vcurrentWorkflowId, function (res) {
+            window.Common.get(uri + "/is-workflow-id-valid/" + vcurrentWorkflowId, function (res) {
                 if (res === true) {
                     saveXmlQuery(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback);
                 } else {
@@ -779,7 +779,7 @@
             //password: password,
             xml: xml
         };
-        window.Common.post(uri + "/saveXml",
+        window.Common.post(uri + "/save-xml",
             function (res) {
                 if (res === true) {
 
@@ -1063,7 +1063,7 @@
         }
 
         if (vcurrentWorkflowId !== selectedWorkflowId) {  // Check currentWorkflowId.
-            window.Common.get(uri + "/isWorkflowIdValid/" + vcurrentWorkflowId, function (res) {
+            window.Common.get(uri + "/is-workflow-id-valid/" + vcurrentWorkflowId, function (res) {
                 if (res === true) {
                     saveWorkflowQuery(workflowId, selectedWorkflowId, scrollToWorkflow, callback, jsonWorkflow);
                 } else {
@@ -2258,7 +2258,7 @@
         var index = getElementIndex(btn.parentElement.parentElement);
         var task = workflowTasks[workflowId][index];
 
-        window.Common.post(uri + "/taskToXml",
+        window.Common.post(uri + "/task-to-xml",
             function (xml) {
                 var xmlContainer = btn.parentElement.parentElement.getElementsByClassName("wf-taskxml")[0];
                 xmlContainer.style.display = 'table-cell';
@@ -2708,7 +2708,7 @@
 
         var tasksHtml = "";
 
-        window.Common.get(uri + "/taskNames",
+        window.Common.get(uri + "/task-names",
             function (taskNames) {
 
                 for (var i = 0; i < tasks.length; i++) {

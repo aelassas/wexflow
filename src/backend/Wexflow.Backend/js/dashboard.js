@@ -117,7 +117,7 @@
                     window.Common.redirectToLoginPage();
                 } else {
 
-                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
 
                         divStatus.style.display = "block";
                         divEntries.style.display = "block";
@@ -148,9 +148,9 @@
                             imgNotifications.src = "images/notification.png";
                         }
 
-                        window.Common.get(uri + "/entryStatusDateMin",
+                        window.Common.get(uri + "/entry-status-date-min",
                             function (dateMin) {
-                                window.Common.get(uri + "/entryStatusDateMax",
+                                window.Common.get(uri + "/entry-status-date-max",
                                     function (dateMax) {
 
                                         from = new Date(dateMin);
@@ -159,7 +159,7 @@
                                         from = new Date(from.getFullYear(), from.getMonth(), from.getDate(), 0, 0, 0);
                                         to.setDate(to.getDate() + 1);
 
-                                        window.Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+                                        window.Common.get(uri + "/entries-count-by-date?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
                                             function (count) {
 
                                                 updateStatusCount();
@@ -268,7 +268,7 @@
     }
 
     function updateStatusCount() {
-        window.Common.get(uri + "/statusCount", function (data) {
+        window.Common.get(uri + "/status-count", function (data) {
             statusPending.innerHTML = data.PendingCount;
             statusRunning.innerHTML = data.RunningCount;
             statusDone.innerHTML = data.DoneCount;
@@ -283,7 +283,7 @@
 
     function updatePager() {
 
-        window.Common.get(uri + "/entriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+        window.Common.get(uri + "/entries-count-by-date?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
             function (count) {
                 updatePagerControls(count);
             },
@@ -328,7 +328,7 @@
 
         let entriesCount = getEntriesCount();
 
-        window.Common.get(uri + "/searchEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
+        window.Common.get(uri + "/search-entries-by-page-order-by?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
             function (data) {
 
                 let items = [];
@@ -395,7 +395,7 @@
 
                         let entryId = this.getElementsByClassName("entryId")[0].value;
 
-                        window.Common.get(uri + "/entryLogs?id=" + entryId, function (logs) {
+                        window.Common.get(uri + "/entry-logs?id=" + entryId, function (logs) {
                             let grabMe = document.getElementById("grabMe");
                             grabMe.innerHTML = window.Common.escape(logs).replace(/\r\n/g, "<br>");
 

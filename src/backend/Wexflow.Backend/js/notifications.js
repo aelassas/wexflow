@@ -67,7 +67,7 @@
                     window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
-                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -119,7 +119,7 @@
     }
 
     function loadNotifications() {
-        window.Common.get(uri + "/searchNotifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {
+        window.Common.get(uri + "/search-notifications?a=" + encodeURIComponent(user.Username) + "&s=" + encodeURIComponent(searchText.value), function (notifications) {
 
             let items = [];
             for (let i = 0; i < notifications.length; i++) {
@@ -172,9 +172,9 @@
             }
 
             document.getElementById("btn-mark-as-read").onclick = function () {
-                window.Common.post(uri + "/markNotificationsAsRead", function (res) {
+                window.Common.post(uri + "/mark-notifications-as-read", function (res) {
                     if (res === true) {
-                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             for (let i = 0; i < notificationIds.length; i++) {
                                 let notificationId = notificationIds[i];
                                 for (let j = 0; j < rows.length; j++) {
@@ -217,9 +217,9 @@
             };
 
             document.getElementById("btn-mark-as-unread").onclick = function () {
-                window.Common.post(uri + "/markNotificationsAsUnread", function (res) {
+                window.Common.post(uri + "/mark-notifications-as-unread", function (res) {
                     if (res === true) {
-                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             for (let i = 0; i < notificationIds.length; i++) {
                                 let notificationId = notificationIds[i];
                                 for (let j = 0; j < rows.length; j++) {
@@ -255,7 +255,7 @@
                 } else {
                     let cres = confirm(notificationIds.length == 1 ? language.get("confirm-delete-notification") : language.get("confirm-delete-notifications"));
                     if (cres === true) {
-                        window.Common.post(uri + "/deleteNotifications", function (res) {
+                        window.Common.post(uri + "/delete-notifications", function (res) {
                             if (res === true) {
                                 for (let i = notificationIds.length - 1; i >= 0; i--) {
                                     let notificationId = notificationIds[i];

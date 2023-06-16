@@ -899,7 +899,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetNewWorkflowId()
         {
-            Get(GetPattern("workflowId"), args =>
+            Get(GetPattern("workflow-id"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -1055,7 +1055,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetTaskNames()
         {
-            Get(GetPattern("taskNames"), args =>
+            Get(GetPattern("task-names"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -1098,7 +1098,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchTaskNames()
         {
-            Get(GetPattern("searchTaskNames"), args =>
+            Get(GetPattern("search-task-names"), args =>
             {
                 string keywordToUpper = Request.Query["s"].ToString().ToUpper();
 
@@ -1190,7 +1190,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetTaskXml()
         {
-            Post(GetPattern("taskToXml"), args =>
+            Post(GetPattern("task-to-xml"), args =>
             {
                 try
                 {
@@ -1287,7 +1287,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsWorkflowIdValid()
         {
-            Get(GetPattern("isWorkflowIdValid/{id}"), args =>
+            Get(GetPattern("is-workflow-id-valid/{id}"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -1331,7 +1331,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsCronExpressionValid()
         {
-            Get(GetPattern("isCronExpressionValid"), args =>
+            Get(GetPattern("is-cron-expression-valid"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -1361,7 +1361,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsPeriodValid()
         {
-            Get(GetPattern("isPeriodValid/{period}"), args =>
+            Get(GetPattern("is-period-valid/{period}"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -1390,7 +1390,7 @@ namespace Wexflow.Server
         /// </summary>
         private void IsXmlWorkflowValid()
         {
-            Post(GetPattern("isXmlWorkflowValid"), args =>
+            Post(GetPattern("is-xml-workflow-valid"), args =>
             {
                 try
                 {
@@ -1453,7 +1453,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveXmlWorkflow()
         {
-            Post(GetPattern("saveXml"), args =>
+            Post(GetPattern("save-xml"), args =>
             {
                 try
                 {
@@ -2702,7 +2702,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetExecutionGraphAsXml()
         {
-            Get(GetPattern("graphXml/{id}"), args =>
+            Get(GetPattern("graph-xml/{id}"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -2748,7 +2748,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetExecutionGraphAsBlockly()
         {
-            Get(GetPattern("graphBlockly/{id}"), args =>
+            Get(GetPattern("graph-blockly/{id}"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -2935,7 +2935,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetStatusCount()
         {
-            Get(GetPattern("statusCount"), args =>
+            Get(GetPattern("status-count"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3030,7 +3030,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchUsers()
         {
-            Get(GetPattern("searchUsers"), args =>
+            Get(GetPattern("search-users"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3075,7 +3075,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetNonRestrictedUsers()
         {
-            Get(GetPattern("nonRestrictedUsers"), args =>
+            Get(GetPattern("non-restricted-users"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3118,7 +3118,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchAdministrators()
         {
-            Get(GetPattern("searchAdmins"), args =>
+            Get(GetPattern("search-admins"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3165,7 +3165,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveUserWorkflows()
         {
-            Post(GetPattern("saveUserWorkflows"), args =>
+            Post(GetPattern("save-user-workflows"), args =>
             {
                 try
                 {
@@ -3227,7 +3227,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetUserWorkflows()
         {
-            Get(GetPattern("userWorkflows"), args =>
+            Get(GetPattern("user-workflows"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3276,7 +3276,7 @@ namespace Wexflow.Server
         /// </summary>
         private void InsertUser()
         {
-            Post(GetPattern("insertUser"), args =>
+            Post(GetPattern("insert-user"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3328,7 +3328,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UpdateUser()
         {
-            Post(GetPattern("updateUser"), args =>
+            Post(GetPattern("update-user"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3381,7 +3381,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UpdateUsernameAndEmailAndUserProfile()
         {
-            Post(GetPattern("updateUsernameAndEmailAndUserProfile"), args =>
+            Post(GetPattern("update-username-email-user-profile"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3433,7 +3433,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteUser()
         {
-            Post(GetPattern("deleteUser"), args =>
+            Post(GetPattern("delete-user"), args =>
             {
                 var auth = GetAuth(Request);
                 var qusername = auth.Username;
@@ -3599,7 +3599,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchHistoryEntriesByPageOrderBy()
         {
-            Get(GetPattern("searchHistoryEntriesByPageOrderBy"), args =>
+            Get(GetPattern("search-history-entries-by-page-order-by"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3657,7 +3657,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchEntriesByPageOrderBy()
         {
-            Get(GetPattern("searchEntriesByPageOrderBy"), args =>
+            Get(GetPattern("search-entries-by-page-order-by"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3714,7 +3714,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntriesCountByDate()
         {
-            Get(GetPattern("historyEntriesCountByDate"), args =>
+            Get(GetPattern("history-entries-count-by-date"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3754,7 +3754,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntriesCountByDate()
         {
-            Get(GetPattern("entriesCountByDate"), args =>
+            Get(GetPattern("entries-count-by-date"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3794,7 +3794,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntryStatusDateMin()
         {
-            Get(GetPattern("historyEntryStatusDateMin"), args =>
+            Get(GetPattern("history-entry-status-date-min"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3829,7 +3829,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntryStatusDateMax()
         {
-            Get(GetPattern("historyEntryStatusDateMax"), args =>
+            Get(GetPattern("history-entry-status-date-max"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3864,7 +3864,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntryStatusDateMin()
         {
-            Get(GetPattern("entryStatusDateMin"), args =>
+            Get(GetPattern("entry-status-date-min"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3899,7 +3899,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntryStatusDateMax()
         {
-            Get(GetPattern("entryStatusDateMax"), args =>
+            Get(GetPattern("entry-status-date-max"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3934,7 +3934,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteWorkflows()
         {
-            Post(GetPattern("deleteWorkflows"), args =>
+            Post(GetPattern("delete-workflows"), args =>
             {
                 try
                 {
@@ -4009,7 +4009,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetEntryLogs()
         {
-            Get(GetPattern("entryLogs"), args =>
+            Get(GetPattern("entry-logs"), args =>
             {
                 try
                 {
@@ -4055,7 +4055,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetHistoryEntryLogs()
         {
-            Get(GetPattern("historyEntryLogs"), args =>
+            Get(GetPattern("history-entry-logs"), args =>
             {
                 try
                 {
@@ -4129,7 +4129,7 @@ namespace Wexflow.Server
         /// </summary>
         private void UploadVersion()
         {
-            Post(GetPattern("uploadVersion"), args =>
+            Post(GetPattern("upload-version"), args =>
             {
                 try
                 {
@@ -4192,7 +4192,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DownloadFile()
         {
-            Get(GetPattern("downloadFile"), args =>
+            Get(GetPattern("download-file"), args =>
             {
                 try
                 {
@@ -4224,7 +4224,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteTempVersionFile()
         {
-            Post(GetPattern("deleteTempVersionFile"), args =>
+            Post(GetPattern("delete-temp-version-file"), args =>
             {
                 try
                 {
@@ -4290,7 +4290,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteTempVersionFiles()
         {
-            Post(GetPattern("deleteTempVersionFiles"), args =>
+            Post(GetPattern("delete-temp-version-files"), args =>
             {
                 try
                 {
@@ -4370,7 +4370,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SaveRecord()
         {
-            Post(GetPattern("saveRecord"), args =>
+            Post(GetPattern("save-record"), args =>
             {
                 try
                 {
@@ -4465,7 +4465,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteRecords()
         {
-            Post(GetPattern("deleteRecords"), args =>
+            Post(GetPattern("delete-records"), args =>
             {
                 try
                 {
@@ -4803,7 +4803,7 @@ namespace Wexflow.Server
         /// </summary>
         private void HasNotifications()
         {
-            Get(GetPattern("hasNotifications"), args =>
+            Get(GetPattern("has-notifications"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -4836,7 +4836,7 @@ namespace Wexflow.Server
         /// </summary>
         private void MarkNotificationsAsRead()
         {
-            Post(GetPattern("markNotificationsAsRead"), args =>
+            Post(GetPattern("mark-notifications-as-read"), args =>
             {
                 try
                 {
@@ -4883,7 +4883,7 @@ namespace Wexflow.Server
         /// </summary>
         private void MarkNotificationsAsUnread()
         {
-            Post(GetPattern("markNotificationsAsUnread"), args =>
+            Post(GetPattern("mark-notifications-as-unread"), args =>
             {
                 try
                 {
@@ -4930,7 +4930,7 @@ namespace Wexflow.Server
         /// </summary>
         private void DeleteNotifications()
         {
-            Post(GetPattern("deleteNotifications"), args =>
+            Post(GetPattern("delete-notifications"), args =>
             {
                 try
                 {
@@ -4978,7 +4978,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchNotifications()
         {
-            Get(GetPattern("searchNotifications"), args =>
+            Get(GetPattern("search-notifications"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -5120,7 +5120,7 @@ namespace Wexflow.Server
         /// </summary>
         private void NotifyApprovers()
         {
-            Post(GetPattern("notifyApprovers"), args =>
+            Post(GetPattern("notify-approvers"), args =>
             {
                 try
                 {

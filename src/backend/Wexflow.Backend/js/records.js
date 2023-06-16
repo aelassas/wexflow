@@ -111,7 +111,7 @@
                     window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
-                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -335,7 +335,7 @@
                                             break;
                                         }
                                     }
-                                    let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(version.FilePath);
+                                    let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/api/v1/download-file?p=" + encodeURIComponent(version.FilePath);
                                     window.open(url, "_self");
                                 };
                             }
@@ -372,7 +372,7 @@
                             let filedialog = document.getElementById("file-dialog");
                             let uploadFileVersion = function (fd) {
                                 jBoxContent.querySelector(".spn-upload-version").innerHTML = language.get("uploading");
-                                window.Common.post(uri + "/uploadVersion?r=" + recordId, function (res) {
+                                window.Common.post(uri + "/upload-version?r=" + recordId, function (res) {
                                     if (res.Result === true) {
                                         editedRecord.Versions.push({
                                             RecordId: recordId,
@@ -410,7 +410,7 @@
 
                                         cell5.querySelector(".btn-delete-version").onclick = function () {
                                             // Delete file
-                                            window.Common.post(uri + "/deleteTempVersionFile?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
+                                            window.Common.post(uri + "/delete-temp-version-file?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
                                                 if (deleteRes === true) {
                                                     let versionIndex = -1;
                                                     for (let j = 0; j < editedRecord.Versions.length; j++) {
@@ -483,12 +483,12 @@
                                 editedRecord.EndDate = jBoxContent.querySelector(".record-end-date").value;
                                 editedRecord.Comments = jBoxContent.querySelector(".record-comments").value;
                                 editedRecord.ManagerComments = jBoxContent.querySelector(".record-manager-comments").value;
-                                window.Common.post(uri + "/saveRecord", function (res) {
+                                window.Common.post(uri + "/save-record", function (res) {
                                     if (res === true) {
                                         if (username !== record.CreatedBy) {
                                             // Notify approvers
                                             let message = "The record " + record.Name + " was updated by the user " + username + ".";
-                                            window.Common.post(uri + "/notifyApprovers?r=" + encodeURIComponent(record.Id) + "&m=" + encodeURIComponent(message), function (notifyRes) {
+                                            window.Common.post(uri + "/notify-approvers?r=" + encodeURIComponent(record.Id) + "&m=" + encodeURIComponent(message), function (notifyRes) {
                                                 if (notifyRes === true) {
                                                     window.Common.toastInfo(language.get("toast-approvers-notified"));
                                                 } else {
@@ -518,7 +518,7 @@
                             };
 
                             jBoxFooter.querySelector(".record-cancel").onclick = function () {
-                                window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                                window.Common.post(uri + "/delete-temp-version-files", function (res) {
                                     if (res === true) {
                                         window.Common.toastSuccess(language.get("toast-modifications-canceled"));
                                     } else {
@@ -532,7 +532,7 @@
                             jBoxFooter.querySelector(".record-delete").onclick = function () {
                                 let cres = confirm(language.get("confirm-delete-record"));
                                 if (cres === true) {
-                                    window.Common.post(uri + "/deleteRecords", function (res) {
+                                    window.Common.post(uri + "/delete-records", function (res) {
                                         if (res === true) {
                                             for (let i = 0; i < rows.length; i++) {
                                                 let row = rows[i];
@@ -550,7 +550,7 @@
                             };
                         },
                         onClose: function () {
-                            window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                            window.Common.post(uri + "/delete-temp-version-files", function (res) {
                                 if (res === false) {
                                     window.Common.toastError(language.get("toast-modifications-cancel-error"));
                                 }
@@ -583,7 +583,7 @@
                 } else {
                     let cres = confirm((recordIds.length == 1 ? language.get("confirm-delete-record") : language.get("confirm-delete-records")));
                     if (cres === true) {
-                        window.Common.post(uri + "/deleteRecords", function (res) {
+                        window.Common.post(uri + "/delete-records", function (res) {
                             if (res === true) {
                                 for (let i = recordIds.length - 1; i >= 0; i--) {
                                     let recordId = recordIds[i];
@@ -643,7 +643,7 @@
                         // Upload version
                         let filedialog = document.getElementById("file-dialog");
                         let uploadFileVersion = function (fd) {
-                            window.Common.post(uri + "/uploadVersion?r=-1", function (res) {
+                            window.Common.post(uri + "/upload-version?r=-1", function (res) {
                                 if (res.Result === true) {
                                     newRecord.Versions.push({
                                         RecordId: "-1",
@@ -675,13 +675,13 @@
                                     goToBottom(jBoxContent);
 
                                     cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                        let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/downloadFile?p=" + encodeURIComponent(res.FilePath);
+                                        let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/api/v1/download-file?p=" + encodeURIComponent(res.FilePath);
                                         window.open(url, "_self");
                                     };
 
                                     cell5.querySelector(".btn-delete-version").onclick = function () {
                                         // Delete file
-                                        window.Common.post(uri + "/deleteTempVersionFile?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
+                                        window.Common.post(uri + "/delete-temp-version-file?p=" + encodeURIComponent(res.FilePath), function (deleteRes) {
                                             if (deleteRes === true) {
                                                 let versionIndex = -1;
                                                 for (let j = 0; j < newRecord.Versions.length; j++) {
@@ -768,7 +768,7 @@
                             newRecord.CreatedOn = "";
                             newRecord.AssignedTo = "";
                             newRecord.AssignedOn = "";
-                            window.Common.post(uri + "/saveRecord", function (res) {
+                            window.Common.post(uri + "/save-record", function (res) {
                                 if (res === true) {
                                     modal.close();
                                     modal.destroy();
@@ -781,7 +781,7 @@
                         };
 
                         jBoxFooter.querySelector(".record-cancel").onclick = function () {
-                            window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                            window.Common.post(uri + "/delete-temp-version-files", function (res) {
                                 if (res === true) {
                                     window.Common.toastSuccess(language.get("toast-modifications-canceled"));
                                 } else {
@@ -795,7 +795,7 @@
                         jBoxFooter.querySelector(".record-delete").style.display = "none";
                     },
                     onClose: function () {
-                        window.Common.post(uri + "/deleteTempVersionFiles", function (res) {
+                        window.Common.post(uri + "/delete-temp-version-files", function (res) {
                             if (res === false) {
                                 window.Common.toastError(language.get("toast-modifications-cancel-error"));
                             }

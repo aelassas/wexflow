@@ -5,7 +5,7 @@
   -->
   <Task id="$int" name="Workflow" description="$string" enabled="true|false">
     <!-- Wexflow Web Service Uri -->
-    <Setting name="wexflowWebServiceUri" value="http://localhost:8000/wexflow/" />
+    <Setting name="wexflowWebServiceUri" value="http://localhost:8000/api/v1/" />
     <!-- Wexflow username. -->
     <Setting name="username" value="$string" />
     <!-- Wexflow password (encrypted in MD5). -->

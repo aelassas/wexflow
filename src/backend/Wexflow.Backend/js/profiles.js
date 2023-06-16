@@ -80,7 +80,7 @@
                 if (!u || user.Password !== u.Password) {
                     window.Common.redirectToLoginPage();
                 } else if (u.UserProfile === 0) {
-                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                         divProfiles.style.display = "block";
                         lnkRecords.style.display = "inline";
                         lnkManager.style.display = "inline";
@@ -125,7 +125,7 @@
     }
 
     function loadUsers(usernameToSelect, scroll) {
-        window.Common.get(uri + "/searchAdmins?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
+        window.Common.get(uri + "/search-admins?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
             function (data) {
 
                 let items = [];
@@ -332,7 +332,7 @@
                 }
 
                 // Check the boxes from the relations in db
-                window.Common.get(uri + "/userWorkflows?u=" + selectedUserId,
+                window.Common.get(uri + "/user-workflows?u=" + selectedUserId,
                     function (res) {
 
                         let workflowsTable = document.getElementById("wf-workflows-table");
@@ -422,7 +422,7 @@
     }
 
     btnSave.onclick = function () {
-        window.Common.post(uri + "/saveUserWorkflows", function (res) {
+        window.Common.post(uri + "/save-user-workflows", function (res) {
             if (res === true) {
                 window.Common.toastSuccess("Workflow relations saved with success.");
             } else {

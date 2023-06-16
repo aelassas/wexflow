@@ -109,7 +109,7 @@
 
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
 
-                        window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                        window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
                             lnkDesigner.style.display = "inline";
@@ -275,7 +275,7 @@
         flowy(canvas, drag, release, snapping, drop);
 
         function loadTasks() {
-            window.Common.get(uri + "/searchTaskNames?s=" + searchtasks.value,
+            window.Common.get(uri + "/search-task-names?s=" + searchtasks.value,
                 function (taskNames) {
                     let blockelements = "";
                     for (let i = 0; i < taskNames.length; i++) {
@@ -299,7 +299,7 @@
         };
 
         document.getElementById("newworkflow").onclick = function () {
-            window.Common.get(uri + "/workflowId",
+            window.Common.get(uri + "/workflow-id",
                 function (res) {
 
                     openSavePopup = true;
@@ -946,7 +946,7 @@
                                                 }, function () { }, auth);
                                             }
                                         } else if (settingType === "user") {
-                                            window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                            window.Common.get(uri + "/non-restricted-users", function (users) {
                                                 loadSettingValue([], users);
                                             }, function () { }, auth);
                                         } else {
@@ -1315,13 +1315,13 @@
                                         if (hasRecordSetting === true && hasUserSetting === true) {
                                             if (userProfile === 0) { // super-admin
                                                 window.Common.get(uri + "/searchRecords?s=", function (records) {
-                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                    window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
-                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                    window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
@@ -1337,7 +1337,7 @@
                                                 }, function () { }, auth);
                                             }
                                         } else if (hasRecordSetting === false && hasUserSetting === true) {
-                                            window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                            window.Common.get(uri + "/non-restricted-users", function (users) {
                                                 loadSettings([], users);
                                             }, function () { }, auth);
                                         } else {
@@ -1710,13 +1710,13 @@
                                         if (hasRecordSetting === true && hasUserSetting === true) {
                                             if (userProfile === 0) { // super-admin
                                                 window.Common.get(uri + "/searchRecords?s=", function (records) {
-                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                    window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
-                                                    window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                                    window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
@@ -1732,7 +1732,7 @@
                                                 }, function () { }, auth);
                                             }
                                         } else if (hasRecordSetting === false && hasUserSetting === true) {
-                                            window.Common.get(uri + "/nonRestrictedUsers", function (users) {
+                                            window.Common.get(uri + "/non-restricted-users", function (users) {
                                                 loadSettings([], users);
                                             }, function () { }, auth);
                                         } else {
@@ -2076,7 +2076,7 @@
                     let workflowId = parseInt(wfIdStr);
 
                     if (checkId === true) {
-                        window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                        window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                             function (res) {
                                 if (res === true) {
                                     if (document.getElementById("wfname").value === "") {
@@ -2096,7 +2096,7 @@
                                                     // Period validation
                                                     if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                         let period = document.getElementById("wfperiod").value;
-                                                        window.Common.get(uri + "/isPeriodValid/" + period,
+                                                        window.Common.get(uri + "/is-period-valid/" + period,
                                                             function (res) {
                                                                 if (res === true) {
                                                                     saveFunc();
@@ -2111,7 +2111,7 @@
                                                         let expression = document.getElementById("wfcronexp").value;
                                                         let expressionEncoded = encodeURIComponent(expression);
 
-                                                        window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                        window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                             function (res) {
                                                                 if (res === true) {
                                                                     saveFunc();
@@ -2156,7 +2156,7 @@
                                         // Period validation
                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                             let period = document.getElementById("wfperiod").value;
-                                            window.Common.get(uri + "/isPeriodValid/" + period,
+                                            window.Common.get(uri + "/is-period-valid/" + period,
                                                 function (res) {
                                                     if (res === true) {
                                                         saveFunc();
@@ -2171,7 +2171,7 @@
                                             let expression = document.getElementById("wfcronexp").value;
                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                            window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                 function (res) {
                                                     if (res === true) {
                                                         saveFunc();
@@ -2227,7 +2227,7 @@
                     filePath: workflow.WorkflowInfo.FilePath,
                     xml: editor.getValue()
                 };
-                window.Common.post(uri + "/saveXml", function (res) {
+                window.Common.post(uri + "/save-xml", function (res) {
                     if (res.Result === true) {
                         checkId = false;
                         openSavePopup = false;
@@ -2587,7 +2587,7 @@
             };
 
             if (checkId === false) {
-                window.Common.get(uri + "/graphBlockly/" + workflowId, function (blocklyXml) {
+                window.Common.get(uri + "/graph-blockly/" + workflowId, function (blocklyXml) {
                     let blocklyArea = document.getElementById('blocklyArea');
                     let blocklyDiv = document.getElementById('blocklyDiv');
                     blocklyDiv.innerHTML = "";
@@ -2737,7 +2737,7 @@
                         let workflowId = parseInt(wfIdStr);
 
                         if (checkId === true) {
-                            window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                                 function (res) {
                                     if (res === true) {
                                         if (document.getElementById("wfname").value === "") {
@@ -2757,7 +2757,7 @@
                                                         // Period validation
                                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                             let period = document.getElementById("wfperiod").value;
-                                                            window.Common.get(uri + "/isPeriodValid/" + period,
+                                                            window.Common.get(uri + "/is-period-valid/" + period,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         openJsonView(jsonVal);
@@ -2772,7 +2772,7 @@
                                                             let expression = document.getElementById("wfcronexp").value;
                                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         openJsonView(jsonVal);
@@ -2817,7 +2817,7 @@
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                 let period = document.getElementById("wfperiod").value;
-                                                window.Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/is-period-valid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             openJsonView(jsonVal);
@@ -2832,7 +2832,7 @@
                                                 let expression = document.getElementById("wfcronexp").value;
                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             openJsonView(jsonVal);
@@ -2940,7 +2940,7 @@
 
             let openXml = function () {
 
-                window.Common.get(uri + "/graphXml/" + (workflow.WorkflowInfo.Id ? workflow.WorkflowInfo.Id : 0), function (val) {
+                window.Common.get(uri + "/graph-xml/" + (workflow.WorkflowInfo.Id ? workflow.WorkflowInfo.Id : 0), function (val) {
                     function getXml() {
                         let graph = val;
 
@@ -2991,7 +2991,7 @@
                         if (isInt(wfIdStr)) {
                             let workflowId = parseInt(wfIdStr);
                             if (checkId === true) {
-                                window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                                window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                                     function (res) {
                                         if (res === true) {
                                             if (document.getElementById("wfname").value === "") {
@@ -3011,7 +3011,7 @@
                                                             // Period validation
                                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                                 let period = document.getElementById("wfperiod").value;
-                                                                window.Common.get(uri + "/isPeriodValid/" + period,
+                                                                window.Common.get(uri + "/is-period-valid/" + period,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             openXmlView(getXml());
@@ -3026,7 +3026,7 @@
                                                                 let expression = document.getElementById("wfcronexp").value;
                                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                                window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             openXmlView(getXml());
@@ -3071,7 +3071,7 @@
                                                 // Period validation
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                     let period = document.getElementById("wfperiod").value;
-                                                    window.Common.get(uri + "/isPeriodValid/" + period,
+                                                    window.Common.get(uri + "/is-period-valid/" + period,
                                                         function (res) {
                                                             if (res === true) {
                                                                 openXmlView(getXml());
@@ -3086,7 +3086,7 @@
                                                     let expression = document.getElementById("wfcronexp").value;
                                                     let expressionEncoded = encodeURIComponent(expression);
 
-                                                    window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                    window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                         function (res) {
                                                             if (res === true) {
                                                                 openXmlView(getXml());
@@ -3526,7 +3526,7 @@
                             if (workflowsToDelete.length > 0) {
                                 let confirmRes = confirm(language.get("confirm-delete-workflows"));
                                 if (confirmRes === true) {
-                                    window.Common.post(uri + "/deleteWorkflows", function (res) {
+                                    window.Common.post(uri + "/delete-workflows", function (res) {
                                         if (res === true) {
                                             window.Common.toastSuccess(language.get("toast-workflows-deleted"));
                                             if (isNaN(parseInt(workflow.WorkflowInfo.Id)) === false && workflows[workflow.WorkflowInfo.Id] && workflowsToDelete.includes(workflows[workflow.WorkflowInfo.Id].DbId)) {
@@ -3785,7 +3785,7 @@
                             let workflowId = parseInt(wfIdStr);
 
                             if (checkId === true) {
-                                window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                                window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                                     function (res) {
                                         if (res === true) {
                                             if (document.getElementById("wfname").value === "") {
@@ -3805,7 +3805,7 @@
                                                             // Period validation
                                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                                 let period = document.getElementById("wfperiod").value;
-                                                                window.Common.get(uri + "/isPeriodValid/" + period,
+                                                                window.Common.get(uri + "/is-period-valid/" + period,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             saveFunc();
@@ -3820,7 +3820,7 @@
                                                                 let expression = document.getElementById("wfcronexp").value;
                                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                                window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                                     function (res) {
                                                                         if (res === true) {
                                                                             saveFunc();
@@ -3865,7 +3865,7 @@
                                                 // Period validation
                                                 if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                     let period = document.getElementById("wfperiod").value;
-                                                    window.Common.get(uri + "/isPeriodValid/" + period,
+                                                    window.Common.get(uri + "/is-period-valid/" + period,
                                                         function (res) {
                                                             if (res === true) {
                                                                 saveFunc();
@@ -3880,7 +3880,7 @@
                                                     let expression = document.getElementById("wfcronexp").value;
                                                     let expressionEncoded = encodeURIComponent(expression);
 
-                                                    window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                    window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                         function (res) {
                                                             if (res === true) {
                                                                 saveFunc();
@@ -3943,7 +3943,7 @@
                             filePath: workflow.WorkflowInfo.FilePath,
                             xml: editor.getValue()
                         };
-                        window.Common.post(uri + "/saveXml", function (res) {
+                        window.Common.post(uri + "/save-xml", function (res) {
                             if (res.Result === true) {
                                 let wfId = parseInt(document.getElementById("wfid").value);
                                 if (id > -1) {
@@ -4087,7 +4087,7 @@
                         let workflowId = parseInt(wfIdStr);
 
                         if (checkId === true) {
-                            window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                                 function (res) {
                                     if (res === true) {
                                         if (document.getElementById("wfname").value === "") {
@@ -4111,7 +4111,7 @@
                                                         // Period validation
                                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                             let period = document.getElementById("wfperiod").value;
-                                                            window.Common.get(uri + "/isPeriodValid/" + period,
+                                                            window.Common.get(uri + "/is-period-valid/" + period,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadJson();
@@ -4127,7 +4127,7 @@
                                                             let expression = document.getElementById("wfcronexp").value;
                                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadJson();
@@ -4175,7 +4175,7 @@
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                 let period = document.getElementById("wfperiod").value;
-                                                window.Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/is-period-valid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadJson();
@@ -4191,7 +4191,7 @@
                                                 let expression = document.getElementById("wfcronexp").value;
                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadJson();
@@ -4226,7 +4226,7 @@
                             download(editor.getValue(), 'workflow-' + document.getElementById("wfid").value + '.xml', 'text/xml')
                             exportModal.close();
                         } else {
-                            window.Common.get(uri + "/graphXml/" + workflow.WorkflowInfo.Id, function (val) {
+                            window.Common.get(uri + "/graph-xml/" + workflow.WorkflowInfo.Id, function (val) {
                                 let graph = val;
 
                                 let xmlVal = '<Workflow xmlns="urn:wexflow-schema" id="' + workflow.WorkflowInfo.Id + '" name="' + workflow.WorkflowInfo.Name + '" description="' + workflow.WorkflowInfo.Description + '">\r\n';
@@ -4275,7 +4275,7 @@
                         let workflowId = parseInt(wfIdStr);
 
                         if (checkId === true) {
-                            window.Common.get(uri + "/isWorkflowIdValid/" + workflowId,
+                            window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
                                 function (res) {
                                     if (res === true) {
                                         if (document.getElementById("wfname").value === "") {
@@ -4299,7 +4299,7 @@
                                                         // Period validation
                                                         if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                             let period = document.getElementById("wfperiod").value;
-                                                            window.Common.get(uri + "/isPeriodValid/" + period,
+                                                            window.Common.get(uri + "/is-period-valid/" + period,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadXml();
@@ -4315,7 +4315,7 @@
                                                             let expression = document.getElementById("wfcronexp").value;
                                                             let expressionEncoded = encodeURIComponent(expression);
 
-                                                            window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                            window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                                 function (res) {
                                                                     if (res === true) {
                                                                         downloadXml();
@@ -4364,7 +4364,7 @@
                                             // Period validation
                                             if (lt === "periodic" && document.getElementById("wfperiod").value !== "") {
                                                 let period = document.getElementById("wfperiod").value;
-                                                window.Common.get(uri + "/isPeriodValid/" + period,
+                                                window.Common.get(uri + "/is-period-valid/" + period,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadXml();
@@ -4380,7 +4380,7 @@
                                                 let expression = document.getElementById("wfcronexp").value;
                                                 let expressionEncoded = encodeURIComponent(expression);
 
-                                                window.Common.get(uri + "/isCronExpressionValid?e=" + expressionEncoded,
+                                                window.Common.get(uri + "/is-cron-expression-valid?e=" + expressionEncoded,
                                                     function (res) {
                                                         if (res === true) {
                                                             downloadXml();

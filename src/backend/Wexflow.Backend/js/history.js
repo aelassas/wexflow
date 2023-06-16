@@ -99,7 +99,7 @@
                 if (!u || user.Password !== u.Password) {
                     window.Common.redirectToLoginPage();
                 } else {
-                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                         if (u.UserProfile === 0 || u.UserProfile === 1) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
@@ -129,9 +129,9 @@
 
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
-                        window.Common.get(uri + "/historyEntryStatusDateMin",
+                        window.Common.get(uri + "/history-entry-status-date-min",
                             function (dateMin) {
-                                window.Common.get(uri + "/historyEntryStatusDateMax",
+                                window.Common.get(uri + "/history-entry-status-date-max",
                                     function (dateMax) {
 
                                         from = new Date(dateMin);
@@ -140,7 +140,7 @@
                                         from = new Date(from.getFullYear(), from.getMonth(), from.getDate(), 0, 0, 0);
                                         to.setDate(to.getDate() + 1);
 
-                                        window.Common.get(uri + "/historyEntriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+                                        window.Common.get(uri + "/history-entries-count-by-date?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
                                             function (count) {
 
                                                 $(txtFrom).datepicker({
@@ -242,7 +242,7 @@
 
     function updatePager() {
 
-        window.Common.get(uri + "/historyEntriesCountByDate?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
+        window.Common.get(uri + "/history-entries-count-by-date?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
             function (count) {
                 updatePagerControls(count);
             },
@@ -286,7 +286,7 @@
     function loadEntries() {
         let entriesCount = getEntriesCount();
 
-        window.Common.get(uri + "/searchHistoryEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
+        window.Common.get(uri + "/search-history-entries-by-page-order-by?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo,
             function (data) {
                 let items = [];
 
@@ -353,7 +353,7 @@
 
                         let entryId = this.getElementsByClassName("entryId")[0].value;
 
-                        window.Common.get(uri + "/historyEntryLogs?id=" + entryId, function (logs) {
+                        window.Common.get(uri + "/history-entry-logs?id=" + entryId, function (logs) {
                             let grabMe = document.getElementById("grabMe");
                             grabMe.innerHTML = window.Common.escape(logs).replace(/\r\n/g, "<br>");
 

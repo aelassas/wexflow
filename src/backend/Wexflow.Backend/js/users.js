@@ -102,7 +102,7 @@
                     window.Common.redirectToLoginPage();
                 } else if (u.UserProfile === 0 || u.UserProfile === 1) {
 
-                    window.Common.get(uri + "/hasNotifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
+                    window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
 
                         logedinUser = u.Username;
                         logedinUserProfile = u.UserProfile;
@@ -160,7 +160,7 @@
     };
 
     function loadUsers(usernameToSelect, scroll) {
-        window.Common.get(uri + "/searchUsers?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
+        window.Common.get(uri + "/search-users?keyword=" + encodeURIComponent(txtSearch.value) + "&uo=" + uo,
             function (data) {
 
                 let items = [];
@@ -461,7 +461,7 @@
 
                 window.Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
                     function (u) {
-                        window.Common.post(uri + "/deleteUser?username=" + encodeURIComponent(selectedUsername) + "&password=" + encodeURIComponent(u.Password),
+                        window.Common.post(uri + "/delete-user?username=" + encodeURIComponent(selectedUsername) + "&password=" + encodeURIComponent(u.Password),
                             function (val) {
                                 if (val === true) {
                                     window.Common.toastSuccess(language.get("toast-user-deleted"));
@@ -521,7 +521,7 @@
                                     } else {
                                         let hashedPass = window.MD5(password);
                                         window.Common.post(
-                                            uri + "/insertUser?username=" + encodeURIComponent(username) + "&password=" + hashedPass + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
+                                            uri + "/insert-user?username=" + encodeURIComponent(username) + "&password=" + hashedPass + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
                                             function (val) {
                                                 if (val === true) {
                                                     window.Common.toastSuccess(language.get("toast-user-created"));
@@ -648,7 +648,7 @@
                                                 window.Common.toastInfo(language.get("toast-username-exists"));
                                             } else {
 
-                                                window.Common.post(uri + "/updateUser?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&password=" + encodeURIComponent(newPassword) + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
+                                                window.Common.post(uri + "/update-user?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&password=" + encodeURIComponent(newPassword) + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
                                                     function (val) {
                                                         if (val === true) {
                                                             auth = "Basic " + btoa(qusername + ":" + (selectedUsername === logedinUser ? newPassword : qpassword));
@@ -715,7 +715,7 @@
     function updateUsernameAndPassword() {
         let up = parseInt(getSelectedProfile());
 
-        window.Common.post(uri + "/updateUsernameAndEmailAndUserProfile?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&email=" + encodeURIComponent(emailText.value) + "&up=" + up,
+        window.Common.post(uri + "/update-username-email-user-profile?userId=" + selectedUserId + "&username=" + encodeURIComponent(txtUsername.value) + "&email=" + encodeURIComponent(emailText.value) + "&up=" + up,
             function (val) {
                 if (val === true) {
                     window.Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),

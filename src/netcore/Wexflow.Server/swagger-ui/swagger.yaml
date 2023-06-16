@@ -31,7 +31,7 @@ tags:
 - name: Notifications
   description: Operations about notifications
 paths:
-  /statusCount:
+  /status-count:
     get:
       tags:
       - Dashboard
@@ -40,7 +40,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /entriesCountByDate:
+  /entries-count-by-date:
     get:
       tags:
       - Dashboard
@@ -65,7 +65,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchEntriesByPageOrderBy:
+  /search-entries-by-page-order-by:
     get:
       tags:
       - Dashboard
@@ -105,7 +105,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /entryStatusDateMin:
+  /entry-status-date-min:
     get:
       tags:
       - Dashboard
@@ -114,7 +114,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /entryStatusDateMax:
+  /entry-status-date-max:
     get:
       tags:
       - Dashboard
@@ -123,7 +123,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /entryLogs:
+  /entry-logs:
     get:
       tags:
       - Dashboard
@@ -138,7 +138,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /uploadVersion:
+  /upload-version:
     post:
       tags:
       - Records
@@ -162,7 +162,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /downloadFile:
+  /download-file:
     get:
       tags:
       - Records
@@ -177,7 +177,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /deleteTempVersionFile:
+  /delete-temp-version-file:
     post:
       tags:
       - Records
@@ -192,7 +192,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /deleteTempVersionFiles:
+  /delete-temp-version-files:
     post:
       tags:
       - Records
@@ -209,7 +209,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /saveRecord:
+  /save-record:
     post:
       tags:
       - Records
@@ -226,7 +226,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /deleteRecords:
+  /delete-records:
     post:
       tags:
       - Records
@@ -563,7 +563,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /taskNames:
+  /task-names:
     get:
       tags:
       - Designer
@@ -572,7 +572,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchTaskNames:
+  /search-task-names:
     get:
       tags:
       - Designer
@@ -603,7 +603,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /taskToXml:
+  /task-to-xml:
     post:
       tags:
       - Designer
@@ -620,7 +620,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /isWorkflowIdValid/{id}:
+  /is-workflow-id-valid/{id}:
     get:
       tags:
       - Designer
@@ -637,7 +637,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /isCronExpressionValid:
+  /is-cron-expression-valid:
     get:
       tags:
       - Designer
@@ -652,7 +652,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /isPeriodValid/{period}:
+  /is-period-valid/{period}:
     get:
       tags:
       - Designer
@@ -668,7 +668,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /isXmlWorkflowValid:
+  /is-xml-workflow-valid:
     post:
       tags:
       - Designer
@@ -685,7 +685,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /workflowId:
+  /workflow-id:
     get:
       tags:
       - Designer
@@ -694,7 +694,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /saveXml:
+  /save-xml:
     post:
       tags:
       - Designer
@@ -795,7 +795,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /deleteWorkflows:
+  /delete-workflows:
     post:
       tags:
       - Designer
@@ -828,7 +828,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /graphXml/{id}:
+  /graph-xml/{id}:
     get:
       tags:
       - Designer
@@ -844,7 +844,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /graphBlockly/{id}:
+  /graph-blockly/{id}:
     get:
       tags:
       - Designer
@@ -860,7 +860,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /historyEntriesCountByDate:
+  /history-entries-count-by-date:
     get:
       tags:
       - History
@@ -885,7 +885,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchHistoryEntriesByPageOrderBy:
+  /search-history-entries-by-page-order-by:
     get:
       tags:
       - History
@@ -925,7 +925,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /historyEntryStatusDateMin:
+  /history-entry-status-date-min:
     get:
       tags:
       - History
@@ -934,7 +934,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /historyEntryStatusDateMax:
+  /history-entry-status-date-max:
     get:
       tags:
       - History
@@ -943,7 +943,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /historyEntryLogs:
+  /history-entry-logs:
     get:
       tags:
       - History
@@ -973,7 +973,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchUsers:
+  /search-users:
     get:
       tags:
       - Users
@@ -993,7 +993,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /nonRestrictedUsers:
+  /non-restricted-users:
     get:
       tags:
       - Users
@@ -1002,7 +1002,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /insertUser:
+  /insert-user:
     post:
       tags:
       - Users
@@ -1032,7 +1032,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /updateUser:
+  /update-user:
     post:
       tags:
       - Users
@@ -1067,7 +1067,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /updateUsernameAndEmailAndUserProfile:
+  /update-username-email-user-profile:
     post:
       tags:
       - Users
@@ -1102,7 +1102,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /deleteUser:
+  /delete-user:
     post:
       tags:
       - Users
@@ -1137,7 +1137,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchAdmins:
+  /search-admins:
     get:
       tags:
       - Profiles
@@ -1157,7 +1157,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /userWorkflows:
+  /user-workflows:
     get:
       tags:
       - Profiles
@@ -1172,7 +1172,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /saveUserWorkflows:
+  /save-user-workflows:
     post:
       tags:
       - Profiles
@@ -1189,7 +1189,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /hasNotifications:
+  /has-notifications:
     get:
       tags:
       - Notifications
@@ -1204,7 +1204,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /markNotificationsAsRead:
+  /mark-notifications-as-read:
     post:
       tags:
       - Notifications
@@ -1223,7 +1223,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /markNotificationsAsUnread:
+  /mark-notifications-as-unread:
     post:
       tags:
       - Notifications
@@ -1242,7 +1242,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /deleteNotifications:
+  /delete-notifications:
     post:
       tags:
       - Notifications
@@ -1261,7 +1261,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /searchNotifications:
+  /search-notifications:
     get:
       tags:
       - Notifications
@@ -1301,7 +1301,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /notifyApprovers:
+  /notify-approvers:
     post:
       tags:
       - Notifications

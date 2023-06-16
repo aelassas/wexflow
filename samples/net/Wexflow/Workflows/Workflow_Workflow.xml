@@ -6,14 +6,14 @@
 	</Settings>
 	<Tasks>
 		<Task id="1" name="Workflow" description="Starting workflow 43" enabled="true">
-			<Setting name="wexflowWebServiceUri" value="http://localhost:8000/wexflow/" />
+			<Setting name="wexflowWebServiceUri" value="http://localhost:8000/api/v1/" />
 			<Setting name="username" value="admin" />
 			<Setting name="password" value="wexflow2018" />
 			<Setting name="action" value="start" />
 			<Setting name="id" value="43" />
 		</Task>
 		<Task id="2" name="Workflow" description="Starting workflow 10 and 11" enabled="true">
-			<Setting name="wexflowWebServiceUri" value="http://localhost:8000/wexflow/" />
+			<Setting name="wexflowWebServiceUri" value="http://localhost:8000/api/v1/" />
 			<Setting name="username" value="admin" />
 			<Setting name="password" value="wexflow2018" />
 			<Setting name="action" value="start" />
