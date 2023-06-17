@@ -267,7 +267,7 @@ namespace Wexflow.Tasks.ApproveRecord
                                                     if (removedWorkflow != null)
                                                     {
                                                         InfoFormat("Workflow {0} is removed.", removedWorkflow.Name);
-                                                        Workflow.WexflowEngine.StopCronJobs(removedWorkflow.Id);
+                                                        WexflowEngine.StopCronJobs(removedWorkflow);
                                                         lock (Workflow.WexflowEngine.Workflows)
                                                         {
                                                             _ = Workflow.WexflowEngine.Workflows.Remove(removedWorkflow);

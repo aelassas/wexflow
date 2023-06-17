@@ -408,15 +408,10 @@ namespace Wexflow.Core
         /// <summary>
         /// Stops cron jobs.
         /// </summary>
-        /// <param name="workflowId">Workflow Id.</param>
-        public void StopCronJobs(int workflowId)
+        /// <param name="workflow">Workflow.</param>
+        public static void StopCronJobs(Workflow workflow)
         {
-            var jobIdentity = $"Workflow Job {workflowId}";
-            var jobKey = new JobKey(jobIdentity);
-            if (QuartzScheduler.CheckExists(jobKey).Result)
-            {
-                _ = QuartzScheduler.DeleteJob(jobKey);
-            }
+            DeleteJob(workflow);
         }
 
         private Workflow LoadWorkflowFromDatabase(Db.Workflow workflow)
@@ -548,7 +543,7 @@ namespace Wexflow.Core
                         {
                             _ = changedWorkflow.Stop(SuperAdminUsername);
 
-                            StopCronJobs(changedWorkflow.Id);
+                            StopCronJobs(changedWorkflow);
                             _ = Workflows.Remove(changedWorkflow);
                             Logger.InfoFormat("A change in the workflow {0} has been detected. The workflow will be reloaded.", changedWorkflow.Name);
 
@@ -618,7 +613,7 @@ namespace Wexflow.Core
                     Logger.InfoFormat("Workflow {0} is stopped and removed.", removedWorkflow.Name);
                     _ = removedWorkflow.Stop(SuperAdminUsername);
 
-                    StopCronJobs(removedWorkflow.Id);
+                    StopCronJobs(removedWorkflow);
                     lock (Workflows)
                     {
                         _ = Workflows.Remove(removedWorkflow);
@@ -658,7 +653,7 @@ namespace Wexflow.Core
                         Logger.InfoFormat("Workflow {0} is stopped and removed.", removedWorkflow.Name);
                         _ = removedWorkflow.Stop(SuperAdminUsername);
 
-                        StopCronJobs(removedWorkflow.Id);
+                        StopCronJobs(removedWorkflow);
                         _ = Workflows.Remove(removedWorkflow);
                         Database.DeleteUserWorkflowRelationsByWorkflowId(removedWorkflow.DbId);
 
@@ -824,17 +819,17 @@ namespace Wexflow.Core
             Logger.InfoFormat("Scheduling {0} workflows finished.", Workflows.Count);
         }
 
-        private string GetJobIdentity(Workflow wf)
+        private static string GetJobIdentity(Workflow wf)
         {
             return $"job_{wf.Id}";
         }
 
-        private string GetTriggerIdentity(Workflow wf)
+        private static string GetTriggerIdentity(Workflow wf)
         {
             return $"trigger_{wf.Id}";
         }
 
-        private void DeleteJob(Workflow wf)
+        private static void DeleteJob(Workflow wf)
         {
             var jobIdentity = GetJobIdentity(wf);
             var jobKey = new JobKey(jobIdentity);
