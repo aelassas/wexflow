@@ -221,7 +221,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchApprovalWorkflows()
         {
-            Get(GetPattern("searchApprovalWorkflows"), args =>
+            Get(GetPattern("search-approval-workflows"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -548,7 +548,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StartWorkflowWithVariables()
         {
-            Post(GetPattern("startWithVariables"), args =>
+            Post(GetPattern("start-with-variables"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -3483,7 +3483,7 @@ namespace Wexflow.Server
         /// </summary>
         private void ResetPassword()
         {
-            Post(GetPattern("resetPassword"), args =>
+            Post(GetPattern("reset-password"), args =>
             {
                 dynamic username = Request.Query["u"].ToString();
 
@@ -4513,7 +4513,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchRecords()
         {
-            Get(GetPattern("searchRecords"), args =>
+            Get(GetPattern("search-records"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -4608,7 +4608,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetRecordsCreatedBy()
         {
-            Get(GetPattern("recordsCreatedBy"), args =>
+            Get(GetPattern("records-created-by"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;
@@ -4704,7 +4704,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchRecordsCreatedByOrAssignedTo()
         {
-            Get(GetPattern("searchRecordsCreatedByOrAssignedTo"), args =>
+            Get(GetPattern("search-records-created-by-or-assigned-to"), args =>
             {
                 var auth = GetAuth(Request);
                 var username = auth.Username;

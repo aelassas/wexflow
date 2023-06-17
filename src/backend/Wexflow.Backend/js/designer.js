@@ -937,11 +937,11 @@
 
                                         if (settingType === "record") {
                                             if (userProfile === 0) { // super-admin
-                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/search-records?s=", function (records) {
                                                     loadSettingValue(records, []);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     loadSettingValue(records, []);
                                                 }, function () { }, auth);
                                             }
@@ -1314,13 +1314,13 @@
 
                                         if (hasRecordSetting === true && hasUserSetting === true) {
                                             if (userProfile === 0) { // super-admin
-                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/search-records?s=", function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
@@ -1328,11 +1328,11 @@
                                             }
                                         } else if (hasRecordSetting === true && hasUserSetting === false) {
                                             if (userProfile === 0) { // super-admin
-                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/search-records?s=", function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             }
@@ -1709,13 +1709,13 @@
 
                                         if (hasRecordSetting === true && hasUserSetting === true) {
                                             if (userProfile === 0) { // super-admin
-                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/search-records?s=", function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
                                                     }, function () { }, auth);
@@ -1723,11 +1723,11 @@
                                             }
                                         } else if (hasRecordSetting === true && hasUserSetting === false) {
                                             if (userProfile === 0) { // super-admin
-                                                window.Common.get(uri + "/searchRecords?s=", function (records) {
+                                                window.Common.get(uri + "/search-records?s=", function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             } else if (userProfile === 1) { // admin
-                                                window.Common.get(uri + "/recordsCreatedBy?c=" + username, function (records) {
+                                                window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     loadSettings(records, []);
                                                 }, function () { }, auth);
                                             }

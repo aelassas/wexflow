@@ -37,7 +37,7 @@
             return;
         }
 
-        window.Common.post(uri + "/resetPassword?u=" + encodeURIComponent(username), function (val) {
+        window.Common.post(uri + "/reset-password?u=" + encodeURIComponent(username), function (val) {
             if (val === true) {
                 window.Common.toastSuccess(language.get("fp-success") + username);
                 setTimeout(function () {

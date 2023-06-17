@@ -246,7 +246,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchApprovalWorkflows()
         {
-            _ = _endpoints.MapGet(GetPattern("searchApprovalWorkflows"), async context =>
+            _ = _endpoints.MapGet(GetPattern("search-approval-workflows"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -510,7 +510,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StartWorkflowWithVariables()
         {
-            _ = _endpoints.MapPost(GetPattern("startWithVariables"), async context =>
+            _ = _endpoints.MapPost(GetPattern("start-with-variables"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -3098,7 +3098,7 @@ namespace Wexflow.Server
         /// </summary>
         private void ResetPassword()
         {
-            _ = _endpoints.MapPost(GetPattern("resetPassword"), async context =>
+            _ = _endpoints.MapPost(GetPattern("reset-password"), async context =>
             {
                 var username = context.Request.Query["u"].ToString();
 
@@ -3914,7 +3914,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchRecords()
         {
-            _ = _endpoints.MapGet(GetPattern("searchRecords"), async context =>
+            _ = _endpoints.MapGet(GetPattern("search-records"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4002,7 +4002,7 @@ namespace Wexflow.Server
         /// </summary>
         private void GetRecordsCreatedBy()
         {
-            _ = _endpoints.MapGet(GetPattern("recordsCreatedBy"), async context =>
+            _ = _endpoints.MapGet(GetPattern("records-created-by"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
@@ -4091,7 +4091,7 @@ namespace Wexflow.Server
         /// </summary>
         private void SearchRecordsCreatedByOrAssignedTo()
         {
-            _ = _endpoints.MapGet(GetPattern("searchRecordsCreatedByOrAssignedTo"), async context =>
+            _ = _endpoints.MapGet(GetPattern("search-records-created-by-or-assigned-to"), async context =>
             {
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;

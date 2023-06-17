@@ -810,11 +810,11 @@
 
         // Load records
         if (userProfile === 0) {
-            window.Common.get(uri + "/searchRecords?s=" + encodeURIComponent(searchText.value), function (records) {
+            window.Common.get(uri + "/search-records?s=" + encodeURIComponent(searchText.value), function (records) {
                 loadRecordsTable(records);
             }, function () { }, auth);
         } else if (userProfile === 1) {
-            window.Common.get(uri + "/searchRecordsCreatedByOrAssignedTo?s=" + encodeURIComponent(searchText.value) + "&c=" + encodeURIComponent(username) + "&a=" + encodeURIComponent(username), function (records) {
+            window.Common.get(uri + "/search-records-created-by-or-assigned-to?s=" + encodeURIComponent(searchText.value) + "&c=" + encodeURIComponent(username) + "&a=" + encodeURIComponent(username), function (records) {
                 loadRecordsTable(records);
             }, function () { }, auth);
         }

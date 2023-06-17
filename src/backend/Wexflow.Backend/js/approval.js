@@ -252,7 +252,7 @@
     }
 
     function loadWorkflows() {
-        window.Common.get(uri + "/searchApprovalWorkflows?s=" + encodeURIComponent(searchText.value),
+        window.Common.get(uri + "/search-approval-workflows?s=" + encodeURIComponent(searchText.value),
             function (data) {
                 data.sort(compareById);
                 let items = [];

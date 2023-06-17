@@ -245,7 +245,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /searchRecords:
+  /search-records:
     get:
       tags:
       - Records
@@ -260,7 +260,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /recordsCreatedBy:
+  /records-created-by:
     get:
       tags:
       - Records
@@ -275,7 +275,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchRecordsCreatedByOrAssignedTo:
+  /search-records-created-by-or-assigned-to:
     get:
       tags:
       - Records
@@ -315,7 +315,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /searchApprovalWorkflows:
+  /search-approval-workflows:
     get:
       tags:
       - Manager
@@ -395,7 +395,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /startWithVariables:
+  /start-with-variables:
     post:
       tags:
       - Manager
@@ -1122,7 +1122,7 @@ paths:
         200:
           description: successful operation
           content: {}
-  /resetPassword:
+  /reset-password:
     post:
       tags:
       - Users
