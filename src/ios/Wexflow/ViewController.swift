@@ -38,9 +38,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
-        }else{
-            self.WexflowServerUrl = "http://192.168.100.207:8000/wexflow/"
-        }
+        }//else{
+        //    self.WexflowServerUrl = "http://192.168.0.198:8000/api/v1"
+        //}
+        print("ViewController.WexflowServerUrl: " + self.WexflowServerUrl)
         
         self.startButton.isEnabled = false
         self.SuspendButton.isEnabled = false
@@ -65,12 +66,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @objc func defaultsChanged(notification: Notification){
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
+            print("ViewController.WexflowServerUrl(changed): " + self.WexflowServerUrl)
         }
     }
     
-    deinit { //Not needed for iOS9 and above. ARC deals with the observer in higher versions.
+    /*deinit { //Not needed for iOS9 and above. ARC deals with the observer in higher versions.
         NotificationCenter.default.removeObserver(self)
-    }
+    }*/
     
     @IBAction func onSettingsClick(_ sender: UIButton) {
         let settings_app: URL = URL(string: UIApplication.openSettingsURLString)!

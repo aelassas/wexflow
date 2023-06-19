@@ -1760,6 +1760,7 @@ namespace Wexflow.Core.Db.LiteDB
         public override void Dispose()
         {
             db.Dispose();
+            db = null;
         }
     }
 }

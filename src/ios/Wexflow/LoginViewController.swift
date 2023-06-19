@@ -9,7 +9,7 @@
 import UIKit
 
 //@available(iOS, deprecated: 13.0)
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, ObservableObject {
 
     static var Username = ""
     static var Password = ""
@@ -24,17 +24,22 @@ class LoginViewController: UIViewController {
         
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
-        }else{
-            self.WexflowServerUrl = "http://192.168.100.207:8000/wexflow/"
-        }
-        
+        }//else{
+        //    self.WexflowServerUrl = "http://192.168.0.198:8000/api/v1"
+        //}
+        print("LoginViewController.WexflowServerUrl: " + self.WexflowServerUrl)
         usernameTextField.text = ""
         passwordTextField.text = ""
         
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.defaultsChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
+        /*UserDefaults.standard.addObserver(self, forKeyPath: "wexflow_server_url_preference", options:NSKeyValueObservingOptions.new, context: nil)*/
         
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.defaultsChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
     }
 
+    /*deinit {
+        NotificationCenter.default.removeObserver(self)
+    }*/
+    
     func registerSettingsBundle(){
         let appDefaults = [String:AnyObject]()
         UserDefaults.standard.register(defaults: appDefaults)
@@ -43,11 +48,8 @@ class LoginViewController: UIViewController {
    @objc func defaultsChanged(notification: Notification){
         if let url = UserDefaults.standard.string(forKey: "wexflow_server_url_preference") {
             self.WexflowServerUrl = cleanupUrl(url: url)
+            print("LoginViewController.WexflowServerUrl(changed): " + self.WexflowServerUrl)
         }
-    }
-    
-    deinit { //Not needed for iOS9 and above. ARC deals with the observer in higher versions.
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
