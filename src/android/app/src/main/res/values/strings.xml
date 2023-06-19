@@ -2,7 +2,7 @@
     <string name="app_name">Wexflow</string>
     <string name="menu_settings">Settings</string>
     <string name="pref_wexflow_uri">Wexflow Web Service URI</string>
-    <string name="pref_wexflow_defualt_value">http://192.168.100.207:8000/wexflow/</string>
+    <string name="pref_wexflow_defualt_value">http://192.168.0.198:8000/api/v1/</string>
     <string name="btnStart">Start</string>
     <string name="btnSuspend">Suspend</string>
     <string name="btnResume">Resume</string>
