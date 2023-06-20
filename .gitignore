@@ -46,6 +46,7 @@ setup/Wexflow.app/
 !setup/net/Wexflow.Scripts.Oracle/*.exe.config
 !setup/net/Wexflow.Scripts.MariaDB/*.exe.config
 !setup/net/Wexflow.Scripts.SQLite/*.exe.config
+!setup/net/Wexflow.Scripts.LiteDB/*.exe.config
 *.nupkg
 *.snupkg
 Wexflow-coverage-dotnet.xml
