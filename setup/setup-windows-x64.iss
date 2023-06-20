@@ -11,12 +11,13 @@ PrivilegesRequired=admin
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{36E7859C-FD7F-47E1-91C6-41B5F522E2F7}
+SetupMutex=SetupMutex{#SetupSetting("AppId")}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppPublisherURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=.
 OutputBaseFilename=wexflow-{#MyAppVersion}-windows-x64
@@ -28,7 +29,11 @@ SolidCompression=yes
 ; 64-bit Program Files directory and the 64-bit view of the registry.
 ; On all other architectures it will install in "32-bit mode".
 ArchitecturesInstallIn64BitMode=x64
+WizardStyle=modern
 LicenseFile="..\LICENSE.txt"
+
+[Messages]
+SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -306,11 +311,11 @@ Filename: "{sys}\sc.exe"; Parameters: "description Wexflow ""Wexflow workflow en
 Filename: "{sys}\sc.exe"; Parameters: "start Wexflow"; Flags: runhidden  waituntilterminated
 
 [UninstallRun]
-Filename: "taskkill"; Parameters: "/im ""{#MyAppExeName}"" /t /f"; Flags: runhidden waituntilterminated
-Filename: "{sys}\sc.exe"; Parameters: "stop Wexflow"; Flags: runhidden waituntilterminated
-Filename: "taskkill"; Parameters: "/im ""Wexflow.Server.exe"" /t /f"; Flags: runhidden waituntilterminated
-Filename: "taskkill"; Parameters: "/im ""chromedriver.exe"" /t /f"; Flags: runhidden waituntilterminated
-Filename: "{sys}\sc.exe"; Parameters: "delete Wexflow"; Flags: runhidden waituntilterminated
+Filename: "taskkill"; Parameters: "/im ""{#MyAppExeName}"" /t /f"; Flags: runhidden waituntilterminated; RunOnceId: StopApp
+Filename: "{sys}\sc.exe"; Parameters: "stop Wexflow"; Flags: runhidden waituntilterminated; RunOnceId: StopService 
+Filename: "taskkill"; Parameters: "/im ""Wexflow.Server.exe"" /t /f"; Flags: runhidden waituntilterminated; RunOnceId: StopAppWexflowServer
+Filename: "taskkill"; Parameters: "/im ""chromedriver.exe"" /t /f"; Flags: runhidden waituntilterminated; RunOnceId: StopChromeDriver
+Filename: "{sys}\sc.exe"; Parameters: "delete Wexflow"; Flags: runhidden waituntilterminated; RunOnceId: RemoveService 
 
 [UninstallDelete]
 Type: files; Name: "{app}\chromedriver.exe"
