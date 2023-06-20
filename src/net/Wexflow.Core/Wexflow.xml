@@ -19,9 +19,9 @@
   <!-- SQLServer -->
   <!--<Setting name="connectionString" value="Server=localhost;Trusted_Connection=True;Database=wexflow;" />-->
   <!-- PostgreSQL -->
-  <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=postgres;Password=pwd;Database=wexflow;Port=5432" />-->
+  <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=postgres;Password=000000;Database=wexflow;Port=5432" />-->
   <!-- MySQL -->
-  <!--<Setting name="connectionString" value="Server=localhost;Database=wexflow;Uid=root;Pwd=pwd;Port=3306" />-->
+  <!--<Setting name="connectionString" value="Server=localhost;Database=wexflow;Uid=root;Pwd=000000;Port=3306" />-->
   <!-- LiteDB -->
   <!--<Setting name="connectionString" value="Filename=C:\Wexflow\Database\Wexflow.db; Connection=direct" />-->
 </Wexflow>
