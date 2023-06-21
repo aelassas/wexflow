@@ -447,7 +447,7 @@ begin
 
     if installedVersion < myAppVersion  then 
     begin 
-      message := 'An old version of Wexflow is already installed. Do you want to uninstall it and install this newer version?';
+      message := 'An older version of Wexflow is already installed. Do you want to uninstall it and install this newer version?';
     end 
     else if installedVersion > myAppVersion then
     begin
