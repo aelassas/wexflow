@@ -458,15 +458,15 @@ begin
 
     if installedVersion < myAppVersion  then 
     begin 
-      message := 'An older version of Wexflow is already installed. Do you want to replace it with this newer version?';
+      message := 'An older version of Wexflow is already installed. Would you like to replace it with this newer version?';
     end 
     else if installedVersion > myAppVersion then
     begin
-      message := 'A newer version of Wexflow is already installed. Do you want to replace it with this older version?';
+      message := 'A newer version of Wexflow is already installed. Would you like to replace it with this older version?';
     end
     else if installedVersion = myAppVersion then
     begin
-      message := 'The same version of Wexflow is already installed. Do you want to repair it?';
+      message := 'The same version of Wexflow is already installed. Would you like to repair it?';
     end;
 
     v := MsgBox(message, mbInformation, MB_YESNO);
