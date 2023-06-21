@@ -325,8 +325,129 @@ Type: files; Name: "{app}\chromedriver.exe"
 ;Type: files; Name: "C:\Wexflow\Database\Wexflow-log.db"
 
 [Code]
-procedure InitializeWizard();
+function GetUninstallString(): String;
+var
+  sUnInstPath, sUnInstallString: String;
 begin
+  sUnInstPath := ExpandConstant('SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+  sUnInstallString := '';
+  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+  Result := sUnInstallString;
+end;
+
+function IsUpgrade(): Boolean;
+begin
+  Result := (GetUninstallString() <> '');
+end;
+
+function BoolToStr(Value: Boolean): String; 
+begin
+  if Value then begin
+    Result := 'Yes';
+  end else
+    Result := 'No';
+end;
+
+function UnInstallOldVersion(): Integer;
+var
+  sUnInstallString, sResult: String;
+  iResultCode: Integer;
+begin
+  Result := 0;
+  sUnInstallString := GetUninstallString();
+  if sUnInstallString <> '' then
+  begin
+    sUnInstallString := RemoveQuotes(sUnInstallString);
+    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+      Result := 3;
+    end else
+      Result := 2;
+  end else
+    Result := 1;
+  
+  sResult := IntToStr(Result)
+  Log('UnInstallOldVersion => ' + sResult);
+end;
+
+function GetInstalledVersion(): String;
+var
+  sUnInstPath, sVersionString: String;
+begin
+  sVersionString := ''
+  sUnInstPath := ExpandConstant('SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+  if not RegQueryStringValue(HKLM, sUnInstPath, 'DisplayVersion', sVersionString) then
+    RegQueryStringValue(HKCU, sUnInstPath, 'DisplayVersion', sVersionString);
+  Result := sVersionString;
+end;
+
+function NumericVersion(sVersion: String): Integer;
+var
+  s1, i: Integer;
+  sv : String;
+begin
+  s1 := 0;
+  for i := 1 to Length(sVersion) do
+  begin
+    sv := sVersion[i];
+    if (sv >= '0') and (sv <= '9') then
+    begin
+      s1 := s1 + StrToInt(sVersion[i]);
+    end;
+  end;
+
+  Result := s1;
+end;
+
+function InitializeSetup(): Boolean;
+var
+  sInstalledVersion, message: String;
+  installedVersion, myAppVersion: Integer;
+  v: Integer;
+begin
+  Result := True;
+  sInstalledVersion := GetInstalledVersion();
+
+  Log('InitializeSetup.InstalledVersion: ' + sInstalledVersion); 
+  if IsUpgrade() and (sInstalledVersion <> '') then
+  begin
+    installedVersion := NumericVersion(sInstalledVersion);
+    myAppVersion :=  NumericVersion(ExpandConstant('{#MyAppVersion}'));
+    message := '';
+
+    if installedVersion < myAppVersion  then 
+    begin 
+      message := 'An old version of Wexflow is already installed. Do you want to uninstall it and install this newer version?';
+    end 
+    else if installedVersion > myAppVersion then
+    begin
+      message := 'A newer version of Wexflow is already installed. Do you want to uninstall it and install this old version?';
+    end
+    else if installedVersion = myAppVersion then
+    begin
+      message := 'The same version of Wexflow is already installed. Do you want to repair it?';
+    end;
+
+    v := MsgBox(message, mbInformation, MB_YESNO);
+    if v = IDYES then
+    begin
+      if installedVersion <> myAppVersion then
+      begin
+        UnInstallOldVersion();
+      end;
+    end
+    else
+      Result := False
+    
+  end;
+end;
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  sNeedsRestart : String;
+begin
+  sNeedsRestart := BoolToStr(NeedsRestart);
+  Log('PrepareToInstall(' + sNeedsRestart + ') called');
   ForceDirectories('C:\Wexflow');
   ForceDirectories('C:\Wexflow\Database');
   ForceDirectories('C:\Wexflow\Workflows');
@@ -334,4 +455,6 @@ begin
   ForceDirectories('C:\Wexflow\Tasks');
   ForceDirectories('C:\Wexflow\Temp');
   ForceDirectories('C:\Wexflow\Approval');
+  Log('PrepareToInstall.ForceDirectories done');
+  Result := '';  
 end;
