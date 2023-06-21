@@ -331,8 +331,22 @@ var
 begin
   sUnInstPath := ExpandConstant('SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
   sUnInstallString := '';
-  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+
+  if not RegQueryStringValue(HKLM64, sUnInstPath, 'UninstallString', sUnInstallString) then
+  begin
     RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+  end;
+
+  if sUnInstallString = '' then
+  begin
+    sUnInstPath := ExpandConstant('SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+
+    if not RegQueryStringValue(HKLM32, sUnInstPath, 'UninstallString', sUnInstallString) then
+    begin
+      RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+    end;
+  end;
+
   Result := sUnInstallString;
 end;
 
@@ -351,7 +365,7 @@ end;
 
 function UnInstallOldVersion(): Integer;
 var
-  sUnInstallString, sResult: String;
+  sUnInstallString: String;
   iResultCode: Integer;
 begin
   Result := 0;
@@ -366,8 +380,7 @@ begin
   end else
     Result := 1;
   
-  sResult := IntToStr(Result)
-  Log('UnInstallOldVersion => ' + sResult);
+  Log('UnInstallOldVersion.Result = ' + IntToStr(Result));
 end;
 
 function GetInstalledVersion(): String;
@@ -376,26 +389,48 @@ var
 begin
   sVersionString := ''
   sUnInstPath := ExpandConstant('SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
-  if not RegQueryStringValue(HKLM, sUnInstPath, 'DisplayVersion', sVersionString) then
+  
+  if not RegQueryStringValue(HKLM64, sUnInstPath, 'DisplayVersion', sVersionString) then
+  begin
     RegQueryStringValue(HKCU, sUnInstPath, 'DisplayVersion', sVersionString);
+  end;
+
+  if sVersionString = '' then
+  begin
+    sUnInstPath := ExpandConstant('SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+  
+    if not RegQueryStringValue(HKLM32, sUnInstPath, 'DisplayVersion', sVersionString) then
+    begin
+      RegQueryStringValue(HKCU, sUnInstPath, 'DisplayVersion', sVersionString);
+    end;
+  end;
+  
   Result := sVersionString;
 end;
 
 function NumericVersion(sVersion: String): Integer;
 var
-  s1, i: Integer;
+  s1, s2, i: Integer;
   sv : String;
 begin
   s1 := 0;
   for i := 1 to Length(sVersion) do
   begin
     sv := sVersion[i];
-    if (sv >= '0') and (sv <= '9') then
-    begin
-      s1 := s1 + StrToInt(sVersion[i]);
-    end;
-  end;
 
+    if (sv >= '0') and (sv <= '9') then
+      begin
+        s2 := StrToInt(sv);
+
+        if i = 1 then
+        begin
+          s2 := s2  * 10;
+        end;
+        
+        s1 := s1 + s2;
+      end;
+  end;
+  
   Result := s1;
 end;
 
@@ -407,10 +442,10 @@ var
 begin
   Result := True;
   sInstalledVersion := GetInstalledVersion();
-
-  Log('InitializeSetup.InstalledVersion: ' + sInstalledVersion); 
+ 
   if IsUpgrade() and (sInstalledVersion <> '') then
   begin
+    Log('InitializeSetup.InstalledVersion: ' + sInstalledVersion);
     installedVersion := NumericVersion(sInstalledVersion);
     myAppVersion :=  NumericVersion(ExpandConstant('{#MyAppVersion}'));
     message := '';
@@ -421,7 +456,7 @@ begin
     end 
     else if installedVersion > myAppVersion then
     begin
-      message := 'A newer version of Wexflow is already installed. Do you want to uninstall it and install this old version?';
+      message := 'A newer version of Wexflow is already installed. Do you want to uninstall it and install this older version?';
     end
     else if installedVersion = myAppVersion then
     begin
@@ -429,16 +464,10 @@ begin
     end;
 
     v := MsgBox(message, mbInformation, MB_YESNO);
-    if v = IDYES then
+    if v <> IDYES then
     begin
-      if installedVersion <> myAppVersion then
-      begin
-        UnInstallOldVersion();
-      end;
-    end
-    else
-      Result := False
-    
+      Result := False;
+    end;
   end;
 end;
 
@@ -448,6 +477,10 @@ var
 begin
   sNeedsRestart := BoolToStr(NeedsRestart);
   Log('PrepareToInstall(' + sNeedsRestart + ') called');
+  if IsUpgrade() then
+  begin
+    UnInstallOldVersion();
+  end;
   ForceDirectories('C:\Wexflow');
   ForceDirectories('C:\Wexflow\Database');
   ForceDirectories('C:\Wexflow\Workflows');
