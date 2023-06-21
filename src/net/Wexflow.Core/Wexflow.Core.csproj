@@ -149,9 +149,6 @@
   <ItemGroup>
     <None Include="docs\README.md" />
     <None Include="nuget-pack.bat" />
-    <None Include="Wexflow.Core.Symbols.nuspec">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Wexflow.Core.nuspec">
       <SubType>Designer</SubType>
     </None>
