@@ -352,10 +352,14 @@ end;
 
 function BoolToStr(Value: Boolean): String; 
 begin
-  if Value then begin
-    Result := 'Yes';
-  end else
-    Result := 'No';
+  if Value then 
+  begin
+    Result := 'True';
+  end 
+  else
+  begin
+    Result := 'False';
+  end;
 end;
 
 function UnInstallOldVersion(): Integer;
@@ -368,12 +372,19 @@ begin
   if sUnInstallString <> '' then
   begin
     sUnInstallString := RemoveQuotes(sUnInstallString);
-    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then 
+    begin
       Result := 3;
-    end else
+    end 
+    else
+    begin
       Result := 2;
-  end else
+    end;
+  end
+  else
+  begin
     Result := 1;
+  end;
   
   Log('UnInstallOldVersion.Result = ' + IntToStr(Result));
 end;
@@ -447,11 +458,11 @@ begin
 
     if installedVersion < myAppVersion  then 
     begin 
-      message := 'An older version of Wexflow is already installed. Do you want to uninstall it and install this newer version?';
+      message := 'An older version of Wexflow is already installed. Do you want to replace it with this newer version?';
     end 
     else if installedVersion > myAppVersion then
     begin
-      message := 'A newer version of Wexflow is already installed. Do you want to uninstall it and install this older version?';
+      message := 'A newer version of Wexflow is already installed. Do you want to replace it with this older version?';
     end
     else if installedVersion = myAppVersion then
     begin
