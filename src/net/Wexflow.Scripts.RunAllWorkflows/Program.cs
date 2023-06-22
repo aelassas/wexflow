@@ -18,8 +18,7 @@ namespace Wexflow.Scripts.RunAllWorkflows
 
                 foreach (var workflow in workflows)
                 {
-                    Console.WriteLine("Starting workflow {0} - {1}", workflow.Id, workflow.Name);
-                    client.StartWorkflow(workflow.Id, username, password);
+                    Console.WriteLine($"Starting workflow {workflow.Id} - {workflow.Name} => {client.StartWorkflow(workflow.Id, username, password)}");
                 }
             }
             catch (Exception e)
