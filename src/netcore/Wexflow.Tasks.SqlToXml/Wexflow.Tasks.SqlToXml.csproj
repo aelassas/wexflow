@@ -21,7 +21,7 @@
     <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
-    <PackageReference Include="Teradata.Client.Provider" Version="17.20.6" />
+    <PackageReference Include="Teradata.Client.Provider" Version="17.20.7" />
   </ItemGroup>
 
   <ItemGroup>
