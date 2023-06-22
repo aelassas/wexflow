@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 100
+    open-pull-requests-limit: 25
     ignore:
       - dependency-name: "Npgsql"
       - dependency-name: "MediaInfoDotNet"
