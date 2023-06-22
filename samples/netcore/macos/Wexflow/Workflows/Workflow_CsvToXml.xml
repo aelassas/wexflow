@@ -15,6 +15,7 @@
     <Task id="3" name="FilesMover" description="Moving Xmls to CsvToXml folder" enabled="true">
       <Setting name="selectFiles" value="2" />
       <Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/CsvToXml/" />
+	  <Setting name="overwrite" value="true" />
     </Task>
   </Tasks>
 </Workflow>

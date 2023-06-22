@@ -14,6 +14,7 @@
 		<Task id="3" name="FilesMover" description="Moving tgzs to Tgz folder" enabled="true">
 			<Setting name="selectFiles" value="2" />
 			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/Tgz/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

@@ -10,6 +10,7 @@
 		<Task id="2" name="FilesMover" description="Moving files to Http folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Http/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

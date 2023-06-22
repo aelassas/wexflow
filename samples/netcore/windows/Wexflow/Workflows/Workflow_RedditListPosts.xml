@@ -12,6 +12,7 @@
 		<Task id="2" name="FilesMover" description="Moving post history from temp folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="C:\WexflowTesting\RedditListPosts\" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>  
 </Workflow>

@@ -17,6 +17,7 @@
       <Setting name="selectFiles" value="2" />
       <Setting name="destFolder" value="/opt/wexflow/WexflowTesting/CsvToYaml_dest" />
 	  <Setting name="overwrite" value="true" />
+	  <Setting name="overwrite" value="true" />
     </Task>
   </Tasks>
 </Workflow>

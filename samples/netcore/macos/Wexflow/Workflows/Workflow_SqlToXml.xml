@@ -49,6 +49,7 @@
 			<Setting name="selectFiles" value="6" />
 			<Setting name="selectFiles" value="7" />
 			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/SqlToXml/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

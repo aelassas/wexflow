@@ -13,6 +13,7 @@
 		<Task id="2" name="FilesMover" description="Moving search results from temp folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="C:\WexflowTesting\YouTubeSearch\" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

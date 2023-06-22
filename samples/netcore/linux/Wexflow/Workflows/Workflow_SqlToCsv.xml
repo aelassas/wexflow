@@ -50,6 +50,7 @@
 			<Setting name="selectFiles" value="6" />
 			<Setting name="selectFiles" value="7" />
 			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/SqlToCsv/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

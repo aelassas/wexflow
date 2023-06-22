@@ -273,6 +273,11 @@ Source: "..\src\net\Wexflow.Scripts.LiteDB\bin\x86\Release\*.dll"; DestDir: "{ap
 ;Source: "..\src\net\Wexflow.Core.Db.MariaDB\bin\x86\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MariaDB"; Flags: ignoreversion recursesubdirs
 ;Source: "..\src\net\Wexflow.Scripts.MariaDB\bin\x86\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.MariaDB"; Flags: ignoreversion recursesubdirs
 
+; Wexflow.Scripts.RunAllWorkflows
+Source: "..\src\net\Wexflow.Scripts.RunAllWorkflows\bin\x86\Release\Wexflow.Scripts.RunAllWorkflows.exe"; DestDir: "{app}\Wexflow.Scripts.RunAllWorkflows"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.RunAllWorkflows\bin\x86\Release\Wexflow.Scripts.RunAllWorkflows.exe.config"; DestDir: "{app}\Wexflow.Scripts.RunAllWorkflows"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.RunAllWorkflows\bin\x86\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.RunAllWorkflows"; Flags: ignoreversion recursesubdirs
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -294,6 +299,7 @@ Name: "{commonprograms}\{#MyAppName}\Install LiteDB samples"; Filename: "{app}\W
 ;Name: "{commonprograms}\{#MyAppName}\Install Firebird samples"; Filename: "{app}\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install Oracle samples"; Filename: "{app}\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install MariaDB samples"; Filename: "{app}\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.exe";
+;Name: "{commonprograms}\{#MyAppName}\Run All Workflows"; Filename: "{app}\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.exe";
 Name: "{commonprograms}\{#MyAppName}\Uninstall"; Filename: "{uninstallexe}";
 
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: desktopicon

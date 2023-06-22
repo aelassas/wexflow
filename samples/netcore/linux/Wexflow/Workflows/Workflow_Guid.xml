@@ -10,6 +10,7 @@
 		<Task id="2" name="FilesMover" description="Moving Guid file from temp folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/Guid/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

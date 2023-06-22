@@ -10,6 +10,7 @@
 		<Task id="3" name="FilesMover" description="Moving ProcessInfo files from temp folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/ProcessInfo/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

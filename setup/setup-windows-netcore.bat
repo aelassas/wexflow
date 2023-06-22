@@ -100,6 +100,10 @@ copy netcore\windows\install-LiteDB.bat %dstDir%
 :: Wexflow.Clients.CommandLine
 dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.CommandLine.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Clients.CommandLine
 
+:: Wexflow.Scripts.RunAllWorkflows
+dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
+copy netcore\windows\run-all-workflows.bat %dstDir%
+
 :: License
 copy ..\LICENSE.txt %dstDir%
 

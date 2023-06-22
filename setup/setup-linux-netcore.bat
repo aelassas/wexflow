@@ -89,6 +89,9 @@ copy netcore\linux\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
 :: Wexflow.Clients.CommandLine
 dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.CommandLine.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Clients.CommandLine
 
+:: Wexflow.Scripts.RunAllWorkflows
+dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
+
 :: License
 copy ..\LICENSE.txt %dstDir%
 

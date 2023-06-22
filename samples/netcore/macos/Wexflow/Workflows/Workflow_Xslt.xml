@@ -14,6 +14,7 @@
 		<Task id="3" name="FilesMover" description="Moving transformed XMLs" enabled="true">
 			<Setting name="selectFiles" value="2" />
 			<Setting name="destFolder" value="/Applications/wexflow/WexflowTesting/Xslt/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

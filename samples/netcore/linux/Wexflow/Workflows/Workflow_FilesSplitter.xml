@@ -15,6 +15,7 @@
 		<Task id="3" name="FilesMover" description="Moving FilesSplitter files from temp folder" enabled="true">
 			<Setting name="selectFiles" value="2" />
 			<Setting name="destFolder" value="/opt/wexflow/WexflowTesting/FilesSplitter/" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>
