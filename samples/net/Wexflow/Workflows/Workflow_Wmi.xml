@@ -10,6 +10,7 @@
 		<Task id="2" name="FilesMover" description="Moving Wmi Xmls to Wmi folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="C:\WexflowTesting\Wmi\" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

@@ -17,6 +17,7 @@
 		<Task id="3" name="FilesMover" description="Moving MP3 files from temp folder" enabled="true">
 			<Setting name="selectFiles" value="2" />
 			<Setting name="destFolder" value="C:\WexflowTesting\MP3\" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

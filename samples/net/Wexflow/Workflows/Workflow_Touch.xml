@@ -11,6 +11,7 @@
 		<Task id="2" name="FilesMover" description="Moving triggers to Triggers folder" enabled="true">
 			<Setting name="selectFiles" value="1" />
 			<Setting name="destFolder" value="C:\WexflowTesting\Triggers\" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 		<Task id="3" name="ListFiles" description="Listing files" enabled="true">
 		</Task>

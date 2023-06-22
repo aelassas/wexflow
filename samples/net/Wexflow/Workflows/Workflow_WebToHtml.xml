@@ -12,6 +12,7 @@
     <Task id="2" name="FilesMover" description="Moving HTML sources to WebToHtml folder" enabled="true">
       <Setting name="selectFiles" value="1" />
       <Setting name="destFolder" value="C:\WexflowTesting\WebToHtml\" />
+	  <Setting name="overwrite" value="true" />
     </Task>
   </Tasks>
 </Workflow>

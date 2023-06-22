@@ -16,6 +16,7 @@
 		<Task id="3" name="FilesMover" description="Moving PNG images to ImagesTransformer folder" enabled="true">
 			<Setting name="selectFiles" value="2" />
 			<Setting name="destFolder" value="C:\WexflowTesting\ImagesTransformer\" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>

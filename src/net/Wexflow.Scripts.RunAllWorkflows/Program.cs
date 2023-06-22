@@ -1,0 +1,34 @@
+﻿using System;
+using System.Configuration;
+using Wexflow.Core.Service.Client;
+
+namespace Wexflow.Scripts.RunAllWorkflows
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            try
+            {
+                var client = new WexflowServiceClient(ConfigurationManager.AppSettings["WexflowWebServiceUri"]);
+                var username = ConfigurationManager.AppSettings["Username"];
+                var password = ConfigurationManager.AppSettings["Password"];
+
+                var workflows = client.Search(string.Empty, username, password);
+
+                foreach (var workflow in workflows)
+                {
+                    Console.WriteLine("Starting workflow {0} - {1}", workflow.Id, workflow.Name);
+                    client.StartWorkflow(workflow.Id, username, password);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occured: {0}", e);
+            }
+
+            Console.Write("Press any key to exit...");
+            _ = Console.ReadKey();
+        }
+    }
+}

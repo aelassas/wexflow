@@ -16,6 +16,7 @@
 		<Task id="3" name="FilesMover" description="Moving Text files to PdfToText folder" enabled="true">
 			<Setting name="selectFiles" value="2" />
 			<Setting name="destFolder" value="C:\WexflowTesting\PdfToText" />
+			<Setting name="overwrite" value="true" />
 		</Task>
 	</Tasks>
 </Workflow>
