@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="RavenDB.Client">
-      <Version>5.4.106</Version>
+      <Version>5.4.107</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
