@@ -11,7 +11,7 @@ namespace Wexflow.Scripts.RavenDB
         {
             try
             {
-                IConfiguration config = new ConfigurationBuilder()
+                var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 

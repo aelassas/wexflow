@@ -10,7 +10,7 @@ namespace Wexflow.NetCore.Tests
         private static readonly string StartupFolder = @"C:\WexflowTesting\Startup";
         private static readonly string PeriodicFolder = @"C:\WexflowTesting\Periodic";
 
-        private string GetPeriodicWorkflowXml(bool enabled)
+        private static string GetPeriodicWorkflowXml(bool enabled)
         {
             return $@"<Workflow xmlns='urn:wexflow-schema' id='59' name='Workflow_Periodic' description='Workflow_Periodic'>
 	            <Settings>

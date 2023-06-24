@@ -10,7 +10,7 @@ namespace Wexflow.Scripts.MariaDB
         {
             try
             {
-                IConfiguration config = new ConfigurationBuilder()
+                var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 

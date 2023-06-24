@@ -9,7 +9,7 @@ namespace Wexflow.NetCore.Tests
     {
         private static readonly string CronFolder = @"C:\WexflowTesting\Cron";
 
-        private string GetCronWorkflowXml(bool enabled)
+        private static string GetCronWorkflowXml(bool enabled)
         {
             return $@"<?xml version='1.0' encoding='utf-8'?>
                     <Workflow xmlns='urn:wexflow-schema' id='75' name='Workflow_Cron' description='Workflow_Cron'>
