@@ -8,7 +8,6 @@ using System.IO;
 #pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
-
     public readonly struct FileChange
     {
         internal FileChange(string directory, string path, WatcherChangeTypes type)
