@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
@@ -63,7 +63,7 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Quartz" Version="3.6.2" />
-    <PackageReference Include="Quartz.Serialization.Json" Version="3.6.2" />
+    <PackageReference Include="Quartz.Serialization.Json" Version="3.6.3" />
   </ItemGroup>
 
   <ItemGroup>
