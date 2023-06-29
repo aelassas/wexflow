@@ -10,7 +10,7 @@
   <Setting name="tasksNamesFile" value="C:\Wexflow\TasksNames.json" />
   <Setting name="tasksSettingsFile" value="C:\Wexflow\TasksSettings.json" />
   <Setting name="globalVariablesFile" value="C:\Wexflow\GlobalVariables.xml" />
-  <!-- SQLite or MongoDB or SQLServer or PostgreSQL or MySQL or LiteDB -->
+  <!-- SQLite or MongoDB or SQLServer or PostgreSQL or MySQL or LiteDB or Oracle -->
   <Setting name="dbType" value="SQLite" />
   <!-- SQLite -->
   <Setting name="connectionString" value="Data Source=C:\Wexflow\Database\Wexflow.sqlite;Version=3;" />
@@ -24,4 +24,6 @@
   <!--<Setting name="connectionString" value="Server=localhost;Database=wexflow;Uid=root;Pwd=000000;Port=3306" />-->
   <!-- LiteDB -->
   <!--<Setting name="connectionString" value="Filename=C:\Wexflow\Database\Wexflow.db; Connection=direct" />-->
+  <!-- Oracle -->
+  <!--<Setting name="connectionString" value="Data Source=localhost:1521/wexflow;User Id=SYSTEM;Password=000000;" />-->
 </Wexflow>

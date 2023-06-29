@@ -88,9 +88,9 @@ copy netcore\windows\install-LiteDB.bat %dstDir%
 ::copy netcore\windows\install-Firebird.bat %dstDir%
 
 :: Oracle script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
-::copy netcore\windows\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
-::copy netcore\windows\install-Oracle.bat %dstDir%
+dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
+copy netcore\windows\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
+copy netcore\windows\install-Oracle.bat %dstDir%
 
 :: MariaDB script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB

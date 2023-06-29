@@ -267,10 +267,10 @@ Source: "..\src\net\Wexflow.Scripts.LiteDB\bin\x64\Release\*.dll"; DestDir: "{ap
 ;Source: "..\src\net\Wexflow.Scripts.Firebird\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.Firebird"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.Oracle
-;Source: "..\src\net\Wexflow.Scripts.Oracle\bin\x64\Release\Wexflow.Scripts.Oracle.exe"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
-;Source: ".\net\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.exe.config"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Core.Db.Oracle\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
-;Source: "..\src\net\Wexflow.Scripts.Oracle\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.Oracle\bin\x64\Release\Wexflow.Scripts.Oracle.exe"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
+Source: ".\net\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.exe.config"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Core.Db.Oracle\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Scripts.Oracle\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.Oracle"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow.Scripts.MariaDB
 ;Source: "..\src\net\Wexflow.Scripts.MariaDB\bin\x64\Release\Wexflow.Scripts.MariaDB.exe"; DestDir: "{app}\Wexflow.Scripts.MariaDB"; Flags: ignoreversion recursesubdirs
@@ -302,7 +302,7 @@ Name: "{commonprograms}\{#MyAppName}\Install MySQL samples"; Filename: "{app}\We
 Name: "{commonprograms}\{#MyAppName}\Install SQLite samples"; Filename: "{app}\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.exe";
 Name: "{commonprograms}\{#MyAppName}\Install LiteDB samples"; Filename: "{app}\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install Firebird samples"; Filename: "{app}\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.exe";
-;Name: "{commonprograms}\{#MyAppName}\Install Oracle samples"; Filename: "{app}\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.exe";
+Name: "{commonprograms}\{#MyAppName}\Install Oracle samples"; Filename: "{app}\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Install MariaDB samples"; Filename: "{app}\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.exe";
 ;Name: "{commonprograms}\{#MyAppName}\Run All Workflows"; Filename: "{app}\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.exe";
 Name: "{commonprograms}\{#MyAppName}\Uninstall"; Filename: "{uninstallexe}";

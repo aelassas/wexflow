@@ -79,8 +79,8 @@ copy netcore\macos\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
 ::copy netcore\macos\Firebird\appsettings.json %dstDir%\Wexflow.Scripts.Firebird
 
 :: Oracle script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
-::copy netcore\macos\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
+dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
+copy netcore\macos\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
 
 :: MariaDB script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB
