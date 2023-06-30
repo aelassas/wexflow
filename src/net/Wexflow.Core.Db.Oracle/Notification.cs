@@ -13,7 +13,7 @@
                                                         + ColumnName_AssignedBy + " INTEGER, "
                                                         + ColumnName_AssignedOn + " TIMESTAMP, "
                                                         + ColumnName_AssignedTo + " INTEGER, "
-                                                        + ColumnName_Message + " VARCHAR2(4000), "
+                                                        + ColumnName_Message + " VARCHAR2(255), "
                                                         + ColumnName_IsRead + " NUMBER(1))";
 
         public long Id { get; set; }

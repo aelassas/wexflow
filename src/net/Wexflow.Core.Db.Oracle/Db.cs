@@ -10,6 +10,7 @@ namespace Wexflow.Core.Db.Oracle
     {
         private static readonly object padlock = new object();
         private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private static readonly int chunkSize = 2000;
 
         private static string connectionString;
 
@@ -1422,7 +1423,8 @@ namespace Wexflow.Core.Db.Oracle
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
                         + "'" + (entry.JobId ?? "") + "', "
-                        + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ")"
+                        + ToCLOB(entry.Logs)
+                        + ")"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1453,7 +1455,8 @@ namespace Wexflow.Core.Db.Oracle
                         + "TO_TIMESTAMP('" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF'), "
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
-                        + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ")"
+                        + ToCLOB(entry.Logs)
+                        + ")"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1523,14 +1526,19 @@ namespace Wexflow.Core.Db.Oracle
             }
         }
 
-        private string ToCLOB(Core.Db.Workflow workflow)
+        private string ToCLOB(string str)
         {
             lock (padlock)
             {
-                var xml = (workflow.Xml ?? "").Replace("'", "''");
-                var chunkSize = 4000;
+                if (string.IsNullOrEmpty(str))
+                {
+                    return "''";
+                }
+
+                str = str.Replace("'", "''");
                 var builder = new StringBuilder();
-                var chunks = ToChuncks(xml, chunkSize).ToArray();
+                _ = builder.Append('(');
+                var chunks = ToChuncks(str, chunkSize).ToArray();
 
                 for (var i = 0; i < chunks.Length; i++)
                 {
@@ -1542,10 +1550,16 @@ namespace Wexflow.Core.Db.Oracle
                     }
                 }
 
-                var xmlVal = builder.ToString();
+                _ = builder.Append(')');
+                var val = builder.ToString();
 
-                return xmlVal;
+                return val;
             }
+        }
+
+        private string ToCLOB(Core.Db.Workflow workflow)
+        {
+            return ToCLOB(workflow.Xml);
         }
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
@@ -1595,7 +1609,7 @@ namespace Wexflow.Core.Db.Oracle
                         + Entry.ColumnName_Status + " = " + (int)entry.Status + ", "
                         + Entry.ColumnName_WorkflowId + " = " + entry.WorkflowId + ", "
                         + Entry.ColumnName_JobId + " = '" + (entry.JobId ?? "") + "', "
-                        + Entry.ColumnName_Logs + " = '" + (entry.Logs ?? "").Replace("'", "''") + "'"
+                        + Entry.ColumnName_Logs + " = " + ToCLOB(entry.Logs)
                         + " WHERE "
                         + Entry.ColumnName_Id + " = " + int.Parse(id)
                         , conn))
