@@ -14,33 +14,33 @@ namespace Wexflow.Server
     {
         public static NameValueCollection Config = ConfigurationManager.AppSettings;
 
-        private static readonly string settingsFile = Config["WexflowSettingsFile"];
-        private static readonly Core.LogLevel logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
-        private static readonly string superAdminUsername = Config["SuperAdminUsername"];
-        private static readonly bool enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
-        private static readonly bool enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
-        private static readonly bool enableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"]);
-        private static readonly string smtpHost = Config["Smtp.Host"];
-        private static readonly int smtpPort = int.Parse(Config["Smtp.Port"]);
-        private static readonly bool smtpEnableSsl = bool.Parse(Config["Smtp.EnableSsl"]);
-        private static readonly string smtpUser = Config["Smtp.User"];
-        private static readonly string smtpPassword = Config["Smtp.Password"];
-        private static readonly string smtpFrom = Config["Smtp.From"];
+        private static readonly string SettingsFile = Config["WexflowSettingsFile"];
+        private static readonly Core.LogLevel LogLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
+        private static readonly string SuperAdminUsername = Config["SuperAdminUsername"];
+        private static readonly bool EnableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"]);
+        private static readonly bool EnableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"]);
+        private static readonly bool EnableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"]);
+        private static readonly string SmtpHost = Config["Smtp.Host"];
+        private static readonly int SmtpPort = int.Parse(Config["Smtp.Port"]);
+        private static readonly bool SmtpEnableSsl = bool.Parse(Config["Smtp.EnableSsl"]);
+        private static readonly string SmtpUser = Config["Smtp.User"];
+        private static readonly string SmtpPassword = Config["Smtp.Password"];
+        private static readonly string SmtpFrom = Config["Smtp.From"];
 
         public static FileSystemWatcher WorkflowsWatcher;
         public static FileSystemWatcher RecordsWatcher;
         public static WexflowEngine WexflowEngine = new WexflowEngine(
-            settingsFile
-            , logLevel
-            , enableWorkflowsHotFolder
-            , superAdminUsername
-            , enableEmailNotifications
-            , smtpHost
-            , smtpPort
-            , smtpEnableSsl
-            , smtpUser
-            , smtpPassword
-            , smtpFrom
+            SettingsFile
+            , LogLevel
+            , EnableWorkflowsHotFolder
+            , SuperAdminUsername
+            , EnableEmailNotifications
+            , SmtpHost
+            , SmtpPort
+            , SmtpEnableSsl
+            , SmtpUser
+            , SmtpPassword
+            , SmtpFrom
             );
 
         private IDisposable _webApp;
@@ -55,7 +55,7 @@ namespace Wexflow.Server
 
         private void StartThread()
         {
-            if (enableWorkflowsHotFolder)
+            if (EnableWorkflowsHotFolder)
             {
                 InitializeWorkflowsFileSystemWatcher();
             }
@@ -64,12 +64,12 @@ namespace Wexflow.Server
                 Logger.Info("Workflows hot folder is disabled.");
             }
 
-            if (enableRecordsHotFolder)
+            if (EnableRecordsHotFolder)
             {
                 // On file found.
                 foreach (var file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
                 {
-                    var recordId = WexflowEngine.SaveRecordFromFile(file, superAdminUsername);
+                    var recordId = WexflowEngine.SaveRecordFromFile(file, SuperAdminUsername);
 
                     if (recordId != "-1")
                     {
@@ -148,11 +148,11 @@ namespace Wexflow.Server
                         Thread.Sleep(1000);
                     }
                 }
-                if (!WexflowEngine.IsDirectory(e.FullPath))
+                if (!IsDirectory(e.FullPath))
                 {
                     Logger.Info("Workflow.FileSystemWatcher.OnCreated");
 
-                    var admin = WexflowEngine.GetUser(superAdminUsername);
+                    var admin = WexflowEngine.GetUser(SuperAdminUsername);
                     _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
                 }
             }
@@ -175,12 +175,12 @@ namespace Wexflow.Server
                         Thread.Sleep(1000);
                     }
                 }
-                if (!WexflowEngine.IsDirectory(e.FullPath))
+                if (!IsDirectory(e.FullPath))
                 {
                     Logger.Info("Workflow.FileSystemWatcher.OnChanged");
 
                     Thread.Sleep(500);
-                    var admin = WexflowEngine.GetUser(superAdminUsername);
+                    var admin = WexflowEngine.GetUser(SuperAdminUsername);
                     _ = WexflowEngine.SaveWorkflowFromFile(admin.GetDbId(), Core.Db.UserProfile.SuperAdministrator, e.FullPath, true);
                 }
             }
@@ -241,12 +241,12 @@ namespace Wexflow.Server
                         Thread.Sleep(1000);
                     }
                 }
-                if (!WexflowEngine.IsDirectory(e.FullPath))
+                if (!IsDirectory(e.FullPath))
                 {
                     Logger.Info("Record.FileSystemWatcher.OnCreated");
 
                     Thread.Sleep(1000);
-                    var recordId = WexflowEngine.SaveRecordFromFile(e.FullPath, superAdminUsername);
+                    var recordId = WexflowEngine.SaveRecordFromFile(e.FullPath, SuperAdminUsername);
                     if (recordId != "-1")
                     {
                         Logger.Info($"Record inserted from file {e.FullPath}. RecordId: {recordId}");
@@ -265,6 +265,30 @@ namespace Wexflow.Server
             {
                 Logger.ErrorFormat("Error while creating the record {0}", ex, e.FullPath);
             }
+        }
+
+        /// <summary>
+        /// Checks if a path is a directory.
+        /// </summary>
+        /// <param name="path">Path.</param>
+        /// <returns>Result.</returns>
+        public static bool IsDirectory(string path)
+        {
+            var attr = File.GetAttributes(path);
+
+            var isDir = attr.HasFlag(FileAttributes.Directory);
+
+            return isDir;
+        }
+
+        /// <summary>
+        /// Checks if a directory is empty.
+        /// </summary>
+        /// <param name="path">Directory path.</param>
+        /// <returns>Result.</returns>
+        public static bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
         }
     }
 }

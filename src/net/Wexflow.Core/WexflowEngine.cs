@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Wexflow.Core.Db;
+// ReSharper disable InconsistentNaming
 
 namespace Wexflow.Core
 {
@@ -376,7 +377,7 @@ namespace Wexflow.Core
             GlobalVariables = variables.ToArray();
         }
 
-        private string GetWexflowSetting(XDocument xdoc, string name)
+        private static string GetWexflowSetting(XDocument xdoc, string name)
         {
             try
             {
@@ -393,7 +394,7 @@ namespace Wexflow.Core
         private void LoadWorkflows()
         {
             // Load workflows from db
-            var workflows = Database.GetWorkflows().ToList();
+            var workflows = Database.GetWorkflows().ToArray();
 
             foreach (var workflow in workflows)
             {
@@ -963,6 +964,7 @@ namespace Wexflow.Core
         /// </summary>
         /// <param name="startedBy">Username of the user that started the workflow.</param>
         /// <param name="workflowId">Workflow Id.</param>
+        /// <returns>Instance id.</returns>
         public Guid StartWorkflow(string startedBy, int workflowId)
         {
             var wf = GetWorkflow(workflowId);
@@ -1129,7 +1131,7 @@ namespace Wexflow.Core
         }
 
         /// <summary>
-        /// Resumes a workflow.
+        /// Rejects a workflow.
         /// </summary>
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="instanceId">Job instance Id.</param>
@@ -1181,15 +1183,6 @@ namespace Wexflow.Core
         public StatusCount GetStatusCount()
         {
             return Database.GetStatusCount();
-        }
-
-        /// <summary>
-        /// Returns all the entries
-        /// </summary>
-        /// <returns>Returns all the entries</returns>
-        public Entry[] GetEntries()
-        {
-            return Database.GetEntries().ToArray();
         }
 
         /// <summary>
@@ -1277,23 +1270,13 @@ namespace Wexflow.Core
         }
 
         /// <summary>
-        /// Gets a password.
-        /// </summary>
-        /// <param name="username">Username.</param>
-        /// <returns></returns>
-        public string GetPassword(string username)
-        {
-            return Database.GetPassword(username);
-        }
-
-        /// <summary>
         /// Returns all the users.
         /// </summary>
         /// <returns>All the users.</returns>
         public User[] GetUsers()
         {
             var q = Database.GetUsers();
-            return q.Any() ? q.ToArray() : Array.Empty<User>();
+            return q.ToArray();
         }
 
         /// <summary>
@@ -1303,7 +1286,7 @@ namespace Wexflow.Core
         public User[] GetUsers(string keyword, UserOrderBy uo)
         {
             var q = Database.GetUsers(keyword, uo);
-            return q.Any() ? q.ToArray() : Array.Empty<User>();
+            return q.ToArray();
         }
 
         /// <summary>
@@ -1314,37 +1297,6 @@ namespace Wexflow.Core
         public void UpdatePassword(string username, string password)
         {
             Database.UpdatePassword(username, password);
-        }
-
-        /// <summary>
-        /// Returns all the entries.
-        /// </summary>
-        /// <returns>Returns all the entries</returns>
-        public HistoryEntry[] GetHistoryEntries()
-        {
-            return Database.GetHistoryEntries().ToArray();
-        }
-
-        /// <summary>
-        /// Returns the entries by a keyword.
-        /// </summary>
-        /// <param name="keyword">Search keyword.</param>
-        /// <returns>Returns all the entries</returns>
-        public HistoryEntry[] GetHistoryEntries(string keyword)
-        {
-            return Database.GetHistoryEntries(keyword).ToArray();
-        }
-
-        /// <summary>
-        /// Returns the entries by a keyword.
-        /// </summary>
-        /// <param name="keyword">Search keyword.</param>
-        /// <param name="page">Page number.</param>
-        /// <param name="entriesCount">Number of entries.</param>
-        /// <returns>Returns all the entries</returns>
-        public HistoryEntry[] GetHistoryEntries(string keyword, int page, int entriesCount)
-        {
-            return Database.GetHistoryEntries(keyword, page, entriesCount).ToArray();
         }
 
         /// <summary>
@@ -1360,8 +1312,7 @@ namespace Wexflow.Core
         public HistoryEntry[] GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
             var col = Database.GetHistoryEntries(keyword, from, to, page, entriesCount, heo);
-
-            return !col.Any() ? Array.Empty<HistoryEntry>() : col.ToArray();
+            return col.ToArray();
         }
 
         /// <summary>
@@ -1377,18 +1328,7 @@ namespace Wexflow.Core
         public Entry[] GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
             var col = Database.GetEntries(keyword, from, to, page, entriesCount, heo);
-
-            return !col.Any() ? Array.Empty<Entry>() : col.ToArray();
-        }
-
-        /// <summary>
-        /// Gets the number of history entries by search keyword.
-        /// </summary>
-        /// <param name="keyword">Search keyword.</param>
-        /// <returns>The number of history entries by search keyword.</returns>
-        public long GetHistoryEntriesCount(string keyword)
-        {
-            return Database.GetHistoryEntriesCount(keyword);
+            return col.ToArray();
         }
 
         /// <summary>
@@ -1472,65 +1412,13 @@ namespace Wexflow.Core
         }
 
         /// <summary>
-        /// Inserts a version in the database.
-        /// </summary>
-        /// <param name="version">Version.</param>
-        /// <returns>Version id.</returns>
-        public string SaveVersion(Db.Version version)
-        {
-            try
-            {
-                var versionId = Database.InsertVersion(version);
-                return versionId;
-            }
-            catch (Exception e)
-            {
-                Logger.ErrorFormat("An error occured while saving the version {0}.", e, version.FilePath);
-                return "-1";
-            }
-        }
-
-        /// <summary>
-        ///  Deletes versions.
-        /// </summary>
-        /// <param name="versionIds">Verions ids.</param>
-        /// <returns>Result.</returns>
-        public bool DeleteVersions(string[] versionIds)
-        {
-            try
-            {
-                Database.DeleteVersions(versionIds);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logger.Error("An error occured while deleting versions.", e);
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Checks if a directory is empty.
         /// </summary>
         /// <param name="path">Directory path.</param>
         /// <returns>Result.</returns>
-        public bool IsDirectoryEmpty(string path)
+        public static bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
-        }
-
-        /// <summary>
-        /// Checks if a path is a directory.
-        /// </summary>
-        /// <param name="path">Path.</param>
-        /// <returns>Result.</returns>
-        public bool IsDirectory(string path)
-        {
-            var attr = File.GetAttributes(path);
-
-            var isDir = attr.HasFlag(FileAttributes.Directory);
-
-            return isDir;
         }
 
         /// <summary>
@@ -1597,7 +1485,7 @@ namespace Wexflow.Core
                     var versionsToDeleteObjs = new List<Db.Version>();
                     foreach (var version in recordVersions)
                     {
-                        if (!versions.Any(v => v.FilePath == version.FilePath))
+                        if (versions.All(v => v.FilePath != version.FilePath))
                         {
                             versionsToDelete.Add(version.GetDbId());
                             versionsToDeleteObjs.Add(version);
@@ -1796,16 +1684,6 @@ namespace Wexflow.Core
         public Db.Version[] GetVersions(string recordId)
         {
             return Database.GetVersions(recordId).ToArray();
-        }
-
-        /// <summary>
-        /// returns the latest version of a record.
-        /// </summary>
-        /// <param name="recordId">Record id.</param>
-        /// <returns>Latest version of a record.</returns>
-        public Db.Version GetLatestVersion(string recordId)
-        {
-            return Database.GetLatestVersion(recordId);
         }
 
         /// <summary>

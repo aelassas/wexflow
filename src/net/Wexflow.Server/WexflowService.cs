@@ -4247,11 +4247,11 @@ namespace Wexflow.Server
                                 res = true;
 
                                 var parentDir = Path.GetDirectoryName(path);
-                                if (WexflowServer.WexflowEngine.IsDirectoryEmpty(parentDir))
+                                if (WexflowEngine.IsDirectoryEmpty(parentDir))
                                 {
                                     Directory.Delete(parentDir);
                                     var recordTempDir = Directory.GetParent(parentDir).FullName;
-                                    if (WexflowServer.WexflowEngine.IsDirectoryEmpty(recordTempDir))
+                                    if (WexflowEngine.IsDirectoryEmpty(recordTempDir))
                                     {
                                         Directory.Delete(recordTempDir);
                                     }
@@ -4320,11 +4320,11 @@ namespace Wexflow.Server
                                         File.Delete(path);
 
                                         var parentDir = Path.GetDirectoryName(path);
-                                        if (WexflowServer.WexflowEngine.IsDirectoryEmpty(parentDir))
+                                        if (WexflowEngine.IsDirectoryEmpty(parentDir))
                                         {
                                             Directory.Delete(parentDir);
                                             var recordTempDir = Directory.GetParent(parentDir).FullName;
-                                            if (WexflowServer.WexflowEngine.IsDirectoryEmpty(recordTempDir))
+                                            if (WexflowEngine.IsDirectoryEmpty(recordTempDir))
                                             {
                                                 Directory.Delete(recordTempDir);
                                             }
