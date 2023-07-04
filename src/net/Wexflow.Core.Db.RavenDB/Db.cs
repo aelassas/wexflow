@@ -14,8 +14,8 @@ namespace Wexflow.Core.Db.RavenDB
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object padlock = new object();
-        private static DocumentStore store;
+        private static readonly object Padlock = new object();
+        private static DocumentStore _store;
 
         public Db(string connectionString) : base(connectionString)
         {
@@ -39,24 +39,24 @@ namespace Wexflow.Core.Db.RavenDB
                 }
             }
 
-            store = new DocumentStore
+            _store = new DocumentStore
             {
-                Urls = new string[] { ravenUrl },
+                Urls = new[] { ravenUrl },
                 Database = database
             };
 
-            _ = store.Initialize();
+            _ = _store.Initialize();
 
             // Create database if it does not exist
             try
             {
-                _ = store.Maintenance.ForDatabase(store.Database).Send(new GetStatisticsOperation());
+                _ = _store.Maintenance.ForDatabase(_store.Database).Send(new GetStatisticsOperation());
             }
             catch (DatabaseDoesNotExistException)
             {
                 try
                 {
-                    _ = store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
+                    _ = _store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
                 }
                 catch (ConcurrencyException)
                 {
@@ -67,7 +67,7 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void Init()
         {
-            using (var session = store.OpenSession())
+            using (var session = _store.OpenSession())
             {
                 // StatusCount
                 ClearStatusCount();
@@ -92,7 +92,7 @@ namespace Wexflow.Core.Db.RavenDB
                 var usersCol = session.Query<User>();
                 try
                 {
-                    if (usersCol.Count() == 0)
+                    if (!usersCol.Any())
                     {
                         InsertDefaultUser();
                     }
@@ -106,9 +106,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         private void DeleteAll(string documentName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                _ = store.Operations
+                _ = _store.Operations
              .Send(new DeleteByQueryOperation(new IndexQuery
              {
                  Query = "from " + documentName
@@ -119,7 +119,7 @@ namespace Wexflow.Core.Db.RavenDB
 
         private void Wait()
         {
-            while (store.Maintenance.ForDatabase(store.Database).Send(new GetStatisticsOperation()).StaleIndexes.Length > 0)
+            while (_store.Maintenance.ForDatabase(_store.Database).Send(new GetStatisticsOperation()).StaleIndexes.Length > 0)
             {
                 Thread.Sleep(10);
             }
@@ -127,9 +127,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override bool CheckUserWorkflow(string userId, string workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -157,9 +157,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DecrementPendingCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -175,9 +175,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DecrementRunningCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -193,9 +193,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteUser(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<User>();
                     var user = col.FirstOrDefault(u => u.Username == username);
@@ -216,9 +216,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteUserWorkflowRelationsByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<UserWorkflow>();
                     var rels = col.Where(uw => uw.UserId == userId).ToArray();
@@ -234,9 +234,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<UserWorkflow>();
                     var rels = col.Where(uw => uw.WorkflowId == workflowDbId).ToArray();
@@ -252,9 +252,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Workflow>();
                     var wf = col.FirstOrDefault(e => e.Id == id);
@@ -270,9 +270,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteWorkflows(string[] ids)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Workflow>();
 
@@ -293,9 +293,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.User> GetAdministrators(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -330,9 +330,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -349,9 +349,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Entry> GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy eo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -367,7 +367,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                    .OrderBy(e => e.StatusDate).Skip((page - 1) * entriesCount)
+                                    .OrderBy(e => e.StatusDate).Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -378,7 +378,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.StatusDate)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -389,7 +389,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.WorkflowId)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -400,7 +400,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.WorkflowId)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -411,7 +411,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.Name)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -422,7 +422,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.Name)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -433,7 +433,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.LaunchType)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -444,7 +444,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.LaunchType)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -455,7 +455,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.Description)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -466,7 +466,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.Description)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -477,7 +477,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.Status)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -488,7 +488,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.Status)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
                         }
@@ -505,9 +505,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override long GetEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -529,9 +529,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.Entry GetEntry(int workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -548,9 +548,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -567,9 +567,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override DateTime GetEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -587,9 +587,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override DateTime GetEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -607,9 +607,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -626,9 +626,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -649,9 +649,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, int page, int entriesCount)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -672,9 +672,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -690,7 +690,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                    .OrderBy(e => e.StatusDate).Skip((page - 1) * entriesCount)
+                                    .OrderBy(e => e.StatusDate).Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -701,7 +701,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.StatusDate)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -712,7 +712,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.WorkflowId)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -723,7 +723,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.WorkflowId)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -734,7 +734,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.Name)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -745,7 +745,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.Name)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -756,7 +756,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.LaunchType)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -767,7 +767,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.LaunchType)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -778,7 +778,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.Description)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -789,7 +789,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.Description)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -800,7 +800,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderBy(e => e.Status)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
 
@@ -811,7 +811,7 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Search(e => e.Description, keywordToLower)
                                     .Where(e => e.StatusDate > from && e.StatusDate < to)
                                     .OrderByDescending(e => e.Status)
-                                    .Skip((page - 1) * entriesCount)
+                                    .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
                         }
@@ -828,9 +828,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override long GetHistoryEntriesCount(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -851,9 +851,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override long GetHistoryEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -875,9 +875,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override DateTime GetHistoryEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -895,9 +895,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override DateTime GetHistoryEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -915,9 +915,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string GetPassword(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -935,9 +935,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.StatusCount GetStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -955,9 +955,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.User GetUser(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -975,9 +975,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.User GetUserById(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -995,9 +995,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.User> GetUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -1014,9 +1014,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.User> GetUsers(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -1043,9 +1043,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<string> GetUserWorkflows(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -1062,9 +1062,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.Workflow GetWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -1081,9 +1081,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     try
                     {
@@ -1100,9 +1100,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementDisabledCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1118,9 +1118,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementRejectedCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1136,9 +1136,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementDoneCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1154,9 +1154,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementFailedCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1172,9 +1172,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementPendingCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1190,9 +1190,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementRunningCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1208,9 +1208,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementStoppedCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1226,9 +1226,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void IncrementWarningCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<StatusCount>();
                     var statusCount = col.FirstOrDefault();
@@ -1244,9 +1244,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void InsertEntry(Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var ie = new Entry
                     {
@@ -1268,9 +1268,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void InsertHistoryEntry(Core.Db.HistoryEntry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var he = new HistoryEntry
                     {
@@ -1291,9 +1291,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void InsertUser(Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     user.CreatedOn = DateTime.Now;
                     var nu = new User
@@ -1314,9 +1314,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void InsertUserWorkflowRelation(Core.Db.UserWorkflow userWorkflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var uw = new UserWorkflow
                     {
@@ -1332,9 +1332,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var wf = new Workflow { Xml = workflow.Xml };
                     session.Store(wf);
@@ -1347,9 +1347,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateEntry(string id, Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Entry>();
                     var ue = col.First(e => e.Id == id);
@@ -1370,9 +1370,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdatePassword(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<User>();
                     var dbUser = col.First(u => u.Username == username);
@@ -1386,9 +1386,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateUser(string id, Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<User>();
                     var uu = col.First(u => u.Id == id);
@@ -1406,9 +1406,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateUsernameAndEmailAndUserProfile(string userId, string username, string email, UserProfile up)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<User>();
                     var uu = col.First(u => u.Id == userId);
@@ -1425,9 +1425,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateWorkflow(string dbId, Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Workflow>();
                     var wf = col.First(w => w.Id == dbId);
@@ -1441,9 +1441,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string GetEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Entry>();
                     var entry = col.First(e => e.Id == entryId);
@@ -1454,9 +1454,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string GetHistoryEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<HistoryEntry>();
                     var entry = col.First(e => e.Id == entryId);
@@ -1467,9 +1467,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<User>();
                     var users = col.Where(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username).ToList();
@@ -1480,9 +1480,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string InsertRecord(Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var r = new Record
                     {
@@ -1508,9 +1508,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateRecord(string recordId, Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Record>();
                     var recordFromDb = col.First(r => r.Id == recordId);
@@ -1537,9 +1537,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteRecords(string[] recordIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Record>();
 
@@ -1560,9 +1560,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.Record GetRecord(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Record>();
                     var record = col.FirstOrDefault(r => r.Id == id);
@@ -1573,9 +1573,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Record> GetRecords(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Record>();
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
@@ -1591,9 +1591,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedBy(string createdBy)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Record>();
                     var records = col.Where(r => r.CreatedBy == createdBy).OrderBy(r => r.Name).ToList();
@@ -1604,9 +1604,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedByOrAssignedTo(string createdBy, string assingedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Record>();
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
@@ -1624,9 +1624,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string InsertVersion(Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var v = new Version
                     {
@@ -1644,9 +1644,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateVersion(string versionId, Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Version>();
                     var versionFromDb = col.First(v => v.Id == versionId);
@@ -1663,9 +1663,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteVersions(string[] versionIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Version>();
 
@@ -1686,9 +1686,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Version> GetVersions(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Version>();
 
@@ -1700,9 +1700,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override Core.Db.Version GetLatestVersion(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Version>();
 
@@ -1714,11 +1714,10 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string InsertNotification(Core.Db.Notification notification)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Notification>();
                     var n = new Notification
                     {
                         AssignedBy = notification.AssignedBy,
@@ -1738,9 +1737,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void MarkNotificationsAsRead(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Notification>();
 
@@ -1761,9 +1760,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void MarkNotificationsAsUnread(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Notification>();
 
@@ -1784,9 +1783,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteNotifications(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Notification>();
 
@@ -1807,9 +1806,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Notification> GetNotifications(string assignedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Notification>();
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
@@ -1825,9 +1824,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override bool HasNotifications(string assignedTo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Notification>();
                     var notifications = col.Where(n => n.AssignedTo == assignedTo && !n.IsRead);
@@ -1839,9 +1838,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override string InsertApprover(Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var a = new Approver
                     {
@@ -1860,9 +1859,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void UpdateApprover(string approverId, Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Approver>();
                     var ua = col.First(a => a.Id == approverId);
@@ -1879,9 +1878,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteApproversByRecordId(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Approver>();
                     var approvers = col.Where(a => a.RecordId == recordId).ToArray();
@@ -1897,9 +1896,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteApprovedApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Approver>();
                     var approvers = col.Where(a => a.Approved && a.RecordId == recordId).ToArray();
@@ -1915,9 +1914,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void DeleteApproversByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Approver>();
                     var approvers = col.Where(a => a.UserId == userId).ToArray();
@@ -1933,9 +1932,9 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override IEnumerable<Core.Db.Approver> GetApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var session = store.OpenSession())
+                using (var session = _store.OpenSession())
                 {
                     var col = session.Query<Approver>();
                     return col.Where(a => a.RecordId == recordId).ToList();

@@ -148,7 +148,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void DecrementDoneCount()
+/*
+        public void DecrementDoneCount()
         {
             lock (Padlock)
             {
@@ -161,6 +162,7 @@ namespace Wexflow.Core.Db.LiteDB
                 }
             }
         }
+*/
 
         public override void IncrementFailedCount()
         {
@@ -190,7 +192,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void DecrementFailedCount()
+/*
+        public void DecrementFailedCount()
         {
             lock (Padlock)
             {
@@ -203,6 +206,7 @@ namespace Wexflow.Core.Db.LiteDB
                 }
             }
         }
+*/
 
         public override void IncrementWarningCount()
         {
@@ -218,7 +222,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void DecrementWarningCount()
+/*
+        public void DecrementWarningCount()
         {
             lock (Padlock)
             {
@@ -231,6 +236,7 @@ namespace Wexflow.Core.Db.LiteDB
                 }
             }
         }
+*/
 
         public override void IncrementDisabledCount()
         {
@@ -246,7 +252,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void DecrementDisabledCount()
+/*
+        public void DecrementDisabledCount()
         {
             lock (Padlock)
             {
@@ -259,6 +266,7 @@ namespace Wexflow.Core.Db.LiteDB
                 }
             }
         }
+*/
 
         public override void IncrementStoppedCount()
         {
@@ -274,7 +282,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void DecrementStoppedCount()
+/*
+        public void DecrementStoppedCount()
         {
             lock (Padlock)
             {
@@ -287,8 +296,10 @@ namespace Wexflow.Core.Db.LiteDB
                 }
             }
         }
+*/
 
-        public static void ResetStatusCount()
+/*
+        public void ResetStatusCount()
         {
             lock (Padlock)
             {
@@ -307,6 +318,7 @@ namespace Wexflow.Core.Db.LiteDB
                 }
             }
         }
+*/
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
@@ -385,7 +397,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void DeleteEntry(int workflowId)
+/*
+        public void DeleteEntry(int workflowId)
         {
             lock (Padlock)
             {
@@ -393,6 +406,7 @@ namespace Wexflow.Core.Db.LiteDB
                 _ = col.DeleteMany(e => e.WorkflowId == workflowId);
             }
         }
+*/
 
         public override void InsertUser(Core.Db.User user)
         {
@@ -647,7 +661,8 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public static void UpdateHistoryEntry(HistoryEntry entry)
+/*
+        public void UpdateHistoryEntry(HistoryEntry entry)
         {
             lock (Padlock)
             {
@@ -655,8 +670,10 @@ namespace Wexflow.Core.Db.LiteDB
                 _ = col.Update(entry);
             }
         }
+*/
 
-        public static void DeleteHistoryEntries(int workflowId)
+/*
+        public void DeleteHistoryEntries(int workflowId)
         {
             lock (Padlock)
             {
@@ -664,6 +681,7 @@ namespace Wexflow.Core.Db.LiteDB
                 _ = col.DeleteMany(e => e.WorkflowId == workflowId);
             }
         }
+*/
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
@@ -1594,7 +1612,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
-                var version = col.Find(v => v.RecordId == recordId).OrderByDescending(v => v.CreatedOn).FirstOrDefault();
+                var version = col.Find(v => v.RecordId == recordId).MaxBy(v => v.CreatedOn);
                 return version;
             }
         }

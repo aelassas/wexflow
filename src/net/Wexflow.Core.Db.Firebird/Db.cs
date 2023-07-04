@@ -7,14 +7,14 @@ namespace Wexflow.Core.Db.Firebird
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object padlock = new object();
-        private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private static readonly object Padlock = new object();
+        private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
-        private static string connectionString;
+        private static string _connectionString;
 
         public Db(string connectionString) : base(connectionString)
         {
-            Db.connectionString = connectionString;
+            _connectionString = connectionString;
             var helper = new Helper(connectionString);
             helper.CreateTableIfNotExists(Core.Db.Entry.DocumentName, Entry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DocumentName, HistoryEntry.TableStruct);
@@ -44,7 +44,7 @@ namespace Wexflow.Core.Db.Firebird
                 StoppedCount = 0
             };
 
-            using (var conn = new FbConnection(connectionString))
+            using (var conn = new FbConnection(_connectionString))
             {
                 conn.Open();
 
@@ -75,7 +75,7 @@ namespace Wexflow.Core.Db.Firebird
             ClearEntries();
 
             // Insert default user if necessary
-            using (var conn = new FbConnection(connectionString))
+            using (var conn = new FbConnection(_connectionString))
             {
                 conn.Open();
 
@@ -93,9 +93,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override bool CheckUserWorkflow(string userId, string workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -114,9 +114,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void ClearEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -130,9 +130,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void ClearStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -146,9 +146,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteUser(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -165,9 +165,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteUserWorkflowRelationsByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -182,9 +182,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -199,9 +199,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -216,9 +216,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteWorkflows(string[] ids)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -242,11 +242,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.User> GetAdministrators(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var admins = new List<User>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -290,11 +290,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<Entry>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -337,11 +337,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Entry> GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy eo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<Entry>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -357,7 +357,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "')"
+                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
                         + " ORDER BY ");
 
                     switch (eo)
@@ -455,9 +455,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override long GetEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -465,7 +465,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn))
+                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn))
                     {
                         var count = (long)command.ExecuteScalar();
 
@@ -477,9 +477,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.Entry GetEntry(int workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -523,9 +523,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -570,9 +570,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override DateTime GetEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -598,9 +598,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override DateTime GetEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -626,11 +626,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -671,11 +671,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -718,11 +718,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, int page, int entriesCount)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -765,11 +765,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -784,7 +784,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "')"
+                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
                         + " ORDER BY ");
 
                     switch (heo)
@@ -881,9 +881,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override long GetHistoryEntriesCount(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -902,9 +902,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override long GetHistoryEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -912,7 +912,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn))
+                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn))
                     {
                         var count = (long)command.ExecuteScalar();
 
@@ -924,9 +924,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override DateTime GetHistoryEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -952,9 +952,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override DateTime GetHistoryEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -980,9 +980,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string GetPassword(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1009,9 +1009,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.StatusCount GetStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1056,9 +1056,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.User GetUser(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1100,9 +1100,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.User GetUserById(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1144,11 +1144,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.User> GetUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var users = new List<User>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1189,11 +1189,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.User> GetUsers(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var users = new List<User>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1236,11 +1236,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<string> GetUserWorkflows(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var workflowIds = new List<string>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1269,9 +1269,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.Workflow GetWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1302,11 +1302,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var workflows = new List<Core.Db.Workflow>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1336,9 +1336,9 @@ namespace Wexflow.Core.Db.Firebird
 
         private static void IncrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1392,9 +1392,9 @@ namespace Wexflow.Core.Db.Firebird
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1418,9 +1418,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void InsertEntry(Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1436,7 +1436,7 @@ namespace Wexflow.Core.Db.Firebird
                         + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (int)entry.LaunchType + ", "
-                        + "'" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", "
+                        + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
                         + "'" + (entry.JobId ?? "") + "', "
@@ -1451,9 +1451,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void InsertHistoryEntry(Core.Db.HistoryEntry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1468,7 +1468,7 @@ namespace Wexflow.Core.Db.Firebird
                         + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (int)entry.LaunchType + ", "
-                        + "'" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", "
+                        + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
                         + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
@@ -1482,9 +1482,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void InsertUser(Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1499,8 +1499,8 @@ namespace Wexflow.Core.Db.Firebird
                         + "'" + (user.Password ?? "").Replace("'", "''") + "'" + ", "
                         + (int)user.UserProfile + ", "
                         + "'" + (user.Email ?? "").Replace("'", "''") + "'" + ", "
-                        + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", "
-                        + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(dateTimeFormat) + "'") + ");"
+                        + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
+                        + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(DateTimeFormat) + "'") + ");"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1511,9 +1511,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void InsertUserWorkflowRelation(Core.Db.UserWorkflow userWorkflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1532,9 +1532,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1553,9 +1553,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateEntry(string id, Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1563,7 +1563,7 @@ namespace Wexflow.Core.Db.Firebird
                         + Entry.ColumnName_Name + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
                         + Entry.ColumnName_Description + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
                         + Entry.ColumnName_LaunchType + " = " + (int)entry.LaunchType + ", "
-                        + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(dateTimeFormat) + "', "
+                        + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(DateTimeFormat) + "', "
                         + Entry.ColumnName_Status + " = " + (int)entry.Status + ", "
                         + Entry.ColumnName_WorkflowId + " = " + entry.WorkflowId + ", "
                         + Entry.ColumnName_JobId + " = '" + (entry.JobId ?? "") + "', "
@@ -1580,9 +1580,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdatePassword(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1600,9 +1600,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateUser(string id, Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1611,8 +1611,8 @@ namespace Wexflow.Core.Db.Firebird
                         + User.ColumnName_Password + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
                         + User.ColumnName_UserProfile + " = " + (int)user.UserProfile + ", "
                         + User.ColumnName_Email + " = '" + (user.Email ?? "").Replace("'", "''") + "', "
-                        + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(dateTimeFormat) + "', "
-                        + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "'"
+                        + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(DateTimeFormat) + "', "
+                        + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                         + " WHERE "
                         + User.ColumnName_Id + " = " + int.Parse(id) + ";"
                         , conn))
@@ -1625,9 +1625,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateUsernameAndEmailAndUserProfile(string userId, string username, string email, UserProfile up)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1635,7 +1635,7 @@ namespace Wexflow.Core.Db.Firebird
                         + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "', "
                         + User.ColumnName_UserProfile + " = " + (int)up + ", "
                         + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''") + "', "
-                        + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "'"
+                        + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                         + " WHERE "
                         + User.ColumnName_Id + " = " + int.Parse(userId) + ";"
                         , conn))
@@ -1648,9 +1648,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateWorkflow(string dbId, Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1668,9 +1668,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string GetEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1697,9 +1697,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string GetHistoryEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1726,11 +1726,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var users = new List<User>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1775,9 +1775,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string InsertRecord(Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1799,16 +1799,16 @@ namespace Wexflow.Core.Db.Firebird
                         + "'" + (record.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (record.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (record.Approved ? "TRUE" : "FALSE") + ", "
-                        + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'") + ", "
-                        + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'") + ", "
+                        + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                        + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
                         + "'" + (record.Comments ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (record.ManagerComments ?? "").Replace("'", "''") + "'" + ", "
                         + int.Parse(record.CreatedBy) + ", "
-                        + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", "
+                        + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
                         + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                        + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(dateTimeFormat) + "'") + ", "
+                        + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(DateTimeFormat) + "'") + ", "
                          + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                        + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'") + ")"
+                        + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'") + ")"
                         + " RETURNING " + Record.ColumnName_Id
                         + ";"
                         , conn))
@@ -1822,9 +1822,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateRecord(string recordId, Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1832,15 +1832,15 @@ namespace Wexflow.Core.Db.Firebird
                         + Record.ColumnName_Name + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_Description + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_Approved + " = " + (record.Approved ? "TRUE" : "FALSE") + ", "
-                        + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'") + ", "
-                        + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'") + ", "
+                        + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                        + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
                         + Record.ColumnName_Comments + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_ManagerComments + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_CreatedBy + " = " + int.Parse(record.CreatedBy) + ", "
                         + Record.ColumnName_ModifiedBy + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                        + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "', "
+                        + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "', "
                         + Record.ColumnName_AssignedTo + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                        + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'")
+                        + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'")
                         + " WHERE "
                         + Record.ColumnName_Id + " = " + int.Parse(recordId) + ";"
                         , conn))
@@ -1853,11 +1853,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteRecords(string[] recordIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (recordIds.Length > 0)
                 {
-                    using (var conn = new FbConnection(connectionString))
+                    using (var conn = new FbConnection(_connectionString))
                     {
                         conn.Open();
 
@@ -1882,9 +1882,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.Record GetRecord(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1941,11 +1941,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Record> GetRecords(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var records = new List<Record>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2004,11 +2004,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedBy(string createdBy)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var records = new List<Record>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2066,11 +2066,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedByOrAssignedTo(string createdBy, string assingedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var records = new List<Record>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2130,9 +2130,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string InsertVersion(Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2143,7 +2143,7 @@ namespace Wexflow.Core.Db.Firebird
                         + " VALUES("
                         + int.Parse(version.RecordId) + ", "
                         + "'" + (version.FilePath ?? "").Replace("'", "''") + "'" + ", "
-                        + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ")"
+                        + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ")"
                         + " RETURNING " + Version.ColumnName_Id
                         + ";"
                         , conn))
@@ -2157,9 +2157,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateVersion(string versionId, Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2178,11 +2178,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteVersions(string[] versionIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (versionIds.Length > 0)
                 {
-                    using (var conn = new FbConnection(connectionString))
+                    using (var conn = new FbConnection(_connectionString))
                     {
                         conn.Open();
 
@@ -2207,11 +2207,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Version> GetVersions(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var versions = new List<Version>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2248,9 +2248,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override Core.Db.Version GetLatestVersion(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2288,9 +2288,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string InsertNotification(Core.Db.Notification notification)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2302,7 +2302,7 @@ namespace Wexflow.Core.Db.Firebird
                         + Notification.ColumnName_IsRead + ")"
                         + " VALUES("
                         + (!string.IsNullOrEmpty(notification.AssignedBy) ? int.Parse(notification.AssignedBy).ToString() : "NULL") + ", "
-                        + "'" + notification.AssignedOn.ToString(dateTimeFormat) + "'" + ", "
+                        + "'" + notification.AssignedOn.ToString(DateTimeFormat) + "'" + ", "
                         + (!string.IsNullOrEmpty(notification.AssignedTo) ? int.Parse(notification.AssignedTo).ToString() : "NULL") + ", "
                         + "'" + (notification.Message ?? "").Replace("'", "''") + "'" + ", "
                         + (notification.IsRead ? "TRUE" : "FALSE") + ")"
@@ -2319,9 +2319,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void MarkNotificationsAsRead(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2346,9 +2346,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void MarkNotificationsAsUnread(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2373,11 +2373,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteNotifications(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (notificationIds.Length > 0)
                 {
-                    using (var conn = new FbConnection(connectionString))
+                    using (var conn = new FbConnection(_connectionString))
                     {
                         conn.Open();
 
@@ -2402,11 +2402,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Notification> GetNotifications(string assignedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var notifications = new List<Notification>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2449,9 +2449,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override bool HasNotifications(string assignedTo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2471,9 +2471,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override string InsertApprover(Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2485,7 +2485,7 @@ namespace Wexflow.Core.Db.Firebird
                         + int.Parse(approver.UserId) + ", "
                         + int.Parse(approver.RecordId) + ", "
                         + (approver.Approved ? "TRUE" : "FALSE") + ", "
-                        + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'") + ") "
+                        + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'") + ") "
                         + "RETURNING " + Approver.ColumnName_Id + ";"
                         , conn))
                     {
@@ -2498,9 +2498,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void UpdateApprover(string approverId, Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2508,7 +2508,7 @@ namespace Wexflow.Core.Db.Firebird
                         + Approver.ColumnName_UserId + " = " + int.Parse(approver.UserId) + ", "
                         + Approver.ColumnName_RecordId + " = " + int.Parse(approver.RecordId) + ", "
                         + Approver.ColumnName_Approved + " = " + (approver.Approved ? "TRUE" : "FALSE") + ", "
-                        + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'")
+                        + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'")
                         + " WHERE "
                         + Approver.ColumnName_Id + " = " + int.Parse(approverId) + ";"
                         , conn))
@@ -2521,9 +2521,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteApproversByRecordId(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2538,9 +2538,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteApprovedApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2558,9 +2558,9 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DeleteApproversByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2575,11 +2575,11 @@ namespace Wexflow.Core.Db.Firebird
 
         public override IEnumerable<Core.Db.Approver> GetApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var approvers = new List<Approver>();
 
-                using (var conn = new FbConnection(connectionString))
+                using (var conn = new FbConnection(_connectionString))
                 {
                     conn.Open();
 

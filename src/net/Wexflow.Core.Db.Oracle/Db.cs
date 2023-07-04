@@ -8,15 +8,15 @@ namespace Wexflow.Core.Db.Oracle
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object padlock = new object();
-        private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
-        private static readonly int chunkSize = 2000;
+        private static readonly object Padlock = new object();
+        private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private const int ChunkSize = 2000;
 
-        private static string connectionString;
+        private static string _connectionString;
 
         public Db(string connectionString) : base(connectionString)
         {
-            Db.connectionString = connectionString;
+            _connectionString = connectionString;
             var helper = new Helper(connectionString);
             helper.CreateTableIfNotExists(Core.Db.Entry.DocumentName, Entry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DocumentName, HistoryEntry.TableStruct);
@@ -46,7 +46,7 @@ namespace Wexflow.Core.Db.Oracle
                 StoppedCount = 0
             };
 
-            using (var conn = new OracleConnection(connectionString))
+            using (var conn = new OracleConnection(_connectionString))
             {
                 conn.Open();
 
@@ -77,7 +77,7 @@ namespace Wexflow.Core.Db.Oracle
             ClearEntries();
 
             // Insert default user if necessary
-            using (var conn = new OracleConnection(connectionString))
+            using (var conn = new OracleConnection(_connectionString))
             {
                 conn.Open();
 
@@ -95,9 +95,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override bool CheckUserWorkflow(string userId, string workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -116,9 +116,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void ClearEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -132,9 +132,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void ClearStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -148,9 +148,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteUser(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -167,9 +167,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteUserWorkflowRelationsByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -184,9 +184,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -201,9 +201,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -218,9 +218,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteWorkflows(string[] ids)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -244,11 +244,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.User> GetAdministrators(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var admins = new List<User>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -292,11 +292,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<Entry>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -339,11 +339,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Entry> GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy eo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<Entry>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -359,7 +359,7 @@ namespace Wexflow.Core.Db.Oracle
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))"
+                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))"
                         + " ORDER BY ");
 
                     switch (eo)
@@ -455,9 +455,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override long GetEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -465,7 +465,7 @@ namespace Wexflow.Core.Db.Oracle
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))", conn))
+                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))", conn))
                     {
                         var count = (decimal)command.ExecuteScalar();
 
@@ -477,9 +477,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.Entry GetEntry(int workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -521,9 +521,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -566,9 +566,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override DateTime GetEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -595,9 +595,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override DateTime GetEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -624,11 +624,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -667,11 +667,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -712,11 +712,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, int page, int entriesCount)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -758,11 +758,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var entries = new List<HistoryEntry>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -777,7 +777,7 @@ namespace Wexflow.Core.Db.Oracle
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))"
+                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))"
                         + " ORDER BY ");
 
                     switch (heo)
@@ -872,9 +872,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override long GetHistoryEntriesCount(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -893,9 +893,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override long GetHistoryEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -903,7 +903,7 @@ namespace Wexflow.Core.Db.Oracle
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))", conn))
+                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN TO_TIMESTAMP('" + from.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('" + to.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'))", conn))
                     {
                         var count = (decimal)command.ExecuteScalar();
 
@@ -915,9 +915,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override DateTime GetHistoryEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -944,9 +944,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override DateTime GetHistoryEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -971,9 +971,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string GetPassword(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -998,9 +998,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.StatusCount GetStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1045,9 +1045,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.User GetUser(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1089,9 +1089,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.User GetUserById(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1133,11 +1133,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.User> GetUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var users = new List<User>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1176,11 +1176,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.User> GetUsers(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var users = new List<User>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1221,11 +1221,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<string> GetUserWorkflows(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var workflowIds = new List<string>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1252,9 +1252,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.Workflow GetWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1285,11 +1285,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var workflows = new List<Core.Db.Workflow>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1319,9 +1319,9 @@ namespace Wexflow.Core.Db.Oracle
 
         private static void IncrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1375,9 +1375,9 @@ namespace Wexflow.Core.Db.Oracle
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1401,9 +1401,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void InsertEntry(Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1419,11 +1419,11 @@ namespace Wexflow.Core.Db.Oracle
                         + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (int)entry.LaunchType + ", "
-                        + "TO_TIMESTAMP('" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF'), "
+                        + "TO_TIMESTAMP('" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF'), "
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
                         + "'" + (entry.JobId ?? "") + "', "
-                        + ToCLOB(entry.Logs)
+                        + ToClob(entry.Logs)
                         + ")"
                         , conn))
                     {
@@ -1435,9 +1435,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void InsertHistoryEntry(Core.Db.HistoryEntry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1452,10 +1452,10 @@ namespace Wexflow.Core.Db.Oracle
                         + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (int)entry.LaunchType + ", "
-                        + "TO_TIMESTAMP('" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF'), "
+                        + "TO_TIMESTAMP('" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF'), "
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
-                        + ToCLOB(entry.Logs)
+                        + ToClob(entry.Logs)
                         + ")"
                         , conn))
                     {
@@ -1467,9 +1467,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void InsertUser(Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1484,8 +1484,8 @@ namespace Wexflow.Core.Db.Oracle
                         + "'" + (user.Password ?? "").Replace("'", "''") + "'" + ", "
                         + (int)user.UserProfile + ", "
                         + "'" + (user.Email ?? "").Replace("'", "''") + "'" + ", "
-                        + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
-                        + (user.ModifiedOn == DateTime.MinValue ? "NULL" : ("TO_TIMESTAMP(" + "'" + user.ModifiedOn.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')")) + ")"
+                        + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
+                        + (user.ModifiedOn == DateTime.MinValue ? "NULL" : ("TO_TIMESTAMP(" + "'" + user.ModifiedOn.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')")) + ")"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1496,9 +1496,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void InsertUserWorkflowRelation(Core.Db.UserWorkflow userWorkflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1517,7 +1517,7 @@ namespace Wexflow.Core.Db.Oracle
 
         private IEnumerable<string> ToChuncks(string str, int maxChunkSize)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 for (var i = 0; i < str.Length; i += maxChunkSize)
                 {
@@ -1526,9 +1526,9 @@ namespace Wexflow.Core.Db.Oracle
             }
         }
 
-        private string ToCLOB(string str)
+        private string ToClob(string str)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (string.IsNullOrEmpty(str))
                 {
@@ -1538,7 +1538,7 @@ namespace Wexflow.Core.Db.Oracle
                 str = str.Replace("'", "''");
                 var builder = new StringBuilder();
                 _ = builder.Append('(');
-                var chunks = ToChuncks(str, chunkSize).ToArray();
+                var chunks = ToChuncks(str, ChunkSize).ToArray();
 
                 for (var i = 0; i < chunks.Length; i++)
                 {
@@ -1557,19 +1557,19 @@ namespace Wexflow.Core.Db.Oracle
             }
         }
 
-        private string ToCLOB(Core.Db.Workflow workflow)
+        private string ToClob(Core.Db.Workflow workflow)
         {
-            return ToCLOB(workflow.Xml);
+            return ToClob(workflow.Xml);
         }
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
-                    var xml = ToCLOB(workflow);
+                    var xml = ToClob(workflow);
 
                     using (var command = new OracleCommand("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
                         + Workflow.ColumnName_Xml + ") VALUES("
@@ -1595,9 +1595,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdateEntry(string id, Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1605,11 +1605,11 @@ namespace Wexflow.Core.Db.Oracle
                         + Entry.ColumnName_Name + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
                         + Entry.ColumnName_Description + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
                         + Entry.ColumnName_LaunchType + " = " + (int)entry.LaunchType + ", "
-                        + Entry.ColumnName_StatusDate + " = TO_TIMESTAMP('" + entry.StatusDate.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'), "
+                        + Entry.ColumnName_StatusDate + " = TO_TIMESTAMP('" + entry.StatusDate.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF'), "
                         + Entry.ColumnName_Status + " = " + (int)entry.Status + ", "
                         + Entry.ColumnName_WorkflowId + " = " + entry.WorkflowId + ", "
                         + Entry.ColumnName_JobId + " = '" + (entry.JobId ?? "") + "', "
-                        + Entry.ColumnName_Logs + " = " + ToCLOB(entry.Logs)
+                        + Entry.ColumnName_Logs + " = " + ToClob(entry.Logs)
                         + " WHERE "
                         + Entry.ColumnName_Id + " = " + int.Parse(id)
                         , conn))
@@ -1622,9 +1622,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdatePassword(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1642,9 +1642,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdateUser(string id, Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1653,8 +1653,8 @@ namespace Wexflow.Core.Db.Oracle
                         + User.ColumnName_Password + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
                         + User.ColumnName_UserProfile + " = " + (int)user.UserProfile + ", "
                         + User.ColumnName_Email + " = '" + (user.Email ?? "").Replace("'", "''") + "', "
-                        + User.ColumnName_CreatedOn + " = TO_TIMESTAMP('" + user.CreatedOn.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
-                        + User.ColumnName_ModifiedOn + " = TO_TIMESTAMP('" + DateTime.Now.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF')"
+                        + User.ColumnName_CreatedOn + " = TO_TIMESTAMP('" + user.CreatedOn.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
+                        + User.ColumnName_ModifiedOn + " = TO_TIMESTAMP('" + DateTime.Now.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF')"
                         + " WHERE "
                         + User.ColumnName_Id + " = " + int.Parse(id)
                         , conn))
@@ -1667,33 +1667,36 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdateUsernameAndEmailAndUserProfile(string userId, string username, string email, UserProfile up)
         {
-            using (var conn = new OracleConnection(connectionString))
+            lock (Padlock)
             {
-                conn.Open();
-
-                using (var command = new OracleCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
-                    + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_UserProfile + " = " + (int)up + ", "
-                    + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_ModifiedOn + " = TO_TIMESTAMP('" + DateTime.Now.ToString(dateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF')"
-                    + " WHERE "
-                    + User.ColumnName_Id + " = " + int.Parse(userId)
-                    , conn))
+                using (var conn = new OracleConnection(_connectionString))
                 {
-                    _ = command.ExecuteNonQuery();
+                    conn.Open();
+
+                    using (var command = new OracleCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
+                        + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "', "
+                        + User.ColumnName_UserProfile + " = " + (int)up + ", "
+                        + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''") + "', "
+                        + User.ColumnName_ModifiedOn + " = TO_TIMESTAMP('" + DateTime.Now.ToString(DateTimeFormat) + "', 'YYYY-MM-DD HH24:MI:SS.FF')"
+                        + " WHERE "
+                        + User.ColumnName_Id + " = " + int.Parse(userId)
+                        , conn))
+                    {
+                        _ = command.ExecuteNonQuery();
+                    }
                 }
             }
         }
 
         public override void UpdateWorkflow(string dbId, Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
-                    var xml = ToCLOB(workflow);
+                    var xml = ToClob(workflow);
 
                     using (var command = new OracleCommand("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
                         + Workflow.ColumnName_Xml + " = " + xml
@@ -1709,9 +1712,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string GetEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1738,9 +1741,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string GetHistoryEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1767,11 +1770,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var users = new List<User>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1816,9 +1819,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string InsertRecord(Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1840,16 +1843,16 @@ namespace Wexflow.Core.Db.Oracle
                         + "'" + (record.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (record.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (record.Approved ? "1" : "0") + ", "
-                        + (record.StartDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
-                        + (record.EndDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
+                        + (record.StartDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
+                        + (record.EndDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
                         + "'" + (record.Comments ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (record.ManagerComments ?? "").Replace("'", "''") + "'" + ", "
                         + int.Parse(record.CreatedBy) + ", "
-                        + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
+                        + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
                         + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                        + (record.ModifiedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.ModifiedOn.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
+                        + (record.ModifiedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.ModifiedOn.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
                          + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                        + (record.AssignedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ")"
+                        + (record.AssignedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ")"
                         + " RETURNING " + Record.ColumnName_Id + " INTO :id"
                         , conn))
                     {
@@ -1872,9 +1875,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdateRecord(string recordId, Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1882,15 +1885,15 @@ namespace Wexflow.Core.Db.Oracle
                         + Record.ColumnName_Name + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_Description + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_Approved + " = " + (record.Approved ? "1" : "0") + ", "
-                        + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
-                        + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
+                        + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
+                        + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ", "
                         + Record.ColumnName_Comments + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_ManagerComments + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
                         + Record.ColumnName_CreatedBy + " = " + int.Parse(record.CreatedBy) + ", "
                         + Record.ColumnName_ModifiedBy + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                        + Record.ColumnName_ModifiedOn + " = " + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
+                        + Record.ColumnName_ModifiedOn + " = " + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
                         + Record.ColumnName_AssignedTo + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                        + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')")
+                        + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')")
                         + " WHERE "
                         + Record.ColumnName_Id + " = " + int.Parse(recordId)
                         , conn))
@@ -1903,11 +1906,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteRecords(string[] recordIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (recordIds.Length > 0)
                 {
-                    using (var conn = new OracleConnection(connectionString))
+                    using (var conn = new OracleConnection(_connectionString))
                     {
                         conn.Open();
 
@@ -1932,9 +1935,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.Record GetRecord(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -1991,11 +1994,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Record> GetRecords(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var records = new List<Record>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2054,11 +2057,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedBy(string createdBy)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var records = new List<Record>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2116,11 +2119,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedByOrAssignedTo(string createdBy, string assingedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var records = new List<Record>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2180,9 +2183,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string InsertVersion(Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2193,7 +2196,7 @@ namespace Wexflow.Core.Db.Oracle
                         + " VALUES("
                         + int.Parse(version.RecordId) + ", "
                         + "'" + (version.FilePath ?? "").Replace("'", "''") + "'" + ", "
-                        + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ")"
+                        + "TO_TIMESTAMP(" + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ")"
                         + " RETURNING " + Version.ColumnName_Id + " INTO :id"
                         , conn))
                     {
@@ -2216,9 +2219,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdateVersion(string versionId, Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2237,11 +2240,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteVersions(string[] versionIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (versionIds.Length > 0)
                 {
-                    using (var conn = new OracleConnection(connectionString))
+                    using (var conn = new OracleConnection(_connectionString))
                     {
                         conn.Open();
 
@@ -2266,11 +2269,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Version> GetVersions(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var versions = new List<Version>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2307,9 +2310,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override Core.Db.Version GetLatestVersion(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2347,9 +2350,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string InsertNotification(Core.Db.Notification notification)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2361,7 +2364,7 @@ namespace Wexflow.Core.Db.Oracle
                         + Notification.ColumnName_IsRead + ")"
                         + " VALUES("
                         + (!string.IsNullOrEmpty(notification.AssignedBy) ? int.Parse(notification.AssignedBy).ToString() : "NULL") + ", "
-                        + "TO_TIMESTAMP(" + "'" + notification.AssignedOn.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
+                        + "TO_TIMESTAMP(" + "'" + notification.AssignedOn.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')" + ", "
                         + (!string.IsNullOrEmpty(notification.AssignedTo) ? int.Parse(notification.AssignedTo).ToString() : "NULL") + ", "
                         + "'" + (notification.Message ?? "").Replace("'", "''") + "'" + ", "
                         + (notification.IsRead ? "1" : "0") + ")"
@@ -2387,9 +2390,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void MarkNotificationsAsRead(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2414,9 +2417,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void MarkNotificationsAsUnread(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2441,11 +2444,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteNotifications(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (notificationIds.Length > 0)
                 {
-                    using (var conn = new OracleConnection(connectionString))
+                    using (var conn = new OracleConnection(_connectionString))
                     {
                         conn.Open();
 
@@ -2470,11 +2473,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Notification> GetNotifications(string assignedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var notifications = new List<Notification>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2517,9 +2520,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override bool HasNotifications(string assignedTo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2539,9 +2542,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override string InsertApprover(Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2553,7 +2556,7 @@ namespace Wexflow.Core.Db.Oracle
                         + int.Parse(approver.UserId) + ", "
                         + int.Parse(approver.RecordId) + ", "
                         + (approver.Approved ? "1" : "0") + ", "
-                        + (approver.ApprovedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ") "
+                        + (approver.ApprovedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')") + ") "
                         + "RETURNING " + Approver.ColumnName_Id + " INTO :id"
                         , conn))
                     {
@@ -2576,9 +2579,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void UpdateApprover(string approverId, Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2586,7 +2589,7 @@ namespace Wexflow.Core.Db.Oracle
                         + Approver.ColumnName_UserId + " = " + int.Parse(approver.UserId) + ", "
                         + Approver.ColumnName_RecordId + " = " + int.Parse(approver.RecordId) + ", "
                         + Approver.ColumnName_Approved + " = " + (approver.Approved ? "1" : "0") + ", "
-                        + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')")
+                        + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "TO_TIMESTAMP(" + "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'" + ", 'YYYY-MM-DD HH24:MI:SS.FF')")
                         + " WHERE "
                         + Approver.ColumnName_Id + " = " + int.Parse(approverId)
                         , conn))
@@ -2599,9 +2602,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteApproversByRecordId(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2616,9 +2619,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteApprovedApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2635,9 +2638,9 @@ namespace Wexflow.Core.Db.Oracle
 
         public override void DeleteApproversByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
@@ -2652,11 +2655,11 @@ namespace Wexflow.Core.Db.Oracle
 
         public override IEnumerable<Core.Db.Approver> GetApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 var approvers = new List<Approver>();
 
-                using (var conn = new OracleConnection(connectionString))
+                using (var conn = new OracleConnection(_connectionString))
                 {
                     conn.Open();
 
