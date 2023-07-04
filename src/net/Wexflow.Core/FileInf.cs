@@ -73,7 +73,7 @@ namespace Wexflow.Core
         {
             Path = path;
             TaskId = taskId;
-            RenameToOrName = FileName;
+            RenameToOrName = System.IO.Path.GetFileName(path);
             Tags = new List<Tag>();
         }
 
