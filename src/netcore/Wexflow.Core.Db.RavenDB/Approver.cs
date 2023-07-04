@@ -6,7 +6,7 @@
 
         public override string GetDbId()
         {
-            return Id.ToString();
+            return Id;
         }
     }
 }

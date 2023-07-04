@@ -234,7 +234,7 @@ namespace Wexflow.Core.Db.Oracle
                     }
 
                     using (var command = new OracleCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
-                        + " WHERE " + Workflow.ColumnName_Id + " IN " + builder.ToString(), conn))
+                        + " WHERE " + Workflow.ColumnName_Id + " IN " + builder, conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -538,7 +538,7 @@ namespace Wexflow.Core.Db.Oracle
                         + Entry.ColumnName_JobId
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
-                        + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "')", conn))
+                        + " AND " + Entry.ColumnName_JobId + " = '" + jobId + "')", conn))
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -1587,7 +1587,7 @@ namespace Wexflow.Core.Db.Oracle
 
                         var id = Convert.ToInt64(command.Parameters[":id"].Value).ToString();
 
-                        return id.ToString();
+                        return id;
                     }
                 }
             }
@@ -1864,7 +1864,7 @@ namespace Wexflow.Core.Db.Oracle
 
                         var id = Convert.ToInt64(command.Parameters[":id"].Value).ToString();
 
-                        return id.ToString();
+                        return id;
                     }
                 }
             }
@@ -1921,7 +1921,7 @@ namespace Wexflow.Core.Db.Oracle
                         }
 
                         using (var command = new OracleCommand("DELETE FROM " + Core.Db.Record.DocumentName
-                            + " WHERE " + Record.ColumnName_Id + " IN " + builder.ToString(), conn))
+                            + " WHERE " + Record.ColumnName_Id + " IN " + builder, conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2208,7 +2208,7 @@ namespace Wexflow.Core.Db.Oracle
 
                         var id = Convert.ToInt64(command.Parameters[":id"].Value).ToString();
 
-                        return id.ToString();
+                        return id;
                     }
                 }
             }
@@ -2255,7 +2255,7 @@ namespace Wexflow.Core.Db.Oracle
                         }
 
                         using (var command = new OracleCommand("DELETE FROM " + Core.Db.Version.DocumentName
-                            + " WHERE " + Version.ColumnName_Id + " IN " + builder.ToString(), conn))
+                            + " WHERE " + Version.ColumnName_Id + " IN " + builder, conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2379,7 +2379,7 @@ namespace Wexflow.Core.Db.Oracle
 
                         var id = Convert.ToInt64(command.Parameters[":id"].Value).ToString();
 
-                        return id.ToString();
+                        return id;
                     }
                 }
             }
@@ -2404,7 +2404,7 @@ namespace Wexflow.Core.Db.Oracle
 
                     using (var command = new OracleCommand("UPDATE " + Core.Db.Notification.DocumentName
                         + " SET " + Notification.ColumnName_IsRead + " = " + "1"
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString(), conn))
+                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder, conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2431,7 +2431,7 @@ namespace Wexflow.Core.Db.Oracle
 
                     using (var command = new OracleCommand("UPDATE " + Core.Db.Notification.DocumentName
                         + " SET " + Notification.ColumnName_IsRead + " = " + "0"
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString(), conn))
+                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder, conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2459,7 +2459,7 @@ namespace Wexflow.Core.Db.Oracle
                         }
 
                         using (var command = new OracleCommand("DELETE FROM " + Core.Db.Notification.DocumentName
-                            + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString(), conn))
+                            + " WHERE " + Notification.ColumnName_Id + " IN " + builder, conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2568,7 +2568,7 @@ namespace Wexflow.Core.Db.Oracle
 
                         var id = Convert.ToInt64(command.Parameters[":id"].Value).ToString();
 
-                        return id.ToString();
+                        return id;
                     }
                 }
             }

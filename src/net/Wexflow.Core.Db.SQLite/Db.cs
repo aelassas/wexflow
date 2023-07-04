@@ -251,7 +251,7 @@ namespace Wexflow.Core.Db.SQLite
                     }
 
                     using (var command = new SQLiteCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
-                        + " WHERE " + Workflow.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
+                        + " WHERE " + Workflow.ColumnName_Id + " IN " + builder + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -559,7 +559,7 @@ namespace Wexflow.Core.Db.SQLite
                         + Entry.ColumnName_JobId
                         + " FROM " + Core.Db.Entry.DocumentName
                         + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
-                        + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "');", conn))
+                        + " AND " + Entry.ColumnName_JobId + " = '" + jobId + "');", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
@@ -1891,7 +1891,7 @@ namespace Wexflow.Core.Db.SQLite
                         }
 
                         using (var command = new SQLiteCommand("DELETE FROM " + Core.Db.Record.DocumentName
-                            + " WHERE " + Record.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
+                            + " WHERE " + Record.ColumnName_Id + " IN " + builder + ";", conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2216,7 +2216,7 @@ namespace Wexflow.Core.Db.SQLite
                         }
 
                         using (var command = new SQLiteCommand("DELETE FROM " + Core.Db.Version.DocumentName
-                            + " WHERE " + Version.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
+                            + " WHERE " + Version.ColumnName_Id + " IN " + builder + ";", conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2357,7 +2357,7 @@ namespace Wexflow.Core.Db.SQLite
 
                     using (var command = new SQLiteCommand("UPDATE " + Core.Db.Notification.DocumentName
                         + " SET " + Notification.ColumnName_IsRead + " = " + "1"
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
+                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2384,7 +2384,7 @@ namespace Wexflow.Core.Db.SQLite
 
                     using (var command = new SQLiteCommand("UPDATE " + Core.Db.Notification.DocumentName
                         + " SET " + Notification.ColumnName_IsRead + " = " + "0"
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
+                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2412,7 +2412,7 @@ namespace Wexflow.Core.Db.SQLite
                         }
 
                         using (var command = new SQLiteCommand("DELETE FROM " + Core.Db.Notification.DocumentName
-                            + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn))
+                            + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }

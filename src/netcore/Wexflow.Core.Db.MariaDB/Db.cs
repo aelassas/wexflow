@@ -7,14 +7,14 @@ namespace Wexflow.Core.Db.MariaDB
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object padlock = new();
-        private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private static readonly object Padlock = new();
+        private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
-        private static string connectionString;
+        private static string _connectionString;
 
         public Db(string connectionString) : base(connectionString)
         {
-            Db.connectionString = connectionString;
+            _connectionString = connectionString;
 
             var server = string.Empty;
             var port = 3306;
@@ -22,7 +22,7 @@ namespace Wexflow.Core.Db.MariaDB
             var password = string.Empty;
             var database = string.Empty;
 
-            var connectionStringParts = Db.connectionString.Split(';');
+            var connectionStringParts = Db._connectionString.Split(';');
 
             foreach (var part in connectionStringParts)
             {
@@ -52,7 +52,7 @@ namespace Wexflow.Core.Db.MariaDB
                 }
             }
 
-            Helper helper = new(Db.connectionString);
+            Helper helper = new(Db._connectionString);
             Helper.CreateDatabaseIfNotExists(server, port, user, password, database);
             helper.CreateTableIfNotExists(Core.Db.Entry.DocumentName, Entry.TableStruct);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DocumentName, HistoryEntry.TableStruct);
@@ -82,7 +82,7 @@ namespace Wexflow.Core.Db.MariaDB
                 StoppedCount = 0
             };
 
-            using (MySqlConnection conn = new(connectionString))
+            using (MySqlConnection conn = new(_connectionString))
             {
                 conn.Open();
 
@@ -111,12 +111,12 @@ namespace Wexflow.Core.Db.MariaDB
             ClearEntries();
 
             // Insert default user if necessary
-            using (MySqlConnection conn = new(connectionString))
+            using (MySqlConnection conn = new(_connectionString))
             {
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT COUNT(*) FROM " + Core.Db.User.DocumentName + ";", conn);
-                var usersCount = (long)command.ExecuteScalar();
+                var usersCount = (long)command.ExecuteScalar()!;
 
                 if (usersCount == 0)
                 {
@@ -127,16 +127,16 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override bool CheckUserWorkflow(string userId, string workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT COUNT(*) FROM " + Core.Db.UserWorkflow.DocumentName
                     + " WHERE " + UserWorkflow.ColumnName_UserId + "=" + int.Parse(userId)
                     + " AND " + UserWorkflow.ColumnName_WorkflowId + "=" + int.Parse(workflowId)
                     + ";", conn);
-                var count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar()!;
 
                 return count > 0;
             }
@@ -144,9 +144,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void ClearEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.Entry.DocumentName + ";", conn);
@@ -156,9 +156,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void ClearStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.StatusCount.DocumentName + ";", conn);
@@ -168,9 +168,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteUser(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.User.DocumentName
@@ -183,9 +183,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteUserWorkflowRelationsByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
@@ -196,9 +196,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
@@ -209,9 +209,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
@@ -222,9 +222,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteWorkflows(string[] ids)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder builder = new("(");
@@ -237,18 +237,18 @@ namespace Wexflow.Core.Db.MariaDB
                 }
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
-                    + " WHERE " + Workflow.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                    + " WHERE " + Workflow.ColumnName_Id + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
 
         public override IEnumerable<Core.Db.User> GetAdministrators(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> admins = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using (MySqlCommand command = new("SELECT " + User.ColumnName_Id + ", "
@@ -288,11 +288,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Entry> entries = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -332,11 +332,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Entry> GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy eo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Entry> entries = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder sqlBuilder = new("SELECT "
@@ -351,7 +351,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
                     + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%')"
-                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "')"
+                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
                     + " ORDER BY ");
 
                 switch (eo)
@@ -446,18 +446,18 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override long GetEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
                     + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%')"
-                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn);
+                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
 
-                var count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar()!;
 
                 return count;
             }
@@ -465,9 +465,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.Entry GetEntry(int workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -507,9 +507,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -523,7 +523,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + Entry.ColumnName_JobId
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
-                    + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "');", conn);
+                    + " AND " + Entry.ColumnName_JobId + " = '" + jobId + "');", conn);
 
                 using var reader = command.ExecuteReader();
 
@@ -550,9 +550,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override DateTime GetEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -576,9 +576,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override DateTime GetEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -602,11 +602,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -644,11 +644,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -688,11 +688,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, int page, int entriesCount)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -734,11 +734,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder sqlBuilder = new("SELECT "
@@ -752,7 +752,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
                     + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%')"
-                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "')"
+                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
                     + " ORDER BY ");
 
                 switch (heo)
@@ -847,9 +847,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override long GetHistoryEntriesCount(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT COUNT(*)"
@@ -857,7 +857,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%';", conn);
 
-                var count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar()!;
 
                 return count;
             }
@@ -865,18 +865,18 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override long GetHistoryEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
                     + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%')"
-                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn);
+                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
 
-                var count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar()!;
 
                 return count;
             }
@@ -884,9 +884,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override DateTime GetHistoryEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -910,9 +910,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override DateTime GetHistoryEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -936,9 +936,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string GetPassword(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + User.ColumnName_Password
@@ -961,9 +961,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.StatusCount GetStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + StatusCount.ColumnName_Id + ", "
@@ -1004,9 +1004,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.User GetUser(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + User.ColumnName_Id + ", "
@@ -1044,9 +1044,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.User GetUserById(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + User.ColumnName_Id + ", "
@@ -1084,11 +1084,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.User> GetUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> users = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using (MySqlCommand command = new("SELECT " + User.ColumnName_Id + ", "
@@ -1126,11 +1126,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.User> GetUsers(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> users = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -1171,11 +1171,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<string> GetUserWorkflows(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<string> workflowIds = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -1202,9 +1202,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.Workflow GetWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
@@ -1231,11 +1231,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Core.Db.Workflow> workflows = new();
 
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using (MySqlCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
@@ -1262,9 +1262,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         private static void IncrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " + 1;", conn);
@@ -1314,9 +1314,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " - 1;", conn);
@@ -1336,9 +1336,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void InsertEntry(Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.Entry.DocumentName + "("
@@ -1353,7 +1353,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + "'" + (entry.Name ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + "'" + (entry.Description ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + (int)entry.LaunchType + ", "
-                    + "'" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
                     + (int)entry.Status + ", "
                     + entry.WorkflowId + ", "
                     + "'" + (entry.JobId ?? "") + "', "
@@ -1366,9 +1366,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void InsertHistoryEntry(Core.Db.HistoryEntry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.HistoryEntry.DocumentName + "("
@@ -1382,7 +1382,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + "'" + (entry.Name ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + "'" + (entry.Description ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + (int)entry.LaunchType + ", "
-                    + "'" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
                     + (int)entry.Status + ", "
                     + entry.WorkflowId + ", "
                     + "'" + (entry.Logs ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ");"
@@ -1394,9 +1394,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void InsertUser(Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.User.DocumentName + "("
@@ -1410,8 +1410,8 @@ namespace Wexflow.Core.Db.MariaDB
                     + "'" + (user.Password ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + (int)user.UserProfile + ", "
                     + "'" + (user.Email ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
-                    + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", "
-                    + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(dateTimeFormat) + "'") + ");"
+                    + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
+                    + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(DateTimeFormat) + "'") + ");"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1420,9 +1420,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void InsertUserWorkflowRelation(Core.Db.UserWorkflow userWorkflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.UserWorkflow.DocumentName + "("
@@ -1438,9 +1438,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
@@ -1448,7 +1448,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + "'" + (workflow.Xml ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + "); SELECT LAST_INSERT_ID(); "
                     , conn);
 
-                var id = (ulong)command.ExecuteScalar();
+                var id = (ulong)command.ExecuteScalar()!;
 
                 return id.ToString();
             }
@@ -1456,16 +1456,16 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void UpdateEntry(string id, Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Entry.DocumentName + " SET "
                     + Entry.ColumnName_Name + " = '" + (entry.Name ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + Entry.ColumnName_Description + " = '" + (entry.Description ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + Entry.ColumnName_LaunchType + " = " + (int)entry.LaunchType + ", "
-                    + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(dateTimeFormat) + "', "
+                    + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(DateTimeFormat) + "', "
                     + Entry.ColumnName_Status + " = " + (int)entry.Status + ", "
                     + Entry.ColumnName_WorkflowId + " = " + entry.WorkflowId + ", "
                     + Entry.ColumnName_JobId + " = '" + (entry.JobId ?? "") + "', "
@@ -1480,9 +1480,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void UpdatePassword(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
@@ -1497,9 +1497,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void UpdateUser(string id, Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
@@ -1507,8 +1507,8 @@ namespace Wexflow.Core.Db.MariaDB
                     + User.ColumnName_Password + " = '" + (user.Password ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + User.ColumnName_UserProfile + " = " + (int)user.UserProfile + ", "
                     + User.ColumnName_Email + " = '" + (user.Email ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
-                    + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(dateTimeFormat) + "', "
-                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "'"
+                    + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(DateTimeFormat) + "', "
+                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                     + " WHERE "
                     + User.ColumnName_Id + " = " + int.Parse(id) + ";"
                     , conn);
@@ -1519,16 +1519,16 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void UpdateUsernameAndEmailAndUserProfile(string userId, string username, string email, UserProfile up)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
                     + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + User.ColumnName_UserProfile + " = " + (int)up + ", "
                     + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
-                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "'"
+                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                     + " WHERE "
                     + User.ColumnName_Id + " = " + int.Parse(userId) + ";"
                     , conn);
@@ -1539,9 +1539,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void UpdateWorkflow(string dbId, Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
@@ -1556,9 +1556,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string GetEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + Entry.ColumnName_Logs
@@ -1581,9 +1581,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string GetHistoryEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT " + HistoryEntry.ColumnName_Logs
@@ -1606,11 +1606,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> users = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -1651,9 +1651,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string InsertRecord(Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.Record.DocumentName + "("
@@ -1674,43 +1674,43 @@ namespace Wexflow.Core.Db.MariaDB
                     + "'" + (record.Name ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + "'" + (record.Description ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + (record.Approved ? "1" : "0") + ", "
-                    + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'") + ", "
-                    + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'") + ", "
+                    + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                    + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
                     + "'" + (record.Comments ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + "'" + (record.ManagerComments ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + int.Parse(record.CreatedBy) + ", "
-                    + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
                     + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                    + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(dateTimeFormat) + "'") + ", "
+                    + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(DateTimeFormat) + "'") + ", "
                      + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                    + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'") + ");"
+                    + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'") + ");"
                     + " SELECT LAST_INSERT_ID();"
                     , conn);
-                var id = (ulong)command.ExecuteScalar();
+                var id = (ulong)command.ExecuteScalar()!;
                 return id.ToString();
             }
         }
 
         public override void UpdateRecord(string recordId, Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Record.DocumentName + " SET "
                     + Record.ColumnName_Name + " = '" + (record.Name ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + Record.ColumnName_Description + " = '" + (record.Description ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + Record.ColumnName_Approved + " = " + (record.Approved ? "1" : "0") + ", "
-                    + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'") + ", "
-                    + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'") + ", "
+                    + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                    + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
                     + Record.ColumnName_Comments + " = '" + (record.Comments ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + Record.ColumnName_ManagerComments + " = '" + (record.ManagerComments ?? "").Replace("'", "''").Replace("\\", "\\\\") + "', "
                     + Record.ColumnName_CreatedBy + " = " + int.Parse(record.CreatedBy) + ", "
                     + Record.ColumnName_ModifiedBy + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                    + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "', "
+                    + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "', "
                     + Record.ColumnName_AssignedTo + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                    + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'")
+                    + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'")
                     + " WHERE "
                     + Record.ColumnName_Id + " = " + int.Parse(recordId) + ";"
                     , conn);
@@ -1720,11 +1720,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteRecords(string[] recordIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (recordIds.Length > 0)
                 {
-                    using MySqlConnection conn = new(connectionString);
+                    using MySqlConnection conn = new(_connectionString);
                     conn.Open();
 
                     StringBuilder builder = new("(");
@@ -1737,7 +1737,7 @@ namespace Wexflow.Core.Db.MariaDB
                     }
 
                     using MySqlCommand command = new("DELETE FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                        + " WHERE " + Record.ColumnName_Id + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -1745,9 +1745,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.Record GetRecord(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -1798,11 +1798,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Record> GetRecords(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Record> records = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -1857,11 +1857,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedBy(string createdBy)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Record> records = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -1915,11 +1915,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedByOrAssignedTo(string createdBy, string assingedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Record> records = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -1975,9 +1975,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string InsertVersion(Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.Version.DocumentName + "("
@@ -1987,19 +1987,19 @@ namespace Wexflow.Core.Db.MariaDB
                     + " VALUES("
                     + int.Parse(version.RecordId) + ", "
                     + "'" + (version.FilePath ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
-                    + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ");"
+                    + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ");"
                     + " SELECT LAST_INSERT_ID();"
                     , conn);
-                var id = (ulong)command.ExecuteScalar();
+                var id = (ulong)command.ExecuteScalar()!;
                 return id.ToString();
             }
         }
 
         public override void UpdateVersion(string versionId, Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Version.DocumentName + " SET "
@@ -2014,11 +2014,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteVersions(string[] versionIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (versionIds.Length > 0)
                 {
-                    using MySqlConnection conn = new(connectionString);
+                    using MySqlConnection conn = new(_connectionString);
                     conn.Open();
 
                     StringBuilder builder = new("(");
@@ -2031,7 +2031,7 @@ namespace Wexflow.Core.Db.MariaDB
                     }
 
                     using MySqlCommand command = new("DELETE FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                        + " WHERE " + Version.ColumnName_Id + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -2039,11 +2039,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Version> GetVersions(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Version> versions = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -2076,9 +2076,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override Core.Db.Version GetLatestVersion(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT "
@@ -2111,9 +2111,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string InsertNotification(Core.Db.Notification notification)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.Notification.DocumentName + "("
@@ -2124,22 +2124,22 @@ namespace Wexflow.Core.Db.MariaDB
                     + Notification.ColumnName_IsRead + ")"
                     + " VALUES("
                     + (!string.IsNullOrEmpty(notification.AssignedBy) ? int.Parse(notification.AssignedBy).ToString() : "NULL") + ", "
-                    + "'" + notification.AssignedOn.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + notification.AssignedOn.ToString(DateTimeFormat) + "'" + ", "
                     + (!string.IsNullOrEmpty(notification.AssignedTo) ? int.Parse(notification.AssignedTo).ToString() : "NULL") + ", "
                     + "'" + (notification.Message ?? "").Replace("'", "''").Replace("\\", "\\\\") + "'" + ", "
                     + (notification.IsRead ? "1" : "0") + ");"
                     + " SELECT LAST_INSERT_ID();"
                     , conn);
-                var id = (ulong)command.ExecuteScalar();
+                var id = (ulong)command.ExecuteScalar()!;
                 return id.ToString();
             }
         }
 
         public override void MarkNotificationsAsRead(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder builder = new("(");
@@ -2153,16 +2153,16 @@ namespace Wexflow.Core.Db.MariaDB
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
                     + " SET " + Notification.ColumnName_IsRead + " = " + "1"
-                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
 
         public override void MarkNotificationsAsUnread(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder builder = new("(");
@@ -2176,18 +2176,18 @@ namespace Wexflow.Core.Db.MariaDB
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
                     + " SET " + Notification.ColumnName_IsRead + " = " + "0"
-                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
 
         public override void DeleteNotifications(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (notificationIds.Length > 0)
                 {
-                    using MySqlConnection conn = new(connectionString);
+                    using MySqlConnection conn = new(_connectionString);
                     conn.Open();
 
                     StringBuilder builder = new("(");
@@ -2200,7 +2200,7 @@ namespace Wexflow.Core.Db.MariaDB
                     }
 
                     using MySqlCommand command = new("DELETE FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -2208,11 +2208,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Notification> GetNotifications(string assignedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Notification> notifications = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -2251,9 +2251,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override bool HasNotifications(string assignedTo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("SELECT COUNT(*)"
@@ -2261,7 +2261,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + " WHERE (" + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo)
                     + " AND " + Notification.ColumnName_IsRead + " = " + "0" + ")"
                     + ";", conn);
-                var count = (long)command.ExecuteScalar();
+                var count = (long)command.ExecuteScalar()!;
                 var hasNotifications = count > 0;
                 return hasNotifications;
             }
@@ -2269,9 +2269,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override string InsertApprover(Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("INSERT INTO " + Core.Db.Approver.DocumentName + "("
@@ -2282,26 +2282,26 @@ namespace Wexflow.Core.Db.MariaDB
                     + int.Parse(approver.UserId) + ", "
                     + int.Parse(approver.RecordId) + ", "
                     + (approver.Approved ? "1" : "0") + ", "
-                    + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'") + ");"
+                    + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'") + ");"
                     + " SELECT LAST_INSERT_ID();"
                     , conn);
-                var id = (ulong)command.ExecuteScalar();
+                var id = (ulong)command.ExecuteScalar()!;
                 return id.ToString();
             }
         }
 
         public override void UpdateApprover(string approverId, Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("UPDATE " + Core.Db.Approver.DocumentName + " SET "
                     + Approver.ColumnName_UserId + " = " + int.Parse(approver.UserId) + ", "
                     + Approver.ColumnName_RecordId + " = " + int.Parse(approver.RecordId) + ", "
                     + Approver.ColumnName_Approved + " = " + (approver.Approved ? "1" : "0") + ", "
-                    + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'")
+                    + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'")
                     + " WHERE "
                     + Approver.ColumnName_Id + " = " + int.Parse(approverId) + ";"
                     , conn);
@@ -2311,9 +2311,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteApproversByRecordId(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
@@ -2324,9 +2324,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteApprovedApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
@@ -2340,9 +2340,9 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override void DeleteApproversByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using MySqlConnection conn = new(connectionString);
+                using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
                 using MySqlCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
@@ -2353,11 +2353,11 @@ namespace Wexflow.Core.Db.MariaDB
 
         public override IEnumerable<Core.Db.Approver> GetApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Approver> approvers = new();
 
-                using (MySqlConnection conn = new(connectionString))
+                using (MySqlConnection conn = new(_connectionString))
                 {
                     conn.Open();
 

@@ -11,7 +11,7 @@ namespace Wexflow.Core.Db.MongoDB
 
         public override string GetDbId()
         {
-            return Id.ToString();
+            return Id;
         }
     }
 }

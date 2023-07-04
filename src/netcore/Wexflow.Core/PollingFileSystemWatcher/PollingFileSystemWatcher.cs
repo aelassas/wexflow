@@ -160,7 +160,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             {
                 var path = file.FileName.ToString();
 
-                changes.AddAdded(directory, path.ToString());
+                changes.AddAdded(directory, path);
 
                 FileState newFileState = new(directory, path)
                 {

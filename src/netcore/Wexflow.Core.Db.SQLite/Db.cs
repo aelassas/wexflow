@@ -7,14 +7,14 @@ namespace Wexflow.Core.Db.SQLite
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object padlock = new();
-        private static readonly string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private static readonly object Padlock = new();
+        private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
-        private static string connectionString;
+        private static string _connectionString;
 
         public Db(string connectionString) : base(connectionString)
         {
-            Db.connectionString = connectionString;
+            _connectionString = connectionString;
 
             var dataSource = string.Empty;
 
@@ -63,7 +63,7 @@ namespace Wexflow.Core.Db.SQLite
                 StoppedCount = 0
             };
 
-            using (SQLiteConnection conn = new(connectionString))
+            using (SQLiteConnection conn = new(_connectionString))
             {
                 conn.Open();
 
@@ -92,7 +92,7 @@ namespace Wexflow.Core.Db.SQLite
             ClearEntries();
 
             // Insert default user if necessary
-            using (SQLiteConnection conn = new(connectionString))
+            using (SQLiteConnection conn = new(_connectionString))
             {
                 conn.Open();
 
@@ -108,9 +108,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override bool CheckUserWorkflow(string userId, string workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT COUNT(*) FROM " + Core.Db.UserWorkflow.DocumentName
@@ -126,9 +126,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void ClearEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.Entry.DocumentName + ";", conn);
@@ -138,9 +138,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void ClearStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.StatusCount.DocumentName + ";", conn);
@@ -150,9 +150,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteUser(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.User.DocumentName
@@ -165,9 +165,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteUserWorkflowRelationsByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
@@ -178,9 +178,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
@@ -191,9 +191,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
@@ -204,9 +204,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteWorkflows(string[] ids)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder builder = new("(");
@@ -219,50 +219,48 @@ namespace Wexflow.Core.Db.SQLite
                 }
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
-                    + " WHERE " + Workflow.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                    + " WHERE " + Workflow.ColumnName_Id + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
 
         public override IEnumerable<Core.Db.User> GetAdministrators(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> admins = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
+                                                  + User.ColumnName_Username + ", "
+                                                  + User.ColumnName_Password + ", "
+                                                  + User.ColumnName_Email + ", "
+                                                  + User.ColumnName_UserProfile + ", "
+                                                  + User.ColumnName_CreatedOn + ", "
+                                                  + User.ColumnName_ModifiedOn
+                                                  + " FROM " + Core.Db.User.DocumentName
+                                                  + " WHERE " + "(LOWER(" + User.ColumnName_Username + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " AND " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
+                                                  + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                                                  + ";", conn);
+
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                        + User.ColumnName_Username + ", "
-                        + User.ColumnName_Password + ", "
-                        + User.ColumnName_Email + ", "
-                        + User.ColumnName_UserProfile + ", "
-                        + User.ColumnName_CreatedOn + ", "
-                        + User.ColumnName_ModifiedOn
-                        + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + "(LOWER(" + User.ColumnName_Username + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " AND " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
-                        + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
-                        + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    User admin = new()
                     {
-                        User admin = new()
-                        {
-                            Id = (long)reader[User.ColumnName_Id],
-                            Username = (string)reader[User.ColumnName_Username],
-                            Password = (string)reader[User.ColumnName_Password],
-                            Email = (string)reader[User.ColumnName_Email],
-                            UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
-                            CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
-                            ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
-                        };
+                        Id = (long)reader[User.ColumnName_Id],
+                        Username = (string)reader[User.ColumnName_Username],
+                        Password = (string)reader[User.ColumnName_Password],
+                        Email = (string)reader[User.ColumnName_Email],
+                        UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
+                        CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
+                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
+                    };
 
-                        admins.Add(admin);
-                    }
+                    admins.Add(admin);
                 }
 
                 return admins;
@@ -271,43 +269,41 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Entry> entries = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Entry.ColumnName_Id + ", "
+                                                  + Entry.ColumnName_Name + ", "
+                                                  + Entry.ColumnName_Description + ", "
+                                                  + Entry.ColumnName_LaunchType + ", "
+                                                  + Entry.ColumnName_Status + ", "
+                                                  + Entry.ColumnName_StatusDate + ", "
+                                                  + Entry.ColumnName_WorkflowId + ", "
+                                                  + Entry.ColumnName_JobId
+                                                  + " FROM " + Core.Db.Entry.DocumentName + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Entry.ColumnName_Id + ", "
-                        + Entry.ColumnName_Name + ", "
-                        + Entry.ColumnName_Description + ", "
-                        + Entry.ColumnName_LaunchType + ", "
-                        + Entry.ColumnName_Status + ", "
-                        + Entry.ColumnName_StatusDate + ", "
-                        + Entry.ColumnName_WorkflowId + ", "
-                        + Entry.ColumnName_JobId
-                        + " FROM " + Core.Db.Entry.DocumentName + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    Entry entry = new()
                     {
-                        Entry entry = new()
-                        {
-                            Id = (long)reader[Entry.ColumnName_Id],
-                            Name = (string)reader[Entry.ColumnName_Name],
-                            Description = (string)reader[Entry.ColumnName_Description],
-                            LaunchType = (LaunchType)(long)reader[Entry.ColumnName_LaunchType],
-                            Status = (Status)(long)reader[Entry.ColumnName_Status],
-                            StatusDate = DateTime.Parse((string)reader[Entry.ColumnName_StatusDate]),
-                            WorkflowId = (int)(long)reader[Entry.ColumnName_WorkflowId],
-                            JobId = (string)reader[Entry.ColumnName_JobId]
-                        };
+                        Id = (long)reader[Entry.ColumnName_Id],
+                        Name = (string)reader[Entry.ColumnName_Name],
+                        Description = (string)reader[Entry.ColumnName_Description],
+                        LaunchType = (LaunchType)(long)reader[Entry.ColumnName_LaunchType],
+                        Status = (Status)(long)reader[Entry.ColumnName_Status],
+                        StatusDate = DateTime.Parse((string)reader[Entry.ColumnName_StatusDate]),
+                        WorkflowId = (int)(long)reader[Entry.ColumnName_WorkflowId],
+                        JobId = (string)reader[Entry.ColumnName_JobId]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -316,114 +312,112 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Entry> GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy eo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Entry> entries = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                StringBuilder sqlBuilder = new("SELECT "
+                                               + Entry.ColumnName_Id + ", "
+                                               + Entry.ColumnName_Name + ", "
+                                               + Entry.ColumnName_Description + ", "
+                                               + Entry.ColumnName_LaunchType + ", "
+                                               + Entry.ColumnName_Status + ", "
+                                               + Entry.ColumnName_StatusDate + ", "
+                                               + Entry.ColumnName_WorkflowId + ", "
+                                               + Entry.ColumnName_JobId
+                                               + " FROM " + Core.Db.Entry.DocumentName
+                                               + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                               + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                               + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
+                                               + " ORDER BY ");
+
+                switch (eo)
                 {
-                    conn.Open();
+                    case EntryOrderBy.StatusDateAscending:
 
-                    StringBuilder sqlBuilder = new("SELECT "
-                        + Entry.ColumnName_Id + ", "
-                        + Entry.ColumnName_Name + ", "
-                        + Entry.ColumnName_Description + ", "
-                        + Entry.ColumnName_LaunchType + ", "
-                        + Entry.ColumnName_Status + ", "
-                        + Entry.ColumnName_StatusDate + ", "
-                        + Entry.ColumnName_WorkflowId + ", "
-                        + Entry.ColumnName_JobId
-                        + " FROM " + Core.Db.Entry.DocumentName
-                        + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "')"
-                        + " ORDER BY ");
+                        _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
+                        break;
 
-                    switch (eo)
+                    case EntryOrderBy.StatusDateDescending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.WorkflowIdAscending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.WorkflowIdDescending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.NameAscending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.NameDescending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.LaunchTypeAscending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.LaunchTypeDescending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.DescriptionAscending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.DescriptionDescending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.StatusAscending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.StatusDescending:
+
+                        _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
+                        break;
+                }
+
+                _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
+
+                using SQLiteCommand command = new(sqlBuilder.ToString(), conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Entry entry = new()
                     {
-                        case EntryOrderBy.StatusDateAscending:
+                        Id = (long)reader[Entry.ColumnName_Id],
+                        Name = (string)reader[Entry.ColumnName_Name],
+                        Description = (string)reader[Entry.ColumnName_Description],
+                        LaunchType = (LaunchType)(long)reader[Entry.ColumnName_LaunchType],
+                        Status = (Status)(long)reader[Entry.ColumnName_Status],
+                        StatusDate = DateTime.Parse((string)reader[Entry.ColumnName_StatusDate]),
+                        WorkflowId = (int)(long)reader[Entry.ColumnName_WorkflowId],
+                        JobId = (string)reader[Entry.ColumnName_JobId]
+                    };
 
-                            _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.StatusDateDescending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.WorkflowIdAscending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.WorkflowIdDescending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.NameAscending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.NameDescending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.LaunchTypeAscending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.LaunchTypeDescending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.DescriptionAscending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.DescriptionDescending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.StatusAscending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.StatusDescending:
-
-                            _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
-                            break;
-                    }
-
-                    _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
-
-                    using SQLiteCommand command = new(sqlBuilder.ToString(), conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Entry entry = new()
-                        {
-                            Id = (long)reader[Entry.ColumnName_Id],
-                            Name = (string)reader[Entry.ColumnName_Name],
-                            Description = (string)reader[Entry.ColumnName_Description],
-                            LaunchType = (LaunchType)(long)reader[Entry.ColumnName_LaunchType],
-                            Status = (Status)(long)reader[Entry.ColumnName_Status],
-                            StatusDate = DateTime.Parse((string)reader[Entry.ColumnName_StatusDate]),
-                            WorkflowId = (int)(long)reader[Entry.ColumnName_WorkflowId],
-                            JobId = (string)reader[Entry.ColumnName_JobId]
-                        };
-
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -432,16 +426,16 @@ namespace Wexflow.Core.Db.SQLite
 
         public override long GetEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                     + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn);
+                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
 
                 var count = (long)command.ExecuteScalar();
 
@@ -451,9 +445,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.Entry GetEntry(int workflowId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT "
@@ -493,9 +487,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT "
@@ -509,7 +503,7 @@ namespace Wexflow.Core.Db.SQLite
                     + Entry.ColumnName_JobId
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
-                    + " AND " + Entry.ColumnName_JobId + " = '" + jobId.ToString() + "');", conn);
+                    + " AND " + Entry.ColumnName_JobId + " = '" + jobId + "');", conn);
 
                 using var reader = command.ExecuteReader();
 
@@ -536,9 +530,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override DateTime GetEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (SQLiteConnection conn = new(connectionString))
+                using (SQLiteConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -561,9 +555,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override DateTime GetEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (SQLiteConnection conn = new(connectionString))
+                using (SQLiteConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -586,40 +580,38 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + HistoryEntry.ColumnName_Id + ", "
+                                                  + HistoryEntry.ColumnName_Name + ", "
+                                                  + HistoryEntry.ColumnName_Description + ", "
+                                                  + HistoryEntry.ColumnName_LaunchType + ", "
+                                                  + HistoryEntry.ColumnName_Status + ", "
+                                                  + HistoryEntry.ColumnName_StatusDate + ", "
+                                                  + HistoryEntry.ColumnName_WorkflowId
+                                                  + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn);
+
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + HistoryEntry.ColumnName_Id + ", "
-                        + HistoryEntry.ColumnName_Name + ", "
-                        + HistoryEntry.ColumnName_Description + ", "
-                        + HistoryEntry.ColumnName_LaunchType + ", "
-                        + HistoryEntry.ColumnName_Status + ", "
-                        + HistoryEntry.ColumnName_StatusDate + ", "
-                        + HistoryEntry.ColumnName_WorkflowId
-                        + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (long)reader[HistoryEntry.ColumnName_Id],
-                            Name = (string)reader[HistoryEntry.ColumnName_Name],
-                            Description = (string)reader[HistoryEntry.ColumnName_Description],
-                            LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
-                            Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
-                            StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
-                            WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
-                        };
+                        Id = (long)reader[HistoryEntry.ColumnName_Id],
+                        Name = (string)reader[HistoryEntry.ColumnName_Name],
+                        Description = (string)reader[HistoryEntry.ColumnName_Description],
+                        LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
+                        Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
+                        StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
+                        WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -628,43 +620,41 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + HistoryEntry.ColumnName_Id + ", "
+                                                  + HistoryEntry.ColumnName_Name + ", "
+                                                  + HistoryEntry.ColumnName_Description + ", "
+                                                  + HistoryEntry.ColumnName_LaunchType + ", "
+                                                  + HistoryEntry.ColumnName_Status + ", "
+                                                  + HistoryEntry.ColumnName_StatusDate + ", "
+                                                  + HistoryEntry.ColumnName_WorkflowId
+                                                  + " FROM " + Core.Db.HistoryEntry.DocumentName
+                                                  + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + HistoryEntry.ColumnName_Id + ", "
-                        + HistoryEntry.ColumnName_Name + ", "
-                        + HistoryEntry.ColumnName_Description + ", "
-                        + HistoryEntry.ColumnName_LaunchType + ", "
-                        + HistoryEntry.ColumnName_Status + ", "
-                        + HistoryEntry.ColumnName_StatusDate + ", "
-                        + HistoryEntry.ColumnName_WorkflowId
-                        + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (long)reader[HistoryEntry.ColumnName_Id],
-                            Name = (string)reader[HistoryEntry.ColumnName_Name],
-                            Description = (string)reader[HistoryEntry.ColumnName_Description],
-                            LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
-                            Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
-                            StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
-                            WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
-                        };
+                        Id = (long)reader[HistoryEntry.ColumnName_Id],
+                        Name = (string)reader[HistoryEntry.ColumnName_Name],
+                        Description = (string)reader[HistoryEntry.ColumnName_Description],
+                        LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
+                        Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
+                        StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
+                        WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -673,158 +663,155 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, int page, int entriesCount)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + HistoryEntry.ColumnName_Id + ", "
+                                                  + HistoryEntry.ColumnName_Name + ", "
+                                                  + HistoryEntry.ColumnName_Description + ", "
+                                                  + HistoryEntry.ColumnName_LaunchType + ", "
+                                                  + HistoryEntry.ColumnName_Status + ", "
+                                                  + HistoryEntry.ColumnName_StatusDate + ", "
+                                                  + HistoryEntry.ColumnName_WorkflowId
+                                                  + " FROM " + Core.Db.HistoryEntry.DocumentName
+                                                  + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " LIMIT " + entriesCount + " OFFSET " + ((page - 1) * entriesCount) + ";"
+                    , conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + HistoryEntry.ColumnName_Id + ", "
-                        + HistoryEntry.ColumnName_Name + ", "
-                        + HistoryEntry.ColumnName_Description + ", "
-                        + HistoryEntry.ColumnName_LaunchType + ", "
-                        + HistoryEntry.ColumnName_Status + ", "
-                        + HistoryEntry.ColumnName_StatusDate + ", "
-                        + HistoryEntry.ColumnName_WorkflowId
-                        + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " LIMIT " + entriesCount + " OFFSET " + ((page - 1) * entriesCount) + ";"
-                        , conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (long)reader[HistoryEntry.ColumnName_Id],
-                            Name = (string)reader[HistoryEntry.ColumnName_Name],
-                            Description = (string)reader[HistoryEntry.ColumnName_Description],
-                            LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
-                            Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
-                            StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
-                            WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
-                        };
+                        Id = (long)reader[HistoryEntry.ColumnName_Id],
+                        Name = (string)reader[HistoryEntry.ColumnName_Name],
+                        Description = (string)reader[HistoryEntry.ColumnName_Description],
+                        LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
+                        Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
+                        StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
+                        WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
+
                 return entries;
             }
         }
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<HistoryEntry> entries = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                StringBuilder sqlBuilder = new("SELECT "
+                                               + HistoryEntry.ColumnName_Id + ", "
+                                               + HistoryEntry.ColumnName_Name + ", "
+                                               + HistoryEntry.ColumnName_Description + ", "
+                                               + HistoryEntry.ColumnName_LaunchType + ", "
+                                               + HistoryEntry.ColumnName_Status + ", "
+                                               + HistoryEntry.ColumnName_StatusDate + ", "
+                                               + HistoryEntry.ColumnName_WorkflowId
+                                               + " FROM " + Core.Db.HistoryEntry.DocumentName
+                                               + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                               + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                               + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
+                                               + " ORDER BY ");
+
+                switch (heo)
                 {
-                    conn.Open();
+                    case EntryOrderBy.StatusDateAscending:
 
-                    StringBuilder sqlBuilder = new("SELECT "
-                        + HistoryEntry.ColumnName_Id + ", "
-                        + HistoryEntry.ColumnName_Name + ", "
-                        + HistoryEntry.ColumnName_Description + ", "
-                        + HistoryEntry.ColumnName_LaunchType + ", "
-                        + HistoryEntry.ColumnName_Status + ", "
-                        + HistoryEntry.ColumnName_StatusDate + ", "
-                        + HistoryEntry.ColumnName_WorkflowId
-                        + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "')"
-                        + " ORDER BY ");
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
+                        break;
 
-                    switch (heo)
+                    case EntryOrderBy.StatusDateDescending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.WorkflowIdAscending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.WorkflowIdDescending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.NameAscending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.NameDescending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.LaunchTypeAscending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.LaunchTypeDescending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.DescriptionAscending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.DescriptionDescending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
+                        break;
+
+                    case EntryOrderBy.StatusAscending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
+                        break;
+
+                    case EntryOrderBy.StatusDescending:
+
+                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
+                        break;
+                }
+
+                _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
+
+                using SQLiteCommand command = new(sqlBuilder.ToString(), conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    HistoryEntry entry = new()
                     {
-                        case EntryOrderBy.StatusDateAscending:
+                        Id = (long)reader[HistoryEntry.ColumnName_Id],
+                        Name = (string)reader[HistoryEntry.ColumnName_Name],
+                        Description = (string)reader[HistoryEntry.ColumnName_Description],
+                        LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
+                        Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
+                        StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
+                        WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
+                    };
 
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.StatusDateDescending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.WorkflowIdAscending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.WorkflowIdDescending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.NameAscending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.NameDescending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.LaunchTypeAscending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.LaunchTypeDescending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.DescriptionAscending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.DescriptionDescending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
-                            break;
-
-                        case EntryOrderBy.StatusAscending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
-                            break;
-
-                        case EntryOrderBy.StatusDescending:
-
-                            _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
-                            break;
-                    }
-
-                    _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
-
-                    using SQLiteCommand command = new(sqlBuilder.ToString(), conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (long)reader[HistoryEntry.ColumnName_Id],
-                            Name = (string)reader[HistoryEntry.ColumnName_Name],
-                            Description = (string)reader[HistoryEntry.ColumnName_Description],
-                            LaunchType = (LaunchType)(long)reader[HistoryEntry.ColumnName_LaunchType],
-                            Status = (Status)(long)reader[HistoryEntry.ColumnName_Status],
-                            StatusDate = DateTime.Parse((string)reader[HistoryEntry.ColumnName_StatusDate]),
-                            WorkflowId = (int)(long)reader[HistoryEntry.ColumnName_WorkflowId]
-                        };
-
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -833,9 +820,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override long GetHistoryEntriesCount(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT COUNT(*)"
@@ -851,16 +838,16 @@ namespace Wexflow.Core.Db.SQLite
 
         public override long GetHistoryEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
                     + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(dateTimeFormat) + "' AND '" + to.ToString(dateTimeFormat) + "');", conn);
+                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
 
                 var count = (long)command.ExecuteScalar();
 
@@ -870,9 +857,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override DateTime GetHistoryEntryStatusDateMax()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (SQLiteConnection conn = new(connectionString))
+                using (SQLiteConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -896,9 +883,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override DateTime GetHistoryEntryStatusDateMin()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using (SQLiteConnection conn = new(connectionString))
+                using (SQLiteConnection conn = new(_connectionString))
                 {
                     conn.Open();
 
@@ -922,9 +909,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string GetPassword(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + User.ColumnName_Password
@@ -947,9 +934,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.StatusCount GetStatusCount()
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + StatusCount.ColumnName_Id + ", "
@@ -989,9 +976,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.User GetUser(string username)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
@@ -1029,9 +1016,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.User GetUserById(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
@@ -1069,41 +1056,39 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.User> GetUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> users = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
+                                                  + User.ColumnName_Username + ", "
+                                                  + User.ColumnName_Password + ", "
+                                                  + User.ColumnName_Email + ", "
+                                                  + User.ColumnName_UserProfile + ", "
+                                                  + User.ColumnName_CreatedOn + ", "
+                                                  + User.ColumnName_ModifiedOn
+                                                  + " FROM " + Core.Db.User.DocumentName
+                                                  + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                        + User.ColumnName_Username + ", "
-                        + User.ColumnName_Password + ", "
-                        + User.ColumnName_Email + ", "
-                        + User.ColumnName_UserProfile + ", "
-                        + User.ColumnName_CreatedOn + ", "
-                        + User.ColumnName_ModifiedOn
-                        + " FROM " + Core.Db.User.DocumentName
-                        + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    User user = new()
                     {
-                        User user = new()
-                        {
-                            Id = (long)reader[User.ColumnName_Id],
-                            Username = (string)reader[User.ColumnName_Username],
-                            Password = (string)reader[User.ColumnName_Password],
-                            Email = (string)reader[User.ColumnName_Email],
-                            UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
-                            CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
-                            ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
-                        };
+                        Id = (long)reader[User.ColumnName_Id],
+                        Username = (string)reader[User.ColumnName_Username],
+                        Password = (string)reader[User.ColumnName_Password],
+                        Email = (string)reader[User.ColumnName_Email],
+                        UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
+                        CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
+                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
+                    };
 
-                        users.Add(user);
-                    }
+                    users.Add(user);
                 }
 
                 return users;
@@ -1112,43 +1097,41 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.User> GetUsers(string keyword, UserOrderBy uo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> users = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
+                                                  + User.ColumnName_Username + ", "
+                                                  + User.ColumnName_Password + ", "
+                                                  + User.ColumnName_Email + ", "
+                                                  + User.ColumnName_UserProfile + ", "
+                                                  + User.ColumnName_CreatedOn + ", "
+                                                  + User.ColumnName_ModifiedOn
+                                                  + " FROM " + Core.Db.User.DocumentName
+                                                  + " WHERE " + "LOWER(" + User.ColumnName_Username + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                                                  + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                        + User.ColumnName_Username + ", "
-                        + User.ColumnName_Password + ", "
-                        + User.ColumnName_Email + ", "
-                        + User.ColumnName_UserProfile + ", "
-                        + User.ColumnName_CreatedOn + ", "
-                        + User.ColumnName_ModifiedOn
-                        + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + "LOWER(" + User.ColumnName_Username + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
-                        + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    User user = new()
                     {
-                        User user = new()
-                        {
-                            Id = (long)reader[User.ColumnName_Id],
-                            Username = (string)reader[User.ColumnName_Username],
-                            Password = (string)reader[User.ColumnName_Password],
-                            Email = (string)reader[User.ColumnName_Email],
-                            UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
-                            CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
-                            ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
-                        };
+                        Id = (long)reader[User.ColumnName_Id],
+                        Username = (string)reader[User.ColumnName_Username],
+                        Password = (string)reader[User.ColumnName_Password],
+                        Email = (string)reader[User.ColumnName_Email],
+                        UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
+                        CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
+                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
+                    };
 
-                        users.Add(user);
-                    }
+                    users.Add(user);
                 }
 
                 return users;
@@ -1157,29 +1140,27 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<string> GetUserWorkflows(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<string> workflowIds = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT " + UserWorkflow.ColumnName_Id + ", "
+                                                  + UserWorkflow.ColumnName_UserId + ", "
+                                                  + UserWorkflow.ColumnName_WorkflowId
+                                                  + " FROM " + Core.Db.UserWorkflow.DocumentName
+                                                  + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
+                                                  + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
+                    var workflowId = (long)reader[UserWorkflow.ColumnName_WorkflowId];
 
-                    using SQLiteCommand command = new("SELECT " + UserWorkflow.ColumnName_Id + ", "
-                        + UserWorkflow.ColumnName_UserId + ", "
-                        + UserWorkflow.ColumnName_WorkflowId
-                        + " FROM " + Core.Db.UserWorkflow.DocumentName
-                        + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
-                        + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        var workflowId = (long)reader[UserWorkflow.ColumnName_WorkflowId];
-
-                        workflowIds.Add(workflowId.ToString());
-                    }
+                    workflowIds.Add(workflowId.ToString());
                 }
 
                 return workflowIds;
@@ -1188,9 +1169,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.Workflow GetWorkflow(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
@@ -1217,30 +1198,28 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Core.Db.Workflow> workflows = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
+                                                  + Workflow.ColumnName_Xml
+                                                  + " FROM " + Core.Db.Workflow.DocumentName + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
-                        + Workflow.ColumnName_Xml
-                        + " FROM " + Core.Db.Workflow.DocumentName + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    Workflow workflow = new()
                     {
-                        Workflow workflow = new()
-                        {
-                            Id = (long)reader[Workflow.ColumnName_Id],
-                            Xml = (string)reader[Workflow.ColumnName_Xml]
-                        };
+                        Id = (long)reader[Workflow.ColumnName_Id],
+                        Xml = (string)reader[Workflow.ColumnName_Xml]
+                    };
 
-                        workflows.Add(workflow);
-                    }
+                    workflows.Add(workflow);
                 }
 
                 return workflows;
@@ -1249,9 +1228,9 @@ namespace Wexflow.Core.Db.SQLite
 
         private static void IncrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " + 1;", conn);
@@ -1301,9 +1280,9 @@ namespace Wexflow.Core.Db.SQLite
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.StatusCount.DocumentName + " SET " + statusCountColumnName + " = " + statusCountColumnName + " - 1;", conn);
@@ -1323,9 +1302,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void InsertEntry(Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.Entry.DocumentName + "("
@@ -1340,7 +1319,7 @@ namespace Wexflow.Core.Db.SQLite
                     + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                     + (int)entry.LaunchType + ", "
-                    + "'" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
                     + (int)entry.Status + ", "
                     + entry.WorkflowId + ", "
                     + "'" + (entry.JobId ?? "") + "', "
@@ -1353,9 +1332,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void InsertHistoryEntry(Core.Db.HistoryEntry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.HistoryEntry.DocumentName + "("
@@ -1369,7 +1348,7 @@ namespace Wexflow.Core.Db.SQLite
                     + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                     + (int)entry.LaunchType + ", "
-                    + "'" + entry.StatusDate.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
                     + (int)entry.Status + ", "
                     + entry.WorkflowId + ", "
                     + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
@@ -1381,9 +1360,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void InsertUser(Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.User.DocumentName + "("
@@ -1397,8 +1376,8 @@ namespace Wexflow.Core.Db.SQLite
                     + "'" + (user.Password ?? "").Replace("'", "''") + "'" + ", "
                     + (int)user.UserProfile + ", "
                     + "'" + (user.Email ?? "").Replace("'", "''") + "'" + ", "
-                    + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", "
-                    + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(dateTimeFormat) + "'") + ");"
+                    + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
+                    + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(DateTimeFormat) + "'") + ");"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1407,9 +1386,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void InsertUserWorkflowRelation(Core.Db.UserWorkflow userWorkflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.UserWorkflow.DocumentName + "("
@@ -1425,9 +1404,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
@@ -1443,16 +1422,16 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateEntry(string id, Core.Db.Entry entry)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Entry.DocumentName + " SET "
                     + Entry.ColumnName_Name + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
                     + Entry.ColumnName_Description + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
                     + Entry.ColumnName_LaunchType + " = " + (int)entry.LaunchType + ", "
-                    + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(dateTimeFormat) + "', "
+                    + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(DateTimeFormat) + "', "
                     + Entry.ColumnName_Status + " = " + (int)entry.Status + ", "
                     + Entry.ColumnName_WorkflowId + " = " + entry.WorkflowId + ", "
                     + Entry.ColumnName_JobId + " = '" + (entry.JobId ?? "") + "', "
@@ -1467,9 +1446,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdatePassword(string username, string password)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
@@ -1484,9 +1463,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateUser(string id, Core.Db.User user)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
@@ -1494,8 +1473,8 @@ namespace Wexflow.Core.Db.SQLite
                     + User.ColumnName_Password + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
                     + User.ColumnName_UserProfile + " = " + (int)user.UserProfile + ", "
                     + User.ColumnName_Email + " = '" + (user.Email ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(dateTimeFormat) + "', "
-                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "'"
+                    + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(DateTimeFormat) + "', "
+                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                     + " WHERE "
                     + User.ColumnName_Id + " = " + int.Parse(id) + ";"
                     , conn);
@@ -1506,16 +1485,16 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateUsernameAndEmailAndUserProfile(string userId, string username, string email, UserProfile up)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
                     + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "', "
                     + User.ColumnName_UserProfile + " = " + (int)up + ", "
                     + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "'"
+                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                     + " WHERE "
                     + User.ColumnName_Id + " = " + int.Parse(userId) + ";"
                     , conn);
@@ -1526,9 +1505,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateWorkflow(string dbId, Core.Db.Workflow workflow)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
@@ -1543,9 +1522,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string GetEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + Entry.ColumnName_Logs
@@ -1566,9 +1545,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string GetHistoryEntryLogs(string entryId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT " + HistoryEntry.ColumnName_Logs
@@ -1590,43 +1569,41 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<User> users = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + User.ColumnName_Id + ", "
+                                                  + User.ColumnName_Username + ", "
+                                                  + User.ColumnName_Password + ", "
+                                                  + User.ColumnName_Email + ", "
+                                                  + User.ColumnName_UserProfile + ", "
+                                                  + User.ColumnName_CreatedOn + ", "
+                                                  + User.ColumnName_ModifiedOn
+                                                  + " FROM " + Core.Db.User.DocumentName
+                                                  + " WHERE (" + User.ColumnName_UserProfile + " = " + (int)UserProfile.SuperAdministrator
+                                                  + " OR " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
+                                                  + " ORDER BY " + User.ColumnName_Username
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + User.ColumnName_Id + ", "
-                        + User.ColumnName_Username + ", "
-                        + User.ColumnName_Password + ", "
-                        + User.ColumnName_Email + ", "
-                        + User.ColumnName_UserProfile + ", "
-                        + User.ColumnName_CreatedOn + ", "
-                        + User.ColumnName_ModifiedOn
-                        + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE (" + User.ColumnName_UserProfile + " = " + (int)UserProfile.SuperAdministrator
-                        + " OR " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
-                        + " ORDER BY " + User.ColumnName_Username
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    User admin = new()
                     {
-                        User admin = new()
-                        {
-                            Id = (long)reader[User.ColumnName_Id],
-                            Username = (string)reader[User.ColumnName_Username],
-                            Password = (string)reader[User.ColumnName_Password],
-                            Email = (string)reader[User.ColumnName_Email],
-                            UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
-                            CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
-                            ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
-                        };
+                        Id = (long)reader[User.ColumnName_Id],
+                        Username = (string)reader[User.ColumnName_Username],
+                        Password = (string)reader[User.ColumnName_Password],
+                        Email = (string)reader[User.ColumnName_Email],
+                        UserProfile = (UserProfile)(long)reader[User.ColumnName_UserProfile],
+                        CreatedOn = DateTime.Parse((string)reader[User.ColumnName_CreatedOn]),
+                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : DateTime.Parse((string)reader[User.ColumnName_ModifiedOn])
+                    };
 
-                        users.Add(admin);
-                    }
+                    users.Add(admin);
                 }
 
                 return users;
@@ -1635,9 +1612,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string InsertRecord(Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.Record.DocumentName + "("
@@ -1658,16 +1635,16 @@ namespace Wexflow.Core.Db.SQLite
                     + "'" + (record.Name ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (record.Description ?? "").Replace("'", "''") + "'" + ", "
                     + (record.Approved ? "1" : "0") + ", "
-                    + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'") + ", "
-                    + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'") + ", "
+                    + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                    + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
                     + "'" + (record.Comments ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (record.ManagerComments ?? "").Replace("'", "''") + "'" + ", "
                     + int.Parse(record.CreatedBy) + ", "
-                    + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
                     + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                    + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(dateTimeFormat) + "'") + ", "
+                    + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(DateTimeFormat) + "'") + ", "
                      + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                    + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'") + ")"
+                    + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'") + ")"
                     + ";"
                     + " SELECT last_insert_rowid();"
                     , conn);
@@ -1678,24 +1655,24 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateRecord(string recordId, Core.Db.Record record)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Record.DocumentName + " SET "
                     + Record.ColumnName_Name + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
                     + Record.ColumnName_Description + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
                     + Record.ColumnName_Approved + " = " + (record.Approved ? "1" : "0") + ", "
-                    + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(dateTimeFormat) + "'") + ", "
-                    + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(dateTimeFormat) + "'") + ", "
+                    + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                    + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
                     + Record.ColumnName_Comments + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
                     + Record.ColumnName_ManagerComments + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
                     + Record.ColumnName_CreatedBy + " = " + int.Parse(record.CreatedBy) + ", "
                     + Record.ColumnName_ModifiedBy + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                    + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(dateTimeFormat) + "', "
+                    + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "', "
                     + Record.ColumnName_AssignedTo + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                    + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(dateTimeFormat) + "'")
+                    + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'")
                     + " WHERE "
                     + Record.ColumnName_Id + " = " + int.Parse(recordId) + ";"
                     , conn);
@@ -1705,11 +1682,11 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteRecords(string[] recordIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (recordIds.Length > 0)
                 {
-                    using SQLiteConnection conn = new(connectionString);
+                    using SQLiteConnection conn = new(_connectionString);
                     conn.Open();
 
                     StringBuilder builder = new("(");
@@ -1722,7 +1699,7 @@ namespace Wexflow.Core.Db.SQLite
                     }
 
                     using SQLiteCommand command = new("DELETE FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                        + " WHERE " + Record.ColumnName_Id + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -1730,9 +1707,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.Record GetRecord(string id)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT "
@@ -1783,57 +1760,55 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Record> GetRecords(string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Record> records = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Record.ColumnName_Id + ", "
+                                                  + Record.ColumnName_Name + ", "
+                                                  + Record.ColumnName_Description + ", "
+                                                  + Record.ColumnName_Approved + ", "
+                                                  + Record.ColumnName_StartDate + ", "
+                                                  + Record.ColumnName_EndDate + ", "
+                                                  + Record.ColumnName_Comments + ", "
+                                                  + Record.ColumnName_ManagerComments + ", "
+                                                  + Record.ColumnName_CreatedBy + ", "
+                                                  + Record.ColumnName_CreatedOn + ", "
+                                                  + Record.ColumnName_ModifiedBy + ", "
+                                                  + Record.ColumnName_ModifiedOn + ", "
+                                                  + Record.ColumnName_AssignedTo + ", "
+                                                  + Record.ColumnName_AssignedOn
+                                                  + " FROM " + Core.Db.Record.DocumentName
+                                                  + " WHERE " + "LOWER(" + Record.ColumnName_Name + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Record.ColumnName_Id + ", "
-                        + Record.ColumnName_Name + ", "
-                        + Record.ColumnName_Description + ", "
-                        + Record.ColumnName_Approved + ", "
-                        + Record.ColumnName_StartDate + ", "
-                        + Record.ColumnName_EndDate + ", "
-                        + Record.ColumnName_Comments + ", "
-                        + Record.ColumnName_ManagerComments + ", "
-                        + Record.ColumnName_CreatedBy + ", "
-                        + Record.ColumnName_CreatedOn + ", "
-                        + Record.ColumnName_ModifiedBy + ", "
-                        + Record.ColumnName_ModifiedOn + ", "
-                        + Record.ColumnName_AssignedTo + ", "
-                        + Record.ColumnName_AssignedOn
-                        + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + "LOWER(" + Record.ColumnName_Name + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Record record = new()
                     {
-                        Record record = new()
-                        {
-                            Id = (long)reader[Record.ColumnName_Id],
-                            Name = (string)reader[Record.ColumnName_Name],
-                            Description = (string)reader[Record.ColumnName_Description],
-                            Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
-                            Comments = (string)reader[Record.ColumnName_Comments],
-                            ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                            CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
-                            CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
-                            ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
-                            AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
-                        };
+                        Id = (long)reader[Record.ColumnName_Id],
+                        Name = (string)reader[Record.ColumnName_Name],
+                        Description = (string)reader[Record.ColumnName_Description],
+                        Approved = (long)reader[Record.ColumnName_Approved] == 1,
+                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                        Comments = (string)reader[Record.ColumnName_Comments],
+                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
+                        CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
+                        CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
+                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
+                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
+                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                    };
 
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
 
                 return records;
@@ -1842,56 +1817,54 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedBy(string createdBy)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Record> records = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Record.ColumnName_Id + ", "
+                                                  + Record.ColumnName_Name + ", "
+                                                  + Record.ColumnName_Description + ", "
+                                                  + Record.ColumnName_Approved + ", "
+                                                  + Record.ColumnName_StartDate + ", "
+                                                  + Record.ColumnName_EndDate + ", "
+                                                  + Record.ColumnName_Comments + ", "
+                                                  + Record.ColumnName_ManagerComments + ", "
+                                                  + Record.ColumnName_CreatedBy + ", "
+                                                  + Record.ColumnName_CreatedOn + ", "
+                                                  + Record.ColumnName_ModifiedBy + ", "
+                                                  + Record.ColumnName_ModifiedOn + ", "
+                                                  + Record.ColumnName_AssignedTo + ", "
+                                                  + Record.ColumnName_AssignedOn
+                                                  + " FROM " + Core.Db.Record.DocumentName
+                                                  + " WHERE " + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy)
+                                                  + " ORDER BY " + Record.ColumnName_Name + " ASC"
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Record.ColumnName_Id + ", "
-                        + Record.ColumnName_Name + ", "
-                        + Record.ColumnName_Description + ", "
-                        + Record.ColumnName_Approved + ", "
-                        + Record.ColumnName_StartDate + ", "
-                        + Record.ColumnName_EndDate + ", "
-                        + Record.ColumnName_Comments + ", "
-                        + Record.ColumnName_ManagerComments + ", "
-                        + Record.ColumnName_CreatedBy + ", "
-                        + Record.ColumnName_CreatedOn + ", "
-                        + Record.ColumnName_ModifiedBy + ", "
-                        + Record.ColumnName_ModifiedOn + ", "
-                        + Record.ColumnName_AssignedTo + ", "
-                        + Record.ColumnName_AssignedOn
-                        + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy)
-                        + " ORDER BY " + Record.ColumnName_Name + " ASC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Record record = new()
                     {
-                        Record record = new()
-                        {
-                            Id = (long)reader[Record.ColumnName_Id],
-                            Name = (string)reader[Record.ColumnName_Name],
-                            Description = (string)reader[Record.ColumnName_Description],
-                            Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
-                            Comments = (string)reader[Record.ColumnName_Comments],
-                            ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                            CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
-                            CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
-                            ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
-                            AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
-                        };
+                        Id = (long)reader[Record.ColumnName_Id],
+                        Name = (string)reader[Record.ColumnName_Name],
+                        Description = (string)reader[Record.ColumnName_Description],
+                        Approved = (long)reader[Record.ColumnName_Approved] == 1,
+                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                        Comments = (string)reader[Record.ColumnName_Comments],
+                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
+                        CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
+                        CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
+                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
+                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
+                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                    };
 
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
 
                 return records;
@@ -1900,58 +1873,56 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedByOrAssignedTo(string createdBy, string assingedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Record> records = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Record.ColumnName_Id + ", "
+                                                  + Record.ColumnName_Name + ", "
+                                                  + Record.ColumnName_Description + ", "
+                                                  + Record.ColumnName_Approved + ", "
+                                                  + Record.ColumnName_StartDate + ", "
+                                                  + Record.ColumnName_EndDate + ", "
+                                                  + Record.ColumnName_Comments + ", "
+                                                  + Record.ColumnName_ManagerComments + ", "
+                                                  + Record.ColumnName_CreatedBy + ", "
+                                                  + Record.ColumnName_CreatedOn + ", "
+                                                  + Record.ColumnName_ModifiedBy + ", "
+                                                  + Record.ColumnName_ModifiedOn + ", "
+                                                  + Record.ColumnName_AssignedTo + ", "
+                                                  + Record.ColumnName_AssignedOn
+                                                  + " FROM " + Core.Db.Record.DocumentName
+                                                  + " WHERE " + "(LOWER(" + Record.ColumnName_Name + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                                  + " AND (" + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy) + " OR " + Record.ColumnName_AssignedTo + " = " + int.Parse(assingedTo) + ")"
+                                                  + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Record.ColumnName_Id + ", "
-                        + Record.ColumnName_Name + ", "
-                        + Record.ColumnName_Description + ", "
-                        + Record.ColumnName_Approved + ", "
-                        + Record.ColumnName_StartDate + ", "
-                        + Record.ColumnName_EndDate + ", "
-                        + Record.ColumnName_Comments + ", "
-                        + Record.ColumnName_ManagerComments + ", "
-                        + Record.ColumnName_CreatedBy + ", "
-                        + Record.ColumnName_CreatedOn + ", "
-                        + Record.ColumnName_ModifiedBy + ", "
-                        + Record.ColumnName_ModifiedOn + ", "
-                        + Record.ColumnName_AssignedTo + ", "
-                        + Record.ColumnName_AssignedOn
-                        + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + "(LOWER(" + Record.ColumnName_Name + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy) + " OR " + Record.ColumnName_AssignedTo + " = " + int.Parse(assingedTo) + ")"
-                        + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Record record = new()
                     {
-                        Record record = new()
-                        {
-                            Id = (long)reader[Record.ColumnName_Id],
-                            Name = (string)reader[Record.ColumnName_Name],
-                            Description = (string)reader[Record.ColumnName_Description],
-                            Approved = (long)reader[Record.ColumnName_Approved] == 1,
-                            StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
-                            EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
-                            Comments = (string)reader[Record.ColumnName_Comments],
-                            ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                            CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
-                            CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
-                            ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                            ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
-                            AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
-                            AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
-                        };
+                        Id = (long)reader[Record.ColumnName_Id],
+                        Name = (string)reader[Record.ColumnName_Name],
+                        Description = (string)reader[Record.ColumnName_Description],
+                        Approved = (long)reader[Record.ColumnName_Approved] == 1,
+                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_StartDate]),
+                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_EndDate]),
+                        Comments = (string)reader[Record.ColumnName_Comments],
+                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
+                        CreatedBy = ((long)reader[Record.ColumnName_CreatedBy]).ToString(),
+                        CreatedOn = DateTime.Parse((string)reader[Record.ColumnName_CreatedOn]),
+                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_ModifiedBy]).ToString(),
+                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_ModifiedOn]),
+                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((long)reader[Record.ColumnName_AssignedTo]).ToString(),
+                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Record.ColumnName_AssignedOn])
+                    };
 
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
 
                 return records;
@@ -1960,9 +1931,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string InsertVersion(Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.Version.DocumentName + "("
@@ -1972,7 +1943,7 @@ namespace Wexflow.Core.Db.SQLite
                     + " VALUES("
                     + int.Parse(version.RecordId) + ", "
                     + "'" + (version.FilePath ?? "").Replace("'", "''") + "'" + ", "
-                    + "'" + DateTime.Now.ToString(dateTimeFormat) + "'" + ")"
+                    + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ")"
                     + ";"
                     + " SELECT last_insert_rowid();"
                     , conn);
@@ -1983,9 +1954,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateVersion(string versionId, Core.Db.Version version)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Version.DocumentName + " SET "
@@ -2000,11 +1971,11 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteVersions(string[] versionIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (versionIds.Length > 0)
                 {
-                    using SQLiteConnection conn = new(connectionString);
+                    using SQLiteConnection conn = new(_connectionString);
                     conn.Open();
 
                     StringBuilder builder = new("(");
@@ -2017,7 +1988,7 @@ namespace Wexflow.Core.Db.SQLite
                     }
 
                     using SQLiteCommand command = new("DELETE FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                        + " WHERE " + Version.ColumnName_Id + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -2025,35 +1996,33 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Version> GetVersions(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Version> versions = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Version.ColumnName_Id + ", "
+                                                  + Version.ColumnName_RecordId + ", "
+                                                  + Version.ColumnName_FilePath + ", "
+                                                  + Version.ColumnName_CreatedOn
+                                                  + " FROM " + Core.Db.Version.DocumentName
+                                                  + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Version.ColumnName_Id + ", "
-                        + Version.ColumnName_RecordId + ", "
-                        + Version.ColumnName_FilePath + ", "
-                        + Version.ColumnName_CreatedOn
-                        + " FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Version version = new()
                     {
-                        Version version = new()
-                        {
-                            Id = (long)reader[Version.ColumnName_Id],
-                            RecordId = ((long)reader[Version.ColumnName_RecordId]).ToString(),
-                            FilePath = (string)reader[Version.ColumnName_FilePath],
-                            CreatedOn = DateTime.Parse((string)reader[Version.ColumnName_CreatedOn])
-                        };
+                        Id = (long)reader[Version.ColumnName_Id],
+                        RecordId = ((long)reader[Version.ColumnName_RecordId]).ToString(),
+                        FilePath = (string)reader[Version.ColumnName_FilePath],
+                        CreatedOn = DateTime.Parse((string)reader[Version.ColumnName_CreatedOn])
+                    };
 
-                        versions.Add(version);
-                    }
+                    versions.Add(version);
                 }
 
                 return versions;
@@ -2062,9 +2031,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override Core.Db.Version GetLatestVersion(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT "
@@ -2097,9 +2066,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string InsertNotification(Core.Db.Notification notification)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.Notification.DocumentName + "("
@@ -2110,7 +2079,7 @@ namespace Wexflow.Core.Db.SQLite
                     + Notification.ColumnName_IsRead + ")"
                     + " VALUES("
                     + (!string.IsNullOrEmpty(notification.AssignedBy) ? int.Parse(notification.AssignedBy).ToString() : "NULL") + ", "
-                    + "'" + notification.AssignedOn.ToString(dateTimeFormat) + "'" + ", "
+                    + "'" + notification.AssignedOn.ToString(DateTimeFormat) + "'" + ", "
                     + (!string.IsNullOrEmpty(notification.AssignedTo) ? int.Parse(notification.AssignedTo).ToString() : "NULL") + ", "
                     + "'" + (notification.Message ?? "").Replace("'", "''") + "'" + ", "
                     + (notification.IsRead ? "1" : "0") + ")"
@@ -2124,9 +2093,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void MarkNotificationsAsRead(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder builder = new("(");
@@ -2140,16 +2109,16 @@ namespace Wexflow.Core.Db.SQLite
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
                     + " SET " + Notification.ColumnName_IsRead + " = " + "1"
-                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
 
         public override void MarkNotificationsAsUnread(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 StringBuilder builder = new("(");
@@ -2163,18 +2132,18 @@ namespace Wexflow.Core.Db.SQLite
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
                     + " SET " + Notification.ColumnName_IsRead + " = " + "0"
-                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
 
         public override void DeleteNotifications(string[] notificationIds)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 if (notificationIds.Length > 0)
                 {
-                    using SQLiteConnection conn = new(connectionString);
+                    using SQLiteConnection conn = new(_connectionString);
                     conn.Open();
 
                     StringBuilder builder = new("(");
@@ -2187,7 +2156,7 @@ namespace Wexflow.Core.Db.SQLite
                     }
 
                     using SQLiteCommand command = new("DELETE FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder.ToString() + ";", conn);
+                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -2195,41 +2164,39 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Notification> GetNotifications(string assignedTo, string keyword)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Notification> notifications = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Notification.ColumnName_Id + ", "
+                                                  + Notification.ColumnName_AssignedBy + ", "
+                                                  + Notification.ColumnName_AssignedOn + ", "
+                                                  + Notification.ColumnName_AssignedTo + ", "
+                                                  + Notification.ColumnName_Message + ", "
+                                                  + Notification.ColumnName_IsRead
+                                                  + " FROM " + Core.Db.Notification.DocumentName
+                                                  + " WHERE " + "(LOWER(" + Notification.ColumnName_Message + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                  + " AND " + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo) + ")"
+                                                  + " ORDER BY " + Notification.ColumnName_AssignedOn + " DESC"
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Notification.ColumnName_Id + ", "
-                        + Notification.ColumnName_AssignedBy + ", "
-                        + Notification.ColumnName_AssignedOn + ", "
-                        + Notification.ColumnName_AssignedTo + ", "
-                        + Notification.ColumnName_Message + ", "
-                        + Notification.ColumnName_IsRead
-                        + " FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE " + "(LOWER(" + Notification.ColumnName_Message + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " AND " + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo) + ")"
-                        + " ORDER BY " + Notification.ColumnName_AssignedOn + " DESC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Notification notification = new()
                     {
-                        Notification notification = new()
-                        {
-                            Id = (long)reader[Notification.ColumnName_Id],
-                            AssignedBy = ((long)reader[Notification.ColumnName_AssignedBy]).ToString(),
-                            AssignedOn = DateTime.Parse((string)reader[Notification.ColumnName_AssignedOn]),
-                            AssignedTo = ((long)reader[Notification.ColumnName_AssignedTo]).ToString(),
-                            Message = (string)reader[Notification.ColumnName_Message],
-                            IsRead = (long)reader[Notification.ColumnName_IsRead] == 1
-                        };
+                        Id = (long)reader[Notification.ColumnName_Id],
+                        AssignedBy = ((long)reader[Notification.ColumnName_AssignedBy]).ToString(),
+                        AssignedOn = DateTime.Parse((string)reader[Notification.ColumnName_AssignedOn]),
+                        AssignedTo = ((long)reader[Notification.ColumnName_AssignedTo]).ToString(),
+                        Message = (string)reader[Notification.ColumnName_Message],
+                        IsRead = (long)reader[Notification.ColumnName_IsRead] == 1
+                    };
 
-                        notifications.Add(notification);
-                    }
+                    notifications.Add(notification);
                 }
 
                 return notifications;
@@ -2238,9 +2205,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override bool HasNotifications(string assignedTo)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("SELECT COUNT(*)"
@@ -2256,9 +2223,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override string InsertApprover(Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("INSERT INTO " + Core.Db.Approver.DocumentName + "("
@@ -2269,7 +2236,7 @@ namespace Wexflow.Core.Db.SQLite
                     + int.Parse(approver.UserId) + ", "
                     + int.Parse(approver.RecordId) + ", "
                     + (approver.Approved ? "1" : "0") + ", "
-                    + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'") + ");"
+                    + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'") + ");"
                     + " SELECT last_insert_rowid();"
                     , conn);
                 var id = (long)command.ExecuteScalar();
@@ -2279,16 +2246,16 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void UpdateApprover(string approverId, Core.Db.Approver approver)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("UPDATE " + Core.Db.Approver.DocumentName + " SET "
                     + Approver.ColumnName_UserId + " = " + int.Parse(approver.UserId) + ", "
                     + Approver.ColumnName_RecordId + " = " + int.Parse(approver.RecordId) + ", "
                     + Approver.ColumnName_Approved + " = " + (approver.Approved ? "1" : "0") + ", "
-                    + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(dateTimeFormat) + "'")
+                    + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'")
                     + " WHERE "
                     + Approver.ColumnName_Id + " = " + int.Parse(approverId) + ";"
                     , conn);
@@ -2298,9 +2265,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteApproversByRecordId(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
@@ -2311,9 +2278,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteApprovedApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
@@ -2327,9 +2294,9 @@ namespace Wexflow.Core.Db.SQLite
 
         public override void DeleteApproversByUserId(string userId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
-                using SQLiteConnection conn = new(connectionString);
+                using SQLiteConnection conn = new(_connectionString);
                 conn.Open();
 
                 using SQLiteCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
@@ -2340,37 +2307,35 @@ namespace Wexflow.Core.Db.SQLite
 
         public override IEnumerable<Core.Db.Approver> GetApprovers(string recordId)
         {
-            lock (padlock)
+            lock (Padlock)
             {
                 List<Approver> approvers = new();
 
-                using (SQLiteConnection conn = new(connectionString))
+                using SQLiteConnection conn = new(_connectionString);
+                conn.Open();
+
+                using SQLiteCommand command = new("SELECT "
+                                                  + Approver.ColumnName_Id + ", "
+                                                  + Approver.ColumnName_UserId + ", "
+                                                  + Approver.ColumnName_RecordId + ", "
+                                                  + Approver.ColumnName_Approved + ", "
+                                                  + Approver.ColumnName_ApprovedOn
+                                                  + " FROM " + Core.Db.Approver.DocumentName
+                                                  + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
+                                                  + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using SQLiteCommand command = new("SELECT "
-                        + Approver.ColumnName_Id + ", "
-                        + Approver.ColumnName_UserId + ", "
-                        + Approver.ColumnName_RecordId + ", "
-                        + Approver.ColumnName_Approved + ", "
-                        + Approver.ColumnName_ApprovedOn
-                        + " FROM " + Core.Db.Approver.DocumentName
-                        + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Approver approver = new()
                     {
-                        Approver approver = new()
-                        {
-                            Id = (long)reader[Approver.ColumnName_Id],
-                            UserId = ((long)reader[Approver.ColumnName_UserId]).ToString(),
-                            RecordId = ((long)reader[Approver.ColumnName_RecordId]).ToString(),
-                            Approved = (long)reader[Approver.ColumnName_Approved] == 1,
-                            ApprovedOn = reader[Approver.ColumnName_ApprovedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Approver.ColumnName_ApprovedOn])
-                        };
+                        Id = (long)reader[Approver.ColumnName_Id],
+                        UserId = ((long)reader[Approver.ColumnName_UserId]).ToString(),
+                        RecordId = ((long)reader[Approver.ColumnName_RecordId]).ToString(),
+                        Approved = (long)reader[Approver.ColumnName_Approved] == 1,
+                        ApprovedOn = reader[Approver.ColumnName_ApprovedOn] == DBNull.Value ? null : DateTime.Parse((string)reader[Approver.ColumnName_ApprovedOn])
+                    };
 
-                        approvers.Add(approver);
-                    }
+                    approvers.Add(approver);
                 }
 
                 return approvers;
