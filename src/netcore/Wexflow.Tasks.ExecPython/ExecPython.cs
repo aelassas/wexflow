@@ -6,7 +6,7 @@ namespace Wexflow.Tasks.ExecPython
 {
     public class ExecPython : Core.Task
     {
-        public string PythonPath { get; private set; }
+        public string PythonPath { get; }
 
         public ExecPython(XElement xe, Workflow wf) : base(xe, wf)
         {

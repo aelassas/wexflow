@@ -8,10 +8,10 @@ namespace Wexflow.Tasks.FilesInfo
 {
     public class FilesInfo : Task
     {
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FilesInfo(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.FilesInfo
             if (files.Length > 0)
             {
                 var filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("FilesInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"FilesInfo_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 var xdoc = new XDocument(new XElement("Files"));
                 foreach (var file in files)

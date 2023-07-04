@@ -10,10 +10,10 @@ namespace Wexflow.Tasks.ImagesConcat
 {
     public class ImagesConcat : Task
     {
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public ImagesConcat(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.ImagesConcat
                     var extension = Path.GetExtension(imageFiles[0].FileName);
 
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                            string.Format("ImagesConcat_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
+                        $"ImagesConcat_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}{extension}");
 
                     success = ConcatImages(imageFiles, destPath);
                 }

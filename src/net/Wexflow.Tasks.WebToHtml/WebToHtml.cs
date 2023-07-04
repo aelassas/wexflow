@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.WebToHtml
 {
     public class WebToHtml : Task
     {
-        public string[] Urls { get; private set; }
+        public string[] Urls { get; }
 
         public WebToHtml(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.WebToHtml
                     driver.Navigate().GoToUrl(url);
 
                     var destFile = Path.Combine(Workflow.WorkflowTempFolder,
-                         string.Format("WebToHtml_{0:yyyy-MM-dd-HH-mm-ss-fff}.html", DateTime.Now));
+                        $"WebToHtml_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.html");
 
                     var source = driver.PageSource;
                     File.WriteAllText(destFile, source);

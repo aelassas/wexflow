@@ -11,7 +11,7 @@ namespace Wexflow.Tasks.Tgz
 {
     public class Tgz : Task
     {
-        public string TgzFileName { get; private set; }
+        public string TgzFileName { get; }
 
         public Tgz(XElement xe, Workflow wf) : base(xe, wf)
         {

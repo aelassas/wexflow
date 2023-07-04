@@ -11,10 +11,10 @@ namespace Wexflow.Tasks.HtmlToPdf
 {
     public class HtmlToPdf : Task
     {
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public HtmlToPdf(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -82,7 +82,7 @@ namespace Wexflow.Tasks.HtmlToPdf
                     try
                     {
                         var pdfPath = Path.Combine(Workflow.WorkflowTempFolder,
-                            string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.pdf", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
+                            $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.pdf");
 
                         var doc = new Document();
                         _ = PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));

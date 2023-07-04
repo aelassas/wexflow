@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.CsvToXml
                 try
                 {
                     var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
+                        $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                     CreateXml(file.Path, xmlPath);
                     Files.Add(new FileInf(xmlPath, Id));
                     InfoFormat("XML file {0} created from {1}", xmlPath, file.Path);

@@ -8,10 +8,10 @@ namespace Wexflow.Tasks.FilesMover
 {
     public class FilesMover : Task
     {
-        public string DestFolder { get; private set; }
-        public bool Overwrite { get; private set; }
-        public string PreserveFolderStructFrom { get; private set; }
-        public bool AllowCreateDirectory { get; private set; }
+        public string DestFolder { get; }
+        public bool Overwrite { get; }
+        public string PreserveFolderStructFrom { get; }
+        public bool AllowCreateDirectory { get; }
 
         public FilesMover(XElement xe, Workflow wf)
             : base(xe, wf)

@@ -20,14 +20,14 @@ namespace Wexflow.Tasks.MailsReceiver
 
     public class MailsReceiver : Task
     {
-        public string Host { get; private set; }
-        public int Port { get; private set; }
-        public bool EnableSsl { get; private set; }
-        public string User { get; private set; }
-        public string Password { get; private set; }
-        public int MessageCount { get; private set; }
-        public bool DeleteMessages { get; private set; }
-        public Protocol Protocol { get; private set; }
+        public string Host { get; }
+        public int Port { get; }
+        public bool EnableSsl { get; }
+        public string User { get; }
+        public string Password { get; }
+        public int MessageCount { get; }
+        public bool DeleteMessages { get; }
+        public Protocol Protocol { get; }
 
         public MailsReceiver(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.MailsReceiver
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
                                 var message = client.Inbox.GetMessage(uids[i]);
-                                var messageFileName = $"message_{i}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", message.Date)}";
+                                var messageFileName = $"message_{i}_{$"{message.Date:yyyy-MM-dd-HH-mm-ss-fff}"}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
                                 Files.Add(new FileInf(messagePath, Id));
@@ -121,7 +121,7 @@ namespace Wexflow.Tasks.MailsReceiver
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
                                 var message = client.GetMessage(i);
-                                var messageFileName = $"message_{i}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", message.Date)}";
+                                var messageFileName = $"message_{i}_{$"{message.Date:yyyy-MM-dd-HH-mm-ss-fff}"}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
                                 Files.Add(new FileInf(messagePath, Id));

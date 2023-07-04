@@ -10,8 +10,8 @@ namespace Wexflow.Tasks.VimeoListUploads
 {
     public class VimeoListUploads : Task
     {
-        public string Token { get; private set; }
-        public long UserId { get; private set; }
+        public string Token { get; }
+        public long UserId { get; }
 
         public VimeoListUploads(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.VimeoListUploads
             try
             {
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "VimeoListUploads", DateTime.Now));
+                    $"{"VimeoListUploads"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 var xdoc = new XDocument(new XElement("VimeoListUploads"));
                 var xvideos = new XElement("Videos");

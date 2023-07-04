@@ -12,9 +12,9 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
     {
         private static readonly string smKey = "ApprovalRecordsCreator.RecordIds";
 
-        public string AssignedTo { get; private set; }
-        public string Approver { get; private set; }
-        public bool DeleteWorkflowOnApproval { get; private set; }
+        public string AssignedTo { get; }
+        public string Approver { get; }
+        public bool DeleteWorkflowOnApproval { get; }
 
         public ApprovalWorkflowsCreator(XElement xe, Workflow wf) : base(xe, wf)
         {

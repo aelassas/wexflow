@@ -10,11 +10,11 @@ namespace Wexflow.Tasks.Untar
 {
     public class Untar : Task
     {
-        public string DestDir { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string DestDir { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public Untar(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -83,7 +83,7 @@ namespace Wexflow.Tasks.Untar
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
+                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
                         _ = Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 

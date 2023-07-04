@@ -7,7 +7,7 @@ namespace Wexflow.Tasks.EnvironmentVariable
 {
     public class EnvironmentVariable : Task
     {
-        public string VariableName { get; private set; }
+        public string VariableName { get; }
 
         public EnvironmentVariable(XElement xe, Workflow wf) : base(xe, wf)
         {

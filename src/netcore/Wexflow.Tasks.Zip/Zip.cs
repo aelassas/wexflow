@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.Zip
 {
     public class Zip : Task
     {
-        public string ZipFileName { get; private set; }
+        public string ZipFileName { get; }
 
         public Zip(XElement xe, Workflow wf)
             : base(xe, wf)

@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.Wmi
 {
     public class Wmi : Task
     {
-        public string Query { get; private set; }
+        public string Query { get; }
 
         public Wmi(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -25,7 +25,8 @@ namespace Wexflow.Tasks.Wmi
 
             try
             {
-                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("WMI_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
+                    $"WMI_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 var xdoc = new XDocument(new XElement("Objects"));
                 var searcher = new ManagementObjectSearcher(Query);

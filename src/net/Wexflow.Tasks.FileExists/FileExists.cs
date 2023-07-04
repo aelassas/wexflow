@@ -7,11 +7,11 @@ namespace Wexflow.Tasks.FileExists
 {
     public class FileExists : Task
     {
-        public string File { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string File { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FileExists(XElement xe, Workflow wf) : base(xe, wf)
         {

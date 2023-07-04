@@ -10,11 +10,11 @@ namespace Wexflow.Tasks.Tar
 {
     public class Tar : Task
     {
-        public string TarFileName { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string TarFileName { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public Tar(XElement xe, Workflow wf) : base(xe, wf)
         {

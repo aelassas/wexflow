@@ -33,7 +33,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Task Id.
         /// </summary>
-        public int TaskId { get; private set; }
+        public int TaskId { get; }
         /// <summary>
         /// RenameTo.
         /// </summary>
@@ -57,7 +57,7 @@ namespace Wexflow.Core
         /// <summary>
         /// List of tags.
         /// </summary>
-        public List<Tag> Tags { get; private set; }
+        public List<Tag> Tags { get; }
 
         /// <summary>
         /// File system info from <see cref="Path"/>.

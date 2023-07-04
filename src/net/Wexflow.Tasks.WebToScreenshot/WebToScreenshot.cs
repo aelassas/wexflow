@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.WebToScreenshot
 {
     public class WebToScreenshot : Task
     {
-        public string[] Urls { get; private set; }
+        public string[] Urls { get; }
 
         public WebToScreenshot(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.WebToScreenshot
                     var ss = ((ITakesScreenshot)driver).GetScreenshot();
 
                     var destFile = Path.Combine(Workflow.WorkflowTempFolder,
-                         string.Format("WebToScreenshot_{0:yyyy-MM-dd-HH-mm-ss-fff}.png", DateTime.Now));
+                        $"WebToScreenshot_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.png");
 
                     ss.SaveAsFile(destFile, ScreenshotImageFormat.Png);
 

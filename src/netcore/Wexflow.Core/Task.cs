@@ -16,7 +16,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Task Id.
         /// </summary>
-        public int Id { get; private set; }
+        public int Id { get; }
         /// <summary>
         /// Task name.
         /// </summary>
@@ -40,11 +40,11 @@ namespace Wexflow.Core
         /// <summary>
         /// Workflow.
         /// </summary>
-        public Workflow Workflow { get; private set; }
+        public Workflow Workflow { get; }
         /// <summary>
         /// Log messages.
         /// </summary>
-        public List<string> Logs { get; private set; }
+        public List<string> Logs { get; }
         /// <summary>
         /// Indicates whether this task has been stopped or not.
         /// </summary>
@@ -141,7 +141,7 @@ namespace Wexflow.Core
         /// <returns>Setting value.</returns>
         public string GetSetting(string name)
         {
-            var xNode = _xElement.XPathSelectElement(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager);
+            var xNode = _xElement.XPathSelectElement($"wf:Setting[@name='{name}']", Workflow.XmlNamespaceManager);
             if (xNode != null)
             {
                 var xSetting = xNode.Attribute("value");
@@ -207,7 +207,7 @@ namespace Wexflow.Core
         /// <returns>A list of setting values.</returns>
         public string[] GetSettings(string name)
         {
-            return _xElement.XPathSelectElements(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager).Select(xe =>
+            return _xElement.XPathSelectElements($"wf:Setting[@name='{name}']", Workflow.XmlNamespaceManager).Select(xe =>
             {
                 var xAttribute = xe.Attribute("value");
                 return xAttribute == null ? throw new Exception($"Setting {name} value attribute not found.") : xAttribute.Value;
@@ -231,7 +231,7 @@ namespace Wexflow.Core
         /// <returns>A list of setting values as XElements.</returns>
         public XElement[] GetXSettings(string name)
         {
-            return _xElement.XPathSelectElements(string.Format("wf:Setting[@name='{0}']", name), Workflow.XmlNamespaceManager).ToArray();
+            return _xElement.XPathSelectElements($"wf:Setting[@name='{name}']", Workflow.XmlNamespaceManager).ToArray();
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Wexflow.Core
 
         private string BuildLogMsg(string msg)
         {
-            return string.Format("{0} [{1}] {2}", Workflow.LogTag, GetType().Name, msg);
+            return $"{Workflow.LogTag} [{GetType().Name}] {msg}";
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.Vimeo
 {
     public class Vimeo : Task
     {
-        public string Token { get; private set; }
+        public string Token { get; }
         public string SmbComputerName { get; private set; }
         public string SmbDomain { get; private set; }
         public string SmbUsername { get; private set; }

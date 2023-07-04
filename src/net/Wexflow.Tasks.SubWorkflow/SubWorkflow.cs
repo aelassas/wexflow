@@ -21,9 +21,9 @@ namespace Wexflow.Tasks.SubWorkflow
 
     public class SubWorkflow : Task
     {
-        public int WorkflowId { get; private set; }
-        public KickOffAction Action { get; private set; }
-        public KickOffMode Mode { get; private set; }
+        public int WorkflowId { get; }
+        public KickOffAction Action { get; }
+        public KickOffMode Mode { get; }
 
         public SubWorkflow(XElement xe, Workflow wf) : base(xe, wf)
         {

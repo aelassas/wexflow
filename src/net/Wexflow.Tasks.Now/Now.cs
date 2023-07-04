@@ -8,8 +8,8 @@ namespace Wexflow.Tasks.Now
 {
     public class Now : Task
     {
-        public string Cultre { get; private set; }
-        public string Format { get; private set; }
+        public string Cultre { get; }
+        public string Format { get; }
 
         public Now(XElement xe, Workflow wf) : base(xe, wf)
         {

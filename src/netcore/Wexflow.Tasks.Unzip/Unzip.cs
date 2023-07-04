@@ -9,9 +9,9 @@ namespace Wexflow.Tasks.Unzip
 {
     public class Unzip : Task
     {
-        public string DestDir { get; private set; }
-        public bool CreateSubDirectoryWithDateTime { get; private set; }
-        public bool Overwrite { get; private set; }
+        public string DestDir { get; }
+        public bool CreateSubDirectoryWithDateTime { get; }
+        public bool Overwrite { get; }
 
         public Unzip(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -39,7 +39,7 @@ namespace Wexflow.Tasks.Unzip
                         var destFolder = CreateSubDirectoryWithDateTime
                             ? Path.Combine(DestDir,
                                 Path.GetFileNameWithoutExtension(zip.Path) + "_" +
-                                string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now))
+                                $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}")
                             : DestDir;
                         if (!Directory.Exists(destFolder))
                         {

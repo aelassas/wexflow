@@ -193,8 +193,7 @@ namespace Wexflow.Tasks.SqlToXml
                 }
 
                 var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                                               string.Format("SqlToXml_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml",
-                                               DateTime.Now));
+                    $"SqlToXml_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 XDocument xdoc = new();
                 XElement xobjects = new("Records");
 

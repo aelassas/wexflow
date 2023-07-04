@@ -9,14 +9,14 @@ namespace Wexflow.Tasks.ImagesCropper
 {
     public class ImagesCropper : Task
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
+        public int X { get; }
+        public int Y { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public ImagesCropper(XElement xe, Workflow wf) : base(xe, wf)
         {

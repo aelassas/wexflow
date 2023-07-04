@@ -13,10 +13,10 @@ namespace Wexflow.Tasks.FilesDiff
     {
         public string OldFile { get; set; }
         public string NewFile { get; set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FilesDiff(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.FilesDiff
             var diff = diffBuilder.BuildDiffModel(oldText, newText);
 
             var resultPath = Path.Combine(Workflow.WorkflowTempFolder,
-                   string.Format("FilesDiff_{0:yyyy-MM-dd-HH-mm-ss-fff}.diff", DateTime.Now));
+                $"FilesDiff_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.diff");
 
             using (var sw = new StreamWriter(resultPath))
             {

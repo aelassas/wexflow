@@ -12,10 +12,10 @@ namespace Wexflow.Tasks.MediaInfo
         private bool _success = true;
         private bool _atLeastOneSucceed = false;
 
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public MediaInfo(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -75,7 +75,7 @@ namespace Wexflow.Tasks.MediaInfo
             if (files.Length > 0)
             {
                 var mediaInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("MediaInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"MediaInfo_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 var xdoc = Inform(files);
                 xdoc.Save(mediaInfoPath);

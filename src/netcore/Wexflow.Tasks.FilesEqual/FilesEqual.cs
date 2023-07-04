@@ -39,7 +39,7 @@ namespace Wexflow.Tasks.FilesEqual
                 }
 
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                       string.Format("FilesEqual_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"FilesEqual_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 XDocument xdoc = new(new XElement("Root"));
                 XElement xFiles = new("Files");
 

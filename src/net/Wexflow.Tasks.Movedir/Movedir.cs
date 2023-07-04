@@ -8,13 +8,13 @@ namespace Wexflow.Tasks.Movedir
 {
     public class Movedir : Task
     {
-        public string Folder { get; private set; }
-        public string DestinationFolder { get; private set; }
-        public bool Overwrite { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string Folder { get; }
+        public string DestinationFolder { get; }
+        public bool Overwrite { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public Movedir(XElement xe, Workflow wf) : base(xe, wf)
         {

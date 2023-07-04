@@ -9,7 +9,7 @@ namespace Wexflow.Tasks.Wait
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public TimeSpan Duration { get; private set; }
+        public TimeSpan Duration { get; }
 
         public Wait(XElement xe, Workflow wf) : base(xe, wf)
         {

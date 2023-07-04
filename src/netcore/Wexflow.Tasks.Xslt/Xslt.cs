@@ -10,11 +10,11 @@ namespace Wexflow.Tasks.Xslt
 {
     public class Xslt : Task
     {
-        public string XsltPath { get; private set; }
+        public string XsltPath { get; }
         public string Version { get; private set; }
-        public bool RemoveWexflowProcessingNodes { get; private set; }
-        public string Extension { get; private set; }
-        public string OutputFormat { get; private set; }
+        public bool RemoveWexflowProcessingNodes { get; }
+        public string Extension { get; }
+        public string OutputFormat { get; }
         public Xslt(XElement xe, Workflow wf)
             : base(xe, wf)
         {

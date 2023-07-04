@@ -10,9 +10,9 @@ namespace Wexflow.Tasks.HttpGet
 {
     public class HttpGet : Task
     {
-        public string Url { get; private set; }
-        public string AuthorizationScheme { get; private set; }
-        public string AuthorizationParameter { get; private set; }
+        public string Url { get; }
+        public string AuthorizationScheme { get; }
+        public string AuthorizationParameter { get; }
 
         public HttpGet(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -30,7 +30,8 @@ namespace Wexflow.Tasks.HttpGet
                 var getTask = Post(Url, AuthorizationScheme, AuthorizationParameter);
                 getTask.Wait();
                 var result = getTask.Result;
-                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpGet_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder,
+                    $"HttpGet_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("GET request {0} executed with success -> {1}", Url, destFile);

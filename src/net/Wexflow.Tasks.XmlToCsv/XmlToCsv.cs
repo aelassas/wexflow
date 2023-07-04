@@ -11,10 +11,10 @@ namespace Wexflow.Tasks.XmlToCsv
     {
         public string Separator { get; set; }
         public string Quote { get; set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public XmlToCsv(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -81,7 +81,7 @@ namespace Wexflow.Tasks.XmlToCsv
                 try
                 {
                     var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.csv", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
+                        $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.csv");
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
                     Files.Add(new FileInf(csvPath, Id));

@@ -9,9 +9,9 @@ namespace Wexflow.Tasks.FileMatch
 {
     public class FileMatch : Task
     {
-        public string Dir { get; private set; }
-        public string Pattern { get; private set; }
-        public bool Recursive { get; private set; }
+        public string Dir { get; }
+        public string Pattern { get; }
+        public bool Recursive { get; }
 
         public FileMatch(XElement xe, Workflow wf) : base(xe, wf)
         {

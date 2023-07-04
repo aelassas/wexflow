@@ -8,10 +8,10 @@ namespace Wexflow.Tasks.CsvToXml
 {
     public class CsvToXml : Task
     {
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public CsvToXml(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.CsvToXml
                 try
                 {
                     var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
+                        $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                     CreateXml(file.Path, xmlPath);
                     Files.Add(new FileInf(xmlPath, Id));
                     InfoFormat("XML file {0} created from {1}", xmlPath, file.Path);

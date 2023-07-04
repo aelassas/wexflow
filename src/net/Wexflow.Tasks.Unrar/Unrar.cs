@@ -12,11 +12,11 @@ namespace Wexflow.Tasks.Unrar
 {
     public class Unrar : Task
     {
-        public string DestDir { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string DestDir { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public Unrar(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -85,7 +85,7 @@ namespace Wexflow.Tasks.Unrar
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(rar.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
+                            , $"{Path.GetFileNameWithoutExtension(rar.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
                         _ = Directory.CreateDirectory(destFolder);
 
                         ExtractRar(rar.Path, destFolder);

@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.FilesInfo
             if (files.Length > 0)
             {
                 var filesInfoPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("FilesInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"FilesInfo_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 XDocument xdoc = new(new XElement("Files"));
                 foreach (var file in files)

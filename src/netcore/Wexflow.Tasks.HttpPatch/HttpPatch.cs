@@ -16,11 +16,11 @@ namespace Wexflow.Tasks.HttpPatch
         private const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
         private const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
 
-        public string Url { get; private set; }
-        public string Payload { get; private set; }
-        public string AuthorizationScheme { get; private set; }
-        public string AuthorizationParameter { get; private set; }
-        public string Type { get; private set; }
+        public string Url { get; }
+        public string Payload { get; }
+        public string AuthorizationScheme { get; }
+        public string AuthorizationParameter { get; }
+        public string Type { get; }
 
         public HttpPatch(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -51,7 +51,8 @@ namespace Wexflow.Tasks.HttpPatch
                 var response = client.PatchAsync(Url, httpContent).Result;
                 var responseString = response.Content.ReadAsStringAsync().Result;
 
-                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpPatch_{0:yyyy-MM-dd-HH-mm-ss-fff}.txt", DateTime.Now));
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder,
+                    $"HttpPatch_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt");
                 File.WriteAllText(destFile, responseString);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("PATCH request {0} executed whith success -> {1}", Url, destFile);

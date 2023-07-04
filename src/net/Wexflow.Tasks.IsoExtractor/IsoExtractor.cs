@@ -11,10 +11,10 @@ namespace Wexflow.Tasks.IsoExtractor
     public class IsoExtractor : Task
     {
         public string DestDir { get; set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public IsoExtractor(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -83,7 +83,7 @@ namespace Wexflow.Tasks.IsoExtractor
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(iso.Path)}_{string.Format("{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now)}");
+                            , $"{Path.GetFileNameWithoutExtension(iso.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
                         _ = Directory.CreateDirectory(destFolder);
 
                         ExtractIso(iso.Path, destFolder);

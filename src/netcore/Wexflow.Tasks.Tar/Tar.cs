@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.Tar
 {
     public class Tar : Task
     {
-        public string TarFileName { get; private set; }
+        public string TarFileName { get; }
 
         public Tar(XElement xe, Workflow wf) : base(xe, wf)
         {

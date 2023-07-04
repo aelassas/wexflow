@@ -44,11 +44,11 @@ namespace Wexflow.Core
         /// <summary>
         /// Wexflow engine.
         /// </summary>
-        public WexflowEngine WexflowEngine { get; private set; }
+        public WexflowEngine WexflowEngine { get; }
         /// <summary>
         /// Database ID.
         /// </summary>
-        public string DbId { get; private set; }
+        public string DbId { get; }
         /// <summary>
         /// Username of the user that started the workflow.
         /// </summary>
@@ -72,11 +72,11 @@ namespace Wexflow.Core
         /// <summary>
         /// XML of the workflow.
         /// </summary>
-        public string Xml { get; private set; }
+        public string Xml { get; }
         /// <summary>
         /// Wexflow temp folder.
         /// </summary>
-        public string WexflowTempFolder { get; private set; }
+        public string WexflowTempFolder { get; }
         /// <summary>
         /// Workflow temp folder.
         /// </summary>
@@ -84,11 +84,11 @@ namespace Wexflow.Core
         /// <summary>
         /// Approval folder.
         /// </summary>
-        public string ApprovalFolder { get; private set; }
+        public string ApprovalFolder { get; }
         /// <summary>
         /// XSD path.
         /// </summary>
-        public string XsdPath { get; private set; }
+        public string XsdPath { get; }
         /// <summary>
         /// Workflow Id.
         /// </summary>
@@ -148,11 +148,11 @@ namespace Wexflow.Core
         /// <summary>
         /// Workflow files.
         /// </summary>
-        public Dictionary<int, List<FileInf>> FilesPerTask { get; private set; }
+        public Dictionary<int, List<FileInf>> FilesPerTask { get; }
         /// <summary>
         /// Workflow entities.
         /// </summary>
-        public Dictionary<int, List<Entity>> EntitiesPerTask { get; private set; }
+        public Dictionary<int, List<Entity>> EntitiesPerTask { get; }
         /// <summary>
         /// Job Id.
         /// </summary>
@@ -192,11 +192,11 @@ namespace Wexflow.Core
         /// <summary>
         /// Database.
         /// </summary>
-        public Db.Db Database { get; private set; }
+        public Db.Db Database { get; }
         /// <summary>
         /// Global variables.
         /// </summary>
-        public Variable[] GlobalVariables { get; private set; }
+        public Variable[] GlobalVariables { get; }
         /// <summary>
         /// Local variables.
         /// </summary>
@@ -208,11 +208,11 @@ namespace Wexflow.Core
         /// <summary>
         /// Tasks folder.
         /// </summary>
-        public string TasksFolder { get; private set; }
+        public string TasksFolder { get; }
         /// <summary>
         /// Workflow jobs.
         /// </summary>
-        public Dictionary<Guid, Workflow> Jobs { get; private set; }
+        public Dictionary<Guid, Workflow> Jobs { get; }
         /// <summary>
         /// Instance Id.
         /// </summary>
@@ -220,7 +220,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Log messages.
         /// </summary>
-        public List<string> Logs { get; private set; }
+        public List<string> Logs { get; }
         /// <summary>
         /// Started on date time.
         /// </summary>
@@ -294,7 +294,7 @@ namespace Wexflow.Core
         /// <returns>Informations about this workflow.</returns>
         public override string ToString()
         {
-            return string.Format("{{id: {0}, name: {1}, enabled: {2}, launchType: {3}}}", Id, Name, IsEnabled, LaunchType);
+            return $"{{id: {Id}, name: {Name}, enabled: {IsEnabled}, launchType: {LaunchType}}}";
         }
 
         private void Check()
@@ -716,7 +716,7 @@ namespace Wexflow.Core
                         .Select(XNodeToNode)
                         .ToArray();
 
-                    var nodeName = string.Format("Switch>Case(value={0})", val);
+                    var nodeName = $"Switch>Case(value={val})";
                     CheckStartupNode(nodes, $"Startup node with parentId=-1 not found in {nodeName} execution graph.");
                     CheckParallelTasks(nodes, $"Parallel tasks execution detected in {nodeName} execution graph.");
                     CheckInfiniteLoop(nodes, $"Infinite loop detected in {nodeName} execution graph.");
@@ -853,7 +853,7 @@ namespace Wexflow.Core
         {
             var xSetting = xdoc
                 .XPathSelectElement(
-                    string.Format("/wf:Workflow[@id='{0}']/wf:Settings/wf:Setting[@name='{1}']", Id, name),
+                    $"/wf:Workflow[@id='{Id}']/wf:Settings/wf:Setting[@name='{name}']",
                     XmlNamespaceManager);
 
             if (xSetting != null)
@@ -950,7 +950,7 @@ namespace Wexflow.Core
 
             if (WexflowEngine.LogLevel != LogLevel.None)
             {
-                var msg = string.Format("{0} Workflow started - Instance Id: {1}", LogTag, InstanceId);
+                var msg = $"{LogTag} Workflow started - Instance Id: {InstanceId}";
                 Logger.Info(msg);
                 Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  INFO - {msg}");
             }
@@ -1146,7 +1146,7 @@ namespace Wexflow.Core
             {
                 if (WexflowEngine.LogLevel != LogLevel.None)
                 {
-                    var emsg = string.Format("An error occured while running the workflow. Error: {0}", this);
+                    var emsg = $"An error occured while running the workflow. Error: {this}";
                     Logger.Error(emsg, e);
                     Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {emsg}\r\n{e}");
                 }
@@ -1207,7 +1207,7 @@ namespace Wexflow.Core
         {
             if (WexflowEngine.LogLevel != LogLevel.None)
             {
-                var msg = string.Format("{0} Workflow finished.", LogTag);
+                var msg = $"{LogTag} Workflow finished.";
                 Logger.Info(msg);
                 Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)} INFO  - {msg}");
             }
@@ -1691,7 +1691,7 @@ namespace Wexflow.Core
 
                     if (WexflowEngine.LogLevel != LogLevel.None)
                     {
-                        var msg = string.Format("An error occured while stopping the workflow : {0}", this);
+                        var msg = $"An error occured while stopping the workflow : {this}";
                         Logger.Error(msg, e);
                         Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {msg}\r\n{e}");
                     }
@@ -1726,7 +1726,7 @@ namespace Wexflow.Core
                 {
                     if (WexflowEngine.LogLevel != LogLevel.None)
                     {
-                        var msg = string.Format("An error occured while suspending the workflow : {0}", this);
+                        var msg = $"An error occured while suspending the workflow : {this}";
                         Logger.Error(msg, e);
                         Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {msg}\r\n{e}");
                     }
@@ -1759,7 +1759,7 @@ namespace Wexflow.Core
                 {
                     if (WexflowEngine.LogLevel != LogLevel.None)
                     {
-                        var msg = string.Format("An error occured while resuming the workflow : {0}", this);
+                        var msg = $"An error occured while resuming the workflow : {this}";
                         Logger.Error(msg, e);
                         Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {msg}\r\n{e}");
                     }
@@ -1810,13 +1810,13 @@ namespace Wexflow.Core
                 _ = Directory.CreateDirectory(wfTempFolder);
             }
 
-            var wfDayTempFolder = Path.Combine(wfTempFolder, string.Format("{0:yyyy-MM-dd}", DateTime.Now));
+            var wfDayTempFolder = Path.Combine(wfTempFolder, $"{DateTime.Now:yyyy-MM-dd}");
             if (!Directory.Exists(wfDayTempFolder))
             {
                 _ = Directory.CreateDirectory(wfDayTempFolder);
             }
 
-            var wfJobTempFolder = Path.Combine(wfDayTempFolder, string.Format("{0:HH-mm-ss-fff}", DateTime.Now));
+            var wfJobTempFolder = Path.Combine(wfDayTempFolder, $"{DateTime.Now:HH-mm-ss-fff}");
             if (!Directory.Exists(wfJobTempFolder))
             {
                 _ = Directory.CreateDirectory(wfJobTempFolder);

@@ -8,7 +8,7 @@ namespace Wexflow.Tasks.Ping
 {
     public class Ping : Task
     {
-        public string Server { get; private set; }
+        public string Server { get; }
 
         public Ping(XElement xe, Workflow wf) : base(xe, wf)
         {

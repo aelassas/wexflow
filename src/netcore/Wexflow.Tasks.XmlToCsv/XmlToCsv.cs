@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.XmlToCsv
                 try
                 {
                     var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.csv", Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now));
+                        $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.csv");
                     CreateCsv(file.Path, csvPath);
                     InfoFormat("Csv file {0} created from {1}", csvPath, file.Path);
                     Files.Add(new FileInf(csvPath, Id));

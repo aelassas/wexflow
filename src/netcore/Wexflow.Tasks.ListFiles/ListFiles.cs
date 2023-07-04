@@ -23,7 +23,7 @@ namespace Wexflow.Tasks.ListFiles
             try
             {
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("ListFiles_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"ListFiles_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 XDocument xdoc = new(new XElement("WexflowProcessing"));
 

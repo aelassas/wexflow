@@ -11,12 +11,12 @@ namespace Wexflow.Tasks.ImagesResizer
 {
     public class ImagesResizer : Task
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public ImagesResizer(XElement xe, Workflow wf) : base(xe, wf)
         {

@@ -8,7 +8,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
 {
     public class ApprovalRecordsCreator : Task
     {
-        public string CreatedBy { get; private set; }
+        public string CreatedBy { get; }
 
         public ApprovalRecordsCreator(XElement xe, Workflow wf) : base(xe, wf)
         {

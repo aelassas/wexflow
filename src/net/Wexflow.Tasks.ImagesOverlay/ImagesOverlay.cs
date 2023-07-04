@@ -10,10 +10,10 @@ namespace Wexflow.Tasks.ImagesOverlay
 {
     public class ImagesOverlay : Task
     {
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public ImagesOverlay(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -75,7 +75,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                     var extension = Path.GetExtension(imageFiles[0].FileName);
 
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                            string.Format("ImagesOverlay_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
+                        $"ImagesOverlay_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}{extension}");
 
                     success = OverlayImages(imageFiles, destPath);
                 }

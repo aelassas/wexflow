@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.CsvToJson
 {
     public class CsvToJson : Task
     {
-        public string Separator { get; private set; }
+        public string Separator { get; }
 
         public CsvToJson(XElement xe, Workflow wf) : base(xe, wf)
         {

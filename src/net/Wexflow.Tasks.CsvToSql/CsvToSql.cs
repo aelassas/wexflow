@@ -33,7 +33,7 @@ namespace Wexflow.Tasks.CsvToSql
                 foreach (var csvFile in csvFiles)
                 {
                     var sqlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.sql", Path.GetFileNameWithoutExtension(csvFile.FileName), DateTime.Now));
+                        $"{Path.GetFileNameWithoutExtension(csvFile.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.sql");
                     succeeded &= ConvertCsvToSql(csvFile.Path, sqlPath, TableName, Separator);
                     if (succeeded && !atLeastOneSucceed)
                     {

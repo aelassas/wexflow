@@ -7,7 +7,7 @@ namespace Wexflow.Tasks.FolderExists
 {
     public class FolderExists : Task
     {
-        public string Folder { get; private set; }
+        public string Folder { get; }
 
         public FolderExists(XElement xe, Workflow wf) : base(xe, wf)
         {

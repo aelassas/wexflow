@@ -8,7 +8,7 @@ namespace Wexflow.Tasks.FilesSplitter
 {
     public class FilesSplitter : Task
     {
-        public int ChunkSize { get; private set; }
+        public int ChunkSize { get; }
 
         public FilesSplitter(XElement xe, Workflow wf)
             : base(xe, wf)

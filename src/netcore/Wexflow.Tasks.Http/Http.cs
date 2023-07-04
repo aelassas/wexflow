@@ -14,7 +14,7 @@ namespace Wexflow.Tasks.Http
         private const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
         private const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
 
-        public string[] Urls { get; private set; }
+        public string[] Urls { get; }
 
         public Http(XElement xe, Workflow wf) : base(xe, wf)
         {

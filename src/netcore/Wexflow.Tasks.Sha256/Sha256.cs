@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Sha256
             if (files.Length > 0)
             {
                 var md5Path = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("SHA256_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"SHA256_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 XDocument xdoc = new(new XElement("Files"));
                 foreach (var file in files)

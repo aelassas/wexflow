@@ -10,10 +10,10 @@ namespace Wexflow.Tasks.Sha256
 {
     public class Sha256 : Task
     {
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public Sha256(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.Sha256
             if (files.Length > 0)
             {
                 var md5Path = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("SHA256_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"SHA256_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 var xdoc = new XDocument(new XElement("Files"));
                 foreach (var file in files)

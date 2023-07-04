@@ -8,8 +8,8 @@ namespace Wexflow.Tasks.FilesExist
 {
     public class FilesExist : Task
     {
-        public string[] FFiles { get; private set; }
-        public string[] Folders { get; private set; }
+        public string[] FFiles { get; }
+        public string[] Folders { get; }
 
         public FilesExist(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.FilesExist
             try
             {
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                       string.Format("FilesExist_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"FilesExist_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 XDocument xdoc = new(new XElement("Root"));
                 XElement xFiles = new("Files");
                 XElement xFolders = new("Folders");

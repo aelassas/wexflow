@@ -7,7 +7,7 @@ namespace Wexflow.Tasks.Guid
 {
     public class Guid : Task
     {
-        public int GuidCount { get; private set; }
+        public int GuidCount { get; }
 
         public Guid(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -20,7 +20,7 @@ namespace Wexflow.Tasks.Guid
             Info("Generating Guids...");
 
             var guidPath = Path.Combine(Workflow.WorkflowTempFolder,
-                string.Format("Guid_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                $"Guid_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
             XElement xguids = new("Guids");
 

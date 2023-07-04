@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                 try
                 {
-                    cmd = ProcessCmd.Replace(string.Format("{{{0}}}", VarFilePath), string.Format("\"{0}\"", file.Path));
+                    cmd = ProcessCmd.Replace($"{{{VarFilePath}}}", $"\"{file.Path}\"");
 
                     var outputRegex = OutputRegex();
                     var m = outputRegex.Match(cmd);

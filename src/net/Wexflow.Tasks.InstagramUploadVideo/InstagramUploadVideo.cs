@@ -14,12 +14,12 @@ namespace Wexflow.Tasks.InstagramUploadVideo
 {
     public class InstagramUploadVideo : Task
     {
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string Username { get; }
+        public string Password { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public InstagramUploadVideo(XElement xe, Workflow wf) : base(xe, wf)
         {

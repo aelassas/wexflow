@@ -99,19 +99,19 @@ namespace Wexflow.Core
         /// <summary>
         /// Records db folder name.
         /// </summary>
-        public string DbFolderName { get; private set; }
+        public string DbFolderName { get; }
         /// <summary>
         /// Super-admin user name.
         /// </summary>
-        public string SuperAdminUsername { get; private set; }
+        public string SuperAdminUsername { get; }
         /// <summary>
         /// Settings file path.
         /// </summary>
-        public string SettingsFile { get; private set; }
+        public string SettingsFile { get; }
         /// <summary>
         /// Indicates whether workflows hot folder is enabled or not.
         /// </summary>
-        public bool EnableWorkflowsHotFolder { get; private set; }
+        public bool EnableWorkflowsHotFolder { get; }
         /// <summary>
         /// Indicates whether email notifications are enabled or not.
         /// </summary>
@@ -183,7 +183,7 @@ namespace Wexflow.Core
         /// <summary>
         /// List of the Workflows loaded by Wexflow engine.
         /// </summary>
-        public IList<Workflow> Workflows { get; private set; }
+        public IList<Workflow> Workflows { get; }
         /// <summary>
         /// Database type.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Database
         /// </summary>
-        public Db.Db Database { get; private set; }
+        public Db.Db Database { get; }
 
         //
         // Quartz scheduler
@@ -381,7 +381,7 @@ namespace Wexflow.Core
         {
             try
             {
-                var xValue = xdoc.XPathSelectElement(string.Format("/Wexflow/Setting[@name='{0}']", name)).Attribute("value");
+                var xValue = xdoc.XPathSelectElement($"/Wexflow/Setting[@name='{name}']").Attribute("value");
                 return xValue == null ? throw new Exception("Wexflow Setting Value attribute not found.") : xValue.Value;
             }
             catch (Exception e)

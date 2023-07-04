@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.ProcessInfo
                 var processes = Process.GetProcessesByName(ProcessName);
 
                 var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    string.Format("ProcessInfo_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                    $"ProcessInfo_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 XElement xprocesses = new("Processes");
                 foreach (var process in processes)
@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.ProcessInfo
                         , new XAttribute("id", process.Id)
                         , new XAttribute("processName", process.ProcessName)
                         , new XAttribute("fileName", process.MainModule.FileName)
-                        , new XAttribute("startTime", string.Format("{0:yyyy-MM-dd HH:mm:ss.fff}", process.StartTime))
+                        , new XAttribute("startTime", $"{process.StartTime:yyyy-MM-dd HH:mm:ss.fff}")
                         , new XAttribute("machineName", process.MachineName)
                         , new XAttribute("sessionId", process.SessionId)
                         , new XAttribute("mainWindowTitle", process.MainWindowTitle)

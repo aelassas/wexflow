@@ -10,10 +10,10 @@ namespace Wexflow.Tasks.HttpDelete
 {
     public class HttpDelete : Task
     {
-        public string Url { get; private set; }
-        public string Payload { get; private set; }
-        public string AuthorizationScheme { get; private set; }
-        public string AuthorizationParameter { get; private set; }
+        public string Url { get; }
+        public string Payload { get; }
+        public string AuthorizationScheme { get; }
+        public string AuthorizationParameter { get; }
 
         public HttpDelete(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -31,7 +31,8 @@ namespace Wexflow.Tasks.HttpDelete
                 var deleteTask = Delete(Url, AuthorizationScheme, AuthorizationParameter);
                 deleteTask.Wait();
                 var result = deleteTask.Result;
-                var destFile = Path.Combine(Workflow.WorkflowTempFolder, string.Format("HttpDelete_{0:yyyy-MM-dd-HH-mm-ss-fff}", DateTime.Now));
+                var destFile = Path.Combine(Workflow.WorkflowTempFolder,
+                    $"HttpDelete_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                 File.WriteAllText(destFile, result);
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("DELETE request {0} executed whith success -> {1}", Url, destFile);

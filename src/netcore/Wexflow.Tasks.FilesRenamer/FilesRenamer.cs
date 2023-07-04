@@ -8,7 +8,7 @@ namespace Wexflow.Tasks.FilesRenamer
 {
     public class FilesRenamer : Task
     {
-        public bool Overwrite { get; private set; }
+        public bool Overwrite { get; }
 
         public FilesRenamer(XElement xe, Workflow wf)
             : base(xe, wf)

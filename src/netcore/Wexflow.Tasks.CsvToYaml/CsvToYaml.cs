@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.CsvToYaml
 {
     public class CsvToYaml : Task
     {
-        public string Separator { get; private set; }
+        public string Separator { get; }
 
         public CsvToYaml(XElement xe, Workflow wf) : base(xe, wf)
         {

@@ -16,13 +16,13 @@ namespace Wexflow.Tasks.SshCmd
         public static readonly Regex PwdPrompt = MyRegex1();
         public static readonly Regex PromptOrPwd = new($"{Prompt}|{PwdPrompt}", RegexOptions.Compiled);
 
-        public string Host { get; private set; }
-        public int Port { get; private set; }
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public string Cmd { get; private set; }
-        public double Timeout { get; private set; }
-        public TimeSpan ExpectTimeout { get; private set; }
+        public string Host { get; }
+        public int Port { get; }
+        public string Username { get; }
+        public string Password { get; }
+        public string Cmd { get; }
+        public double Timeout { get; }
+        public TimeSpan ExpectTimeout { get; }
 
         public SshCmd(XElement xe, Workflow wf) : base(xe, wf)
         {

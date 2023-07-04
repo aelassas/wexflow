@@ -9,13 +9,13 @@ namespace Wexflow.Tasks.FileMatch
 {
     public class FileMatch : Task
     {
-        public string Dir { get; private set; }
-        public string Pattern { get; private set; }
-        public bool Recursive { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string Dir { get; }
+        public string Pattern { get; }
+        public bool Recursive { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FileMatch(XElement xe, Workflow wf) : base(xe, wf)
         {

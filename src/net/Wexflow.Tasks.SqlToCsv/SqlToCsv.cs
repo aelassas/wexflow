@@ -39,10 +39,10 @@ namespace Wexflow.Tasks.SqlToCsv
         public bool Headers { get; }
         public bool SingleRecordHeaders { get; }
         public bool DoNotGenerateFilesIfEmpty { get; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public SqlToCsv(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -231,7 +231,8 @@ namespace Wexflow.Tasks.SqlToCsv
         {
             conn.Open();
             var reader = comm.ExecuteReader();
-            var destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
+            var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                $"SqlToCsv_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.csv");
 
             using (var sw = new StreamWriter(destPath))
             {

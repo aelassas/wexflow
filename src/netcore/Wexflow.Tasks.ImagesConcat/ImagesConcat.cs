@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.ImagesConcat
                     var extension = Path.GetExtension(imageFiles[0].FileName);
 
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                            string.Format("ImagesConcat_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
+                        $"ImagesConcat_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}{extension}");
 
                     var res = ConcatImages(imageFiles, destPath);
                     if (!res)

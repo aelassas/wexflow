@@ -199,7 +199,8 @@ namespace Wexflow.Tasks.SqlToCsv
         {
             conn.Open();
             var reader = comm.ExecuteReader();
-            var destPath = Path.Combine(Workflow.WorkflowTempFolder, string.Format("SqlToCsv_{0:yyyy-MM-dd-HH-mm-ss-fff}.csv", DateTime.Now));
+            var destPath = Path.Combine(Workflow.WorkflowTempFolder,
+                $"SqlToCsv_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.csv");
 
             using (StreamWriter sw = new(destPath))
             {

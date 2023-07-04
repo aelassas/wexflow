@@ -8,14 +8,14 @@ namespace Wexflow.Tasks.FilesMover
 {
     public class FilesMover : Task
     {
-        public string DestFolder { get; private set; }
-        public bool Overwrite { get; private set; }
-        public string PreserveFolderStructFrom { get; private set; }
-        public bool AllowCreateDirectory { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string DestFolder { get; }
+        public bool Overwrite { get; }
+        public string PreserveFolderStructFrom { get; }
+        public bool AllowCreateDirectory { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FilesMover(XElement xe, Workflow wf)
             : base(xe, wf)

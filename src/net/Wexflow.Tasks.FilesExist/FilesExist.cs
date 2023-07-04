@@ -8,12 +8,12 @@ namespace Wexflow.Tasks.FilesExist
 {
     public class FilesExist : Task
     {
-        public string[] FFiles { get; private set; }
-        public string[] Folders { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string[] FFiles { get; }
+        public string[] Folders { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FilesExist(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.FilesExist
         private void CheckFiles()
         {
             var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                       string.Format("FilesExist_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml", DateTime.Now));
+                $"FilesExist_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
             var xdoc = new XDocument(new XElement("Root"));
             var xFiles = new XElement("Files");
             var xFolders = new XElement("Folders");

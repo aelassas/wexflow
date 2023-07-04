@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
             var channelsListResponse = await channelsListRequest.ExecuteAsync();
 
             var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "YouTubeListUploads", DateTime.Now));
+                $"{"YouTubeListUploads"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
             XDocument xdoc = new(new XElement("YouTubeListUploads"));
             XElement xchannels = new("Channels");

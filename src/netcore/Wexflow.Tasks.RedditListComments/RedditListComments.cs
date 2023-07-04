@@ -59,7 +59,7 @@ namespace Wexflow.Tasks.RedditListComments
                 }
 
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "RedditListComments", DateTime.Now));
+                    $"{"RedditListComments"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Comment history written in {0}", xmlPath);

@@ -6,7 +6,7 @@ namespace Wexflow.Tasks.MessageCorrect
 {
     public class MessageCorrect : Task
     {
-        public string CheckString { get; private set; }
+        public string CheckString { get; }
 
         public MessageCorrect(XElement xe, Workflow wf) : base(xe, wf)
         {

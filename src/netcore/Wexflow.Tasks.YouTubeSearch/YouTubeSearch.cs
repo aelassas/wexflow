@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.YouTubeSearch
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
             var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "YouTubeSearch", DateTime.Now));
+                $"{"YouTubeSearch"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
             XDocument xdoc = new(new XElement("YouTubeSearch"));
             XElement xvideos = new("Videos");
@@ -80,17 +80,17 @@ namespace Wexflow.Tasks.YouTubeSearch
                 switch (searchResult.Id.Kind)
                 {
                     case "youtube#video":
-                        videos.Add(string.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.VideoId));
+                        videos.Add($"{searchResult.Snippet.Title} ({searchResult.Id.VideoId})");
                         xvideos.Add(new XElement("Video", new XAttribute("id", searchResult.Id.VideoId), new XAttribute("title", searchResult.Snippet.Title)));
                         break;
 
                     case "youtube#channel":
-                        channels.Add(string.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.ChannelId));
+                        channels.Add($"{searchResult.Snippet.Title} ({searchResult.Id.ChannelId})");
                         xchannels.Add(new XElement("Channel", new XAttribute("id", searchResult.Id.ChannelId), new XAttribute("title", searchResult.Snippet.Title)));
                         break;
 
                     case "youtube#playlist":
-                        playlists.Add(string.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.PlaylistId));
+                        playlists.Add($"{searchResult.Snippet.Title} ({searchResult.Id.PlaylistId})");
                         xplaylists.Add(new XElement("Playlist", new XAttribute("id", searchResult.Id.PlaylistId), new XAttribute("title", searchResult.Snippet.Title)));
                         break;
                 }

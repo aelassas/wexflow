@@ -33,7 +33,7 @@ namespace Wexflow.Tasks.PdfToText
                     try
                     {
                         var textPath = Path.Combine(Workflow.WorkflowTempFolder,
-                            string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.txt", Path.GetFileNameWithoutExtension(pdfFile.FileName), DateTime.Now));
+                            $"{Path.GetFileNameWithoutExtension(pdfFile.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt");
 
                         //Document doc = new Document();
                         using (var doc = new StreamWriter(textPath))

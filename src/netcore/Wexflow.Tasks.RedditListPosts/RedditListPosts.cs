@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.RedditListPosts
                 }
 
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                string.Format("{0}_{1:yyyy-MM-dd-HH-mm-ss-fff}.xml", "RedditListPosts", DateTime.Now));
+                    $"{"RedditListPosts"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Post history written in {0}", xmlPath);

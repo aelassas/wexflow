@@ -8,11 +8,11 @@ namespace Wexflow.Tasks.Mkdir
 {
     public class Mkdir : Task
     {
-        public string[] Folders { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string[] Folders { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public Mkdir(XElement xe, Workflow wf) : base(xe, wf)
         {

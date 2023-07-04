@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                     var extension = Path.GetExtension(imageFiles[0].FileName);
 
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                            string.Format("ImagesOverlay_{0:yyyy-MM-dd-HH-mm-ss-fff}{1}", DateTime.Now, extension));
+                        $"ImagesOverlay_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}{extension}");
 
                     var res = OverlayImages(imageFiles, destPath);
                     if (!res)

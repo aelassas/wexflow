@@ -9,14 +9,14 @@ namespace Wexflow.Tasks.FileContentMatch
 {
     public class FileContentMatch : Task
     {
-        public string[] FilesToCheck { get; private set; }
-        public string[] FoldersToCheck { get; private set; }
-        public bool Recursive { get; private set; }
-        public string Pattern { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string[] FilesToCheck { get; }
+        public string[] FoldersToCheck { get; }
+        public bool Recursive { get; }
+        public string Pattern { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public FileContentMatch(XElement xe, Workflow wf) : base(xe, wf)
         {

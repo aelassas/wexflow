@@ -36,11 +36,11 @@ namespace Wexflow.Tasks.SqlToXml
         public Type DbType { get; set; }
         public string ConnectionString { get; set; }
         public string SqlScript { get; set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
-        public bool ExcludeEmptyValues { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
+        public bool ExcludeEmptyValues { get; }
 
         public SqlToXml(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -227,8 +227,7 @@ namespace Wexflow.Tasks.SqlToXml
                 }
 
                 var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                                               string.Format("SqlToXml_{0:yyyy-MM-dd-HH-mm-ss-fff}.xml",
-                                               DateTime.Now));
+                    $"SqlToXml_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 var xdoc = new XDocument();
                 var xobjects = new XElement("Records");
 

@@ -12,16 +12,16 @@ namespace Wexflow.Tasks.MailsSender
 {
     public class MailsSender : Task
     {
-        public string Host { get; private set; }
-        public int Port { get; private set; }
-        public bool EnableSsl { get; private set; }
-        public string User { get; private set; }
-        public string Password { get; private set; }
-        public bool IsBodyHtml { get; private set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string Host { get; }
+        public int Port { get; }
+        public bool EnableSsl { get; }
+        public string User { get; }
+        public string Password { get; }
+        public bool IsBodyHtml { get; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public MailsSender(XElement xe, Workflow wf) : base(xe, wf)
         {

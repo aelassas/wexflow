@@ -11,20 +11,20 @@ namespace Wexflow.Tasks.FilesLoaderEx
 {
     public class FilesLoaderEx : Task
     {
-        public string[] Folders { get; private set; }
-        public string[] FlFiles { get; private set; }
-        public string RegexPattern { get; private set; }
-        public bool Recursive { get; private set; }
+        public string[] Folders { get; }
+        public string[] FlFiles { get; }
+        public string RegexPattern { get; }
+        public bool Recursive { get; }
 
-        public int AddMaxCreateDate { get; private set; }
-        public int AddMinCreateDate { get; private set; }
-        public int AddMaxModifyDate { get; private set; }
-        public int AddMinModifyDate { get; private set; }
+        public int AddMaxCreateDate { get; }
+        public int AddMinCreateDate { get; }
+        public int AddMaxModifyDate { get; }
+        public int AddMinModifyDate { get; }
 
-        public int RemoveMaxCreateDate { get; private set; }
-        public int RemoveMinCreateDate { get; private set; }
-        public int RemoveMaxModifyDate { get; private set; }
-        public int RemoveMinModifyDate { get; private set; }
+        public int RemoveMaxCreateDate { get; }
+        public int RemoveMinCreateDate { get; }
+        public int RemoveMaxModifyDate { get; }
+        public int RemoveMinModifyDate { get; }
 
         public FilesLoaderEx(XElement xe, Workflow wf) : base(xe, wf)
         {

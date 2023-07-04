@@ -8,7 +8,7 @@ namespace Wexflow.Tasks.Touch
 {
     public class Touch : Task
     {
-        public string[] Tfiles { get; private set; }
+        public string[] Tfiles { get; }
 
         public Touch(XElement xe, Workflow wf)
             : base(xe, wf)

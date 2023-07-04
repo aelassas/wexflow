@@ -14,16 +14,16 @@ namespace Wexflow.Tasks.ApproveRecord
 {
     public class ApproveRecord : Task
     {
-        public string RecordId { get; private set; }
-        public string AssignedTo { get; private set; }
-        public TimeSpan ReminderDelay { get; private set; }
-        public string OnApproved { get; private set; }
-        public string OnRejected { get; private set; }
-        public string OnDueDateReached { get; private set; }
-        public string OnReminderDateReached { get; private set; }
-        public string OnDeleted { get; private set; }
-        public string OnStopped { get; private set; }
-        public bool DeleteWorkflowOnApproval { get; private set; }
+        public string RecordId { get; }
+        public string AssignedTo { get; }
+        public TimeSpan ReminderDelay { get; }
+        public string OnApproved { get; }
+        public string OnRejected { get; }
+        public string OnDueDateReached { get; }
+        public string OnReminderDateReached { get; }
+        public string OnDeleted { get; }
+        public string OnStopped { get; }
+        public bool DeleteWorkflowOnApproval { get; }
 
         public ApproveRecord(XElement xe, Workflow wf) : base(xe, wf)
         {

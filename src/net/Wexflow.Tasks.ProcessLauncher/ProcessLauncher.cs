@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                 try
                 {
-                    cmd = ProcessCmd.Replace(string.Format("{{{0}}}", VarFilePath), string.Format("\"{0}\"", file.Path));
+                    cmd = ProcessCmd.Replace($"{{{VarFilePath}}}", $"\"{file.Path}\"");
 
                     const string outputRegexPattern = @"{\$output:(?:\$fileNameWithoutExtension|\$fileName)(?:[a-zA-Z0-9._-]*})";
                     var outputRegex = new Regex(outputRegexPattern);

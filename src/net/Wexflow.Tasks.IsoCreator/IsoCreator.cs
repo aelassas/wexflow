@@ -12,10 +12,10 @@ namespace Wexflow.Tasks.IsoCreator
         public string SrcDir { get; set; }
         public string VolumeIdentifier { get; set; }
         public string IsoFileName { get; set; }
-        public string SmbComputerName { get; private set; }
-        public string SmbDomain { get; private set; }
-        public string SmbUsername { get; private set; }
-        public string SmbPassword { get; private set; }
+        public string SmbComputerName { get; }
+        public string SmbDomain { get; }
+        public string SmbUsername { get; }
+        public string SmbPassword { get; }
 
         public IsoCreator(XElement xe, Workflow wf) : base(xe, wf)
         {
