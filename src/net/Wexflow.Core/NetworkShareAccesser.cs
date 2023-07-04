@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+// ReSharper disable All
 
 namespace Wexflow.Core
 {
