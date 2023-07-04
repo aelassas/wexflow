@@ -368,8 +368,8 @@ namespace Wexflow.Core
             {
                 var variable = new Variable
                 {
-                    Key = xvariable.Attribute("name").Value,
-                    Value = xvariable.Attribute("value").Value
+                    Key = (xvariable.Attribute("name") ?? throw new InvalidOperationException("name attribute of global variable not found")).Value,
+                    Value = (xvariable.Attribute("value") ?? throw new InvalidOperationException("value attribute of global variable not found")).Value
                 };
                 variables.Add(variable);
             }
@@ -381,7 +381,7 @@ namespace Wexflow.Core
         {
             try
             {
-                var xValue = xdoc.XPathSelectElement($"/Wexflow/Setting[@name='{name}']").Attribute("value");
+                var xValue = (xdoc.XPathSelectElement($"/Wexflow/Setting[@name='{name}']") ?? throw new InvalidOperationException($"setting {name} not found")).Attribute("value");
                 return xValue == null ? throw new Exception("Wexflow Setting Value attribute not found.") : xValue.Value;
             }
             catch (Exception e)
@@ -464,7 +464,7 @@ namespace Wexflow.Core
                     }
 
                     var xdoc = XDocument.Parse(xml);
-                    var id = int.Parse(xdoc.XPathSelectElement("/wf:Workflow", xmlNamespaceManager).Attribute("id").Value);
+                    var id = int.Parse(((xdoc.XPathSelectElement("/wf:Workflow", xmlNamespaceManager) ?? throw new InvalidOperationException()).Attribute("id") ?? throw new InvalidOperationException("id attribute of workflow not found")).Value);
                     var workflow = Workflows.FirstOrDefault(w => w.Id == id);
 
                     if (workflow == null) // insert
@@ -1456,11 +1456,11 @@ namespace Wexflow.Core
                             }
                             var destPath = Path.Combine(destDir, fileName);
                             File.Move(version.FilePath, destPath);
-                            var parentDir = Path.GetDirectoryName(version.FilePath);
+                            var parentDir = Path.GetDirectoryName(version.FilePath) ?? throw new InvalidOperationException("parentDir is null");
                             if (IsDirectoryEmpty(parentDir))
                             {
                                 Directory.Delete(parentDir);
-                                var recordTempDir = Directory.GetParent(parentDir).FullName;
+                                var recordTempDir = (Directory.GetParent(parentDir) ?? throw new InvalidOperationException("parentDir is null")).FullName;
                                 if (IsDirectoryEmpty(recordTempDir))
                                 {
                                     Directory.Delete(recordTempDir);
@@ -1500,11 +1500,11 @@ namespace Wexflow.Core
                             File.Delete(version.FilePath);
                         }
 
-                        var versionDir = Path.GetDirectoryName(version.FilePath);
+                        var versionDir = Path.GetDirectoryName(version.FilePath) ?? throw new InvalidOperationException("versionDir is null");
                         if (IsDirectoryEmpty(versionDir))
                         {
                             Directory.Delete(versionDir);
-                            var recordDir = Directory.GetParent(versionDir).FullName;
+                            var recordDir = (Directory.GetParent(versionDir) ?? throw new InvalidOperationException("versionDir is null")).FullName;
                             if (IsDirectoryEmpty(recordDir))
                             {
                                 Directory.Delete(recordDir);
@@ -1527,11 +1527,11 @@ namespace Wexflow.Core
                             }
                             var destPath = Path.Combine(destDir, fileName);
                             File.Move(version.FilePath, destPath);
-                            var parentDir = Path.GetDirectoryName(version.FilePath);
+                            var parentDir = Path.GetDirectoryName(version.FilePath) ?? throw new InvalidOperationException("parentDir is null");
                             if (IsDirectoryEmpty(parentDir))
                             {
                                 Directory.Delete(parentDir);
-                                var recordTempDir = Directory.GetParent(parentDir).FullName;
+                                var recordTempDir = (Directory.GetParent(parentDir) ?? throw new InvalidOperationException("parentDir is null")).FullName;
                                 if (IsDirectoryEmpty(recordTempDir))
                                 {
                                     Directory.Delete(recordTempDir);
@@ -1570,11 +1570,11 @@ namespace Wexflow.Core
             }
             var destPath = Path.Combine(destDir, fileName);
             File.Move(filePath, destPath);
-            var parentDir = Path.GetDirectoryName(destPath);
+            var parentDir = Path.GetDirectoryName(destPath) ?? throw new InvalidOperationException("parentDir is null");
             if (IsDirectoryEmpty(parentDir))
             {
                 Directory.Delete(parentDir);
-                var recordTempDir = Directory.GetParent(parentDir).FullName;
+                var recordTempDir = (Directory.GetParent(parentDir) ?? throw new InvalidOperationException("parentDir is null")).FullName;
                 if (IsDirectoryEmpty(recordTempDir))
                 {
                     Directory.Delete(recordTempDir);
@@ -1611,7 +1611,7 @@ namespace Wexflow.Core
                 Database.DeleteRecords(recordIds);
                 foreach (var recordId in recordIds)
                 {
-                    var versions = Database.GetVersions(recordId);
+                    var versions = Database.GetVersions(recordId).ToArray();
                     var versionIds = versions.Select(v => v.GetDbId()).ToArray();
                     Database.DeleteVersions(versionIds);
                     foreach (var version in versions)
@@ -1620,11 +1620,11 @@ namespace Wexflow.Core
                         {
                             File.Delete(version.FilePath);
 
-                            var versionDir = Path.GetDirectoryName(version.FilePath);
+                            var versionDir = Path.GetDirectoryName(version.FilePath) ?? throw new InvalidOperationException("versionDir is null");
                             if (IsDirectoryEmpty(versionDir))
                             {
                                 Directory.Delete(versionDir);
-                                var recordDir = Directory.GetParent(versionDir).FullName;
+                                var recordDir = (Directory.GetParent(versionDir) ?? throw new InvalidOperationException("versionDir is null")).FullName;
                                 if (IsDirectoryEmpty(recordDir))
                                 {
                                     Directory.Delete(recordDir);
