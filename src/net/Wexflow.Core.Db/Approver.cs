@@ -4,7 +4,7 @@ namespace Wexflow.Core.Db
 {
     public class Approver
     {
-        public static readonly string DocumentName = "approvers";
+        public const string DocumentName = "approvers";
 
         public string UserId { get; set; }
         public string RecordId { get; set; }

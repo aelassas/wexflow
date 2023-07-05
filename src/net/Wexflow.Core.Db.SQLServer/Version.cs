@@ -2,12 +2,12 @@
 {
     public class Version : Core.Db.Version
     {
-        public static readonly string ColumnName_Id = "ID";
-        public static readonly string ColumnName_RecordId = "RECORD_ID";
-        public static readonly string ColumnName_FilePath = "FILE_PATH";
-        public static readonly string ColumnName_CreatedOn = "CREATED_ON";
+        public const string ColumnName_Id = "ID";
+        public const string ColumnName_RecordId = "RECORD_ID";
+        public const string ColumnName_FilePath = "FILE_PATH";
+        public const string ColumnName_CreatedOn = "CREATED_ON";
 
-        public static readonly string TableStruct = "(" + ColumnName_Id + " INT IDENTITY(1,1) PRIMARY KEY, "
+        public const string TableStruct = "(" + ColumnName_Id + " INT IDENTITY(1,1) PRIMARY KEY, "
                                                         + ColumnName_RecordId + " INT, "
                                                         + ColumnName_FilePath + " VARCHAR(1024), "
                                                         + ColumnName_CreatedOn + " DATETIME)";

@@ -4,7 +4,7 @@ namespace Wexflow.Core.Db
 {
     public class Notification
     {
-        public static readonly string DocumentName = "notifications";
+        public const string DocumentName = "notifications";
 
         public string AssignedBy { get; set; }
         public DateTime AssignedOn { get; set; }

@@ -26,15 +26,15 @@ namespace Wexflow.Core
         /// This constant is used to determine the key size of the encryption algorithm in bits.
         /// We divide this by 8 within the code below to get the equivalent number of bytes.
         /// </summary>
-        public static readonly int KeySize = 128;
+        public const int KeySize = 128;
         /// <summary>
         /// This constant determines the number of iterations for the password bytes generation function. 
         /// </summary>
-        public static readonly int DerivationIterations = 1000;
+        public const int DerivationIterations = 1000;
         /// <summary>
         /// PassPhrase.
         /// </summary>
-        public static readonly string PassPhrase = "FHMWW-EORNR-XXF0Q-E8Q#G-YC!RG-KV=TN-M9MQJ-AySDI-LAC5Q-UV==QE-VSVNL-OV1IZ";
+        public const string PassPhrase = "FHMWW-EORNR-XXF0Q-E8Q#G-YC!RG-KV=TN-M9MQJ-AySDI-LAC5Q-UV==QE-VSVNL-OV1IZ";
 
         /// <summary>
         /// Default parent node id to start with in the execution graph.
@@ -204,7 +204,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Rest variables.
         /// </summary>
-        public List<Variable> RestVariables { get; private set; }
+        public List<Variable> RestVariables { get; private init; }
         /// <summary>
         /// Tasks folder.
         /// </summary>
@@ -304,7 +304,7 @@ namespace Wexflow.Core
 
             var doc = XDocument.Parse(Xml);
             var msg = string.Empty;
-            doc.Validate(schemas, (o, e) =>
+            doc.Validate(schemas, (_, e) =>
             {
                 msg += e.Message + Environment.NewLine;
             });
@@ -335,8 +335,8 @@ namespace Wexflow.Core
             foreach (var xvariable in xdoc.XPathSelectElements("/wf:Workflow/wf:LocalVariables/wf:Variable",
                 XmlNamespaceManager))
             {
-                var key = xvariable.Attribute("name").Value;
-                var value = xvariable.Attribute("value").Value;
+                var key = (xvariable.Attribute("name") ?? throw new InvalidOperationException("name attribute of local varible not found")).Value;
+                var value = (xvariable.Attribute("value") ?? throw new InvalidOperationException("value attribute of local varible not found")).Value;
 
                 Variable variable = new()
                 {
@@ -352,7 +352,7 @@ namespace Wexflow.Core
 
         private string Parse(string src)
         {
-            var dest = string.Empty;
+            string dest;
 
             //
             // Parse global variables.
@@ -360,8 +360,7 @@ namespace Wexflow.Core
             using (StringReader sr = new(src))
             using (StringWriter sw = new())
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                while (sr.ReadLine() is { } line)
                 {
                     foreach (var variable in GlobalVariables)
                     {
@@ -394,8 +393,8 @@ namespace Wexflow.Core
                 foreach (var xvariable in xdoc.XPathSelectElements("/wf:Workflow/wf:LocalVariables/wf:Variable",
                     XmlNamespaceManager))
                 {
-                    var key = xvariable.Attribute("name").Value;
-                    var value = xvariable.Attribute("value").Value;
+                    var key = (xvariable.Attribute("name") ?? throw new InvalidOperationException("name attribute of local varible not found")).Value;
+                    var value = (xvariable.Attribute("value") ?? throw new InvalidOperationException("value attribute of local varible not found")).Value;
 
                     Variable variable = new()
                     {
@@ -410,12 +409,11 @@ namespace Wexflow.Core
             //
             // Parse local variables.
             //
-            var res = string.Empty;
+            string res;
             using (StringReader sr = new(dest))
             using (StringWriter sw = new())
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                while (sr.ReadLine() is { } line)
                 {
                     var pattern = @"{.*?}";
                     var m = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
@@ -439,12 +437,11 @@ namespace Wexflow.Core
             //
             // Parse Rest variables.
             //
-            var res2 = string.Empty;
+            string res2;
             using (StringReader sr = new(res))
             using (StringWriter sw = new())
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                while (sr.ReadLine() is { } line)
                 {
                     foreach (var variable in RestVariables)
                     {
@@ -523,13 +520,12 @@ namespace Wexflow.Core
                 var xAttribute = xTask.Attribute("name");
                 if (xAttribute != null)
                 {
-                    Type type = null;
                     var name = xAttribute.Value;
                     var assemblyName = $"Wexflow.Tasks.{name}";
                     var typeName = $"Wexflow.Tasks.{name}.{name}, {assemblyName}";
 
                     // Try to load from root
-                    type = Type.GetType(typeName);
+                    var type = Type.GetType(typeName);
 
                     if (type == null) // Try to load from Tasks folder
                     {
@@ -647,7 +643,7 @@ namespace Wexflow.Core
             var ifId = int.Parse(xIfId.Value);
 
             // Do nodes
-            var doNodes = xIf.XPathSelectElement("wf:Do", XmlNamespaceManager)
+            var doNodes = (xIf.XPathSelectElement("wf:Do", XmlNamespaceManager) ?? throw new InvalidOperationException("wf:Do not found"))
                 .Elements()
                 .Select(XNodeToNode)
                 .ToArray();
@@ -754,7 +750,7 @@ namespace Wexflow.Core
                     var xId = xNode.Attribute("id") ?? throw new Exception("Task id not found.");
                     var id = int.Parse(xId.Value);
 
-                    var xParentId = xNode.XPathSelectElement("wf:Parent", XmlNamespaceManager)
+                    var xParentId = (xNode.XPathSelectElement("wf:Parent", XmlNamespaceManager) ?? throw new InvalidOperationException("wf:Parent not found"))
                         .Attribute("id") ?? throw new Exception("Parent id not found.");
                     var parentId = int.Parse(xParentId.Value);
 
@@ -845,7 +841,7 @@ namespace Wexflow.Core
 
         private string GetWorkflowAttribute(XDocument xdoc, string attr)
         {
-            var xAttribute = xdoc.XPathSelectElement("/wf:Workflow", XmlNamespaceManager).Attribute(attr);
+            var xAttribute = (xdoc.XPathSelectElement("/wf:Workflow", XmlNamespaceManager) ?? throw new InvalidOperationException("wf:Workflow not found")).Attribute(attr);
             return xAttribute != null ? xAttribute.Value : throw new Exception($"Workflow attribute {attr}not found.");
         }
 
@@ -1017,7 +1013,6 @@ namespace Wexflow.Core
                             entry.Logs = string.Join("\r\n", Logs);
                             Database.UpdateEntry(entry.GetDbId(), entry);
                             _historyEntry.Status = Db.Status.Rejected;
-                            resultSuccess = true;
                         }
                         else
                         {
@@ -1030,8 +1025,6 @@ namespace Wexflow.Core
                                 entry.Logs = string.Join("\r\n", Logs);
                                 Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Done;
-                                resultSuccess = true;
-
                             }
                             else if (warning)
                             {
@@ -1079,7 +1072,6 @@ namespace Wexflow.Core
                                 entry.Logs = string.Join("\r\n", Logs);
                                 Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Done;
-                                resultSuccess = true;
                                 break;
                             case Status.Warning:
                                 if (ExecutionGraph.OnWarning != null)
@@ -1124,7 +1116,6 @@ namespace Wexflow.Core
                                 entry.Logs = string.Join("\r\n", Logs);
                                 Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Rejected;
-                                resultSuccess = true;
                                 break;
                         }
                     }
@@ -1304,7 +1295,8 @@ namespace Wexflow.Core
         private void RunSequentialTasks(IEnumerable<Task> tasks, ref bool success, ref bool warning, ref bool error)
         {
             var atLeastOneSucceed = false;
-            foreach (var task in tasks)
+            var enumerable = tasks as Task[] ?? tasks.ToArray();
+            foreach (var task in enumerable)
             {
                 if (!task.IsEnabled)
                 {
@@ -1332,7 +1324,7 @@ namespace Wexflow.Core
                 }
             }
 
-            if (tasks.Any() && !success && atLeastOneSucceed)
+            if (enumerable.Any() && !success && atLeastOneSucceed)
             {
                 warning = true;
             }
@@ -1484,7 +1476,7 @@ namespace Wexflow.Core
                     }
                     else if (status.Condition == false)
                     {
-                        if (@if.ElseNodes != null && @if.ElseNodes.Length > 0)
+                        if (@if.ElseNodes is { Length: > 0 })
                         {
                             // Build Tasks
                             var elseTasks = NodesToTasks(@if.ElseNodes);
@@ -1780,7 +1772,7 @@ namespace Wexflow.Core
             if (IsApproval)
             {
                 ApprovedBy = approvedBy;
-                var task = Tasks.Where(t => t.IsWaitingForApproval).First();
+                var task = Tasks.First(t => t.IsWaitingForApproval);
                 var dir = Path.Combine(ApprovalFolder, Id.ToString(), InstanceId.ToString(), task.Id.ToString());
                 _ = Directory.CreateDirectory(dir);
                 File.WriteAllText(Path.Combine(dir, "task.approved"), $"Task {task.Id} of the workflow {Id} approved.");

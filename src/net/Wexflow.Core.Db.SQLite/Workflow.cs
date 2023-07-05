@@ -2,10 +2,10 @@
 {
     public class Workflow : Core.Db.Workflow
     {
-        public static readonly string ColumnName_Id = "ID";
-        public static readonly string ColumnName_Xml = "XML";
+        public const string ColumnName_Id = "ID";
+        public const string ColumnName_Xml = "XML";
 
-        public static readonly string TableStruct = "(" + ColumnName_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + ColumnName_Xml + " TEXT)";
+        public const string TableStruct = "(" + ColumnName_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + ColumnName_Xml + " TEXT)";
 
         public long Id { get; set; }
 

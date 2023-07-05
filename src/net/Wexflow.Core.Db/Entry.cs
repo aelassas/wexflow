@@ -24,7 +24,7 @@ namespace Wexflow.Core.Db
 
     public class Entry
     {
-        public static readonly string DocumentName = "entries";
+        public const string DocumentName = "entries";
 
         public int WorkflowId { get; set; }
         public string JobId { get; set; }

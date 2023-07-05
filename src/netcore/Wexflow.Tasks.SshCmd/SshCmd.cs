@@ -12,9 +12,9 @@ namespace Wexflow.Tasks.SshCmd
 {
     public partial class SshCmd : Task
     {
-        public static readonly Regex Prompt = MyRegex();
-        public static readonly Regex PwdPrompt = MyRegex1();
-        public static readonly Regex PromptOrPwd = new($"{Prompt}|{PwdPrompt}", RegexOptions.Compiled);
+        public static readonly Regex ColumnPrompt = MyRegex();
+        public static readonly Regex ColumnPwdPrompt = MyRegex1();
+        public static readonly Regex ColumnPromptOrPwd = new($"{ColumnPrompt}|{ColumnPwdPrompt}", RegexOptions.Compiled);
 
         public string Host { get; }
         public int Port { get; }
@@ -49,7 +49,7 @@ namespace Wexflow.Tasks.SshCmd
                 sshclient.Connect();
                 Dictionary<TerminalModes, uint> modes = new() { { TerminalModes.ECHO, 53 } };
                 stream = sshclient.CreateShellStream("xterm", 80, 24, 800, 600, 4096, modes);
-                var result = stream.Expect(Prompt, ExpectTimeout);
+                var result = stream.Expect(ColumnPrompt, ExpectTimeout);
 
                 if (result == null)
                 {
@@ -91,7 +91,7 @@ namespace Wexflow.Tasks.SshCmd
         public void SendCommand(ShellStream stream, string cmd)
         {
             stream.WriteLine(cmd);
-            var result = stream.Expect(PromptOrPwd, ExpectTimeout);
+            var result = stream.Expect(ColumnPromptOrPwd, ExpectTimeout);
 
             if (result == null)
             {
@@ -99,10 +99,10 @@ namespace Wexflow.Tasks.SshCmd
                 return;
             }
 
-            if (PwdPrompt.IsMatch(result))
+            if (ColumnPwdPrompt.IsMatch(result))
             {
                 stream.WriteLine(Password);
-                var res = stream.Expect(Prompt, ExpectTimeout);
+                var res = stream.Expect(ColumnPrompt, ExpectTimeout);
 
                 if (res == null)
                 {
@@ -115,7 +115,7 @@ namespace Wexflow.Tasks.SshCmd
 
             var echoCmd = "echo $?";
             stream.WriteLine(echoCmd);
-            var errorCode = stream.Expect(Prompt, ExpectTimeout);
+            var errorCode = stream.Expect(ColumnPrompt, ExpectTimeout);
 
             if (errorCode == null)
             {

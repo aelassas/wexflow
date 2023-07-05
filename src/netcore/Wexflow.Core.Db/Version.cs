@@ -4,7 +4,7 @@ namespace Wexflow.Core.Db
 {
     public class Version
     {
-        public static readonly string DocumentName = "versions";
+        public const string DocumentName = "versions";
 
         public string FilePath { get; set; }
         public string RecordId { get; set; }

@@ -2,13 +2,13 @@
 {
     public class Approver : Core.Db.Approver
     {
-        public static readonly string ColumnName_Id = "ID";
-        public static readonly string ColumnName_UserId = "USER_ID";
-        public static readonly string ColumnName_RecordId = "RECORD_ID";
-        public static readonly string ColumnName_Approved = "APPROVED";
-        public static readonly string ColumnName_ApprovedOn = "APPROVED_ON";
+        public const string ColumnName_Id = "ID";
+        public const string ColumnName_UserId = "USER_ID";
+        public const string ColumnName_RecordId = "RECORD_ID";
+        public const string ColumnName_Approved = "APPROVED";
+        public const string ColumnName_ApprovedOn = "APPROVED_ON";
 
-        public static readonly string TableStruct = "(" + ColumnName_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, "
+        public const string TableStruct = "(" + ColumnName_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, "
                                                         + ColumnName_UserId + " INTEGER, "
                                                         + ColumnName_RecordId + " INTEGER, "
                                                         + ColumnName_Approved + " INTEGER, "

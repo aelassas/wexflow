@@ -4,7 +4,7 @@ namespace Wexflow.Core.Db
 {
     public class Record
     {
-        public static readonly string DocumentName = "records";
+        public const string DocumentName = "records";
 
         public string Name { get; set; }
         public string Description { get; set; }

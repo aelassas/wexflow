@@ -2,7 +2,7 @@
 {
     public class Workflow
     {
-        public static readonly string DocumentName = "workflows";
+        public const string DocumentName = "workflows";
 
         public string Xml { get; set; }
 

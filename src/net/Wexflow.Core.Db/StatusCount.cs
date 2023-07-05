@@ -2,7 +2,7 @@
 {
     public class StatusCount
     {
-        public static readonly string DocumentName = "statusCount";
+        public const string DocumentName = "statusCount";
 
         public int PendingCount { get; set; }
         public int RunningCount { get; set; }

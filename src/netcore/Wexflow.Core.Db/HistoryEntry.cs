@@ -4,7 +4,7 @@ namespace Wexflow.Core.Db
 {
     public class HistoryEntry
     {
-        public static readonly string DocumentName = "historyEntries";
+        public const string DocumentName = "historyEntries";
 
         public int WorkflowId { get; set; }
         public string Name { get; set; }

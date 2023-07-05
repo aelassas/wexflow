@@ -2,22 +2,22 @@
 {
     public class Record : Core.Db.Record
     {
-        public static readonly string ColumnName_Id = "ID";
-        public static readonly string ColumnName_Name = "NAME";
-        public static readonly string ColumnName_Description = "DESCRIPTION";
-        public static readonly string ColumnName_Approved = "APPROVED";
-        public static readonly string ColumnName_StartDate = "START_DATE";
-        public static readonly string ColumnName_EndDate = "END_DATE";
-        public static readonly string ColumnName_Comments = "COMMENTS";
-        public static readonly string ColumnName_ManagerComments = "MANAGER_COMMENTS";
-        public static readonly string ColumnName_CreatedBy = "CREATED_BY";
-        public static readonly string ColumnName_CreatedOn = "CREATED_ON";
-        public static readonly string ColumnName_ModifiedBy = "MODIFIED_BY";
-        public static readonly string ColumnName_ModifiedOn = "MODIFIED_ON";
-        public static readonly string ColumnName_AssignedTo = "ASSIGNED_TO";
-        public static readonly string ColumnName_AssignedOn = "ASSIGNED_ON";
+        public const string ColumnName_Id = "ID";
+        public const string ColumnName_Name = "NAME";
+        public const string ColumnName_Description = "DESCRIPTION";
+        public const string ColumnName_Approved = "APPROVED";
+        public const string ColumnName_StartDate = "START_DATE";
+        public const string ColumnName_EndDate = "END_DATE";
+        public const string ColumnName_Comments = "COMMENTS";
+        public const string ColumnName_ManagerComments = "MANAGER_COMMENTS";
+        public const string ColumnName_CreatedBy = "CREATED_BY";
+        public const string ColumnName_CreatedOn = "CREATED_ON";
+        public const string ColumnName_ModifiedBy = "MODIFIED_BY";
+        public const string ColumnName_ModifiedOn = "MODIFIED_ON";
+        public const string ColumnName_AssignedTo = "ASSIGNED_TO";
+        public const string ColumnName_AssignedOn = "ASSIGNED_ON";
 
-        public static readonly string TableStruct = "(" + ColumnName_Id + " SERIAL PRIMARY KEY, "
+        public const string TableStruct = "(" + ColumnName_Id + " SERIAL PRIMARY KEY, "
                                                         + ColumnName_Name + " VARCHAR, "
                                                         + ColumnName_Description + " VARCHAR, "
                                                         + ColumnName_Approved + " BOOLEAN, "
