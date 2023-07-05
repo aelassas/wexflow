@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.ImagesOverlay
         public override TaskStatus Run()
         {
             Info("Overlaying images...");
-            var success = true;
+            bool success;
 
             try
             {

@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Touch
         {
             Info("Touching files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

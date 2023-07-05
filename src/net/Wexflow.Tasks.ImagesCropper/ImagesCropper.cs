@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.ImagesCropper
         {
             Info("Cropping images...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

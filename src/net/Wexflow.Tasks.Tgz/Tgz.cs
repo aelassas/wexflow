@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.Tgz
         {
             Info("Creating tgz archive...");
 
-            var success = true;
+            bool success;
 
             try
             {

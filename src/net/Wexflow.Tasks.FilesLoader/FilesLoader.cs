@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.FilesLoader
         {
             Info("Loading files...");
 
-            var success = true;
+            bool success;
 
             try
             {

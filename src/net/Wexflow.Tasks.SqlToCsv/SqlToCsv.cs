@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.SqlToCsv
         {
             Info("Executing SQL scripts...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

@@ -29,7 +29,7 @@ namespace Wexflow.Tasks.FilesEqual
         {
             Info("Checking...");
 
-            var success = true;
+            bool success;
 
             try
             {

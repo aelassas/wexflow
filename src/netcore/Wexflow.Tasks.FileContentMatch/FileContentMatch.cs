@@ -48,15 +48,7 @@ namespace Wexflow.Tasks.FileContentMatch
                 // Checking folders
                 foreach (var folder in FoldersToCheck)
                 {
-                    var files = Array.Empty<string>();
-                    if (Recursive)
-                    {
-                        files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
-                    }
-                    else
-                    {
-                        files = Directory.GetFiles(folder);
-                    }
+                    var files = Recursive ? Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories) : Directory.GetFiles(folder);
 
                     foreach (var file in files)
                     {

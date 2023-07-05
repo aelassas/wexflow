@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.Unzip
         {
             Info("Extracting ZIP archives...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

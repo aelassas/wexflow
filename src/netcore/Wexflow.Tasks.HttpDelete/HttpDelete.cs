@@ -11,7 +11,6 @@ namespace Wexflow.Tasks.HttpDelete
     public class HttpDelete : Task
     {
         public string Url { get; }
-        public string Payload { get; }
         public string AuthorizationScheme { get; }
         public string AuthorizationParameter { get; }
 
@@ -52,21 +51,15 @@ namespace Wexflow.Tasks.HttpDelete
 
         public static async System.Threading.Tasks.Task<string> Delete(string url, string authScheme, string authParam)
         {
-            using (HttpClient httpClient = new())
+            using HttpClient httpClient = new();
+            if (!string.IsNullOrEmpty(authScheme) && !string.IsNullOrEmpty(authParam))
             {
-                if (!string.IsNullOrEmpty(authScheme) && !string.IsNullOrEmpty(authParam))
-                {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
-                }
-
-                var httpResponse = await httpClient.DeleteAsync(url);
-                if (httpResponse.Content != null)
-                {
-                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
-                    return responseContent;
-                }
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
             }
-            return string.Empty;
+
+            var httpResponse = await httpClient.DeleteAsync(url);
+            var responseContent = await httpResponse.Content.ReadAsStringAsync();
+            return responseContent;
         }
     }
 }

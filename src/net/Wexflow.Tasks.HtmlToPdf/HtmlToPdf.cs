@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.HtmlToPdf
         {
             Info("Generating PDF files from HTML files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

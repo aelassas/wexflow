@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.FilesRemover
         {
             Info("Removing files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

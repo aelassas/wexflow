@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.FilesSplitter
         {
             Info("Splitting files into chunks...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

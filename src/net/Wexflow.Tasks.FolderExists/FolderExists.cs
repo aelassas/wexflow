@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.FolderExists
         {
             Info("Checking folder...");
 
-            var success = false;
+            bool success;
             TaskStatus status = null;
 
             try
@@ -65,14 +65,7 @@ namespace Wexflow.Tasks.FolderExists
             {
                 success = System.IO.Directory.Exists(Folder);
 
-                if (success)
-                {
-                    InfoFormat("The folder {0} exists.", Folder);
-                }
-                else
-                {
-                    InfoFormat("The folder {0} does not exist.", Folder);
-                }
+                InfoFormat(success ? "The folder {0} exists." : "The folder {0} does not exist.", Folder);
             }
             catch (ThreadAbortException)
             {

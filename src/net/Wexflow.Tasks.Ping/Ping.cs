@@ -24,14 +24,10 @@ namespace Wexflow.Tasks.Ping
             {
                 success = PingHost(Server);
 
-                if (success)
-                {
-                    InfoFormat("The server {0} responded the ping request.", Server);
-                }
-                else
-                {
-                    InfoFormat("The server {0} did not respond to the ping request.", Server);
-                }
+                InfoFormat(
+                    success
+                        ? "The server {0} responded the ping request."
+                        : "The server {0} did not respond to the ping request.", Server);
             }
             catch (ThreadAbortException)
             {
@@ -50,12 +46,12 @@ namespace Wexflow.Tasks.Ping
 
         private bool PingHost(string server)
         {
-            var pingable = false;
+            bool pingable;
 
             using (var pinger = new System.Net.NetworkInformation.Ping())
             {
                 var reply = pinger.Send(server);
-                pingable = reply.Status == IPStatus.Success;
+                pingable = reply != null && reply.Status == IPStatus.Success;
             }
 
             return pingable;

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- ReSharper disable once VulnerablePackage -->
     <PackageReference Include="Reddit" Version="1.5.2" />
   </ItemGroup>
 

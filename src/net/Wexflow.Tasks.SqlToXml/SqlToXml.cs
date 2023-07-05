@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.SqlToXml
         {
             Info("Executing SQL scripts...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -250,8 +250,8 @@ namespace Wexflow.Tasks.SqlToXml
                         if (!ExcludeEmptyValues || !string.IsNullOrEmpty(xmlvalue))
                         {
                             xobject.Add(new XElement("Cell"
-                                , new XAttribute("column", SecurityElement.Escape(column))
-                                , new XAttribute("value", SecurityElement.Escape(xmlvalue))));
+                                , new XAttribute("column", SecurityElement.Escape(column) ?? throw new InvalidOperationException())
+                                , new XAttribute("value", SecurityElement.Escape(xmlvalue) ?? throw new InvalidOperationException())));
                         }
                     }
                     xobjects.Add(xobject);

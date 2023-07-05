@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Sha1
         {
             Info("Generating SHA-1 hashes...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

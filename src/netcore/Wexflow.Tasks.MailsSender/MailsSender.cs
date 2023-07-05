@@ -119,12 +119,11 @@ namespace Wexflow.Tasks.MailsSender
             //
             // Parse local variables.
             //
-            var res = string.Empty;
+            string res;
             using (StringReader sr = new(src))
             using (StringWriter sw = new())
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                while (sr.ReadLine() is { } line)
                 {
                     var pattern = @"{.*?}";
                     var m = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
@@ -148,12 +147,11 @@ namespace Wexflow.Tasks.MailsSender
             //
             // Parse Rest variables.
             //
-            var res2 = string.Empty;
+            string res2;
             using (StringReader sr = new(res))
             using (StringWriter sw = new())
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                while (sr.ReadLine() is { } line)
                 {
                     foreach (var variable in Workflow.RestVariables)
                     {

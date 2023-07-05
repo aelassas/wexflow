@@ -103,7 +103,7 @@ namespace Wexflow.Tasks.Ftp
         public static void UploadFile(FtpClient client, FileInf file)
         {
             using (Stream istream = File.Open(file.Path, FileMode.Open, FileAccess.Read))
-            using (var ostream = client.OpenWrite(file.RenameToOrName, FtpDataType.Binary))
+            using (var ostream = client.OpenWrite(file.RenameToOrName))
             {
                 var buffer = new byte[BufferSize];
                 int r;

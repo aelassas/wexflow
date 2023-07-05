@@ -1,7 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Tar;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -29,7 +28,7 @@ namespace Wexflow.Tasks.Tar
         {
             Info("Creating tar archive...");
 
-            var success = true;
+            bool success;
 
             try
             {

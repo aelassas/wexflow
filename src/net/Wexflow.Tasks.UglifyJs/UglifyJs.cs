@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.UglifyJs
         {
             Info("Uglifying JavaScript files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

@@ -52,7 +52,7 @@ namespace Wexflow.Tasks.Sql
         {
             Info("Executing SQL scripts...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             // Execute SQL scripts

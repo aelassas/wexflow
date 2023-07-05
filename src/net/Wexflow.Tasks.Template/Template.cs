@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 
@@ -23,6 +24,11 @@ namespace Wexflow.Tasks.Template
             catch (ThreadAbortException)
             {
                 throw;
+            }
+            catch (Exception ex)
+            {
+                ErrorFormat("An error occured.", ex);
+                return new TaskStatus(Status.Error);
             }
         }
     }

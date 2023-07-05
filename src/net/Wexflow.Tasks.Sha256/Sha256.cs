@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Sha256
         {
             Info("Generating SHA-256 hashes...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

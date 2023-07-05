@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.YamlToJson
         {
             Info("Converting YAML files to JSON files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

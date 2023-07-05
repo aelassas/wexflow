@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.FilesRenamer
         {
             Info("Renaming files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

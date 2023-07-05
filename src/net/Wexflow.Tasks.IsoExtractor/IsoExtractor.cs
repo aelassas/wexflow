@@ -29,7 +29,7 @@ namespace Wexflow.Tasks.IsoExtractor
         {
             Info("Extracting ISO files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -83,7 +83,7 @@ namespace Wexflow.Tasks.IsoExtractor
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(iso.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
+                            , $"{Path.GetFileNameWithoutExtension(iso.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
 
                         ExtractIso(iso.Path, destFolder);
@@ -128,7 +128,7 @@ namespace Wexflow.Tasks.IsoExtractor
                         var destFile = $"{destDir.TrimEnd('\\')}\\{Regex.Replace(file.Replace("/", "\\"), @";\d*$", "").TrimStart('\\')}";
 
                         // Create directories
-                        var destFolder = Path.GetDirectoryName(destFile);
+                        var destFolder = Path.GetDirectoryName(destFile)??throw new InvalidOperationException();
                         destFolder = destFolder.Equals(destDir) ? string.Empty : destFolder;
 
                         var finalDestFolder = destDir;

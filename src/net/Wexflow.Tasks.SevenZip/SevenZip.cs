@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.SevenZip
         {
             Info("Zipping files...");
 
-            var success = true;
+            bool success;
 
             try
             {
@@ -83,7 +83,7 @@ namespace Wexflow.Tasks.SevenZip
 #if DEBUG
                     var processorArch = assembly.GetName().ProcessorArchitecture;
                     var x86 = processorArch == ProcessorArchitecture.X86;
-                    libraryPath = Path.Combine(libraryPath, x86 ? "x86" : "x64", "7z.dll");
+                    libraryPath = Path.Combine(libraryPath ?? throw new InvalidOperationException(), x86 ? "x86" : "x64", "7z.dll");
 #else
                     libraryPath = Path.Combine(libraryPath, "7z.dll");
 #endif

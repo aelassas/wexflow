@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.FilesEncryptor
         {
             Info("Encrypting files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

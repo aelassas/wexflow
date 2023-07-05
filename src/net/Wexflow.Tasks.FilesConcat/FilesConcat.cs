@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.FilesConcat
         {
             Info("Concatenating files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

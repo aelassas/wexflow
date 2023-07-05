@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.TextsDecryptor
         {
             Info("Decrypting files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

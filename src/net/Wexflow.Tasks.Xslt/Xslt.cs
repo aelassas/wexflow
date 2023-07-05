@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.Xslt
         {
             Info("Transforming files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

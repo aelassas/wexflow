@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Zip
         {
             Info("Zipping files...");
 
-            var success = true;
+            bool success;
 
             try
             {

@@ -1,7 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Tar;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -29,7 +28,7 @@ namespace Wexflow.Tasks.Untar
         {
             Info("Extracting TAR archives...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -83,7 +82,7 @@ namespace Wexflow.Tasks.Untar
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
+                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 
@@ -139,7 +138,7 @@ namespace Wexflow.Tasks.Untar
                     // Apply further name transformations here as necessary
                     var outName = Path.Combine(targetDir, name);
 
-                    var directoryName = Path.GetDirectoryName(outName);
+                    var directoryName = Path.GetDirectoryName(outName) ?? throw new InvalidOperationException();
                     _ = Directory.CreateDirectory(directoryName);
 
                     var outStr = new FileStream(outName, FileMode.Create);

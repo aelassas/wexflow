@@ -29,7 +29,7 @@ namespace Wexflow.Tasks.CsvToYaml
         {
             Info("Converting CSV files to YAML files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

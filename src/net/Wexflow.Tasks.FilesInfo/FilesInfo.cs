@@ -15,13 +15,17 @@ namespace Wexflow.Tasks.FilesInfo
 
         public FilesInfo(XElement xe, Workflow wf) : base(xe, wf)
         {
+            SmbComputerName = GetSetting("smbComputerName");
+            SmbDomain = GetSetting("smbDomain");
+            SmbUsername = GetSetting("smbUsername");
+            SmbPassword = GetSetting("smbPassword");
         }
 
         public override TaskStatus Run()
         {
             Info("Generating files informations...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

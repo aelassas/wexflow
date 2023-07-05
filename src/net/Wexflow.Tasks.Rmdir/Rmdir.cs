@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Rmdir
         {
             Info("Removing folders...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

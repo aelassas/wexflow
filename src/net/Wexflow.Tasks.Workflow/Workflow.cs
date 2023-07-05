@@ -58,14 +58,7 @@ namespace Wexflow.Tasks.Workflow
                             else
                             {
                                 var instanceId = client.StartWorkflow(id, Username, Password);
-                                if (Jobs.ContainsKey(id))
-                                {
-                                    Jobs[id] = instanceId;
-                                }
-                                else
-                                {
-                                    Jobs.Add(id, instanceId);
-                                }
+                                Jobs[id] = instanceId;
                                 InfoFormat("Workflow {0} started.", id);
                                 if (!atLeastOneSucceed)
                                 {
@@ -77,19 +70,11 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsRunning)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                if (jobId != null)
+                                client.SuspendWorkflow(id, jobId, Username, Password);
+                                InfoFormat("Workflow {0} suspended.", id);
+                                if (!atLeastOneSucceed)
                                 {
-                                    client.SuspendWorkflow(id, jobId, Username, Password);
-                                    InfoFormat("Workflow {0} suspended.", id);
-                                    if (!atLeastOneSucceed)
-                                    {
-                                        atLeastOneSucceed = true;
-                                    }
-                                }
-                                else
-                                {
-                                    success = false;
-                                    ErrorFormat("Can't suspend the workflow {0} because it's not running.", id);
+                                    atLeastOneSucceed = true;
                                 }
                             }
                             else
@@ -102,19 +87,11 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsPaused)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                if (jobId != null)
+                                client.ResumeWorkflow(id, jobId, Username, Password);
+                                InfoFormat("Workflow {0} resumed.", id);
+                                if (!atLeastOneSucceed)
                                 {
-                                    client.ResumeWorkflow(id, jobId, Username, Password);
-                                    InfoFormat("Workflow {0} resumed.", id);
-                                    if (!atLeastOneSucceed)
-                                    {
-                                        atLeastOneSucceed = true;
-                                    }
-                                }
-                                else
-                                {
-                                    success = false;
-                                    ErrorFormat("Can't resume the workflow {0} because it's not suspended.", id);
+                                    atLeastOneSucceed = true;
                                 }
                             }
                             else
@@ -127,19 +104,11 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsRunning)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                if (jobId != null)
+                                client.StopWorkflow(id, jobId, Username, Password);
+                                InfoFormat("Workflow {0} stopped.", id);
+                                if (!atLeastOneSucceed)
                                 {
-                                    client.StopWorkflow(id, jobId, Username, Password);
-                                    InfoFormat("Workflow {0} stopped.", id);
-                                    if (!atLeastOneSucceed)
-                                    {
-                                        atLeastOneSucceed = true;
-                                    }
-                                }
-                                else
-                                {
-                                    success = false;
-                                    ErrorFormat("Can't stop the workflow {0} because it's not running.", id);
+                                    atLeastOneSucceed = true;
                                 }
                             }
                             else
@@ -152,19 +121,11 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsApproval && wfInfo.IsWaitingForApproval)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                if (jobId != null)
+                                client.ApproveWorkflow(id, jobId, Username, Password);
+                                InfoFormat("Workflow {0} approved.", id);
+                                if (!atLeastOneSucceed)
                                 {
-                                    client.ApproveWorkflow(id, jobId, Username, Password);
-                                    InfoFormat("Workflow {0} approved.", id);
-                                    if (!atLeastOneSucceed)
-                                    {
-                                        atLeastOneSucceed = true;
-                                    }
-                                }
-                                else
-                                {
-                                    success = false;
-                                    ErrorFormat("Can't approve the workflow {0} because it's not waiting for approval.", id);
+                                    atLeastOneSucceed = true;
                                 }
                             }
                             else
@@ -177,19 +138,11 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsApproval && wfInfo.IsWaitingForApproval)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                if (jobId != null)
+                                client.RejectWorkflow(id, jobId, Username, Password);
+                                InfoFormat("Workflow {0} rejected.", id);
+                                if (!atLeastOneSucceed)
                                 {
-                                    client.RejectWorkflow(id, jobId, Username, Password);
-                                    InfoFormat("Workflow {0} rejected.", id);
-                                    if (!atLeastOneSucceed)
-                                    {
-                                        atLeastOneSucceed = true;
-                                    }
-                                }
-                                else
-                                {
-                                    success = false;
-                                    ErrorFormat("Can't reject the workflow {0} because it's not waiting for approval.", id);
+                                    atLeastOneSucceed = true;
                                 }
                             }
                             else
@@ -207,15 +160,15 @@ namespace Wexflow.Tasks.Workflow
                 }
             }
             Info("Task finished.");
-            var status = Core.Status.Success;
+            var status = Status.Success;
 
             if (!success && atLeastOneSucceed)
             {
-                status = Core.Status.Warning;
+                status = Status.Warning;
             }
             else if (!success)
             {
-                status = Core.Status.Error;
+                status = Status.Error;
             }
 
             return new TaskStatus(status);

@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Sha512
         {
             Info("Generating SHA-512 hashes...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

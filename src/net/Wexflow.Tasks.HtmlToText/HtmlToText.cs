@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.HtmlToText
         {
             Info("Extracting text from HTML files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

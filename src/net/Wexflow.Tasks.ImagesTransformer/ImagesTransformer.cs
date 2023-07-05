@@ -8,19 +8,6 @@ using Wexflow.Core;
 
 namespace Wexflow.Tasks.ImagesTransformer
 {
-    public enum ImgFormat
-    {
-        Bmp,
-        Emf,
-        Exif,
-        Gif,
-        Icon,
-        Jpeg,
-        Png,
-        Tiff,
-        Wmf
-    }
-
     public class ImagesTransformer : Task
     {
         public string OutputFilePattern { get; }
@@ -44,7 +31,7 @@ namespace Wexflow.Tasks.ImagesTransformer
         {
             Info("Transforming images...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

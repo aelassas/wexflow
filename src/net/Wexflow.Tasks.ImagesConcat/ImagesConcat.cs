@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.ImagesConcat
         {
             Info("Concatenating images...");
 
-            var success = true;
+            bool success;
 
             try
             {

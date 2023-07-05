@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Mkdir
         {
             Info("Creating folders...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

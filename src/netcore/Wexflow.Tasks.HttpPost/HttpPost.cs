@@ -56,22 +56,16 @@ namespace Wexflow.Tasks.HttpPost
 
         public async System.Threading.Tasks.Task<string> Post(string url, string authScheme, string authParam, string payload)
         {
-            using (StringContent httpContent = new(payload, Encoding.UTF8, Type))
-            using (HttpClient httpClient = new())
+            using StringContent httpContent = new(payload, Encoding.UTF8, Type);
+            using HttpClient httpClient = new();
+            if (!string.IsNullOrEmpty(authScheme) && !string.IsNullOrEmpty(authParam))
             {
-                if (!string.IsNullOrEmpty(authScheme) && !string.IsNullOrEmpty(authParam))
-                {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
-                }
-
-                var httpResponse = await httpClient.PostAsync(url, httpContent);
-                if (httpResponse.Content != null)
-                {
-                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
-                    return responseContent;
-                }
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authScheme, authParam);
             }
-            return string.Empty;
+
+            var httpResponse = await httpClient.PostAsync(url, httpContent);
+            var responseContent = await httpResponse.Content.ReadAsStringAsync();
+            return responseContent;
         }
     }
 }

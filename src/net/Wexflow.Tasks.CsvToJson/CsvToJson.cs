@@ -29,7 +29,7 @@ namespace Wexflow.Tasks.CsvToJson
         {
             Info("Converting CSV files to JSON files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

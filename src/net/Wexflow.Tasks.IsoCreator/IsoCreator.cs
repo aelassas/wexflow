@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.IsoCreator
         {
             Info("Creating .iso...");
             var status = Status.Success;
-            var success = true;
+            bool success;
 
             try
             {
@@ -69,7 +69,6 @@ namespace Wexflow.Tasks.IsoCreator
 
         private bool CreateIso()
         {
-            var success = true;
             try
             {
                 var files = Directory.GetFiles(SrcDir, "*.*", SearchOption.AllDirectories);
@@ -90,8 +89,6 @@ namespace Wexflow.Tasks.IsoCreator
 
                 Files.Add(new FileInf(isoPath, Id));
                 InfoFormat("Iso {0} created with success.", isoPath);
-
-                success = true;
             }
             catch (ThreadAbortException)
             {
@@ -100,8 +97,10 @@ namespace Wexflow.Tasks.IsoCreator
             catch (Exception e)
             {
                 ErrorFormat("An error occured while creating {0}: {1}", IsoFileName, e.Message);
+                return false;
             }
-            return success;
+
+            return true;
         }
     }
 }

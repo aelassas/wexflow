@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Slack
         {
             Info("Sending slack messages...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -101,8 +101,8 @@ namespace Wexflow.Tasks.Slack
                         var xdoc = XDocument.Load(file.Path);
                         foreach (var xMessage in xdoc.XPathSelectElements("Messages/Message"))
                         {
-                            var username = xMessage.Element("User").Value;
-                            var text = xMessage.Element("Text").Value;
+                            var username = xMessage.Element("User")?.Value;
+                            var text = xMessage.Element("Text")?.Value;
 
                             if (client.Users != null)
                             {

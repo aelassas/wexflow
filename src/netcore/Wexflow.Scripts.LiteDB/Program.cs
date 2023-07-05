@@ -25,7 +25,7 @@ namespace Wexflow.Scripts.LiteDB
 
                 _ = bool.TryParse(_config["buildDevDatabases"], out var buildDevDatabases);
 
-                if (buildDevDatabases && _config != null)
+                if (buildDevDatabases)
                 {
                     BuildDatabase("Windows", "windows", _config);
                     BuildDatabase("Linux", "linux", _config);

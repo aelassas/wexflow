@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.ImagesResizer
         {
             Info("Resizing images...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

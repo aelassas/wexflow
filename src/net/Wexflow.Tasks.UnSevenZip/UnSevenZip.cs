@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.UnSevenZip
         {
             Info("Extracting 7Z archives...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -85,7 +85,7 @@ namespace Wexflow.Tasks.UnSevenZip
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(rar.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
+                            , $"{Path.GetFileNameWithoutExtension(rar.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
 
                         Extract7Z(rar.Path, destFolder);

@@ -2,7 +2,6 @@
 using ICSharpCode.SharpZipLib.Tar;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -30,7 +29,7 @@ namespace Wexflow.Tasks.Untgz
         {
             Info("Extracting TAR.GZ archives...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -84,7 +83,7 @@ namespace Wexflow.Tasks.Untgz
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(tgz.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
+                            , $"{Path.GetFileNameWithoutExtension(tgz.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
                         ExtractTgz(tgz.Path, destFolder);
 

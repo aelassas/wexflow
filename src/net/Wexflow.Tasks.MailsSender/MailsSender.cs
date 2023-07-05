@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.MailsSender
         {
             Info("Sending mails...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -155,7 +155,7 @@ namespace Wexflow.Tasks.MailsSender
             //
             // Parse local variables.
             //
-            var res = string.Empty;
+            string res;
             using (var sr = new StringReader(src))
             using (var sw = new StringWriter())
             {
@@ -184,7 +184,7 @@ namespace Wexflow.Tasks.MailsSender
             //
             // Parse Rest variables.
             //
-            var res2 = string.Empty;
+            string res2;
             using (var sr = new StringReader(res))
             using (var sw = new StringWriter())
             {

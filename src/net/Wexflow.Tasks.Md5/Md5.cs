@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Md5
         {
             Info("Generating MD5 sums...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try

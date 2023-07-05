@@ -39,7 +39,7 @@ namespace Wexflow.NetCore.Tests
                ? "/Applications/wexflow/WexflowTesting/"
                : @"C:\WexflowTesting\");
 
-        private static readonly string Username = "admin";
+        private const string Username = "admin";
 
         public static void SaveWorkflow(string xml, bool schedule)
         {
@@ -106,7 +106,7 @@ namespace Wexflow.NetCore.Tests
             _ = WexflowEngine.RejectWorkflow(workflowId, instanceId, Username);
         }
 
-        public static Core.Workflow GetWorkflow(int workflowId)
+        public static Workflow GetWorkflow(int workflowId)
         {
             return WexflowEngine.GetWorkflow(workflowId);
         }

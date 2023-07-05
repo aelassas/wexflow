@@ -86,7 +86,7 @@ namespace Wexflow.Tasks.FilesJoiner
         {
             Info("Concatenating files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSucceed = false;
 
             try

@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.FileMatch
         {
             Info("Checking file...");
 
-            var success = false;
+            bool success;
             TaskStatus status = null;
 
             try

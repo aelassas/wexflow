@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.Ftp
             client.Config.DataConnectionType = FtpDataConnectionType.PASV;
             client.Config.EncryptionMode = _encryptionMode;
             client.Config.ValidateAnyCertificate = true;
-            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
+            client.ValidateCertificate += OnValidateCertificate;
             client.Connect();
             client.SetWorkingDirectory(Path);
 
@@ -92,7 +92,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
+            client.ValidateCertificate += OnValidateCertificate;
             client.Config.DataConnectionType = FtpDataConnectionType.PASV;
             client.Config.EncryptionMode = _encryptionMode;
 
@@ -126,7 +126,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
+            client.ValidateCertificate += OnValidateCertificate;
             client.Connect();
             client.SetWorkingDirectory(Path);
 
@@ -151,7 +151,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.ValidateCertificate += new FtpSslValidation(OnValidateCertificate);
+            client.ValidateCertificate += OnValidateCertificate;
             client.Connect();
             client.SetWorkingDirectory(Path);
 

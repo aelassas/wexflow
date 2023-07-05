@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.XmlToCsv
         {
             Info("Creating csv files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
