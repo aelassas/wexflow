@@ -280,15 +280,5 @@ namespace Wexflow.Server
 
             return isDir;
         }
-
-        /// <summary>
-        /// Checks if a directory is empty.
-        /// </summary>
-        /// <param name="path">Directory path.</param>
-        /// <returns>Result.</returns>
-        public static bool IsDirectoryEmpty(string path)
-        {
-            return !Directory.EnumerateFileSystemEntries(path).Any();
-        }
     }
 }

@@ -33,7 +33,7 @@ namespace Wexflow.Server
         private static void RunInteractiveServices(ServiceBase[] servicesToRun)
         {
             Console.WriteLine();
-            Console.WriteLine("Start the services in interactive mode.");
+            Console.WriteLine(@"Start the services in interactive mode.");
             Console.WriteLine();
 
             // Get the method to invoke on each service to start it
@@ -42,14 +42,14 @@ namespace Wexflow.Server
             // Start services loop
             foreach (var service in servicesToRun)
             {
-                Console.Write("Starting {0} ... ", service.ServiceName);
+                Console.Write(@"Starting {0} ... ", service.ServiceName);
                 _ = (onStartMethod?.Invoke(service, new object[] { Array.Empty<string>() }));
-                Console.WriteLine("Started");
+                Console.WriteLine(@"Started");
             }
 
             // Waiting the end
             Console.WriteLine();
-            Console.WriteLine("Press a key to stop services and finish process...");
+            Console.WriteLine(@"Press a key to stop services and finish process...");
             _ = Console.ReadKey();
             Console.WriteLine();
 
@@ -59,19 +59,19 @@ namespace Wexflow.Server
             // Stop loop
             foreach (var service in servicesToRun)
             {
-                Console.Write("Stopping {0} ... ", service.ServiceName);
+                Console.Write(@"Stopping {0} ... ", service.ServiceName);
                 _ = (onStopMethod?.Invoke(service, null));
-                Console.WriteLine("Stopped");
+                Console.WriteLine(@"Stopped");
             }
 
             Console.WriteLine();
-            Console.WriteLine("All services are stopped.");
+            Console.WriteLine(@"All services are stopped.");
 
             // Waiting a key press to not return to VS directly
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 Console.WriteLine();
-                Console.WriteLine("=== Press a key to quit ===");
+                Console.WriteLine(@"=== Press a key to quit ===");
                 _ = Console.ReadKey();
             }
         }
