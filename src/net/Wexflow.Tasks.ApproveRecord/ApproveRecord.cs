@@ -64,7 +64,6 @@ namespace Wexflow.Tasks.ApproveRecord
                     else
                     {
                         var record = Workflow.Database.GetRecord(RecordId);
-                        var recordName = string.Empty;
 
                         if (record == null)
                         {
@@ -73,7 +72,7 @@ namespace Wexflow.Tasks.ApproveRecord
                         }
                         else
                         {
-                            recordName = record.Name;
+                            var recordName = record.Name;
                             var assignedTo = Workflow.Database.GetUser(AssignedTo);
 
                             if (assignedTo == null)
@@ -127,7 +126,7 @@ namespace Wexflow.Tasks.ApproveRecord
                                     Info($"Approved approvers of the record {record.GetDbId()} - {record.Name} deleted.");
                                     var approvers = Workflow.WexflowEngine.GetApprovers(record.GetDbId());
                                     var approver = approvers.FirstOrDefault(a => a.UserId == approverUser.GetDbId());
-                                    var approverUpserted = false;
+                                    bool approverUpserted;
 
                                     if (approver == null)
                                     {
@@ -721,7 +720,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
             if (!string.IsNullOrEmpty(evt))
             {
-                var ids = evt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var ids = evt.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var id in ids)
                 {
                     var taskId = int.Parse(id.Trim());
