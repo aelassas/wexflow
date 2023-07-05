@@ -9,84 +9,9 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Wexflow.Core.Db;
-// ReSharper disable InconsistentNaming
 
 namespace Wexflow.Core
 {
-    /// <summary>
-    /// Log level
-    /// </summary>
-    public enum LogLevel
-    {
-        /// <summary>
-        /// All logs and debug logs.
-        /// </summary>
-        Debug,
-        /// <summary>
-        /// All logs without debug logs.
-        /// </summary>
-        All,
-        /// <summary>
-        /// Only last workflow log and error logs.
-        /// </summary>
-        Severely,
-        /// <summary>
-        /// Only last workflow log.
-        /// </summary>
-        Minimum,
-        /// <summary>
-        /// No logs.
-        /// </summary>
-        None
-    }
-
-    /// <summary>
-    /// Database type
-    /// </summary>
-    public enum DbType
-    {
-        /// <summary>
-        /// LiteDB
-        /// </summary>
-        LiteDB,
-        /// <summary>
-        /// MongoDB
-        /// </summary>
-        MongoDB,
-        /// <summary>
-        /// RavenDB
-        /// </summary>
-        RavenDB,
-        /// <summary>
-        /// PostgreSQL
-        /// </summary>
-        PostgreSQL,
-        /// <summary>
-        /// SQLServer
-        /// </summary>
-        SQLServer,
-        /// <summary>
-        /// MySQL
-        /// </summary>
-        MySQL,
-        /// <summary>
-        /// SQLite
-        /// </summary>
-        SQLite,
-        /// <summary>
-        /// Firebird
-        /// </summary>
-        Firebird,
-        /// <summary>
-        /// Oracle
-        /// </summary>
-        Oracle,
-        /// <summary>
-        /// MariaDB
-        /// </summary>
-        MariaDB
-    }
-
     /// <summary>
     /// Wexflow engine.
     /// </summary>
@@ -95,7 +20,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Log level.
         /// </summary>
-        public LogLevel LogLevel { get; private set; }
+        public LogLevel LogLevel { get; }
         /// <summary>
         /// Records db folder name.
         /// </summary>
@@ -115,31 +40,39 @@ namespace Wexflow.Core
         /// <summary>
         /// Indicates whether email notifications are enabled or not.
         /// </summary>
-        public bool EnableEmailNotifications { get; private set; }
+        public bool EnableEmailNotifications { get; }
         /// <summary>
         /// SMTP host.
         /// </summary>
-        public string SmptHost { get; private set; }
+        public string SmptHost { get; }
         /// <summary>
         /// SMTP port.
         /// </summary>
-        public int SmtpPort { get; private set; }
+        public int SmtpPort { get; }
         /// <summary>
         ///  Indicates whether to enable SMTP SSL or not.
         /// </summary>
-        public bool SmtpEnableSsl { get; private set; }
+        public bool SmtpEnableSsl { get; }
         /// <summary>
         /// SMTP user.
         /// </summary>
-        public string SmtpUser { get; private set; }
+        public string SmtpUser { get; }
         /// <summary>
         /// SMTP password.
         /// </summary>
-        public string SmtpPassword { get; private set; }
+        public string SmtpPassword { get; }
         /// <summary>
         /// SMTP from.
         /// </summary>
-        public string SmtpFrom { get; private set; }
+        public string SmtpFrom { get; }
+        /// <summary>
+        /// List of the Workflows loaded by Wexflow engine.
+        /// </summary>
+        public IList<Workflow> Workflows { get; }
+        /// <summary>
+        /// Database.
+        /// </summary>
+        public Db.Db Database { get; }
         /// <summary>
         /// Workflows hot folder path.
         /// </summary>
@@ -181,10 +114,6 @@ namespace Wexflow.Core
         /// </summary>
         public string TasksSettingsFile { get; private set; }
         /// <summary>
-        /// List of the Workflows loaded by Wexflow engine.
-        /// </summary>
-        public IList<Workflow> Workflows { get; }
-        /// <summary>
         /// Database type.
         /// </summary>
         public DbType DbType { get; private set; }
@@ -200,10 +129,6 @@ namespace Wexflow.Core
         /// Global variables.
         /// </summary>
         public Variable[] GlobalVariables { get; private set; }
-        /// <summary>
-        /// Database
-        /// </summary>
-        public Db.Db Database { get; }
 
         //
         // Quartz scheduler

@@ -66,6 +66,14 @@ namespace Wexflow.Core
         /// </summary>
         public string SmtpFrom { get; }
         /// <summary>
+        /// List of the Workflows loaded by Wexflow engine.
+        /// </summary>
+        public IList<Workflow> Workflows { get; }
+        /// <summary>
+        /// Database.
+        /// </summary>
+        public Db.Db Database { get; }
+        /// <summary>
         /// Workflows hot folder path.
         /// </summary>
         public string WorkflowsFolder { get; private set; }
@@ -106,10 +114,6 @@ namespace Wexflow.Core
         /// </summary>
         public string TasksSettingsFile { get; private set; }
         /// <summary>
-        /// List of the Workflows loaded by Wexflow engine.
-        /// </summary>
-        public IList<Workflow> Workflows { get; }
-        /// <summary>
         /// Database type.
         /// </summary>
         public DbType DbType { get; private set; }
@@ -125,10 +129,6 @@ namespace Wexflow.Core
         /// Global variables.
         /// </summary>
         public Variable[] GlobalVariables { get; private set; }
-        /// <summary>
-        /// Database
-        /// </summary>
-        public Db.Db Database { get; }
 
         //
         // Quartz scheduler
