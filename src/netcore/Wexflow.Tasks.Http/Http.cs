@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.Http
         {
             using HttpClient client = new();
             var response = await client.GetAsync(url);
-            using FileStream fs = new(path, FileMode.CreateNew);
+            await using FileStream fs = new(path, FileMode.CreateNew);
             await response.Content.CopyToAsync(fs);
         }
     }
