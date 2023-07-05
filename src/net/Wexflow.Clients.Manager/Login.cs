@@ -49,7 +49,7 @@ namespace Wexflow.Clients.Manager
                 var username = txtUserName.Text;
                 if (string.IsNullOrEmpty(username))
                 {
-                    _ = MessageBox.Show("Type a username.");
+                    _ = MessageBox.Show(@"Type a username.");
                 }
                 else
                 {
@@ -58,13 +58,13 @@ namespace Wexflow.Clients.Manager
 
                     if (user == null)
                     {
-                        _ = MessageBox.Show("Wrong credentials.");
+                        _ = MessageBox.Show(@"Wrong credentials.");
                     }
                     else
                     {
                         if (user.UserProfile == UserProfile.Restricted)
                         {
-                            _ = MessageBox.Show("You do not have enough rights to access Wexflow Manager.");
+                            _ = MessageBox.Show(@"You do not have enough rights to access Wexflow Manager.");
                         }
                         else
                         {
@@ -79,7 +79,7 @@ namespace Wexflow.Clients.Manager
                             }
                             else
                             {
-                                _ = MessageBox.Show("The password is incorrect.");
+                                _ = MessageBox.Show(@"The password is incorrect.");
                             }
                         }
                     }
@@ -87,7 +87,7 @@ namespace Wexflow.Clients.Manager
             }
             catch (Exception)
             {
-                _ = MessageBox.Show(@"An error occured during the authentication.", "Wexflow", MessageBoxButtons.OK);
+                _ = MessageBox.Show(@"An error occured during the authentication.", @"Wexflow", MessageBoxButtons.OK);
             }
         }
 
@@ -101,6 +101,7 @@ namespace Wexflow.Clients.Manager
 
                 // Convert the byte array to hexadecimal string
                 var sb = new StringBuilder();
+                // ReSharper disable once ForCanBeConvertedToForeach
                 for (var i = 0; i < hashBytes.Length; i++)
                 {
                     _ = sb.Append(hashBytes[i].ToString("x2"));

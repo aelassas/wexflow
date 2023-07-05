@@ -251,35 +251,33 @@ namespace Wexflow.Core.Db.MariaDB
                 using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
-                using (MySqlCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
-                    + User.COLUMN_NAME_USERNAME + ", "
-                    + User.COLUMN_NAME_PASSWORD + ", "
-                    + User.COLUMN_NAME_EMAIL + ", "
-                    + User.COLUMN_NAME_USER_PROFILE + ", "
-                    + User.COLUMN_NAME_CREATED_ON + ", "
-                    + User.COLUMN_NAME_MODIFIED_ON
-                    + " FROM " + Core.Db.User.DocumentName
-                    + " WHERE " + "(LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
-                    + " AND " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
-                    + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
-                    + ";", conn))
+                using MySqlCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                                                 + User.COLUMN_NAME_USERNAME + ", "
+                                                 + User.COLUMN_NAME_PASSWORD + ", "
+                                                 + User.COLUMN_NAME_EMAIL + ", "
+                                                 + User.COLUMN_NAME_USER_PROFILE + ", "
+                                                 + User.COLUMN_NAME_CREATED_ON + ", "
+                                                 + User.COLUMN_NAME_MODIFIED_ON
+                                                 + " FROM " + Core.Db.User.DocumentName
+                                                 + " WHERE " + "(LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
+                                                 + " AND " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
+                                                 + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    User admin = new()
                     {
-                        User admin = new()
-                        {
-                            Id = (int)reader[User.COLUMN_NAME_ID],
-                            Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                            Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                            Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                            UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                            CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                            ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
-                        };
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                    };
 
-                        admins.Add(admin);
-                    }
+                    admins.Add(admin);
                 }
 
                 return admins;
@@ -306,24 +304,22 @@ namespace Wexflow.Core.Db.MariaDB
                     + Entry.COLUMN_NAME_JOB_ID
                     + " FROM " + Core.Db.Entry.DocumentName + ";", conn);
 
-                using (var reader = command.ExecuteReader())
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    Entry entry = new()
                     {
-                        Entry entry = new()
-                        {
-                            Id = (int)reader[Entry.COLUMN_NAME_ID],
-                            Name = (string)reader[Entry.COLUMN_NAME_NAME],
-                            Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
-                            LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
-                            Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
-                            StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
-                            WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
-                            JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
-                        };
+                        Id = (int)reader[Entry.COLUMN_NAME_ID],
+                        Name = (string)reader[Entry.COLUMN_NAME_NAME],
+                        Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
+                        JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -420,24 +416,22 @@ namespace Wexflow.Core.Db.MariaDB
                 _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
 
                 using MySqlCommand command = new(sqlBuilder.ToString(), conn);
-                using (var reader = command.ExecuteReader())
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    Entry entry = new()
                     {
-                        Entry entry = new()
-                        {
-                            Id = (int)reader[Entry.COLUMN_NAME_ID],
-                            Name = (string)reader[Entry.COLUMN_NAME_NAME],
-                            Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
-                            LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
-                            Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
-                            StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
-                            WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
-                            JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
-                        };
+                        Id = (int)reader[Entry.COLUMN_NAME_ID],
+                        Name = (string)reader[Entry.COLUMN_NAME_NAME],
+                        Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
+                        JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -619,23 +613,21 @@ namespace Wexflow.Core.Db.MariaDB
                     + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
                     + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn);
 
-                using (var reader = command.ExecuteReader())
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                            Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                            Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                            LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                            Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                            StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                            WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
-                        };
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -663,23 +655,21 @@ namespace Wexflow.Core.Db.MariaDB
                     + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
                     + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%';", conn);
 
-                using (var reader = command.ExecuteReader())
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                            Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                            Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                            LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                            Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                            StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                            WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
-                        };
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -709,23 +699,21 @@ namespace Wexflow.Core.Db.MariaDB
                     + " LIMIT " + entriesCount + " OFFSET " + ((page - 1) * entriesCount) + ";"
                     , conn);
 
-                using (var reader = command.ExecuteReader())
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                            Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                            Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                            LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                            Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                            StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                            WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
-                        };
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -822,23 +810,21 @@ namespace Wexflow.Core.Db.MariaDB
 
                 using MySqlCommand command = new(sqlBuilder.ToString(), conn);
 
-                using (var reader = command.ExecuteReader())
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    HistoryEntry entry = new()
                     {
-                        HistoryEntry entry = new()
-                        {
-                            Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                            Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                            Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                            LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                            Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                            StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                            WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
-                        };
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                    };
 
-                        entries.Add(entry);
-                    }
+                    entries.Add(entry);
                 }
 
                 return entries;
@@ -1091,33 +1077,31 @@ namespace Wexflow.Core.Db.MariaDB
                 using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
-                using (MySqlCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
-                    + User.COLUMN_NAME_USERNAME + ", "
-                    + User.COLUMN_NAME_PASSWORD + ", "
-                    + User.COLUMN_NAME_EMAIL + ", "
-                    + User.COLUMN_NAME_USER_PROFILE + ", "
-                    + User.COLUMN_NAME_CREATED_ON + ", "
-                    + User.COLUMN_NAME_MODIFIED_ON
-                    + " FROM " + Core.Db.User.DocumentName
-                    + ";", conn))
+                using MySqlCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                                                 + User.COLUMN_NAME_USERNAME + ", "
+                                                 + User.COLUMN_NAME_PASSWORD + ", "
+                                                 + User.COLUMN_NAME_EMAIL + ", "
+                                                 + User.COLUMN_NAME_USER_PROFILE + ", "
+                                                 + User.COLUMN_NAME_CREATED_ON + ", "
+                                                 + User.COLUMN_NAME_MODIFIED_ON
+                                                 + " FROM " + Core.Db.User.DocumentName
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    User user = new()
                     {
-                        User user = new()
-                        {
-                            Id = (int)reader[User.COLUMN_NAME_ID],
-                            Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                            Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                            Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                            UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                            CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                            ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
-                        };
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                    };
 
-                        users.Add(user);
-                    }
+                    users.Add(user);
                 }
 
                 return users;
@@ -1130,39 +1114,37 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<User> users = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                                                 + User.COLUMN_NAME_USERNAME + ", "
+                                                 + User.COLUMN_NAME_PASSWORD + ", "
+                                                 + User.COLUMN_NAME_EMAIL + ", "
+                                                 + User.COLUMN_NAME_USER_PROFILE + ", "
+                                                 + User.COLUMN_NAME_CREATED_ON + ", "
+                                                 + User.COLUMN_NAME_MODIFIED_ON
+                                                 + " FROM " + Core.Db.User.DocumentName
+                                                 + " WHERE " + "LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
+                                                 + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                                                 + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
-                        + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + "LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").Replace("\\", "\\\\").ToLower() + "%'"
-                        + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
-                        + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    User user = new()
                     {
-                        User user = new()
-                        {
-                            Id = (int)reader[User.COLUMN_NAME_ID],
-                            Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                            Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                            Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                            UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                            CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                            ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
-                        };
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                    };
 
-                        users.Add(user);
-                    }
+                    users.Add(user);
                 }
 
                 return users;
@@ -1175,25 +1157,23 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<string> workflowIds = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT " + UserWorkflow.COLUMN_NAME_ID + ", "
+                                                 + UserWorkflow.COLUMN_NAME_USER_ID + ", "
+                                                 + UserWorkflow.COLUMN_NAME_WORKFLOW_ID
+                                                 + " FROM " + Core.Db.UserWorkflow.DocumentName
+                                                 + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + " = " + int.Parse(userId)
+                                                 + ";", conn);
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
+                    var workflowId = (int)reader[UserWorkflow.COLUMN_NAME_WORKFLOW_ID];
 
-                    using MySqlCommand command = new("SELECT " + UserWorkflow.COLUMN_NAME_ID + ", "
-                        + UserWorkflow.COLUMN_NAME_USER_ID + ", "
-                        + UserWorkflow.COLUMN_NAME_WORKFLOW_ID
-                        + " FROM " + Core.Db.UserWorkflow.DocumentName
-                        + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + " = " + int.Parse(userId)
-                        + ";", conn);
-
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        var workflowId = (int)reader[UserWorkflow.COLUMN_NAME_WORKFLOW_ID];
-
-                        workflowIds.Add(workflowId.ToString());
-                    }
+                    workflowIds.Add(workflowId.ToString());
                 }
 
                 return workflowIds;
@@ -1238,22 +1218,20 @@ namespace Wexflow.Core.Db.MariaDB
                 using MySqlConnection conn = new(_connectionString);
                 conn.Open();
 
-                using (MySqlCommand command = new("SELECT " + Workflow.COLUMN_NAME_ID + ", "
-                    + Workflow.COLUMN_NAME_XML
-                    + " FROM " + Core.Db.Workflow.DocumentName + ";", conn))
+                using MySqlCommand command = new("SELECT " + Workflow.COLUMN_NAME_ID + ", "
+                                                 + Workflow.COLUMN_NAME_XML
+                                                 + " FROM " + Core.Db.Workflow.DocumentName + ";", conn);
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    using var reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    Workflow workflow = new()
                     {
-                        Workflow workflow = new()
-                        {
-                            Id = (int)reader[Workflow.COLUMN_NAME_ID],
-                            Xml = (string)reader[Workflow.COLUMN_NAME_XML]
-                        };
+                        Id = (int)reader[Workflow.COLUMN_NAME_ID],
+                        Xml = (string)reader[Workflow.COLUMN_NAME_XML]
+                    };
 
-                        workflows.Add(workflow);
-                    }
+                    workflows.Add(workflow);
                 }
 
                 return workflows;
@@ -1610,39 +1588,37 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<User> users = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + User.COLUMN_NAME_ID + ", "
+                                                 + User.COLUMN_NAME_USERNAME + ", "
+                                                 + User.COLUMN_NAME_PASSWORD + ", "
+                                                 + User.COLUMN_NAME_EMAIL + ", "
+                                                 + User.COLUMN_NAME_USER_PROFILE + ", "
+                                                 + User.COLUMN_NAME_CREATED_ON + ", "
+                                                 + User.COLUMN_NAME_MODIFIED_ON
+                                                 + " FROM " + Core.Db.User.DocumentName
+                                                 + " WHERE (" + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.SuperAdministrator
+                                                 + " OR " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
+                                                 + " ORDER BY " + User.COLUMN_NAME_USERNAME
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
-                        + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE (" + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.SuperAdministrator
-                        + " OR " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
-                        + " ORDER BY " + User.COLUMN_NAME_USERNAME
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    User admin = new()
                     {
-                        User admin = new()
-                        {
-                            Id = (int)reader[User.COLUMN_NAME_ID],
-                            Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                            Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                            Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                            UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                            CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                            ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
-                        };
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                    };
 
-                        users.Add(admin);
-                    }
+                    users.Add(admin);
                 }
 
                 return users;
@@ -1802,53 +1778,51 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<Record> records = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + Record.COLUMN_NAME_ID + ", "
+                                                 + Record.COLUMN_NAME_NAME + ", "
+                                                 + Record.COLUMN_NAME_DESCRIPTION + ", "
+                                                 + Record.COLUMN_NAME_APPROVED + ", "
+                                                 + Record.COLUMN_NAME_START_DATE + ", "
+                                                 + Record.COLUMN_NAME_END_DATE + ", "
+                                                 + Record.COLUMN_NAME_COMMENTS + ", "
+                                                 + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                                                 + Record.COLUMN_NAME_CREATED_BY + ", "
+                                                 + Record.COLUMN_NAME_CREATED_ON + ", "
+                                                 + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                                                 + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                                                 + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                                                 + Record.COLUMN_NAME_ASSIGNED_ON
+                                                 + " FROM " + Core.Db.Record.DocumentName
+                                                 + " WHERE " + "LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                 + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                 + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
-                        + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + "LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Record record = new()
                     {
-                        Record record = new()
-                        {
-                            Id = (int)reader[Record.COLUMN_NAME_ID],
-                            Name = (string)reader[Record.COLUMN_NAME_NAME],
-                            Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                            Approved = (ulong)reader[Record.COLUMN_NAME_APPROVED] == 1,
-                            StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                            EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                            Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                            ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                            CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                            CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                            ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                            ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                            AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                            AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
-                        };
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (ulong)reader[Record.COLUMN_NAME_APPROVED] == 1,
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                    };
 
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
 
                 return records;
@@ -1861,52 +1835,50 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<Record> records = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + Record.COLUMN_NAME_ID + ", "
+                                                 + Record.COLUMN_NAME_NAME + ", "
+                                                 + Record.COLUMN_NAME_DESCRIPTION + ", "
+                                                 + Record.COLUMN_NAME_APPROVED + ", "
+                                                 + Record.COLUMN_NAME_START_DATE + ", "
+                                                 + Record.COLUMN_NAME_END_DATE + ", "
+                                                 + Record.COLUMN_NAME_COMMENTS + ", "
+                                                 + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                                                 + Record.COLUMN_NAME_CREATED_BY + ", "
+                                                 + Record.COLUMN_NAME_CREATED_ON + ", "
+                                                 + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                                                 + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                                                 + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                                                 + Record.COLUMN_NAME_ASSIGNED_ON
+                                                 + " FROM " + Core.Db.Record.DocumentName
+                                                 + " WHERE " + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy)
+                                                 + " ORDER BY " + Record.COLUMN_NAME_NAME + " ASC"
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
-                        + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy)
-                        + " ORDER BY " + Record.COLUMN_NAME_NAME + " ASC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Record record = new()
                     {
-                        Record record = new()
-                        {
-                            Id = (int)reader[Record.COLUMN_NAME_ID],
-                            Name = (string)reader[Record.COLUMN_NAME_NAME],
-                            Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                            Approved = (ulong)reader[Record.COLUMN_NAME_APPROVED] == 1,
-                            StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                            EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                            Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                            ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                            CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                            CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                            ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                            ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                            AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                            AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
-                        };
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (ulong)reader[Record.COLUMN_NAME_APPROVED] == 1,
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                    };
 
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
 
                 return records;
@@ -1919,54 +1891,52 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<Record> records = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + Record.COLUMN_NAME_ID + ", "
+                                                 + Record.COLUMN_NAME_NAME + ", "
+                                                 + Record.COLUMN_NAME_DESCRIPTION + ", "
+                                                 + Record.COLUMN_NAME_APPROVED + ", "
+                                                 + Record.COLUMN_NAME_START_DATE + ", "
+                                                 + Record.COLUMN_NAME_END_DATE + ", "
+                                                 + Record.COLUMN_NAME_COMMENTS + ", "
+                                                 + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                                                 + Record.COLUMN_NAME_CREATED_BY + ", "
+                                                 + Record.COLUMN_NAME_CREATED_ON + ", "
+                                                 + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                                                 + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                                                 + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                                                 + Record.COLUMN_NAME_ASSIGNED_ON
+                                                 + " FROM " + Core.Db.Record.DocumentName
+                                                 + " WHERE " + "(LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                 + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                                 + " AND (" + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy) + " OR " + Record.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assingedTo) + ")"
+                                                 + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
-                        + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + "(LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy) + " OR " + Record.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assingedTo) + ")"
-                        + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Record record = new()
                     {
-                        Record record = new()
-                        {
-                            Id = (int)reader[Record.COLUMN_NAME_ID],
-                            Name = (string)reader[Record.COLUMN_NAME_NAME],
-                            Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                            Approved = (ulong)reader[Record.COLUMN_NAME_APPROVED] == 1,
-                            StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                            EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                            Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                            ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                            CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                            CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                            ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                            ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                            AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                            AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
-                        };
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (ulong)reader[Record.COLUMN_NAME_APPROVED] == 1,
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                    };
 
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
 
                 return records;
@@ -2043,31 +2013,29 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<Version> versions = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + Version.COLUMN_NAME_ID + ", "
+                                                 + Version.COLUMN_NAME_RECORD_ID + ", "
+                                                 + Version.COLUMN_NAME_FILE_PATH + ", "
+                                                 + Version.COLUMN_NAME_CREATED_ON
+                                                 + " FROM " + Core.Db.Version.DocumentName
+                                                 + " WHERE " + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + Version.COLUMN_NAME_ID + ", "
-                        + Version.COLUMN_NAME_RECORD_ID + ", "
-                        + Version.COLUMN_NAME_FILE_PATH + ", "
-                        + Version.COLUMN_NAME_CREATED_ON
-                        + " FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Version version = new()
                     {
-                        Version version = new()
-                        {
-                            Id = (int)reader[Version.COLUMN_NAME_ID],
-                            RecordId = ((int)reader[Version.COLUMN_NAME_RECORD_ID]).ToString(),
-                            FilePath = (string)reader[Version.COLUMN_NAME_FILE_PATH],
-                            CreatedOn = (DateTime)reader[Version.COLUMN_NAME_CREATED_ON]
-                        };
+                        Id = (int)reader[Version.COLUMN_NAME_ID],
+                        RecordId = ((int)reader[Version.COLUMN_NAME_RECORD_ID]).ToString(),
+                        FilePath = (string)reader[Version.COLUMN_NAME_FILE_PATH],
+                        CreatedOn = (DateTime)reader[Version.COLUMN_NAME_CREATED_ON]
+                    };
 
-                        versions.Add(version);
-                    }
+                    versions.Add(version);
                 }
 
                 return versions;
@@ -2212,37 +2180,35 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<Notification> notifications = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + Notification.COLUMN_NAME_ID + ", "
+                                                 + Notification.COLUMN_NAME_ASSIGNED_BY + ", "
+                                                 + Notification.COLUMN_NAME_ASSIGNED_ON + ", "
+                                                 + Notification.COLUMN_NAME_ASSIGNED_TO + ", "
+                                                 + Notification.COLUMN_NAME_MESSAGE + ", "
+                                                 + Notification.COLUMN_NAME_IS_READ
+                                                 + " FROM " + Core.Db.Notification.DocumentName
+                                                 + " WHERE " + "(LOWER(" + Notification.COLUMN_NAME_MESSAGE + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                                 + " AND " + Notification.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assignedTo) + ")"
+                                                 + " ORDER BY " + Notification.COLUMN_NAME_ASSIGNED_ON + " DESC"
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + Notification.COLUMN_NAME_ID + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_BY + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_ON + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Notification.COLUMN_NAME_MESSAGE + ", "
-                        + Notification.COLUMN_NAME_IS_READ
-                        + " FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE " + "(LOWER(" + Notification.COLUMN_NAME_MESSAGE + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " AND " + Notification.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assignedTo) + ")"
-                        + " ORDER BY " + Notification.COLUMN_NAME_ASSIGNED_ON + " DESC"
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Notification notification = new()
                     {
-                        Notification notification = new()
-                        {
-                            Id = (int)reader[Notification.COLUMN_NAME_ID],
-                            AssignedBy = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_BY]).ToString(),
-                            AssignedOn = (DateTime)reader[Notification.COLUMN_NAME_ASSIGNED_ON],
-                            AssignedTo = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                            Message = (string)reader[Notification.COLUMN_NAME_MESSAGE],
-                            IsRead = (ulong)reader[Notification.COLUMN_NAME_IS_READ] == 1
-                        };
+                        Id = (int)reader[Notification.COLUMN_NAME_ID],
+                        AssignedBy = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_BY]).ToString(),
+                        AssignedOn = (DateTime)reader[Notification.COLUMN_NAME_ASSIGNED_ON],
+                        AssignedTo = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        Message = (string)reader[Notification.COLUMN_NAME_MESSAGE],
+                        IsRead = (ulong)reader[Notification.COLUMN_NAME_IS_READ] == 1
+                    };
 
-                        notifications.Add(notification);
-                    }
+                    notifications.Add(notification);
                 }
 
                 return notifications;
@@ -2357,33 +2323,31 @@ namespace Wexflow.Core.Db.MariaDB
             {
                 List<Approver> approvers = new();
 
-                using (MySqlConnection conn = new(_connectionString))
+                using MySqlConnection conn = new(_connectionString);
+                conn.Open();
+
+                using MySqlCommand command = new("SELECT "
+                                                 + Approver.COLUMN_NAME_ID + ", "
+                                                 + Approver.COLUMN_NAME_USER_ID + ", "
+                                                 + Approver.COLUMN_NAME_RECORD_ID + ", "
+                                                 + Approver.COLUMN_NAME_APPROVED + ", "
+                                                 + Approver.COLUMN_NAME_APPROVED_ON
+                                                 + " FROM " + Core.Db.Approver.DocumentName
+                                                 + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
+                                                 + ";", conn);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-
-                    using MySqlCommand command = new("SELECT "
-                        + Approver.COLUMN_NAME_ID + ", "
-                        + Approver.COLUMN_NAME_USER_ID + ", "
-                        + Approver.COLUMN_NAME_RECORD_ID + ", "
-                        + Approver.COLUMN_NAME_APPROVED + ", "
-                        + Approver.COLUMN_NAME_APPROVED_ON
-                        + " FROM " + Core.Db.Approver.DocumentName
-                        + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
-                        + ";", conn);
-                    using var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    Approver approver = new()
                     {
-                        Approver approver = new()
-                        {
-                            Id = (int)reader[Approver.COLUMN_NAME_ID],
-                            UserId = ((int)reader[Approver.COLUMN_NAME_USER_ID]).ToString(),
-                            RecordId = ((int)reader[Approver.COLUMN_NAME_RECORD_ID]).ToString(),
-                            Approved = (ulong)reader[Approver.COLUMN_NAME_APPROVED] == 1,
-                            ApprovedOn = reader[Approver.COLUMN_NAME_APPROVED_ON] == DBNull.Value ? null : (DateTime?)reader[Approver.COLUMN_NAME_APPROVED_ON]
-                        };
+                        Id = (int)reader[Approver.COLUMN_NAME_ID],
+                        UserId = ((int)reader[Approver.COLUMN_NAME_USER_ID]).ToString(),
+                        RecordId = ((int)reader[Approver.COLUMN_NAME_RECORD_ID]).ToString(),
+                        Approved = (ulong)reader[Approver.COLUMN_NAME_APPROVED] == 1,
+                        ApprovedOn = reader[Approver.COLUMN_NAME_APPROVED_ON] == DBNull.Value ? null : (DateTime?)reader[Approver.COLUMN_NAME_APPROVED_ON]
+                    };
 
-                        approvers.Add(approver);
-                    }
+                    approvers.Add(approver);
                 }
 
                 return approvers;

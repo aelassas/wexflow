@@ -95,12 +95,10 @@ namespace Wexflow.Tasks.ImagesCropper
             Rectangle cropRect = new(x, y, width, height);
             Bitmap target = new(cropRect.Width, cropRect.Height);
 
-            using (var g = Graphics.FromImage(target))
-            {
-                g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                                 cropRect,
-                                 GraphicsUnit.Pixel);
-            }
+            using var g = Graphics.FromImage(target);
+            g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                cropRect,
+                GraphicsUnit.Pixel);
             return target;
         }
     }
