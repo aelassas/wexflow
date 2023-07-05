@@ -22,14 +22,14 @@ namespace Wexflow.Scripts.Core
                 {
                     XNamespace xn = "urn:wexflow-schema";
                     var xdoc1 = XDocument.Load(workflowFile);
-                    var workflowIdFromFile = int.Parse(xdoc1.Element(xn + "Workflow").Attribute("id").Value);
+                    var workflowIdFromFile = int.Parse(xdoc1.Element(xn + "Workflow")?.Attribute("id")?.Value ?? throw new InvalidOperationException());
 
                     var found = false;
                     var workflows = db.GetWorkflows().ToList();
                     foreach (var workflow in workflows)
                     {
                         var xdoc2 = XDocument.Parse(workflow.Xml);
-                        var workflowId = int.Parse(xdoc2.Element(xn + "Workflow").Attribute("id").Value);
+                        var workflowId = int.Parse(xdoc2.Element(xn + "Workflow")?.Attribute("id")?.Value ?? throw new InvalidOperationException());
                         if (workflowIdFromFile == workflowId)
                         {
                             found = true;
@@ -72,7 +72,7 @@ namespace Wexflow.Scripts.Core
                     {
                         XNamespace xn = "urn:wexflow-schema";
                         var xdoc = XDocument.Parse(workflow.Xml);
-                        var workflowId = int.Parse(xdoc.Element(xn + "Workflow").Attribute("id").Value);
+                        var workflowId = int.Parse(xdoc.Element(xn + "Workflow")?.Attribute("id")?.Value ?? throw new InvalidOperationException());
 
                         if (workflowId != 146 && workflowId != 147 && workflowId != 148 && workflowId != 149 && workflowId != 150)
                         {
@@ -105,7 +105,7 @@ namespace Wexflow.Scripts.Core
             var records = db.GetRecords(string.Empty).ToList();
 
             // Insert document
-            if (!records.Any(r => r.Name == "Document"))
+            if (records.All(r => r.Name != "Document"))
             {
                 InsertRecord(db
                     , "Document"
@@ -118,7 +118,7 @@ namespace Wexflow.Scripts.Core
             }
 
             // Insert invoice
-            if (!records.Any(r => r.Name == "Invoice"))
+            if (records.All(r => r.Name != "Invoice"))
             {
                 InsertRecord(db
                 , "Invoice"
@@ -131,7 +131,7 @@ namespace Wexflow.Scripts.Core
             }
 
             // Insert timesheet
-            if (!records.Any(r => r.Name == "Timesheet"))
+            if (records.All(r => r.Name != "Timesheet"))
             {
                 InsertRecord(db
                 , "Timesheet"
@@ -144,7 +144,7 @@ namespace Wexflow.Scripts.Core
             }
 
             // Insert vacation request
-            if (!records.Any(r => r.Name == "Vacations"))
+            if (records.All(r => r.Name != "Vacations"))
             {
                 InsertRecord(db
                 , "Vacations"
