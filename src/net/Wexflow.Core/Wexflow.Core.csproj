@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute.cs" />
+    <Compile Include="DbType.cs" />
     <Compile Include="ExecutionGraph\Flowchart\Case.cs" />
     <Compile Include="ExecutionGraph\Flowchart\If.cs" />
     <Compile Include="ExecutionGraph\Flowchart\Switch.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="LaunchType.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ExecutionGraph\Node.cs" />
+    <Compile Include="LogLevel.cs" />
     <Compile Include="NetworkShareAccesser.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Status.cs" />
