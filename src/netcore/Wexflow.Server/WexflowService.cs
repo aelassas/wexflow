@@ -1627,17 +1627,20 @@ namespace Wexflow.Server
                 // Local variables
                 XElement xLocalVariables = new(Xn + "LocalVariables");
                 var variables = wi.SelectToken("LocalVariables");
-                foreach (var variable in variables!)
+                if (variables != null)
                 {
-                    var key = (string)variable.SelectToken("Key");
-                    var value = (string)variable.SelectToken("Value");
+                    foreach (var variable in variables!)
+                    {
+                        var key = (string)variable.SelectToken("Key");
+                        var value = (string)variable.SelectToken("Value");
 
-                    XElement xVariable = new(Xn + "Variable"
+                        XElement xVariable = new(Xn + "Variable"
                             , new XAttribute("name", key)
                             , new XAttribute("value", value)
-                    );
+                        );
 
-                    xLocalVariables.Add(xVariable);
+                        xLocalVariables.Add(xVariable);
+                    }
                 }
 
                 // tasks
@@ -1913,17 +1916,20 @@ namespace Wexflow.Server
                     }
 
                     var variables = wi.SelectToken("LocalVariables");
-                    foreach (var variable in variables)
+                    if (variables != null)
                     {
-                        var key = (string)variable.SelectToken("Key");
-                        var value = (string)variable.SelectToken("Value");
+                        foreach (var variable in variables)
+                        {
+                            var key = (string)variable.SelectToken("Key");
+                            var value = (string)variable.SelectToken("Value");
 
-                        XElement xVariable = new(wf.XNamespaceWf + "Variable"
+                            XElement xVariable = new(wf.XNamespaceWf + "Variable"
                                 , new XAttribute("name", key)
                                 , new XAttribute("value", value)
-                        );
+                            );
 
-                        xLocalVariables.Add(xVariable);
+                            xLocalVariables.Add(xVariable);
+                        }
                     }
 
                     var xtasks = xdoc.Root.Element(wf.XNamespaceWf + "Tasks");
