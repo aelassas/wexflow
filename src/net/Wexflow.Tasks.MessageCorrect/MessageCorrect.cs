@@ -16,12 +16,24 @@ namespace Wexflow.Tasks.MessageCorrect
 
         public override TaskStatus Run()
         {
-            var o = SharedMemory["message"];
-            var message = o == null ? string.Empty : o.ToString();
-            var result = message.IndexOf(CheckString, StringComparison.Ordinal) >= 0;
-            Info($"The result is {result}");
+            try
+            {
+                var o = SharedMemory["message"];
+                var message = o == null ? string.Empty : o.ToString();
+                var result = message.IndexOf(CheckString, StringComparison.Ordinal) >= 0;
+                Info($"The result is {result}");
 
-            return new TaskStatus(result ? Status.Success : Status.Error, result, message);
+                return new TaskStatus(result ? Status.Success : Status.Error, result, message);
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ErrorFormat("An error occured.", ex);
+                return new TaskStatus(Status.Error);
+            }
         }
     }
 }

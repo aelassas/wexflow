@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.UglifyHtml
         {
             Info("Uglifying HTML files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
