@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.Slack
             {
                 var clientReady = new ManualResetEventSlim(false);
                 var client = new SlackSocketClient(Token);
-                client.Connect((connected) =>
+                client.Connect(connected =>
                 {
                     // This is called once the client has emitted the RTM start command
                     clientReady.Set();
@@ -87,12 +87,12 @@ namespace Wexflow.Tasks.Slack
                 {
                     // This is called once the RTM client has connected to the end point
                 });
-                client.OnMessageReceived += (message) =>
+                client.OnMessageReceived += message =>
                 {
                     // Handle each message as you receive them
                 };
                 clientReady.Wait();
-                client.GetUserList((ulr) => { Info("Got users."); });
+                client.GetUserList(ulr => { Info("Got users."); });
 
                 foreach (var file in files)
                 {
@@ -108,7 +108,7 @@ namespace Wexflow.Tasks.Slack
                             {
                                 var user = client.Users.Find(x => x.name.Equals(username));
                                 var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
-                                client.PostMessage((mr) => Info($"Message '{text}' sent to {dmchannel.id}."), dmchannel.id, text);
+                                client.PostMessage(mr => Info($"Message '{text}' sent to {dmchannel.id}."), dmchannel.id, text);
 
                                 if (!atLeastOneSuccess)
                                 {

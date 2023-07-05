@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.MediaInfo
     public class MediaInfo : Task
     {
         private bool _success = true;
-        private bool _atLeastOneSucceed = false;
+        private bool _atLeastOneSucceed;
 
         public string SmbComputerName { get; }
         public string SmbDomain { get; }
@@ -53,15 +53,15 @@ namespace Wexflow.Tasks.MediaInfo
                 _success = false;
             }
 
-            var status = Core.Status.Success;
+            var status = Status.Success;
 
             if (!_success && _atLeastOneSucceed)
             {
-                status = Core.Status.Warning;
+                status = Status.Warning;
             }
             else if (!_success)
             {
-                status = Core.Status.Error;
+                status = Status.Error;
             }
 
             Info("Task finished.");

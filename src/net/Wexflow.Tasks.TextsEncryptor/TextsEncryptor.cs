@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.TextsEncryptor
         public override TaskStatus Run()
         {
             Info("Encrypting files...");
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.TextsEncryptor
                 foreach (var file in files)
                 {
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
-                    success &= Encrypt(file.Path, destPath, Workflow.PassPhrase);
+                    success &= Encrypt(file.Path, destPath);
                     if (!atLeastOneSuccess && success)
                     {
                         atLeastOneSuccess = true;
@@ -97,13 +97,8 @@ namespace Wexflow.Tasks.TextsEncryptor
             return success;
         }
 
-        private bool Encrypt(string inputFile, string outputFile, string passphrase)
+        private bool Encrypt(string inputFile, string outputFile)
         {
-            if (passphrase is null)
-            {
-                throw new ArgumentNullException(nameof(passphrase));
-            }
-
             try
             {
                 var srcStr = File.ReadAllText(inputFile);

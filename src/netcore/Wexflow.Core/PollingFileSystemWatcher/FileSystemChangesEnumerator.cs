@@ -10,7 +10,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 {
     internal class FileSystemChangeEnumerator : FileSystemEnumerator<string>
     {
-        private FileChangeList _changes = new();
+        private FileChangeList _changes;
         private string _currentDirectory;
         private readonly PollingFileSystemWatcher _watcher;
 

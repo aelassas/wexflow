@@ -74,8 +74,8 @@ namespace Wexflow.Tasks.Vimeo
 
                         foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
                         {
-                            var title = xvideo.Element("Title").Value;
-                            var desc = xvideo.Element("Description").Value;
+                            //var title = xvideo.Element("Title").Value;
+                            //var desc = xvideo.Element("Description").Value;
                             var filePath = xvideo.Element("FilePath").Value;
 
                             try

@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.TextsEncryptor
                 foreach (var file in files)
                 {
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
-                    succeeded &= Encrypt(file.Path, destPath, Workflow.PassPhrase);
+                    succeeded &= Encrypt(file.Path, destPath);
                     if (!atLeastOneSuccess && succeeded)
                     {
                         atLeastOneSuccess = true;
@@ -58,13 +58,8 @@ namespace Wexflow.Tasks.TextsEncryptor
             return new TaskStatus(status);
         }
 
-        private bool Encrypt(string inputFile, string outputFile, string passphrase)
+        private bool Encrypt(string inputFile, string outputFile)
         {
-            if (passphrase is null)
-            {
-                throw new ArgumentNullException(nameof(passphrase));
-            }
-
             try
             {
                 var srcStr = File.ReadAllText(inputFile);
@@ -112,11 +107,9 @@ namespace Wexflow.Tasks.TextsEncryptor
         private static byte[] Generate128BitsOfRandomEntropy()
         {
             var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
-            using (var rngCsp = RandomNumberGenerator.Create())
-            {
-                // Fill the array with cryptographically secure random bytes.
-                rngCsp.GetBytes(randomBytes);
-            }
+            using var rngCsp = RandomNumberGenerator.Create();
+            // Fill the array with cryptographically secure random bytes.
+            rngCsp.GetBytes(randomBytes);
             return randomBytes;
         }
     }

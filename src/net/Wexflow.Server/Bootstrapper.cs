@@ -27,7 +27,7 @@ namespace Wexflow.Server
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
         {
-            pipelines.AfterRequest += (ctx) =>
+            pipelines.AfterRequest += ctx =>
             {
                 _ = ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
                     .WithHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS,HEAD,PATCH")
