@@ -49,7 +49,7 @@ namespace Wexflow.Clients.CommandLine
                        var password = ConfigurationManager.AppSettings["Password"];
 
                        var workflows = client.Search(string.Empty, username, password);
-                       if (!workflows.Any(w => w.Id == o.WorkflowId))
+                       if (workflows.All(w => w.Id != o.WorkflowId))
                        {
                            Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
                            return;
@@ -130,10 +130,7 @@ namespace Wexflow.Clients.CommandLine
 
                 _ = res.WithNotParsed(errs =>
                 {
-                    var helpText = HelpText.AutoBuild(res, h => h, e =>
-                    {
-                        return e;
-                    });
+                    var helpText = HelpText.AutoBuild(res, h => h, e => e);
                     Console.WriteLine(helpText);
                 });
             }

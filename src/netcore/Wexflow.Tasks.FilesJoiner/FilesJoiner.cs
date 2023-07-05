@@ -37,11 +37,11 @@ namespace Wexflow.Tasks.FilesJoiner
         {
             var files = SelectFiles().Select(f =>
             {
-                (var RenamedPath, var Number) = GetNumberPart(f.Path);
+                var (renamedPath, number) = GetNumberPart(f.Path);
                 return new
                 {
-                    RenamedPath,
-                    Number,
+                    RenamedPath = renamedPath,
+                    Number = number,
                     FileInf = f
                 };
             });
