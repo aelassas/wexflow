@@ -111,10 +111,10 @@ namespace Wexflow.Tasks.CsvToJson
 
             foreach (var line in lines)
             {
-                csv.Add(line.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries));
+                csv.Add(line.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries));
             }
 
-            var properties = lines[0].Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+            var properties = lines[0].Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
 
             var listObjResult = new List<Dictionary<string, string>>();
 

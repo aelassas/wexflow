@@ -278,7 +278,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
             if (!string.IsNullOrEmpty(evt))
             {
-                var ids = evt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var ids = evt.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var id in ids)
                 {
                     var taskId = int.Parse(id.Trim());
