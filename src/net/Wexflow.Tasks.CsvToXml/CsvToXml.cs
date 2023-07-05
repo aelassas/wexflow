@@ -15,13 +15,17 @@ namespace Wexflow.Tasks.CsvToXml
 
         public CsvToXml(XElement xe, Workflow wf) : base(xe, wf)
         {
+            SmbComputerName = GetSetting("smbComputerName");
+            SmbDomain = GetSetting("smbDomain");
+            SmbUsername = GetSetting("smbUsername");
+            SmbPassword = GetSetting("smbPassword");
         }
 
         public override TaskStatus Run()
         {
             Info("Creating XML files...");
 
-            var success = true;
+            bool success;
             var atLeastOneSuccess = false;
 
             try
