@@ -13,7 +13,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Wexflow.Core;
@@ -30,7 +29,7 @@ namespace Wexflow.Server
     public sealed partial class WexflowService
     {
         private const string Root = "api/v1";
-        private static readonly XNamespace xn = "urn:wexflow-schema";
+        private static readonly XNamespace Xn = "urn:wexflow-schema";
 
         private readonly IEndpointRouteBuilder _endpoints;
 
@@ -428,23 +427,20 @@ namespace Wexflow.Server
                             , w.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                             ));
 
-                    if (wf != null)
-                    {
-                        var user = WexflowServer.WexflowEngine.GetUser(username);
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
 
-                        if (user.Password.Equals(password))
+                    if (user.Password.Equals(password))
+                    {
+                        if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
-                            if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(jobs));
+                        }
+                        else if (user.UserProfile == Core.Db.UserProfile.Administrator)
+                        {
+                            var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), wf.DbId);
+                            if (check)
                             {
                                 await context.Response.WriteAsync(JsonConvert.SerializeObject(jobs));
-                            }
-                            else if (user.UserProfile == Core.Db.UserProfile.Administrator)
-                            {
-                                var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), wf.DbId);
-                                if (check)
-                                {
-                                    await context.Response.WriteAsync(JsonConvert.SerializeObject(jobs));
-                                }
                             }
                         }
                     }
@@ -497,11 +493,8 @@ namespace Wexflow.Server
 
         private static string GetBody(HttpContext context)
         {
-            string body;
-            using (StreamReader reader = new(context.Request.Body, Encoding.UTF8, true, 1024, true))
-            {
-                body = reader.ReadToEnd();
-            }
+            using StreamReader reader = new(context.Request.Body, Encoding.UTF8, true, 1024, true);
+            var body = reader.ReadToEnd();
             return body;
         }
 
@@ -568,8 +561,6 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapPost(GetPattern("stop"), async context =>
             {
-                var res = false;
-
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
                 var password = auth.Password;
@@ -582,7 +573,7 @@ namespace Wexflow.Server
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
-                        res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
+                        WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
                         await context.Response.WriteAsync(string.Empty);
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
@@ -591,7 +582,7 @@ namespace Wexflow.Server
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                         if (check)
                         {
-                            res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
+                            WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
                             await context.Response.WriteAsync(string.Empty);
                         }
                     }
@@ -610,8 +601,6 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapPost(GetPattern("suspend"), async context =>
             {
-                var res = false;
-
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
                 var password = auth.Password;
@@ -624,7 +613,7 @@ namespace Wexflow.Server
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
-                        res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
+                        WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
                         await context.Response.WriteAsync(string.Empty);
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
@@ -633,7 +622,7 @@ namespace Wexflow.Server
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                         if (check)
                         {
-                            res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
+                            WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
                             await context.Response.WriteAsync(string.Empty);
                         }
                     }
@@ -775,7 +764,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"].ToString()));
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
                         IList<TaskInfo> taskInfos = new List<TaskInfo>();
@@ -836,7 +825,7 @@ namespace Wexflow.Server
                     {
                         var workflows = WexflowServer.WexflowEngine.Workflows;
 
-                        if (workflows != null && workflows.Count > 0)
+                        if (workflows is { Count: > 0 })
                         {
                             workflowId = workflows.Select(w => w.Id).Max() + 1;
                         }
@@ -869,7 +858,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"].ToString()));
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(wf.Xml));
@@ -900,7 +889,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"].ToString()));
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
                         List<Contracts.Variable> variables = new();
@@ -979,7 +968,7 @@ namespace Wexflow.Server
                     TaskName[] taskNames;
                     try
                     {
-                        var array = JArray.Parse(File.ReadAllText(WexflowServer.WexflowEngine.TasksNamesFile));
+                        var array = JArray.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksNamesFile));
                         taskNames = array.ToObject<TaskName[]>().OrderBy(x => x.Name).ToArray();
                     }
                     catch (Exception e)
@@ -1016,7 +1005,7 @@ namespace Wexflow.Server
                     TaskName[] taskNames;
                     try
                     {
-                        var array = JArray.Parse(File.ReadAllText(WexflowServer.WexflowEngine.TasksNamesFile));
+                        var array = JArray.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksNamesFile));
                         taskNames = array
                         .ToObject<TaskName[]>()
                         .Where(x => x.Name.ToUpper().Contains(keywordToUpper))
@@ -1054,14 +1043,14 @@ namespace Wexflow.Server
                     TaskSetting[] taskSettings;
                     try
                     {
-                        var o = JObject.Parse(File.ReadAllText(WexflowServer.WexflowEngine.TasksSettingsFile));
-                        var token = o.SelectToken(context.Request.RouteValues["taskName"].ToString());
+                        var o = JObject.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksSettingsFile));
+                        var token = o.SelectToken(context.Request.RouteValues["taskName"]?.ToString() ?? throw new InvalidOperationException());
                         taskSettings = token != null ? token.ToObject<TaskSetting[]>() : Array.Empty<TaskSetting>();
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
-                        taskSettings = new TaskSetting[] { new TaskSetting { Name = "TasksSettings.json is not valid." } };
+                        taskSettings = new[] { new TaskSetting { Name = "TasksSettings.json is not valid." } };
                     }
 
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(taskSettings));
@@ -1100,20 +1089,18 @@ namespace Wexflow.Server
 
                         XElement xtask = new("Task"
                             , new XAttribute("id", taskId)
-                            , new XAttribute("name", taskName)
-                            , new XAttribute("description", taskDesc)
+                            , new XAttribute("name", taskName!)
+                            , new XAttribute("description", taskDesc ?? string.Empty)
                             , new XAttribute("enabled", isTaskEnabled.ToString().ToLower())
                         );
 
                         var settings = task.SelectToken("Settings");
-                        foreach (var setting in settings)
+                        foreach (var setting in settings!)
                         {
                             var settingName = (string)setting.SelectToken("Name");
                             var settingValue = (string)setting.SelectToken("Value");
 
-                            XElement xsetting = new("Setting"
-                                , new XAttribute("name", settingName)
-                            );
+                            XElement xsetting = new("Setting", new XAttribute("name", settingName!));
 
                             if (!string.IsNullOrEmpty(settingValue))
                             {
@@ -1133,11 +1120,11 @@ namespace Wexflow.Server
                             }
 
                             var attributes = setting.SelectToken("Attributes");
-                            foreach (var attribute in attributes)
+                            foreach (var attribute in attributes!)
                             {
                                 var attributeName = (string)attribute.SelectToken("Name");
                                 var attributeValue = (string)attribute.SelectToken("Value");
-                                xsetting.SetAttributeValue(attributeName, attributeValue);
+                                xsetting.SetAttributeValue(attributeName!, attributeValue);
                             }
 
                             xtask.Add(xsetting);
@@ -1171,7 +1158,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var workflowId = int.Parse(context.Request.RouteValues["id"].ToString());
+                    var workflowId = int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException());
                     foreach (var workflow in WexflowServer.WexflowEngine.Workflows)
                     {
                         if (workflow.Id == workflowId)
@@ -1229,7 +1216,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var res = TimeSpan.TryParse(context.Request.RouteValues["period"].ToString(), out var ts);
+                    var res = TimeSpan.TryParse(context.Request.RouteValues["period"]?.ToString(), out _);
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
                 }
                 else
@@ -1305,9 +1292,9 @@ namespace Wexflow.Server
                     var res = false;
 
                     var o = JObject.Parse(json);
-                    var workflowId = int.Parse((string)o.SelectToken("workflowId"));
+                    var workflowId = int.Parse((string)o.SelectToken("workflowId") ?? throw new InvalidOperationException());
                     var path = (string)o.SelectToken("filePath");
-                    var xml = (string)o.SelectToken("xml");
+                    var xml = (string)o.SelectToken("xml") ?? throw new InvalidOperationException();
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password))
@@ -1367,19 +1354,21 @@ namespace Wexflow.Server
             });
         }
 
-        private Core.Workflow GetWorkflowRecursive(int workflowId)
-        {
-            var wf = WexflowServer.WexflowEngine.GetWorkflow(workflowId);
-            if (wf != null)
-            {
-                return wf;
-            }
-            else
-            {
-                Thread.Sleep(500);
-                return GetWorkflowRecursive(workflowId);
-            }
-        }
+        /*
+                private Core.Workflow GetWorkflowRecursive(int workflowId)
+                {
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(workflowId);
+                    if (wf != null)
+                    {
+                        return wf;
+                    }
+                    else
+                    {
+                        Thread.Sleep(500);
+                        return GetWorkflowRecursive(workflowId);
+                    }
+                }
+        */
 
         //private static string CleanupXml(string xml)
         //{
@@ -1419,11 +1408,11 @@ namespace Wexflow.Server
             var switchId = (int?)node.SelectToken("SwitchId");
             if (ifId != null)
             {
-                XElement xif = new(xn + "If", new XAttribute("id", (int)node.SelectToken("Id")),
+                XElement xif = new(Xn + "If", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("if", ifId));
 
-                XElement xdo = new(xn + "Do");
+                XElement xdo = new(Xn + "Do");
                 var doNodes = (JArray)node.SelectToken("DoNodes");
                 if (doNodes != null)
                 {
@@ -1431,23 +1420,23 @@ namespace Wexflow.Server
                     {
                         var taskId = (int)doNode.SelectToken("Id");
                         var parentId = (int)doNode.SelectToken("ParentId");
-                        xdo.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xdo.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
                 }
                 xif.Add(xdo);
 
-                XElement xelse = new(xn + "Else");
+                XElement xelse = new(Xn + "Else");
                 var elseNodesToken = node.SelectToken("ElseNodes");
-                if (elseNodesToken != null && elseNodesToken.HasValues)
+                if (elseNodesToken is { HasValues: true })
                 {
                     var elseNodes = (JArray)elseNodesToken;
                     foreach (var elseNode in elseNodes)
                     {
                         var taskId = (int)elseNode.SelectToken("Id");
                         var parentId = (int)elseNode.SelectToken("ParentId");
-                        xelse.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xelse.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
 
                     if (elseNodes.Count > 0) // Fix
@@ -1460,7 +1449,7 @@ namespace Wexflow.Server
             }
             else if (whileId != null)
             {
-                XElement xwhile = new(xn + "While", new XAttribute("id", (int)node.SelectToken("Id")),
+                XElement xwhile = new(Xn + "While", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("while", whileId));
 
@@ -1471,8 +1460,8 @@ namespace Wexflow.Server
                     {
                         var taskId = (int)doNode.SelectToken("Id");
                         var parentId = (int)doNode.SelectToken("ParentId");
-                        xwhile.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xwhile.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
                 }
 
@@ -1480,16 +1469,16 @@ namespace Wexflow.Server
             }
             else if (switchId != null)
             {
-                XElement xswitch = new(xn + "Switch", new XAttribute("id", (int)node.SelectToken("Id")),
+                XElement xswitch = new(Xn + "Switch", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("switch", switchId));
 
                 var cases = (JArray)node.SelectToken("Cases");
-                foreach (var @case in cases)
+                foreach (var @case in cases!)
                 {
                     var value = (string)@case.SelectToken("Value");
 
-                    XElement xcase = new(xn + "Case", new XAttribute("value", value));
+                    XElement xcase = new(Xn + "Case", new XAttribute("value", value ?? string.Empty));
 
                     var doNodes = (JArray)@case.SelectToken("Nodes");
                     if (doNodes != null)
@@ -1498,8 +1487,8 @@ namespace Wexflow.Server
                         {
                             var taskId = (int)doNode.SelectToken("Id");
                             var parentId = (int)doNode.SelectToken("ParentId");
-                            xcase.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                                new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                            xcase.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                                new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                         }
                     }
 
@@ -1507,16 +1496,16 @@ namespace Wexflow.Server
                 }
 
                 var @default = (JArray)node.SelectToken("Default");
-                if (@default != null && @default.Count > 0)
+                if (@default is { Count: > 0 })
                 {
-                    XElement xdefault = new(xn + "Default");
+                    XElement xdefault = new(Xn + "Default");
 
                     foreach (var doNode in @default)
                     {
                         var taskId = (int)doNode.SelectToken("Id");
                         var parentId = (int)doNode.SelectToken("ParentId");
-                        xdefault.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xdefault.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
 
                     xswitch.Add(xdefault);
@@ -1528,8 +1517,8 @@ namespace Wexflow.Server
             {
                 var taskId = (int)node.SelectToken("Id");
                 var parentId = (int)node.SelectToken("ParentId");
-                XElement xtask = new(xn + "Task", new XAttribute("id", taskId),
-                    new XElement(xn + "Parent", new XAttribute("id", parentId)));
+                XElement xtask = new(Xn + "Task", new XAttribute("id", taskId),
+                    new XElement(Xn + "Parent", new XAttribute("id", parentId)));
                 return xtask;
             }
         }
@@ -1538,7 +1527,7 @@ namespace Wexflow.Server
         {
             if (eg != null && eg.Any())
             {
-                XElement xeg = new(xn + "ExecutionGraph");
+                XElement xeg = new(Xn + "ExecutionGraph");
                 var nodes = (JArray)eg.SelectToken("Nodes");
                 if (nodes != null)
                 {
@@ -1552,9 +1541,9 @@ namespace Wexflow.Server
                 var onSuccess = eg.SelectToken("OnSuccess");
                 if (onSuccess != null && onSuccess.Any())
                 {
-                    XElement xEvent = new(xn + "OnSuccess");
+                    XElement xEvent = new(Xn + "OnSuccess");
                     var doNodes = (JArray)onSuccess.SelectToken("Nodes");
-                    foreach (var doNode in doNodes)
+                    foreach (var doNode in doNodes!)
                     {
                         xEvent.Add(JsonNodeToXmlNode(doNode));
                     }
@@ -1565,9 +1554,9 @@ namespace Wexflow.Server
                 var onWarning = eg.SelectToken("OnWarning");
                 if (onWarning != null && onWarning.Any())
                 {
-                    XElement xEvent = new(xn + "OnWarning");
+                    XElement xEvent = new(Xn + "OnWarning");
                     var doNodes = (JArray)onWarning.SelectToken("Nodes");
-                    foreach (var doNode in doNodes)
+                    foreach (var doNode in doNodes!)
                     {
                         xEvent.Add(JsonNodeToXmlNode(doNode));
                     }
@@ -1578,9 +1567,9 @@ namespace Wexflow.Server
                 var onError = eg.SelectToken("OnError");
                 if (onError != null && onError.Any())
                 {
-                    XElement xEvent = new(xn + "OnError");
+                    XElement xEvent = new(Xn + "OnError");
                     var doNodes = (JArray)onError.SelectToken("Nodes");
-                    foreach (var doNode in doNodes)
+                    foreach (var doNode in doNodes!)
                     {
                         xEvent.Add(JsonNodeToXmlNode(doNode));
                     }
@@ -1591,9 +1580,9 @@ namespace Wexflow.Server
                 var onRejected = eg.SelectToken("OnRejected");
                 if (onRejected != null && onRejected.Any())
                 {
-                    XElement xEvent = new(xn + "OnRejected");
+                    XElement xEvent = new(Xn + "OnRejected");
                     var doNodes = (JArray)onRejected.SelectToken("Nodes");
-                    foreach (var doNode in doNodes)
+                    foreach (var doNode in doNodes!)
                     {
                         xEvent.Add(JsonNodeToXmlNode(doNode));
                     }
@@ -1610,8 +1599,8 @@ namespace Wexflow.Server
         {
             var o = JObject.Parse(json);
             var wi = o.SelectToken("WorkflowInfo");
-            var currentWorkflowId = (int)wi.SelectToken("Id");
-            var isNew = !WexflowServer.WexflowEngine.Workflows.Any(w => w.Id == currentWorkflowId);
+            var currentWorkflowId = (int)(wi ?? throw new InvalidOperationException("WorkflowInfo is null")).SelectToken("Id");
+            var isNew = WexflowServer.WexflowEngine.Workflows.All(w => w.Id != currentWorkflowId);
             var path = string.Empty;
 
             if (isNew)
@@ -1636,14 +1625,14 @@ namespace Wexflow.Server
                 var workflowDesc = (string)wi.SelectToken("Description");
 
                 // Local variables
-                XElement xLocalVariables = new(xn + "LocalVariables");
+                XElement xLocalVariables = new(Xn + "LocalVariables");
                 var variables = wi.SelectToken("LocalVariables");
-                foreach (var variable in variables)
+                foreach (var variable in variables!)
                 {
                     var key = (string)variable.SelectToken("Key");
                     var value = (string)variable.SelectToken("Value");
 
-                    XElement xVariable = new(xn + "Variable"
+                    XElement xVariable = new(Xn + "Variable"
                             , new XAttribute("name", key)
                             , new XAttribute("value", value)
                     );
@@ -1652,7 +1641,7 @@ namespace Wexflow.Server
                 }
 
                 // tasks
-                XElement xtasks = new(xn + "Tasks");
+                XElement xtasks = new(Xn + "Tasks");
                 var tasks = o.SelectToken("Tasks");
                 foreach (var task in tasks)
                 {
@@ -1661,7 +1650,7 @@ namespace Wexflow.Server
                     var taskDesc = (string)task.SelectToken("Description");
                     var isTaskEnabled = (bool)task.SelectToken("IsEnabled");
 
-                    XElement xtask = new(xn + "Task"
+                    XElement xtask = new(Xn + "Task"
                         , new XAttribute("id", taskId)
                         , new XAttribute("name", taskName)
                         , new XAttribute("description", taskDesc)
@@ -1674,7 +1663,7 @@ namespace Wexflow.Server
                         var settingName = (string)setting.SelectToken("Name");
                         var settingValue = (string)setting.SelectToken("Value");
 
-                        XElement xsetting = new(xn + "Setting"
+                        XElement xsetting = new(Xn + "Setting"
                             , new XAttribute("name", settingName)
                         );
 
@@ -1713,21 +1702,21 @@ namespace Wexflow.Server
                 }
 
                 // root
-                XElement xwf = new(xn + "Workflow"
+                XElement xwf = new(Xn + "Workflow"
                     , new XAttribute("id", workflowId)
                     , new XAttribute("name", workflowName)
                     , new XAttribute("description", workflowDesc)
-                    , new XElement(xn + "Settings"
-                        , new XElement(xn + "Setting"
+                    , new XElement(Xn + "Settings"
+                        , new XElement(Xn + "Setting"
                             , new XAttribute("name", "launchType")
                             , new XAttribute("value", workflowLaunchType.ToString().ToLower()))
-                        , new XElement(xn + "Setting"
+                        , new XElement(Xn + "Setting"
                             , new XAttribute("name", "enabled")
                             , new XAttribute("value", isWorkflowEnabled.ToString().ToLower()))
-                        , new XElement(xn + "Setting"
+                        , new XElement(Xn + "Setting"
                         , new XAttribute("name", "approval")
                         , new XAttribute("value", isWorkflowApproval.ToString().ToLower()))
-                        , new XElement(xn + "Setting"
+                        , new XElement(Xn + "Setting"
                         , new XAttribute("name", "enableParallelJobs")
                         , new XAttribute("value", enableParallelJobs.ToString().ToLower()))
                     //, new XElement(xn + "Setting"
@@ -1743,8 +1732,8 @@ namespace Wexflow.Server
 
                 if (workflowLaunchType == LaunchType.Periodic)
                 {
-                    xwf.Element(xn + "Settings").Add(
-                         new XElement(xn + "Setting"
+                    xwf.Element(Xn + "Settings").Add(
+                         new XElement(Xn + "Setting"
                             , new XAttribute("name", "period")
                             , new XAttribute("value", workflowPeriod.ToString(@"dd\.hh\:mm\:ss")))
                         );
@@ -1752,8 +1741,8 @@ namespace Wexflow.Server
 
                 if (workflowLaunchType == LaunchType.Cron)
                 {
-                    xwf.Element(xn + "Settings").Add(
-                         new XElement(xn + "Setting"
+                    xwf.Element(Xn + "Settings").Add(
+                         new XElement(Xn + "Setting"
                             , new XAttribute("name", "cronExpression")
                             , new XAttribute("value", cronExpression))
                         );
@@ -1815,44 +1804,44 @@ namespace Wexflow.Server
                     var enableParallelJobs = (bool)(wi.SelectToken("EnableParallelJobs") ?? true);
                     var workflowDesc = (string)wi.SelectToken("Description");
 
-                    //if(xdoc.Root == null) throw new Exception("Root is null");
-                    xdoc.Root.Attribute("id").Value = workflowId.ToString();
-                    xdoc.Root.Attribute("name").Value = workflowName;
-                    xdoc.Root.Attribute("description").Value = workflowDesc;
+                    if (xdoc.Root == null) throw new InvalidOperationException("Root is null");
+                    xdoc.Root.Attribute("id")!.Value = workflowId.ToString();
+                    xdoc.Root.Attribute("name")!.Value = workflowName ?? throw new InvalidOperationException();
+                    xdoc.Root.Attribute("description")!.Value = workflowDesc ?? string.Empty;
 
                     var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
-                        wf.XmlNamespaceManager);
-                    xwfEnabled.Attribute("value").Value = isWorkflowEnabled.ToString().ToLower();
+                        wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
+                    xwfEnabled.Attribute("value")!.Value = isWorkflowEnabled.ToString().ToLower();
                     var xwfLaunchType = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='launchType']",
-                        wf.XmlNamespaceManager);
-                    xwfLaunchType.Attribute("value").Value = workflowLaunchType.ToString().ToLower();
+                        wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
+                    xwfLaunchType.Attribute("value")!.Value = workflowLaunchType.ToString().ToLower();
 
                     var xwfApproval = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='approval']",
                     wf.XmlNamespaceManager);
                     if (xwfApproval == null)
                     {
-                        xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
-                            .Add(new XElement(xn + "Setting"
+                        xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)!
+                            .Add(new XElement(Xn + "Setting"
                                     , new XAttribute("name", "approval")
                                     , new XAttribute("value", isWorkflowApproval.ToString().ToLower())));
                     }
                     else
                     {
-                        xwfApproval.Attribute("value").Value = isWorkflowApproval.ToString().ToLower();
+                        xwfApproval.Attribute("value")!.Value = isWorkflowApproval.ToString().ToLower();
                     }
 
                     var xwfEnableParallelJobs = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enableParallelJobs']",
                     wf.XmlNamespaceManager);
                     if (xwfEnableParallelJobs == null)
                     {
-                        xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
-                            .Add(new XElement(xn + "Setting"
+                        xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)!
+                            .Add(new XElement(Xn + "Setting"
                                     , new XAttribute("name", "enableParallelJobs")
                                     , new XAttribute("value", enableParallelJobs.ToString().ToLower())));
                     }
                     else
                     {
-                        xwfEnableParallelJobs.Attribute("value").Value = enableParallelJobs.ToString().ToLower();
+                        xwfEnableParallelJobs.Attribute("value")!.Value = enableParallelJobs.ToString().ToLower();
                     }
 
                     var xwfPeriod = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='period']",
@@ -1861,11 +1850,11 @@ namespace Wexflow.Server
                     {
                         if (xwfPeriod != null)
                         {
-                            xwfPeriod.Attribute("value").Value = workflowPeriod.ToString(@"dd\.hh\:mm\:ss");
+                            xwfPeriod.Attribute("value")!.Value = workflowPeriod.ToString(@"dd\.hh\:mm\:ss");
                         }
                         else
                         {
-                            xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                            xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)!
                                 .Add(new XElement(wf.XNamespaceWf + "Setting", new XAttribute("name", "period"),
                                     new XAttribute("value", workflowPeriod.ToString())));
                         }
@@ -2047,9 +2036,9 @@ namespace Wexflow.Server
                     var json = GetBody(context);
 
                     var o = JObject.Parse(json);
-                    var wi = o.SelectToken("WorkflowInfo");
+                    var wi = o.SelectToken("WorkflowInfo") ?? throw new InvalidOperationException();
                     var currentWorkflowId = (int)wi.SelectToken("Id");
-                    var isNew = !WexflowServer.WexflowEngine.Workflows.Any(w => w.Id == currentWorkflowId);
+                    var isNew = WexflowServer.WexflowEngine.Workflows.All(w => w.Id != currentWorkflowId);
 
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
@@ -2100,7 +2089,7 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    var workflowId = int.Parse(context.Request.RouteValues["id"].ToString());
+                    var workflowId = int.Parse(context.Request.RouteValues["id"]?.ToString()!);
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
                     var password = auth.Password;
@@ -2135,9 +2124,10 @@ namespace Wexflow.Server
                     if (wf != null)
                     {
                         var xdoc = wf.XDoc;
+                        if (xdoc.Root is null) throw new InvalidOperationException(" xdoc.Root is null");
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
-                        wf.XmlNamespaceManager);
-                        xwfEnabled.Attribute("value").Value = false.ToString().ToLower();
+                        wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
+                        xwfEnabled.Attribute("value")!.Value = false.ToString().ToLower();
                         var qid = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
 
                         if (qid != "-1")
@@ -2169,7 +2159,7 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    var workflowId = int.Parse(context.Request.RouteValues["id"].ToString());
+                    var workflowId = int.Parse(context.Request.RouteValues["id"]?.ToString()!);
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
                     var password = auth.Password;
@@ -2204,9 +2194,10 @@ namespace Wexflow.Server
                     if (wf != null)
                     {
                         var xdoc = wf.XDoc;
+                        if (xdoc.Root is null) throw new InvalidOperationException("xdoc.Root is null");
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
-                        wf.XmlNamespaceManager);
-                        xwfEnabled.Attribute("value").Value = true.ToString().ToLower();
+                        wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
+                        xwfEnabled.Attribute("value")!.Value = true.ToString().ToLower();
                         var qid = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
 
                         if (qid != "-1")
@@ -2256,19 +2247,19 @@ namespace Wexflow.Server
                         fileValue = fileValue[index..];
                     }
 
-                    var workflowId = -1;
+                    int workflowId;
                     var extension = Path.GetExtension(fileName).ToLower();
                     var isXml = extension == ".xml";
                     if (isXml) // xml
                     {
                         XNamespace xn = "urn:wexflow-schema";
                         var xdoc = XDocument.Parse(fileValue);
-                        workflowId = int.Parse(xdoc.Element(xn + "Workflow").Attribute("id").Value);
+                        workflowId = int.Parse(xdoc.Element(xn + "Workflow")?.Attribute("id")!.Value ?? throw new InvalidOperationException());
                     }
                     else // json
                     {
                         var o = JObject.Parse(fileValue);
-                        var wi = o.SelectToken("WorkflowInfo");
+                        var wi = o.SelectToken("WorkflowInfo") ?? throw new InvalidOperationException();
                         workflowId = (int)wi.SelectToken("Id");
                     }
 
@@ -2406,7 +2397,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"].ToString()));
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
                         IList<Node> nodes = new List<Node>();
@@ -2461,7 +2452,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"].ToString()));
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
                         var xgraph = wf.XDoc.Descendants(wf.XNamespaceWf + "ExecutionGraph").FirstOrDefault();
@@ -2504,7 +2495,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"].ToString()));
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
                         if (wf.ExecutionGraph != null)
@@ -2521,14 +2512,9 @@ namespace Wexflow.Server
                             for (var i = 0; i < wf.Tasks.Length; i++)
                             {
                                 var task = wf.Tasks[i];
-                                if (i == 0)
-                                {
-                                    nodes.Add(new Core.ExecutionGraph.Node(task.Id, -1));
-                                }
-                                else
-                                {
-                                    nodes.Add(new Core.ExecutionGraph.Node(task.Id, wf.Tasks[i - 1].Id));
-                                }
+                                nodes.Add(i == 0
+                                    ? new Core.ExecutionGraph.Node(task.Id, -1)
+                                    : new Core.ExecutionGraph.Node(task.Id, wf.Tasks[i - 1].Id));
                             }
 
                             Core.ExecutionGraph.Graph sgraph = new(nodes, null, null, null, null);
@@ -2583,7 +2569,7 @@ namespace Wexflow.Server
                         XElement @do = new("statement", new XAttribute("name", "DO"));
                         @do.Add(NodeToBlockly(graph, GetStartupNode(@if.DoNodes), @if.DoNodes, true, isEvent, ref depth));
                         block.Add(@do);
-                        if (@if.ElseNodes != null && @if.ElseNodes.Length > 0)
+                        if (@if.ElseNodes is { Length: > 0 })
                         {
                             XElement @else = new("statement", new XAttribute("name", "ELSE"));
                             @else.Add(NodeToBlockly(graph, GetStartupNode(@if.ElseNodes), @if.ElseNodes, true, isEvent, ref depth));
@@ -2615,7 +2601,7 @@ namespace Wexflow.Server
                             @case.Add(xcases);
                         }
                         block.Add(@case);
-                        if (@switch.Default != null && @switch.Default.Length > 0)
+                        if (@switch.Default is { Length: > 0 })
                         {
                             XElement @default = new("statement", new XAttribute("name", "DEFAULT"));
                             @default.Add(NodeToBlockly(graph, GetStartupNode(@switch.Default), @switch.Default, true, isEvent, ref depth));
@@ -2643,7 +2629,7 @@ namespace Wexflow.Server
                 {
                     block.Add(new XElement("next", NodeToBlockly(graph, childNode, nodes, isFlowchart, isEvent, ref depth)));
                 }
-                else if (childNode == null && !isFlowchart && !isEvent)
+                else if (!isFlowchart && !isEvent)
                 {
                     block.Add(new XElement("next",
                         new XElement("block", new XAttribute("type", "onSuccess"), new XElement("statement", new XAttribute("name", "ON_SUCCESS"), NodeToBlockly(graph, GetStartupNode((graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
@@ -3116,8 +3102,8 @@ namespace Wexflow.Server
                         var body = $"Your new password is: {newPassword}";
 
                         var host = WexflowServer.Config["Smtp.Host"];
-                        var port = int.Parse(WexflowServer.Config["Smtp.Port"]);
-                        var enableSsl = bool.Parse(WexflowServer.Config["Smtp.EnableSsl"]);
+                        var port = int.Parse(WexflowServer.Config["Smtp.Port"] ?? throw new InvalidOperationException("Smtp.Port setting not found"));
+                        var enableSsl = bool.Parse(WexflowServer.Config["Smtp.EnableSsl"] ?? throw new InvalidOperationException("Smtp.EnableSsl setting not found"));
                         var smtpUser = WexflowServer.Config["Smtp.User"];
                         var smtpPassword = WexflowServer.Config["Smtp.Password"];
                         var from = WexflowServer.Config["Smtp.From"];
@@ -3147,10 +3133,10 @@ namespace Wexflow.Server
         /// <returns></returns>
         private int GenerateRandomNumber()
         {
-            const int _min = 1000;
-            const int _max = 9999;
-            Random _rdm = new();
-            return _rdm.Next(_min, _max);
+            const int min = 1000;
+            const int max = 9999;
+            Random rdm = new();
+            return rdm.Next(min, max);
         }
 
         /// <summary>
@@ -3471,7 +3457,7 @@ namespace Wexflow.Server
                     var res = false;
 
                     var o = JObject.Parse(json);
-                    var workflowDbIds = JsonConvert.DeserializeObject<string[]>(((JArray)o.SelectToken("WorkflowsToDelete")).ToString());
+                    var workflowDbIds = JsonConvert.DeserializeObject<string[]>((((JArray)o.SelectToken("WorkflowsToDelete"))!).ToString());
 
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
@@ -3499,7 +3485,7 @@ namespace Wexflow.Server
                                     catch (Exception e)
                                     {
                                         Console.WriteLine(e);
-                                        tres &= false;
+                                        tres = false;
                                     }
 
                                 }
@@ -3561,7 +3547,6 @@ namespace Wexflow.Server
                 try
                 {
                     var entryId = context.Request.Query["id"].ToString();
-                    var res = string.Empty;
 
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
@@ -3570,7 +3555,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password))
                     {
-                        res = WexflowServer.WexflowEngine.GetHistoryEntryLogs(entryId);
+                        var res = WexflowServer.WexflowEngine.GetHistoryEntryLogs(entryId);
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
                     }
                     else
@@ -3644,7 +3629,7 @@ namespace Wexflow.Server
                             _ = Directory.CreateDirectory(dir);
                         }
                         var filePath = Path.Combine(dir, fileName);
-                        File.WriteAllBytes(filePath, ms.ToArray());
+                        await File.WriteAllBytesAsync(filePath, ms.ToArray());
                         ressr.Result = true;
                         ressr.FilePath = filePath;
                         ressr.FileName = Path.GetFileName(filePath);
@@ -3709,11 +3694,11 @@ namespace Wexflow.Server
                                 File.Delete(path);
                                 res = true;
 
-                                var parentDir = Path.GetDirectoryName(path);
+                                var parentDir = Path.GetDirectoryName(path) ?? throw new InvalidOperationException();
                                 if (WexflowEngine.IsDirectoryEmpty(parentDir))
                                 {
                                     Directory.Delete(parentDir);
-                                    var recordTempDir = Directory.GetParent(parentDir).FullName;
+                                    var recordTempDir = (Directory.GetParent(parentDir) ?? throw new InvalidOperationException()).FullName;
                                     if (WexflowEngine.IsDirectoryEmpty(recordTempDir))
                                     {
                                         Directory.Delete(recordTempDir);
@@ -3767,11 +3752,11 @@ namespace Wexflow.Server
                                     {
                                         File.Delete(path);
 
-                                        var parentDir = Path.GetDirectoryName(path);
+                                        var parentDir = Path.GetDirectoryName(path) ?? throw new InvalidOperationException();
                                         if (WexflowEngine.IsDirectoryEmpty(parentDir))
                                         {
                                             Directory.Delete(parentDir);
-                                            var recordTempDir = Directory.GetParent(parentDir).FullName;
+                                            var recordTempDir = (Directory.GetParent(parentDir) ?? throw new InvalidOperationException()).FullName;
                                             if (WexflowEngine.IsDirectoryEmpty(recordTempDir))
                                             {
                                                 Directory.Delete(recordTempDir);
@@ -3834,7 +3819,7 @@ namespace Wexflow.Server
                         var assignedOn = o.Value<string>("AssignedOn");
                         var versions = JsonConvert.DeserializeObject<Contracts.Version[]>(o.Value<JArray>("Versions").ToString());
 
-                        var dateTimeFormat = WexflowServer.Config["DateTimeFormat"];
+                        var dateTimeFormat = WexflowServer.Config["DateTimeFormat"] ?? throw new InvalidOperationException("DateTimeFormat setting not found");
 
                         Core.Db.Record record = new()
                         {
@@ -4365,15 +4350,15 @@ namespace Wexflow.Server
                 var id = WexflowServer.WexflowEngine.InsertNotification(notification);
                 res = id != "-1";
 
-                var enableEmailNotifications = bool.Parse(WexflowServer.Config["EnableEmailNotifications"]);
+                var enableEmailNotifications = bool.Parse(WexflowServer.Config["EnableEmailNotifications"] ?? throw new InvalidOperationException());
                 if (enableEmailNotifications)
                 {
                     var subject = $"Wexflow notification from {assignedBy.Username}";
                     var body = message;
 
                     var host = WexflowServer.Config["Smtp.Host"];
-                    var port = int.Parse(WexflowServer.Config["Smtp.Port"]);
-                    var enableSsl = bool.Parse(WexflowServer.Config["Smtp.EnableSsl"]);
+                    var port = int.Parse(WexflowServer.Config["Smtp.Port"] ?? throw new InvalidOperationException());
+                    var enableSsl = bool.Parse(WexflowServer.Config["Smtp.EnableSsl"] ?? throw new InvalidOperationException());
                     var smtpUser = WexflowServer.Config["Smtp.User"];
                     var smtpPassword = WexflowServer.Config["Smtp.Password"];
                     var from = WexflowServer.Config["Smtp.From"];

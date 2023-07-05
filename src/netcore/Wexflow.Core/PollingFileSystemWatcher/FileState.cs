@@ -23,7 +23,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             Path = path;
         }
 
-        public override readonly string ToString()
+        public readonly override string ToString()
         {
             return Path;
         }

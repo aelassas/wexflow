@@ -31,8 +31,8 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         private Timer _timer;
         private readonly PathToFileStateHashtable _state; // stores state of the directory
         private long _version; // this is used to keep track of removals. // TODO: describe the algorithm
-        private bool _started = false;
-        private bool _disposed = false;
+        private bool _started;
+        private bool _disposed;
         private long _pollingInterval = 1000;
 
         /// <summary>
@@ -57,12 +57,12 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             Path = path;
             Filter = filter ?? throw new ArgumentNullException(nameof(filter));
             EnumerationOptions = options ?? new EnumerationOptions();
-            _timer = new Timer(new TimerCallback(TimerHandler));
+            _timer = new Timer(TimerHandler);
         }
 
         private void Initialize()
         {
-            _timer = new Timer(new TimerCallback(TimerHandler));
+            _timer = new Timer(TimerHandler);
             if (!_started)
             {
                 return;
@@ -255,7 +255,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             Filter = info.GetString(nameof(Filter));
             EnumerationOptions = new EnumerationOptions { RecurseSubdirectories = info.GetBoolean(nameof(EnumerationOptions.RecurseSubdirectories)) };
 
-            _timer = new Timer(new TimerCallback(TimerHandler));
+            _timer = new Timer(TimerHandler);
             PollingInterval = info.GetInt32(nameof(PollingInterval));
         }
 

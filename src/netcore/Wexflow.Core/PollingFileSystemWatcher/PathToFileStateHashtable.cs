@@ -17,7 +17,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
     {
         private int _nextValuesIndex = 1; // the first Values slot is reserved so that default(Bucket) knows that it is not pointing to any value.
         public FileState[] Values { get; private set; }
-        private Bucket[] Buckets;
+        private Bucket[] _buckets;
 
         public PathToFileStateHashtable(int capacity = 4)
         {
@@ -26,7 +26,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             // +1 is needed so that there are always more buckets than values.
             // this is so that unsuccesful search always terminates (as it terminates at an empty bucket)
             // note that today the "+1" is not strictly required, as one Values slot is reserved, but I am future proofing here
-            Buckets = new Bucket[GetPrime(capacity + 1)];
+            _buckets = new Bucket[GetPrime(capacity + 1)];
         }
 
         public int Count { get; private set; }
@@ -43,9 +43,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
             while (true)
             {
-                if (Buckets[bucket].IsEmpty)
+                if (_buckets[bucket].IsEmpty)
                 {
-                    Buckets[bucket] = new Bucket(directory, file, _nextValuesIndex);
+                    _buckets[bucket] = new Bucket(directory, file, _nextValuesIndex);
                     Count++;
                     _nextValuesIndex++;
                     return;
@@ -69,13 +69,13 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             var bucket = ComputeBucket(file);
             while (true)
             {
-                var valueIndex = Buckets[bucket].ValuesIndex;
+                var valueIndex = _buckets[bucket].ValuesIndex;
                 if (valueIndex == 0)
                 {
                     return -1; // not found
                 }
 
-                if (Equal(Buckets[bucket].Key, directory, file))
+                if (Equal(_buckets[bucket].Key, directory, file))
                 {
                     if (Values[valueIndex].Path != null)
                     {
@@ -90,7 +90,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         private int NextCandidateBucket(int bucket)
         {
             bucket++;
-            if (bucket >= Buckets.Length)
+            if (bucket >= _buckets.Length)
             {
                 bucket = 0;
             }
@@ -128,7 +128,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
                 hash = int.MaxValue;
             }
 
-            var bucket = Math.Abs(hash) % Buckets.Length;
+            var bucket = Math.Abs(hash) % _buckets.Length;
             return bucket;
         }
 
@@ -144,12 +144,12 @@ namespace Wexflow.Core.PollingFileSystemWatcher
                 bigger.Add(existingValue.Directory, existingValue.Path, existingValue);
             }
             Values = bigger.Values;
-            Buckets = bigger.Buckets;
+            _buckets = bigger._buckets;
             _nextValuesIndex = bigger._nextValuesIndex;
             Count = bigger.Count;
         }
 
-        private static readonly int[] primes = {
+        private static readonly int[] Primes = {
             3, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919,
             1103, 1327, 1597, 1931, 2333, 2801, 3371, 4049, 4861, 5839, 7013, 8419, 10103, 12143, 14591,
             17519, 21023, 25229, 30293, 36353, 43627, 52361, 62851, 75431, 90523, 108631, 130363, 156437,
@@ -175,9 +175,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
         private static int GetPrime(int min)
         {
-            for (var i = 0; i < primes.Length; i++)
+            for (var i = 0; i < Primes.Length; i++)
             {
-                var prime = primes[i];
+                var prime = Primes[i];
                 if (prime >= min)
                 {
                     return prime;
@@ -246,7 +246,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             }
             public readonly bool IsEmpty => ValuesIndex == 0;
 
-            public override readonly string ToString()
+            public readonly override string ToString()
             {
                 return IsEmpty ? "empty" : Key.ToString();
             }
@@ -258,7 +258,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             public string Directory;
             public string File;
 
-            public override readonly string ToString()
+            public readonly override string ToString()
             {
                 return File;
             }
