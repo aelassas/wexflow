@@ -45,11 +45,11 @@ namespace Wexflow.Tasks.FilesEqual
 
                 xFiles.Add(new XElement("File",
                     new XAttribute("path", File1),
-                    new XAttribute("name", Path.GetFileName(File1))));
+                    new XAttribute("name", Path.GetFileName(File1) ?? throw new InvalidOperationException())));
 
                 xFiles.Add(new XElement("File",
                     new XAttribute("path", File2),
-                    new XAttribute("name", Path.GetFileName(File2))));
+                    new XAttribute("name", Path.GetFileName(File2) ?? throw new InvalidOperationException())));
 
                 if (xdoc.Root != null)
                 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.SQLite;
 
 namespace Wexflow.NetCore.Tests
@@ -33,7 +34,7 @@ namespace Wexflow.NetCore.Tests
             using var reader = comm.ExecuteReader();
             while (reader.Read())
             {
-                var id = int.Parse(reader["Id"].ToString());
+                var id = int.Parse(reader["Id"].ToString() ?? throw new InvalidOperationException());
                 var desc = (string)reader["Description"];
 
                 if (id == 1)
@@ -57,8 +58,6 @@ namespace Wexflow.NetCore.Tests
                     Assert.AreEqual("Hello World Description 5!", desc);
                 }
             }
-
-            // TODO sqlserver|access|oracle|mysql|postgresql|teradata
         }
 
         private static void InitDataTable()

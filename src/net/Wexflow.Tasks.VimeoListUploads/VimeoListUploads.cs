@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Threading;
@@ -28,7 +29,7 @@ namespace Wexflow.Tasks.VimeoListUploads
             try
             {
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    $"{"VimeoListUploads"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
+                    $"VimeoListUploads_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
                 var xdoc = new XDocument(new XElement("VimeoListUploads"));
                 var xvideos = new XElement("Videos");
@@ -41,13 +42,14 @@ namespace Wexflow.Tasks.VimeoListUploads
                 foreach (var d in videos)
                 {
                     xvideos.Add(new XElement("Video"
-                        , new XAttribute("title", SecurityElement.Escape(d.Name))
-                        , new XAttribute("uri", SecurityElement.Escape(d.Uri))
-                        , new XAttribute("created_time", SecurityElement.Escape(d.CreatedTime.ToString()))
-                        , new XAttribute("status", SecurityElement.Escape(d.Status))
+                        , new XAttribute("title", SecurityElement.Escape(d.Name) ?? throw new InvalidOperationException())
+                        , new XAttribute("uri", SecurityElement.Escape(d.Uri) ?? throw new InvalidOperationException())
+                        , new XAttribute("created_time", SecurityElement.Escape(d.CreatedTime.ToString(CultureInfo.InvariantCulture)) ?? throw new InvalidOperationException())
+                        , new XAttribute("status", SecurityElement.Escape(d.Status) ?? throw new InvalidOperationException())
                         ));
                 }
 
+                if (xdoc.Root == null) throw new InvalidOperationException();
                 xdoc.Root.Add(xvideos);
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));

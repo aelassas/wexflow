@@ -29,7 +29,7 @@ namespace Wexflow.Tasks.Mkdir
                 {
                     if (!Directory.Exists(folder))
                     {
-                        _ = Directory.CreateDirectory(folder);
+                        _ = Directory.CreateDirectory(folder ?? throw new InvalidOperationException());
                     }
 
                     InfoFormat("Folder {0} created.", folder);

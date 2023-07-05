@@ -55,12 +55,17 @@ namespace Wexflow.Tasks.RedditListPosts
 
                 foreach (var post in posts)
                 {
-                    XElement xpost = new("Post", new XAttribute("id", SecurityElement.Escape(post.Id)), new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit)), new XAttribute("title", SecurityElement.Escape(post.Title)), new XAttribute("upvotes", post.UpVotes), new XAttribute("downvotes", post.DownVotes));
+                    XElement xpost = new("Post", new XAttribute("id", SecurityElement.Escape(post.Id) ?? throw new InvalidOperationException()),
+                        new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit) ?? throw new InvalidOperationException()),
+                        new XAttribute("title", SecurityElement.Escape(post.Title) ?? throw new InvalidOperationException()),
+                        new XAttribute("upvotes", post.UpVotes),
+                        new XAttribute("downvotes", post.DownVotes));
+                    if (xdoc.Root == null) throw new InvalidOperationException();
                     xdoc.Root.Add(xpost);
                 }
 
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    $"{"RedditListPosts"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
+                    $"RedditListPosts_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Post history written in {0}", xmlPath);

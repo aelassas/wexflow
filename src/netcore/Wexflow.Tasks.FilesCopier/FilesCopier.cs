@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.FilesCopier
                 if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                     file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var preservedFolderStruct = Path.GetDirectoryName(file.Path);
+                    var preservedFolderStruct = Path.GetDirectoryName(file.Path) ?? throw new InvalidOperationException();
                     preservedFolderStruct = preservedFolderStruct.Length > PreserveFolderStructFrom.Length
                         ? preservedFolderStruct.Remove(0, PreserveFolderStructFrom.Length)
                         : string.Empty;
@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.FilesCopier
                     if (AllowCreateDirectory && !Directory.Exists(Path.GetDirectoryName(destPath)))
                     {
                         InfoFormat("Creating directory: {0}", Path.GetDirectoryName(destPath));
-                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destPath));
+                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destPath) ?? throw new InvalidOperationException());
                     }
 
                     File.Copy(file.Path, destPath, Overwrite);

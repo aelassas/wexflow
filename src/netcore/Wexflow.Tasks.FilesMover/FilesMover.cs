@@ -40,7 +40,7 @@ namespace Wexflow.Tasks.FilesMover
                     if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                         file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        var preservedFolderStruct = Path.GetDirectoryName(file.Path);
+                        var preservedFolderStruct = Path.GetDirectoryName(file.Path) ?? throw new InvalidOperationException();
                         preservedFolderStruct = preservedFolderStruct.Length > PreserveFolderStructFrom.Length
                             ? preservedFolderStruct.Remove(0, PreserveFolderStructFrom.Length)
                             : string.Empty;
@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.FilesMover
                     if (AllowCreateDirectory && !Directory.Exists(Path.GetDirectoryName(destFilePath)))
                     {
                         InfoFormat("Creating directory: {0}", Path.GetDirectoryName(destFilePath));
-                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
+                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destFilePath) ?? throw new InvalidOperationException());
                     }
 
                     if (File.Exists(destFilePath))

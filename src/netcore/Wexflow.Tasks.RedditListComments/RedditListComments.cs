@@ -54,12 +54,17 @@ namespace Wexflow.Tasks.RedditListComments
 
                 foreach (var comment in comments)
                 {
-                    XElement xcomment = new("Comment", new XAttribute("id", SecurityElement.Escape(comment.Id)), new XAttribute("subreddit", SecurityElement.Escape(comment.Subreddit)), new XAttribute("author", SecurityElement.Escape(comment.Author)), new XAttribute("upvotes", comment.UpVotes), new XAttribute("downvotes", comment.DownVotes), new XCData(comment.BodyHTML));
+                    XElement xcomment = new("Comment", new XAttribute("id", SecurityElement.Escape(comment.Id) ?? throw new InvalidOperationException()),
+                        new XAttribute("subreddit", SecurityElement.Escape(comment.Subreddit) ?? throw new InvalidOperationException()), 
+                        new XAttribute("author", SecurityElement.Escape(comment.Author) ?? throw new InvalidOperationException()),
+                        new XAttribute("upvotes", comment.UpVotes), 
+                        new XAttribute("downvotes", comment.DownVotes), new XCData(comment.BodyHTML));
+                    if (xdoc.Root == null) throw new InvalidOperationException();
                     xdoc.Root.Add(xcomment);
                 }
 
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                    $"{"RedditListComments"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
+                    $"RedditListComments_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Comment history written in {0}", xmlPath);

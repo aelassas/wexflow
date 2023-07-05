@@ -217,7 +217,7 @@ namespace Wexflow.Tasks.SqlToXml
                         {
                             xobject.Add(new XElement("Cell"
                             , new XAttribute("column", SecurityElement.Escape(column))
-                            , new XAttribute("value", SecurityElement.Escape(xmlvalue))));
+                            , new XAttribute("value", SecurityElement.Escape(xmlvalue) ?? throw new InvalidOperationException())));
                         }
                     }
                     xobjects.Add(xobject);

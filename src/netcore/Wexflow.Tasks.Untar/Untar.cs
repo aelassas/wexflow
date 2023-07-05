@@ -64,7 +64,7 @@ namespace Wexflow.Tasks.Untar
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
+                            , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
                         ExtractTarByEntry(tar.Path, destFolder);
 
@@ -100,8 +100,7 @@ namespace Wexflow.Tasks.Untar
             using FileStream fsIn = new(tarFileName, FileMode.Open, FileAccess.Read);
 
             TarInputStream tarIn = new(fsIn, Encoding.UTF8);
-            TarEntry tarEntry;
-            while ((tarEntry = tarIn.GetNextEntry()) != null)
+            while (tarIn.GetNextEntry() is { } tarEntry)
             {
                 if (tarEntry.IsDirectory)
                 {
@@ -114,14 +113,14 @@ namespace Wexflow.Tasks.Untar
                 // Remove any root e.g. '\' because a PathRooted filename defeats Path.Combine
                 if (Path.IsPathRooted(name))
                 {
-                    name = name[Path.GetPathRoot(name).Length..];
+                    name = name[Path.GetPathRoot(name)!.Length..];
                 }
 
                 // Apply further name transformations here as necessary
                 var outName = Path.Combine(targetDir, name);
 
                 var directoryName = Path.GetDirectoryName(outName);
-                _ = Directory.CreateDirectory(directoryName);
+                _ = Directory.CreateDirectory(directoryName ?? throw new InvalidOperationException());
 
                 FileStream outStr = new(outName, FileMode.Create);
 
