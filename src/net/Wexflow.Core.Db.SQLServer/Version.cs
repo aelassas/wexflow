@@ -2,15 +2,15 @@
 {
     public class Version : Core.Db.Version
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_RecordId = "RECORD_ID";
-        public const string ColumnName_FilePath = "FILE_PATH";
-        public const string ColumnName_CreatedOn = "CREATED_ON";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_RECORD_ID = "RECORD_ID";
+        public const string COLUMN_NAME_FILE_PATH = "FILE_PATH";
+        public const string COLUMN_NAME_CREATED_ON = "CREATED_ON";
 
-        public const string TableStruct = "(" + ColumnName_Id + " INT IDENTITY(1,1) PRIMARY KEY, "
-                                                        + ColumnName_RecordId + " INT, "
-                                                        + ColumnName_FilePath + " VARCHAR(1024), "
-                                                        + ColumnName_CreatedOn + " DATETIME)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " INT IDENTITY(1,1) PRIMARY KEY, "
+                                                        + COLUMN_NAME_RECORD_ID + " INT, "
+                                                        + COLUMN_NAME_FILE_PATH + " VARCHAR(1024), "
+                                                        + COLUMN_NAME_CREATED_ON + " DATETIME)";
 
         public int Id { get; set; }
 

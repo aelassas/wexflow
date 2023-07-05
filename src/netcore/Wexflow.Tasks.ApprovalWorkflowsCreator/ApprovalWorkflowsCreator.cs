@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
 {
     public class ApprovalWorkflowsCreator : Task
     {
-        private static readonly string smKey = "ApprovalRecordsCreator.RecordIds";
+        private static readonly string SmKey = "ApprovalRecordsCreator.RecordIds";
 
         public string AssignedTo { get; }
         public string Approver { get; }
@@ -32,14 +32,14 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
 
             try
             {
-                if (!SharedMemory.ContainsKey(smKey))
+                if (!SharedMemory.ContainsKey(SmKey))
                 {
-                    Error($"Shared memory key {smKey} not found.");
+                    Error($"Shared memory key {SmKey} not found.");
                     success = false;
                 }
                 else
                 {
-                    var recordIds = (string[])SharedMemory[smKey];
+                    var recordIds = (string[])SharedMemory[SmKey];
 
                     foreach (var recordId in recordIds)
                     {

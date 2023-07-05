@@ -2,16 +2,16 @@
 {
     public class HistoryEntry : Core.Db.HistoryEntry
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_Name = "NAME";
-        public const string ColumnName_Description = "DESCRIPTION";
-        public const string ColumnName_LaunchType = "LAUNCH_TYPE";
-        public const string ColumnName_StatusDate = "STATUS_DATE";
-        public const string ColumnName_Status = "STATUS";
-        public const string ColumnName_WorkflowId = "WORKFLOW_ID";
-        public const string ColumnName_Logs = "LOGS";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_NAME = "NAME";
+        public const string COLUMN_NAME_DESCRIPTION = "DESCRIPTION";
+        public const string COLUMN_NAME_LAUNCH_TYPE = "LAUNCH_TYPE";
+        public const string COLUMN_NAME_STATUS_DATE = "STATUS_DATE";
+        public const string COLUMN_NAME_STATUS = "STATUS";
+        public const string COLUMN_NAME_WORKFLOW_ID = "WORKFLOW_ID";
+        public const string COLUMN_NAME_LOGS = "LOGS";
 
-        public const string TableStruct = "(" + ColumnName_Id + " SERIAL PRIMARY KEY, " + ColumnName_Name + " VARCHAR(255), " + ColumnName_Description + " VARCHAR(255), " + ColumnName_LaunchType + " INT, " + ColumnName_StatusDate + " TIMESTAMP, " + ColumnName_Status + " INT, " + ColumnName_WorkflowId + " INT, " + ColumnName_Logs + " VARCHAR)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " SERIAL PRIMARY KEY, " + COLUMN_NAME_NAME + " VARCHAR(255), " + COLUMN_NAME_DESCRIPTION + " VARCHAR(255), " + COLUMN_NAME_LAUNCH_TYPE + " INT, " + COLUMN_NAME_STATUS_DATE + " TIMESTAMP, " + COLUMN_NAME_STATUS + " INT, " + COLUMN_NAME_WORKFLOW_ID + " INT, " + COLUMN_NAME_LOGS + " VARCHAR)";
 
         public int Id { get; set; }
 

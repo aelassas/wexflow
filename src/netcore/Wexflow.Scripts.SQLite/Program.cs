@@ -7,24 +7,24 @@ namespace Wexflow.Scripts.SQLite
 {
     internal class Program
     {
-        private static IConfiguration config;
+        private static IConfiguration _config;
 
         private static void Main()
         {
             try
             {
-                config = new ConfigurationBuilder()
+                _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 //.AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                var workflowsFolder = config["workflowsFolder"];
-                Db db = new(config["connectionString"]);
+                var workflowsFolder = _config["workflowsFolder"];
+                Db db = new(_config["connectionString"]);
                 Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
-                Core.Helper.InsertRecords(db, "sqlite", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
+                Core.Helper.InsertRecords(db, "sqlite", _config["recordsFolder"], _config["documentFile"], _config["invoiceFile"], _config["timesheetFile"]);
                 db.Dispose();
 
-                _ = bool.TryParse(config["buildDevDatabases"], out var buildDevDatabases);
+                _ = bool.TryParse(_config["buildDevDatabases"], out var buildDevDatabases);
 
                 if (buildDevDatabases)
                 {
@@ -66,7 +66,7 @@ namespace Wexflow.Scripts.SQLite
 
             Db db = new(connString);
             Core.Helper.InsertWorkflowsAndUser(db, workflowsFolder);
-            var recordsFolder = config["recordsFolder"];
+            var recordsFolder = _config["recordsFolder"];
             if (platformFolder == "linux")
             {
                 recordsFolder = "/opt/wexflow/Wexflow/Records";
@@ -76,7 +76,7 @@ namespace Wexflow.Scripts.SQLite
                 recordsFolder = "/Applications/wexflow/Wexflow/Records";
             }
             var isUnix = platformFolder is "linux" or "macos";
-            Core.Helper.InsertRecords(db, "sqlite", recordsFolder, config["documentFile"], config["invoiceFile"], config["timesheetFile"], isUnix);
+            Core.Helper.InsertRecords(db, "sqlite", recordsFolder, _config["documentFile"], _config["invoiceFile"], _config["timesheetFile"], isUnix);
             db.Dispose();
         }
     }

@@ -2,17 +2,17 @@
 {
     public class Entry : Core.Db.Entry
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_Name = "NAME";
-        public const string ColumnName_Description = "DESCRIPTION";
-        public const string ColumnName_LaunchType = "LAUNCH_TYPE";
-        public const string ColumnName_StatusDate = "STATUS_DATE";
-        public const string ColumnName_Status = "STATUS";
-        public const string ColumnName_WorkflowId = "WORKFLOW_ID";
-        public const string ColumnName_JobId = "JOB_ID";
-        public const string ColumnName_Logs = "LOGS";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_NAME = "NAME";
+        public const string COLUMN_NAME_DESCRIPTION = "DESCRIPTION";
+        public const string COLUMN_NAME_LAUNCH_TYPE = "LAUNCH_TYPE";
+        public const string COLUMN_NAME_STATUS_DATE = "STATUS_DATE";
+        public const string COLUMN_NAME_STATUS = "STATUS";
+        public const string COLUMN_NAME_WORKFLOW_ID = "WORKFLOW_ID";
+        public const string COLUMN_NAME_JOB_ID = "JOB_ID";
+        public const string COLUMN_NAME_LOGS = "LOGS";
 
-        public const string TableStruct = "(" + ColumnName_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + ColumnName_Name + " TEXT, " + ColumnName_Description + " TEXT, " + ColumnName_LaunchType + " INTEGER, " + ColumnName_StatusDate + " TEXT, " + ColumnName_Status + " INTEGER, " + ColumnName_WorkflowId + " INTEGER, " + ColumnName_JobId + " TEXT, " + ColumnName_Logs + " TEXT)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + COLUMN_NAME_NAME + " TEXT, " + COLUMN_NAME_DESCRIPTION + " TEXT, " + COLUMN_NAME_LAUNCH_TYPE + " INTEGER, " + COLUMN_NAME_STATUS_DATE + " TEXT, " + COLUMN_NAME_STATUS + " INTEGER, " + COLUMN_NAME_WORKFLOW_ID + " INTEGER, " + COLUMN_NAME_JOB_ID + " TEXT, " + COLUMN_NAME_LOGS + " TEXT)";
 
         public long Id { get; set; }
 

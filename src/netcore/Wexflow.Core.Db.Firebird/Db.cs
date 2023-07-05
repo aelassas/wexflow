@@ -49,14 +49,14 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.StatusCount.DocumentName + "("
-                    + StatusCount.ColumnName_PendingCount + ", "
-                    + StatusCount.ColumnName_RunningCount + ", "
-                    + StatusCount.ColumnName_DoneCount + ", "
-                    + StatusCount.ColumnName_FailedCount + ", "
-                    + StatusCount.ColumnName_WarningCount + ", "
-                    + StatusCount.ColumnName_DisabledCount + ", "
-                    + StatusCount.ColumnName_StoppedCount + ", "
-                    + StatusCount.ColumnName_RejectedCount + ") VALUES("
+                    + StatusCount.COLUMN_NAME_PENDING_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_RUNNING_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_DONE_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_FAILED_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_WARNING_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_DISABLED_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_STOPPED_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_REJECTED_COUNT + ") VALUES("
                     + statusCount.PendingCount + ", "
                     + statusCount.RunningCount + ", "
                     + statusCount.DoneCount + ", "
@@ -95,8 +95,8 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT COUNT(*) FROM " + Core.Db.UserWorkflow.DocumentName
-                    + " WHERE " + UserWorkflow.ColumnName_UserId + "=" + int.Parse(userId)
-                    + " AND " + UserWorkflow.ColumnName_WorkflowId + "=" + int.Parse(workflowId)
+                    + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + "=" + int.Parse(userId)
+                    + " AND " + UserWorkflow.COLUMN_NAME_WORKFLOW_ID + "=" + int.Parse(workflowId)
                     + ";", conn);
 
                 var count = (long)command.ExecuteScalar();
@@ -137,8 +137,8 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.User.DocumentName
-                    + " WHERE " + User.ColumnName_Username + " = '" + username + "'"
-                    + " AND " + User.ColumnName_Password + " = '" + password + "'"
+                    + " WHERE " + User.COLUMN_NAME_USERNAME + " = '" + username + "'"
+                    + " AND " + User.COLUMN_NAME_PASSWORD + " = '" + password + "'"
                     + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
@@ -152,7 +152,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
-                    + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId) + ";", conn);
+                    + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + " = " + int.Parse(userId) + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -165,7 +165,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
-                    + " WHERE " + UserWorkflow.ColumnName_WorkflowId + " = " + int.Parse(workflowDbId) + ";", conn);
+                    + " WHERE " + UserWorkflow.COLUMN_NAME_WORKFLOW_ID + " = " + int.Parse(workflowDbId) + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -178,7 +178,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
-                    + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn);
+                    + " WHERE " + Workflow.COLUMN_NAME_ID + " = " + int.Parse(id) + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -200,7 +200,7 @@ namespace Wexflow.Core.Db.Firebird
                 }
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Workflow.DocumentName
-                    + " WHERE " + Workflow.ColumnName_Id + " IN " + builder + ";", conn);
+                    + " WHERE " + Workflow.COLUMN_NAME_ID + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -214,17 +214,17 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                                              + User.ColumnName_Username + ", "
-                                              + User.ColumnName_Password + ", "
-                                              + User.ColumnName_Email + ", "
-                                              + User.ColumnName_UserProfile + ", "
-                                              + User.ColumnName_CreatedOn + ", "
-                                              + User.ColumnName_ModifiedOn
+                using FbCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                                              + User.COLUMN_NAME_USERNAME + ", "
+                                              + User.COLUMN_NAME_PASSWORD + ", "
+                                              + User.COLUMN_NAME_EMAIL + ", "
+                                              + User.COLUMN_NAME_USER_PROFILE + ", "
+                                              + User.COLUMN_NAME_CREATED_ON + ", "
+                                              + User.COLUMN_NAME_MODIFIED_ON
                                               + " FROM " + Core.Db.User.DocumentName
-                                              + " WHERE " + "(LOWER(" + User.ColumnName_Username + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " AND " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
-                                              + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                                              + " WHERE " + "(LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " AND " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
+                                              + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                                               + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -232,13 +232,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     User admin = new()
                     {
-                        Id = (int)reader[User.ColumnName_Id],
-                        Username = (string)reader[User.ColumnName_Username],
-                        Password = (string)reader[User.ColumnName_Password],
-                        Email = (string)reader[User.ColumnName_Email],
-                        UserProfile = (UserProfile)(int)reader[User.ColumnName_UserProfile],
-                        CreatedOn = (DateTime)reader[User.ColumnName_CreatedOn],
-                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnName_ModifiedOn]
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
                     };
 
                     admins.Add(admin);
@@ -258,14 +258,14 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Entry.ColumnName_Id + ", "
-                                              + Entry.ColumnName_Name + ", "
-                                              + Entry.ColumnName_Description + ", "
-                                              + Entry.ColumnName_LaunchType + ", "
-                                              + Entry.ColumnName_Status + ", "
-                                              + Entry.ColumnName_StatusDate + ", "
-                                              + Entry.ColumnName_WorkflowId + ", "
-                                              + Entry.ColumnName_JobId
+                                              + Entry.COLUMN_NAME_ID + ", "
+                                              + Entry.COLUMN_NAME_NAME + ", "
+                                              + Entry.COLUMN_NAME_DESCRIPTION + ", "
+                                              + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                                              + Entry.COLUMN_NAME_STATUS + ", "
+                                              + Entry.COLUMN_NAME_STATUS_DATE + ", "
+                                              + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
+                                              + Entry.COLUMN_NAME_JOB_ID
                                               + " FROM " + Core.Db.Entry.DocumentName + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -274,14 +274,14 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     Entry entry = new()
                     {
-                        Id = (int)reader[Entry.ColumnName_Id],
-                        Name = (string)reader[Entry.ColumnName_Name],
-                        Description = (string)reader[Entry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[Entry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
-                        JobId = (string)reader[Entry.ColumnName_JobId]
+                        Id = (int)reader[Entry.COLUMN_NAME_ID],
+                        Name = (string)reader[Entry.COLUMN_NAME_NAME],
+                        Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
+                        JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
                     };
 
                     entries.Add(entry);
@@ -301,80 +301,80 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 StringBuilder sqlBuilder = new("SELECT FIRST " + entriesCount + " SKIP " + ((page - 1) * entriesCount) + " "
-                                               + Entry.ColumnName_Id + ", "
-                                               + Entry.ColumnName_Name + ", "
-                                               + Entry.ColumnName_Description + ", "
-                                               + Entry.ColumnName_LaunchType + ", "
-                                               + Entry.ColumnName_Status + ", "
-                                               + Entry.ColumnName_StatusDate + ", "
-                                               + Entry.ColumnName_WorkflowId + ", "
-                                               + Entry.ColumnName_JobId
+                                               + Entry.COLUMN_NAME_ID + ", "
+                                               + Entry.COLUMN_NAME_NAME + ", "
+                                               + Entry.COLUMN_NAME_DESCRIPTION + ", "
+                                               + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                                               + Entry.COLUMN_NAME_STATUS + ", "
+                                               + Entry.COLUMN_NAME_STATUS_DATE + ", "
+                                               + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
+                                               + Entry.COLUMN_NAME_JOB_ID
                                                + " FROM " + Core.Db.Entry.DocumentName
-                                               + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                               + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                                               + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
+                                               + " WHERE " + "(LOWER(" + Entry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                               + " OR " + "LOWER(" + Entry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                               + " AND (" + Entry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
                                                + " ORDER BY ");
 
                 switch (eo)
                 {
                     case EntryOrderBy.StatusDateAscending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" ASC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS_DATE).Append(" ASC");
                         break;
 
                     case EntryOrderBy.StatusDateDescending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_StatusDate).Append(" DESC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS_DATE).Append(" DESC");
                         break;
 
                     case EntryOrderBy.WorkflowIdAscending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" ASC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_WORKFLOW_ID).Append(" ASC");
                         break;
 
                     case EntryOrderBy.WorkflowIdDescending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_WorkflowId).Append(" DESC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_WORKFLOW_ID).Append(" DESC");
                         break;
 
                     case EntryOrderBy.NameAscending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" ASC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_NAME).Append(" ASC");
                         break;
 
                     case EntryOrderBy.NameDescending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_Name).Append(" DESC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_NAME).Append(" DESC");
                         break;
 
                     case EntryOrderBy.LaunchTypeAscending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" ASC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_LAUNCH_TYPE).Append(" ASC");
                         break;
 
                     case EntryOrderBy.LaunchTypeDescending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_LaunchType).Append(" DESC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_LAUNCH_TYPE).Append(" DESC");
                         break;
 
                     case EntryOrderBy.DescriptionAscending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" ASC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_DESCRIPTION).Append(" ASC");
                         break;
 
                     case EntryOrderBy.DescriptionDescending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_Description).Append(" DESC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_DESCRIPTION).Append(" DESC");
                         break;
 
                     case EntryOrderBy.StatusAscending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" ASC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" ASC");
                         break;
 
                     case EntryOrderBy.StatusDescending:
 
-                        _ = sqlBuilder.Append(Entry.ColumnName_Status).Append(" DESC");
+                        _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
                 }
 
@@ -388,14 +388,14 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     Entry entry = new()
                     {
-                        Id = (int)reader[Entry.ColumnName_Id],
-                        Name = (string)reader[Entry.ColumnName_Name],
-                        Description = (string)reader[Entry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[Entry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
-                        JobId = (string)reader[Entry.ColumnName_JobId]
+                        Id = (int)reader[Entry.COLUMN_NAME_ID],
+                        Name = (string)reader[Entry.COLUMN_NAME_NAME],
+                        Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
+                        JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
                     };
 
                     entries.Add(entry);
@@ -414,9 +414,9 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.Entry.DocumentName
-                    + " WHERE " + "(LOWER(" + Entry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                    + " OR " + "LOWER(" + Entry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                    + " AND (" + Entry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
+                    + " WHERE " + "(LOWER(" + Entry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                    + " OR " + "LOWER(" + Entry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                    + " AND (" + Entry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
                 var count = (long)command.ExecuteScalar();
 
                 return count;
@@ -431,16 +431,16 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                    + Entry.ColumnName_Id + ", "
-                    + Entry.ColumnName_Name + ", "
-                    + Entry.ColumnName_Description + ", "
-                    + Entry.ColumnName_LaunchType + ", "
-                    + Entry.ColumnName_Status + ", "
-                    + Entry.ColumnName_StatusDate + ", "
-                    + Entry.ColumnName_WorkflowId + ", "
-                    + Entry.ColumnName_JobId
+                    + Entry.COLUMN_NAME_ID + ", "
+                    + Entry.COLUMN_NAME_NAME + ", "
+                    + Entry.COLUMN_NAME_DESCRIPTION + ", "
+                    + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                    + Entry.COLUMN_NAME_STATUS + ", "
+                    + Entry.COLUMN_NAME_STATUS_DATE + ", "
+                    + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
+                    + Entry.COLUMN_NAME_JOB_ID
                     + " FROM " + Core.Db.Entry.DocumentName
-                    + " WHERE " + Entry.ColumnName_WorkflowId + " = " + workflowId + ";", conn);
+                    + " WHERE " + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId + ";", conn);
 
                 using var reader = command.ExecuteReader();
 
@@ -448,14 +448,14 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     Entry entry = new()
                     {
-                        Id = (int)reader[Entry.ColumnName_Id],
-                        Name = (string)reader[Entry.ColumnName_Name],
-                        Description = (string)reader[Entry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[Entry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
-                        JobId = (string)reader[Entry.ColumnName_JobId]
+                        Id = (int)reader[Entry.COLUMN_NAME_ID],
+                        Name = (string)reader[Entry.COLUMN_NAME_NAME],
+                        Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
+                        JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
                     };
 
                     return entry;
@@ -473,17 +473,17 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                    + Entry.ColumnName_Id + ", "
-                    + Entry.ColumnName_Name + ", "
-                    + Entry.ColumnName_Description + ", "
-                    + Entry.ColumnName_LaunchType + ", "
-                    + Entry.ColumnName_Status + ", "
-                    + Entry.ColumnName_StatusDate + ", "
-                    + Entry.ColumnName_WorkflowId + ", "
-                    + Entry.ColumnName_JobId
+                    + Entry.COLUMN_NAME_ID + ", "
+                    + Entry.COLUMN_NAME_NAME + ", "
+                    + Entry.COLUMN_NAME_DESCRIPTION + ", "
+                    + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                    + Entry.COLUMN_NAME_STATUS + ", "
+                    + Entry.COLUMN_NAME_STATUS_DATE + ", "
+                    + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
+                    + Entry.COLUMN_NAME_JOB_ID
                     + " FROM " + Core.Db.Entry.DocumentName
-                    + " WHERE (" + Entry.ColumnName_WorkflowId + " = " + workflowId
-                    + " AND " + Entry.ColumnName_JobId + " = '" + jobId + "');", conn);
+                    + " WHERE (" + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId
+                    + " AND " + Entry.COLUMN_NAME_JOB_ID + " = '" + jobId + "');", conn);
 
                 using var reader = command.ExecuteReader();
 
@@ -491,14 +491,14 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     Entry entry = new()
                     {
-                        Id = (int)reader[Entry.ColumnName_Id],
-                        Name = (string)reader[Entry.ColumnName_Name],
-                        Description = (string)reader[Entry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[Entry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[Entry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[Entry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[Entry.ColumnName_WorkflowId],
-                        JobId = (string)reader[Entry.ColumnName_JobId]
+                        Id = (int)reader[Entry.COLUMN_NAME_ID],
+                        Name = (string)reader[Entry.COLUMN_NAME_NAME],
+                        Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
+                        JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
                     };
 
                     return entry;
@@ -516,14 +516,14 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     conn.Open();
 
-                    using FbCommand command = new("SELECT FIRST 1 " + Entry.ColumnName_StatusDate
+                    using FbCommand command = new("SELECT FIRST 1 " + Entry.COLUMN_NAME_STATUS_DATE
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " ORDER BY " + Entry.ColumnName_StatusDate + " DESC;", conn);
+                        + " ORDER BY " + Entry.COLUMN_NAME_STATUS_DATE + " DESC;", conn);
 
                     using var reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        var statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE];
 
                         return statusDate;
                     }
@@ -541,14 +541,14 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     conn.Open();
 
-                    using FbCommand command = new("SELECT FIRST 1 " + Entry.ColumnName_StatusDate
+                    using FbCommand command = new("SELECT FIRST 1 " + Entry.COLUMN_NAME_STATUS_DATE
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " ORDER BY " + Entry.ColumnName_StatusDate + " ASC;", conn);
+                        + " ORDER BY " + Entry.COLUMN_NAME_STATUS_DATE + " ASC;", conn);
 
                     using var reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        var statusDate = (DateTime)reader[Entry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE];
 
                         return statusDate;
                     }
@@ -568,13 +568,13 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + HistoryEntry.ColumnName_Id + ", "
-                                              + HistoryEntry.ColumnName_Name + ", "
-                                              + HistoryEntry.ColumnName_Description + ", "
-                                              + HistoryEntry.ColumnName_LaunchType + ", "
-                                              + HistoryEntry.ColumnName_Status + ", "
-                                              + HistoryEntry.ColumnName_StatusDate + ", "
-                                              + HistoryEntry.ColumnName_WorkflowId
+                                              + HistoryEntry.COLUMN_NAME_ID + ", "
+                                              + HistoryEntry.COLUMN_NAME_NAME + ", "
+                                              + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
+                                              + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                                              + HistoryEntry.COLUMN_NAME_STATUS + ", "
+                                              + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
+                                              + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
                                               + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -582,13 +582,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     HistoryEntry entry = new()
                     {
-                        Id = (int)reader[HistoryEntry.ColumnName_Id],
-                        Name = (string)reader[HistoryEntry.ColumnName_Name],
-                        Description = (string)reader[HistoryEntry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
                     };
 
                     entries.Add(entry);
@@ -608,16 +608,16 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + HistoryEntry.ColumnName_Id + ", "
-                                              + HistoryEntry.ColumnName_Name + ", "
-                                              + HistoryEntry.ColumnName_Description + ", "
-                                              + HistoryEntry.ColumnName_LaunchType + ", "
-                                              + HistoryEntry.ColumnName_Status + ", "
-                                              + HistoryEntry.ColumnName_StatusDate + ", "
-                                              + HistoryEntry.ColumnName_WorkflowId
+                                              + HistoryEntry.COLUMN_NAME_ID + ", "
+                                              + HistoryEntry.COLUMN_NAME_NAME + ", "
+                                              + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
+                                              + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                                              + HistoryEntry.COLUMN_NAME_STATUS + ", "
+                                              + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
+                                              + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
                                               + " FROM " + Core.Db.HistoryEntry.DocumentName
-                                              + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
+                                              + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
 
                 using var reader = command.ExecuteReader();
 
@@ -625,13 +625,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     HistoryEntry entry = new()
                     {
-                        Id = (int)reader[HistoryEntry.ColumnName_Id],
-                        Name = (string)reader[HistoryEntry.ColumnName_Name],
-                        Description = (string)reader[HistoryEntry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
                     };
 
                     entries.Add(entry);
@@ -651,16 +651,16 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT FIRST " + entriesCount + " SKIP " + ((page - 1) * entriesCount) + " "
-                                              + HistoryEntry.ColumnName_Id + ", "
-                                              + HistoryEntry.ColumnName_Name + ", "
-                                              + HistoryEntry.ColumnName_Description + ", "
-                                              + HistoryEntry.ColumnName_LaunchType + ", "
-                                              + HistoryEntry.ColumnName_Status + ", "
-                                              + HistoryEntry.ColumnName_StatusDate + ", "
-                                              + HistoryEntry.ColumnName_WorkflowId
+                                              + HistoryEntry.COLUMN_NAME_ID + ", "
+                                              + HistoryEntry.COLUMN_NAME_NAME + ", "
+                                              + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
+                                              + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                                              + HistoryEntry.COLUMN_NAME_STATUS + ", "
+                                              + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
+                                              + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
                                               + " FROM " + Core.Db.HistoryEntry.DocumentName
-                                              + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'" + ";"
+                                              + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'" + ";"
                     , conn);
 
                 using var reader = command.ExecuteReader();
@@ -669,13 +669,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     HistoryEntry entry = new()
                     {
-                        Id = (int)reader[HistoryEntry.ColumnName_Id],
-                        Name = (string)reader[HistoryEntry.ColumnName_Name],
-                        Description = (string)reader[HistoryEntry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
                     };
 
                     entries.Add(entry);
@@ -695,79 +695,79 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 StringBuilder sqlBuilder = new("SELECT FIRST " + entriesCount + " SKIP " + ((page - 1) * entriesCount) + " "
-                                               + HistoryEntry.ColumnName_Id + ", "
-                                               + HistoryEntry.ColumnName_Name + ", "
-                                               + HistoryEntry.ColumnName_Description + ", "
-                                               + HistoryEntry.ColumnName_LaunchType + ", "
-                                               + HistoryEntry.ColumnName_Status + ", "
-                                               + HistoryEntry.ColumnName_StatusDate + ", "
-                                               + HistoryEntry.ColumnName_WorkflowId
+                                               + HistoryEntry.COLUMN_NAME_ID + ", "
+                                               + HistoryEntry.COLUMN_NAME_NAME + ", "
+                                               + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
+                                               + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                                               + HistoryEntry.COLUMN_NAME_STATUS + ", "
+                                               + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
+                                               + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
                                                + " FROM " + Core.Db.HistoryEntry.DocumentName
-                                               + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                               + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                                               + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
+                                               + " WHERE " + "(LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                               + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                               + " AND (" + HistoryEntry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "')"
                                                + " ORDER BY ");
 
                 switch (heo)
                 {
                     case EntryOrderBy.StatusDateAscending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" ASC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS_DATE).Append(" ASC");
                         break;
 
                     case EntryOrderBy.StatusDateDescending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_StatusDate).Append(" DESC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS_DATE).Append(" DESC");
                         break;
 
                     case EntryOrderBy.WorkflowIdAscending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" ASC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_WORKFLOW_ID).Append(" ASC");
                         break;
 
                     case EntryOrderBy.WorkflowIdDescending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_WorkflowId).Append(" DESC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_WORKFLOW_ID).Append(" DESC");
                         break;
 
                     case EntryOrderBy.NameAscending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" ASC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_NAME).Append(" ASC");
                         break;
 
                     case EntryOrderBy.NameDescending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Name).Append(" DESC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_NAME).Append(" DESC");
                         break;
 
                     case EntryOrderBy.LaunchTypeAscending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" ASC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_LAUNCH_TYPE).Append(" ASC");
                         break;
 
                     case EntryOrderBy.LaunchTypeDescending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_LaunchType).Append(" DESC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_LAUNCH_TYPE).Append(" DESC");
                         break;
 
                     case EntryOrderBy.DescriptionAscending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" ASC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_DESCRIPTION).Append(" ASC");
                         break;
 
                     case EntryOrderBy.DescriptionDescending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Description).Append(" DESC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_DESCRIPTION).Append(" DESC");
                         break;
 
                     case EntryOrderBy.StatusAscending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" ASC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" ASC");
                         break;
 
                     case EntryOrderBy.StatusDescending:
 
-                        _ = sqlBuilder.Append(HistoryEntry.ColumnName_Status).Append(" DESC");
+                        _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
                 }
 
@@ -781,13 +781,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     HistoryEntry entry = new()
                     {
-                        Id = (int)reader[HistoryEntry.ColumnName_Id],
-                        Name = (string)reader[HistoryEntry.ColumnName_Name],
-                        Description = (string)reader[HistoryEntry.ColumnName_Description],
-                        LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnName_LaunchType],
-                        Status = (Status)(int)reader[HistoryEntry.ColumnName_Status],
-                        StatusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate],
-                        WorkflowId = (int)reader[HistoryEntry.ColumnName_WorkflowId]
+                        Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
+                        Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
+                        Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
+                        LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
+                        Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
+                        StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
+                        WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
                     };
 
                     entries.Add(entry);
@@ -806,8 +806,8 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
-                    + " WHERE " + "LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                    + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
+                    + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                    + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn);
 
                 var count = (long)command.ExecuteScalar();
 
@@ -824,9 +824,9 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
-                    + " WHERE " + "(LOWER(" + HistoryEntry.ColumnName_Name + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                    + " OR " + "LOWER(" + HistoryEntry.ColumnName_Description + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                    + " AND (" + HistoryEntry.ColumnName_StatusDate + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
+                    + " WHERE " + "(LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                    + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                    + " AND (" + HistoryEntry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "' AND '" + to.ToString(DateTimeFormat) + "');", conn);
                 var count = (long)command.ExecuteScalar();
 
                 return count;
@@ -841,15 +841,15 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     conn.Open();
 
-                    using FbCommand command = new("SELECT FIRST 1 " + HistoryEntry.ColumnName_StatusDate
+                    using FbCommand command = new("SELECT FIRST 1 " + HistoryEntry.COLUMN_NAME_STATUS_DATE
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " DESC;", conn);
+                        + " ORDER BY " + HistoryEntry.COLUMN_NAME_STATUS_DATE + " DESC;", conn);
 
                     using var reader = command.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        var statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE];
 
                         return statusDate;
                     }
@@ -867,15 +867,15 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     conn.Open();
 
-                    using FbCommand command = new("SELECT FIRST 1 " + HistoryEntry.ColumnName_StatusDate
+                    using FbCommand command = new("SELECT FIRST 1 " + HistoryEntry.COLUMN_NAME_STATUS_DATE
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " ORDER BY " + HistoryEntry.ColumnName_StatusDate + " ASC;", conn);
+                        + " ORDER BY " + HistoryEntry.COLUMN_NAME_STATUS_DATE + " ASC;", conn);
 
                     using var reader = command.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        var statusDate = (DateTime)reader[HistoryEntry.ColumnName_StatusDate];
+                        var statusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE];
 
                         return statusDate;
                     }
@@ -892,14 +892,14 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + User.ColumnName_Password
+                using FbCommand command = new("SELECT " + User.COLUMN_NAME_PASSWORD
                     + " FROM " + Core.Db.User.DocumentName
-                    + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
+                    + " WHERE " + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "'"
                     + ";", conn);
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    var password = (string)reader[User.ColumnName_Password];
+                    var password = (string)reader[User.COLUMN_NAME_PASSWORD];
 
                     return password;
                 }
@@ -915,15 +915,15 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + StatusCount.ColumnName_Id + ", "
-                    + StatusCount.ColumnName_PendingCount + ", "
-                    + StatusCount.ColumnName_RunningCount + ", "
-                    + StatusCount.ColumnName_DoneCount + ", "
-                    + StatusCount.ColumnName_FailedCount + ", "
-                    + StatusCount.ColumnName_WarningCount + ", "
-                    + StatusCount.ColumnName_DisabledCount + ", "
-                    + StatusCount.ColumnName_StoppedCount + ", "
-                    + StatusCount.ColumnName_RejectedCount
+                using FbCommand command = new("SELECT " + StatusCount.COLUMN_NAME_ID + ", "
+                    + StatusCount.COLUMN_NAME_PENDING_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_RUNNING_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_DONE_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_FAILED_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_WARNING_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_DISABLED_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_STOPPED_COUNT + ", "
+                    + StatusCount.COLUMN_NAME_REJECTED_COUNT
                     + " FROM " + Core.Db.StatusCount.DocumentName
                     + ";", conn);
                 using var reader = command.ExecuteReader();
@@ -932,15 +932,15 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     StatusCount statusCount = new()
                     {
-                        Id = (int)reader[StatusCount.ColumnName_Id],
-                        PendingCount = (int)reader[StatusCount.ColumnName_PendingCount],
-                        RunningCount = (int)reader[StatusCount.ColumnName_RunningCount],
-                        DoneCount = (int)reader[StatusCount.ColumnName_DoneCount],
-                        FailedCount = (int)reader[StatusCount.ColumnName_FailedCount],
-                        WarningCount = (int)reader[StatusCount.ColumnName_WarningCount],
-                        DisabledCount = (int)reader[StatusCount.ColumnName_DisabledCount],
-                        StoppedCount = (int)reader[StatusCount.ColumnName_StoppedCount],
-                        RejectedCount = (int)reader[StatusCount.ColumnName_RejectedCount]
+                        Id = (int)reader[StatusCount.COLUMN_NAME_ID],
+                        PendingCount = (int)reader[StatusCount.COLUMN_NAME_PENDING_COUNT],
+                        RunningCount = (int)reader[StatusCount.COLUMN_NAME_RUNNING_COUNT],
+                        DoneCount = (int)reader[StatusCount.COLUMN_NAME_DONE_COUNT],
+                        FailedCount = (int)reader[StatusCount.COLUMN_NAME_FAILED_COUNT],
+                        WarningCount = (int)reader[StatusCount.COLUMN_NAME_WARNING_COUNT],
+                        DisabledCount = (int)reader[StatusCount.COLUMN_NAME_DISABLED_COUNT],
+                        StoppedCount = (int)reader[StatusCount.COLUMN_NAME_STOPPED_COUNT],
+                        RejectedCount = (int)reader[StatusCount.COLUMN_NAME_REJECTED_COUNT]
                     };
 
                     return statusCount;
@@ -957,15 +957,15 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                    + User.ColumnName_Username + ", "
-                    + User.ColumnName_Password + ", "
-                    + User.ColumnName_Email + ", "
-                    + User.ColumnName_UserProfile + ", "
-                    + User.ColumnName_CreatedOn + ", "
-                    + User.ColumnName_ModifiedOn
+                using FbCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                    + User.COLUMN_NAME_USERNAME + ", "
+                    + User.COLUMN_NAME_PASSWORD + ", "
+                    + User.COLUMN_NAME_EMAIL + ", "
+                    + User.COLUMN_NAME_USER_PROFILE + ", "
+                    + User.COLUMN_NAME_CREATED_ON + ", "
+                    + User.COLUMN_NAME_MODIFIED_ON
                     + " FROM " + Core.Db.User.DocumentName
-                    + " WHERE " + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "'"
+                    + " WHERE " + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "'"
                     + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -973,13 +973,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     User user = new()
                     {
-                        Id = (int)reader[User.ColumnName_Id],
-                        Username = (string)reader[User.ColumnName_Username],
-                        Password = (string)reader[User.ColumnName_Password],
-                        Email = (string)reader[User.ColumnName_Email],
-                        UserProfile = (UserProfile)(int)reader[User.ColumnName_UserProfile],
-                        CreatedOn = (DateTime)reader[User.ColumnName_CreatedOn],
-                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnName_ModifiedOn]
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
                     };
 
                     return user;
@@ -996,15 +996,15 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                    + User.ColumnName_Username + ", "
-                    + User.ColumnName_Password + ", "
-                    + User.ColumnName_Email + ", "
-                    + User.ColumnName_UserProfile + ", "
-                    + User.ColumnName_CreatedOn + ", "
-                    + User.ColumnName_ModifiedOn
+                using FbCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                    + User.COLUMN_NAME_USERNAME + ", "
+                    + User.COLUMN_NAME_PASSWORD + ", "
+                    + User.COLUMN_NAME_EMAIL + ", "
+                    + User.COLUMN_NAME_USER_PROFILE + ", "
+                    + User.COLUMN_NAME_CREATED_ON + ", "
+                    + User.COLUMN_NAME_MODIFIED_ON
                     + " FROM " + Core.Db.User.DocumentName
-                    + " WHERE " + User.ColumnName_Id + " = '" + int.Parse(userId) + "'"
+                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(userId) + "'"
                     + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -1013,13 +1013,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     User user = new()
                     {
-                        Id = (int)reader[User.ColumnName_Id],
-                        Username = (string)reader[User.ColumnName_Username],
-                        Password = (string)reader[User.ColumnName_Password],
-                        Email = (string)reader[User.ColumnName_Email],
-                        UserProfile = (UserProfile)(int)reader[User.ColumnName_UserProfile],
-                        CreatedOn = (DateTime)reader[User.ColumnName_CreatedOn],
-                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnName_ModifiedOn]
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
                     };
 
                     return user;
@@ -1038,13 +1038,13 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                                              + User.ColumnName_Username + ", "
-                                              + User.ColumnName_Password + ", "
-                                              + User.ColumnName_Email + ", "
-                                              + User.ColumnName_UserProfile + ", "
-                                              + User.ColumnName_CreatedOn + ", "
-                                              + User.ColumnName_ModifiedOn
+                using FbCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                                              + User.COLUMN_NAME_USERNAME + ", "
+                                              + User.COLUMN_NAME_PASSWORD + ", "
+                                              + User.COLUMN_NAME_EMAIL + ", "
+                                              + User.COLUMN_NAME_USER_PROFILE + ", "
+                                              + User.COLUMN_NAME_CREATED_ON + ", "
+                                              + User.COLUMN_NAME_MODIFIED_ON
                                               + " FROM " + Core.Db.User.DocumentName
                                               + ";", conn);
 
@@ -1054,13 +1054,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     User user = new()
                     {
-                        Id = (int)reader[User.ColumnName_Id],
-                        Username = (string)reader[User.ColumnName_Username],
-                        Password = (string)reader[User.ColumnName_Password],
-                        Email = (string)reader[User.ColumnName_Email],
-                        UserProfile = (UserProfile)(int)reader[User.ColumnName_UserProfile],
-                        CreatedOn = (DateTime)reader[User.ColumnName_CreatedOn],
-                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnName_ModifiedOn]
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
                     };
 
                     users.Add(user);
@@ -1079,16 +1079,16 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + User.ColumnName_Id + ", "
-                                              + User.ColumnName_Username + ", "
-                                              + User.ColumnName_Password + ", "
-                                              + User.ColumnName_Email + ", "
-                                              + User.ColumnName_UserProfile + ", "
-                                              + User.ColumnName_CreatedOn + ", "
-                                              + User.ColumnName_ModifiedOn
+                using FbCommand command = new("SELECT " + User.COLUMN_NAME_ID + ", "
+                                              + User.COLUMN_NAME_USERNAME + ", "
+                                              + User.COLUMN_NAME_PASSWORD + ", "
+                                              + User.COLUMN_NAME_EMAIL + ", "
+                                              + User.COLUMN_NAME_USER_PROFILE + ", "
+                                              + User.COLUMN_NAME_CREATED_ON + ", "
+                                              + User.COLUMN_NAME_MODIFIED_ON
                                               + " FROM " + Core.Db.User.DocumentName
-                                              + " WHERE " + "LOWER(" + User.ColumnName_Username + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " ORDER BY " + User.ColumnName_Username + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                                              + " WHERE " + "LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                                               + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -1097,13 +1097,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     User user = new()
                     {
-                        Id = (int)reader[User.ColumnName_Id],
-                        Username = (string)reader[User.ColumnName_Username],
-                        Password = (string)reader[User.ColumnName_Password],
-                        Email = (string)reader[User.ColumnName_Email],
-                        UserProfile = (UserProfile)(int)reader[User.ColumnName_UserProfile],
-                        CreatedOn = (DateTime)reader[User.ColumnName_CreatedOn],
-                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnName_ModifiedOn]
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
                     };
 
                     users.Add(user);
@@ -1122,18 +1122,18 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + UserWorkflow.ColumnName_Id + ", "
-                                              + UserWorkflow.ColumnName_UserId + ", "
-                                              + UserWorkflow.ColumnName_WorkflowId
+                using FbCommand command = new("SELECT " + UserWorkflow.COLUMN_NAME_ID + ", "
+                                              + UserWorkflow.COLUMN_NAME_USER_ID + ", "
+                                              + UserWorkflow.COLUMN_NAME_WORKFLOW_ID
                                               + " FROM " + Core.Db.UserWorkflow.DocumentName
-                                              + " WHERE " + UserWorkflow.ColumnName_UserId + " = " + int.Parse(userId)
+                                              + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + " = " + int.Parse(userId)
                                               + ";", conn);
 
                 using var reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    var workflowId = (int)reader[UserWorkflow.ColumnName_WorkflowId];
+                    var workflowId = (int)reader[UserWorkflow.COLUMN_NAME_WORKFLOW_ID];
 
                     workflowIds.Add(workflowId.ToString());
                 }
@@ -1149,10 +1149,10 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
-                    + Workflow.ColumnName_Xml
+                using FbCommand command = new("SELECT " + Workflow.COLUMN_NAME_ID + ", "
+                    + Workflow.COLUMN_NAME_XML
                     + " FROM " + Core.Db.Workflow.DocumentName
-                    + " WHERE " + Workflow.ColumnName_Id + " = " + int.Parse(id) + ";", conn);
+                    + " WHERE " + Workflow.COLUMN_NAME_ID + " = " + int.Parse(id) + ";", conn);
 
                 using var reader = command.ExecuteReader();
 
@@ -1160,8 +1160,8 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     Workflow workflow = new()
                     {
-                        Id = (int)reader[Workflow.ColumnName_Id],
-                        Xml = (string)reader[Workflow.ColumnName_Xml]
+                        Id = (int)reader[Workflow.COLUMN_NAME_ID],
+                        Xml = (string)reader[Workflow.COLUMN_NAME_XML]
                     };
 
                     return workflow;
@@ -1180,8 +1180,8 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + Workflow.ColumnName_Id + ", "
-                                              + Workflow.ColumnName_Xml
+                using FbCommand command = new("SELECT " + Workflow.COLUMN_NAME_ID + ", "
+                                              + Workflow.COLUMN_NAME_XML
                                               + " FROM " + Core.Db.Workflow.DocumentName + ";", conn);
 
                 using var reader = command.ExecuteReader();
@@ -1190,8 +1190,8 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     Workflow workflow = new()
                     {
-                        Id = (int)reader[Workflow.ColumnName_Id],
-                        Xml = (string)reader[Workflow.ColumnName_Xml]
+                        Id = (int)reader[Workflow.COLUMN_NAME_ID],
+                        Xml = (string)reader[Workflow.COLUMN_NAME_XML]
                     };
 
                     workflows.Add(workflow);
@@ -1215,42 +1215,42 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void IncrementDisabledCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_DisabledCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_DISABLED_COUNT);
         }
 
         public override void IncrementRejectedCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_RejectedCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_REJECTED_COUNT);
         }
 
         public override void IncrementDoneCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_DoneCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_DONE_COUNT);
         }
 
         public override void IncrementFailedCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_FailedCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_FAILED_COUNT);
         }
 
         public override void IncrementPendingCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_PendingCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_PENDING_COUNT);
         }
 
         public override void IncrementRunningCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_RunningCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_RUNNING_COUNT);
         }
 
         public override void IncrementStoppedCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_StoppedCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_STOPPED_COUNT);
         }
 
         public override void IncrementWarningCount()
         {
-            IncrementStatusCountColumn(StatusCount.ColumnName_WarningCount);
+            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_WARNING_COUNT);
         }
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
@@ -1267,12 +1267,12 @@ namespace Wexflow.Core.Db.Firebird
 
         public override void DecrementPendingCount()
         {
-            DecrementStatusCountColumn(StatusCount.ColumnName_PendingCount);
+            DecrementStatusCountColumn(StatusCount.COLUMN_NAME_PENDING_COUNT);
         }
 
         public override void DecrementRunningCount()
         {
-            DecrementStatusCountColumn(StatusCount.ColumnName_RunningCount);
+            DecrementStatusCountColumn(StatusCount.COLUMN_NAME_RUNNING_COUNT);
         }
 
         public override void InsertEntry(Core.Db.Entry entry)
@@ -1283,14 +1283,14 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.Entry.DocumentName + "("
-                    + Entry.ColumnName_Name + ", "
-                    + Entry.ColumnName_Description + ", "
-                    + Entry.ColumnName_LaunchType + ", "
-                    + Entry.ColumnName_StatusDate + ", "
-                    + Entry.ColumnName_Status + ", "
-                    + Entry.ColumnName_WorkflowId + ", "
-                    + Entry.ColumnName_JobId + ", "
-                    + Entry.ColumnName_Logs + ") VALUES("
+                    + Entry.COLUMN_NAME_NAME + ", "
+                    + Entry.COLUMN_NAME_DESCRIPTION + ", "
+                    + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                    + Entry.COLUMN_NAME_STATUS_DATE + ", "
+                    + Entry.COLUMN_NAME_STATUS + ", "
+                    + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
+                    + Entry.COLUMN_NAME_JOB_ID + ", "
+                    + Entry.COLUMN_NAME_LOGS + ") VALUES("
                     + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                     + (int)entry.LaunchType + ", "
@@ -1313,13 +1313,13 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.HistoryEntry.DocumentName + "("
-                    + HistoryEntry.ColumnName_Name + ", "
-                    + HistoryEntry.ColumnName_Description + ", "
-                    + HistoryEntry.ColumnName_LaunchType + ", "
-                    + HistoryEntry.ColumnName_StatusDate + ", "
-                    + HistoryEntry.ColumnName_Status + ", "
-                    + HistoryEntry.ColumnName_WorkflowId + ", "
-                    + HistoryEntry.ColumnName_Logs + ") VALUES("
+                    + HistoryEntry.COLUMN_NAME_NAME + ", "
+                    + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
+                    + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
+                    + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
+                    + HistoryEntry.COLUMN_NAME_STATUS + ", "
+                    + HistoryEntry.COLUMN_NAME_WORKFLOW_ID + ", "
+                    + HistoryEntry.COLUMN_NAME_LOGS + ") VALUES("
                     + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                     + (int)entry.LaunchType + ", "
@@ -1341,12 +1341,12 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.User.DocumentName + "("
-                    + User.ColumnName_Username + ", "
-                    + User.ColumnName_Password + ", "
-                    + User.ColumnName_UserProfile + ", "
-                    + User.ColumnName_Email + ", "
-                    + User.ColumnName_CreatedOn + ", "
-                    + User.ColumnName_ModifiedOn + ") VALUES("
+                    + User.COLUMN_NAME_USERNAME + ", "
+                    + User.COLUMN_NAME_PASSWORD + ", "
+                    + User.COLUMN_NAME_USER_PROFILE + ", "
+                    + User.COLUMN_NAME_EMAIL + ", "
+                    + User.COLUMN_NAME_CREATED_ON + ", "
+                    + User.COLUMN_NAME_MODIFIED_ON + ") VALUES("
                     + "'" + (user.Username ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (user.Password ?? "").Replace("'", "''") + "'" + ", "
                     + (int)user.UserProfile + ", "
@@ -1367,8 +1367,8 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.UserWorkflow.DocumentName + "("
-                    + UserWorkflow.ColumnName_UserId + ", "
-                    + UserWorkflow.ColumnName_WorkflowId + ") VALUES("
+                    + UserWorkflow.COLUMN_NAME_USER_ID + ", "
+                    + UserWorkflow.COLUMN_NAME_WORKFLOW_ID + ") VALUES("
                     + int.Parse(userWorkflow.UserId) + ", "
                     + int.Parse(userWorkflow.WorkflowId) + ");"
                     , conn);
@@ -1385,8 +1385,8 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
-                    + Workflow.ColumnName_Xml + ") VALUES("
-                    + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + ") RETURNING " + Workflow.ColumnName_Id + "; "
+                    + Workflow.COLUMN_NAME_XML + ") VALUES("
+                    + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + ") RETURNING " + Workflow.COLUMN_NAME_ID + "; "
                     , conn);
 
                 var id = (int)command.ExecuteScalar();
@@ -1403,16 +1403,16 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.Entry.DocumentName + " SET "
-                    + Entry.ColumnName_Name + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
-                    + Entry.ColumnName_Description + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
-                    + Entry.ColumnName_LaunchType + " = " + (int)entry.LaunchType + ", "
-                    + Entry.ColumnName_StatusDate + " = '" + entry.StatusDate.ToString(DateTimeFormat) + "', "
-                    + Entry.ColumnName_Status + " = " + (int)entry.Status + ", "
-                    + Entry.ColumnName_WorkflowId + " = " + entry.WorkflowId + ", "
-                    + Entry.ColumnName_JobId + " = '" + (entry.JobId ?? "") + "', "
-                    + Entry.ColumnName_Logs + " = '" + (entry.Logs ?? "").Replace("'", "''") + "'"
+                    + Entry.COLUMN_NAME_NAME + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
+                    + Entry.COLUMN_NAME_DESCRIPTION + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
+                    + Entry.COLUMN_NAME_LAUNCH_TYPE + " = " + (int)entry.LaunchType + ", "
+                    + Entry.COLUMN_NAME_STATUS_DATE + " = '" + entry.StatusDate.ToString(DateTimeFormat) + "', "
+                    + Entry.COLUMN_NAME_STATUS + " = " + (int)entry.Status + ", "
+                    + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + entry.WorkflowId + ", "
+                    + Entry.COLUMN_NAME_JOB_ID + " = '" + (entry.JobId ?? "") + "', "
+                    + Entry.COLUMN_NAME_LOGS + " = '" + (entry.Logs ?? "").Replace("'", "''") + "'"
                     + " WHERE "
-                    + Entry.ColumnName_Id + " = " + int.Parse(id) + ";"
+                    + Entry.COLUMN_NAME_ID + " = " + int.Parse(id) + ";"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1427,9 +1427,9 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
-                    + User.ColumnName_Password + " = '" + (password ?? "").Replace("'", "''") + "'"
+                    + User.COLUMN_NAME_PASSWORD + " = '" + (password ?? "").Replace("'", "''") + "'"
                     + " WHERE "
-                    + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "';"
+                    + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "';"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1444,14 +1444,14 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
-                    + User.ColumnName_Username + " = '" + (user.Username ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_Password + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_UserProfile + " = " + (int)user.UserProfile + ", "
-                    + User.ColumnName_Email + " = '" + (user.Email ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_CreatedOn + " = '" + user.CreatedOn.ToString(DateTimeFormat) + "', "
-                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
+                    + User.COLUMN_NAME_USERNAME + " = '" + (user.Username ?? "").Replace("'", "''") + "', "
+                    + User.COLUMN_NAME_PASSWORD + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
+                    + User.COLUMN_NAME_USER_PROFILE + " = " + (int)user.UserProfile + ", "
+                    + User.COLUMN_NAME_EMAIL + " = '" + (user.Email ?? "").Replace("'", "''") + "', "
+                    + User.COLUMN_NAME_CREATED_ON + " = '" + user.CreatedOn.ToString(DateTimeFormat) + "', "
+                    + User.COLUMN_NAME_MODIFIED_ON + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                     + " WHERE "
-                    + User.ColumnName_Id + " = " + int.Parse(id) + ";"
+                    + User.COLUMN_NAME_ID + " = " + int.Parse(id) + ";"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1466,12 +1466,12 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.User.DocumentName + " SET "
-                    + User.ColumnName_Username + " = '" + (username ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_UserProfile + " = " + (int)up + ", "
-                    + User.ColumnName_Email + " = '" + (email ?? "").Replace("'", "''") + "', "
-                    + User.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
+                    + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "', "
+                    + User.COLUMN_NAME_USER_PROFILE + " = " + (int)up + ", "
+                    + User.COLUMN_NAME_EMAIL + " = '" + (email ?? "").Replace("'", "''") + "', "
+                    + User.COLUMN_NAME_MODIFIED_ON + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
                     + " WHERE "
-                    + User.ColumnName_Id + " = " + int.Parse(userId) + ";"
+                    + User.COLUMN_NAME_ID + " = " + int.Parse(userId) + ";"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1486,9 +1486,9 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
-                    + Workflow.ColumnName_Xml + " = '" + (workflow.Xml ?? "").Replace("'", "''") + "'"
+                    + Workflow.COLUMN_NAME_XML + " = '" + (workflow.Xml ?? "").Replace("'", "''") + "'"
                     + " WHERE "
-                    + User.ColumnName_Id + " = " + int.Parse(dbId) + ";"
+                    + User.COLUMN_NAME_ID + " = " + int.Parse(dbId) + ";"
                     , conn);
 
                 _ = command.ExecuteNonQuery();
@@ -1502,15 +1502,15 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + Entry.ColumnName_Logs
+                using FbCommand command = new("SELECT " + Entry.COLUMN_NAME_LOGS
                     + " FROM " + Core.Db.Entry.DocumentName
                     + " WHERE "
-                    + Entry.ColumnName_Id + " = " + int.Parse(entryId) + ";"
+                    + Entry.COLUMN_NAME_ID + " = " + int.Parse(entryId) + ";"
                     , conn);
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    var logs = (string)reader[Entry.ColumnName_Logs];
+                    var logs = (string)reader[Entry.COLUMN_NAME_LOGS];
                     return logs;
                 }
 
@@ -1525,16 +1525,16 @@ namespace Wexflow.Core.Db.Firebird
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
 
-                using FbCommand command = new("SELECT " + HistoryEntry.ColumnName_Logs
+                using FbCommand command = new("SELECT " + HistoryEntry.COLUMN_NAME_LOGS
                     + " FROM " + Core.Db.HistoryEntry.DocumentName
                     + " WHERE "
-                    + HistoryEntry.ColumnName_Id + " = " + int.Parse(entryId) + ";"
+                    + HistoryEntry.COLUMN_NAME_ID + " = " + int.Parse(entryId) + ";"
                     , conn);
                 using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
-                    var logs = (string)reader[HistoryEntry.ColumnName_Logs];
+                    var logs = (string)reader[HistoryEntry.COLUMN_NAME_LOGS];
                     return logs;
                 }
 
@@ -1552,17 +1552,17 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + User.ColumnName_Id + ", "
-                                              + User.ColumnName_Username + ", "
-                                              + User.ColumnName_Password + ", "
-                                              + User.ColumnName_Email + ", "
-                                              + User.ColumnName_UserProfile + ", "
-                                              + User.ColumnName_CreatedOn + ", "
-                                              + User.ColumnName_ModifiedOn
+                                              + User.COLUMN_NAME_ID + ", "
+                                              + User.COLUMN_NAME_USERNAME + ", "
+                                              + User.COLUMN_NAME_PASSWORD + ", "
+                                              + User.COLUMN_NAME_EMAIL + ", "
+                                              + User.COLUMN_NAME_USER_PROFILE + ", "
+                                              + User.COLUMN_NAME_CREATED_ON + ", "
+                                              + User.COLUMN_NAME_MODIFIED_ON
                                               + " FROM " + Core.Db.User.DocumentName
-                                              + " WHERE (" + User.ColumnName_UserProfile + " = " + (int)UserProfile.SuperAdministrator
-                                              + " OR " + User.ColumnName_UserProfile + " = " + (int)UserProfile.Administrator + ")"
-                                              + " ORDER BY " + User.ColumnName_Username
+                                              + " WHERE (" + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.SuperAdministrator
+                                              + " OR " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
+                                              + " ORDER BY " + User.COLUMN_NAME_USERNAME
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
 
@@ -1570,13 +1570,13 @@ namespace Wexflow.Core.Db.Firebird
                 {
                     User admin = new()
                     {
-                        Id = (int)reader[User.ColumnName_Id],
-                        Username = (string)reader[User.ColumnName_Username],
-                        Password = (string)reader[User.ColumnName_Password],
-                        Email = (string)reader[User.ColumnName_Email],
-                        UserProfile = (UserProfile)(int)reader[User.ColumnName_UserProfile],
-                        CreatedOn = (DateTime)reader[User.ColumnName_CreatedOn],
-                        ModifiedOn = reader[User.ColumnName_ModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnName_ModifiedOn]
+                        Id = (int)reader[User.COLUMN_NAME_ID],
+                        Username = (string)reader[User.COLUMN_NAME_USERNAME],
+                        Password = (string)reader[User.COLUMN_NAME_PASSWORD],
+                        Email = (string)reader[User.COLUMN_NAME_EMAIL],
+                        UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
+                        CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
+                        ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
                     };
 
                     users.Add(admin);
@@ -1594,19 +1594,19 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.Record.DocumentName + "("
-                    + Record.ColumnName_Name + ", "
-                    + Record.ColumnName_Description + ", "
-                    + Record.ColumnName_Approved + ", "
-                    + Record.ColumnName_StartDate + ", "
-                    + Record.ColumnName_EndDate + ", "
-                    + Record.ColumnName_Comments + ", "
-                    + Record.ColumnName_ManagerComments + ", "
-                    + Record.ColumnName_CreatedBy + ", "
-                    + Record.ColumnName_CreatedOn + ", "
-                    + Record.ColumnName_ModifiedBy + ", "
-                    + Record.ColumnName_ModifiedOn + ", "
-                    + Record.ColumnName_AssignedTo + ", "
-                    + Record.ColumnName_AssignedOn + ")"
+                    + Record.COLUMN_NAME_NAME + ", "
+                    + Record.COLUMN_NAME_DESCRIPTION + ", "
+                    + Record.COLUMN_NAME_APPROVED + ", "
+                    + Record.COLUMN_NAME_START_DATE + ", "
+                    + Record.COLUMN_NAME_END_DATE + ", "
+                    + Record.COLUMN_NAME_COMMENTS + ", "
+                    + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                    + Record.COLUMN_NAME_CREATED_BY + ", "
+                    + Record.COLUMN_NAME_CREATED_ON + ", "
+                    + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                    + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                    + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                    + Record.COLUMN_NAME_ASSIGNED_ON + ")"
                     + " VALUES("
                     + "'" + (record.Name ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + (record.Description ?? "").Replace("'", "''") + "'" + ", "
@@ -1621,7 +1621,7 @@ namespace Wexflow.Core.Db.Firebird
                     + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(DateTimeFormat) + "'") + ", "
                      + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
                     + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'") + ")"
-                    + " RETURNING " + Record.ColumnName_Id
+                    + " RETURNING " + Record.COLUMN_NAME_ID
                     + ";"
                     , conn);
                 var id = (int)command.ExecuteScalar();
@@ -1637,20 +1637,20 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.Record.DocumentName + " SET "
-                    + Record.ColumnName_Name + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
-                    + Record.ColumnName_Description + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
-                    + Record.ColumnName_Approved + " = " + (record.Approved ? "TRUE" : "FALSE") + ", "
-                    + Record.ColumnName_StartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
-                    + Record.ColumnName_EndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
-                    + Record.ColumnName_Comments + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
-                    + Record.ColumnName_ManagerComments + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
-                    + Record.ColumnName_CreatedBy + " = " + int.Parse(record.CreatedBy) + ", "
-                    + Record.ColumnName_ModifiedBy + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                    + Record.ColumnName_ModifiedOn + " = '" + DateTime.Now.ToString(DateTimeFormat) + "', "
-                    + Record.ColumnName_AssignedTo + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                    + Record.ColumnName_AssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'")
+                    + Record.COLUMN_NAME_NAME + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
+                    + Record.COLUMN_NAME_DESCRIPTION + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
+                    + Record.COLUMN_NAME_APPROVED + " = " + (record.Approved ? "TRUE" : "FALSE") + ", "
+                    + Record.COLUMN_NAME_START_DATE + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                    + Record.COLUMN_NAME_END_DATE + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                    + Record.COLUMN_NAME_COMMENTS + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
+                    + Record.COLUMN_NAME_MANAGER_COMMENTS + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
+                    + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(record.CreatedBy) + ", "
+                    + Record.COLUMN_NAME_MODIFIED_BY + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
+                    + Record.COLUMN_NAME_MODIFIED_ON + " = '" + DateTime.Now.ToString(DateTimeFormat) + "', "
+                    + Record.COLUMN_NAME_ASSIGNED_TO + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
+                    + Record.COLUMN_NAME_ASSIGNED_ON + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'")
                     + " WHERE "
-                    + Record.ColumnName_Id + " = " + int.Parse(recordId) + ";"
+                    + Record.COLUMN_NAME_ID + " = " + int.Parse(recordId) + ";"
                     , conn);
                 _ = command.ExecuteNonQuery();
             }
@@ -1675,7 +1675,7 @@ namespace Wexflow.Core.Db.Firebird
                     }
 
                     using FbCommand command = new("DELETE FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.ColumnName_Id + " IN " + builder + ";", conn);
+                        + " WHERE " + Record.COLUMN_NAME_ID + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -1689,42 +1689,42 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                    + Record.ColumnName_Id + ", "
-                    + Record.ColumnName_Name + ", "
-                    + Record.ColumnName_Description + ", "
-                    + Record.ColumnName_Approved + ", "
-                    + Record.ColumnName_StartDate + ", "
-                    + Record.ColumnName_EndDate + ", "
-                    + Record.ColumnName_Comments + ", "
-                    + Record.ColumnName_ManagerComments + ", "
-                    + Record.ColumnName_CreatedBy + ", "
-                    + Record.ColumnName_CreatedOn + ", "
-                    + Record.ColumnName_ModifiedBy + ", "
-                    + Record.ColumnName_ModifiedOn + ", "
-                    + Record.ColumnName_AssignedTo + ", "
-                    + Record.ColumnName_AssignedOn
+                    + Record.COLUMN_NAME_ID + ", "
+                    + Record.COLUMN_NAME_NAME + ", "
+                    + Record.COLUMN_NAME_DESCRIPTION + ", "
+                    + Record.COLUMN_NAME_APPROVED + ", "
+                    + Record.COLUMN_NAME_START_DATE + ", "
+                    + Record.COLUMN_NAME_END_DATE + ", "
+                    + Record.COLUMN_NAME_COMMENTS + ", "
+                    + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                    + Record.COLUMN_NAME_CREATED_BY + ", "
+                    + Record.COLUMN_NAME_CREATED_ON + ", "
+                    + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                    + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                    + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                    + Record.COLUMN_NAME_ASSIGNED_ON
                     + " FROM " + Core.Db.Record.DocumentName
-                    + " WHERE " + Record.ColumnName_Id + " = " + int.Parse(id)
+                    + " WHERE " + Record.COLUMN_NAME_ID + " = " + int.Parse(id)
                     + ";", conn);
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     Record record = new()
                     {
-                        Id = (int)reader[Record.ColumnName_Id],
-                        Name = (string)reader[Record.ColumnName_Name],
-                        Description = (string)reader[Record.ColumnName_Description],
-                        Approved = (bool)reader[Record.ColumnName_Approved],
-                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_StartDate],
-                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_EndDate],
-                        Comments = (string)reader[Record.ColumnName_Comments],
-                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                        CreatedBy = ((int)reader[Record.ColumnName_CreatedBy]).ToString(),
-                        CreatedOn = (DateTime)reader[Record.ColumnName_CreatedOn],
-                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_ModifiedOn],
-                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_AssignedTo]).ToString(),
-                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_AssignedOn]
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
                     };
 
                     return record;
@@ -1744,44 +1744,44 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Record.ColumnName_Id + ", "
-                                              + Record.ColumnName_Name + ", "
-                                              + Record.ColumnName_Description + ", "
-                                              + Record.ColumnName_Approved + ", "
-                                              + Record.ColumnName_StartDate + ", "
-                                              + Record.ColumnName_EndDate + ", "
-                                              + Record.ColumnName_Comments + ", "
-                                              + Record.ColumnName_ManagerComments + ", "
-                                              + Record.ColumnName_CreatedBy + ", "
-                                              + Record.ColumnName_CreatedOn + ", "
-                                              + Record.ColumnName_ModifiedBy + ", "
-                                              + Record.ColumnName_ModifiedOn + ", "
-                                              + Record.ColumnName_AssignedTo + ", "
-                                              + Record.ColumnName_AssignedOn
+                                              + Record.COLUMN_NAME_ID + ", "
+                                              + Record.COLUMN_NAME_NAME + ", "
+                                              + Record.COLUMN_NAME_DESCRIPTION + ", "
+                                              + Record.COLUMN_NAME_APPROVED + ", "
+                                              + Record.COLUMN_NAME_START_DATE + ", "
+                                              + Record.COLUMN_NAME_END_DATE + ", "
+                                              + Record.COLUMN_NAME_COMMENTS + ", "
+                                              + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                                              + Record.COLUMN_NAME_CREATED_BY + ", "
+                                              + Record.COLUMN_NAME_CREATED_ON + ", "
+                                              + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                                              + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                                              + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                                              + Record.COLUMN_NAME_ASSIGNED_ON
                                               + " FROM " + Core.Db.Record.DocumentName
-                                              + " WHERE " + "LOWER(" + Record.ColumnName_Name + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
+                                              + " WHERE " + "LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Record record = new()
                     {
-                        Id = (int)reader[Record.ColumnName_Id],
-                        Name = (string)reader[Record.ColumnName_Name],
-                        Description = (string)reader[Record.ColumnName_Description],
-                        Approved = (bool)reader[Record.ColumnName_Approved],
-                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_StartDate],
-                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_EndDate],
-                        Comments = (string)reader[Record.ColumnName_Comments],
-                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                        CreatedBy = ((int)reader[Record.ColumnName_CreatedBy]).ToString(),
-                        CreatedOn = (DateTime)reader[Record.ColumnName_CreatedOn],
-                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_ModifiedOn],
-                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_AssignedTo]).ToString(),
-                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_AssignedOn]
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
                     };
 
                     records.Add(record);
@@ -1801,43 +1801,43 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Record.ColumnName_Id + ", "
-                                              + Record.ColumnName_Name + ", "
-                                              + Record.ColumnName_Description + ", "
-                                              + Record.ColumnName_Approved + ", "
-                                              + Record.ColumnName_StartDate + ", "
-                                              + Record.ColumnName_EndDate + ", "
-                                              + Record.ColumnName_Comments + ", "
-                                              + Record.ColumnName_ManagerComments + ", "
-                                              + Record.ColumnName_CreatedBy + ", "
-                                              + Record.ColumnName_CreatedOn + ", "
-                                              + Record.ColumnName_ModifiedBy + ", "
-                                              + Record.ColumnName_ModifiedOn + ", "
-                                              + Record.ColumnName_AssignedTo + ", "
-                                              + Record.ColumnName_AssignedOn
+                                              + Record.COLUMN_NAME_ID + ", "
+                                              + Record.COLUMN_NAME_NAME + ", "
+                                              + Record.COLUMN_NAME_DESCRIPTION + ", "
+                                              + Record.COLUMN_NAME_APPROVED + ", "
+                                              + Record.COLUMN_NAME_START_DATE + ", "
+                                              + Record.COLUMN_NAME_END_DATE + ", "
+                                              + Record.COLUMN_NAME_COMMENTS + ", "
+                                              + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                                              + Record.COLUMN_NAME_CREATED_BY + ", "
+                                              + Record.COLUMN_NAME_CREATED_ON + ", "
+                                              + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                                              + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                                              + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                                              + Record.COLUMN_NAME_ASSIGNED_ON
                                               + " FROM " + Core.Db.Record.DocumentName
-                                              + " WHERE " + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy)
-                                              + " ORDER BY " + Record.ColumnName_Name + " ASC"
+                                              + " WHERE " + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy)
+                                              + " ORDER BY " + Record.COLUMN_NAME_NAME + " ASC"
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Record record = new()
                     {
-                        Id = (int)reader[Record.ColumnName_Id],
-                        Name = (string)reader[Record.ColumnName_Name],
-                        Description = (string)reader[Record.ColumnName_Description],
-                        Approved = (bool)reader[Record.ColumnName_Approved],
-                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_StartDate],
-                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_EndDate],
-                        Comments = (string)reader[Record.ColumnName_Comments],
-                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                        CreatedBy = ((int)reader[Record.ColumnName_CreatedBy]).ToString(),
-                        CreatedOn = (DateTime)reader[Record.ColumnName_CreatedOn],
-                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_ModifiedOn],
-                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_AssignedTo]).ToString(),
-                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_AssignedOn]
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
                     };
 
                     records.Add(record);
@@ -1857,45 +1857,45 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Record.ColumnName_Id + ", "
-                                              + Record.ColumnName_Name + ", "
-                                              + Record.ColumnName_Description + ", "
-                                              + Record.ColumnName_Approved + ", "
-                                              + Record.ColumnName_StartDate + ", "
-                                              + Record.ColumnName_EndDate + ", "
-                                              + Record.ColumnName_Comments + ", "
-                                              + Record.ColumnName_ManagerComments + ", "
-                                              + Record.ColumnName_CreatedBy + ", "
-                                              + Record.ColumnName_CreatedOn + ", "
-                                              + Record.ColumnName_ModifiedBy + ", "
-                                              + Record.ColumnName_ModifiedOn + ", "
-                                              + Record.ColumnName_AssignedTo + ", "
-                                              + Record.ColumnName_AssignedOn
+                                              + Record.COLUMN_NAME_ID + ", "
+                                              + Record.COLUMN_NAME_NAME + ", "
+                                              + Record.COLUMN_NAME_DESCRIPTION + ", "
+                                              + Record.COLUMN_NAME_APPROVED + ", "
+                                              + Record.COLUMN_NAME_START_DATE + ", "
+                                              + Record.COLUMN_NAME_END_DATE + ", "
+                                              + Record.COLUMN_NAME_COMMENTS + ", "
+                                              + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
+                                              + Record.COLUMN_NAME_CREATED_BY + ", "
+                                              + Record.COLUMN_NAME_CREATED_ON + ", "
+                                              + Record.COLUMN_NAME_MODIFIED_BY + ", "
+                                              + Record.COLUMN_NAME_MODIFIED_ON + ", "
+                                              + Record.COLUMN_NAME_ASSIGNED_TO + ", "
+                                              + Record.COLUMN_NAME_ASSIGNED_ON
                                               + " FROM " + Core.Db.Record.DocumentName
-                                              + " WHERE " + "(LOWER(" + Record.ColumnName_Name + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " OR " + "LOWER(" + Record.ColumnName_Description + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                                              + " AND (" + Record.ColumnName_CreatedBy + " = " + int.Parse(createdBy) + " OR " + Record.ColumnName_AssignedTo + " = " + int.Parse(assingedTo) + ")"
-                                              + " ORDER BY " + Record.ColumnName_CreatedOn + " DESC"
+                                              + " WHERE " + "(LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                                              + " AND (" + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy) + " OR " + Record.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assingedTo) + ")"
+                                              + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Record record = new()
                     {
-                        Id = (int)reader[Record.ColumnName_Id],
-                        Name = (string)reader[Record.ColumnName_Name],
-                        Description = (string)reader[Record.ColumnName_Description],
-                        Approved = (bool)reader[Record.ColumnName_Approved],
-                        StartDate = reader[Record.ColumnName_StartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_StartDate],
-                        EndDate = reader[Record.ColumnName_EndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_EndDate],
-                        Comments = (string)reader[Record.ColumnName_Comments],
-                        ManagerComments = (string)reader[Record.ColumnName_ManagerComments],
-                        CreatedBy = ((int)reader[Record.ColumnName_CreatedBy]).ToString(),
-                        CreatedOn = (DateTime)reader[Record.ColumnName_CreatedOn],
-                        ModifiedBy = reader[Record.ColumnName_ModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_ModifiedBy]).ToString(),
-                        ModifiedOn = reader[Record.ColumnName_ModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_ModifiedOn],
-                        AssignedTo = reader[Record.ColumnName_AssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnName_AssignedTo]).ToString(),
-                        AssignedOn = reader[Record.ColumnName_AssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnName_AssignedOn]
+                        Id = (int)reader[Record.COLUMN_NAME_ID],
+                        Name = (string)reader[Record.COLUMN_NAME_NAME],
+                        Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
+                        Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
+                        StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
+                        EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
+                        Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
+                        ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
+                        CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
+                        CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
+                        ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
+                        ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
+                        AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
                     };
 
                     records.Add(record);
@@ -1913,14 +1913,14 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.Version.DocumentName + "("
-                    + Version.ColumnName_RecordId + ", "
-                    + Version.ColumnName_FilePath + ", "
-                    + Version.ColumnName_CreatedOn + ")"
+                    + Version.COLUMN_NAME_RECORD_ID + ", "
+                    + Version.COLUMN_NAME_FILE_PATH + ", "
+                    + Version.COLUMN_NAME_CREATED_ON + ")"
                     + " VALUES("
                     + int.Parse(version.RecordId) + ", "
                     + "'" + (version.FilePath ?? "").Replace("'", "''") + "'" + ", "
                     + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ")"
-                    + " RETURNING " + Version.ColumnName_Id
+                    + " RETURNING " + Version.COLUMN_NAME_ID
                     + ";"
                     , conn);
                 var id = (int)command.ExecuteScalar();
@@ -1936,10 +1936,10 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.Version.DocumentName + " SET "
-                    + Version.ColumnName_RecordId + " = " + int.Parse(version.RecordId) + ", "
-                    + Version.ColumnName_FilePath + " = '" + (version.FilePath ?? "").Replace("'", "''") + "'"
+                    + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(version.RecordId) + ", "
+                    + Version.COLUMN_NAME_FILE_PATH + " = '" + (version.FilePath ?? "").Replace("'", "''") + "'"
                     + " WHERE "
-                    + Version.ColumnName_Id + " = " + int.Parse(versionId) + ";"
+                    + Version.COLUMN_NAME_ID + " = " + int.Parse(versionId) + ";"
                     , conn);
                 _ = command.ExecuteNonQuery();
             }
@@ -1964,7 +1964,7 @@ namespace Wexflow.Core.Db.Firebird
                     }
 
                     using FbCommand command = new("DELETE FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.ColumnName_Id + " IN " + builder + ";", conn);
+                        + " WHERE " + Version.COLUMN_NAME_ID + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -1980,22 +1980,22 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Version.ColumnName_Id + ", "
-                                              + Version.ColumnName_RecordId + ", "
-                                              + Version.ColumnName_FilePath + ", "
-                                              + Version.ColumnName_CreatedOn
+                                              + Version.COLUMN_NAME_ID + ", "
+                                              + Version.COLUMN_NAME_RECORD_ID + ", "
+                                              + Version.COLUMN_NAME_FILE_PATH + ", "
+                                              + Version.COLUMN_NAME_CREATED_ON
                                               + " FROM " + Core.Db.Version.DocumentName
-                                              + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
+                                              + " WHERE " + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Version version = new()
                     {
-                        Id = (int)reader[Version.ColumnName_Id],
-                        RecordId = ((int)reader[Version.ColumnName_RecordId]).ToString(),
-                        FilePath = (string)reader[Version.ColumnName_FilePath],
-                        CreatedOn = (DateTime)reader[Version.ColumnName_CreatedOn]
+                        Id = (int)reader[Version.COLUMN_NAME_ID],
+                        RecordId = ((int)reader[Version.COLUMN_NAME_RECORD_ID]).ToString(),
+                        FilePath = (string)reader[Version.COLUMN_NAME_FILE_PATH],
+                        CreatedOn = (DateTime)reader[Version.COLUMN_NAME_CREATED_ON]
                     };
 
                     versions.Add(version);
@@ -2013,23 +2013,23 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT FIRST 1 "
-                    + Version.ColumnName_Id + ", "
-                    + Version.ColumnName_RecordId + ", "
-                    + Version.ColumnName_FilePath + ", "
-                    + Version.ColumnName_CreatedOn
+                    + Version.COLUMN_NAME_ID + ", "
+                    + Version.COLUMN_NAME_RECORD_ID + ", "
+                    + Version.COLUMN_NAME_FILE_PATH + ", "
+                    + Version.COLUMN_NAME_CREATED_ON
                     + " FROM " + Core.Db.Version.DocumentName
-                    + " WHERE " + Version.ColumnName_RecordId + " = " + int.Parse(recordId)
-                    + " ORDER BY " + Version.ColumnName_CreatedOn + " DESC"
+                    + " WHERE " + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
+                    + " ORDER BY " + Version.COLUMN_NAME_CREATED_ON + " DESC"
                     + ";", conn);
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     Version version = new()
                     {
-                        Id = (int)reader[Version.ColumnName_Id],
-                        RecordId = ((int)reader[Version.ColumnName_RecordId]).ToString(),
-                        FilePath = (string)reader[Version.ColumnName_FilePath],
-                        CreatedOn = (DateTime)reader[Version.ColumnName_CreatedOn]
+                        Id = (int)reader[Version.COLUMN_NAME_ID],
+                        RecordId = ((int)reader[Version.COLUMN_NAME_RECORD_ID]).ToString(),
+                        FilePath = (string)reader[Version.COLUMN_NAME_FILE_PATH],
+                        CreatedOn = (DateTime)reader[Version.COLUMN_NAME_CREATED_ON]
                     };
 
                     return version;
@@ -2047,18 +2047,18 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.Notification.DocumentName + "("
-                    + Notification.ColumnName_AssignedBy + ", "
-                    + Notification.ColumnName_AssignedOn + ", "
-                    + Notification.ColumnName_AssignedTo + ", "
-                    + Notification.ColumnName_Message + ", "
-                    + Notification.ColumnName_IsRead + ")"
+                    + Notification.COLUMN_NAME_ASSIGNED_BY + ", "
+                    + Notification.COLUMN_NAME_ASSIGNED_ON + ", "
+                    + Notification.COLUMN_NAME_ASSIGNED_TO + ", "
+                    + Notification.COLUMN_NAME_MESSAGE + ", "
+                    + Notification.COLUMN_NAME_IS_READ + ")"
                     + " VALUES("
                     + (!string.IsNullOrEmpty(notification.AssignedBy) ? int.Parse(notification.AssignedBy).ToString() : "NULL") + ", "
                     + "'" + notification.AssignedOn.ToString(DateTimeFormat) + "'" + ", "
                     + (!string.IsNullOrEmpty(notification.AssignedTo) ? int.Parse(notification.AssignedTo).ToString() : "NULL") + ", "
                     + "'" + (notification.Message ?? "").Replace("'", "''") + "'" + ", "
                     + (notification.IsRead ? "TRUE" : "FALSE") + ")"
-                    + " RETURNING " + Notification.ColumnName_Id
+                    + " RETURNING " + Notification.COLUMN_NAME_ID
                     + ";"
                     , conn);
                 var id = (int)command.ExecuteScalar();
@@ -2083,8 +2083,8 @@ namespace Wexflow.Core.Db.Firebird
                 }
 
                 using FbCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
-                    + " SET " + Notification.ColumnName_IsRead + " = " + "TRUE"
-                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
+                    + " SET " + Notification.COLUMN_NAME_IS_READ + " = " + "TRUE"
+                    + " WHERE " + Notification.COLUMN_NAME_ID + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -2106,8 +2106,8 @@ namespace Wexflow.Core.Db.Firebird
                 }
 
                 using FbCommand command = new("UPDATE " + Core.Db.Notification.DocumentName
-                    + " SET " + Notification.ColumnName_IsRead + " = " + "FALSE"
-                    + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
+                    + " SET " + Notification.COLUMN_NAME_IS_READ + " = " + "FALSE"
+                    + " WHERE " + Notification.COLUMN_NAME_ID + " IN " + builder + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -2131,7 +2131,7 @@ namespace Wexflow.Core.Db.Firebird
                     }
 
                     using FbCommand command = new("DELETE FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE " + Notification.ColumnName_Id + " IN " + builder + ";", conn);
+                        + " WHERE " + Notification.COLUMN_NAME_ID + " IN " + builder + ";", conn);
                     _ = command.ExecuteNonQuery();
                 }
             }
@@ -2147,28 +2147,28 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Notification.ColumnName_Id + ", "
-                                              + Notification.ColumnName_AssignedBy + ", "
-                                              + Notification.ColumnName_AssignedOn + ", "
-                                              + Notification.ColumnName_AssignedTo + ", "
-                                              + Notification.ColumnName_Message + ", "
-                                              + Notification.ColumnName_IsRead
+                                              + Notification.COLUMN_NAME_ID + ", "
+                                              + Notification.COLUMN_NAME_ASSIGNED_BY + ", "
+                                              + Notification.COLUMN_NAME_ASSIGNED_ON + ", "
+                                              + Notification.COLUMN_NAME_ASSIGNED_TO + ", "
+                                              + Notification.COLUMN_NAME_MESSAGE + ", "
+                                              + Notification.COLUMN_NAME_IS_READ
                                               + " FROM " + Core.Db.Notification.DocumentName
-                                              + " WHERE " + "(LOWER(" + Notification.ColumnName_Message + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                                              + " AND " + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo) + ")"
-                                              + " ORDER BY " + Notification.ColumnName_AssignedOn + " DESC"
+                                              + " WHERE " + "(LOWER(" + Notification.COLUMN_NAME_MESSAGE + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                                              + " AND " + Notification.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assignedTo) + ")"
+                                              + " ORDER BY " + Notification.COLUMN_NAME_ASSIGNED_ON + " DESC"
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Notification notification = new()
                     {
-                        Id = (int)reader[Notification.ColumnName_Id],
-                        AssignedBy = ((int)reader[Notification.ColumnName_AssignedBy]).ToString(),
-                        AssignedOn = (DateTime)reader[Notification.ColumnName_AssignedOn],
-                        AssignedTo = ((int)reader[Notification.ColumnName_AssignedTo]).ToString(),
-                        Message = (string)reader[Notification.ColumnName_Message],
-                        IsRead = (bool)reader[Notification.ColumnName_IsRead]
+                        Id = (int)reader[Notification.COLUMN_NAME_ID],
+                        AssignedBy = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_BY]).ToString(),
+                        AssignedOn = (DateTime)reader[Notification.COLUMN_NAME_ASSIGNED_ON],
+                        AssignedTo = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_TO]).ToString(),
+                        Message = (string)reader[Notification.COLUMN_NAME_MESSAGE],
+                        IsRead = (bool)reader[Notification.COLUMN_NAME_IS_READ]
                     };
 
                     notifications.Add(notification);
@@ -2187,8 +2187,8 @@ namespace Wexflow.Core.Db.Firebird
 
                 using FbCommand command = new("SELECT COUNT(*)"
                     + " FROM " + Core.Db.Notification.DocumentName
-                    + " WHERE (" + Notification.ColumnName_AssignedTo + " = " + int.Parse(assignedTo)
-                    + " AND " + Notification.ColumnName_IsRead + " = " + "FALSE" + ")"
+                    + " WHERE (" + Notification.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assignedTo)
+                    + " AND " + Notification.COLUMN_NAME_IS_READ + " = " + "FALSE" + ")"
                     + ";", conn);
                 var count = (long)command.ExecuteScalar();
                 var hasNotifications = count > 0;
@@ -2204,15 +2204,15 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("INSERT INTO " + Core.Db.Approver.DocumentName + "("
-                    + Approver.ColumnName_UserId + ", "
-                    + Approver.ColumnName_RecordId + ", "
-                    + Approver.ColumnName_Approved + ", "
-                    + Approver.ColumnName_ApprovedOn + ") VALUES("
+                    + Approver.COLUMN_NAME_USER_ID + ", "
+                    + Approver.COLUMN_NAME_RECORD_ID + ", "
+                    + Approver.COLUMN_NAME_APPROVED + ", "
+                    + Approver.COLUMN_NAME_APPROVED_ON + ") VALUES("
                     + int.Parse(approver.UserId) + ", "
                     + int.Parse(approver.RecordId) + ", "
                     + (approver.Approved ? "TRUE" : "FALSE") + ", "
                     + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'") + ") "
-                    + "RETURNING " + Approver.ColumnName_Id + ";"
+                    + "RETURNING " + Approver.COLUMN_NAME_ID + ";"
                     , conn);
                 var id = (int)command.ExecuteScalar();
                 return id.ToString();
@@ -2227,12 +2227,12 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("UPDATE " + Core.Db.Approver.DocumentName + " SET "
-                    + Approver.ColumnName_UserId + " = " + int.Parse(approver.UserId) + ", "
-                    + Approver.ColumnName_RecordId + " = " + int.Parse(approver.RecordId) + ", "
-                    + Approver.ColumnName_Approved + " = " + (approver.Approved ? "TRUE" : "FALSE") + ", "
-                    + Approver.ColumnName_ApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'")
+                    + Approver.COLUMN_NAME_USER_ID + " = " + int.Parse(approver.UserId) + ", "
+                    + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(approver.RecordId) + ", "
+                    + Approver.COLUMN_NAME_APPROVED + " = " + (approver.Approved ? "TRUE" : "FALSE") + ", "
+                    + Approver.COLUMN_NAME_APPROVED_ON + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'")
                     + " WHERE "
-                    + Approver.ColumnName_Id + " = " + int.Parse(approverId) + ";"
+                    + Approver.COLUMN_NAME_ID + " = " + int.Parse(approverId) + ";"
                     , conn);
                 _ = command.ExecuteNonQuery();
             }
@@ -2246,7 +2246,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
-                    + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId) + ";", conn);
+                    + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId) + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -2259,8 +2259,8 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
-                    + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
-                    + " AND " + Approver.ColumnName_Approved + " = " + "TRUE"
+                    + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
+                    + " AND " + Approver.COLUMN_NAME_APPROVED + " = " + "TRUE"
                     + ";"
                     , conn);
                 _ = command.ExecuteNonQuery();
@@ -2275,7 +2275,7 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("DELETE FROM " + Core.Db.Approver.DocumentName
-                    + " WHERE " + Approver.ColumnName_UserId + " = " + int.Parse(userId) + ";", conn);
+                    + " WHERE " + Approver.COLUMN_NAME_USER_ID + " = " + int.Parse(userId) + ";", conn);
                 _ = command.ExecuteNonQuery();
             }
         }
@@ -2290,24 +2290,24 @@ namespace Wexflow.Core.Db.Firebird
                 conn.Open();
 
                 using FbCommand command = new("SELECT "
-                                              + Approver.ColumnName_Id + ", "
-                                              + Approver.ColumnName_UserId + ", "
-                                              + Approver.ColumnName_RecordId + ", "
-                                              + Approver.ColumnName_Approved + ", "
-                                              + Approver.ColumnName_ApprovedOn
+                                              + Approver.COLUMN_NAME_ID + ", "
+                                              + Approver.COLUMN_NAME_USER_ID + ", "
+                                              + Approver.COLUMN_NAME_RECORD_ID + ", "
+                                              + Approver.COLUMN_NAME_APPROVED + ", "
+                                              + Approver.COLUMN_NAME_APPROVED_ON
                                               + " FROM " + Core.Db.Approver.DocumentName
-                                              + " WHERE " + Approver.ColumnName_RecordId + " = " + int.Parse(recordId)
+                                              + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
                                               + ";", conn);
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Approver approver = new()
                     {
-                        Id = (int)reader[Approver.ColumnName_Id],
-                        UserId = ((int)reader[Approver.ColumnName_UserId]).ToString(),
-                        RecordId = ((int)reader[Approver.ColumnName_RecordId]).ToString(),
-                        Approved = (bool)reader[Approver.ColumnName_Approved],
-                        ApprovedOn = reader[Approver.ColumnName_ApprovedOn] == DBNull.Value ? null : (DateTime?)reader[Approver.ColumnName_ApprovedOn]
+                        Id = (int)reader[Approver.COLUMN_NAME_ID],
+                        UserId = ((int)reader[Approver.COLUMN_NAME_USER_ID]).ToString(),
+                        RecordId = ((int)reader[Approver.COLUMN_NAME_RECORD_ID]).ToString(),
+                        Approved = (bool)reader[Approver.COLUMN_NAME_APPROVED],
+                        ApprovedOn = reader[Approver.COLUMN_NAME_APPROVED_ON] == DBNull.Value ? null : (DateTime?)reader[Approver.COLUMN_NAME_APPROVED_ON]
                     };
 
                     approvers.Add(approver);

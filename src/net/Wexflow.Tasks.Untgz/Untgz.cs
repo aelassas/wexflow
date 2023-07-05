@@ -86,7 +86,7 @@ namespace Wexflow.Tasks.Untgz
                         var destFolder = Path.Combine(DestDir
                             , $"{Path.GetFileNameWithoutExtension(tgz.Path)}_{$"{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}"}");
                         _ = Directory.CreateDirectory(destFolder);
-                        ExtractTGZ(tgz.Path, destFolder);
+                        ExtractTgz(tgz.Path, destFolder);
 
                         foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
@@ -114,7 +114,7 @@ namespace Wexflow.Tasks.Untgz
             return success;
         }
 
-        private void ExtractTGZ(string gzArchiveName, string destFolder)
+        private void ExtractTgz(string gzArchiveName, string destFolder)
         {
             Stream inStream = File.OpenRead(gzArchiveName);
             Stream gzipStream = new GZipInputStream(inStream);

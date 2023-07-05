@@ -2,35 +2,35 @@
 {
     public class Record : Core.Db.Record
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_Name = "NAME";
-        public const string ColumnName_Description = "DESCRIPTION";
-        public const string ColumnName_Approved = "APPROVED";
-        public const string ColumnName_StartDate = "START_DATE";
-        public const string ColumnName_EndDate = "END_DATE";
-        public const string ColumnName_Comments = "COMMENTS";
-        public const string ColumnName_ManagerComments = "MANAGER_COMMENTS";
-        public const string ColumnName_CreatedBy = "CREATED_BY";
-        public const string ColumnName_CreatedOn = "CREATED_ON";
-        public const string ColumnName_ModifiedBy = "MODIFIED_BY";
-        public const string ColumnName_ModifiedOn = "MODIFIED_ON";
-        public const string ColumnName_AssignedTo = "ASSIGNED_TO";
-        public const string ColumnName_AssignedOn = "ASSIGNED_ON";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_NAME = "NAME";
+        public const string COLUMN_NAME_DESCRIPTION = "DESCRIPTION";
+        public const string COLUMN_NAME_APPROVED = "APPROVED";
+        public const string COLUMN_NAME_START_DATE = "START_DATE";
+        public const string COLUMN_NAME_END_DATE = "END_DATE";
+        public const string COLUMN_NAME_COMMENTS = "COMMENTS";
+        public const string COLUMN_NAME_MANAGER_COMMENTS = "MANAGER_COMMENTS";
+        public const string COLUMN_NAME_CREATED_BY = "CREATED_BY";
+        public const string COLUMN_NAME_CREATED_ON = "CREATED_ON";
+        public const string COLUMN_NAME_MODIFIED_BY = "MODIFIED_BY";
+        public const string COLUMN_NAME_MODIFIED_ON = "MODIFIED_ON";
+        public const string COLUMN_NAME_ASSIGNED_TO = "ASSIGNED_TO";
+        public const string COLUMN_NAME_ASSIGNED_ON = "ASSIGNED_ON";
 
-        public const string TableStruct = "(" + ColumnName_Id + " SERIAL PRIMARY KEY, "
-                                                        + ColumnName_Name + " VARCHAR, "
-                                                        + ColumnName_Description + " VARCHAR, "
-                                                        + ColumnName_Approved + " BOOLEAN, "
-                                                        + ColumnName_StartDate + " TIMESTAMP, "
-                                                        + ColumnName_EndDate + " TIMESTAMP, "
-                                                        + ColumnName_Comments + " VARCHAR, "
-                                                        + ColumnName_ManagerComments + " VARCHAR, "
-                                                        + ColumnName_CreatedBy + " INT, "
-                                                        + ColumnName_CreatedOn + " TIMESTAMP, "
-                                                        + ColumnName_ModifiedBy + " INT, "
-                                                        + ColumnName_ModifiedOn + " TIMESTAMP, "
-                                                        + ColumnName_AssignedTo + " INT, "
-                                                        + ColumnName_AssignedOn + " TIMESTAMP)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " SERIAL PRIMARY KEY, "
+                                                        + COLUMN_NAME_NAME + " VARCHAR, "
+                                                        + COLUMN_NAME_DESCRIPTION + " VARCHAR, "
+                                                        + COLUMN_NAME_APPROVED + " BOOLEAN, "
+                                                        + COLUMN_NAME_START_DATE + " TIMESTAMP, "
+                                                        + COLUMN_NAME_END_DATE + " TIMESTAMP, "
+                                                        + COLUMN_NAME_COMMENTS + " VARCHAR, "
+                                                        + COLUMN_NAME_MANAGER_COMMENTS + " VARCHAR, "
+                                                        + COLUMN_NAME_CREATED_BY + " INT, "
+                                                        + COLUMN_NAME_CREATED_ON + " TIMESTAMP, "
+                                                        + COLUMN_NAME_MODIFIED_BY + " INT, "
+                                                        + COLUMN_NAME_MODIFIED_ON + " TIMESTAMP, "
+                                                        + COLUMN_NAME_ASSIGNED_TO + " INT, "
+                                                        + COLUMN_NAME_ASSIGNED_ON + " TIMESTAMP)";
 
         public int Id { get; set; }
 

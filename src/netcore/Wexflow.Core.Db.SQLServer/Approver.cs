@@ -2,17 +2,17 @@
 {
     public class Approver : Core.Db.Approver
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_UserId = "USER_ID";
-        public const string ColumnName_RecordId = "RECORD_ID";
-        public const string ColumnName_Approved = "APPROVED";
-        public const string ColumnName_ApprovedOn = "APPROVED_ON";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_USER_ID = "USER_ID";
+        public const string COLUMN_NAME_RECORD_ID = "RECORD_ID";
+        public const string COLUMN_NAME_APPROVED = "APPROVED";
+        public const string COLUMN_NAME_APPROVED_ON = "APPROVED_ON";
 
-        public const string TableStruct = "(" + ColumnName_Id + " INT IDENTITY(1,1) PRIMARY KEY, "
-                                                        + ColumnName_UserId + " INT, "
-                                                        + ColumnName_RecordId + " INT, "
-                                                        + ColumnName_Approved + " BIT, "
-                                                        + ColumnName_ApprovedOn + " DATETIME)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " INT IDENTITY(1,1) PRIMARY KEY, "
+                                                        + COLUMN_NAME_USER_ID + " INT, "
+                                                        + COLUMN_NAME_RECORD_ID + " INT, "
+                                                        + COLUMN_NAME_APPROVED + " BIT, "
+                                                        + COLUMN_NAME_APPROVED_ON + " DATETIME)";
 
         public int Id { get; set; }
 

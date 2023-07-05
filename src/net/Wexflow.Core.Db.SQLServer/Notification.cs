@@ -2,19 +2,19 @@
 {
     public class Notification : Core.Db.Notification
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_AssignedBy = "ASSIGNED_BY";
-        public const string ColumnName_AssignedOn = "ASSIGNED_ON";
-        public const string ColumnName_AssignedTo = "ASSIGNED_TO";
-        public const string ColumnName_Message = "MESSAGE";
-        public const string ColumnName_IsRead = "IS_READ";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_ASSIGNED_BY = "ASSIGNED_BY";
+        public const string COLUMN_NAME_ASSIGNED_ON = "ASSIGNED_ON";
+        public const string COLUMN_NAME_ASSIGNED_TO = "ASSIGNED_TO";
+        public const string COLUMN_NAME_MESSAGE = "MESSAGE";
+        public const string COLUMN_NAME_IS_READ = "IS_READ";
 
-        public const string TableStruct = "(" + ColumnName_Id + " INT IDENTITY(1,1) PRIMARY KEY, "
-                                                        + ColumnName_AssignedBy + " INT, "
-                                                        + ColumnName_AssignedOn + " DATETIME, "
-                                                        + ColumnName_AssignedTo + " INT, "
-                                                        + ColumnName_Message + " VARCHAR(MAX), "
-                                                        + ColumnName_IsRead + " BIT)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " INT IDENTITY(1,1) PRIMARY KEY, "
+                                                        + COLUMN_NAME_ASSIGNED_BY + " INT, "
+                                                        + COLUMN_NAME_ASSIGNED_ON + " DATETIME, "
+                                                        + COLUMN_NAME_ASSIGNED_TO + " INT, "
+                                                        + COLUMN_NAME_MESSAGE + " VARCHAR(MAX), "
+                                                        + COLUMN_NAME_IS_READ + " BIT)";
 
         public int Id { get; set; }
 

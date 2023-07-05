@@ -25,14 +25,14 @@ namespace Wexflow.NetCore.Tests
             , string.Empty
             , string.Empty);
 
-        public static readonly string TempFolder =
+        public static readonly string ColumnTempFolder =
             Environment.OSVersion.Platform == PlatformID.Unix
             ? "/opt/wexflow/Wexflow/Temp/"
             : (Environment.OSVersion.Platform == PlatformID.MacOSX
                ? "/Applications/wexflow/Wexflow/Temp/"
                : @"C:\Wexflow-netcore\Temp\");
 
-        public static readonly string SourceFilesFolder =
+        public static readonly string ColumnSourceFilesFolder =
             Environment.OSVersion.Platform == PlatformID.Unix
             ? "/opt/wexflow/WexflowTesting/"
             : (Environment.OSVersion.Platform == PlatformID.MacOSX

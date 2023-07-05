@@ -6,30 +6,30 @@ namespace Wexflow.Scripts.LiteDB
 {
     internal class Program
     {
-        private static IConfiguration? config;
+        private static IConfiguration? _config;
 
         private static void Main()
         {
             try
             {
-                config = new ConfigurationBuilder()
+                _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 //.AddJsonFile($"appsettings.{Environment.OSVersion.Platform}.json", optional: true, reloadOnChange: true)
                 .Build();
 
-                var workflowsFolder = config["workflowsFolder"];
-                Db db = new(config["connectionString"]);
+                var workflowsFolder = _config["workflowsFolder"];
+                Db db = new(_config["connectionString"]);
                 Helper.InsertWorkflowsAndUser(db, workflowsFolder);
-                Helper.InsertRecords(db, "litedb", config["recordsFolder"], config["documentFile"], config["invoiceFile"], config["timesheetFile"]);
+                Helper.InsertRecords(db, "litedb", _config["recordsFolder"], _config["documentFile"], _config["invoiceFile"], _config["timesheetFile"]);
                 db.Dispose();
 
-                _ = bool.TryParse(config["buildDevDatabases"], out var buildDevDatabases);
+                _ = bool.TryParse(_config["buildDevDatabases"], out var buildDevDatabases);
 
-                if (buildDevDatabases && config != null)
+                if (buildDevDatabases && _config != null)
                 {
-                    BuildDatabase("Windows", "windows", config);
-                    BuildDatabase("Linux", "linux", config);
-                    BuildDatabase("Mac OS X", "macos", config);
+                    BuildDatabase("Windows", "windows", _config);
+                    BuildDatabase("Linux", "linux", _config);
+                    BuildDatabase("Mac OS X", "macos", _config);
                 }
             }
             catch (Exception e)

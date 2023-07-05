@@ -7,10 +7,10 @@ namespace Wexflow.NetCore.Tests
     [TestClass]
     public class FilesJoiner
     {
-        private static readonly string TempFolder = Path.Combine(Helper.TempFolder, "147");
+        private static readonly string TempFolder = Path.Combine(Helper.ColumnTempFolder, "147");
 
         private static readonly string SourceFilesFolder =
-            Path.Combine(Helper.SourceFilesFolder, "FilesJoiner") + Path.DirectorySeparatorChar;
+            Path.Combine(Helper.ColumnSourceFilesFolder, "FilesJoiner") + Path.DirectorySeparatorChar;
 
         private const string ExpectedResultFileA = "file-a-1\r\n" +
                                                    "file-a-2\r\n" +

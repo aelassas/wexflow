@@ -2,11 +2,11 @@
 {
     public class UserWorkflow : Core.Db.UserWorkflow
     {
-        public const string ColumnName_Id = "ID";
-        public const string ColumnName_UserId = "USER_ID";
-        public const string ColumnName_WorkflowId = "WORKFLOW_ID";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_USER_ID = "USER_ID";
+        public const string COLUMN_NAME_WORKFLOW_ID = "WORKFLOW_ID";
 
-        public const string TableStruct = "(" + ColumnName_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + ColumnName_UserId + " INTEGER, " + ColumnName_WorkflowId + " INTEGER)";
+        public const string TableStruct = "(" + COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + COLUMN_NAME_USER_ID + " INTEGER, " + COLUMN_NAME_WORKFLOW_ID + " INTEGER)";
 
         public long Id { get; set; }
     }

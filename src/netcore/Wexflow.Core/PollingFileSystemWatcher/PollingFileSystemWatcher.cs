@@ -122,7 +122,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
             foreach (var value in _state)
             {
-                if (value._version != _version)
+                if (value.Version != _version)
                 {
                     changes.AddRemoved(value.Directory, value.Path);
                     _state.Remove(value.Directory, value.Path);
@@ -166,13 +166,13 @@ namespace Wexflow.Core.PollingFileSystemWatcher
                 {
                     LastWriteTimeUtc = file.LastWriteTimeUtc,
                     Length = file.Length,
-                    _version = _version
+                    Version = _version
                 };
                 _state.Add(directory, path, newFileState);
                 return;
             }
 
-            _state.Values[index]._version = _version;
+            _state.Values[index].Version = _version;
 
             var previousState = _state.Values[index];
             if (file.LastWriteTimeUtc != previousState.LastWriteTimeUtc || file.Length != previousState.Length)

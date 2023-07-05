@@ -10,8 +10,8 @@ namespace Wexflow.Tasks.Http
 {
     public class Http : Task
     {
-        private const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
-        private const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
+        private const SslProtocols SslProtocolsTls12 = (SslProtocols)0x00000C00;
+        private const SecurityProtocolType Tls12 = (SecurityProtocolType)SslProtocolsTls12;
 
         public string[] Urls { get; }
 
