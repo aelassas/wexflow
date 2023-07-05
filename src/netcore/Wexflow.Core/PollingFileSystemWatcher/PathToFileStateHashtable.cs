@@ -98,12 +98,14 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // ReSharper disable once RedundantUnsafeContext
         private static unsafe bool Equal(FullPath fullPath, string directory, ReadOnlySpan<char> file)
         {
             return string.Equals(fullPath.Directory, directory, StringComparison.Ordinal)
 && file.Equals((ReadOnlySpan<char>)fullPath.File, StringComparison.Ordinal);
         }
 
+        // ReSharper disable once RedundantUnsafeContext
         private static unsafe int GetHashCode(ReadOnlySpan<char> path)
         {
             var code = 0;
@@ -175,6 +177,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
         private static int GetPrime(int min)
         {
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < Primes.Length; i++)
             {
                 var prime = Primes[i];
