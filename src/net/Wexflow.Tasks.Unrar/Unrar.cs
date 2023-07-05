@@ -122,7 +122,7 @@ namespace Wexflow.Tasks.Unrar
             {
                 foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
                 {
-                    entry.WriteToDirectory(targetDir, new ExtractionOptions()
+                    entry.WriteToDirectory(targetDir, new ExtractionOptions
                     {
                         ExtractFullPath = true,
                         Overwrite = true

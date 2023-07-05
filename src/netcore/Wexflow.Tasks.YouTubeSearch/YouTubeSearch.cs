@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.YouTubeSearch
 
         private async System.Threading.Tasks.Task Search()
         {
-            YouTubeService youtubeService = new(new BaseClientService.Initializer()
+            YouTubeService youtubeService = new(new BaseClientService.Initializer
             {
                 ApiKey = ApiKey,
                 ApplicationName = ApplicationName

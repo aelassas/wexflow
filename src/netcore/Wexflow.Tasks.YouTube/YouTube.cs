@@ -126,7 +126,7 @@ namespace Wexflow.Tasks.YouTube
                 }
                 Info("Authentication succeeded.");
 
-                YouTubeService youtubeService = new(new BaseClientService.Initializer()
+                YouTubeService youtubeService = new(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = ApplicationName,

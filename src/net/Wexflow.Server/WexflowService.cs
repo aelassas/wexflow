@@ -30,17 +30,14 @@ namespace Wexflow.Server
     public sealed class WexflowService : NancyModule
     {
         private const string Root = "api/v1";
-        private static readonly XNamespace xn = "urn:wexflow-schema";
+        private static readonly XNamespace Xn = "urn:wexflow-schema";
 
         public WexflowService()
         {
             //
             // Index
             //
-            Get("/", _ =>
-            {
-                return Response.AsRedirect("/swagger-ui/index.html");
-            });
+            Get("/", _ => Response.AsRedirect("/swagger-ui/index.html"));
 
             //
             // Dashboard
@@ -208,7 +205,7 @@ namespace Wexflow.Server
                 var workflowsStr = JsonConvert.SerializeObject(workflows);
                 var workflowsBytes = Encoding.UTF8.GetBytes(workflowsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(workflowsBytes, 0, workflowsBytes.Length)
@@ -273,7 +270,7 @@ namespace Wexflow.Server
                 var workflowsStr = JsonConvert.SerializeObject(workflows);
                 var workflowsBytes = Encoding.UTF8.GetBytes(workflowsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(workflowsBytes, 0, workflowsBytes.Length)
@@ -313,7 +310,7 @@ namespace Wexflow.Server
                             var workflowStr = JsonConvert.SerializeObject(workflow);
                             var workflowBytes = Encoding.UTF8.GetBytes(workflowStr);
 
-                            return new Response()
+                            return new Response
                             {
                                 ContentType = "application/json",
                                 Contents = s => s.Write(workflowBytes, 0, workflowBytes.Length)
@@ -327,7 +324,7 @@ namespace Wexflow.Server
                                 var workflowStr = JsonConvert.SerializeObject(workflow);
                                 var workflowBytes = Encoding.UTF8.GetBytes(workflowStr);
 
-                                return new Response()
+                                return new Response
                                 {
                                     ContentType = "application/json",
                                     Contents = s => s.Write(workflowBytes, 0, workflowBytes.Length)
@@ -337,7 +334,7 @@ namespace Wexflow.Server
                     }
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -384,7 +381,7 @@ namespace Wexflow.Server
                                 var workflowStr = JsonConvert.SerializeObject(workflow);
                                 var workflowBytes = Encoding.UTF8.GetBytes(workflowStr);
 
-                                return new Response()
+                                return new Response
                                 {
                                     ContentType = "application/json",
                                     Contents = s => s.Write(workflowBytes, 0, workflowBytes.Length)
@@ -398,7 +395,7 @@ namespace Wexflow.Server
                                     var workflowStr = JsonConvert.SerializeObject(workflow);
                                     var workflowBytes = Encoding.UTF8.GetBytes(workflowStr);
 
-                                    return new Response()
+                                    return new Response
                                     {
                                         ContentType = "application/json",
                                         Contents = s => s.Write(workflowBytes, 0, workflowBytes.Length)
@@ -409,7 +406,7 @@ namespace Wexflow.Server
                     }
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -451,7 +448,7 @@ namespace Wexflow.Server
                                 var jobsStr = JsonConvert.SerializeObject(jobs);
                                 var jobsBytes = Encoding.UTF8.GetBytes(jobsStr);
 
-                                return new Response()
+                                return new Response
                                 {
                                     ContentType = "application/json",
                                     Contents = s => s.Write(jobsBytes, 0, jobsBytes.Length)
@@ -465,7 +462,7 @@ namespace Wexflow.Server
                                     var jobsStr = JsonConvert.SerializeObject(jobs);
                                     var jobsBytes = Encoding.UTF8.GetBytes(jobsStr);
 
-                                    return new Response()
+                                    return new Response
                                     {
                                         ContentType = "application/json",
                                         Contents = s => s.Write(jobsBytes, 0, jobsBytes.Length)
@@ -479,7 +476,7 @@ namespace Wexflow.Server
                 var emptyJobsStr = JsonConvert.SerializeObject(Array.Empty<WorkflowInfo>());
                 var emptyJobsBytes = Encoding.UTF8.GetBytes(emptyJobsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(emptyJobsBytes, 0, emptyJobsBytes.Length)
@@ -510,7 +507,7 @@ namespace Wexflow.Server
                         var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                         var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -527,7 +524,7 @@ namespace Wexflow.Server
                             var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                             var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                            return new Response()
+                            return new Response
                             {
                                 ContentType = "application/json",
                                 Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -580,7 +577,7 @@ namespace Wexflow.Server
                         var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                         var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -599,7 +596,7 @@ namespace Wexflow.Server
                             var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                             var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                            return new Response()
+                            return new Response
                             {
                                 ContentType = "application/json",
                                 Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -652,7 +649,7 @@ namespace Wexflow.Server
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -697,7 +694,7 @@ namespace Wexflow.Server
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -781,7 +778,7 @@ namespace Wexflow.Server
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -826,7 +823,7 @@ namespace Wexflow.Server
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -848,7 +845,7 @@ namespace Wexflow.Server
                 var user = WexflowServer.WexflowEngine.GetUser(username);
                 if (user.Password.Equals(password))
                 {
-                    dynamic wf = WexflowServer.WexflowEngine.GetWorkflow(args.id);
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow((int)args.id);
                     if (wf != null)
                     {
                         IList<TaskInfo> taskInfos = new List<TaskInfo>();
@@ -879,7 +876,7 @@ namespace Wexflow.Server
                         var tasksStr = JsonConvert.SerializeObject(taskInfos);
                         var tasksBytes = Encoding.UTF8.GetBytes(tasksStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(tasksBytes, 0, tasksBytes.Length)
@@ -887,7 +884,7 @@ namespace Wexflow.Server
                     }
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -926,7 +923,7 @@ namespace Wexflow.Server
                 var workflowIdStr = JsonConvert.SerializeObject(workflowId);
                 var workflowIdBytes = Encoding.UTF8.GetBytes(workflowIdStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(workflowIdBytes, 0, workflowIdBytes.Length)
@@ -955,7 +952,7 @@ namespace Wexflow.Server
                         var xmlStr = JsonConvert.SerializeObject(wf.Xml);
                         var xmlBytes = Encoding.UTF8.GetBytes(xmlStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(xmlBytes, 0, xmlBytes.Length)
@@ -963,7 +960,7 @@ namespace Wexflow.Server
                     }
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -1035,7 +1032,7 @@ namespace Wexflow.Server
                         var jsonStr = JsonConvert.SerializeObject(workflow);
                         var jsonbBytes = Encoding.UTF8.GetBytes(jsonStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(jsonbBytes, 0, jsonbBytes.Length)
@@ -1043,7 +1040,7 @@ namespace Wexflow.Server
                     }
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -1079,14 +1076,14 @@ namespace Wexflow.Server
                     var taskNamesStr = JsonConvert.SerializeObject(taskNames);
                     var taskNamesBytes = Encoding.UTF8.GetBytes(taskNamesStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(taskNamesBytes, 0, taskNamesBytes.Length)
                     };
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -1127,14 +1124,14 @@ namespace Wexflow.Server
                     var taskNamesStr = JsonConvert.SerializeObject(taskNames);
                     var taskNamesBytes = Encoding.UTF8.GetBytes(taskNamesStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(taskNamesBytes, 0, taskNamesBytes.Length)
                     };
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -1171,14 +1168,14 @@ namespace Wexflow.Server
                     var taskSettingsStr = JsonConvert.SerializeObject(taskSettings);
                     var taskSettingsBytes = Encoding.UTF8.GetBytes(taskSettingsStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(taskSettingsBytes, 0, taskSettingsBytes.Length)
                     };
                 }
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json"
                 };
@@ -1259,14 +1256,14 @@ namespace Wexflow.Server
                         var xtaskXmlStr = JsonConvert.SerializeObject(xtaskXml);
                         var xtaskXmlBytes = Encoding.UTF8.GetBytes(xtaskXmlStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(xtaskXmlBytes, 0, xtaskXmlBytes.Length)
                         };
                     }
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json"
                     };
@@ -1274,7 +1271,7 @@ namespace Wexflow.Server
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json"
                     };
@@ -1304,7 +1301,7 @@ namespace Wexflow.Server
                             var falseStr = JsonConvert.SerializeObject(false);
                             var falseBytes = Encoding.UTF8.GetBytes(falseStr);
 
-                            return new Response()
+                            return new Response
                             {
                                 ContentType = "application/json",
                                 Contents = s => s.Write(falseBytes, 0, falseBytes.Length)
@@ -1315,7 +1312,7 @@ namespace Wexflow.Server
                     var trueStr = JsonConvert.SerializeObject(true);
                     var trueBytes = Encoding.UTF8.GetBytes(trueStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(trueBytes, 0, trueBytes.Length)
@@ -1345,7 +1342,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -1374,7 +1371,7 @@ namespace Wexflow.Server
                     dynamic resStr = JsonConvert.SerializeObject(res);
                     dynamic resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -1423,7 +1420,7 @@ namespace Wexflow.Server
                         var resStr = JsonConvert.SerializeObject(true);
                         var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                        return new Response()
+                        return new Response
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -1439,7 +1436,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -1521,7 +1518,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(ressr);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -1534,7 +1531,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(new SaveResult { FilePath = string.Empty, Result = false });
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -1593,7 +1590,7 @@ namespace Wexflow.Server
             var qFalseStr = JsonConvert.SerializeObject(false);
             var qFalseBytes = Encoding.UTF8.GetBytes(qFalseStr);
 
-            return new Response()
+            return new Response
             {
                 ContentType = "application/json",
                 Contents = s => s.Write(qFalseBytes, 0, qFalseBytes.Length)
@@ -1607,11 +1604,11 @@ namespace Wexflow.Server
             var switchId = (int?)node.SelectToken("SwitchId");
             if (ifId != null)
             {
-                var xif = new XElement(xn + "If", new XAttribute("id", (int)node.SelectToken("Id")),
+                var xif = new XElement(Xn + "If", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("if", ifId));
 
-                var xdo = new XElement(xn + "Do");
+                var xdo = new XElement(Xn + "Do");
                 var doNodes = (JArray)node.SelectToken("DoNodes");
                 if (doNodes != null)
                 {
@@ -1619,13 +1616,13 @@ namespace Wexflow.Server
                     {
                         var taskId = (int)doNode.SelectToken("Id");
                         var parentId = (int)doNode.SelectToken("ParentId");
-                        xdo.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xdo.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
                 }
                 xif.Add(xdo);
 
-                var xelse = new XElement(xn + "Else");
+                var xelse = new XElement(Xn + "Else");
                 var elseNodesToken = node.SelectToken("ElseNodes");
                 if (elseNodesToken != null && elseNodesToken.HasValues)
                 {
@@ -1634,8 +1631,8 @@ namespace Wexflow.Server
                     {
                         var taskId = (int)elseNode.SelectToken("Id");
                         var parentId = (int)elseNode.SelectToken("ParentId");
-                        xelse.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xelse.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
 
                     if (elseNodes.Count > 0) // Fix
@@ -1648,7 +1645,7 @@ namespace Wexflow.Server
             }
             else if (whileId != null)
             {
-                var xwhile = new XElement(xn + "While", new XAttribute("id", (int)node.SelectToken("Id")),
+                var xwhile = new XElement(Xn + "While", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("while", whileId));
 
@@ -1659,8 +1656,8 @@ namespace Wexflow.Server
                     {
                         var taskId = (int)doNode.SelectToken("Id");
                         var parentId = (int)doNode.SelectToken("ParentId");
-                        xwhile.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xwhile.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
                 }
 
@@ -1668,7 +1665,7 @@ namespace Wexflow.Server
             }
             else if (switchId != null)
             {
-                var xswitch = new XElement(xn + "Switch", new XAttribute("id", (int)node.SelectToken("Id")),
+                var xswitch = new XElement(Xn + "Switch", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("switch", switchId));
 
@@ -1677,7 +1674,7 @@ namespace Wexflow.Server
                 {
                     var value = (string)@case.SelectToken("Value");
 
-                    var xcase = new XElement(xn + "Case", new XAttribute("value", value));
+                    var xcase = new XElement(Xn + "Case", new XAttribute("value", value));
 
                     var doNodes = (JArray)@case.SelectToken("Nodes");
                     if (doNodes != null)
@@ -1686,8 +1683,8 @@ namespace Wexflow.Server
                         {
                             var taskId = (int)doNode.SelectToken("Id");
                             var parentId = (int)doNode.SelectToken("ParentId");
-                            xcase.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                                new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                            xcase.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                                new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                         }
                     }
 
@@ -1697,14 +1694,14 @@ namespace Wexflow.Server
                 var @default = (JArray)node.SelectToken("Default");
                 if (@default != null && @default.Count > 0)
                 {
-                    var xdefault = new XElement(xn + "Default");
+                    var xdefault = new XElement(Xn + "Default");
 
                     foreach (var doNode in @default)
                     {
                         var taskId = (int)doNode.SelectToken("Id");
                         var parentId = (int)doNode.SelectToken("ParentId");
-                        xdefault.Add(new XElement(xn + "Task", new XAttribute("id", taskId),
-                            new XElement(xn + "Parent", new XAttribute("id", parentId))));
+                        xdefault.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
+                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
                     }
 
                     xswitch.Add(xdefault);
@@ -1716,8 +1713,8 @@ namespace Wexflow.Server
             {
                 var taskId = (int)node.SelectToken("Id");
                 var parentId = (int)node.SelectToken("ParentId");
-                var xtask = new XElement(xn + "Task", new XAttribute("id", taskId),
-                    new XElement(xn + "Parent", new XAttribute("id", parentId)));
+                var xtask = new XElement(Xn + "Task", new XAttribute("id", taskId),
+                    new XElement(Xn + "Parent", new XAttribute("id", parentId)));
                 return xtask;
             }
         }
@@ -1726,7 +1723,7 @@ namespace Wexflow.Server
         {
             if (eg != null && eg.Count() > 0)
             {
-                var xeg = new XElement(xn + "ExecutionGraph");
+                var xeg = new XElement(Xn + "ExecutionGraph");
                 var nodes = (JArray)eg.SelectToken("Nodes");
                 if (nodes != null)
                 {
@@ -1740,7 +1737,7 @@ namespace Wexflow.Server
                 var onSuccess = eg.SelectToken("OnSuccess");
                 if (onSuccess != null && onSuccess.Count() > 0)
                 {
-                    var xEvent = new XElement(xn + "OnSuccess");
+                    var xEvent = new XElement(Xn + "OnSuccess");
                     var doNodes = (JArray)onSuccess.SelectToken("Nodes");
                     foreach (var doNode in doNodes)
                     {
@@ -1753,7 +1750,7 @@ namespace Wexflow.Server
                 var onWarning = eg.SelectToken("OnWarning");
                 if (onWarning != null && onWarning.Count() > 0)
                 {
-                    var xEvent = new XElement(xn + "OnWarning");
+                    var xEvent = new XElement(Xn + "OnWarning");
                     var doNodes = (JArray)onWarning.SelectToken("Nodes");
                     foreach (var doNode in doNodes)
                     {
@@ -1766,7 +1763,7 @@ namespace Wexflow.Server
                 var onError = eg.SelectToken("OnError");
                 if (onError != null && onError.Count() > 0)
                 {
-                    var xEvent = new XElement(xn + "OnError");
+                    var xEvent = new XElement(Xn + "OnError");
                     var doNodes = (JArray)onError.SelectToken("Nodes");
                     foreach (var doNode in doNodes)
                     {
@@ -1779,7 +1776,7 @@ namespace Wexflow.Server
                 var onRejected = eg.SelectToken("OnRejected");
                 if (onRejected != null && onRejected.Count() > 0)
                 {
-                    var xEvent = new XElement(xn + "OnRejected");
+                    var xEvent = new XElement(Xn + "OnRejected");
                     var doNodes = (JArray)onRejected.SelectToken("Nodes");
                     foreach (var doNode in doNodes)
                     {
@@ -1824,14 +1821,14 @@ namespace Wexflow.Server
                 var workflowDesc = (string)wi.SelectToken("Description");
 
                 // Local variables
-                var xLocalVariables = new XElement(xn + "LocalVariables");
+                var xLocalVariables = new XElement(Xn + "LocalVariables");
                 var variables = wi.SelectToken("LocalVariables");
                 foreach (var variable in variables)
                 {
                     var key = (string)variable.SelectToken("Key");
                     var value = (string)variable.SelectToken("Value");
 
-                    var xVariable = new XElement(xn + "Variable"
+                    var xVariable = new XElement(Xn + "Variable"
                             , new XAttribute("name", key)
                             , new XAttribute("value", value)
                     );
@@ -1840,7 +1837,7 @@ namespace Wexflow.Server
                 }
 
                 // tasks
-                var xtasks = new XElement(xn + "Tasks");
+                var xtasks = new XElement(Xn + "Tasks");
                 var tasks = o.SelectToken("Tasks");
                 foreach (var task in tasks)
                 {
@@ -1849,7 +1846,7 @@ namespace Wexflow.Server
                     var taskDesc = (string)task.SelectToken("Description");
                     var isTaskEnabled = (bool)task.SelectToken("IsEnabled");
 
-                    var xtask = new XElement(xn + "Task"
+                    var xtask = new XElement(Xn + "Task"
                         , new XAttribute("id", taskId)
                         , new XAttribute("name", taskName)
                         , new XAttribute("description", taskDesc)
@@ -1862,7 +1859,7 @@ namespace Wexflow.Server
                         var settingName = (string)setting.SelectToken("Name");
                         var settingValue = (string)setting.SelectToken("Value");
 
-                        var xsetting = new XElement(xn + "Setting"
+                        var xsetting = new XElement(Xn + "Setting"
                             , new XAttribute("name", settingName)
                         );
 
@@ -1901,21 +1898,21 @@ namespace Wexflow.Server
                 }
 
                 // root
-                var xwf = new XElement(xn + "Workflow"
+                var xwf = new XElement(Xn + "Workflow"
                     , new XAttribute("id", workflowId)
                     , new XAttribute("name", workflowName)
                     , new XAttribute("description", workflowDesc)
-                    , new XElement(xn + "Settings"
-                        , new XElement(xn + "Setting"
+                    , new XElement(Xn + "Settings"
+                        , new XElement(Xn + "Setting"
                             , new XAttribute("name", "launchType")
                             , new XAttribute("value", workflowLaunchType.ToString().ToLower()))
-                        , new XElement(xn + "Setting"
+                        , new XElement(Xn + "Setting"
                             , new XAttribute("name", "enabled")
                             , new XAttribute("value", isWorkflowEnabled.ToString().ToLower()))
-                        , new XElement(xn + "Setting"
+                        , new XElement(Xn + "Setting"
                         , new XAttribute("name", "approval")
                         , new XAttribute("value", isWorkflowApproval.ToString().ToLower()))
-                        , new XElement(xn + "Setting"
+                        , new XElement(Xn + "Setting"
                         , new XAttribute("name", "enableParallelJobs")
                         , new XAttribute("value", enableParallelJobs.ToString().ToLower()))
                     //, new XElement(xn + "Setting"
@@ -1931,8 +1928,8 @@ namespace Wexflow.Server
 
                 if (workflowLaunchType == LaunchType.Periodic)
                 {
-                    xwf.Element(xn + "Settings").Add(
-                         new XElement(xn + "Setting"
+                    xwf.Element(Xn + "Settings").Add(
+                         new XElement(Xn + "Setting"
                             , new XAttribute("name", "period")
                             , new XAttribute("value", workflowPeriod.ToString(@"dd\.hh\:mm\:ss")))
                         );
@@ -1940,8 +1937,8 @@ namespace Wexflow.Server
 
                 if (workflowLaunchType == LaunchType.Cron)
                 {
-                    xwf.Element(xn + "Settings").Add(
-                         new XElement(xn + "Setting"
+                    xwf.Element(Xn + "Settings").Add(
+                         new XElement(Xn + "Setting"
                             , new XAttribute("name", "cronExpression")
                             , new XAttribute("value", cronExpression))
                         );
@@ -2020,7 +2017,7 @@ namespace Wexflow.Server
                     if (xwfApproval == null)
                     {
                         xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
-                            .Add(new XElement(xn + "Setting"
+                            .Add(new XElement(Xn + "Setting"
                                     , new XAttribute("name", "approval")
                                     , new XAttribute("value", isWorkflowApproval.ToString().ToLower())));
                     }
@@ -2034,7 +2031,7 @@ namespace Wexflow.Server
                     if (xwfEnableParallelJobs == null)
                     {
                         xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
-                            .Add(new XElement(xn + "Setting"
+                            .Add(new XElement(Xn + "Setting"
                                     , new XAttribute("name", "enableParallelJobs")
                                     , new XAttribute("value", enableParallelJobs.ToString().ToLower())));
                     }
@@ -2270,7 +2267,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -2283,7 +2280,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -2347,7 +2344,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -2360,7 +2357,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -2424,7 +2421,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -2437,7 +2434,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -3200,7 +3197,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -3213,7 +3210,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -3263,7 +3260,7 @@ namespace Wexflow.Server
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -3982,7 +3979,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -3995,7 +3992,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4028,7 +4025,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4041,7 +4038,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(string.Empty);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4074,7 +4071,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4087,7 +4084,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(string.Empty);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4196,7 +4193,7 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    dynamic path = Request.Query["p"].ToString();
+                    var path = (string)Request.Query["p"].ToString();
                     var file = new FileStream(path, FileMode.Open);
                     string fileName = Path.GetFileName(path);
 
@@ -4263,7 +4260,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4276,7 +4273,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4343,7 +4340,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4356,7 +4353,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4438,7 +4435,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4451,7 +4448,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4486,7 +4483,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4499,7 +4496,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4595,7 +4592,7 @@ namespace Wexflow.Server
                 var recordsStr = JsonConvert.SerializeObject(records);
                 var recordsBytes = Encoding.UTF8.GetBytes(recordsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(recordsBytes, 0, recordsBytes.Length)
@@ -4691,7 +4688,7 @@ namespace Wexflow.Server
                 var recordsStr = JsonConvert.SerializeObject(records);
                 var recordsBytes = Encoding.UTF8.GetBytes(recordsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(recordsBytes, 0, recordsBytes.Length)
@@ -4790,7 +4787,7 @@ namespace Wexflow.Server
                 var recordsStr = JsonConvert.SerializeObject(records);
                 var recordsBytes = Encoding.UTF8.GetBytes(recordsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(recordsBytes, 0, recordsBytes.Length)
@@ -4823,7 +4820,7 @@ namespace Wexflow.Server
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4856,7 +4853,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4869,7 +4866,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4903,7 +4900,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4916,7 +4913,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4951,7 +4948,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -4964,7 +4961,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -5016,7 +5013,7 @@ namespace Wexflow.Server
                 var notificationsStr = JsonConvert.SerializeObject(notifications);
                 var notificationsBytes = Encoding.UTF8.GetBytes(notificationsStr);
 
-                return new Response()
+                return new Response
                 {
                     ContentType = "application/json",
                     Contents = s => s.Write(notificationsBytes, 0, notificationsBytes.Length)
@@ -5093,7 +5090,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -5106,7 +5103,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -5147,7 +5144,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(res);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)
@@ -5160,7 +5157,7 @@ namespace Wexflow.Server
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
-                    return new Response()
+                    return new Response
                     {
                         ContentType = "application/json",
                         Contents = s => s.Write(resBytes, 0, resBytes.Length)

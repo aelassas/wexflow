@@ -1518,7 +1518,7 @@ namespace Wexflow.Core
                 FilePath = destPath
             };
 
-            var versions = new List<Db.Version>() { version };
+            var versions = new List<Db.Version> { version };
 
             var recordId = SaveRecord("-1", record, versions);
             return recordId;

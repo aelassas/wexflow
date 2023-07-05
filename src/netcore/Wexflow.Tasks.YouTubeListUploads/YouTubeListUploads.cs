@@ -65,7 +65,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
 #pragma warning restore CS0618 // Le type ou le membre est obsolète
             }
 
-            YouTubeService youtubeService = new(new BaseClientService.Initializer()
+            YouTubeService youtubeService = new(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName

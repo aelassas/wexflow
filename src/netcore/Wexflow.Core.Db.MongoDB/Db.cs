@@ -47,7 +47,7 @@ namespace Wexflow.Core.Db.MongoDB
 
             if (enabledSslProtocols)
             {
-                settings.SslSettings = new SslSettings() { EnabledSslProtocols = sslProtocols };
+                settings.SslSettings = new SslSettings { EnabledSslProtocols = sslProtocols };
             }
 
             MongoClient client = new(settings);
