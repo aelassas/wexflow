@@ -174,6 +174,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
             {
                 Thread.Sleep(1);
             }
+            // ReSharper disable once FunctionNeverReturns
         }
 
         private void OnCreated(object source, FileSystemEventArgs e)

@@ -55,9 +55,9 @@ namespace Wexflow.Tasks.Reddit
                         // Self posts
                         foreach (var xPost in xdoc.XPathSelectElements("Reddit/SelfPosts/SelfPost"))
                         {
-                            var subreddit = xPost.Attribute("subreddit").Value;
-                            var title = xPost.Attribute("title").Value;
-                            var text = xPost.Attribute("text").Value;
+                            var subreddit = xPost.Attribute("subreddit")!.Value;
+                            var title = xPost.Attribute("title")!.Value;
+                            var text = xPost.Attribute("text")!.Value;
 
                             var sub = reddit.Subreddit(subreddit);
                             var selfPost = sub.SelfPost(title, text).Submit();
@@ -81,9 +81,9 @@ namespace Wexflow.Tasks.Reddit
                         // Link posts
                         foreach (var xLink in xdoc.XPathSelectElements("Reddit/LinkPosts/LinkPost"))
                         {
-                            var subreddit = xLink.Attribute("subreddit").Value;
-                            var title = xLink.Attribute("title").Value;
-                            var url = xLink.Attribute("url").Value;
+                            var subreddit = xLink.Attribute("subreddit")!.Value;
+                            var title = xLink.Attribute("title")!.Value;
+                            var url = xLink.Attribute("url")!.Value;
 
                             var sub = reddit.Subreddit(subreddit);
                             var linkPost = sub.LinkPost(title, url).Submit();

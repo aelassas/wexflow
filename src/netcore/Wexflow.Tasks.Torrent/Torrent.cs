@@ -8,6 +8,8 @@ namespace Wexflow.Tasks.Torrent
 {
     public class Torrent : Task
     {
+        private const double Tolerance = 0.001;
+
         public string SaveFolder { get; set; }
 
         public Torrent(XElement xe, Workflow wf) : base(xe, wf)
@@ -97,7 +99,7 @@ namespace Wexflow.Tasks.Torrent
                 {
                     Thread.Sleep(1000);
 
-                    if (manager.Progress == 100.0)
+                    if (Math.Abs(manager.Progress - 100.0) < Tolerance)
                     {
                         // If we want to stop a torrent, or the engine for whatever reason, we call engine.StopAll()
                         _ = engine.StopAllAsync();

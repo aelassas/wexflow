@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.CsvToSql
                 using (var sr = new StreamReader(csvPath))
                 using (var sw = new StreamWriter(sqlPath))
                 {
-                    var columnsLine = sr.ReadLine(); // First line contains columns
+                    var columnsLine = sr.ReadLine() ?? throw new InvalidOperationException(); // First line contains columns
                     string line;
                     while (!string.IsNullOrEmpty(line = sr.ReadLine()))
                     {

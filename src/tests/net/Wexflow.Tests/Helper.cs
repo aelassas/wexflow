@@ -23,7 +23,7 @@ namespace Wexflow.Tests
             , string.Empty
             , string.Empty);
 
-        private static readonly string Username = "admin";
+        private const string Username = "admin";
 
         public static void SaveWorkflow(string xml, bool schedule)
         {

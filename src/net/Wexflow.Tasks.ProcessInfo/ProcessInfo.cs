@@ -33,7 +33,7 @@ namespace Wexflow.Tasks.ProcessInfo
                     var xprocess = new XElement("Process"
                         , new XAttribute("id", process.Id)
                         , new XAttribute("processName", process.ProcessName)
-                        , new XAttribute("fileName", process.MainModule.FileName)
+                        , new XAttribute("fileName", process.MainModule != null ? process.MainModule.FileName : string.Empty)
                         , new XAttribute("startTime", $"{process.StartTime:yyyy-MM-dd HH:mm:ss.fff}")
                         , new XAttribute("machineName", process.MachineName)
                         , new XAttribute("sessionId", process.SessionId)

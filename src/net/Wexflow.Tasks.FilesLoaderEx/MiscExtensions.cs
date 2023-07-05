@@ -8,7 +8,8 @@ namespace Wexflow.Tasks.FilesLoaderEx
     {
         public static IEnumerable<T> TakeLast<T>(this IEnumerable<T> source, int n)
         {
-            return source.Skip(Math.Max(0, source.Count() - n));
+            var enumerable = source as T[] ?? source.ToArray();
+            return enumerable.Skip(Math.Max(0, enumerable.Length - n));
         }
     }
 }

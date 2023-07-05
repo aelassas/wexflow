@@ -82,8 +82,8 @@ namespace Wexflow.Tasks.MailsSender
 
         public static Mail Parse(MailsSender mailsSender, XElement xe, FileInf[] attachments)
         {
-            var from = mailsSender.ParseVariables(xe.XPathSelectElement("From").Value);
-            var to = mailsSender.ParseVariables(xe.XPathSelectElement("To").Value).Split(',');
+            var from = mailsSender.ParseVariables(xe.XPathSelectElement("From")?.Value);
+            var to = mailsSender.ParseVariables(xe.XPathSelectElement("To")?.Value).Split(',');
 
             string[] cc = { };
             var ccElement = xe.XPathSelectElement("Cc");
@@ -99,8 +99,8 @@ namespace Wexflow.Tasks.MailsSender
                 bcc = mailsSender.ParseVariables(bccElement.Value).Split(',');
             }
 
-            var subject = mailsSender.ParseVariables(xe.XPathSelectElement("Subject").Value);
-            var body = mailsSender.ParseVariables(xe.XPathSelectElement("Body").Value);
+            var subject = mailsSender.ParseVariables(xe.XPathSelectElement("Subject")?.Value);
+            var body = mailsSender.ParseVariables(xe.XPathSelectElement("Body")?.Value);
 
             return new Mail(from, to, cc, bcc, subject, body, attachments);
         }

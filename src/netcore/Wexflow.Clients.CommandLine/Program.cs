@@ -21,18 +21,23 @@ namespace Wexflow.Clients.CommandLine
             Reject
         }
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class Options
         {
             [Option('o', "operation", Required = true, HelpText = "start|suspend|resume|stop|approve|reject")]
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public Operation Operation { get; set; }
 
             [Option('i', "workflowId", Required = true, HelpText = "Workflow Id")]
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public int WorkflowId { get; set; }
 
             [Option('j', "jobId", Required = false, HelpText = "Job instance id (Guid)")]
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string JobId { get; set; }
 
             [Option('w', "wait", Required = false, HelpText = "Wait until workflow finishes", Default = false)]
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public bool Wait { get; set; }
         }
 
@@ -45,92 +50,100 @@ namespace Wexflow.Clients.CommandLine
                 .Build();
 
                 Parser parser = new(cfg => cfg.CaseInsensitiveEnumValues = true);
-                var res = parser.ParseArguments<Options>(args)
-                   .WithParsed(async o =>
-                   {
-                       WexflowServiceClient client = new(config["WexflowWebServiceUri"]);
-                       var username = config["Username"];
-                       var password = config["Password"];
 
-                       var workflows = await client.Search(string.Empty, username, password);
-                       if (workflows.All(w => w.Id != o.WorkflowId))
-                       {
-                           Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
-                           return;
-                       }
+                async void Action(Options o)
+                {
+                    WexflowServiceClient client = new(config["WexflowWebServiceUri"]);
+                    var username = config["Username"];
+                    var password = config["Password"];
 
-                       WorkflowInfo workflow;
-                       switch (o.Operation)
-                       {
-                           case Operation.Start:
-                               var instanceId = await client.StartWorkflow(o.WorkflowId, username, password);
-                               Console.WriteLine("JobId: {0}", instanceId);
+                    var workflows = await client.Search(string.Empty, username, password);
+                    if (workflows.All(w => w.Id != o.WorkflowId))
+                    {
+                        Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
+                        return;
+                    }
 
-                               if (o.Wait)
-                               {
-                                   Thread.Sleep(1000);
-                                   workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                                   var isRunning = workflow.IsRunning;
-                                   while (isRunning)
-                                   {
-                                       Thread.Sleep(100);
-                                       workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                                       isRunning = workflow.IsRunning;
-                                   }
-                               }
-                               break;
+                    WorkflowInfo workflow;
+                    switch (o.Operation)
+                    {
+                        case Operation.Start:
+                            var instanceId = await client.StartWorkflow(o.WorkflowId, username, password);
+                            Console.WriteLine("JobId: {0}", instanceId);
 
-                           case Operation.Suspend:
-                               workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                               if (!workflow.IsRunning)
-                               {
-                                   Console.WriteLine("Workflow {0} is not running to be suspended.", o.WorkflowId);
-                                   return;
-                               }
-                               await client.SuspendWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
-                               break;
+                            if (o.Wait)
+                            {
+                                Thread.Sleep(1000);
+                                workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                                var isRunning = workflow.IsRunning;
+                                while (isRunning)
+                                {
+                                    Thread.Sleep(100);
+                                    workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                                    isRunning = workflow.IsRunning;
+                                }
+                            }
 
-                           case Operation.Stop:
-                               workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                               if (!workflow.IsRunning)
-                               {
-                                   Console.WriteLine("Workflow {0} is not running to be stopped.", o.WorkflowId);
-                                   return;
-                               }
-                               await client.StopWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
-                               break;
+                            break;
 
-                           case Operation.Resume:
-                               workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                               if (!workflow.IsPaused)
-                               {
-                                   Console.WriteLine("Workflow {0} is not suspended to be resumed.", o.WorkflowId);
-                                   return;
-                               }
-                               await client.ResumeWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
-                               break;
+                        case Operation.Suspend:
+                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            if (!workflow.IsRunning)
+                            {
+                                Console.WriteLine("Workflow {0} is not running to be suspended.", o.WorkflowId);
+                                return;
+                            }
 
-                           case Operation.Approve:
-                               workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                               if (!workflow.IsWaitingForApproval)
-                               {
-                                   Console.WriteLine("Workflow {0} is not waiting for approval to be approved.", o.WorkflowId);
-                                   return;
-                               }
-                               await client.ApproveWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
-                               break;
+                            await client.SuspendWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            break;
 
-                           case Operation.Reject:
-                               workflow = await client.GetWorkflow(username, password, o.WorkflowId);
-                               if (!workflow.IsWaitingForApproval)
-                               {
-                                   Console.WriteLine("Workflow {0} is not waiting for approval to be rejected.", o.WorkflowId);
-                                   return;
-                               }
-                               await client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
-                               break;
-                       }
-                   });
+                        case Operation.Stop:
+                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            if (!workflow.IsRunning)
+                            {
+                                Console.WriteLine("Workflow {0} is not running to be stopped.", o.WorkflowId);
+                                return;
+                            }
+
+                            await client.StopWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            break;
+
+                        case Operation.Resume:
+                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            if (!workflow.IsPaused)
+                            {
+                                Console.WriteLine("Workflow {0} is not suspended to be resumed.", o.WorkflowId);
+                                return;
+                            }
+
+                            await client.ResumeWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            break;
+
+                        case Operation.Approve:
+                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            if (!workflow.IsWaitingForApproval)
+                            {
+                                Console.WriteLine("Workflow {0} is not waiting for approval to be approved.", o.WorkflowId);
+                                return;
+                            }
+
+                            await client.ApproveWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            break;
+
+                        case Operation.Reject:
+                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            if (!workflow.IsWaitingForApproval)
+                            {
+                                Console.WriteLine("Workflow {0} is not waiting for approval to be rejected.", o.WorkflowId);
+                                return;
+                            }
+
+                            await client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            break;
+                    }
+                }
+
+                var res = parser.ParseArguments<Options>(args).WithParsed(Action);
 
                 _ = res.WithNotParsed(_ =>
                 {

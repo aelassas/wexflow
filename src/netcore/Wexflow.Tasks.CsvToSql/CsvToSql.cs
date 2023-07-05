@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.CsvToSql
                 string line;
                 while (!string.IsNullOrEmpty(line = sr.ReadLine()))
                 {
-                    sw.Write($"INSERT INTO {tableName}({columnsLine.Replace(separator, ",").TrimEnd(',')}) VALUES ");
+                    sw.Write($"INSERT INTO {tableName}({columnsLine!.Replace(separator, ",").TrimEnd(',')}) VALUES ");
                     sw.Write("(");
                     var values = line.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var value in values)
