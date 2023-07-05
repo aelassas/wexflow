@@ -22,7 +22,7 @@ namespace Wexflow.Server
             var config = builder.Build();
 
             AppConfiguration appConfig = new();
-            ConfigurationBinder.Bind(config, appConfig);
+            config.Bind(appConfig);
 
             if (env.IsDevelopment())
             {
@@ -58,11 +58,11 @@ namespace Wexflow.Server
             _ = app.UseMiddleware<WexflowMiddleware>();
             _ = app.UseRouting();
             _ = app.UseAuthorization();
-            _ = app.UseCors(builder => builder
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .SetIsOriginAllowed((host) => true)
-            .AllowCredentials()
+            _ = app.UseCors(policyBuilder => policyBuilder
+                                                        .AllowAnyHeader()
+                                                        .AllowAnyMethod()
+                                                        .SetIsOriginAllowed(_ => true)
+                                                        .AllowCredentials()
             );
             _ = app.UseEndpoints(endpoints =>
             {
