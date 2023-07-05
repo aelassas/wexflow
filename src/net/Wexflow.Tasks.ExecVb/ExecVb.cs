@@ -69,7 +69,6 @@ namespace Wexflow.Tasks.ExecVb
         private bool CompileExecutable(string sourceName, string exeName)
         {
             var provider = CodeDomProvider.CreateProvider("VisualBasic");
-            bool compileOk;
 
             var cp = new CompilerParameters
             {
@@ -106,7 +105,7 @@ namespace Wexflow.Tasks.ExecVb
             }
 
             // Return the results of the compilation.
-            compileOk = cr.Errors.Count <= 0;
+            var compileOk = cr.Errors.Count <= 0;
 
             return compileOk;
         }

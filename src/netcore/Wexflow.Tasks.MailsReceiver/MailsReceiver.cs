@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.MailsReceiver
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
                                 var message = client.Inbox.GetMessage(uids[i]);
-                                var messageFileName = $"message_{i}_{$"{message.Date:yyyy-MM-dd-HH-mm-ss-fff}"}";
+                                var messageFileName = $"message_{i}_{message.Date:yyyy-MM-dd-HH-mm-ss-fff}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
                                 Files.Add(new FileInf(messagePath, Id));
@@ -81,14 +81,14 @@ namespace Wexflow.Tasks.MailsReceiver
                                     {
                                         var attachmentPath = Path.Combine(Workflow.WorkflowTempFolder, $"{messageFileName}_{(attachment is MessagePart ? ++j + ".eml" : ((MimePart)attachment).FileName)}");
 
-                                        if (attachment is not MessagePart)
+                                        if (attachment is not MessagePart part)
                                         {
                                             using var stream = File.Create(attachmentPath);
                                             ((MimePart)attachment).Content.DecodeTo(stream);
                                         }
                                         else
                                         {
-                                            ((MessagePart)attachment).WriteTo(attachmentPath);
+                                            part.WriteTo(attachmentPath);
                                         }
 
                                         Files.Add(new FileInf(attachmentPath, Id));
@@ -121,7 +121,7 @@ namespace Wexflow.Tasks.MailsReceiver
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
                                 var message = client.GetMessage(i);
-                                var messageFileName = $"message_{i}_{$"{message.Date:yyyy-MM-dd-HH-mm-ss-fff}"}";
+                                var messageFileName = $"message_{i}_{message.Date:yyyy-MM-dd-HH-mm-ss-fff}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
                                 Files.Add(new FileInf(messagePath, Id));

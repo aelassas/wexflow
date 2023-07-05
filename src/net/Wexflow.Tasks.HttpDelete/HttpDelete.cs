@@ -11,7 +11,6 @@ namespace Wexflow.Tasks.HttpDelete
     public class HttpDelete : Task
     {
         public string Url { get; }
-        public string Payload { get; }
         public string AuthorizationScheme { get; }
         public string AuthorizationParameter { get; }
 

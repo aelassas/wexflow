@@ -55,8 +55,8 @@ namespace Wexflow.Tasks.InstagramUploadImage
 
                         foreach (var xvideo in xdoc.XPathSelectElements("/Images/Image"))
                         {
-                            var filePath = xvideo.Element("FilePath").Value;
-                            var caption = xvideo.Element("Caption").Value;
+                            var filePath = xvideo.Element("FilePath")!.Value;
+                            var caption = xvideo.Element("Caption")!.Value;
 
                             var uploadImageTask = UploadImage(authTask.Result, filePath, caption);
                             uploadImageTask.Wait();
@@ -122,8 +122,8 @@ namespace Wexflow.Tasks.InstagramUploadImage
                 // load session file if exists
                 if (File.Exists(stateFile))
                 {
-                    using var fs = File.OpenRead(stateFile);
-                    instaApi.LoadStateDataFromStream(fs);
+                    await using var fs = File.OpenRead(stateFile);
+                    await instaApi.LoadStateDataFromStreamAsync(fs);
                     // in .net core or uwp apps don't use LoadStateDataFromStream
                     // use this one:
                     // _instaApi.LoadStateDataFromString(new StreamReader(fs).ReadToEnd());
@@ -147,16 +147,14 @@ namespace Wexflow.Tasks.InstagramUploadImage
                 }
             }
             // save session in file
-            var state = instaApi.GetStateDataAsStream();
+            var state = await instaApi.GetStateDataAsStreamAsync();
             // in .net core or uwp apps don't use GetStateDataAsStream.
             // use this one:
             // var state = _instaApi.GetStateDataAsString();
             // this returns you session as json string.
-            using (var fileStream = File.Create(stateFile))
-            {
-                _ = state.Seek(0, SeekOrigin.Begin);
-                state.CopyTo(fileStream);
-            }
+            await using var fileStream = File.Create(stateFile);
+            _ = state.Seek(0, SeekOrigin.Begin);
+            await state.CopyToAsync(fileStream);
 
             return instaApi;
         }

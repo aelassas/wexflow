@@ -50,7 +50,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
         private async System.Threading.Tasks.Task ListUploads()
         {
             UserCredential credential;
-            using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
+            await using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
             {
 #pragma warning disable CS0618 // Le type ou le membre est obsolète
                 credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
             var channelsListResponse = await channelsListRequest.ExecuteAsync();
 
             var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                $"{"YouTubeListUploads"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
+                $"YouTubeListUploads_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
             XDocument xdoc = new(new XElement("YouTubeListUploads"));
             XElement xchannels = new("Channels");
@@ -120,6 +120,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
                 xchannels.Add(xchannel);
             }
 
+            if (xdoc.Root == null) throw new InvalidOperationException();
             xdoc.Root.Add(xchannels);
             xdoc.Save(xmlPath);
             Files.Add(new FileInf(xmlPath, Id));

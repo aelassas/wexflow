@@ -51,12 +51,12 @@ namespace Wexflow.Tasks.YouTube
 
                         foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
                         {
-                            var title = xvideo.Element("Title").Value;
-                            var desc = xvideo.Element("Description").Value;
-                            var tags = xvideo.Element("Tags").Value.Split(',');
-                            var categoryId = xvideo.Element("CategoryId").Value;
-                            var ps = (PrivacyStatus)Enum.Parse(typeof(PrivacyStatus), xvideo.Element("PrivacyStatus").Value, true);
-                            var filePath = xvideo.Element("FilePath").Value;
+                            var title = xvideo.Element("Title")!.Value;
+                            var desc = xvideo.Element("Description")!.Value;
+                            var tags = xvideo.Element("Tags")!.Value.Split(',');
+                            var categoryId = xvideo.Element("CategoryId")!.Value;
+                            var ps = (PrivacyStatus)Enum.Parse(typeof(PrivacyStatus), xvideo.Element("PrivacyStatus")!.Value, true);
+                            var filePath = xvideo.Element("FilePath")!.Value;
 
                             var succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);
                             succeededTask.Wait();
@@ -111,7 +111,7 @@ namespace Wexflow.Tasks.YouTube
                 InfoFormat("Uploading the video file {0} to YouTube started...", filePath);
                 Info("Authentication started...");
                 UserCredential credential;
-                using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
+                await using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
                 {
 #pragma warning disable CS0618 // Le type ou le membre est obsolète
                     credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -134,23 +134,25 @@ namespace Wexflow.Tasks.YouTube
 
                 Video video = new()
                 {
-                    Snippet = new VideoSnippet()
-                };
-                video.Snippet.Title = title;
-                video.Snippet.Description = desc;
-                video.Snippet.Tags = tags;
-                video.Snippet.CategoryId = categoryId; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
-                video.Status = new VideoStatus
-                {
-                    PrivacyStatus = ps.ToString().ToLower() // "unlisted" or "private" or "public"
+                    Snippet = new VideoSnippet
+                    {
+                        Title = title,
+                        Description = desc,
+                        Tags = tags,
+                        CategoryId = categoryId // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+                    },
+                    Status = new VideoStatus
+                    {
+                        PrivacyStatus = ps.ToString().ToLower() // "unlisted" or "private" or "public"
+                    }
                 };
 
-                using (FileStream fileStream = new(filePath, FileMode.Open))
+                await using (FileStream fileStream = new(filePath, FileMode.Open))
                 {
                     var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
                     videosInsertRequest.ResponseReceived += VideosInsertRequest_ResponseReceived;
 
-                    var res = videosInsertRequest.Upload();
+                    var res = await videosInsertRequest.UploadAsync();
 
                     if (res.Exception != null)
                     {

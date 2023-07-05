@@ -61,12 +61,12 @@ namespace Wexflow.Tasks.MailsReceiver
 
                             var uids = client.Inbox.Search(SearchQuery.All);
 
-                            var count = uids.Count();
+                            var count = uids.Count;
 
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
                                 var message = client.Inbox.GetMessage(uids[i]);
-                                var messageFileName = $"message_{i}_{$"{message.Date:yyyy-MM-dd-HH-mm-ss-fff}"}";
+                                var messageFileName = $"message_{i}_{message.Date:yyyy-MM-dd-HH-mm-ss-fff}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
                                 message.WriteTo(messagePath);
                                 Files.Add(new FileInf(messagePath, Id));

@@ -21,7 +21,7 @@ namespace Wexflow.Core.Service.Client
         {
             HttpRequestMessage request = new(HttpMethod.Get, url);
             request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
-            var response = client.Send(request);
+            var response = await client.SendAsync(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
             return responseString;
@@ -31,7 +31,7 @@ namespace Wexflow.Core.Service.Client
         {
             HttpRequestMessage request = new(HttpMethod.Post, url);
             request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
-            var response = client.Send(request);
+            var response = await client.SendAsync(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
             return responseString;
@@ -45,6 +45,7 @@ namespace Wexflow.Core.Service.Client
 
             // Convert the byte array to hexadecimal string
             StringBuilder sb = new();
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < hashBytes.Length; i++)
             {
                 _ = sb.Append(hashBytes[i].ToString("x2"));

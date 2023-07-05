@@ -32,9 +32,9 @@ namespace Wexflow.Tasks.Twitter
 
             var files = SelectFiles();
 
-            TwitterClient client;
             if (files.Length > 0)
             {
+                TwitterClient client;
                 try
                 {
                     TwitterCredentials credentials = new(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);

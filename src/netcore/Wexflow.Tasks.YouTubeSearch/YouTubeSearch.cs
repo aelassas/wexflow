@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.YouTubeSearch
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
             var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
-                $"{"YouTubeSearch"}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
+                $"YouTubeSearch_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
             XDocument xdoc = new(new XElement("YouTubeSearch"));
             XElement xvideos = new("Videos");
@@ -100,6 +100,7 @@ namespace Wexflow.Tasks.YouTubeSearch
             InfoFormat("Channels:\n{0}\n", string.Join("\n", channels));
             InfoFormat("Playlists:\n{0}\n", string.Join("\n", playlists));
 
+            if (xdoc.Root == null) throw new InvalidOperationException();
             xdoc.Root.Add(xvideos);
             xdoc.Root.Add(xchannels);
             xdoc.Root.Add(xplaylists);
