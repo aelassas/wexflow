@@ -1,0 +1,10 @@
+[Unit]
+Description=wexflow
+
+[Service]
+ExecStart=/usr/bin/dotnet Wexflow.Server.dll
+WorkingDirectory=/opt/wexflow/Wexflow.Server
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

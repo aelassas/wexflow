@@ -92,6 +92,9 @@ dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.Comman
 :: Wexflow.Scripts.RunAllWorkflows
 dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
 
+:: wexflow.service
+copy netcore\linux\wexflow.service %dstDir%
+
 :: License
 copy ..\LICENSE.txt %dstDir%
 
