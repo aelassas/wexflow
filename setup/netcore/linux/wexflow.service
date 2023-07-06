@@ -1,5 +1,6 @@
 [Unit]
 Description=wexflow
+Documentation=https://wexflow.github.io
 
 [Service]
 ExecStart=/usr/bin/dotnet Wexflow.Server.dll
