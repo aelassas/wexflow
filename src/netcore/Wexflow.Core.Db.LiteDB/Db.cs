@@ -53,8 +53,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll();
-                _ = col.DeleteMany(s => statusCount.Any(ss => ss.Id == s.Id));
+                _ = col.DeleteMany(_ => true);
             }
         }
 
@@ -63,8 +62,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
-                var entries = col.FindAll();
-                _ = col.DeleteMany(e => entries.Any(ee => ee.Id == e.Id));
+                _ = col.DeleteMany(_ => true);
             }
         }
 

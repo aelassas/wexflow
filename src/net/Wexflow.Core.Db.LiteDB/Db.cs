@@ -53,8 +53,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll();
-                _ = col.DeleteMany(s => statusCount.Any(ss => ss.Id == s.Id));
+                _ = col.DeleteMany(_ => true);
             }
         }
 
@@ -63,8 +62,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
-                var entries = col.FindAll();
-                _ = col.DeleteMany(e => entries.Any(ee => ee.Id == e.Id));
+                _ = col.DeleteMany(_ => true);
             }
         }
 
@@ -148,21 +146,21 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void DecrementDoneCount()
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll().FirstOrDefault();
-                if (statusCount != null)
+        /*
+                public void DecrementDoneCount()
                 {
-                    statusCount.DoneCount--;
-                    _ = col.Update(statusCount);
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                        var statusCount = col.FindAll().FirstOrDefault();
+                        if (statusCount != null)
+                        {
+                            statusCount.DoneCount--;
+                            _ = col.Update(statusCount);
+                        }
+                    }
                 }
-            }
-        }
-*/
+        */
 
         public override void IncrementFailedCount()
         {
@@ -192,21 +190,21 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void DecrementFailedCount()
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll().FirstOrDefault();
-                if (statusCount != null)
+        /*
+                public void DecrementFailedCount()
                 {
-                    statusCount.FailedCount--;
-                    _ = col.Update(statusCount);
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                        var statusCount = col.FindAll().FirstOrDefault();
+                        if (statusCount != null)
+                        {
+                            statusCount.FailedCount--;
+                            _ = col.Update(statusCount);
+                        }
+                    }
                 }
-            }
-        }
-*/
+        */
 
         public override void IncrementWarningCount()
         {
@@ -222,21 +220,21 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void DecrementWarningCount()
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll().FirstOrDefault();
-                if (statusCount != null)
+        /*
+                public void DecrementWarningCount()
                 {
-                    statusCount.WarningCount--;
-                    _ = col.Update(statusCount);
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                        var statusCount = col.FindAll().FirstOrDefault();
+                        if (statusCount != null)
+                        {
+                            statusCount.WarningCount--;
+                            _ = col.Update(statusCount);
+                        }
+                    }
                 }
-            }
-        }
-*/
+        */
 
         public override void IncrementDisabledCount()
         {
@@ -252,21 +250,21 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void DecrementDisabledCount()
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll().FirstOrDefault();
-                if (statusCount != null)
+        /*
+                public void DecrementDisabledCount()
                 {
-                    statusCount.DisabledCount--;
-                    _ = col.Update(statusCount);
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                        var statusCount = col.FindAll().FirstOrDefault();
+                        if (statusCount != null)
+                        {
+                            statusCount.DisabledCount--;
+                            _ = col.Update(statusCount);
+                        }
+                    }
                 }
-            }
-        }
-*/
+        */
 
         public override void IncrementStoppedCount()
         {
@@ -282,43 +280,43 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void DecrementStoppedCount()
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll().FirstOrDefault();
-                if (statusCount != null)
+        /*
+                public void DecrementStoppedCount()
                 {
-                    statusCount.StoppedCount--;
-                    _ = col.Update(statusCount);
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                        var statusCount = col.FindAll().FirstOrDefault();
+                        if (statusCount != null)
+                        {
+                            statusCount.StoppedCount--;
+                            _ = col.Update(statusCount);
+                        }
+                    }
                 }
-            }
-        }
-*/
+        */
 
-/*
-        public void ResetStatusCount()
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
-                var statusCount = col.FindAll().FirstOrDefault();
-                if (statusCount != null)
+        /*
+                public void ResetStatusCount()
                 {
-                    statusCount.PendingCount = 0;
-                    statusCount.RunningCount = 0;
-                    statusCount.DoneCount = 0;
-                    statusCount.FailedCount = 0;
-                    statusCount.WarningCount = 0;
-                    statusCount.DisabledCount = 0;
-                    statusCount.RejectedCount = 0;
-                    _ = col.Update(statusCount);
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                        var statusCount = col.FindAll().FirstOrDefault();
+                        if (statusCount != null)
+                        {
+                            statusCount.PendingCount = 0;
+                            statusCount.RunningCount = 0;
+                            statusCount.DoneCount = 0;
+                            statusCount.FailedCount = 0;
+                            statusCount.WarningCount = 0;
+                            statusCount.DisabledCount = 0;
+                            statusCount.RejectedCount = 0;
+                            _ = col.Update(statusCount);
+                        }
+                    }
                 }
-            }
-        }
-*/
+        */
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
@@ -397,16 +395,16 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void DeleteEntry(int workflowId)
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
-                _ = col.DeleteMany(e => e.WorkflowId == workflowId);
-            }
-        }
-*/
+        /*
+                public void DeleteEntry(int workflowId)
+                {
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                        _ = col.DeleteMany(e => e.WorkflowId == workflowId);
+                    }
+                }
+        */
 
         public override void InsertUser(Core.Db.User user)
         {
@@ -661,27 +659,27 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-/*
-        public void UpdateHistoryEntry(HistoryEntry entry)
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
-                _ = col.Update(entry);
-            }
-        }
-*/
+        /*
+                public void UpdateHistoryEntry(HistoryEntry entry)
+                {
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                        _ = col.Update(entry);
+                    }
+                }
+        */
 
-/*
-        public void DeleteHistoryEntries(int workflowId)
-        {
-            lock (Padlock)
-            {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
-                _ = col.DeleteMany(e => e.WorkflowId == workflowId);
-            }
-        }
-*/
+        /*
+                public void DeleteHistoryEntries(int workflowId)
+                {
+                    lock (Padlock)
+                    {
+                        var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                        _ = col.DeleteMany(e => e.WorkflowId == workflowId);
+                    }
+                }
+        */
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
