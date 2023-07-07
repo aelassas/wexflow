@@ -14,7 +14,7 @@ namespace Wexflow.Clients.Manager
     {
         private static readonly string WexflowWebServiceUri = ConfigurationManager.AppSettings["WexflowWebServiceUri"];
 
-        private const string ForgotPasswordPage = @"..\Backend\forgot-password.html";
+        private const string FORGOT_PASSWORD_PAGE = @"..\Backend\forgot-password.html";
 
         public static string Username = "";
         public static string Password = "";
@@ -25,7 +25,7 @@ namespace Wexflow.Clients.Manager
         {
             InitializeComponent();
             txtPassword.PasswordChar = '*';
-            lnkForgotPassword.Visible = File.Exists(ForgotPasswordPage);
+            lnkForgotPassword.Visible = File.Exists(FORGOT_PASSWORD_PAGE);
             _wexflowServiceClient = new WexflowServiceClient(WexflowWebServiceUri);
         }
 
@@ -112,9 +112,9 @@ namespace Wexflow.Clients.Manager
 
         private void LnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (File.Exists(ForgotPasswordPage))
+            if (File.Exists(FORGOT_PASSWORD_PAGE))
             {
-                _ = Process.Start(ForgotPasswordPage, "");
+                _ = Process.Start(FORGOT_PASSWORD_PAGE, "");
             }
         }
     }

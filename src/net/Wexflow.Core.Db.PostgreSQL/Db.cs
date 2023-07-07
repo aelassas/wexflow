@@ -8,7 +8,7 @@ namespace Wexflow.Core.Db.PostgreSQL
     public sealed class Db : Core.Db.Db
     {
         private static readonly object Padlock = new object();
-        private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private const string DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
 
         private static string _connectionString;
 
@@ -86,14 +86,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                 conn.Open();
 
                 using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.StatusCount.DocumentName + "("
-                    + StatusCount.COLUMN_NAME_PENDING_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_RUNNING_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_DONE_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_FAILED_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_WARNING_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_DISABLED_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_STOPPED_COUNT + ", "
-                    + StatusCount.COLUMN_NAME_REJECTED_COUNT + ") VALUES("
+                    + StatusCount.ColumnNamePendingCount + ", "
+                    + StatusCount.ColumnNameRunningCount + ", "
+                    + StatusCount.ColumnNameDoneCount + ", "
+                    + StatusCount.ColumnNameFailedCount + ", "
+                    + StatusCount.ColumnNameWarningCount + ", "
+                    + StatusCount.ColumnNameDisabledCount + ", "
+                    + StatusCount.ColumnNameStoppedCount + ", "
+                    + StatusCount.ColumnNameRejectedCount + ") VALUES("
                     + statusCount.PendingCount + ", "
                     + statusCount.RunningCount + ", "
                     + statusCount.DoneCount + ", "
@@ -137,8 +137,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT COUNT(*) FROM " + Core.Db.UserWorkflow.DocumentName
-                        + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + "=" + int.Parse(userId)
-                        + " AND " + UserWorkflow.COLUMN_NAME_WORKFLOW_ID + "=" + int.Parse(workflowId)
+                        + " WHERE " + UserWorkflow.ColumnNameUserId + "=" + int.Parse(userId)
+                        + " AND " + UserWorkflow.ColumnNameWorkflowId + "=" + int.Parse(workflowId)
                         + ";", conn))
                     {
                         var count = (long)command.ExecuteScalar();
@@ -190,8 +190,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + User.COLUMN_NAME_USERNAME + " = '" + username + "'"
-                        + " AND " + User.COLUMN_NAME_PASSWORD + " = '" + password + "'"
+                        + " WHERE " + User.ColumnNameUsername + " = '" + username + "'"
+                        + " AND " + User.ColumnNamePassword + " = '" + password + "'"
                         + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -209,7 +209,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
-                        + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + " = " + int.Parse(userId) + ";", conn))
+                        + " WHERE " + UserWorkflow.ColumnNameUserId + " = " + int.Parse(userId) + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -226,7 +226,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.UserWorkflow.DocumentName
-                        + " WHERE " + UserWorkflow.COLUMN_NAME_WORKFLOW_ID + " = " + int.Parse(workflowDbId) + ";", conn))
+                        + " WHERE " + UserWorkflow.ColumnNameWorkflowId + " = " + int.Parse(workflowDbId) + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -243,7 +243,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
-                         + " WHERE " + Workflow.COLUMN_NAME_ID + " = " + int.Parse(id) + ";", conn))
+                         + " WHERE " + Workflow.ColumnNameId + " = " + int.Parse(id) + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -269,7 +269,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     }
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Workflow.DocumentName
-                        + " WHERE " + Workflow.COLUMN_NAME_ID + " IN " + builder + ";", conn))
+                        + " WHERE " + Workflow.ColumnNameId + " IN " + builder + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -287,17 +287,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnNameId + ", "
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn
                         + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + "(LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " AND " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
-                        + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                        + " WHERE " + "(LOWER(" + User.ColumnNameUsername + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " AND " + User.ColumnNameUserProfile + " = " + (int)UserProfile.Administrator + ")"
+                        + " ORDER BY " + User.ColumnNameUsername + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -306,13 +306,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var admin = new User
                                 {
-                                    Id = (int)reader[User.COLUMN_NAME_ID],
-                                    Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                                    Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                                    Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                                    UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                                    CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                                    ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                                    Id = (int)reader[User.ColumnNameId],
+                                    Username = (string)reader[User.ColumnNameUsername],
+                                    Password = (string)reader[User.ColumnNamePassword],
+                                    Email = (string)reader[User.ColumnNameEmail],
+                                    UserProfile = (UserProfile)(int)reader[User.ColumnNameUserProfile],
+                                    CreatedOn = (DateTime)reader[User.ColumnNameCreatedOn],
+                                    ModifiedOn = reader[User.ColumnNameModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnNameModifiedOn]
                                 };
 
                                 admins.Add(admin);
@@ -336,14 +336,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Entry.COLUMN_NAME_ID + ", "
-                        + Entry.COLUMN_NAME_NAME + ", "
-                        + Entry.COLUMN_NAME_DESCRIPTION + ", "
-                        + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + Entry.COLUMN_NAME_STATUS + ", "
-                        + Entry.COLUMN_NAME_STATUS_DATE + ", "
-                        + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
-                        + Entry.COLUMN_NAME_JOB_ID
+                        + Entry.ColumnNameId + ", "
+                        + Entry.ColumnNameName + ", "
+                        + Entry.ColumnNameDescription + ", "
+                        + Entry.ColumnNameLaunchType + ", "
+                        + Entry.ColumnNameStatus + ", "
+                        + Entry.ColumnNameStatusDate + ", "
+                        + Entry.ColumnNameWorkflowId + ", "
+                        + Entry.ColumnNameJobId
                         + " FROM " + Core.Db.Entry.DocumentName + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -352,14 +352,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new Entry
                                 {
-                                    Id = (int)reader[Entry.COLUMN_NAME_ID],
-                                    Name = (string)reader[Entry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
-                                    JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
+                                    Id = (int)reader[Entry.ColumnNameId],
+                                    Name = (string)reader[Entry.ColumnNameName],
+                                    Description = (string)reader[Entry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[Entry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[Entry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[Entry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[Entry.ColumnNameWorkflowId],
+                                    JobId = (string)reader[Entry.ColumnNameJobId]
                                 };
 
                                 entries.Add(entry);
@@ -383,80 +383,80 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     var sqlBuilder = new StringBuilder("SELECT "
-                        + Entry.COLUMN_NAME_ID + ", "
-                        + Entry.COLUMN_NAME_NAME + ", "
-                        + Entry.COLUMN_NAME_DESCRIPTION + ", "
-                        + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + Entry.COLUMN_NAME_STATUS + ", "
-                        + Entry.COLUMN_NAME_STATUS_DATE + ", "
-                        + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
-                        + Entry.COLUMN_NAME_JOB_ID
+                        + Entry.ColumnNameId + ", "
+                        + Entry.ColumnNameName + ", "
+                        + Entry.ColumnNameDescription + ", "
+                        + Entry.ColumnNameLaunchType + ", "
+                        + Entry.ColumnNameStatus + ", "
+                        + Entry.ColumnNameStatusDate + ", "
+                        + Entry.ColumnNameWorkflowId + ", "
+                        + Entry.ColumnNameJobId
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " WHERE " + "(LOWER(" + Entry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Entry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "'::timestamp AND '" + to.ToString(DateTimeFormat) + "'::timestamp)"
+                        + " WHERE " + "(LOWER(" + Entry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + Entry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                        + " AND (" + Entry.ColumnNameStatusDate + " BETWEEN '" + from.ToString(DATE_TIME_FORMAT) + "'::timestamp AND '" + to.ToString(DATE_TIME_FORMAT) + "'::timestamp)"
                         + " ORDER BY ");
 
                     switch (eo)
                     {
                         case EntryOrderBy.StatusDateAscending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS_DATE).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameStatusDate).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDateDescending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS_DATE).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameStatusDate).Append(" DESC");
                             break;
 
                         case EntryOrderBy.WorkflowIdAscending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_WORKFLOW_ID).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameWorkflowId).Append(" ASC");
                             break;
 
                         case EntryOrderBy.WorkflowIdDescending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_WORKFLOW_ID).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameWorkflowId).Append(" DESC");
                             break;
 
                         case EntryOrderBy.NameAscending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_NAME).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameName).Append(" ASC");
                             break;
 
                         case EntryOrderBy.NameDescending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_NAME).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameName).Append(" DESC");
                             break;
 
                         case EntryOrderBy.LaunchTypeAscending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_LAUNCH_TYPE).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameLaunchType).Append(" ASC");
                             break;
 
                         case EntryOrderBy.LaunchTypeDescending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_LAUNCH_TYPE).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameLaunchType).Append(" DESC");
                             break;
 
                         case EntryOrderBy.DescriptionAscending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_DESCRIPTION).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameDescription).Append(" ASC");
                             break;
 
                         case EntryOrderBy.DescriptionDescending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_DESCRIPTION).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameDescription).Append(" DESC");
                             break;
 
                         case EntryOrderBy.StatusAscending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" ASC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameStatus).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDescending:
 
-                            _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
+                            _ = sqlBuilder.Append(Entry.ColumnNameStatus).Append(" DESC");
                             break;
                     }
 
@@ -470,14 +470,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new Entry
                                 {
-                                    Id = (int)reader[Entry.COLUMN_NAME_ID],
-                                    Name = (string)reader[Entry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
-                                    JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
+                                    Id = (int)reader[Entry.ColumnNameId],
+                                    Name = (string)reader[Entry.ColumnNameName],
+                                    Description = (string)reader[Entry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[Entry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[Entry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[Entry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[Entry.ColumnNameWorkflowId],
+                                    JobId = (string)reader[Entry.ColumnNameJobId]
                                 };
 
                                 entries.Add(entry);
@@ -500,9 +500,9 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                     using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " WHERE " + "(LOWER(" + Entry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Entry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Entry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "'::timestamp AND '" + to.ToString(DateTimeFormat) + "'::timestamp);", conn))
+                        + " WHERE " + "(LOWER(" + Entry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + Entry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                        + " AND (" + Entry.ColumnNameStatusDate + " BETWEEN '" + from.ToString(DATE_TIME_FORMAT) + "'::timestamp AND '" + to.ToString(DATE_TIME_FORMAT) + "'::timestamp);", conn))
                     {
                         var count = (long)command.ExecuteScalar();
 
@@ -521,16 +521,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Entry.COLUMN_NAME_ID + ", "
-                        + Entry.COLUMN_NAME_NAME + ", "
-                        + Entry.COLUMN_NAME_DESCRIPTION + ", "
-                        + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + Entry.COLUMN_NAME_STATUS + ", "
-                        + Entry.COLUMN_NAME_STATUS_DATE + ", "
-                        + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
-                        + Entry.COLUMN_NAME_JOB_ID
+                        + Entry.ColumnNameId + ", "
+                        + Entry.ColumnNameName + ", "
+                        + Entry.ColumnNameDescription + ", "
+                        + Entry.ColumnNameLaunchType + ", "
+                        + Entry.ColumnNameStatus + ", "
+                        + Entry.ColumnNameStatusDate + ", "
+                        + Entry.ColumnNameWorkflowId + ", "
+                        + Entry.ColumnNameJobId
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " WHERE " + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId + ";", conn))
+                        + " WHERE " + Entry.ColumnNameWorkflowId + " = " + workflowId + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
@@ -538,14 +538,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new Entry
                                 {
-                                    Id = (int)reader[Entry.COLUMN_NAME_ID],
-                                    Name = (string)reader[Entry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
-                                    JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
+                                    Id = (int)reader[Entry.ColumnNameId],
+                                    Name = (string)reader[Entry.ColumnNameName],
+                                    Description = (string)reader[Entry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[Entry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[Entry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[Entry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[Entry.ColumnNameWorkflowId],
+                                    JobId = (string)reader[Entry.ColumnNameJobId]
                                 };
 
                                 return entry;
@@ -567,17 +567,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Entry.COLUMN_NAME_ID + ", "
-                        + Entry.COLUMN_NAME_NAME + ", "
-                        + Entry.COLUMN_NAME_DESCRIPTION + ", "
-                        + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + Entry.COLUMN_NAME_STATUS + ", "
-                        + Entry.COLUMN_NAME_STATUS_DATE + ", "
-                        + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
-                        + Entry.COLUMN_NAME_JOB_ID
+                        + Entry.ColumnNameId + ", "
+                        + Entry.ColumnNameName + ", "
+                        + Entry.ColumnNameDescription + ", "
+                        + Entry.ColumnNameLaunchType + ", "
+                        + Entry.ColumnNameStatus + ", "
+                        + Entry.ColumnNameStatusDate + ", "
+                        + Entry.ColumnNameWorkflowId + ", "
+                        + Entry.ColumnNameJobId
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " WHERE (" + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId
-                        + " AND " + Entry.COLUMN_NAME_JOB_ID + " = '" + jobId + "');", conn))
+                        + " WHERE (" + Entry.ColumnNameWorkflowId + " = " + workflowId
+                        + " AND " + Entry.ColumnNameJobId + " = '" + jobId + "');", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
@@ -585,14 +585,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new Entry
                                 {
-                                    Id = (int)reader[Entry.COLUMN_NAME_ID],
-                                    Name = (string)reader[Entry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Entry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[Entry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[Entry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[Entry.COLUMN_NAME_WORKFLOW_ID],
-                                    JobId = (string)reader[Entry.COLUMN_NAME_JOB_ID]
+                                    Id = (int)reader[Entry.ColumnNameId],
+                                    Name = (string)reader[Entry.ColumnNameName],
+                                    Description = (string)reader[Entry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[Entry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[Entry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[Entry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[Entry.ColumnNameWorkflowId],
+                                    JobId = (string)reader[Entry.ColumnNameJobId]
                                 };
 
                                 return entry;
@@ -613,15 +613,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + Entry.COLUMN_NAME_STATUS_DATE
+                    using (var command = new NpgsqlCommand("SELECT " + Entry.ColumnNameStatusDate
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " ORDER BY " + Entry.COLUMN_NAME_STATUS_DATE + " DESC LIMIT 1;", conn))
+                        + " ORDER BY " + Entry.ColumnNameStatusDate + " DESC LIMIT 1;", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var statusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE];
+                                var statusDate = (DateTime)reader[Entry.ColumnNameStatusDate];
 
                                 return statusDate;
                             }
@@ -641,15 +641,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + Entry.COLUMN_NAME_STATUS_DATE
+                    using (var command = new NpgsqlCommand("SELECT " + Entry.ColumnNameStatusDate
                         + " FROM " + Core.Db.Entry.DocumentName
-                        + " ORDER BY " + Entry.COLUMN_NAME_STATUS_DATE + " ASC LIMIT 1;", conn))
+                        + " ORDER BY " + Entry.ColumnNameStatusDate + " ASC LIMIT 1;", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var statusDate = (DateTime)reader[Entry.COLUMN_NAME_STATUS_DATE];
+                                var statusDate = (DateTime)reader[Entry.ColumnNameStatusDate];
 
                                 return statusDate;
                             }
@@ -672,13 +672,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + HistoryEntry.COLUMN_NAME_ID + ", "
-                        + HistoryEntry.COLUMN_NAME_NAME + ", "
-                        + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
-                        + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
-                        + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
+                        + HistoryEntry.ColumnNameId + ", "
+                        + HistoryEntry.ColumnNameName + ", "
+                        + HistoryEntry.ColumnNameDescription + ", "
+                        + HistoryEntry.ColumnNameLaunchType + ", "
+                        + HistoryEntry.ColumnNameStatus + ", "
+                        + HistoryEntry.ColumnNameStatusDate + ", "
+                        + HistoryEntry.ColumnNameWorkflowId
                         + " FROM " + Core.Db.HistoryEntry.DocumentName + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -687,13 +687,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new HistoryEntry
                                 {
-                                    Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                                    Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                                    Id = (int)reader[HistoryEntry.ColumnNameId],
+                                    Name = (string)reader[HistoryEntry.ColumnNameName],
+                                    Description = (string)reader[HistoryEntry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[HistoryEntry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[HistoryEntry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnNameWorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -717,16 +717,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + HistoryEntry.COLUMN_NAME_ID + ", "
-                        + HistoryEntry.COLUMN_NAME_NAME + ", "
-                        + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
-                        + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
-                        + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
+                        + HistoryEntry.ColumnNameId + ", "
+                        + HistoryEntry.ColumnNameName + ", "
+                        + HistoryEntry.ColumnNameDescription + ", "
+                        + HistoryEntry.ColumnNameLaunchType + ", "
+                        + HistoryEntry.ColumnNameStatus + ", "
+                        + HistoryEntry.ColumnNameStatusDate + ", "
+                        + HistoryEntry.ColumnNameWorkflowId
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
+                        + " WHERE " + "LOWER(" + HistoryEntry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + HistoryEntry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
@@ -734,13 +734,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new HistoryEntry
                                 {
-                                    Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                                    Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                                    Id = (int)reader[HistoryEntry.ColumnNameId],
+                                    Name = (string)reader[HistoryEntry.ColumnNameName],
+                                    Description = (string)reader[HistoryEntry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[HistoryEntry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[HistoryEntry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnNameWorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -764,16 +764,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + HistoryEntry.COLUMN_NAME_ID + ", "
-                        + HistoryEntry.COLUMN_NAME_NAME + ", "
-                        + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
-                        + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
-                        + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
+                        + HistoryEntry.ColumnNameId + ", "
+                        + HistoryEntry.ColumnNameName + ", "
+                        + HistoryEntry.ColumnNameDescription + ", "
+                        + HistoryEntry.ColumnNameLaunchType + ", "
+                        + HistoryEntry.ColumnNameStatus + ", "
+                        + HistoryEntry.ColumnNameStatusDate + ", "
+                        + HistoryEntry.ColumnNameWorkflowId
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " WHERE " + "LOWER(" + HistoryEntry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + HistoryEntry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
                         + " LIMIT " + entriesCount + " OFFSET " + ((page - 1) * entriesCount) + ";"
                         , conn))
                     {
@@ -783,13 +783,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new HistoryEntry
                                 {
-                                    Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                                    Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                                    Id = (int)reader[HistoryEntry.ColumnNameId],
+                                    Name = (string)reader[HistoryEntry.ColumnNameName],
+                                    Description = (string)reader[HistoryEntry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[HistoryEntry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[HistoryEntry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnNameWorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -813,79 +813,79 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     var sqlBuilder = new StringBuilder("SELECT "
-                        + HistoryEntry.COLUMN_NAME_ID + ", "
-                        + HistoryEntry.COLUMN_NAME_NAME + ", "
-                        + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
-                        + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS + ", "
-                        + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
-                        + HistoryEntry.COLUMN_NAME_WORKFLOW_ID
+                        + HistoryEntry.ColumnNameId + ", "
+                        + HistoryEntry.ColumnNameName + ", "
+                        + HistoryEntry.ColumnNameDescription + ", "
+                        + HistoryEntry.ColumnNameLaunchType + ", "
+                        + HistoryEntry.ColumnNameStatus + ", "
+                        + HistoryEntry.ColumnNameStatusDate + ", "
+                        + HistoryEntry.ColumnNameWorkflowId
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "(LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "'::timestamp AND '" + to.ToString(DateTimeFormat) + "'::timestamp)"
+                        + " WHERE " + "(LOWER(" + HistoryEntry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + HistoryEntry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                        + " AND (" + HistoryEntry.ColumnNameStatusDate + " BETWEEN '" + from.ToString(DATE_TIME_FORMAT) + "'::timestamp AND '" + to.ToString(DATE_TIME_FORMAT) + "'::timestamp)"
                         + " ORDER BY ");
 
                     switch (heo)
                     {
                         case EntryOrderBy.StatusDateAscending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS_DATE).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameStatusDate).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDateDescending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS_DATE).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameStatusDate).Append(" DESC");
                             break;
 
                         case EntryOrderBy.WorkflowIdAscending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_WORKFLOW_ID).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameWorkflowId).Append(" ASC");
                             break;
 
                         case EntryOrderBy.WorkflowIdDescending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_WORKFLOW_ID).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameWorkflowId).Append(" DESC");
                             break;
 
                         case EntryOrderBy.NameAscending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_NAME).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameName).Append(" ASC");
                             break;
 
                         case EntryOrderBy.NameDescending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_NAME).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameName).Append(" DESC");
                             break;
 
                         case EntryOrderBy.LaunchTypeAscending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_LAUNCH_TYPE).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameLaunchType).Append(" ASC");
                             break;
 
                         case EntryOrderBy.LaunchTypeDescending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_LAUNCH_TYPE).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameLaunchType).Append(" DESC");
                             break;
 
                         case EntryOrderBy.DescriptionAscending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_DESCRIPTION).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameDescription).Append(" ASC");
                             break;
 
                         case EntryOrderBy.DescriptionDescending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_DESCRIPTION).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameDescription).Append(" DESC");
                             break;
 
                         case EntryOrderBy.StatusAscending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" ASC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameStatus).Append(" ASC");
                             break;
 
                         case EntryOrderBy.StatusDescending:
 
-                            _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
+                            _ = sqlBuilder.Append(HistoryEntry.ColumnNameStatus).Append(" DESC");
                             break;
                     }
 
@@ -899,13 +899,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var entry = new HistoryEntry
                                 {
-                                    Id = (int)reader[HistoryEntry.COLUMN_NAME_ID],
-                                    Name = (string)reader[HistoryEntry.COLUMN_NAME_NAME],
-                                    Description = (string)reader[HistoryEntry.COLUMN_NAME_DESCRIPTION],
-                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.COLUMN_NAME_LAUNCH_TYPE],
-                                    Status = (Status)(int)reader[HistoryEntry.COLUMN_NAME_STATUS],
-                                    StatusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE],
-                                    WorkflowId = (int)reader[HistoryEntry.COLUMN_NAME_WORKFLOW_ID]
+                                    Id = (int)reader[HistoryEntry.ColumnNameId],
+                                    Name = (string)reader[HistoryEntry.ColumnNameName],
+                                    Description = (string)reader[HistoryEntry.ColumnNameDescription],
+                                    LaunchType = (LaunchType)(int)reader[HistoryEntry.ColumnNameLaunchType],
+                                    Status = (Status)(int)reader[HistoryEntry.ColumnNameStatus],
+                                    StatusDate = (DateTime)reader[HistoryEntry.ColumnNameStatusDate],
+                                    WorkflowId = (int)reader[HistoryEntry.ColumnNameWorkflowId]
                                 };
 
                                 entries.Add(entry);
@@ -928,8 +928,8 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                     using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
+                        + " WHERE " + "LOWER(" + HistoryEntry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + HistoryEntry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%';", conn))
                     {
                         var count = (long)command.ExecuteScalar();
 
@@ -949,9 +949,9 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                     using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " WHERE " + "(LOWER(" + HistoryEntry.COLUMN_NAME_NAME + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + HistoryEntry.COLUMN_NAME_DESCRIPTION + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + HistoryEntry.COLUMN_NAME_STATUS_DATE + " BETWEEN '" + from.ToString(DateTimeFormat) + "'::timestamp AND '" + to.ToString(DateTimeFormat) + "'::timestamp);", conn))
+                        + " WHERE " + "(LOWER(" + HistoryEntry.ColumnNameName + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + HistoryEntry.ColumnNameDescription + ") LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                        + " AND (" + HistoryEntry.ColumnNameStatusDate + " BETWEEN '" + from.ToString(DATE_TIME_FORMAT) + "'::timestamp AND '" + to.ToString(DATE_TIME_FORMAT) + "'::timestamp);", conn))
                     {
                         var count = (long)command.ExecuteScalar();
 
@@ -969,15 +969,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.COLUMN_NAME_STATUS_DATE
+                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnNameStatusDate
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " ORDER BY " + HistoryEntry.COLUMN_NAME_STATUS_DATE + " DESC LIMIT 1;", conn))
+                        + " ORDER BY " + HistoryEntry.ColumnNameStatusDate + " DESC LIMIT 1;", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var statusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE];
+                                var statusDate = (DateTime)reader[HistoryEntry.ColumnNameStatusDate];
 
                                 return statusDate;
                             }
@@ -997,15 +997,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.COLUMN_NAME_STATUS_DATE
+                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnNameStatusDate
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
-                        + " ORDER BY " + HistoryEntry.COLUMN_NAME_STATUS_DATE + " ASC LIMIT 1;", conn))
+                        + " ORDER BY " + HistoryEntry.ColumnNameStatusDate + " ASC LIMIT 1;", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var statusDate = (DateTime)reader[HistoryEntry.COLUMN_NAME_STATUS_DATE];
+                                var statusDate = (DateTime)reader[HistoryEntry.ColumnNameStatusDate];
 
                                 return statusDate;
                             }
@@ -1025,16 +1025,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + User.COLUMN_NAME_PASSWORD
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnNamePassword
                          + " FROM " + Core.Db.User.DocumentName
-                         + " WHERE " + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "'"
+                         + " WHERE " + User.ColumnNameUsername + " = '" + (username ?? "").Replace("'", "''") + "'"
                          + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var password = (string)reader[User.COLUMN_NAME_PASSWORD];
+                                var password = (string)reader[User.ColumnNamePassword];
 
                                 return password;
                             }
@@ -1054,15 +1054,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + StatusCount.COLUMN_NAME_ID + ", "
-                        + StatusCount.COLUMN_NAME_PENDING_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_RUNNING_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_DONE_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_FAILED_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_WARNING_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_DISABLED_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_STOPPED_COUNT + ", "
-                        + StatusCount.COLUMN_NAME_REJECTED_COUNT
+                    using (var command = new NpgsqlCommand("SELECT " + StatusCount.ColumnNameId + ", "
+                        + StatusCount.ColumnNamePendingCount + ", "
+                        + StatusCount.ColumnNameRunningCount + ", "
+                        + StatusCount.ColumnNameDoneCount + ", "
+                        + StatusCount.ColumnNameFailedCount + ", "
+                        + StatusCount.ColumnNameWarningCount + ", "
+                        + StatusCount.ColumnNameDisabledCount + ", "
+                        + StatusCount.ColumnNameStoppedCount + ", "
+                        + StatusCount.ColumnNameRejectedCount
                         + " FROM " + Core.Db.StatusCount.DocumentName
                         + ";", conn))
                     {
@@ -1072,15 +1072,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var statusCount = new StatusCount
                                 {
-                                    Id = (int)reader[StatusCount.COLUMN_NAME_ID],
-                                    PendingCount = (int)reader[StatusCount.COLUMN_NAME_PENDING_COUNT],
-                                    RunningCount = (int)reader[StatusCount.COLUMN_NAME_RUNNING_COUNT],
-                                    DoneCount = (int)reader[StatusCount.COLUMN_NAME_DONE_COUNT],
-                                    FailedCount = (int)reader[StatusCount.COLUMN_NAME_FAILED_COUNT],
-                                    WarningCount = (int)reader[StatusCount.COLUMN_NAME_WARNING_COUNT],
-                                    DisabledCount = (int)reader[StatusCount.COLUMN_NAME_DISABLED_COUNT],
-                                    StoppedCount = (int)reader[StatusCount.COLUMN_NAME_STOPPED_COUNT],
-                                    RejectedCount = (int)reader[StatusCount.COLUMN_NAME_REJECTED_COUNT]
+                                    Id = (int)reader[StatusCount.ColumnNameId],
+                                    PendingCount = (int)reader[StatusCount.ColumnNamePendingCount],
+                                    RunningCount = (int)reader[StatusCount.ColumnNameRunningCount],
+                                    DoneCount = (int)reader[StatusCount.ColumnNameDoneCount],
+                                    FailedCount = (int)reader[StatusCount.ColumnNameFailedCount],
+                                    WarningCount = (int)reader[StatusCount.ColumnNameWarningCount],
+                                    DisabledCount = (int)reader[StatusCount.ColumnNameDisabledCount],
+                                    StoppedCount = (int)reader[StatusCount.ColumnNameStoppedCount],
+                                    RejectedCount = (int)reader[StatusCount.ColumnNameRejectedCount]
                                 };
 
                                 return statusCount;
@@ -1101,15 +1101,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnNameId + ", "
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn
                         + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "'"
+                        + " WHERE " + User.ColumnNameUsername + " = '" + (username ?? "").Replace("'", "''") + "'"
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -1118,13 +1118,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var user = new User
                                 {
-                                    Id = (int)reader[User.COLUMN_NAME_ID],
-                                    Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                                    Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                                    Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                                    UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                                    CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                                    ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                                    Id = (int)reader[User.ColumnNameId],
+                                    Username = (string)reader[User.ColumnNameUsername],
+                                    Password = (string)reader[User.ColumnNamePassword],
+                                    Email = (string)reader[User.ColumnNameEmail],
+                                    UserProfile = (UserProfile)(int)reader[User.ColumnNameUserProfile],
+                                    CreatedOn = (DateTime)reader[User.ColumnNameCreatedOn],
+                                    ModifiedOn = reader[User.ColumnNameModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnNameModifiedOn]
                                 };
 
                                 return user;
@@ -1145,15 +1145,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnNameId + ", "
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn
                         + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(userId) + "'"
+                        + " WHERE " + User.ColumnNameId + " = '" + int.Parse(userId) + "'"
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -1162,13 +1162,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var user = new User
                                 {
-                                    Id = (int)reader[User.COLUMN_NAME_ID],
-                                    Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                                    Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                                    Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                                    UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                                    CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                                    ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                                    Id = (int)reader[User.ColumnNameId],
+                                    Username = (string)reader[User.ColumnNameUsername],
+                                    Password = (string)reader[User.ColumnNamePassword],
+                                    Email = (string)reader[User.ColumnNameEmail],
+                                    UserProfile = (UserProfile)(int)reader[User.ColumnNameUserProfile],
+                                    CreatedOn = (DateTime)reader[User.ColumnNameCreatedOn],
+                                    ModifiedOn = reader[User.ColumnNameModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnNameModifiedOn]
                                 };
 
                                 return user;
@@ -1191,13 +1191,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnNameId + ", "
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn
                         + " FROM " + Core.Db.User.DocumentName
                         + ";", conn))
                     {
@@ -1207,13 +1207,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var user = new User
                                 {
-                                    Id = (int)reader[User.COLUMN_NAME_ID],
-                                    Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                                    Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                                    Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                                    UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                                    CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                                    ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                                    Id = (int)reader[User.ColumnNameId],
+                                    Username = (string)reader[User.ColumnNameUsername],
+                                    Password = (string)reader[User.ColumnNamePassword],
+                                    Email = (string)reader[User.ColumnNameEmail],
+                                    UserProfile = (UserProfile)(int)reader[User.ColumnNameUserProfile],
+                                    CreatedOn = (DateTime)reader[User.ColumnNameCreatedOn],
+                                    ModifiedOn = reader[User.ColumnNameModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnNameModifiedOn]
                                 };
 
                                 users.Add(user);
@@ -1236,16 +1236,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
+                    using (var command = new NpgsqlCommand("SELECT " + User.ColumnNameId + ", "
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn
                         + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE " + "LOWER(" + User.COLUMN_NAME_USERNAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " ORDER BY " + User.COLUMN_NAME_USERNAME + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
+                        + " WHERE " + "LOWER(" + User.ColumnNameUsername + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " ORDER BY " + User.ColumnNameUsername + (uo == UserOrderBy.UsernameAscending ? " ASC" : " DESC")
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -1254,13 +1254,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var user = new User
                                 {
-                                    Id = (int)reader[User.COLUMN_NAME_ID],
-                                    Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                                    Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                                    Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                                    UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                                    CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                                    ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                                    Id = (int)reader[User.ColumnNameId],
+                                    Username = (string)reader[User.ColumnNameUsername],
+                                    Password = (string)reader[User.ColumnNamePassword],
+                                    Email = (string)reader[User.ColumnNameEmail],
+                                    UserProfile = (UserProfile)(int)reader[User.ColumnNameUserProfile],
+                                    CreatedOn = (DateTime)reader[User.ColumnNameCreatedOn],
+                                    ModifiedOn = reader[User.ColumnNameModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnNameModifiedOn]
                                 };
 
                                 users.Add(user);
@@ -1283,18 +1283,18 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + UserWorkflow.COLUMN_NAME_ID + ", "
-                        + UserWorkflow.COLUMN_NAME_USER_ID + ", "
-                        + UserWorkflow.COLUMN_NAME_WORKFLOW_ID
+                    using (var command = new NpgsqlCommand("SELECT " + UserWorkflow.ColumnNameId + ", "
+                        + UserWorkflow.ColumnNameUserId + ", "
+                        + UserWorkflow.ColumnNameWorkflowId
                         + " FROM " + Core.Db.UserWorkflow.DocumentName
-                        + " WHERE " + UserWorkflow.COLUMN_NAME_USER_ID + " = " + int.Parse(userId)
+                        + " WHERE " + UserWorkflow.ColumnNameUserId + " = " + int.Parse(userId)
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                var workflowId = (int)reader[UserWorkflow.COLUMN_NAME_WORKFLOW_ID];
+                                var workflowId = (int)reader[UserWorkflow.ColumnNameWorkflowId];
 
                                 workflowIds.Add(workflowId.ToString());
                             }
@@ -1314,10 +1314,10 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + Workflow.COLUMN_NAME_ID + ", "
-                        + Workflow.COLUMN_NAME_XML
+                    using (var command = new NpgsqlCommand("SELECT " + Workflow.ColumnNameId + ", "
+                        + Workflow.ColumnNameXml
                         + " FROM " + Core.Db.Workflow.DocumentName
-                        + " WHERE " + Workflow.COLUMN_NAME_ID + " = " + int.Parse(id) + ";", conn))
+                        + " WHERE " + Workflow.ColumnNameId + " = " + int.Parse(id) + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
@@ -1325,8 +1325,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var workflow = new Workflow
                                 {
-                                    Id = (int)reader[Workflow.COLUMN_NAME_ID],
-                                    Xml = (string)reader[Workflow.COLUMN_NAME_XML]
+                                    Id = (int)reader[Workflow.ColumnNameId],
+                                    Xml = (string)reader[Workflow.ColumnNameXml]
                                 };
 
                                 return workflow;
@@ -1349,8 +1349,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + Workflow.COLUMN_NAME_ID + ", "
-                        + Workflow.COLUMN_NAME_XML
+                    using (var command = new NpgsqlCommand("SELECT " + Workflow.ColumnNameId + ", "
+                        + Workflow.ColumnNameXml
                         + " FROM " + Core.Db.Workflow.DocumentName + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -1359,8 +1359,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var workflow = new Workflow
                                 {
-                                    Id = (int)reader[Workflow.COLUMN_NAME_ID],
-                                    Xml = (string)reader[Workflow.COLUMN_NAME_XML]
+                                    Id = (int)reader[Workflow.ColumnNameId],
+                                    Xml = (string)reader[Workflow.ColumnNameXml]
                                 };
 
                                 workflows.Add(workflow);
@@ -1391,42 +1391,42 @@ namespace Wexflow.Core.Db.PostgreSQL
 
         public override void IncrementDisabledCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_DISABLED_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameDisabledCount);
         }
 
         public override void IncrementRejectedCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_REJECTED_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameRejectedCount);
         }
 
         public override void IncrementDoneCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_DONE_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameDoneCount);
         }
 
         public override void IncrementFailedCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_FAILED_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameFailedCount);
         }
 
         public override void IncrementPendingCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_PENDING_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNamePendingCount);
         }
 
         public override void IncrementRunningCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_RUNNING_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameRunningCount);
         }
 
         public override void IncrementStoppedCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_STOPPED_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameStoppedCount);
         }
 
         public override void IncrementWarningCount()
         {
-            IncrementStatusCountColumn(StatusCount.COLUMN_NAME_WARNING_COUNT);
+            IncrementStatusCountColumn(StatusCount.ColumnNameWarningCount);
         }
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
@@ -1447,12 +1447,12 @@ namespace Wexflow.Core.Db.PostgreSQL
 
         public override void DecrementPendingCount()
         {
-            DecrementStatusCountColumn(StatusCount.COLUMN_NAME_PENDING_COUNT);
+            DecrementStatusCountColumn(StatusCount.ColumnNamePendingCount);
         }
 
         public override void DecrementRunningCount()
         {
-            DecrementStatusCountColumn(StatusCount.COLUMN_NAME_RUNNING_COUNT);
+            DecrementStatusCountColumn(StatusCount.ColumnNameRunningCount);
         }
 
         public override void InsertEntry(Core.Db.Entry entry)
@@ -1464,18 +1464,18 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Entry.DocumentName + "("
-                        + Entry.COLUMN_NAME_NAME + ", "
-                        + Entry.COLUMN_NAME_DESCRIPTION + ", "
-                        + Entry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                        + Entry.COLUMN_NAME_STATUS_DATE + ", "
-                        + Entry.COLUMN_NAME_STATUS + ", "
-                        + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
-                        + Entry.COLUMN_NAME_JOB_ID + ", "
-                        + Entry.COLUMN_NAME_LOGS + ") VALUES("
+                        + Entry.ColumnNameName + ", "
+                        + Entry.ColumnNameDescription + ", "
+                        + Entry.ColumnNameLaunchType + ", "
+                        + Entry.ColumnNameStatusDate + ", "
+                        + Entry.ColumnNameStatus + ", "
+                        + Entry.ColumnNameWorkflowId + ", "
+                        + Entry.ColumnNameJobId + ", "
+                        + Entry.ColumnNameLogs + ") VALUES("
                         + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (int)entry.LaunchType + ", "
-                        + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
+                        + "'" + entry.StatusDate.ToString(DATE_TIME_FORMAT) + "'" + ", "
                         + (int)entry.Status + ", "
                         + entry.WorkflowId + ", "
                         + "'" + (entry.JobId ?? "") + "', "
@@ -1497,17 +1497,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.HistoryEntry.DocumentName + "("
-                         + HistoryEntry.COLUMN_NAME_NAME + ", "
-                         + HistoryEntry.COLUMN_NAME_DESCRIPTION + ", "
-                         + HistoryEntry.COLUMN_NAME_LAUNCH_TYPE + ", "
-                         + HistoryEntry.COLUMN_NAME_STATUS_DATE + ", "
-                         + HistoryEntry.COLUMN_NAME_STATUS + ", "
-                         + HistoryEntry.COLUMN_NAME_WORKFLOW_ID + ", "
-                         + HistoryEntry.COLUMN_NAME_LOGS + ") VALUES("
+                         + HistoryEntry.ColumnNameName + ", "
+                         + HistoryEntry.ColumnNameDescription + ", "
+                         + HistoryEntry.ColumnNameLaunchType + ", "
+                         + HistoryEntry.ColumnNameStatusDate + ", "
+                         + HistoryEntry.ColumnNameStatus + ", "
+                         + HistoryEntry.ColumnNameWorkflowId + ", "
+                         + HistoryEntry.ColumnNameLogs + ") VALUES("
                          + "'" + (entry.Name ?? "").Replace("'", "''") + "'" + ", "
                          + "'" + (entry.Description ?? "").Replace("'", "''") + "'" + ", "
                          + (int)entry.LaunchType + ", "
-                         + "'" + entry.StatusDate.ToString(DateTimeFormat) + "'" + ", "
+                         + "'" + entry.StatusDate.ToString(DATE_TIME_FORMAT) + "'" + ", "
                          + (int)entry.Status + ", "
                          + entry.WorkflowId + ", "
                          + "'" + (entry.Logs ?? "").Replace("'", "''") + "'" + ");"
@@ -1528,18 +1528,18 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.User.DocumentName + "("
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON + ") VALUES("
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn + ") VALUES("
                         + "'" + (user.Username ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (user.Password ?? "").Replace("'", "''") + "'" + ", "
                         + (int)user.UserProfile + ", "
                         + "'" + (user.Email ?? "").Replace("'", "''") + "'" + ", "
-                        + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
-                        + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(DateTimeFormat) + "'") + ");"
+                        + "'" + DateTime.Now.ToString(DATE_TIME_FORMAT) + "'" + ", "
+                        + (user.ModifiedOn == DateTime.MinValue ? "NULL" : "'" + user.ModifiedOn.ToString(DATE_TIME_FORMAT) + "'") + ");"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1557,8 +1557,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.UserWorkflow.DocumentName + "("
-                        + UserWorkflow.COLUMN_NAME_USER_ID + ", "
-                        + UserWorkflow.COLUMN_NAME_WORKFLOW_ID + ") VALUES("
+                        + UserWorkflow.ColumnNameUserId + ", "
+                        + UserWorkflow.ColumnNameWorkflowId + ") VALUES("
                         + int.Parse(userWorkflow.UserId) + ", "
                         + int.Parse(userWorkflow.WorkflowId) + ");"
                         , conn))
@@ -1578,8 +1578,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Workflow.DocumentName + "("
-                        + Workflow.COLUMN_NAME_XML + ") VALUES("
-                        + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + ") RETURNING " + Workflow.COLUMN_NAME_ID + ";"
+                        + Workflow.ColumnNameXml + ") VALUES("
+                        + "'" + (workflow.Xml ?? "").Replace("'", "''") + "'" + ") RETURNING " + Workflow.ColumnNameId + ";"
                         , conn))
                     {
                         var id = (int)command.ExecuteScalar();
@@ -1599,16 +1599,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Entry.DocumentName + " SET "
-                        + Entry.COLUMN_NAME_NAME + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
-                        + Entry.COLUMN_NAME_DESCRIPTION + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
-                        + Entry.COLUMN_NAME_LAUNCH_TYPE + " = " + (int)entry.LaunchType + ", "
-                        + Entry.COLUMN_NAME_STATUS_DATE + " = '" + entry.StatusDate.ToString(DateTimeFormat) + "', "
-                        + Entry.COLUMN_NAME_STATUS + " = " + (int)entry.Status + ", "
-                        + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + entry.WorkflowId + ", "
-                        + Entry.COLUMN_NAME_JOB_ID + " = '" + (entry.JobId ?? "") + "', "
-                        + Entry.COLUMN_NAME_LOGS + " = '" + (entry.Logs ?? "").Replace("'", "''") + "'"
+                        + Entry.ColumnNameName + " = '" + (entry.Name ?? "").Replace("'", "''") + "', "
+                        + Entry.ColumnNameDescription + " = '" + (entry.Description ?? "").Replace("'", "''") + "', "
+                        + Entry.ColumnNameLaunchType + " = " + (int)entry.LaunchType + ", "
+                        + Entry.ColumnNameStatusDate + " = '" + entry.StatusDate.ToString(DATE_TIME_FORMAT) + "', "
+                        + Entry.ColumnNameStatus + " = " + (int)entry.Status + ", "
+                        + Entry.ColumnNameWorkflowId + " = " + entry.WorkflowId + ", "
+                        + Entry.ColumnNameJobId + " = '" + (entry.JobId ?? "") + "', "
+                        + Entry.ColumnNameLogs + " = '" + (entry.Logs ?? "").Replace("'", "''") + "'"
                         + " WHERE "
-                        + Entry.COLUMN_NAME_ID + " = " + int.Parse(id) + ";"
+                        + Entry.ColumnNameId + " = " + int.Parse(id) + ";"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1626,9 +1626,9 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
-                        + User.COLUMN_NAME_PASSWORD + " = '" + (password ?? "").Replace("'", "''") + "'"
+                        + User.ColumnNamePassword + " = '" + (password ?? "").Replace("'", "''") + "'"
                         + " WHERE "
-                        + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "';"
+                        + User.ColumnNameUsername + " = '" + (username ?? "").Replace("'", "''") + "';"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1646,14 +1646,14 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
-                         + User.COLUMN_NAME_USERNAME + " = '" + (user.Username ?? "").Replace("'", "''") + "', "
-                         + User.COLUMN_NAME_PASSWORD + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
-                         + User.COLUMN_NAME_USER_PROFILE + " = " + (int)user.UserProfile + ", "
-                         + User.COLUMN_NAME_EMAIL + " = '" + user.Email + "', "
-                         + User.COLUMN_NAME_CREATED_ON + " = '" + user.CreatedOn.ToString(DateTimeFormat) + "', "
-                         + User.COLUMN_NAME_MODIFIED_ON + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
+                         + User.ColumnNameUsername + " = '" + (user.Username ?? "").Replace("'", "''") + "', "
+                         + User.ColumnNamePassword + " = '" + (user.Password ?? "").Replace("'", "''") + "', "
+                         + User.ColumnNameUserProfile + " = " + (int)user.UserProfile + ", "
+                         + User.ColumnNameEmail + " = '" + user.Email + "', "
+                         + User.ColumnNameCreatedOn + " = '" + user.CreatedOn.ToString(DATE_TIME_FORMAT) + "', "
+                         + User.ColumnNameModifiedOn + " = '" + DateTime.Now.ToString(DATE_TIME_FORMAT) + "'"
                          + " WHERE "
-                         + User.COLUMN_NAME_ID + " = " + int.Parse(id) + ";"
+                         + User.ColumnNameId + " = " + int.Parse(id) + ";"
                          , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1671,12 +1671,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.User.DocumentName + " SET "
-                        + User.COLUMN_NAME_USERNAME + " = '" + (username ?? "").Replace("'", "''") + "', "
-                        + User.COLUMN_NAME_USER_PROFILE + " = " + (int)up + ", "
-                        + User.COLUMN_NAME_EMAIL + " = '" + (email ?? "").Replace("'", "''") + "', "
-                        + User.COLUMN_NAME_MODIFIED_ON + " = '" + DateTime.Now.ToString(DateTimeFormat) + "'"
+                        + User.ColumnNameUsername + " = '" + (username ?? "").Replace("'", "''") + "', "
+                        + User.ColumnNameUserProfile + " = " + (int)up + ", "
+                        + User.ColumnNameEmail + " = '" + (email ?? "").Replace("'", "''") + "', "
+                        + User.ColumnNameModifiedOn + " = '" + DateTime.Now.ToString(DATE_TIME_FORMAT) + "'"
                         + " WHERE "
-                        + User.COLUMN_NAME_ID + " = " + int.Parse(userId) + ";"
+                        + User.ColumnNameId + " = " + int.Parse(userId) + ";"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1694,9 +1694,9 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Workflow.DocumentName + " SET "
-                         + Workflow.COLUMN_NAME_XML + " = '" + (workflow.Xml ?? "").Replace("'", "''") + "'"
+                         + Workflow.ColumnNameXml + " = '" + (workflow.Xml ?? "").Replace("'", "''") + "'"
                          + " WHERE "
-                         + User.COLUMN_NAME_ID + " = " + int.Parse(dbId) + ";"
+                         + User.ColumnNameId + " = " + int.Parse(dbId) + ";"
                          , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1713,17 +1713,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + Entry.COLUMN_NAME_LOGS
+                    using (var command = new NpgsqlCommand("SELECT " + Entry.ColumnNameLogs
                          + " FROM " + Core.Db.Entry.DocumentName
                          + " WHERE "
-                         + Entry.COLUMN_NAME_ID + " = " + int.Parse(entryId) + ";"
+                         + Entry.ColumnNameId + " = " + int.Parse(entryId) + ";"
                          , conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var logs = (string)reader[Entry.COLUMN_NAME_LOGS];
+                                var logs = (string)reader[Entry.ColumnNameLogs];
                                 return logs;
                             }
                         }
@@ -1742,17 +1742,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                 {
                     conn.Open();
 
-                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.COLUMN_NAME_LOGS
+                    using (var command = new NpgsqlCommand("SELECT " + HistoryEntry.ColumnNameLogs
                         + " FROM " + Core.Db.HistoryEntry.DocumentName
                         + " WHERE "
-                        + HistoryEntry.COLUMN_NAME_ID + " = " + int.Parse(entryId) + ";"
+                        + HistoryEntry.ColumnNameId + " = " + int.Parse(entryId) + ";"
                         , conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var logs = (string)reader[HistoryEntry.COLUMN_NAME_LOGS];
+                                var logs = (string)reader[HistoryEntry.ColumnNameLogs];
                                 return logs;
                             }
                         }
@@ -1774,17 +1774,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + User.COLUMN_NAME_ID + ", "
-                        + User.COLUMN_NAME_USERNAME + ", "
-                        + User.COLUMN_NAME_PASSWORD + ", "
-                        + User.COLUMN_NAME_EMAIL + ", "
-                        + User.COLUMN_NAME_USER_PROFILE + ", "
-                        + User.COLUMN_NAME_CREATED_ON + ", "
-                        + User.COLUMN_NAME_MODIFIED_ON
+                        + User.ColumnNameId + ", "
+                        + User.ColumnNameUsername + ", "
+                        + User.ColumnNamePassword + ", "
+                        + User.ColumnNameEmail + ", "
+                        + User.ColumnNameUserProfile + ", "
+                        + User.ColumnNameCreatedOn + ", "
+                        + User.ColumnNameModifiedOn
                         + " FROM " + Core.Db.User.DocumentName
-                        + " WHERE (" + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.SuperAdministrator
-                        + " OR " + User.COLUMN_NAME_USER_PROFILE + " = " + (int)UserProfile.Administrator + ")"
-                        + " ORDER BY " + User.COLUMN_NAME_USERNAME
+                        + " WHERE (" + User.ColumnNameUserProfile + " = " + (int)UserProfile.SuperAdministrator
+                        + " OR " + User.ColumnNameUserProfile + " = " + (int)UserProfile.Administrator + ")"
+                        + " ORDER BY " + User.ColumnNameUsername
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -1793,13 +1793,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var admin = new User
                                 {
-                                    Id = (int)reader[User.COLUMN_NAME_ID],
-                                    Username = (string)reader[User.COLUMN_NAME_USERNAME],
-                                    Password = (string)reader[User.COLUMN_NAME_PASSWORD],
-                                    Email = (string)reader[User.COLUMN_NAME_EMAIL],
-                                    UserProfile = (UserProfile)(int)reader[User.COLUMN_NAME_USER_PROFILE],
-                                    CreatedOn = (DateTime)reader[User.COLUMN_NAME_CREATED_ON],
-                                    ModifiedOn = reader[User.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.COLUMN_NAME_MODIFIED_ON]
+                                    Id = (int)reader[User.ColumnNameId],
+                                    Username = (string)reader[User.ColumnNameUsername],
+                                    Password = (string)reader[User.ColumnNamePassword],
+                                    Email = (string)reader[User.ColumnNameEmail],
+                                    UserProfile = (UserProfile)(int)reader[User.ColumnNameUserProfile],
+                                    CreatedOn = (DateTime)reader[User.ColumnNameCreatedOn],
+                                    ModifiedOn = reader[User.ColumnNameModifiedOn] == DBNull.Value ? DateTime.MinValue : (DateTime)reader[User.ColumnNameModifiedOn]
                                 };
 
                                 users.Add(admin);
@@ -1821,33 +1821,33 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Record.DocumentName + "("
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON + ") VALUES("
+                        + Record.ColumnNameName + ", "
+                        + Record.ColumnNameDescription + ", "
+                        + Record.ColumnNameApproved + ", "
+                        + Record.ColumnNameStartDate + ", "
+                        + Record.ColumnNameEndDate + ", "
+                        + Record.ColumnNameComments + ", "
+                        + Record.ColumnNameManagerComments + ", "
+                        + Record.ColumnNameCreatedBy + ", "
+                        + Record.ColumnNameCreatedOn + ", "
+                        + Record.ColumnNameModifiedBy + ", "
+                        + Record.ColumnNameModifiedOn + ", "
+                        + Record.ColumnNameAssignedTo + ", "
+                        + Record.ColumnNameAssignedOn + ") VALUES("
                         + "'" + (record.Name ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (record.Description ?? "").Replace("'", "''") + "'" + ", "
                         + (record.Approved ? "TRUE" : "FALSE") + ", "
-                        + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
-                        + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
+                        + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DATE_TIME_FORMAT) + "'") + ", "
+                        + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DATE_TIME_FORMAT) + "'") + ", "
                         + "'" + (record.Comments ?? "").Replace("'", "''") + "'" + ", "
                         + "'" + (record.ManagerComments ?? "").Replace("'", "''") + "'" + ", "
                         + int.Parse(record.CreatedBy) + ", "
-                        + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ", "
+                        + "'" + DateTime.Now.ToString(DATE_TIME_FORMAT) + "'" + ", "
                         + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                        + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(DateTimeFormat) + "'") + ", "
+                        + (record.ModifiedOn == null ? "NULL" : "'" + record.ModifiedOn.Value.ToString(DATE_TIME_FORMAT) + "'") + ", "
                          + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                        + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'") + ") "
-                        + "RETURNING " + Record.COLUMN_NAME_ID + ";"
+                        + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DATE_TIME_FORMAT) + "'") + ") "
+                        + "RETURNING " + Record.ColumnNameId + ";"
                         , conn))
                     {
                         var id = (int)command.ExecuteScalar();
@@ -1866,20 +1866,20 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Record.DocumentName + " SET "
-                        + Record.COLUMN_NAME_NAME + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
-                        + Record.COLUMN_NAME_DESCRIPTION + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
-                        + Record.COLUMN_NAME_APPROVED + " = " + (record.Approved ? "TRUE" : "FALSE") + ", "
-                        + Record.COLUMN_NAME_START_DATE + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DateTimeFormat) + "'") + ", "
-                        + Record.COLUMN_NAME_END_DATE + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DateTimeFormat) + "'") + ", "
-                        + Record.COLUMN_NAME_COMMENTS + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
-                        + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(record.CreatedBy) + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + " = '" + DateTime.Now.ToString(DateTimeFormat) + "', "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DateTimeFormat) + "'")
+                        + Record.ColumnNameName + " = '" + (record.Name ?? "").Replace("'", "''") + "', "
+                        + Record.ColumnNameDescription + " = '" + (record.Description ?? "").Replace("'", "''") + "', "
+                        + Record.ColumnNameApproved + " = " + (record.Approved ? "TRUE" : "FALSE") + ", "
+                        + Record.ColumnNameStartDate + " = " + (record.StartDate == null ? "NULL" : "'" + record.StartDate.Value.ToString(DATE_TIME_FORMAT) + "'") + ", "
+                        + Record.ColumnNameEndDate + " = " + (record.EndDate == null ? "NULL" : "'" + record.EndDate.Value.ToString(DATE_TIME_FORMAT) + "'") + ", "
+                        + Record.ColumnNameComments + " = '" + (record.Comments ?? "").Replace("'", "''") + "', "
+                        + Record.ColumnNameManagerComments + " = '" + (record.ManagerComments ?? "").Replace("'", "''") + "', "
+                        + Record.ColumnNameCreatedBy + " = " + int.Parse(record.CreatedBy) + ", "
+                        + Record.ColumnNameModifiedBy + " = " + (string.IsNullOrEmpty(record.ModifiedBy) ? "NULL" : int.Parse(record.ModifiedBy).ToString()) + ", "
+                        + Record.ColumnNameModifiedOn + " = '" + DateTime.Now.ToString(DATE_TIME_FORMAT) + "', "
+                        + Record.ColumnNameAssignedTo + " = " + (string.IsNullOrEmpty(record.AssignedTo) ? "NULL" : int.Parse(record.AssignedTo).ToString()) + ", "
+                        + Record.ColumnNameAssignedOn + " = " + (record.AssignedOn == null ? "NULL" : "'" + record.AssignedOn.Value.ToString(DATE_TIME_FORMAT) + "'")
                         + " WHERE "
-                        + Record.COLUMN_NAME_ID + " = " + int.Parse(recordId) + ";"
+                        + Record.ColumnNameId + " = " + int.Parse(recordId) + ";"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -1908,7 +1908,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         }
 
                         using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Record.DocumentName
-                            + " WHERE " + Record.COLUMN_NAME_ID + " IN " + builder + ";", conn))
+                            + " WHERE " + Record.ColumnNameId + " IN " + builder + ";", conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -1926,22 +1926,22 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
+                        + Record.ColumnNameId + ", "
+                        + Record.ColumnNameName + ", "
+                        + Record.ColumnNameDescription + ", "
+                        + Record.ColumnNameApproved + ", "
+                        + Record.ColumnNameStartDate + ", "
+                        + Record.ColumnNameEndDate + ", "
+                        + Record.ColumnNameComments + ", "
+                        + Record.ColumnNameManagerComments + ", "
+                        + Record.ColumnNameCreatedBy + ", "
+                        + Record.ColumnNameCreatedOn + ", "
+                        + Record.ColumnNameModifiedBy + ", "
+                        + Record.ColumnNameModifiedOn + ", "
+                        + Record.ColumnNameAssignedTo + ", "
+                        + Record.ColumnNameAssignedOn
                         + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.COLUMN_NAME_ID + " = " + int.Parse(id)
+                        + " WHERE " + Record.ColumnNameId + " = " + int.Parse(id)
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -1950,20 +1950,20 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var record = new Record
                                 {
-                                    Id = (int)reader[Record.COLUMN_NAME_ID],
-                                    Name = (string)reader[Record.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                                    Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
-                                    StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                                    EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                                    Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                                    ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                                    CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                                    CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                                    ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                                    ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                                    AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                                    AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                                    Id = (int)reader[Record.ColumnNameId],
+                                    Name = (string)reader[Record.ColumnNameName],
+                                    Description = (string)reader[Record.ColumnNameDescription],
+                                    Approved = (bool)reader[Record.ColumnNameApproved],
+                                    StartDate = reader[Record.ColumnNameStartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameStartDate],
+                                    EndDate = reader[Record.ColumnNameEndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameEndDate],
+                                    Comments = (string)reader[Record.ColumnNameComments],
+                                    ManagerComments = (string)reader[Record.ColumnNameManagerComments],
+                                    CreatedBy = ((int)reader[Record.ColumnNameCreatedBy]).ToString(),
+                                    CreatedOn = (DateTime)reader[Record.ColumnNameCreatedOn],
+                                    ModifiedBy = reader[Record.ColumnNameModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameModifiedBy]).ToString(),
+                                    ModifiedOn = reader[Record.ColumnNameModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameModifiedOn],
+                                    AssignedTo = reader[Record.ColumnNameAssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameAssignedTo]).ToString(),
+                                    AssignedOn = reader[Record.ColumnNameAssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameAssignedOn]
                                 };
 
                                 return record;
@@ -1987,24 +1987,24 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
+                        + Record.ColumnNameId + ", "
+                        + Record.ColumnNameName + ", "
+                        + Record.ColumnNameDescription + ", "
+                        + Record.ColumnNameApproved + ", "
+                        + Record.ColumnNameStartDate + ", "
+                        + Record.ColumnNameEndDate + ", "
+                        + Record.ColumnNameComments + ", "
+                        + Record.ColumnNameManagerComments + ", "
+                        + Record.ColumnNameCreatedBy + ", "
+                        + Record.ColumnNameCreatedOn + ", "
+                        + Record.ColumnNameModifiedBy + ", "
+                        + Record.ColumnNameModifiedOn + ", "
+                        + Record.ColumnNameAssignedTo + ", "
+                        + Record.ColumnNameAssignedOn
                         + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + "LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
+                        + " WHERE " + "LOWER(" + Record.ColumnNameName + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + Record.ColumnNameDescription + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " ORDER BY " + Record.ColumnNameCreatedOn + " DESC"
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -2013,20 +2013,20 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var record = new Record
                                 {
-                                    Id = (int)reader[Record.COLUMN_NAME_ID],
-                                    Name = (string)reader[Record.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                                    Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
-                                    StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                                    EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                                    Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                                    ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                                    CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                                    CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                                    ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                                    ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                                    AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                                    AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                                    Id = (int)reader[Record.ColumnNameId],
+                                    Name = (string)reader[Record.ColumnNameName],
+                                    Description = (string)reader[Record.ColumnNameDescription],
+                                    Approved = (bool)reader[Record.ColumnNameApproved],
+                                    StartDate = reader[Record.ColumnNameStartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameStartDate],
+                                    EndDate = reader[Record.ColumnNameEndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameEndDate],
+                                    Comments = (string)reader[Record.ColumnNameComments],
+                                    ManagerComments = (string)reader[Record.ColumnNameManagerComments],
+                                    CreatedBy = ((int)reader[Record.ColumnNameCreatedBy]).ToString(),
+                                    CreatedOn = (DateTime)reader[Record.ColumnNameCreatedOn],
+                                    ModifiedBy = reader[Record.ColumnNameModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameModifiedBy]).ToString(),
+                                    ModifiedOn = reader[Record.ColumnNameModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameModifiedOn],
+                                    AssignedTo = reader[Record.ColumnNameAssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameAssignedTo]).ToString(),
+                                    AssignedOn = reader[Record.ColumnNameAssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameAssignedOn]
                                 };
 
                                 records.Add(record);
@@ -2050,23 +2050,23 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
+                        + Record.ColumnNameId + ", "
+                        + Record.ColumnNameName + ", "
+                        + Record.ColumnNameDescription + ", "
+                        + Record.ColumnNameApproved + ", "
+                        + Record.ColumnNameStartDate + ", "
+                        + Record.ColumnNameEndDate + ", "
+                        + Record.ColumnNameComments + ", "
+                        + Record.ColumnNameManagerComments + ", "
+                        + Record.ColumnNameCreatedBy + ", "
+                        + Record.ColumnNameCreatedOn + ", "
+                        + Record.ColumnNameModifiedBy + ", "
+                        + Record.ColumnNameModifiedOn + ", "
+                        + Record.ColumnNameAssignedTo + ", "
+                        + Record.ColumnNameAssignedOn
                         + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy)
-                        + " ORDER BY " + Record.COLUMN_NAME_NAME + " ASC"
+                        + " WHERE " + Record.ColumnNameCreatedBy + " = " + int.Parse(createdBy)
+                        + " ORDER BY " + Record.ColumnNameName + " ASC"
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -2075,20 +2075,20 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var record = new Record
                                 {
-                                    Id = (int)reader[Record.COLUMN_NAME_ID],
-                                    Name = (string)reader[Record.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                                    Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
-                                    StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                                    EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                                    Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                                    ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                                    CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                                    CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                                    ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                                    ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                                    AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                                    AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                                    Id = (int)reader[Record.ColumnNameId],
+                                    Name = (string)reader[Record.ColumnNameName],
+                                    Description = (string)reader[Record.ColumnNameDescription],
+                                    Approved = (bool)reader[Record.ColumnNameApproved],
+                                    StartDate = reader[Record.ColumnNameStartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameStartDate],
+                                    EndDate = reader[Record.ColumnNameEndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameEndDate],
+                                    Comments = (string)reader[Record.ColumnNameComments],
+                                    ManagerComments = (string)reader[Record.ColumnNameManagerComments],
+                                    CreatedBy = ((int)reader[Record.ColumnNameCreatedBy]).ToString(),
+                                    CreatedOn = (DateTime)reader[Record.ColumnNameCreatedOn],
+                                    ModifiedBy = reader[Record.ColumnNameModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameModifiedBy]).ToString(),
+                                    ModifiedOn = reader[Record.ColumnNameModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameModifiedOn],
+                                    AssignedTo = reader[Record.ColumnNameAssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameAssignedTo]).ToString(),
+                                    AssignedOn = reader[Record.ColumnNameAssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameAssignedOn]
                                 };
 
                                 records.Add(record);
@@ -2112,25 +2112,25 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Record.COLUMN_NAME_ID + ", "
-                        + Record.COLUMN_NAME_NAME + ", "
-                        + Record.COLUMN_NAME_DESCRIPTION + ", "
-                        + Record.COLUMN_NAME_APPROVED + ", "
-                        + Record.COLUMN_NAME_START_DATE + ", "
-                        + Record.COLUMN_NAME_END_DATE + ", "
-                        + Record.COLUMN_NAME_COMMENTS + ", "
-                        + Record.COLUMN_NAME_MANAGER_COMMENTS + ", "
-                        + Record.COLUMN_NAME_CREATED_BY + ", "
-                        + Record.COLUMN_NAME_CREATED_ON + ", "
-                        + Record.COLUMN_NAME_MODIFIED_BY + ", "
-                        + Record.COLUMN_NAME_MODIFIED_ON + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Record.COLUMN_NAME_ASSIGNED_ON
+                        + Record.ColumnNameId + ", "
+                        + Record.ColumnNameName + ", "
+                        + Record.ColumnNameDescription + ", "
+                        + Record.ColumnNameApproved + ", "
+                        + Record.ColumnNameStartDate + ", "
+                        + Record.ColumnNameEndDate + ", "
+                        + Record.ColumnNameComments + ", "
+                        + Record.ColumnNameManagerComments + ", "
+                        + Record.ColumnNameCreatedBy + ", "
+                        + Record.ColumnNameCreatedOn + ", "
+                        + Record.ColumnNameModifiedBy + ", "
+                        + Record.ColumnNameModifiedOn + ", "
+                        + Record.ColumnNameAssignedTo + ", "
+                        + Record.ColumnNameAssignedOn
                         + " FROM " + Core.Db.Record.DocumentName
-                        + " WHERE " + "(LOWER(" + Record.COLUMN_NAME_NAME + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " OR " + "LOWER(" + Record.COLUMN_NAME_DESCRIPTION + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
-                        + " AND (" + Record.COLUMN_NAME_CREATED_BY + " = " + int.Parse(createdBy) + " OR " + Record.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assingedTo) + ")"
-                        + " ORDER BY " + Record.COLUMN_NAME_CREATED_ON + " DESC"
+                        + " WHERE " + "(LOWER(" + Record.ColumnNameName + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " OR " + "LOWER(" + Record.ColumnNameDescription + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%')"
+                        + " AND (" + Record.ColumnNameCreatedBy + " = " + int.Parse(createdBy) + " OR " + Record.ColumnNameAssignedTo + " = " + int.Parse(assingedTo) + ")"
+                        + " ORDER BY " + Record.ColumnNameCreatedOn + " DESC"
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -2139,20 +2139,20 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var record = new Record
                                 {
-                                    Id = (int)reader[Record.COLUMN_NAME_ID],
-                                    Name = (string)reader[Record.COLUMN_NAME_NAME],
-                                    Description = (string)reader[Record.COLUMN_NAME_DESCRIPTION],
-                                    Approved = (bool)reader[Record.COLUMN_NAME_APPROVED],
-                                    StartDate = reader[Record.COLUMN_NAME_START_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_START_DATE],
-                                    EndDate = reader[Record.COLUMN_NAME_END_DATE] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_END_DATE],
-                                    Comments = (string)reader[Record.COLUMN_NAME_COMMENTS],
-                                    ManagerComments = (string)reader[Record.COLUMN_NAME_MANAGER_COMMENTS],
-                                    CreatedBy = ((int)reader[Record.COLUMN_NAME_CREATED_BY]).ToString(),
-                                    CreatedOn = (DateTime)reader[Record.COLUMN_NAME_CREATED_ON],
-                                    ModifiedBy = reader[Record.COLUMN_NAME_MODIFIED_BY] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_MODIFIED_BY]).ToString(),
-                                    ModifiedOn = reader[Record.COLUMN_NAME_MODIFIED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_MODIFIED_ON],
-                                    AssignedTo = reader[Record.COLUMN_NAME_ASSIGNED_TO] == DBNull.Value ? string.Empty : ((int)reader[Record.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                                    AssignedOn = reader[Record.COLUMN_NAME_ASSIGNED_ON] == DBNull.Value ? null : (DateTime?)reader[Record.COLUMN_NAME_ASSIGNED_ON]
+                                    Id = (int)reader[Record.ColumnNameId],
+                                    Name = (string)reader[Record.ColumnNameName],
+                                    Description = (string)reader[Record.ColumnNameDescription],
+                                    Approved = (bool)reader[Record.ColumnNameApproved],
+                                    StartDate = reader[Record.ColumnNameStartDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameStartDate],
+                                    EndDate = reader[Record.ColumnNameEndDate] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameEndDate],
+                                    Comments = (string)reader[Record.ColumnNameComments],
+                                    ManagerComments = (string)reader[Record.ColumnNameManagerComments],
+                                    CreatedBy = ((int)reader[Record.ColumnNameCreatedBy]).ToString(),
+                                    CreatedOn = (DateTime)reader[Record.ColumnNameCreatedOn],
+                                    ModifiedBy = reader[Record.ColumnNameModifiedBy] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameModifiedBy]).ToString(),
+                                    ModifiedOn = reader[Record.ColumnNameModifiedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameModifiedOn],
+                                    AssignedTo = reader[Record.ColumnNameAssignedTo] == DBNull.Value ? string.Empty : ((int)reader[Record.ColumnNameAssignedTo]).ToString(),
+                                    AssignedOn = reader[Record.ColumnNameAssignedOn] == DBNull.Value ? null : (DateTime?)reader[Record.ColumnNameAssignedOn]
                                 };
 
                                 records.Add(record);
@@ -2174,13 +2174,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Version.DocumentName + "("
-                        + Version.COLUMN_NAME_RECORD_ID + ", "
-                        + Version.COLUMN_NAME_FILE_PATH + ", "
-                        + Version.COLUMN_NAME_CREATED_ON + ") VALUES("
+                        + Version.ColumnNameRecordId + ", "
+                        + Version.ColumnNameFilePath + ", "
+                        + Version.ColumnNameCreatedOn + ") VALUES("
                         + int.Parse(version.RecordId) + ", "
                         + "'" + (version.FilePath ?? "").Replace("'", "''") + "'" + ", "
-                        + "'" + DateTime.Now.ToString(DateTimeFormat) + "'" + ") "
-                        + "RETURNING " + Version.COLUMN_NAME_ID + ";"
+                        + "'" + DateTime.Now.ToString(DATE_TIME_FORMAT) + "'" + ") "
+                        + "RETURNING " + Version.ColumnNameId + ";"
                         , conn))
                     {
                         var id = (int)command.ExecuteScalar();
@@ -2199,10 +2199,10 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Version.DocumentName + " SET "
-                        + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(version.RecordId) + ", "
-                        + Version.COLUMN_NAME_FILE_PATH + " = '" + (version.FilePath ?? "").Replace("'", "''") + "'"
+                        + Version.ColumnNameRecordId + " = " + int.Parse(version.RecordId) + ", "
+                        + Version.ColumnNameFilePath + " = '" + (version.FilePath ?? "").Replace("'", "''") + "'"
                         + " WHERE "
-                        + Version.COLUMN_NAME_ID + " = " + int.Parse(versionId) + ";"
+                        + Version.ColumnNameId + " = " + int.Parse(versionId) + ";"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -2231,7 +2231,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         }
 
                         using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Version.DocumentName
-                            + " WHERE " + Version.COLUMN_NAME_ID + " IN " + builder + ";", conn))
+                            + " WHERE " + Version.ColumnNameId + " IN " + builder + ";", conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2251,12 +2251,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Version.COLUMN_NAME_ID + ", "
-                        + Version.COLUMN_NAME_RECORD_ID + ", "
-                        + Version.COLUMN_NAME_FILE_PATH + ", "
-                        + Version.COLUMN_NAME_CREATED_ON
+                        + Version.ColumnNameId + ", "
+                        + Version.ColumnNameRecordId + ", "
+                        + Version.ColumnNameFilePath + ", "
+                        + Version.ColumnNameCreatedOn
                         + " FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
+                        + " WHERE " + Version.ColumnNameRecordId + " = " + int.Parse(recordId)
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -2265,10 +2265,10 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var version = new Version
                                 {
-                                    Id = (int)reader[Version.COLUMN_NAME_ID],
-                                    RecordId = ((int)reader[Version.COLUMN_NAME_RECORD_ID]).ToString(),
-                                    FilePath = (string)reader[Version.COLUMN_NAME_FILE_PATH],
-                                    CreatedOn = (DateTime)reader[Version.COLUMN_NAME_CREATED_ON]
+                                    Id = (int)reader[Version.ColumnNameId],
+                                    RecordId = ((int)reader[Version.ColumnNameRecordId]).ToString(),
+                                    FilePath = (string)reader[Version.ColumnNameFilePath],
+                                    CreatedOn = (DateTime)reader[Version.ColumnNameCreatedOn]
                                 };
 
                                 versions.Add(version);
@@ -2290,13 +2290,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Version.COLUMN_NAME_ID + ", "
-                        + Version.COLUMN_NAME_RECORD_ID + ", "
-                        + Version.COLUMN_NAME_FILE_PATH + ", "
-                        + Version.COLUMN_NAME_CREATED_ON
+                        + Version.ColumnNameId + ", "
+                        + Version.ColumnNameRecordId + ", "
+                        + Version.ColumnNameFilePath + ", "
+                        + Version.ColumnNameCreatedOn
                         + " FROM " + Core.Db.Version.DocumentName
-                        + " WHERE " + Version.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
-                        + " ORDER BY " + Version.COLUMN_NAME_CREATED_ON + " DESC"
+                        + " WHERE " + Version.ColumnNameRecordId + " = " + int.Parse(recordId)
+                        + " ORDER BY " + Version.ColumnNameCreatedOn + " DESC"
                         + " LIMIT 1"
                         + ";", conn))
                     {
@@ -2306,10 +2306,10 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var version = new Version
                                 {
-                                    Id = (int)reader[Version.COLUMN_NAME_ID],
-                                    RecordId = ((int)reader[Version.COLUMN_NAME_RECORD_ID]).ToString(),
-                                    FilePath = (string)reader[Version.COLUMN_NAME_FILE_PATH],
-                                    CreatedOn = (DateTime)reader[Version.COLUMN_NAME_CREATED_ON]
+                                    Id = (int)reader[Version.ColumnNameId],
+                                    RecordId = ((int)reader[Version.ColumnNameRecordId]).ToString(),
+                                    FilePath = (string)reader[Version.ColumnNameFilePath],
+                                    CreatedOn = (DateTime)reader[Version.ColumnNameCreatedOn]
                                 };
 
                                 return version;
@@ -2331,17 +2331,17 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Notification.DocumentName + "("
-                        + Notification.COLUMN_NAME_ASSIGNED_BY + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_ON + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Notification.COLUMN_NAME_MESSAGE + ", "
-                        + Notification.COLUMN_NAME_IS_READ + ") VALUES("
+                        + Notification.ColumnNameAssignedBy + ", "
+                        + Notification.ColumnNameAssignedOn + ", "
+                        + Notification.ColumnNameAssignedTo + ", "
+                        + Notification.ColumnNameMessage + ", "
+                        + Notification.ColumnNameIsRead + ") VALUES("
                         + (!string.IsNullOrEmpty(notification.AssignedBy) ? int.Parse(notification.AssignedBy).ToString() : "NULL") + ", "
-                        + "'" + notification.AssignedOn.ToString(DateTimeFormat) + "'" + ", "
+                        + "'" + notification.AssignedOn.ToString(DATE_TIME_FORMAT) + "'" + ", "
                         + (!string.IsNullOrEmpty(notification.AssignedTo) ? int.Parse(notification.AssignedTo).ToString() : "NULL") + ", "
                         + "'" + (notification.Message ?? "").Replace("'", "''") + "'" + ", "
                         + (notification.IsRead ? "TRUE" : "FALSE") + ") "
-                        + "RETURNING " + Notification.COLUMN_NAME_ID + ";"
+                        + "RETURNING " + Notification.ColumnNameId + ";"
                         , conn))
                     {
                         var id = (int)command.ExecuteScalar();
@@ -2369,8 +2369,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     }
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Notification.DocumentName
-                        + " SET " + Notification.COLUMN_NAME_IS_READ + " = " + "TRUE"
-                        + " WHERE " + Notification.COLUMN_NAME_ID + " IN " + builder + ";", conn))
+                        + " SET " + Notification.ColumnNameIsRead + " = " + "TRUE"
+                        + " WHERE " + Notification.ColumnNameId + " IN " + builder + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2396,8 +2396,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     }
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Notification.DocumentName
-                        + " SET " + Notification.COLUMN_NAME_IS_READ + " = " + "FALSE"
-                        + " WHERE " + Notification.COLUMN_NAME_ID + " IN " + builder + ";", conn))
+                        + " SET " + Notification.ColumnNameIsRead + " = " + "FALSE"
+                        + " WHERE " + Notification.ColumnNameId + " IN " + builder + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2425,7 +2425,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                         }
 
                         using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Notification.DocumentName
-                            + " WHERE " + Notification.COLUMN_NAME_ID + " IN " + builder + ";", conn))
+                            + " WHERE " + Notification.ColumnNameId + " IN " + builder + ";", conn))
                         {
                             _ = command.ExecuteNonQuery();
                         }
@@ -2445,16 +2445,16 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Notification.COLUMN_NAME_ID + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_BY + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_ON + ", "
-                        + Notification.COLUMN_NAME_ASSIGNED_TO + ", "
-                        + Notification.COLUMN_NAME_MESSAGE + ", "
-                        + Notification.COLUMN_NAME_IS_READ
+                        + Notification.ColumnNameId + ", "
+                        + Notification.ColumnNameAssignedBy + ", "
+                        + Notification.ColumnNameAssignedOn + ", "
+                        + Notification.ColumnNameAssignedTo + ", "
+                        + Notification.ColumnNameMessage + ", "
+                        + Notification.ColumnNameIsRead
                         + " FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE " + "(LOWER(" + Notification.COLUMN_NAME_MESSAGE + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
-                        + " AND " + Notification.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assignedTo) + ")"
-                        + " ORDER BY " + Notification.COLUMN_NAME_ASSIGNED_ON + " DESC"
+                        + " WHERE " + "(LOWER(" + Notification.ColumnNameMessage + ")" + " LIKE '%" + (keyword ?? "").Replace("'", "''").ToLower() + "%'"
+                        + " AND " + Notification.ColumnNameAssignedTo + " = " + int.Parse(assignedTo) + ")"
+                        + " ORDER BY " + Notification.ColumnNameAssignedOn + " DESC"
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -2463,12 +2463,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var notification = new Notification
                                 {
-                                    Id = (int)reader[Notification.COLUMN_NAME_ID],
-                                    AssignedBy = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_BY]).ToString(),
-                                    AssignedOn = (DateTime)reader[Notification.COLUMN_NAME_ASSIGNED_ON],
-                                    AssignedTo = ((int)reader[Notification.COLUMN_NAME_ASSIGNED_TO]).ToString(),
-                                    Message = (string)reader[Notification.COLUMN_NAME_MESSAGE],
-                                    IsRead = (bool)reader[Notification.COLUMN_NAME_IS_READ]
+                                    Id = (int)reader[Notification.ColumnNameId],
+                                    AssignedBy = ((int)reader[Notification.ColumnNameAssignedBy]).ToString(),
+                                    AssignedOn = (DateTime)reader[Notification.ColumnNameAssignedOn],
+                                    AssignedTo = ((int)reader[Notification.ColumnNameAssignedTo]).ToString(),
+                                    Message = (string)reader[Notification.ColumnNameMessage],
+                                    IsRead = (bool)reader[Notification.ColumnNameIsRead]
                                 };
 
                                 notifications.Add(notification);
@@ -2491,8 +2491,8 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                     using (var command = new NpgsqlCommand("SELECT COUNT(*)"
                         + " FROM " + Core.Db.Notification.DocumentName
-                        + " WHERE (" + Notification.COLUMN_NAME_ASSIGNED_TO + " = " + int.Parse(assignedTo)
-                        + " AND " + Notification.COLUMN_NAME_IS_READ + " = " + "FALSE" + ")"
+                        + " WHERE (" + Notification.ColumnNameAssignedTo + " = " + int.Parse(assignedTo)
+                        + " AND " + Notification.ColumnNameIsRead + " = " + "FALSE" + ")"
                         + ";", conn))
                     {
                         var count = (long)command.ExecuteScalar();
@@ -2512,15 +2512,15 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("INSERT INTO " + Core.Db.Approver.DocumentName + "("
-                        + Approver.COLUMN_NAME_USER_ID + ", "
-                        + Approver.COLUMN_NAME_RECORD_ID + ", "
-                        + Approver.COLUMN_NAME_APPROVED + ", "
-                        + Approver.COLUMN_NAME_APPROVED_ON + ") VALUES("
+                        + Approver.ColumnNameUserId + ", "
+                        + Approver.ColumnNameRecordId + ", "
+                        + Approver.ColumnNameApproved + ", "
+                        + Approver.ColumnNameApprovedOn + ") VALUES("
                         + int.Parse(approver.UserId) + ", "
                         + int.Parse(approver.RecordId) + ", "
                         + (approver.Approved ? "TRUE" : "FALSE") + ", "
-                        + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'") + ") "
-                        + "RETURNING " + Approver.COLUMN_NAME_ID + ";"
+                        + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DATE_TIME_FORMAT) + "'") + ") "
+                        + "RETURNING " + Approver.ColumnNameId + ";"
                         , conn))
                     {
                         var id = (int)command.ExecuteScalar();
@@ -2539,12 +2539,12 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("UPDATE " + Core.Db.Approver.DocumentName + " SET "
-                        + Approver.COLUMN_NAME_USER_ID + " = " + int.Parse(approver.UserId) + ", "
-                        + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(approver.RecordId) + ", "
-                        + Approver.COLUMN_NAME_APPROVED + " = " + (approver.Approved ? "TRUE" : "FALSE") + ", "
-                        + Approver.COLUMN_NAME_APPROVED_ON + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DateTimeFormat) + "'")
+                        + Approver.ColumnNameUserId + " = " + int.Parse(approver.UserId) + ", "
+                        + Approver.ColumnNameRecordId + " = " + int.Parse(approver.RecordId) + ", "
+                        + Approver.ColumnNameApproved + " = " + (approver.Approved ? "TRUE" : "FALSE") + ", "
+                        + Approver.ColumnNameApprovedOn + " = " + (approver.ApprovedOn == null ? "NULL" : "'" + approver.ApprovedOn.Value.ToString(DATE_TIME_FORMAT) + "'")
                         + " WHERE "
-                        + Approver.COLUMN_NAME_ID + " = " + int.Parse(approverId) + ";"
+                        + Approver.ColumnNameId + " = " + int.Parse(approverId) + ";"
                         , conn))
                     {
                         _ = command.ExecuteNonQuery();
@@ -2562,7 +2562,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
-                        + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId) + ";", conn))
+                        + " WHERE " + Approver.ColumnNameRecordId + " = " + int.Parse(recordId) + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2579,8 +2579,8 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
-                        + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
-                        + " AND " + Approver.COLUMN_NAME_APPROVED + " = " + "TRUE"
+                        + " WHERE " + Approver.ColumnNameRecordId + " = " + int.Parse(recordId)
+                        + " AND " + Approver.ColumnNameApproved + " = " + "TRUE"
                         + ";"
                         , conn))
                     {
@@ -2599,7 +2599,7 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("DELETE FROM " + Core.Db.Approver.DocumentName
-                        + " WHERE " + Approver.COLUMN_NAME_USER_ID + " = " + int.Parse(userId) + ";", conn))
+                        + " WHERE " + Approver.ColumnNameUserId + " = " + int.Parse(userId) + ";", conn))
                     {
                         _ = command.ExecuteNonQuery();
                     }
@@ -2618,13 +2618,13 @@ namespace Wexflow.Core.Db.PostgreSQL
                     conn.Open();
 
                     using (var command = new NpgsqlCommand("SELECT "
-                        + Approver.COLUMN_NAME_ID + ", "
-                        + Approver.COLUMN_NAME_USER_ID + ", "
-                        + Approver.COLUMN_NAME_RECORD_ID + ", "
-                        + Approver.COLUMN_NAME_APPROVED + ", "
-                        + Approver.COLUMN_NAME_APPROVED_ON
+                        + Approver.ColumnNameId + ", "
+                        + Approver.ColumnNameUserId + ", "
+                        + Approver.ColumnNameRecordId + ", "
+                        + Approver.ColumnNameApproved + ", "
+                        + Approver.ColumnNameApprovedOn
                         + " FROM " + Core.Db.Approver.DocumentName
-                        + " WHERE " + Approver.COLUMN_NAME_RECORD_ID + " = " + int.Parse(recordId)
+                        + " WHERE " + Approver.ColumnNameRecordId + " = " + int.Parse(recordId)
                         + ";", conn))
                     {
                         using (var reader = command.ExecuteReader())
@@ -2633,11 +2633,11 @@ namespace Wexflow.Core.Db.PostgreSQL
                             {
                                 var approver = new Approver
                                 {
-                                    Id = (int)reader[Approver.COLUMN_NAME_ID],
-                                    UserId = ((int)reader[Approver.COLUMN_NAME_USER_ID]).ToString(),
-                                    RecordId = ((int)reader[Approver.COLUMN_NAME_RECORD_ID]).ToString(),
-                                    Approved = (bool)reader[Approver.COLUMN_NAME_APPROVED],
-                                    ApprovedOn = reader[Approver.COLUMN_NAME_APPROVED_ON] == DBNull.Value ? null : (DateTime?)reader[Approver.COLUMN_NAME_APPROVED_ON]
+                                    Id = (int)reader[Approver.ColumnNameId],
+                                    UserId = ((int)reader[Approver.ColumnNameUserId]).ToString(),
+                                    RecordId = ((int)reader[Approver.ColumnNameRecordId]).ToString(),
+                                    Approved = (bool)reader[Approver.ColumnNameApproved],
+                                    ApprovedOn = reader[Approver.ColumnNameApprovedOn] == DBNull.Value ? null : (DateTime?)reader[Approver.ColumnNameApprovedOn]
                                 };
 
                                 approvers.Add(approver);

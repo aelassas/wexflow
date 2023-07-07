@@ -8,7 +8,7 @@ namespace Wexflow.Tasks.Ftp
 {
     public class PluginFtp : PluginBase
     {
-        private const int BufferSize = 1 * 1024 * 1024; // 1 MB
+        private const int BUFFER_SIZE = 1 * 1024 * 1024; // 1 MB
 
         public PluginFtp(Task task, string server, int port, string user, string password, string path, bool debugLogs)
             : base(task, server, port, user, password, path, debugLogs)
@@ -104,10 +104,10 @@ namespace Wexflow.Tasks.Ftp
         {
             using Stream istream = File.Open(file.Path, FileMode.Open, FileAccess.Read);
             using var ostream = client.OpenWrite(file.RenameToOrName);
-            var buffer = new byte[BufferSize];
+            var buffer = new byte[BUFFER_SIZE];
             int r;
 
-            while ((r = istream.Read(buffer, 0, BufferSize)) > 0)
+            while ((r = istream.Read(buffer, 0, BUFFER_SIZE)) > 0)
             {
                 ostream.Write(buffer, 0, r);
             }

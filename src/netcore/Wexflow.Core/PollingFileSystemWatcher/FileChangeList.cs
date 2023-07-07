@@ -11,7 +11,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 {
     internal struct FileChangeList
     {
-        private const int DefaultListSize = 4;
+        private const int DEFAULT_LIST_SIZE = 4;
         private FileChange[] _changes;
         private int _count;
 
@@ -43,7 +43,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
         private void EnsureCapacity()
         {
-            _changes ??= new FileChange[DefaultListSize];
+            _changes ??= new FileChange[DEFAULT_LIST_SIZE];
             if (_count >= _changes.Length)
             {
                 var larger = new FileChange[_changes.Length * 2];

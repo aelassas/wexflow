@@ -16,7 +16,7 @@ namespace Wexflow.NetCore.Tests
                : @"C:\Wexflow-netcore\Wexflow.xml")
             , LogLevel.All
             , false
-            , Username
+            , USERNAME
             , false
             , string.Empty
             , 0
@@ -39,11 +39,11 @@ namespace Wexflow.NetCore.Tests
                ? "/Applications/wexflow/WexflowTesting/"
                : @"C:\WexflowTesting\");
 
-        private const string Username = "admin";
+        private const string USERNAME = "admin";
 
         public static void SaveWorkflow(string xml, bool schedule)
         {
-            WexflowEngine.SaveWorkflow(Username, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
+            WexflowEngine.SaveWorkflow(USERNAME, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
         }
 
         public static void Run()
@@ -58,7 +58,7 @@ namespace Wexflow.NetCore.Tests
 
         public static System.Guid StartWorkflow(int workflowId)
         {
-            var instanceId = WexflowEngine.StartWorkflow(Username, workflowId);
+            var instanceId = WexflowEngine.StartWorkflow(USERNAME, workflowId);
 
             // Wait until the workflow finishes
             Thread.Sleep(1000);
@@ -78,12 +78,12 @@ namespace Wexflow.NetCore.Tests
 
         public static System.Guid StartWorkflowAsync(int workflowId)
         {
-            return WexflowEngine.StartWorkflow(Username, workflowId);
+            return WexflowEngine.StartWorkflow(USERNAME, workflowId);
         }
 
         public static void StopWorkflow(int workflowId, System.Guid instanceId)
         {
-            _ = WexflowEngine.StopWorkflow(workflowId, instanceId, Username);
+            _ = WexflowEngine.StopWorkflow(workflowId, instanceId, USERNAME);
         }
 
         public static void SuspendWorkflow(int workflowId, System.Guid instanceId)
@@ -98,12 +98,12 @@ namespace Wexflow.NetCore.Tests
 
         public static void ApproveWorkflow(int workflowId, System.Guid instanceId)
         {
-            _ = WexflowEngine.ApproveWorkflow(workflowId, instanceId, Username);
+            _ = WexflowEngine.ApproveWorkflow(workflowId, instanceId, USERNAME);
         }
 
         public static void RejectWorkflow(int workflowId, System.Guid instanceId)
         {
-            _ = WexflowEngine.RejectWorkflow(workflowId, instanceId, Username);
+            _ = WexflowEngine.RejectWorkflow(workflowId, instanceId, USERNAME);
         }
 
         public static Workflow GetWorkflow(int workflowId)

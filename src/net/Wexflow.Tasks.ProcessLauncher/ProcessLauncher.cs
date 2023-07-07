@@ -16,10 +16,10 @@ namespace Wexflow.Tasks.ProcessLauncher
         public bool GeneratesFiles { get; set; }
         public bool LoadAllFiles { get; set; }
 
-        private const string VarFilePath = "$filePath";
-        private const string VarFileName = "$fileName";
-        private const string VarFileNameWithoutExtension = "$fileNameWithoutExtension";
-        private const string VarOutput = "$output";
+        private const string VAR_FILE_PATH = "$filePath";
+        private const string VAR_FILE_NAME = "$fileName";
+        private const string VAR_FILE_NAME_WITHOUT_EXTENSION = "$fileNameWithoutExtension";
+        private const string VAR_OUTPUT = "$output";
 
         public ProcessLauncher(XElement xe, Workflow wf)
             : base(xe, wf)
@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.ProcessLauncher
         {
             Info("Launching process...");
 
-            if (GeneratesFiles && !(ProcessCmd.Contains(VarFileName) && ProcessCmd.Contains(VarOutput) && (ProcessCmd.Contains(VarFileName) || ProcessCmd.Contains(VarFileNameWithoutExtension))))
+            if (GeneratesFiles && !(ProcessCmd.Contains(VAR_FILE_NAME) && ProcessCmd.Contains(VAR_OUTPUT) && (ProcessCmd.Contains(VAR_FILE_NAME) || ProcessCmd.Contains(VAR_FILE_NAME_WITHOUT_EXTENSION))))
             {
                 Error("Error in process command. Please read the documentation.");
                 return new TaskStatus(Status.Error, false);
@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                 try
                 {
-                    cmd = ProcessCmd.Replace($"{{{VarFilePath}}}", $"\"{file.Path}\"");
+                    cmd = ProcessCmd.Replace($"{{{VAR_FILE_PATH}}}", $"\"{file.Path}\"");
 
                     const string outputRegexPattern = @"{\$output:(?:\$fileNameWithoutExtension|\$fileName)(?:[a-zA-Z0-9._-]*})";
                     var outputRegex = new Regex(outputRegexPattern);
@@ -66,15 +66,15 @@ namespace Wexflow.Tasks.ProcessLauncher
                     {
                         var val = m.Value;
                         outputFilePath = val;
-                        if (outputFilePath.Contains(VarFileNameWithoutExtension))
+                        if (outputFilePath.Contains(VAR_FILE_NAME_WITHOUT_EXTENSION))
                         {
-                            outputFilePath = outputFilePath.Replace(VarFileNameWithoutExtension, Path.GetFileNameWithoutExtension(file.FileName));
+                            outputFilePath = outputFilePath.Replace(VAR_FILE_NAME_WITHOUT_EXTENSION, Path.GetFileNameWithoutExtension(file.FileName));
                         }
-                        else if (outputFilePath.Contains(VarFileName))
+                        else if (outputFilePath.Contains(VAR_FILE_NAME))
                         {
-                            outputFilePath = outputFilePath.Replace(VarFileName, file.FileName);
+                            outputFilePath = outputFilePath.Replace(VAR_FILE_NAME, file.FileName);
                         }
-                        outputFilePath = outputFilePath.Replace($"{{{VarOutput}:", Workflow.WorkflowTempFolder.Trim('\\') + "\\");
+                        outputFilePath = outputFilePath.Replace($"{{{VAR_OUTPUT}:", Workflow.WorkflowTempFolder.Trim('\\') + "\\");
                         outputFilePath = outputFilePath.Trim('}');
 
                         cmd = cmd.Replace(val, $"\"{outputFilePath}\"");

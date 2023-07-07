@@ -13,8 +13,8 @@ namespace Wexflow.Tasks.HttpPatch
 {
     public class HttpPatch : Task
     {
-        private const SslProtocols SslProtocolsTls12 = (SslProtocols)0x00000C00;
-        private const SecurityProtocolType Tls12 = (SecurityProtocolType)SslProtocolsTls12;
+        private const SslProtocols SSL_PROTOCOLS_TLS12 = (SslProtocols)0x00000C00;
+        private const SecurityProtocolType TLS12 = (SecurityProtocolType)SSL_PROTOCOLS_TLS12;
 
         public string Url { get; }
         public string Payload { get; }
@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.HttpPatch
                 using StringContent httpContent = new(Payload, Encoding.UTF8, Type);
 
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = Tls12;
+                ServicePointManager.SecurityProtocol = TLS12;
 
                 if (!string.IsNullOrEmpty(AuthorizationScheme) && !string.IsNullOrEmpty(AuthorizationParameter))
                 {

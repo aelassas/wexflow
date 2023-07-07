@@ -28,7 +28,7 @@ namespace Wexflow.Server
 {
     public sealed partial class WexflowService
     {
-        private const string Root = "api/v1";
+        private const string ROOT = "api/v1";
         private static readonly XNamespace Xn = "urn:wexflow-schema";
 
         private readonly IEndpointRouteBuilder _endpoints;
@@ -149,7 +149,7 @@ namespace Wexflow.Server
             NotifyApprovers();
         }
 
-        private static string GetPattern(string pattern) => $"/{Root}/{pattern}";
+        private static string GetPattern(string pattern) => $"/{ROOT}/{pattern}";
 
         private static async System.Threading.Tasks.Task WriteFalse(HttpContext context)
         {

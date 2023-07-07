@@ -11,8 +11,8 @@ namespace Wexflow.Tasks.Http
 {
     public class Http : Task
     {
-        private const SslProtocols SslProtocolsTls12 = (SslProtocols)0x00000C00;
-        private const SecurityProtocolType Tls12 = (SecurityProtocolType)SslProtocolsTls12;
+        private const SslProtocols SSL_PROTOCOLS_TLS12 = (SslProtocols)0x00000C00;
+        private const SecurityProtocolType TLS12 = (SecurityProtocolType)SSL_PROTOCOLS_TLS12;
 
         public string[] Urls { get; }
 
@@ -29,7 +29,7 @@ namespace Wexflow.Tasks.Http
             var atLeastOneSucceed = false;
 
             ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = Tls12;
+            ServicePointManager.SecurityProtocol = TLS12;
 
             foreach (var url in Urls)
             {

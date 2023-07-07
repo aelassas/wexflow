@@ -2,35 +2,35 @@
 {
     public class Record : Core.Db.Record
     {
-        public const string COLUMN_NAME_ID = "ID";
-        public const string COLUMN_NAME_NAME = "NAME";
-        public const string COLUMN_NAME_DESCRIPTION = "DESCRIPTION";
-        public const string COLUMN_NAME_APPROVED = "APPROVED";
-        public const string COLUMN_NAME_START_DATE = "START_DATE";
-        public const string COLUMN_NAME_END_DATE = "END_DATE";
-        public const string COLUMN_NAME_COMMENTS = "COMMENTS";
-        public const string COLUMN_NAME_MANAGER_COMMENTS = "MANAGER_COMMENTS";
-        public const string COLUMN_NAME_CREATED_BY = "CREATED_BY";
-        public const string COLUMN_NAME_CREATED_ON = "CREATED_ON";
-        public const string COLUMN_NAME_MODIFIED_BY = "MODIFIED_BY";
-        public const string COLUMN_NAME_MODIFIED_ON = "MODIFIED_ON";
-        public const string COLUMN_NAME_ASSIGNED_TO = "ASSIGNED_TO";
-        public const string COLUMN_NAME_ASSIGNED_ON = "ASSIGNED_ON";
+        public const string ColumnNameId = "ID";
+        public const string ColumnNameName = "NAME";
+        public const string ColumnNameDescription = "DESCRIPTION";
+        public const string ColumnNameApproved = "APPROVED";
+        public const string ColumnNameStartDate = "START_DATE";
+        public const string ColumnNameEndDate = "END_DATE";
+        public const string ColumnNameComments = "COMMENTS";
+        public const string ColumnNameManagerComments = "MANAGER_COMMENTS";
+        public const string ColumnNameCreatedBy = "CREATED_BY";
+        public const string ColumnNameCreatedOn = "CREATED_ON";
+        public const string ColumnNameModifiedBy = "MODIFIED_BY";
+        public const string ColumnNameModifiedOn = "MODIFIED_ON";
+        public const string ColumnNameAssignedTo = "ASSIGNED_TO";
+        public const string ColumnNameAssignedOn = "ASSIGNED_ON";
 
-        public const string TableStruct = "(" + COLUMN_NAME_ID + " INT NOT NULL AUTO_INCREMENT, "
-                                                        + COLUMN_NAME_NAME + " VARCHAR(512), "
-                                                        + COLUMN_NAME_DESCRIPTION + " LONGTEXT, "
-                                                        + COLUMN_NAME_APPROVED + " BIT, "
-                                                        + COLUMN_NAME_START_DATE + " TIMESTAMP NULL DEFAULT NULL, "
-                                                        + COLUMN_NAME_END_DATE + " TIMESTAMP NULL DEFAULT NULL, "
-                                                        + COLUMN_NAME_COMMENTS + " LONGTEXT, "
-                                                        + COLUMN_NAME_MANAGER_COMMENTS + " LONGTEXT, "
-                                                        + COLUMN_NAME_CREATED_BY + " INT, "
-                                                        + COLUMN_NAME_CREATED_ON + " TIMESTAMP, "
-                                                        + COLUMN_NAME_MODIFIED_BY + " INT, "
-                                                        + COLUMN_NAME_MODIFIED_ON + " TIMESTAMP NULL DEFAULT NULL, "
-                                                        + COLUMN_NAME_ASSIGNED_TO + " INT, "
-                                                        + COLUMN_NAME_ASSIGNED_ON + " TIMESTAMP NULL DEFAULT NULL, CONSTRAINT " + DocumentName + "_pk PRIMARY KEY (" + COLUMN_NAME_ID + "))";
+        public const string TableStruct = "(" + ColumnNameId + " INT NOT NULL AUTO_INCREMENT, "
+                                                        + ColumnNameName + " VARCHAR(512), "
+                                                        + ColumnNameDescription + " LONGTEXT, "
+                                                        + ColumnNameApproved + " BIT, "
+                                                        + ColumnNameStartDate + " TIMESTAMP NULL DEFAULT NULL, "
+                                                        + ColumnNameEndDate + " TIMESTAMP NULL DEFAULT NULL, "
+                                                        + ColumnNameComments + " LONGTEXT, "
+                                                        + ColumnNameManagerComments + " LONGTEXT, "
+                                                        + ColumnNameCreatedBy + " INT, "
+                                                        + ColumnNameCreatedOn + " TIMESTAMP, "
+                                                        + ColumnNameModifiedBy + " INT, "
+                                                        + ColumnNameModifiedOn + " TIMESTAMP NULL DEFAULT NULL, "
+                                                        + ColumnNameAssignedTo + " INT, "
+                                                        + ColumnNameAssignedOn + " TIMESTAMP NULL DEFAULT NULL, CONSTRAINT " + DocumentName + "_pk PRIMARY KEY (" + ColumnNameId + "))";
 
         public int Id { get; set; }
 

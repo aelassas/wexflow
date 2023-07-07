@@ -2,15 +2,15 @@
 {
     public class User : Core.Db.User
     {
-        public const string COLUMN_NAME_ID = "ID";
-        public const string COLUMN_NAME_USERNAME = "USERNAME";
-        public const string COLUMN_NAME_PASSWORD = "PASSWORD";
-        public const string COLUMN_NAME_USER_PROFILE = "USER_PROFILE";
-        public const string COLUMN_NAME_EMAIL = "EMAIL";
-        public const string COLUMN_NAME_CREATED_ON = "CREATED_ON";
-        public const string COLUMN_NAME_MODIFIED_ON = "MODIFIED_ON";
+        public const string ColumnNameId = "ID";
+        public const string ColumnNameUsername = "USERNAME";
+        public const string ColumnNamePassword = "PASSWORD";
+        public const string ColumnNameUserProfile = "USER_PROFILE";
+        public const string ColumnNameEmail = "EMAIL";
+        public const string ColumnNameCreatedOn = "CREATED_ON";
+        public const string ColumnNameModifiedOn = "MODIFIED_ON";
 
-        public const string TableStruct = "(" + COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + COLUMN_NAME_USERNAME + " TEXT, " + COLUMN_NAME_PASSWORD + " TEXT, " + COLUMN_NAME_USER_PROFILE + " INTEGER, " + COLUMN_NAME_EMAIL + " TEXT, " + COLUMN_NAME_CREATED_ON + " TEXT, " + COLUMN_NAME_MODIFIED_ON + " TEXT)";
+        public const string TableStruct = "(" + ColumnNameId + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + ColumnNameUsername + " TEXT, " + ColumnNamePassword + " TEXT, " + ColumnNameUserProfile + " INTEGER, " + ColumnNameEmail + " TEXT, " + ColumnNameCreatedOn + " TEXT, " + ColumnNameModifiedOn + " TEXT)";
 
         public long Id { get; set; }
 

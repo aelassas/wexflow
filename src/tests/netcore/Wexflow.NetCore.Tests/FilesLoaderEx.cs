@@ -6,7 +6,7 @@ namespace Wexflow.NetCore.Tests
     [TestClass]
     public class FilesLoaderEx
     {
-        public static readonly string ColumnSourceFilesFolder =
+        public static readonly string SourceFilesFolder =
             Path.Combine(Helper.ColumnSourceFilesFolder, "FilesLoaderEx") + Path.DirectorySeparatorChar;
 
         private static readonly string ExpectedResult138AddMaxCreateDate =
@@ -14,8 +14,8 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"139\" name=\"Workflow_FilesLoaderEx_AddMaxCreateDate\" description=\"Workflow_FilesLoaderEx_AddMaxCreateDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -25,8 +25,8 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"140\" name=\"Workflow_FilesLoaderEx_AddMinCreateDate\" description=\"Workflow_FilesLoaderEx_AddMinCreateDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -36,8 +36,8 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"141\" name=\"Workflow_FilesLoaderEx_AddMaxModifyDate\" description=\"Workflow_FilesLoaderEx_AddMaxModifyDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -47,8 +47,8 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"142\" name=\"Workflow_FilesLoaderEx_AddMinModifyDate\" description=\"Workflow_FilesLoaderEx_AddMinModifyDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -58,9 +58,9 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"143\" name=\"Workflow_FilesLoaderEx_RemoveMaxCreateDate\" description=\"Workflow_FilesLoaderEx_RemoveMaxCreateDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -70,9 +70,9 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"144\" name=\"Workflow_FilesLoaderEx_RemoveMinCreateDate\" description=\"Workflow_FilesLoaderEx_RemoveMinCreateDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -82,9 +82,9 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"145\" name=\"Workflow_FilesLoaderEx_RemoveMaxModifyDate\" description=\"Workflow_FilesLoaderEx_RemoveMaxModifyDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file1.txt\" name=\"file1.txt\" renameTo=\"\" renameToOrName=\"file1.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file2.txt\" name=\"file2.txt\" renameTo=\"\" renameToOrName=\"file2.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";
@@ -94,9 +94,9 @@ namespace Wexflow.NetCore.Tests
             "<WexflowProcessing>\r\n" +
             "  <Workflow id=\"146\" name=\"Workflow_FilesLoaderEx_RemoveMinModifyDate\" description=\"Workflow_FilesLoaderEx_RemoveMinModifyDate\">\r\n" +
             "    <Files>\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
-            "      <File taskId=\"1\" path=\"" + ColumnSourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file3.txt\" name=\"file3.txt\" renameTo=\"\" renameToOrName=\"file3.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file4.txt\" name=\"file4.txt\" renameTo=\"\" renameToOrName=\"file4.txt\" />\r\n" +
+            "      <File taskId=\"1\" path=\"" + SourceFilesFolder + "file5.txt\" name=\"file5.txt\" renameTo=\"\" renameToOrName=\"file5.txt\" />\r\n" +
             "    </Files>\r\n" +
             "  </Workflow>\r\n" +
             "</WexflowProcessing>";

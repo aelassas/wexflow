@@ -28,7 +28,7 @@ namespace Wexflow.Server
 {
     public sealed class WexflowService : NancyModule
     {
-        private const string Root = "api/v1";
+        private const string ROOT = "api/v1";
         private static readonly XNamespace Xn = "urn:wexflow-schema";
 
         public WexflowService()
@@ -147,7 +147,7 @@ namespace Wexflow.Server
             NotifyApprovers();
         }
 
-        private static string GetPattern(string pattern) => $"/{Root}/{pattern}";
+        private static string GetPattern(string pattern) => $"/{ROOT}/{pattern}";
 
         /// <summary>
         /// Search for workflows.

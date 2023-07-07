@@ -17,11 +17,11 @@ namespace Wexflow.Clients.Manager
     {
         private static readonly string WexflowWebServiceUri = ConfigurationManager.AppSettings["WexflowWebServiceUri"];
 
-        private const string Id = "Id";
-        private new const string Enabled = "Enabled";
-        private const string Approval = "Approval";
-        private const string WexflowServerPath = @"..\Wexflow.Server.exe.config";
-        private const string Backend = @"..\Backend\index.html";
+        private const string ID = "Id";
+        private const string ENABLED = "Enabled";
+        private const string APPROVAL = "Approval";
+        private const string WEXFLOW_SERVER_PATH = @"..\Wexflow.Server.exe.config";
+        private const string BACKEND = @"..\Backend\index.html";
 
         private WexflowServiceClient _wexflowServiceClient;
         private WorkflowInfo[] _workflows;
@@ -42,10 +42,10 @@ namespace Wexflow.Clients.Manager
 
             LoadWorkflows();
 
-            if (File.Exists(WexflowServerPath))
+            if (File.Exists(WEXFLOW_SERVER_PATH))
             {
                 var doc = new XmlDocument();
-                doc.Load(WexflowServerPath);
+                doc.Load(WEXFLOW_SERVER_PATH);
                 var root = doc.DocumentElement;
                 if (root != null)
                 {
@@ -58,7 +58,7 @@ namespace Wexflow.Clients.Manager
             }
 
             buttonLogs.Enabled = !string.IsNullOrEmpty(_logfile);
-            buttonBackend.Enabled = File.Exists(Backend);
+            buttonBackend.Enabled = File.Exists(BACKEND);
             buttonRestart.Enabled = !Program.DebugMode;
 
             dataGridViewWorkflows.MouseWheel += MouseWheelEvt;
@@ -170,10 +170,10 @@ namespace Wexflow.Clients.Manager
             dataGridViewWorkflows.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewWorkflows.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewWorkflows.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewWorkflows.Columns[3].Name = Enabled;
-            dataGridViewWorkflows.Columns[3].HeaderText = Enabled;
-            dataGridViewWorkflows.Columns[4].Name = Approval;
-            dataGridViewWorkflows.Columns[4].HeaderText = Approval;
+            dataGridViewWorkflows.Columns[3].Name = ENABLED;
+            dataGridViewWorkflows.Columns[3].HeaderText = ENABLED;
+            dataGridViewWorkflows.Columns[4].Name = APPROVAL;
+            dataGridViewWorkflows.Columns[4].HeaderText = APPROVAL;
             dataGridViewWorkflows.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             dataGridViewWorkflows.Sort(dataGridViewWorkflows.Columns[0], ListSortDirection.Ascending);
@@ -188,7 +188,7 @@ namespace Wexflow.Clients.Manager
             {
                 if (Program.DebugMode || Program.IsWexflowWindowsServiceRunning())
                 {
-                    wfId = int.Parse(dataGridViewWorkflows.SelectedRows[0].Cells[Id].Value.ToString());
+                    wfId = int.Parse(dataGridViewWorkflows.SelectedRows[0].Cells[ID].Value.ToString());
                 }
                 else
                 {
@@ -424,9 +424,9 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonBackend_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Backend))
+            if (File.Exists(BACKEND))
             {
-                _ = Process.Start(Backend, "");
+                _ = Process.Start(BACKEND, "");
             }
         }
 
