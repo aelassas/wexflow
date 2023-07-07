@@ -94,6 +94,7 @@ dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.Ru
 
 :: wexflow.service
 copy netcore\linux\wexflow.service %dstDir%
+copy netcore\linux\install.sh %dstDir%
 
 :: License
 copy ..\LICENSE.txt %dstDir%
