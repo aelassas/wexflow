@@ -3137,7 +3137,7 @@ namespace Wexflow.Server
         /// Generates a random number of 4 digits.
         /// </summary>
         /// <returns></returns>
-        private int GenerateRandomNumber()
+        private static int GenerateRandomNumber()
         {
             const int min = 1000;
             const int max = 9999;
@@ -4340,7 +4340,7 @@ namespace Wexflow.Server
         /// <param name="assignedTo">Assigned to.</param>
         /// <param name="message">Message.</param>
         /// <returns>Result.</returns>
-        private bool NotifyUser(Core.Db.User assignedBy, Core.Db.User assignedTo, string message)
+        private static bool NotifyUser(Core.Db.User assignedBy, Core.Db.User assignedTo, string message)
         {
             var res = false;
             if (assignedTo != null && !string.IsNullOrEmpty(message))

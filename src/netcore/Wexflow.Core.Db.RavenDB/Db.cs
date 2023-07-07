@@ -283,23 +283,18 @@ namespace Wexflow.Core.Db.RavenDB
                     var col = session.Query<User>();
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
 
-                    switch (uo)
+                    return uo switch
                     {
-                        case UserOrderBy.UsernameAscending:
-                            return col
-                                .Search(u => u.Username, keywordToLower)
-                                .Where(u => u.UserProfile == UserProfile.Administrator)
-                                .OrderBy(u => u.Username)
-                                .ToArray();
-                        case UserOrderBy.UsernameDescending:
-                            return col
-                                .Search(u => u.Username, keywordToLower)
-                                .Where(u => u.UserProfile == UserProfile.Administrator)
-                                .OrderByDescending(u => u.Username)
-                                .ToArray();
-                    }
-
-                    return Array.Empty<User>();
+                        UserOrderBy.UsernameAscending => col.Search(u => u.Username, keywordToLower)
+                            .Where(u => u.UserProfile == UserProfile.Administrator)
+                            .OrderBy(u => u.Username)
+                            .ToArray(),
+                        UserOrderBy.UsernameDescending => col.Search(u => u.Username, keywordToLower)
+                            .Where(u => u.UserProfile == UserProfile.Administrator)
+                            .OrderByDescending(u => u.Username)
+                            .ToArray(),
+                        _ => Array.Empty<User>()
+                    };
                 }
                 catch (Exception)
                 {
@@ -336,141 +331,105 @@ namespace Wexflow.Core.Db.RavenDB
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
                     var skip = (page - 1) * entriesCount;
 
-                    switch (eo)
+                    return eo switch
                     {
-                        case EntryOrderBy.StatusDateAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.StatusDate).Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.StatusDateDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.StatusDate)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.WorkflowIdAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.WorkflowId)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.WorkflowIdDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.WorkflowId)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.NameAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.Name)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.NameDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.Name)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.LaunchTypeAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.LaunchType)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.LaunchTypeDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.LaunchType)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.DescriptionAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.Description)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.DescriptionDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.Description)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.StatusAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.Status)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.StatusDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.Status)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-                    }
-
-                    return Array.Empty<Entry>();
+                        EntryOrderBy.StatusDateAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.StatusDate)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.StatusDateDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.StatusDate)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.WorkflowIdAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.WorkflowId)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.WorkflowIdDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.WorkflowId)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.NameAscending => col.Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.Name)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.NameDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.Name)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.LaunchTypeAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.LaunchType)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.LaunchTypeDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.LaunchType)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.DescriptionAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.Description)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.DescriptionDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.Description)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.StatusAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.Status)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.StatusDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.Status)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        _ => Array.Empty<Entry>()
+                    };
                 }
                 catch (Exception)
                 {
@@ -641,141 +600,105 @@ namespace Wexflow.Core.Db.RavenDB
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
                     var skip = (page - 1) * entriesCount;
 
-                    switch (heo)
+                    return heo switch
                     {
-                        case EntryOrderBy.StatusDateAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.StatusDate).Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.StatusDateDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.StatusDate)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.WorkflowIdAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.WorkflowId)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.WorkflowIdDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.WorkflowId)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.NameAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.Name)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.NameDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.Name)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.LaunchTypeAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.LaunchType)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.LaunchTypeDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.LaunchType)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.DescriptionAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.Description)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.DescriptionDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.Description)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.StatusAscending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderBy(e => e.Status)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-
-                        case EntryOrderBy.StatusDescending:
-
-                            return col
-                                .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                                .Search(e => e.Description, keywordToLower)
-                                .Where(e => e.StatusDate > from && e.StatusDate < to)
-                                .OrderByDescending(e => e.Status)
-                                .Skip(skip)
-                                .Take(entriesCount)
-                                .ToArray();
-                    }
-
-                    return Array.Empty<HistoryEntry>();
+                        EntryOrderBy.StatusDateAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.StatusDate)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.StatusDateDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.StatusDate)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.WorkflowIdAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.WorkflowId)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.WorkflowIdDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.WorkflowId)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.NameAscending => col.Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.Name)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.NameDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.Name)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.LaunchTypeAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.LaunchType)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.LaunchTypeDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.LaunchType)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.DescriptionAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.Description)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.DescriptionDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.Description)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.StatusAscending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderBy(e => e.Status)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        EntryOrderBy.StatusDescending => col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Where(e => e.StatusDate > from && e.StatusDate < to)
+                            .OrderByDescending(e => e.Status)
+                            .Skip(skip)
+                            .Take(entriesCount)
+                            .ToArray(),
+                        _ => Array.Empty<HistoryEntry>()
+                    };
                 }
                 catch (Exception)
                 {
@@ -962,15 +885,16 @@ namespace Wexflow.Core.Db.RavenDB
                     var col = session.Query<User>();
                     var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
 
-                    switch (uo)
+                    return uo switch
                     {
-                        case UserOrderBy.UsernameAscending:
-                            return col.Search(u => u.Username, keywordToLower).OrderBy(u => u.Username).ToArray();
-                        case UserOrderBy.UsernameDescending:
-                            return col.Search(u => u.Username, keywordToLower).OrderByDescending(u => u.Username).ToArray();
-                    }
-
-                    return Array.Empty<User>();
+                        UserOrderBy.UsernameAscending => col.Search(u => u.Username, keywordToLower)
+                            .OrderBy(u => u.Username)
+                            .ToArray(),
+                        UserOrderBy.UsernameDescending => col.Search(u => u.Username, keywordToLower)
+                            .OrderByDescending(u => u.Username)
+                            .ToArray(),
+                        _ => Array.Empty<User>()
+                    };
                 }
                 catch (Exception)
                 {
