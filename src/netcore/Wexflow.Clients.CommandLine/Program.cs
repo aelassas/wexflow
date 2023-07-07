@@ -3,7 +3,7 @@ using CommandLine.Text;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using Wexflow.Core.Service.Client;
 using Wexflow.Core.Service.Contracts;
 
@@ -41,7 +41,7 @@ namespace Wexflow.Clients.CommandLine
             public bool Wait { get; set; }
         }
 
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Wexflow.Clients.CommandLine
 
                 Parser parser = new(cfg => cfg.CaseInsensitiveEnumValues = true);
 
-                async void Action(Options o)
+                async Task<int> ExecuteCommand(Options o)
                 {
                     WexflowServiceClient client = new(config["WexflowWebServiceUri"]);
                     var username = config["Username"];
@@ -61,7 +61,7 @@ namespace Wexflow.Clients.CommandLine
                     if (workflows.All(w => w.Id != o.WorkflowId))
                     {
                         Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
-                        return;
+                        return await Task.FromResult(1);
                     }
 
                     WorkflowInfo workflow;
@@ -73,12 +73,12 @@ namespace Wexflow.Clients.CommandLine
 
                             if (o.Wait)
                             {
-                                Thread.Sleep(1000);
+                                await Task.Delay(1000);
                                 workflow = await client.GetWorkflow(username, password, o.WorkflowId);
                                 var isRunning = workflow.IsRunning;
                                 while (isRunning)
                                 {
-                                    Thread.Sleep(100);
+                                    await Task.Delay(100);
                                     workflow = await client.GetWorkflow(username, password, o.WorkflowId);
                                     isRunning = workflow.IsRunning;
                                 }
@@ -91,7 +91,7 @@ namespace Wexflow.Clients.CommandLine
                             if (!workflow.IsRunning)
                             {
                                 Console.WriteLine("Workflow {0} is not running to be suspended.", o.WorkflowId);
-                                return;
+                                return await Task.FromResult(1);
                             }
 
                             await client.SuspendWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
@@ -102,7 +102,7 @@ namespace Wexflow.Clients.CommandLine
                             if (!workflow.IsRunning)
                             {
                                 Console.WriteLine("Workflow {0} is not running to be stopped.", o.WorkflowId);
-                                return;
+                                return await Task.FromResult(1);
                             }
 
                             await client.StopWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
@@ -113,7 +113,7 @@ namespace Wexflow.Clients.CommandLine
                             if (!workflow.IsPaused)
                             {
                                 Console.WriteLine("Workflow {0} is not suspended to be resumed.", o.WorkflowId);
-                                return;
+                                return await Task.FromResult(1);
                             }
 
                             await client.ResumeWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
@@ -124,7 +124,7 @@ namespace Wexflow.Clients.CommandLine
                             if (!workflow.IsWaitingForApproval)
                             {
                                 Console.WriteLine("Workflow {0} is not waiting for approval to be approved.", o.WorkflowId);
-                                return;
+                                return await Task.FromResult(1);
                             }
 
                             await client.ApproveWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
@@ -135,15 +135,18 @@ namespace Wexflow.Clients.CommandLine
                             if (!workflow.IsWaitingForApproval)
                             {
                                 Console.WriteLine("Workflow {0} is not waiting for approval to be rejected.", o.WorkflowId);
-                                return;
+                                return await Task.FromResult(1);
                             }
 
                             await client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
                             break;
                     }
+
+                    return await Task.FromResult(0);
                 }
 
-                var res = parser.ParseArguments<Options>(args).WithParsed(Action);
+                var res = parser.ParseArguments<Options>(args);
+                _ = await res.MapResult(ExecuteCommand, _ => Task.FromResult(1));
 
                 _ = res.WithNotParsed(_ =>
                 {
