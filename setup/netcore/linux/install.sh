@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+if [ $(/usr/bin/id -u) -ne 0 ]
+then
     echo "$0 is not running as root. Try using sudo."
     exit
 fi
