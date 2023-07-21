@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.FilesDecryptor
                 foreach (var file in files)
                 {
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
-                    success &= Decrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
+                    success &= Decrypt(file.Path, destPath, Workflow.PASS_PHRASE, Workflow.DERIVATION_ITERATIONS);
                     if (!atLeastOneSuccess && success)
                     {
                         atLeastOneSuccess = true;

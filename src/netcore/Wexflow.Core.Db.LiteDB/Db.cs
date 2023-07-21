@@ -22,7 +22,7 @@ namespace Wexflow.Core.Db.LiteDB
             // StatusCount
             ClearStatusCount();
 
-            var statusCountCol = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+            var statusCountCol = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
 
             StatusCount statusCount = new()
             {
@@ -41,7 +41,7 @@ namespace Wexflow.Core.Db.LiteDB
             ClearEntries();
 
             // Insert default user if necessary
-            var usersCol = _db.GetCollection<User>(Core.Db.User.DocumentName);
+            var usersCol = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
             if (usersCol.Count() == 0)
             {
                 InsertDefaultUser();
@@ -52,7 +52,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 _ = col.DeleteMany(_ => true);
             }
         }
@@ -61,7 +61,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 _ = col.DeleteMany(_ => true);
             }
         }
@@ -70,7 +70,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 return statusCount;
             }
@@ -80,7 +80,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -94,7 +94,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -108,7 +108,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -122,7 +122,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -136,7 +136,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -166,7 +166,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -180,7 +180,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -210,7 +210,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -240,7 +240,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -270,7 +270,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.FindAll().FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -322,7 +322,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 return col.FindAll();
             }
         }
@@ -331,7 +331,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 return col.FindOne(e => e.WorkflowId == workflowId);
             }
         }
@@ -340,7 +340,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 return col.FindOne(e => e.WorkflowId == workflowId && e.JobId == jobId.ToString());
             }
         }
@@ -349,7 +349,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 Entry ie = new()
                 {
                     Description = entry.Description,
@@ -378,7 +378,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 Entry e = new()
                 {
                     Id = int.Parse(id),
@@ -410,7 +410,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 user.CreatedOn = DateTime.Now;
                 _ = col.Insert(new User
                 {
@@ -431,7 +431,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var dbUser = col.FindOne(u => u.Username == username);
                 dbUser.Password = password;
                 _ = col.Update(dbUser);
@@ -442,7 +442,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var i = int.Parse(id);
                 var dbUser = col.FindOne(u => u.Id == i);
                 dbUser.ModifiedOn = DateTime.Now;
@@ -458,7 +458,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var i = int.Parse(userId);
                 var dbUser = col.FindOne(u => u.Id == i);
                 dbUser.ModifiedOn = DateTime.Now;
@@ -473,7 +473,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.FindOne(u => u.Username == username);
                 if (user != null && user.Password == password)
                 {
@@ -491,7 +491,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.FindOne(u => u.Username == username);
                 return user;
             }
@@ -501,7 +501,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var id = int.Parse(userId);
                 var user = col.FindOne(u => u.Id == id);
                 return user;
@@ -512,7 +512,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.FindOne(u => u.Username == username);
                 return user.Password;
             }
@@ -522,7 +522,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 return col.FindAll();
             }
         }
@@ -531,7 +531,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
                 BsonExpression query = null;
 
@@ -580,7 +580,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
                 BsonExpression query = null;
 
@@ -636,7 +636,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 HistoryEntry he = new()
                 {
                     Description = entry.Description,
@@ -685,7 +685,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.FindAll();
             }
         }
@@ -695,7 +695,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var keywordToUpper = keyword.ToUpper();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper));
             }
         }
@@ -705,7 +705,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var keywordToUpper = keyword.ToUpper();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper), (page - 1) * entriesCount, entriesCount);
             }
         }
@@ -714,7 +714,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
                 var skip = (page - 1) * entriesCount;
                 var query = !string.IsNullOrEmpty(keyword)
@@ -972,7 +972,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
                 var skip = (page - 1) * entriesCount;
                 var query = !string.IsNullOrEmpty(keyword)
@@ -1231,7 +1231,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var keywordToUpper = keyword.ToUpper();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper)).LongCount();
             }
         }
@@ -1241,7 +1241,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var keywordToLower = keyword.ToLower();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var query = !string.IsNullOrEmpty(keyword)
                     ? Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
                         , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)))
@@ -1255,7 +1255,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var keywordToLower = keyword.ToLower();
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var query = !string.IsNullOrEmpty(keyword)
                     ? Query.And(Query.Or(Query.Contains("Name", keywordToLower), Query.Contains("Description", keywordToLower))
                         , Query.And(Query.GTE("StatusDate", from), Query.LTE("StatusDate", to)))
@@ -1268,7 +1268,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate")).ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -1278,7 +1278,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate", Query.Descending)).ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -1288,7 +1288,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.Entry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate")).ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -1298,7 +1298,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.Entry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate", Query.Descending)).ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -1308,7 +1308,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 Workflow wf = new() { Xml = workflow.Xml };
                 var res = col.Insert(wf);
                 return res.AsInt32.ToString();
@@ -1319,7 +1319,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 Workflow wf = new() { Id = int.Parse(dbId), Xml = workflow.Xml };
                 _ = col.Update(wf);
             }
@@ -1329,7 +1329,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 var i = int.Parse(id);
                 _ = col.DeleteMany(e => e.Id == i);
             }
@@ -1339,7 +1339,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 _ = col.DeleteMany(e => ids.Contains(e.Id.ToString()));
             }
         }
@@ -1348,7 +1348,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 return col.FindAll();
             }
         }
@@ -1357,7 +1357,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 return col.FindById(int.Parse(id));
             }
         }
@@ -1366,7 +1366,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 UserWorkflow uw = new()
                 {
                     UserId = userWorkflow.UserId,
@@ -1380,7 +1380,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 _ = col.DeleteMany(uw => uw.UserId == userId);
             }
         }
@@ -1389,7 +1389,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 _ = col.DeleteMany(uw => uw.WorkflowId == workflowId);
             }
         }
@@ -1398,7 +1398,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 return col.Find(uw => uw.UserId == userId).Select(uw => uw.WorkflowId.ToString());
             }
         }
@@ -1407,7 +1407,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 var res = col.FindOne(uw => uw.UserId == userId && uw.WorkflowId == workflowId);
                 return res != null;
             }
@@ -1418,7 +1418,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var id = int.Parse(entryId);
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var entry = col.FindOne(e => e.Id == id);
                 return entry.Logs;
             }
@@ -1429,7 +1429,7 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var id = int.Parse(entryId);
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var entry = col.FindOne(e => e.Id == id);
                 return entry.Logs;
             }
@@ -1439,7 +1439,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var users = col.Find(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username);
                 return users;
             }
@@ -1449,7 +1449,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 Record r = new()
                 {
                     Approved = record.Approved,
@@ -1474,7 +1474,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var bsonId = int.Parse(recordId);
                 var recordFromDb = col.FindById(bsonId);
                 Record r = new()
@@ -1503,7 +1503,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 _ = col.DeleteMany(r => recordIds.Contains(r.Id.ToString()));
             }
         }
@@ -1512,7 +1512,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var bsonId = int.Parse(id);
                 var record = col.FindById(bsonId);
                 return record;
@@ -1523,7 +1523,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
                 var records = col.Find(r => r.Name.ToUpper().Contains(keywordToUpper) || (!string.IsNullOrEmpty(r.Description) && r.Description.ToUpper().Contains(keywordToUpper))).OrderByDescending(r => r.CreatedOn).ToList();
                 return records;
@@ -1534,7 +1534,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var records = col.Find(r => r.CreatedBy == createdBy).OrderBy(r => r.Name).ToList();
                 return records;
             }
@@ -1544,7 +1544,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
                 var records = col.Find(r => (r.CreatedBy == createdBy || r.AssignedTo == assingedTo) && (r.Name.ToUpper().Contains(keywordToUpper) || (!string.IsNullOrEmpty(r.Description) && r.Description.ToUpper().Contains(keywordToUpper)))).OrderByDescending(r => r.CreatedOn).ToList();
                 return records;
@@ -1555,7 +1555,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 Version v = new()
                 {
                     RecordId = version.RecordId,
@@ -1571,7 +1571,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var bsonId = int.Parse(versionId);
                 var versionFromDb = col.FindById(bsonId);
                 Version v = new()
@@ -1590,7 +1590,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 _ = col.DeleteMany(v => versionIds.Contains(v.Id.ToString()));
             }
         }
@@ -1599,7 +1599,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var versions = col.Find(v => v.RecordId == recordId).OrderBy(v => v.CreatedOn).ToList();
                 return versions;
             }
@@ -1609,7 +1609,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var version = col.Find(v => v.RecordId == recordId).MaxBy(v => v.CreatedOn);
                 return version;
             }
@@ -1619,7 +1619,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 Notification n = new()
                 {
                     AssignedBy = notification.AssignedBy,
@@ -1637,7 +1637,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 _ = col.UpdateMany(n => new Notification
                 {
                     Id = n.Id,
@@ -1654,7 +1654,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 _ = col.UpdateMany(n => new Notification
                 {
                     Id = n.Id,
@@ -1671,7 +1671,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 _ = col.DeleteMany(n => notificationIds.Contains(n.Id.ToString()));
             }
         }
@@ -1680,7 +1680,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
                 var notifications = col.Find(n => n.AssignedTo == assignedTo && n.Message.ToUpper().Contains(keywordToUpper)).OrderByDescending(n => n.AssignedOn).ToList();
                 return notifications;
@@ -1691,7 +1691,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var notifications = col.Find(n => n.AssignedTo == assignedTo && !n.IsRead);
                 var hasNotifications = notifications.Any();
                 return hasNotifications;
@@ -1702,7 +1702,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 Approver a = new()
                 {
                     UserId = approver.UserId,
@@ -1720,7 +1720,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 var bsonId = int.Parse(approverId);
 
                 Approver a = new()
@@ -1740,7 +1740,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 _ = col.DeleteMany(a => a.RecordId == recordId);
             }
         }
@@ -1749,7 +1749,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 _ = col.DeleteMany(a => a.Approved && a.RecordId == recordId);
             }
         }
@@ -1758,7 +1758,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 _ = col.DeleteMany(a => a.UserId == userId);
             }
         }
@@ -1767,7 +1767,7 @@ namespace Wexflow.Core.Db.LiteDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 var approvers = col.Find(a => a.RecordId == recordId).ToList();
                 return approvers;
             }

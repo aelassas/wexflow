@@ -2,11 +2,11 @@
 {
     public class UserWorkflow : Core.Db.UserWorkflow
     {
-        public const string ColumnNameId = "ID";
-        public const string ColumnNameUserId = "USER_ID";
-        public const string ColumnNameWorkflowId = "WORKFLOW_ID";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_USER_ID = "USER_ID";
+        public const string COLUMN_NAME_WORKFLOW_ID = "WORKFLOW_ID";
 
-        public const string TableStruct = "(" + ColumnNameId + " SERIAL PRIMARY KEY, " + ColumnNameUserId + " INT, " + ColumnNameWorkflowId + " INT)";
+        public const string TABLE_STRUCT = "(" + COLUMN_NAME_ID + " SERIAL PRIMARY KEY, " + COLUMN_NAME_USER_ID + " INT, " + COLUMN_NAME_WORKFLOW_ID + " INT)";
 
         public string Id { get; set; }
     }

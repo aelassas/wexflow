@@ -7,8 +7,8 @@ namespace Wexflow.Tests
 {
     public class Helper
     {
-        public const string TempFolder = @"C:\Wexflow\Temp\";
-        public const string SourceFilesFolder = @"C:\WexflowTesting\";
+        public const string TEMP_FOLDER = @"C:\Wexflow\Temp\";
+        public const string SOURCE_FILES_FOLDER = @"C:\WexflowTesting\";
 
         private static readonly WexflowEngine WexflowEngine = new WexflowEngine(
             @"C:\Wexflow\Wexflow.xml"

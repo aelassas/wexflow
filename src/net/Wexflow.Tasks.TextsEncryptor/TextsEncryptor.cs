@@ -102,7 +102,7 @@ namespace Wexflow.Tasks.TextsEncryptor
             try
             {
                 var srcStr = File.ReadAllText(inputFile);
-                var destStr = EncryptString(srcStr, Workflow.PassPhrase, Workflow.KeySize, Workflow.DerivationIterations);
+                var destStr = EncryptString(srcStr, Workflow.PASS_PHRASE, Workflow.KEY_SIZE, Workflow.DERIVATION_ITERATIONS);
                 File.WriteAllText(outputFile, destStr);
                 InfoFormat("The file {0} has been encrypted -> {1}", inputFile, outputFile);
                 Files.Add(new FileInf(outputFile, Id));

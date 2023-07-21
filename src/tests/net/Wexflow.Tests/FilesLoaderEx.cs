@@ -7,7 +7,7 @@ namespace Wexflow.Tests
     public class FilesLoaderEx
     {
         public static readonly string SourceFilesFolder =
-            Path.Combine(Helper.SourceFilesFolder, "FilesLoaderEx") + Path.DirectorySeparatorChar;
+            Path.Combine(Helper.SOURCE_FILES_FOLDER, "FilesLoaderEx") + Path.DirectorySeparatorChar;
 
         private static readonly string ExpectedResult138AddMaxCreateDate =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" +
@@ -103,7 +103,7 @@ namespace Wexflow.Tests
 
         public void TestInitialize(int workflowId)
         {
-            var tempFolder = Path.Combine(Helper.TempFolder, workflowId.ToString());
+            var tempFolder = Path.Combine(Helper.TEMP_FOLDER, workflowId.ToString());
             if (!Directory.Exists(tempFolder))
             {
                 _ = Directory.CreateDirectory(tempFolder);
@@ -124,7 +124,7 @@ namespace Wexflow.Tests
 
             // Check the workflow result
             var files = Directory.GetFiles(
-                Path.Combine(Helper.TempFolder, workflowId.ToString()),
+                Path.Combine(Helper.TEMP_FOLDER, workflowId.ToString()),
                 "ListFiles*.xml",
                 SearchOption.AllDirectories);
             Assert.AreEqual(1, files.Length);

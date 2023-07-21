@@ -26,20 +26,20 @@ namespace Wexflow.Core
         /// This constant is used to determine the key size of the encryption algorithm in bits.
         /// We divide this by 8 within the code below to get the equivalent number of bytes.
         /// </summary>
-        public const int KeySize = 128;
+        public const int KEY_SIZE = 128;
         /// <summary>
         /// This constant determines the number of iterations for the password bytes generation function. 
         /// </summary>
-        public const int DerivationIterations = 1000;
+        public const int DERIVATION_ITERATIONS = 1000;
         /// <summary>
         /// PassPhrase.
         /// </summary>
-        public const string PassPhrase = "FHMWW-EORNR-XXF0Q-E8Q#G-YC!RG-KV=TN-M9MQJ-AySDI-LAC5Q-UV==QE-VSVNL-OV1IZ";
+        public const string PASS_PHRASE = "FHMWW-EORNR-XXF0Q-E8Q#G-YC!RG-KV=TN-M9MQJ-AySDI-LAC5Q-UV==QE-VSVNL-OV1IZ";
 
         /// <summary>
         /// Default parent node id to start with in the execution graph.
         /// </summary>
-        public const int StartId = -1;
+        public const int START_ID = -1;
 
         /// <summary>
         /// Wexflow engine.
@@ -774,7 +774,7 @@ namespace Wexflow.Core
                 throw new ArgumentNullException(nameof(nodes)); // new ArgumentNullException()
             }
 
-            if (nodes.All(n => n.ParentId != StartId))
+            if (nodes.All(n => n.ParentId != START_ID))
             {
                 throw new Exception(errorMsg);
             }
@@ -800,7 +800,7 @@ namespace Wexflow.Core
 
         private static void CheckInfiniteLoop(Node[] taskNodes, string errorMsg)
         {
-            var startNode = taskNodes.FirstOrDefault(n => n.ParentId == StartId);
+            var startNode = taskNodes.FirstOrDefault(n => n.ParentId == START_ID);
 
             if (startNode != null)
             {
@@ -1282,7 +1282,7 @@ namespace Wexflow.Core
                 }
                 else
                 {
-                    if (startNode.ParentId == StartId)
+                    if (startNode.ParentId == START_ID)
                     {
                         RunTasks(tasks, nodes, startNode, force, ref success, ref warning, ref atLeastOneSucceed);
                     }
@@ -1468,7 +1468,7 @@ namespace Wexflow.Core
                             // Run Tasks
                             var doIfStartNode = GetStartupNode(@if.DoNodes);
 
-                            if (doIfStartNode.ParentId == StartId)
+                            if (doIfStartNode.ParentId == START_ID)
                             {
                                 RunTasks(doIfTasks, @if.DoNodes, doIfStartNode, force, ref success, ref warning, ref atLeastOneSucceed);
                             }
@@ -1819,7 +1819,7 @@ namespace Wexflow.Core
 
         private static Node GetStartupNode(IEnumerable<Node> nodes)
         {
-            return nodes.First(n => n.ParentId == StartId);
+            return nodes.First(n => n.ParentId == START_ID);
         }
 
         private Task GetTask(int id)

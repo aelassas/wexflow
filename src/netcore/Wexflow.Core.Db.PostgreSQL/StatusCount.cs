@@ -2,17 +2,17 @@
 {
     public class StatusCount : Core.Db.StatusCount
     {
-        public const string ColumnNameId = "ID";
-        public const string ColumnNamePendingCount = "PENDING_COUNT";
-        public const string ColumnNameRunningCount = "RUNNING_COUNT";
-        public const string ColumnNameDoneCount = "DONE_COUNT";
-        public const string ColumnNameFailedCount = "FAILED_COUNT";
-        public const string ColumnNameWarningCount = "WARNING_COUNT";
-        public const string ColumnNameDisabledCount = "DISABLED_COUNT";
-        public const string ColumnNameStoppedCount = "STOPPED_COUNT";
-        public const string ColumnNameRejectedCount = "DISAPPROVED_COUNT";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_PENDING_COUNT = "PENDING_COUNT";
+        public const string COLUMN_NAME_RUNNING_COUNT = "RUNNING_COUNT";
+        public const string COLUMN_NAME_DONE_COUNT = "DONE_COUNT";
+        public const string COLUMN_NAME_FAILED_COUNT = "FAILED_COUNT";
+        public const string COLUMN_NAME_WARNING_COUNT = "WARNING_COUNT";
+        public const string COLUMN_NAME_DISABLED_COUNT = "DISABLED_COUNT";
+        public const string COLUMN_NAME_STOPPED_COUNT = "STOPPED_COUNT";
+        public const string COLUMN_NAME_REJECTED_COUNT = "DISAPPROVED_COUNT";
 
-        public const string TableStruct = "(" + ColumnNameId + " SERIAL PRIMARY KEY, " + ColumnNamePendingCount + " INT, " + ColumnNameRunningCount + " INT, " + ColumnNameDoneCount + " INT, " + ColumnNameFailedCount + " INT, " + ColumnNameWarningCount + " INT, " + ColumnNameDisabledCount + " INT, " + ColumnNameStoppedCount + " INT, " + ColumnNameRejectedCount + " INT)";
+        public const string TABLE_STRUCT = "(" + COLUMN_NAME_ID + " SERIAL PRIMARY KEY, " + COLUMN_NAME_PENDING_COUNT + " INT, " + COLUMN_NAME_RUNNING_COUNT + " INT, " + COLUMN_NAME_DONE_COUNT + " INT, " + COLUMN_NAME_FAILED_COUNT + " INT, " + COLUMN_NAME_WARNING_COUNT + " INT, " + COLUMN_NAME_DISABLED_COUNT + " INT, " + COLUMN_NAME_STOPPED_COUNT + " INT, " + COLUMN_NAME_REJECTED_COUNT + " INT)";
 
         public int Id { get; set; }
     }

@@ -59,7 +59,7 @@ namespace Wexflow.Core.Db.MongoDB
             // StatusCount
             ClearStatusCount();
 
-            var statusCountCol = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+            var statusCountCol = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
 
             var statusCount = new StatusCount
             {
@@ -78,7 +78,7 @@ namespace Wexflow.Core.Db.MongoDB
             ClearEntries();
 
             // Insert default user if necessary
-            var usersCol = _db.GetCollection<User>(Core.Db.User.DocumentName);
+            var usersCol = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
             if (usersCol.CountDocuments(FilterDefinition<User>.Empty) == 0)
             {
                 InsertDefaultUser();
@@ -89,7 +89,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 return col.Find(FilterDefinition<Workflow>.Empty).ToEnumerable();
             }
         }
@@ -98,7 +98,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 var wf = new Workflow { Xml = workflow.Xml };
                 col.InsertOne(wf);
                 return wf.Id;
@@ -109,7 +109,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 return col.Find(w => w.Id == id).FirstOrDefault();
             }
         }
@@ -118,7 +118,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 var update = Builders<Workflow>.Update
                     .Set(w => w.Xml, workflow.Xml);
 
@@ -130,7 +130,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 _ = col.DeleteOne(e => e.Id == id);
             }
         }
@@ -139,7 +139,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 _ = col.DeleteMany(uw => uw.WorkflowId == workflowDbId);
             }
         }
@@ -148,7 +148,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DocumentName);
+                var col = _db.GetCollection<Workflow>(Core.Db.Workflow.DOCUMENT_NAME);
                 _ = col.DeleteMany(e => ids.Contains(e.Id));
             }
         }
@@ -157,7 +157,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 var uw = new UserWorkflow
                 {
                     UserId = userWorkflow.UserId,
@@ -171,7 +171,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 _ = col.DeleteMany(uw => uw.UserId == userId);
             }
         }
@@ -180,7 +180,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 return col.Find(uw => uw.UserId == userId).ToEnumerable().Select(uw => uw.WorkflowId);
             }
         }
@@ -189,7 +189,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DocumentName);
+                var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
                 var res = col.Find(uw => uw.UserId == userId && uw.WorkflowId == workflowId).FirstOrDefault();
                 return res != null;
             }
@@ -199,7 +199,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
 
                 switch (uo)
@@ -218,7 +218,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 _ = col.DeleteMany(FilterDefinition<StatusCount>.Empty);
             }
         }
@@ -227,7 +227,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 _ = col.DeleteMany(FilterDefinition<Entry>.Empty);
             }
         }
@@ -236,7 +236,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 return statusCount;
             }
@@ -246,7 +246,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 return col.Find(FilterDefinition<Entry>.Empty).ToEnumerable();
             }
         }
@@ -255,7 +255,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 user.CreatedOn = DateTime.Now;
                 var nu = new User
                 {
@@ -276,7 +276,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var update = Builders<User>.Update
                     .Set(u => u.ModifiedOn, DateTime.Now)
                     .Set(u => u.Username, user.Username)
@@ -292,7 +292,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
 
                 var update = Builders<User>.Update
                     .Set(u => u.ModifiedOn, DateTime.Now)
@@ -308,7 +308,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.Find(u => u.Username == username).FirstOrDefault();
                 return user;
             }
@@ -318,7 +318,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.Find(u => u.Id == userId).FirstOrDefault();
                 return user;
             }
@@ -328,7 +328,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.Find(u => u.Username == username).FirstOrDefault();
                 if (user != null && user.Password == password)
                 {
@@ -346,7 +346,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var user = col.Find(u => u.Username == username).First();
                 return user.Password;
             }
@@ -356,7 +356,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 return col.Find(FilterDefinition<User>.Empty).ToEnumerable();
             }
         }
@@ -365,7 +365,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
 
                 switch (uo)
@@ -384,7 +384,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 var dbUser = col.Find(u => u.Username == username).First();
                 dbUser.Password = password;
 
@@ -399,7 +399,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(FilterDefinition<HistoryEntry>.Empty).ToEnumerable();
             }
         }
@@ -409,7 +409,7 @@ namespace Wexflow.Core.Db.MongoDB
             lock (Padlock)
             {
                 var keywordToUpper = keyword.ToUpper();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper)).ToEnumerable();
             }
         }
@@ -419,7 +419,7 @@ namespace Wexflow.Core.Db.MongoDB
             lock (Padlock)
             {
                 var keywordToUpper = keyword.ToUpper();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper)).ToEnumerable().Skip((page - 1) * entriesCount).Take(entriesCount);
             }
         }
@@ -428,7 +428,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
                 var skip = (page - 1) * entriesCount;
 
@@ -491,7 +491,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var keywordToLower = keyword.ToLower();
                 var skip = (page - 1) * entriesCount;
 
@@ -555,7 +555,7 @@ namespace Wexflow.Core.Db.MongoDB
             lock (Padlock)
             {
                 var keywordToUpper = keyword.ToUpper();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper)).CountDocuments();
             }
         }
@@ -565,7 +565,7 @@ namespace Wexflow.Core.Db.MongoDB
             lock (Padlock)
             {
                 var keywordToLower = keyword.ToLower();
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
 
                 return col.Find(e => (e.Name.ToLower().Contains(keywordToLower) || e.Description.ToLower().Contains(keywordToLower)) && e.StatusDate > from && e.StatusDate < to).CountDocuments();
             }
@@ -576,7 +576,7 @@ namespace Wexflow.Core.Db.MongoDB
             lock (Padlock)
             {
                 var keywordToLower = keyword.ToLower();
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
 
                 return col.Find(e => (e.Name.ToLower().Contains(keywordToLower) || e.Description.ToLower().Contains(keywordToLower)) && e.StatusDate > from && e.StatusDate < to).CountDocuments();
             }
@@ -586,7 +586,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var q = col.Find(FilterDefinition<HistoryEntry>.Empty).Sort(Builders<HistoryEntry>.Sort.Ascending(e => e.StatusDate)).ToEnumerable().ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -596,7 +596,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var q = col.Find(FilterDefinition<HistoryEntry>.Empty).Sort(Builders<HistoryEntry>.Sort.Descending(e => e.StatusDate)).ToEnumerable().ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -606,7 +606,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var q = col.Find(FilterDefinition<Entry>.Empty).Sort(Builders<Entry>.Sort.Ascending(e => e.StatusDate)).ToEnumerable().ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -616,7 +616,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var q = col.Find(FilterDefinition<Entry>.Empty).Sort(Builders<Entry>.Sort.Descending(e => e.StatusDate)).ToEnumerable().ToArray();
                 return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
@@ -626,7 +626,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -644,7 +644,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -662,7 +662,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 return col.Find(e => e.WorkflowId == workflowId).FirstOrDefault();
             }
         }
@@ -671,7 +671,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 return col.Find(e => e.WorkflowId == workflowId && e.JobId == jobId.ToString()).FirstOrDefault();
             }
         }
@@ -680,7 +680,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var ie = new Entry
                 {
                     Description = entry.Description,
@@ -707,7 +707,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var update = Builders<Entry>.Update
                     .Set(e => e.Name, entry.Name)
                     .Set(e => e.Description, entry.Description)
@@ -726,7 +726,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -744,7 +744,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -762,7 +762,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -780,7 +780,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -798,7 +798,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var he = new HistoryEntry
                 {
                     Description = entry.Description,
@@ -823,7 +823,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -841,7 +841,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -859,7 +859,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -877,7 +877,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DocumentName);
+                var col = _db.GetCollection<StatusCount>(Core.Db.StatusCount.DOCUMENT_NAME);
                 var statusCount = col.Find(FilterDefinition<StatusCount>.Empty).FirstOrDefault();
                 if (statusCount != null)
                 {
@@ -895,7 +895,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Entry>(Core.Db.Entry.DocumentName);
+                var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
                 var entry = col.Find(e => e.Id == entryId).First();
                 return entry.Logs;
             }
@@ -905,7 +905,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DocumentName);
+                var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var entry = col.Find(e => e.Id == entryId).First();
                 return entry.Logs;
             }
@@ -915,7 +915,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<User>(Core.Db.User.DocumentName);
+                var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
                 return col.Find(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).Sort(Builders<User>.Sort.Ascending(u => u.Username)).ToList();
             }
         }
@@ -924,7 +924,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var r = new Record
                 {
                     Approved = record.Approved,
@@ -950,7 +950,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var update = Builders<Record>.Update
                     .Set(r => r.Approved, record.Approved)
                     .Set(r => r.AssignedOn, record.AssignedOn)
@@ -974,7 +974,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 _ = col.DeleteMany(r => recordIds.Contains(r.Id));
             }
         }
@@ -983,7 +983,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var record = col.Find(r => r.Id == id).FirstOrDefault();
                 return record;
             }
@@ -993,7 +993,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
                 var records = col.Find(r => r.Name.ToUpper().Contains(keywordToUpper) || (!string.IsNullOrEmpty(r.Description) && r.Description.ToUpper().Contains(keywordToUpper))).Sort(Builders<Record>.Sort.Descending(r => r.CreatedOn)).ToList();
                 return records;
@@ -1004,7 +1004,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var records = col.Find(r => r.CreatedBy == createdBy).Sort(Builders<Record>.Sort.Ascending(r => r.Name)).ToList();
                 return records;
             }
@@ -1014,7 +1014,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Record>(Core.Db.Record.DocumentName);
+                var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
                 var records = col.Find(r => (r.CreatedBy == createdBy || r.AssignedTo == assingedTo) && (r.Name.ToUpper().Contains(keywordToUpper) || (!string.IsNullOrEmpty(r.Description) && r.Description.ToUpper().Contains(keywordToUpper)))).Sort(Builders<Record>.Sort.Descending(r => r.CreatedOn)).ToList();
                 return records;
@@ -1025,7 +1025,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var v = new Version
                 {
                     RecordId = version.RecordId,
@@ -1041,7 +1041,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var update = Builders<Version>.Update
                     .Set(v => v.RecordId, version.RecordId)
                     //.Set(v => v.CreatedOn, version.CreatedOn)
@@ -1055,7 +1055,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 _ = col.DeleteMany(v => versionIds.Contains(v.Id));
             }
         }
@@ -1064,7 +1064,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var versions = col.Find(v => v.RecordId == recordId).Sort(Builders<Version>.Sort.Ascending(v => v.CreatedOn)).ToList();
                 return versions;
             }
@@ -1074,7 +1074,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Version>(Core.Db.Version.DocumentName);
+                var col = _db.GetCollection<Version>(Core.Db.Version.DOCUMENT_NAME);
                 var version = col.Find(v => v.RecordId == recordId).Sort(Builders<Version>.Sort.Descending(v => v.CreatedOn)).FirstOrDefault();
                 return version;
             }
@@ -1084,7 +1084,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var n = new Notification
                 {
                     AssignedBy = notification.AssignedBy,
@@ -1102,7 +1102,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var notifications = col.Find(n => notificationIds.Contains(n.Id)).ToList();
                 foreach (var notification in notifications)
                 {
@@ -1118,7 +1118,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var notifications = col.Find(n => notificationIds.Contains(n.Id)).ToList();
                 foreach (var notification in notifications)
                 {
@@ -1134,7 +1134,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 _ = col.DeleteMany(n => notificationIds.Contains(n.Id));
             }
         }
@@ -1143,7 +1143,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
                 var notifications = col.Find(n => n.AssignedTo == assignedTo && n.Message.ToUpper().Contains(keywordToUpper)).Sort(Builders<Notification>.Sort.Descending(n => n.AssignedOn)).ToList();
                 return notifications;
@@ -1154,7 +1154,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Notification>(Core.Db.Notification.DocumentName);
+                var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var notifications = col.Find(n => n.AssignedTo == assignedTo && !n.IsRead);
                 var hasNotifications = notifications.Any();
                 return hasNotifications;
@@ -1165,7 +1165,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 var a = new Approver
                 {
                     UserId = approver.UserId,
@@ -1182,7 +1182,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 var update = Builders<Approver>.Update
                     .Set(u => u.UserId, approver.UserId)
                     .Set(u => u.RecordId, approver.RecordId)
@@ -1197,7 +1197,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 _ = col.DeleteMany(a => a.RecordId == recordId);
             }
         }
@@ -1206,7 +1206,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 _ = col.DeleteMany(a => a.Approved && a.RecordId == recordId);
             }
         }
@@ -1215,7 +1215,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 _ = col.DeleteMany(a => a.UserId == userId);
             }
         }
@@ -1224,7 +1224,7 @@ namespace Wexflow.Core.Db.MongoDB
         {
             lock (Padlock)
             {
-                var col = _db.GetCollection<Approver>(Core.Db.Approver.DocumentName);
+                var col = _db.GetCollection<Approver>(Core.Db.Approver.DOCUMENT_NAME);
                 return col.Find(a => a.RecordId == recordId).ToList();
             }
         }

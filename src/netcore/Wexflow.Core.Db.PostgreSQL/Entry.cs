@@ -2,17 +2,17 @@
 {
     public class Entry : Core.Db.Entry
     {
-        public const string ColumnNameId = "ID";
-        public const string ColumnNameName = "NAME";
-        public const string ColumnNameDescription = "DESCRIPTION";
-        public const string ColumnNameLaunchType = "LAUNCH_TYPE";
-        public const string ColumnNameStatusDate = "STATUS_DATE";
-        public const string ColumnNameStatus = "STATUS";
-        public const string ColumnNameWorkflowId = "WORKFLOW_ID";
-        public const string ColumnNameJobId = "JOB_ID";
-        public const string ColumnNameLogs = "LOGS";
+        public const string COLUMN_NAME_ID = "ID";
+        public const string COLUMN_NAME_NAME = "NAME";
+        public const string COLUMN_NAME_DESCRIPTION = "DESCRIPTION";
+        public const string COLUMN_NAME_LAUNCH_TYPE = "LAUNCH_TYPE";
+        public const string COLUMN_NAME_STATUS_DATE = "STATUS_DATE";
+        public const string COLUMN_NAME_STATUS = "STATUS";
+        public const string COLUMN_NAME_WORKFLOW_ID = "WORKFLOW_ID";
+        public const string COLUMN_NAME_JOB_ID = "JOB_ID";
+        public const string COLUMN_NAME_LOGS = "LOGS";
 
-        public const string TableStruct = "(" + ColumnNameId + " SERIAL PRIMARY KEY, " + ColumnNameName + " VARCHAR(255), " + ColumnNameDescription + " VARCHAR(255), " + ColumnNameLaunchType + " INT, " + ColumnNameStatusDate + " TIMESTAMP, " + ColumnNameStatus + " INT, " + ColumnNameWorkflowId + " INT, " + ColumnNameJobId + " VARCHAR(255), " + ColumnNameLogs + " VARCHAR)";
+        public const string TABLE_STRUCT = "(" + COLUMN_NAME_ID + " SERIAL PRIMARY KEY, " + COLUMN_NAME_NAME + " VARCHAR(255), " + COLUMN_NAME_DESCRIPTION + " VARCHAR(255), " + COLUMN_NAME_LAUNCH_TYPE + " INT, " + COLUMN_NAME_STATUS_DATE + " TIMESTAMP, " + COLUMN_NAME_STATUS + " INT, " + COLUMN_NAME_WORKFLOW_ID + " INT, " + COLUMN_NAME_JOB_ID + " VARCHAR(255), " + COLUMN_NAME_LOGS + " VARCHAR)";
 
         public int Id { get; set; }
 

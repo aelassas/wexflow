@@ -2666,7 +2666,7 @@ namespace Wexflow.Server
         }
 
         private static Core.ExecutionGraph.Node GetStartupNode(IEnumerable<Core.ExecutionGraph.Node> nodes)
-            => nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.StartId);
+            => nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.START_ID);
 
         /// <summary>
         /// Returns status count.

@@ -2,7 +2,7 @@
 {
     public class Workflow
     {
-        public const string DocumentName = "workflows";
+        public const string DOCUMENT_NAME = "workflows";
 
         public string Xml { get; set; }
 

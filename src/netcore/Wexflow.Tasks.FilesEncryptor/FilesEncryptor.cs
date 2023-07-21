@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                 foreach (var file in files)
                 {
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
-                    succeeded &= Encrypt(file.Path, destPath, Workflow.PassPhrase, Workflow.DerivationIterations);
+                    succeeded &= Encrypt(file.Path, destPath, Workflow.PASS_PHRASE, Workflow.DERIVATION_ITERATIONS);
                     if (!atLeastOneSuccess && succeeded)
                     {
                         atLeastOneSuccess = true;
