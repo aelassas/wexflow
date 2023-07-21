@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
@@ -524,17 +525,42 @@ namespace Wexflow.Core
                     var assemblyName = $"Wexflow.Tasks.{name}";
                     var typeName = $"Wexflow.Tasks.{name}.{name}, {assemblyName}";
 
-                    // Try to load from root
+                    // Try to load task assembly
                     var type = Type.GetType(typeName);
 
-                    if (type == null) // Try to load from Tasks folder
+                    if (type == null) // Try to load from AppContext.BaseDirectory
                     {
-                        var taskAssemblyFile = Path.Combine(TasksFolder, assemblyName + ".dll");
-                        if (File.Exists(taskAssemblyFile))
+                        var taskFileName = $"{assemblyName}.dll";
+                        var taskTypeName = $"Wexflow.Tasks.{name}.{name}";
+                        var taskPath = Path.Combine(AppContext.BaseDirectory, taskFileName);
+
+                        if (File.Exists(taskPath))
                         {
-                            var taskAssembly = Assembly.LoadFile(taskAssemblyFile);
-                            var typeFullName = $"Wexflow.Tasks.{name}.{name}";
-                            type = taskAssembly.GetType(typeFullName);
+                            var taskAssembly = Assembly.LoadFile(taskPath);
+                            type = taskAssembly.GetType(taskTypeName);
+
+                            // load references
+                            if (type != null)
+                            {
+                                LoadReferences(taskAssembly);
+                            }
+                        }
+
+                        if (type == null) // Try to load from Tasks folder
+                        {
+                            taskPath = Path.Combine(TasksFolder, taskFileName);
+
+                            if (File.Exists(taskPath))
+                            {
+                                var taskAssembly = Assembly.LoadFile(taskPath);
+                                type = taskAssembly.GetType(taskTypeName);
+
+                                // load references
+                                if (type != null)
+                                {
+                                    LoadReferences(taskAssembly);
+                                }
+                            }
                         }
                     }
 
@@ -619,6 +645,47 @@ namespace Wexflow.Core
                 }
 
                 ExecutionGraph = new Graph(taskNodes, onSuccess, onWarning, onError, onRejected);
+            }
+        }
+
+        private void LoadReferences(Assembly taskAssembly)
+        {
+            var loadContext = AssemblyLoadContext.GetLoadContext(taskAssembly);
+
+            if (loadContext != null)
+            {
+                var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToArray();
+                var loadedPaths = loadedAssemblies.Where(a => !a.IsDynamic).Select(a => a.Location).ToArray();
+                var loadedNames = loadedPaths.Select(Path.GetFileNameWithoutExtension).ToArray();
+
+                foreach (var refAssemblyName in taskAssembly.GetReferencedAssemblies())
+                {
+                    if (loadedNames.All(a => a != refAssemblyName.Name))
+                    {
+                        var refName = $"{refAssemblyName.Name}.dll";
+                        var refPath = Path.Combine(AppContext.BaseDirectory, refName);
+
+                        Assembly refAssembly = null;
+                        if (File.Exists(refPath))
+                        {
+                            refAssembly = loadContext.LoadFromAssemblyPath(refPath);
+                        }
+                        else
+                        {
+                            refPath = Path.Combine(TasksFolder, refName);
+
+                            if (File.Exists(refPath))
+                            {
+                                refAssembly = loadContext.LoadFromAssemblyPath(refPath);
+                            }
+                        }
+
+                        if (refAssembly != null) // Recursive load
+                        {
+                            LoadReferences(refAssembly);
+                        }
+                    }
+                }
             }
         }
 

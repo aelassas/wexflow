@@ -650,7 +650,7 @@ namespace Wexflow.Core
             var ifId = int.Parse(xIfId.Value);
 
             // Do nodes
-            var doNodes = (xIf.XPathSelectElement("wf:Do", XmlNamespaceManager)??throw new InvalidOperationException("wf:Do not found"))
+            var doNodes = (xIf.XPathSelectElement("wf:Do", XmlNamespaceManager) ?? throw new InvalidOperationException("wf:Do not found"))
                 .Elements()
                 .Select(XNodeToNode)
                 .ToArray();

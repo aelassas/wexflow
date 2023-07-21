@@ -434,13 +434,13 @@ namespace Wexflow.Core
                         }
                         return dbId;
                     }
-                    else // update
+
+                    // update
+                    // check the workflow before to save it
+                    try
                     {
-                        // check the workflow before to save it
-                        try
-                        {
-                            _ = new Workflow(
-                              this
+                        _ = new Workflow(
+                            this
                             , 1
                             , new Dictionary<Guid, Workflow>()
                             , "-1"
@@ -451,36 +451,35 @@ namespace Wexflow.Core
                             , XsdPath
                             , Database
                             , GlobalVariables
-                            );
-                        }
-                        catch (Exception e)
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ErrorFormat("An error occured while saving the workflow {0}:", e, xml);
+                        return "-1";
+                    }
+
+                    var workflowFromDb = Database.GetWorkflow(workflow.DbId);
+                    workflowFromDb.Xml = xml;
+                    Database.UpdateWorkflow(workflow.DbId, workflowFromDb);
+
+                    var changedWorkflow = Workflows.SingleOrDefault(wf => wf.DbId == workflowFromDb.GetDbId());
+
+                    if (changedWorkflow != null)
+                    {
+                        _ = changedWorkflow.Stop(SuperAdminUsername);
+
+                        StopCronJobs(changedWorkflow);
+                        _ = Workflows.Remove(changedWorkflow);
+                        Logger.InfoFormat("A change in the workflow {0} has been detected. The workflow will be reloaded.", changedWorkflow.Name);
+
+                        var updatedWorkflow = LoadWorkflowFromDatabase(workflowFromDb);
+                        Workflows.Add(updatedWorkflow);
+                        if (schedule)
                         {
-                            Logger.ErrorFormat("An error occured while saving the workflow {0}:", e, xml);
-                            return "-1";
+                            ScheduleWorkflow(updatedWorkflow);
                         }
-
-                        var workflowFromDb = Database.GetWorkflow(workflow.DbId);
-                        workflowFromDb.Xml = xml;
-                        Database.UpdateWorkflow(workflow.DbId, workflowFromDb);
-
-                        var changedWorkflow = Workflows.SingleOrDefault(wf => wf.DbId == workflowFromDb.GetDbId());
-
-                        if (changedWorkflow != null)
-                        {
-                            _ = changedWorkflow.Stop(SuperAdminUsername);
-
-                            StopCronJobs(changedWorkflow);
-                            _ = Workflows.Remove(changedWorkflow);
-                            Logger.InfoFormat("A change in the workflow {0} has been detected. The workflow will be reloaded.", changedWorkflow.Name);
-
-                            var updatedWorkflow = LoadWorkflowFromDatabase(workflowFromDb);
-                            Workflows.Add(updatedWorkflow);
-                            if (schedule)
-                            {
-                                ScheduleWorkflow(updatedWorkflow);
-                            }
-                            return changedWorkflow.DbId;
-                        }
+                        return changedWorkflow.DbId;
                     }
                 }
             }
