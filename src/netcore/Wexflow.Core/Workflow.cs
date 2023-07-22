@@ -648,17 +648,17 @@ namespace Wexflow.Core
             }
         }
 
-        private void LoadReferences(Assembly taskAssembly)
+        private void LoadReferences(Assembly assembly)
         {
-            var loadContext = AssemblyLoadContext.GetLoadContext(taskAssembly);
+            var context = AssemblyLoadContext.GetLoadContext(assembly);
 
-            if (loadContext != null)
+            if (context != null)
             {
                 var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToArray();
                 var loadedPaths = loadedAssemblies.Where(a => !a.IsDynamic).Select(a => a.Location).ToArray();
                 var loadedNames = loadedPaths.Select(Path.GetFileNameWithoutExtension).ToArray();
 
-                foreach (var refAssemblyName in taskAssembly.GetReferencedAssemblies())
+                foreach (var refAssemblyName in assembly.GetReferencedAssemblies())
                 {
                     if (loadedNames.All(a => a != refAssemblyName.Name))
                     {
@@ -668,7 +668,7 @@ namespace Wexflow.Core
                         Assembly refAssembly = null;
                         if (File.Exists(refPath))
                         {
-                            refAssembly = loadContext.LoadFromAssemblyPath(refPath);
+                            refAssembly = context.LoadFromAssemblyPath(refPath);
                         }
                         else
                         {
@@ -676,7 +676,7 @@ namespace Wexflow.Core
 
                             if (File.Exists(refPath))
                             {
-                                refAssembly = loadContext.LoadFromAssemblyPath(refPath);
+                                refAssembly = context.LoadFromAssemblyPath(refPath);
                             }
                         }
 
