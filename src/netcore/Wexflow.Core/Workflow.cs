@@ -654,35 +654,33 @@ namespace Wexflow.Core
 
             if (context != null)
             {
-                var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToArray();
-                var loadedPaths = loadedAssemblies.Where(a => !a.IsDynamic).Select(a => a.Location).ToArray();
-                var loadedNames = loadedPaths.Select(Path.GetFileNameWithoutExtension).ToArray();
+                var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetName().Name).ToArray();
 
-                foreach (var refAssemblyName in assembly.GetReferencedAssemblies())
+                foreach (var reference in assembly.GetReferencedAssemblies())
                 {
-                    if (loadedNames.All(a => a != refAssemblyName.Name))
+                    if (loadedAssemblies.All(a => a != reference.Name))
                     {
-                        var refName = $"{refAssemblyName.Name}.dll";
-                        var refPath = Path.Combine(AppContext.BaseDirectory, refName);
+                        var referenceName = $"{reference.Name}.dll";
+                        var referencePath = Path.Combine(AppContext.BaseDirectory, referenceName);
 
-                        Assembly refAssembly = null;
-                        if (File.Exists(refPath))
+                        Assembly referenceAssembly = null;
+                        if (File.Exists(referencePath))
                         {
-                            refAssembly = context.LoadFromAssemblyPath(refPath);
+                            referenceAssembly = context.LoadFromAssemblyPath(referencePath);
                         }
                         else
                         {
-                            refPath = Path.Combine(TasksFolder, refName);
+                            referencePath = Path.Combine(TasksFolder, referenceName);
 
-                            if (File.Exists(refPath))
+                            if (File.Exists(referencePath))
                             {
-                                refAssembly = context.LoadFromAssemblyPath(refPath);
+                                referenceAssembly = context.LoadFromAssemblyPath(referencePath);
                             }
                         }
 
-                        if (refAssembly != null) // Recursive load
+                        if (referenceAssembly != null) // Recursive load
                         {
-                            LoadReferences(refAssembly);
+                            LoadReferences(referenceAssembly);
                         }
                     }
                 }
