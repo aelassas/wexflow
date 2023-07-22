@@ -4,8 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
 	<DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms> 
-    <Version>7.3.0</Version>
-    <AssemblyVersion>7.3.0</AssemblyVersion>
+    <Version>7.4.0</Version>
+    <AssemblyVersion>7.4.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
