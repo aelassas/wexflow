@@ -101,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MySqlConnector">
-      <Version>2.2.6</Version>
+      <Version>2.2.7</Version>
     </PackageReference>
     <PackageReference Include="Npgsql">
       <Version>4.1.12</Version>
