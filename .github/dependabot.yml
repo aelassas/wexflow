@@ -1,20 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "src/net"
+    directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 25
     ignore:
       - dependency-name: "Npgsql"
       - dependency-name: "MediaInfoDotNet"
-  - package-ecosystem: "nuget"
-    directory: "src/netcore"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 25
-  - package-ecosystem: "nuget"
-    directory: "src/tests"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 25
