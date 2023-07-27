@@ -1,15 +1,20 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "nuget"
+    directory: "./src/net"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 25
     ignore:
       - dependency-name: "Npgsql"
       - dependency-name: "MediaInfoDotNet"
+  - package-ecosystem: "nuget"
+    directory: "./src/netcore"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 25
+  - package-ecosystem: "nuget"
+    directory: "./src/tests"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 25
