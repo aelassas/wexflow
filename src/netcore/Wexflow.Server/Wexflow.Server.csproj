@@ -111,7 +111,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="7.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ServiceStack.Kestrel" Version="6.9.0" />
+    <PackageReference Include="ServiceStack.Kestrel" Version="6.10.0" />
   </ItemGroup>
 
   <ItemGroup>
