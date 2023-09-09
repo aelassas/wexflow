@@ -36,3 +36,6 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 ### Sponsors
 
 [![JetBrains](https://wexflow.github.io/content/jetbrains.png)](https://www.jetbrains.com/)
+
+### License
+Wexflow is [MIT licensed](https://github.com/aelassas/wexflow/blob/main/LICENSE.txt).
