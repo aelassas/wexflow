@@ -145,7 +145,7 @@ namespace Wexflow.Core.Db
                 var sb = new StringBuilder();
                 for (var i = 0; i < hashBytes.Length; i++)
                 {
-                    _ = sb.Append(i.ToString("x2"));
+                    _ = sb.Append(hashBytes[i].ToString("x2"));
                 }
                 return sb.ToString();
             }
