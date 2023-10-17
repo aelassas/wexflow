@@ -23,5 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./wexflow:/opt/wexflow
     ports:
       - 8000:8000

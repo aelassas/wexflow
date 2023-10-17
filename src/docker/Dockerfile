@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # Linux .NET runtime
 FROM mcr.microsoft.com/dotnet/aspnet:7.0.10-alpine3.18
 
@@ -17,5 +19,5 @@ WORKDIR /opt/wexflow/Wexflow.Server
 
 # Modification of installation instructions so that
 # Docker exposes the wexflow server once it’s run:
-EXPOSE 8000
 ENTRYPOINT ["dotnet", "Wexflow.Server.dll"]
+EXPOSE 8000
