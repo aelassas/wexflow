@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Linux .NET runtime
-FROM mcr.microsoft.com/dotnet/aspnet:7.0.10-alpine3.18
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
 
 #RUN apk add --no-cache icu-dev icu-libs icu-data-full
 

@@ -24,7 +24,7 @@ namespace Wexflow.NetCore.Tests
                         </Task>
 	                    <Task id='2' name='Wait' description='Wait for 10 seconds...' enabled='true'>
 			                    <Setting name='duration' value='00.00:00:10' />
-		                    </Task>
+		                </Task>
                         <Task id='3' name='FilesCopier' description='Copying files' enabled='true'>
                             <Setting name='selectFiles' value='1' />
                             <Setting name='destFolder' value='C:\WexflowTesting\Cron' />

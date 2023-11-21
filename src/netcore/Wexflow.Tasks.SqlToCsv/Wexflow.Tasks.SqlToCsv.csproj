@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Platforms>AnyCPU;x86;x64</Platforms>
 	<Version>7.6.0</Version>
   </PropertyGroup>
@@ -15,13 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySqlConnector" Version="2.2.7" />
+    <PackageReference Include="MySqlConnector" Version="2.3.1" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.120" />
-    <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
-    <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
+    <PackageReference Include="System.Data.Odbc" Version="8.0.0" />
+    <PackageReference Include="System.Data.OleDb" Version="8.0.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
-    <PackageReference Include="Teradata.Client.Provider" Version="17.20.8" />
+    <PackageReference Include="Teradata.Client.Provider" Version="20.0.2" />
   </ItemGroup>
 
   <ItemGroup>

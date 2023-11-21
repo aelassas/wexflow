@@ -13,8 +13,8 @@ namespace Wexflow.Tests
         private static string _expectedResult =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
             + "<Files>\r\n"
-            + "  <File path=\"C:\\WexflowTesting\\file1.txt\" name=\"file1.txt\" renameToOrName=\"file1.txt\" createdOn=\"{0}\" lastWriteOn=\"{1}\" lastAcessOn=\"{2}\" isReadOnly=\"false\" length=\"5066\" attributes=\"Archive\" />\r\n"
-            + "  <File path=\"C:\\WexflowTesting\\file2.txt\" name=\"file2.txt\" renameToOrName=\"file2.txt\" createdOn=\"{3}\" lastWriteOn=\"{4}\" lastAcessOn=\"{5}\" isReadOnly=\"false\" length=\"27\" attributes=\"Archive\" />\r\n"
+            + "  <File path=\"C:\\WexflowTesting\\file1.txt\" name=\"file1.txt\" renameToOrName=\"file1.txt\" createdOn=\"{0}\" lastWriteOn=\"{1}\" lastAcessOn=\"{2}\" isReadOnly=\"false\" length=\"5066\" attributes=\"Archive, NotContentIndexed\" />\r\n"
+            + "  <File path=\"C:\\WexflowTesting\\file2.txt\" name=\"file2.txt\" renameToOrName=\"file2.txt\" createdOn=\"{3}\" lastWriteOn=\"{4}\" lastAcessOn=\"{5}\" isReadOnly=\"false\" length=\"27\" attributes=\"Archive, NotContentIndexed\" />\r\n"
             + "</Files>";
 
         [TestInitialize]
