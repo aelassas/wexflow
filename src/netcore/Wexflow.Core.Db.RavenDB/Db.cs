@@ -1508,7 +1508,7 @@ namespace Wexflow.Core.Db.RavenDB
             lock (Padlock)
             {
                 using var session = _store.OpenSession();
-                
+
                 Notification n = new()
                 {
                     AssignedBy = notification.AssignedBy,

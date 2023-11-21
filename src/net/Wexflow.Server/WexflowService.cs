@@ -1536,36 +1536,36 @@ namespace Wexflow.Server
             });
         }
 
-/*
-        private Core.Workflow GetWorkflowRecursive(int workflowId)
-        {
-            var wf = WexflowServer.WexflowEngine.GetWorkflow(workflowId);
-            if (wf != null)
-            {
-                return wf;
-            }
-            else
-            {
-                Thread.Sleep(500);
-                return GetWorkflowRecursive(workflowId);
-            }
-        }
-*/
+        /*
+                private Core.Workflow GetWorkflowRecursive(int workflowId)
+                {
+                    var wf = WexflowServer.WexflowEngine.GetWorkflow(workflowId);
+                    if (wf != null)
+                    {
+                        return wf;
+                    }
+                    else
+                    {
+                        Thread.Sleep(500);
+                        return GetWorkflowRecursive(workflowId);
+                    }
+                }
+        */
 
-/*
-        private string CleanupXml(string xml)
-        {
-            var trimChars = new char[] { '\r', '\n', '"', '\'' };
-            return xml
-                .TrimStart(trimChars)
-                .TrimEnd(trimChars)
-                .Replace("\\r", string.Empty)
-                .Replace("\\n", string.Empty)
-                .Replace("\\t", string.Empty)
-                .Replace("\\\"", "\"")
-                .Replace("\\\\", "\\");
-        }
-*/
+        /*
+                private string CleanupXml(string xml)
+                {
+                    var trimChars = new char[] { '\r', '\n', '"', '\'' };
+                    return xml
+                        .TrimStart(trimChars)
+                        .TrimEnd(trimChars)
+                        .Replace("\\r", string.Empty)
+                        .Replace("\\n", string.Empty)
+                        .Replace("\\t", string.Empty)
+                        .Replace("\\\"", "\"")
+                        .Replace("\\\\", "\\");
+                }
+        */
 
         private string DecodeBase64(string str)
         {

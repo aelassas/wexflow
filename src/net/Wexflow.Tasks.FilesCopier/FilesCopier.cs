@@ -107,7 +107,7 @@ namespace Wexflow.Tasks.FilesCopier
                     if (AllowCreateDirectory && !Directory.Exists(Path.GetDirectoryName(destPath)))
                     {
                         InfoFormat("Creating directory: {0}", Path.GetDirectoryName(destPath));
-                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destPath)??throw new InvalidOperationException());
+                        _ = Directory.CreateDirectory(Path.GetDirectoryName(destPath) ?? throw new InvalidOperationException());
                     }
 
                     File.Copy(file.Path, destPath, Overwrite);

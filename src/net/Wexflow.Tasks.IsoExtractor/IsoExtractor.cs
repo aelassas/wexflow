@@ -128,7 +128,7 @@ namespace Wexflow.Tasks.IsoExtractor
                         var destFile = $"{destDir.TrimEnd('\\')}\\{Regex.Replace(file.Replace("/", "\\"), @";\d*$", "").TrimStart('\\')}";
 
                         // Create directories
-                        var destFolder = Path.GetDirectoryName(destFile)??throw new InvalidOperationException();
+                        var destFolder = Path.GetDirectoryName(destFile) ?? throw new InvalidOperationException();
                         destFolder = destFolder.Equals(destDir) ? string.Empty : destFolder;
 
                         var finalDestFolder = destDir;
