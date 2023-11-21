@@ -1365,7 +1365,7 @@ namespace Wexflow.Core
                         // Move version file from temp folder to Records folder.
                         if (version.FilePath.Contains(RecordsTempFolder))
                         {
-                            var fileName = Path.GetFileName(version.FilePath) ?? throw new InvalidOperationException("fileName is null");
+                            var fileName = Path.GetFileName(version.FilePath);
                             var destDir = Path.Combine(RecordsFolder, DbFolderName, id, versionId);
                             if (!Directory.Exists(destDir))
                             {
@@ -1436,7 +1436,7 @@ namespace Wexflow.Core
                             var versionId = Database.InsertVersion(version);
 
                             // Move version file from temp folder to Records folder.
-                            var fileName = Path.GetFileName(version.FilePath) ?? throw new InvalidOperationException("fileName is null");
+                            var fileName = Path.GetFileName(version.FilePath);
                             var destDir = Path.Combine(RecordsFolder, DbFolderName, recordId, versionId);
                             if (!Directory.Exists(destDir))
                             {

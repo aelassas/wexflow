@@ -419,7 +419,7 @@ namespace Wexflow.Core
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    var pattern = @"{.*?}";
+                    var pattern = "{.*?}";
                     var m = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
                     if (m.Success)
                     {

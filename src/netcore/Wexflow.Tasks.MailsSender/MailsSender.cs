@@ -125,7 +125,7 @@ namespace Wexflow.Tasks.MailsSender
             {
                 while (sr.ReadLine() is { } line)
                 {
-                    var pattern = @"{.*?}";
+                    var pattern = "{.*?}";
                     var m = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
                     if (m.Success)
                     {

@@ -416,7 +416,7 @@ namespace Wexflow.Core
             {
                 while (sr.ReadLine() is { } line)
                 {
-                    var pattern = @"{.*?}";
+                    var pattern = "{.*?}";
                     var m = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
                     if (m.Success)
                     {

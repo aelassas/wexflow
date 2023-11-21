@@ -34,7 +34,7 @@ namespace Wexflow.NetCore.Tests
             var xdoc = XDocument.Load(files[0]);
             var xguids = xdoc.Descendants("Guid").ToList();
             Assert.AreEqual(3, xguids.Count);
-            var regexPattern = @"^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$";
+            var regexPattern = "^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$";
 
             foreach (var xguid in xguids)
             {
