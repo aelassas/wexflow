@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Wexflow</id>
-    <version>7.6.0</version>
+    <version>7.6.1</version>
     <title>Wexflow</title>
     <authors>Akram El Assas</authors>
     <owners>akram.elassas</owners>
@@ -18,12 +18,12 @@
     <dependencies>
       <group targetFramework="net48">
         <dependency id="log4net" version="2.0.15" />
-        <dependency id="Quartz" version="3.6.2" />
+        <dependency id="Quartz" version="3.8.0" />
       </group>
-      <group targetFramework="net7.0">
+      <group targetFramework="net8.0">
         <dependency id="log4net" version="2.0.15" />
-        <dependency id="Quartz" version="3.6.2" />
-        <dependency id="Quartz.Serialization.Json" version="3.6.2" />
+        <dependency id="Quartz" version="3.8.0" />
+        <dependency id="Quartz.Serialization.Json" version="3.8.0" />
       </group>
     </dependencies>
     <packageTypes>
@@ -60,29 +60,29 @@
     <file src=".\bin\Debug\Wexflow.Core.Db.MariaDB.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.MariaDB.pdb" target="lib\net48" />
 
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.xml" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.LiteDB.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.LiteDB.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.MongoDB.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.RavenDB.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.RavenDB.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.PostgreSQL.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.PostgreSQL.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.SQLServer.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.SQLServer.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.MySQL.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.MySQL.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.SQLite.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.SQLite.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.Firebird.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.Firebird.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.Oracle.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.Oracle.pdb" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.MariaDB.dll" target="lib\net7.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net7.0\Wexflow.Core.Db.MariaDB.pdb" target="lib\net7.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.xml" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.LiteDB.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.LiteDB.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MongoDB.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.RavenDB.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.RavenDB.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.PostgreSQL.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.PostgreSQL.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLServer.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLServer.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MySQL.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MySQL.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLite.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLite.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Firebird.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Firebird.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Oracle.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Oracle.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MariaDB.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MariaDB.pdb" target="lib\net8.0" />
   </files>
 </package>
