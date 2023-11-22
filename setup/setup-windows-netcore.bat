@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=7.6
+set version=7.7
 set dst=wexflow-%version%-windows-netcore
 set dstDir=.\%dst%
 set backend=Backend
