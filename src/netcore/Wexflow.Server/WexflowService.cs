@@ -215,7 +215,10 @@ namespace Wexflow.Server
                                 wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                                 wf.IsExecutionGraphEmpty
                                , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
-                               , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])))
+                               , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                               , wf.RetryCount
+                               , wf.RetryTimeout
+                               ))
                             .ToArray();
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
@@ -231,7 +234,10 @@ namespace Wexflow.Server
                                                     wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                                                     wf.IsExecutionGraphEmpty
                                                    , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
-                                                   , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])))
+                                                   , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                                                   , wf.RetryCount
+                                                   , wf.RetryTimeout
+                                                   ))
                                                 .ToArray();
                     }
                 }
@@ -272,7 +278,10 @@ namespace Wexflow.Server
                                 wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                                 wf.IsExecutionGraphEmpty
                                , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
-                               , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])))
+                               , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                               , wf.RetryCount
+                               , wf.RetryTimeout
+                               ))
                             .ToArray();
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
@@ -289,7 +298,10 @@ namespace Wexflow.Server
                                                     wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                                                     wf.IsExecutionGraphEmpty
                                                    , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
-                                                   , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])))
+                                                   , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                                                   , wf.RetryCount
+                                                   , wf.RetryTimeout
+                                                   ))
                                                 .ToArray();
                     }
                 }
@@ -319,6 +331,8 @@ namespace Wexflow.Server
                         wf.IsExecutionGraphEmpty
                         , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
                         , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                        , wf.RetryCount
+                        , wf.RetryTimeout
                         );
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
@@ -375,6 +389,8 @@ namespace Wexflow.Server
                             wf.IsExecutionGraphEmpty
                             , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
                             , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                            , wf.RetryCount
+                            , wf.RetryTimeout
                             );
 
                         var user = WexflowServer.WexflowEngine.GetUser(username);
@@ -425,6 +441,8 @@ namespace Wexflow.Server
                             w.IsExecutionGraphEmpty
                             , w.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
                             , w.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                            , wf.RetryCount
+                            , wf.RetryTimeout
                             ));
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
@@ -910,7 +928,9 @@ namespace Wexflow.Server
                             IsApproval = wf.IsApproval,
                             EnableParallelJobs = wf.EnableParallelJobs,
                             Description = wf.Description,
-                            LocalVariables = variables.ToArray()
+                            LocalVariables = variables.ToArray(),
+                            RetryCount = wf.RetryCount,
+                            RetryTimeout = wf.RetryTimeout
                         };
 
                         List<TaskInfo> tasks = new();
@@ -1624,6 +1644,9 @@ namespace Wexflow.Server
                 var enableParallelJobs = (bool)wi.SelectToken("EnableParallelJobs");
                 var workflowDesc = (string)wi.SelectToken("Description");
 
+                var retryCount = (int)wi.SelectToken("RetryCount");
+                var retryTimeout = (int)wi.SelectToken("RetryTimeout");
+
                 // Local variables
                 XElement xLocalVariables = new(Xn + "LocalVariables");
                 var variables = wi.SelectToken("LocalVariables");
@@ -1722,12 +1745,12 @@ namespace Wexflow.Server
                         , new XElement(Xn + "Setting"
                         , new XAttribute("name", "enableParallelJobs")
                         , new XAttribute("value", enableParallelJobs.ToString().ToLower()))
-                    //, new XElement(xn + "Setting"
-                    //    , new XAttribute("name", "period")
-                    //    , new XAttribute("value", workflowPeriod.ToString(@"dd\.hh\:mm\:ss")))
-                    //, new XElement(xn + "Setting"
-                    //    , new XAttribute("name", "cronExpression")
-                    //    , new XAttribute("value", cronExpression))
+                        , new XElement(Xn + "Setting"
+                            , new XAttribute("name", "retryCount")
+                            , new XAttribute("value", retryCount))
+                        , new XElement(Xn + "Setting"
+                            , new XAttribute("name", "retryTimeout")
+                            , new XAttribute("value", retryTimeout))
                     )
                     , xLocalVariables
                     , xtasks
@@ -1806,6 +1829,9 @@ namespace Wexflow.Server
                     var isWorkflowApproval = (bool)(wi.SelectToken("IsApproval") ?? false);
                     var enableParallelJobs = (bool)(wi.SelectToken("EnableParallelJobs") ?? true);
                     var workflowDesc = (string)wi.SelectToken("Description");
+
+                    var retryCount = (int)wi.SelectToken("RetryCount");
+                    var retryTimeout = (int)wi.SelectToken("RetryTimeout");
 
                     if (xdoc.Root == null) throw new InvalidOperationException("Root is null");
                     xdoc.Root.Attribute("id")!.Value = workflowId.ToString();
@@ -1901,6 +1927,32 @@ namespace Wexflow.Server
                     //        xwfCronExpression.Remove();
                     //    }
                     //}
+
+                    var xwfRetryCount = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='retryCount']",
+                        wf.XmlNamespaceManager);
+                    if (xwfRetryCount != null)
+                    {
+                        (xwfRetryCount.Attribute("value") ?? throw new InvalidOperationException()).Value = retryCount.ToString();
+                    }
+                    else
+                    {
+                        (xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager) ?? throw new InvalidOperationException())
+                            .Add(new XElement(wf.XNamespaceWf + "Setting", new XAttribute("name", "retryCount"),
+                                new XAttribute("value", retryCount)));
+                    }
+
+                    var xwfRetryTimeout = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='retryTimeout']",
+                        wf.XmlNamespaceManager);
+                    if (xwfRetryTimeout != null)
+                    {
+                        (xwfRetryTimeout.Attribute("value") ?? throw new InvalidOperationException()).Value = retryTimeout.ToString();
+                    }
+                    else
+                    {
+                        (xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager) ?? throw new InvalidOperationException())
+                            .Add(new XElement(wf.XNamespaceWf + "Setting", new XAttribute("name", "retryTimeout"),
+                                new XAttribute("value", retryTimeout)));
+                    }
 
                     // Local variables
                     var xLocalVariables = xdoc.Root.Element(wf.XNamespaceWf + "LocalVariables");
@@ -2932,8 +2984,10 @@ namespace Wexflow.Server
                             wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                             wf.IsExecutionGraphEmpty
                            , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
-                           , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])))
-                            .ToArray();
+                           , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
+                            , wf.RetryCount
+                            , wf.RetryTimeout
+                           )).ToArray();
                     }
                     catch (Exception e)
                     {

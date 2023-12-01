@@ -225,6 +225,14 @@ namespace Wexflow.Core
         /// Started on date time.
         /// </summary>
         public DateTime StartedOn { get; private set; }
+        /// <summary>
+        /// Number of retry times in case of failures. Default is 0.
+        /// </summary>
+        public int RetryCount { get; private set; }
+        /// <summary>
+        /// The retry timeout between two tries. Default is 1500ms.
+        /// </summary>
+        public int RetryTimeout { get; private set; }
 
         private readonly Queue<Job> _jobsQueue;
         private Thread _thread;
@@ -512,6 +520,12 @@ namespace Wexflow.Core
 
                 var enableParallelJobsStr = GetWorkflowSetting(xdoc, "enableParallelJobs", false);
                 EnableParallelJobs = bool.Parse(string.IsNullOrEmpty(enableParallelJobsStr) ? "true" : enableParallelJobsStr);
+
+                var retryCount = GetWorkflowSetting(xdoc, "retryCount", false);
+                RetryCount = int.Parse(string.IsNullOrEmpty(retryCount) ? "0" : retryCount);
+
+                var retryTimeout = GetWorkflowSetting(xdoc, "retryTimeout", false);
+                RetryTimeout = int.Parse(string.IsNullOrEmpty(retryTimeout) ? "1500" : retryTimeout);
 
                 if (xdoc.Root != null)
                 {
@@ -1299,6 +1313,22 @@ namespace Wexflow.Core
             return IsRejected ? Status.Rejected : success ? Status.Success : atLeastOneSucceed || warning ? Status.Warning : Status.Error;
         }
 
+        private TaskStatus RunTask(Task task)
+        {
+            var status = task.Run();
+
+            var retries = 0;
+            while (status.Status != Status.Success && retries < RetryCount)
+            {
+                Thread.Sleep(RetryTimeout);
+                task.InfoFormat("Retry attempt {0}", retries + 1);
+                status = task.Run();
+                retries++;
+            }
+
+            return status;
+        }
+
         private void RunSequentialTasks(IEnumerable<Task> tasks, ref bool success, ref bool warning, ref bool error)
         {
             var atLeastOneSucceed = false;
@@ -1320,7 +1350,7 @@ namespace Wexflow.Core
                     Logs.AddRange(task.Logs);
                     continue;
                 }
-                var status = task.Run();
+                var status = RunTask(task);
                 Logs.AddRange(task.Logs);
                 success &= status.Status == Status.Success;
                 warning |= status.Status == Status.Warning;
@@ -1365,7 +1395,7 @@ namespace Wexflow.Core
                     {
                         if (task.IsEnabled && !task.IsStopped && (!IsApproval || (IsApproval && !IsRejected) || force))
                         {
-                            var status = task.Run();
+                            var status = RunTask(task);
                             Logs.AddRange(task.Logs);
 
                             success &= status.Status == Status.Success;
@@ -1399,7 +1429,7 @@ namespace Wexflow.Core
                                     {
                                         if (childTask.IsEnabled && !childTask.IsStopped && (!IsApproval || (IsApproval && !IsRejected) || force))
                                         {
-                                            var childStatus = childTask.Run();
+                                            var childStatus = RunTask(childTask);
                                             Logs.AddRange(childTask.Logs);
 
                                             success &= childStatus.Status == Status.Success;
@@ -1455,7 +1485,7 @@ namespace Wexflow.Core
             {
                 if (ifTask.IsEnabled && !ifTask.IsStopped && (!IsApproval || (IsApproval && !IsRejected)))
                 {
-                    var status = ifTask.Run();
+                    var status = RunTask(ifTask);
                     Logs.AddRange(ifTask.Logs);
 
                     success &= status.Status == Status.Success;
@@ -1520,7 +1550,7 @@ namespace Wexflow.Core
                 {
                     while (true)
                     {
-                        var status = whileTask.Run();
+                        var status = RunTask(whileTask);
                         Logs.AddRange(whileTask.Logs);
 
                         success &= status.Status == Status.Success;
@@ -1572,7 +1602,7 @@ namespace Wexflow.Core
             {
                 if (switchTask.IsEnabled && !switchTask.IsStopped && (!IsApproval || (IsApproval && !IsRejected)))
                 {
-                    var status = switchTask.Run();
+                    var status = RunTask(switchTask);
                     Logs.AddRange(switchTask.Logs);
 
                     success &= status.Status == Status.Success;

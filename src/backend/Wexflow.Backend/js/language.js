@@ -72,7 +72,7 @@
     languages["en"]["job-part-1"] = "The job ";
     languages["en"]["job-approved"] = " was approved.";
     languages["en"]["job-rejected"] = " was rejected.";
-    languages["en"]["workflows-server-error"] = "An error occurred while retrieving workflows. Check that Wexflow server is running correctly."
+    languages["en"]["workflows-server-error"] = "An error occurred while retrieving workflows. Check that Wexflow server is running correctly.";
     languages["en"]["job-approved-error-part-1"] = "An error occurred while approving the job ";
     languages["en"]["job-rejected-error-part-1"] = "An error occurred while rejecting the job ";
     languages["en"]["job-approved-error-part-2"] = " of the workflow ";
@@ -236,6 +236,13 @@
     languages["en"]["th-approved-on"] = "Approved on";
     languages["en"]["toast-save-and-run"] = "Workflow saved and started successfully.";
 
+    languages["en"]["wfretrycount-label"] = "Task Retries";
+    languages["en"]["wfretrytimeout-label"] = "Task Retries Timeout";
+    languages["en"]["wfretrycount-title"] = "Number of task retries in case of failure";
+    languages["en"]["wfretrytimeout-title"] = "Waiting time between two tries in milliseconds";
+    languages["en"]["toast-workflow-retry-count-error"] = "Task Retries is invalid.";
+    languages["en"]["toast-workflow-retry-timeout-error"] = "Task Retries Timeout is invalid.";
+
     // 
     // fr
     //
@@ -296,7 +303,7 @@
     languages["fr"]["job-part-1"] = "Le job ";
     languages["fr"]["job-approved"] = " a été approuvé.";
     languages["fr"]["job-rejected"] = " a été rejeté.";
-    languages["fr"]["workflows-server-error"] = "Une erreur s'est produite lors de la récupération de workflows. Vérifiez que le serveur tourne."
+    languages["fr"]["workflows-server-error"] = "Une erreur s'est produite lors de la récupération de workflows. Vérifiez que le serveur tourne.";
     languages["fr"]["job-approved-error-part-1"] = "Une erreur s'est produite lors de l'approbation du job ";
     languages["fr"]["job-rejected-error-part-1"] = "Une erreur s'est produite lors du rejet du job ";
     languages["fr"]["job-approved-error-part-2"] = " du workflow ";
@@ -460,6 +467,13 @@
     languages["fr"]["th-approved-on"] = "Approuvé le";
     languages["fr"]["toast-save-and-run"] = "Workflow enregistré et démarré avec succès.";
 
+    languages["fr"]["wfretrycount-label"] = "Nombre de tentatives des tâches";
+    languages["fr"]["wfretrytimeout-label"] = "Timeout des tentatives des tâches";
+    languages["fr"]["wfretrycount-title"] = "Nombre de tentatives de tâche en cas d'échec";
+    languages["fr"]["wfretrytimeout-title"] = "Délai d'attente de tâche entre deux tentatives en millisecondes";
+    languages["fr"]["toast-workflow-retry-count-error"] = "Le nombre d'essais n'est pas au bon format.";
+    languages["fr"]["toast-workflow-retry-timeout-error"] = "Le nombre d'essais n'est pas au bon format.";
+
     //
     // da
     //
@@ -520,7 +534,7 @@
     languages["da"]["job-part-1"] = "Jobbet";
     languages["da"]["job-approved"] = "blev godkendt.";
     languages["da"]["job-rejected"] = "blev afvist.";
-    languages["da"]["workflows-server-error"] = "Der opstod en fejl under hentning af workflows. Kontroller, at Wexflow-server kører korrekt."
+    languages["da"]["workflows-server-error"] = "Der opstod en fejl under hentning af workflows. Kontroller, at Wexflow-server kører korrekt.";
     languages["da"]["job-approved-error-part-1"] = "Der opstod en fejl under godkendelse af jobbet";
     languages["da"]["job-rejected-error-part-1"] = "En fejl opstod under afvisning af jobbet";
     languages["da"]["job-approved-error-part-2"] = "af opgavern";
@@ -683,6 +697,13 @@
     languages["da"]["th-approved"] = "Godkendt";
     languages["da"]["th-approved-on"] = "Godkendt på";
     languages["da"]["toast-save-and-run"] = "Workflow gemt og startet med succes.";
+
+    languages["da"]["wfretrycount-label"] = "Opgaveforsøg igen";
+    languages["da"]["wfretrytimeout-label"] = "Timeout for Opgaveforsøg igen";
+    languages["da"]["wfretrycount-title"] = "Antal mislykkede opgaveforsøg";
+    languages["da"]["wfretrytimeout-title"] = "Ventetid mellem to forsøg i millisekunder";
+    languages["da"]["toast-workflow-retry-count-error"] = "Opgaveforsøg er ugyldige.";
+    languages["da"]["toast-workflow-retry-timeout-error"] = "Timeout for opgavegenforsøg er ugyldig.";
 
     return {
         codes: codes,

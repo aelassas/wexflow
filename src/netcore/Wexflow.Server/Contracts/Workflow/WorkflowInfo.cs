@@ -12,6 +12,8 @@
         public string Description { get; set; }
         public string Period { get; set; }
         public string CronExpression { get; set; }
+        public int RetryCount { get; set; }
+        public int RetryTimeout { get; set; }
         public Variable[] LocalVariables { get; set; }
     }
 }

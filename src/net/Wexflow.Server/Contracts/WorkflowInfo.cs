@@ -48,7 +48,30 @@ namespace Wexflow.Server.Contracts
 
         public string StartedOn { get; set; }
 
-        public WorkflowInfo(string dbId, int id, Guid instanceId, string name, string filePath, LaunchType launchType, bool isEnabled, bool isApproval, bool enableParallelJobs, bool isWaitingForApproval, string desc, bool isRunning, bool isPaused, string period, string cronExpression, bool isExecutionGraphEmpty, Variable[] localVariables, string startedOn)
+        public int RetryCount { get; set; }
+
+        public int RetryTimeout { get; set; }
+
+        public WorkflowInfo(string dbId,
+            int id,
+            Guid instanceId,
+            string name,
+            string filePath,
+            LaunchType launchType,
+            bool isEnabled,
+            bool isApproval,
+            bool enableParallelJobs,
+            bool isWaitingForApproval,
+            string desc,
+            bool isRunning,
+            bool isPaused,
+            string period,
+            string cronExpression,
+            bool isExecutionGraphEmpty,
+            Variable[] localVariables,
+            string startedOn,
+            int retryCount,
+            int retryTimeout)
         {
             DbId = dbId;
             Id = id;
@@ -68,6 +91,8 @@ namespace Wexflow.Server.Contracts
             IsExecutionGraphEmpty = isExecutionGraphEmpty;
             LocalVariables = localVariables;
             StartedOn = startedOn;
+            RetryCount = retryCount;
+            RetryTimeout = retryTimeout;
         }
 
         public int CompareTo(object obj)

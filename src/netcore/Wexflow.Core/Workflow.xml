@@ -22,7 +22,11 @@
           The possible values are true or false. An approval workflow must contain
           at least one Approval task or more.
         - The enableParallelJobs option Shows whether workflow jobs are executed in parallel. 
-          Otherwise jobs are queued. Defaults to true.  
+          Otherwise jobs are queued. Defaults to true.
+        - The retryCount option allows to retry a task a certain number of times in case of
+          failure. Defaults to 0 (no retry).
+        - The retryTimeout option indicates the waiting time between two tries in milliseconds.
+          Defaults to 1500.
       - A LocalVariables section which contains local variables.
       - A Tasks section which contains the tasks that will be executed by
         the workflow one after the other.
@@ -43,6 +47,8 @@
     <Setting name="enabled" value="true|false" />
     <Setting name="approval" value="true|false" />
     <Setting name="enableParallelJobs" value="true|false" />
+    <Setting name="retryCount" value="0" />
+    <Setting name="retryTimeout" value="1500" />
   </Settings>
   <LocalVariables>
     <Variable name="$string" value="$string" />

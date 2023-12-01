@@ -51,10 +51,17 @@
         document.getElementById("wfenabled-label").innerHTML = language.get("wfenabled-label");
         document.getElementById("wfapproval-label").innerHTML = language.get("wfapproval-label");
         document.getElementById("wfenablepj-label").innerHTML = language.get("wfenablepj-label");
+
+        document.getElementById("wfretrycount-label").innerHTML = language.get("wfretrycount-label");
+        document.getElementById("wfretrytimeout-label").innerHTML = language.get("wfretrytimeout-label");
+        document.getElementById("wfretrycount-label").title = language.get("wfretrycount-title");
+        document.getElementById("wfretrytimeout-label").title = language.get("wfretrytimeout-title");
+
         document.getElementById("wf-local-vars-label").innerHTML = language.get("wf-local-vars-label");
         document.getElementById("wf-add-var").value = language.get("wf-add-var");
         document.getElementById("removeblock").innerHTML = language.get("removeblock");
         document.getElementById("removeworkflow").innerHTML = language.get("removeworkflow");
+
         let removeVariableButtons = document.getElementsByClassName("wf-remove-var");
         for (let i = 0; i < removeVariableButtons.length; i++) {
             removeVariableButtons[i].innerHTML = language.get("wf-remove-var");
@@ -293,7 +300,7 @@
 
         searchtasks.onkeyup = function (event) {
             event.preventDefault();
-            if (event.keyCode === 13) { // Enter
+            if (event.key === 'Enter') { // Enter
                 loadTasks();
             }
         };
@@ -352,6 +359,8 @@
                             "IsEnabled": document.getElementById("wfenabled").checked,
                             "IsApproval": document.getElementById("wfapproval").checked,
                             "EnableParallelJobs": document.getElementById("wfenablepj").checked,
+                            "RetryCount": document.getElementById("wfretrycount").value,
+                            "RetryTimeout": document.getElementById("wfretrytimeout").value,
                             "LocalVariables": []
                         },
                         "Tasks": []
@@ -590,6 +599,8 @@
                         "IsEnabled": document.getElementById("wfenabled").checked,
                         "IsApproval": document.getElementById("wfapproval").checked,
                         "EnableParallelJobs": document.getElementById("wfenablepj").checked,
+                        "RetryCount": document.getElementById("wfretrycount").value,
+                        "RetryTimeout": document.getElementById("wfretrytimeout").value,
                         "LocalVariables": []
                     },
                     "Tasks": []
@@ -644,6 +655,8 @@
                                     "IsEnabled": document.getElementById("wfenabled").checked,
                                     "IsApproval": document.getElementById("wfapproval").checked,
                                     "EnableParallelJobs": document.getElementById("wfenablepj").checked,
+                                    "RetryCount": document.getElementById("wfretrycount").value,
+                                    "RetryTimeout": document.getElementById("wfretrytimeout").value,
                                     "LocalVariables": []
                                 },
                                 "Tasks": []
@@ -879,7 +892,6 @@
 
                                             self.parentNode.parentNode.nextSibling.firstChild.innerHTML += settingValueHtml;
                                             self.parentNode.parentNode.nextSibling.querySelector(".wf-setting-type").value = settingType;
-
 
                                             // bind events
                                             let settingValueInput = self.parentNode.parentNode.nextSibling.querySelector(".wf-setting-value");
@@ -1832,7 +1844,6 @@
             }
         };
 
-
         wfclose.onclick = function () {
             if (wfpropHidden === false) {
                 document.getElementById("wfpropwrap").style.right = -wfpropwidth + "px";
@@ -1863,6 +1874,8 @@
                 "IsEnabled": document.getElementById("wfenabled").checked,
                 "IsApproval": document.getElementById("wfapproval").checked,
                 "EnableParallelJobs": document.getElementById("wfenablepj").checked,
+                "RetryCount": document.getElementById("wfretrycount").value,
+                "RetryTimeout": document.getElementById("wfretrytimeout").value,
                 "LocalVariables": []
             },
             "Tasks": []
@@ -1898,6 +1911,24 @@
         };
         document.getElementById("wfenablepj").onchange = function () {
             workflow.WorkflowInfo.EnableParallelJobs = this.checked;
+        };
+        document.getElementById("wfretrycount").onchange = function () {
+            if (isInt(this.value) === false) {
+                this.style.borderColor = "#FF0000";
+            } else {
+                this.style.borderColor = "#CCCCCC";
+            }
+
+            workflow.WorkflowInfo.RetryCount = this.value;
+        };
+        document.getElementById("wfretrytimeout").onchange = function () {
+            if (isInt(this.value) === false) {
+                this.style.borderColor = "#FF0000";
+            } else {
+                this.style.borderColor = "#CCCCCC";
+            }
+
+            workflow.WorkflowInfo.RetryTimeout = this.value;
         };
 
         // main function for updating tasks
@@ -2071,6 +2102,16 @@
                     }, workflow, auth);
                 };
 
+                if (isInt(document.getElementById("wfretrycount").value) === false) {
+                    window.Common.toastInfo(language.get("toast-workflow-retry-count-error"));
+                    return;
+                }
+
+                if (isInt(document.getElementById("wfretrytimeout").value) === false) {
+                    window.Common.toastInfo(language.get("toast-workflow-retry-timeout-error"));
+                    return;
+                }
+
                 let wfIdStr = document.getElementById("wfid").value;
                 if (isInt(wfIdStr)) {
                     let workflowId = parseInt(wfIdStr);
@@ -2209,7 +2250,7 @@
                         initialWorkflow = JSON.parse(JSON.stringify(workflow));
                         removeworkflow.style.display = "block";
                         jsonEditorChanged = false;
-                        openJsonView(JSON.stringify(workflow, null, '\t'));
+                        //openJsonView(JSON.stringify(workflow, null, '\t'));
                         if (callback) {
                             callback();
                         } else {
@@ -2945,7 +2986,15 @@
                         let graph = val;
 
                         let xmlVal = '<Workflow xmlns="urn:wexflow-schema" id="' + workflow.WorkflowInfo.Id + '" name="' + window.Common.escape(workflow.WorkflowInfo.Name) + '" description="' + window.Common.escape(workflow.WorkflowInfo.Description) + '">\r\n';
-                        xmlVal += '\t<Settings>\r\n\t\t<Setting name="launchType" value="' + launchType(workflow.WorkflowInfo.LaunchType) + '" />' + (workflow.WorkflowInfo.Period !== '' && workflow.WorkflowInfo.Period !== '00:00:00' ? ('\r\n\t\t<Setting name="period" value="' + workflow.WorkflowInfo.Period + '" />') : '') + (workflow.WorkflowInfo.CronExpression !== '' && workflow.WorkflowInfo.CronExpression !== null ? ('\r\n\t\t<Setting name="cronExpression" value="' + workflow.WorkflowInfo.CronExpression + '" />') : '') + '\r\n\t\t<Setting name="enabled" value="' + workflow.WorkflowInfo.IsEnabled + '" />\r\n\t\t<Setting name="approval" value="' + workflow.WorkflowInfo.IsApproval + '" />\r\n\t\t<Setting name="enableParallelJobs" value="' + workflow.WorkflowInfo.EnableParallelJobs + '" />\r\n\t</Settings>\r\n';
+                        xmlVal += '\t<Settings>\r\n\t\t<Setting name="launchType" value="' + launchType(workflow.WorkflowInfo.LaunchType) + '" />'
+                            + (workflow.WorkflowInfo.Period !== '' && workflow.WorkflowInfo.Period !== '00:00:00' ? ('\r\n\t\t<Setting name="period" value="' + workflow.WorkflowInfo.Period + '" />') : '')
+                            + (workflow.WorkflowInfo.CronExpression !== '' && workflow.WorkflowInfo.CronExpression !== null ? ('\r\n\t\t<Setting name="cronExpression" value="' + workflow.WorkflowInfo.CronExpression + '" />') : '')
+                            + '\r\n\t\t<Setting name="enabled" value="' + workflow.WorkflowInfo.IsEnabled + '" />\r\n\t\t<Setting name="approval" value="'
+                            + workflow.WorkflowInfo.IsApproval + '" />'
+                            + '\r\n\t\t<Setting name="enableParallelJobs" value="' + workflow.WorkflowInfo.EnableParallelJobs + '" />'
+                            + '\r\n\t\t<Setting name="retryCount" value="' + workflow.WorkflowInfo.RetryCount + '" />'
+                            + '\r\n\t\t<Setting name="retryTimeout" value="' + workflow.WorkflowInfo.RetryTimeout + '" />'
+                            + '\r\n\t</Settings>\r\n';
                         if (workflow.WorkflowInfo.LocalVariables.length > 0) {
                             xmlVal += '\t<LocalVariables>\r\n';
                             for (let i = 0; i < workflow.WorkflowInfo.LocalVariables.length; i++) {
@@ -3159,6 +3208,9 @@
                         document.getElementById("wfenabled").checked = workflow.WorkflowInfo.IsEnabled;
                         document.getElementById("wfapproval").checked = workflow.WorkflowInfo.IsApproval;
                         document.getElementById("wfenablepj").checked = workflow.WorkflowInfo.EnableParallelJobs;
+
+                        document.getElementById("wfretrycount").value = workflow.WorkflowInfo.RetryCount;
+                        document.getElementById("wfretrytimeout").value = workflow.WorkflowInfo.RetryTimeout;
 
                         // Local variables
                         document.getElementsByClassName("wf-local-vars")[0].innerHTML = "";
@@ -3380,7 +3432,7 @@
                         searchworkflows.select();
                         searchworkflows.onkeyup = function (event) {
                             event.preventDefault();
-                            if (event.keyCode === 13) { // Enter
+                            if (event.key === 'Enter') { // Enter
                                 let jbox = document.getElementsByClassName("jBox-content")[0];
 
                                 window.Common.get(uri + "/search?s=" + searchworkflows.value,
@@ -3580,6 +3632,8 @@
                                                         "IsEnabled": document.getElementById("wfenabled").checked,
                                                         "IsApproval": document.getElementById("wfapproval").checked,
                                                         "EnableParallelJobs": document.getElementById("wfenablepj").checked,
+                                                        "RetryCount": document.getElementById("wfretrycount").value,
+                                                        "RetryTimeout": document.getElementById("wfretrytimeout").value,
                                                         "LocalVariables": []
                                                     },
                                                     "Tasks": []
