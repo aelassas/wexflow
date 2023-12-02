@@ -237,7 +237,7 @@
     languages["en"]["toast-save-and-run"] = "Workflow saved and started successfully.";
 
     languages["en"]["wfretrycount-label"] = "Task Retries";
-    languages["en"]["wfretrytimeout-label"] = "Task Retries Timeout";
+    languages["en"]["wfretrytimeout-label"] = "Task Retries Timeout (ms)";
     languages["en"]["wfretrycount-title"] = "Number of task retries in case of failure";
     languages["en"]["wfretrytimeout-title"] = "Waiting time between two tries in milliseconds";
     languages["en"]["toast-workflow-retry-count-error"] = "Task Retries is invalid.";
@@ -468,7 +468,7 @@
     languages["fr"]["toast-save-and-run"] = "Workflow enregistré et démarré avec succès.";
 
     languages["fr"]["wfretrycount-label"] = "Nombre de tentatives des tâches";
-    languages["fr"]["wfretrytimeout-label"] = "Timeout des tentatives des tâches";
+    languages["fr"]["wfretrytimeout-label"] = "Timeout des tentatives des tâches (ms)";
     languages["fr"]["wfretrycount-title"] = "Nombre de tentatives de tâche en cas d'échec";
     languages["fr"]["wfretrytimeout-title"] = "Délai d'attente de tâche entre deux tentatives en millisecondes";
     languages["fr"]["toast-workflow-retry-count-error"] = "Le nombre d'essais n'est pas au bon format.";
@@ -699,7 +699,7 @@
     languages["da"]["toast-save-and-run"] = "Workflow gemt og startet med succes.";
 
     languages["da"]["wfretrycount-label"] = "Opgaveforsøg igen";
-    languages["da"]["wfretrytimeout-label"] = "Timeout for Opgaveforsøg igen";
+    languages["da"]["wfretrytimeout-label"] = "Timeout for Opgaveforsøg igen (ms)";
     languages["da"]["wfretrycount-title"] = "Antal mislykkede opgaveforsøg";
     languages["da"]["wfretrytimeout-title"] = "Ventetid mellem to forsøg i millisekunder";
     languages["da"]["toast-workflow-retry-count-error"] = "Opgaveforsøg er ugyldige.";
