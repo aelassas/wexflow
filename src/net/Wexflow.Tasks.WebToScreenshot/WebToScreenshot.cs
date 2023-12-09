@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.WebToScreenshot
                     var destFile = Path.Combine(Workflow.WorkflowTempFolder,
                         $"WebToScreenshot_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.png");
 
-                    ss.SaveAsFile(destFile, ScreenshotImageFormat.Png);
+                    ss.SaveAsFile(destFile);
 
                     if (!atLeastOneSuccess)
                     {

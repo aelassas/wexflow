@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SevenZipSharp.Interop">
-      <Version>19.0.2</Version>
+      <Version>19.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
