@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }
@@ -80,7 +80,7 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

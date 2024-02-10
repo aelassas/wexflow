@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.VimeoListUploads
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Results written in {0}", xmlPath);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -63,7 +63,7 @@ namespace Wexflow.Tasks.FilesSplitter
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

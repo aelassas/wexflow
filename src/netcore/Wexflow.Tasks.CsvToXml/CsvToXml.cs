@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.CsvToXml
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

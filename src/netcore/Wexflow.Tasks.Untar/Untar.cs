@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Untar
             {
                 success = UntarFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -80,7 +80,7 @@ namespace Wexflow.Tasks.Untar
                             atLeastOneSuccess = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

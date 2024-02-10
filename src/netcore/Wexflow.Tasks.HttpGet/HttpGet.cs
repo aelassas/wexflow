@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.HttpGet
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("GET request {0} executed with success -> {1}", Url, destFile);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

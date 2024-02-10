@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Tgz
             {
                 success = CreateTgz();
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -104,7 +104,7 @@ namespace Wexflow.Tasks.Tgz
                     InfoFormat("Tgz {0} created.", tgzPath);
                     Files.Add(new FileInf(tgzPath, Id));
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

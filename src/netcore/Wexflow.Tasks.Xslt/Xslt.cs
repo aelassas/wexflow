@@ -95,7 +95,7 @@ namespace Wexflow.Tasks.Xslt
                                     ErrorFormat("Cannot find the File: {{fileName: {0}, taskId:{1}}}", fileName, taskId);
                                 }
                             }
-                            catch (ThreadAbortException)
+                            catch (ThreadInterruptedException)
                             {
                                 throw;
                             }
@@ -117,7 +117,7 @@ namespace Wexflow.Tasks.Xslt
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

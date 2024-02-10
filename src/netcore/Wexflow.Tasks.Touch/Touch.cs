@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.Touch
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

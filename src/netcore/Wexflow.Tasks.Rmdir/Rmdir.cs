@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.Rmdir
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

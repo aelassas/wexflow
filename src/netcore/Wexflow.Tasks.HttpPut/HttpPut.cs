@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.HttpPut
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("PUT request {0} executed whith success -> {1}", Url, destFile);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

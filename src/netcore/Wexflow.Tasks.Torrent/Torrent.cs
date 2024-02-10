@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Torrent
             {
                 success = Download(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.Torrent
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -130,7 +130,7 @@ namespace Wexflow.Tasks.Torrent
                 InfoFormat("The torrent {0} download succeeded.", path);
                 return true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

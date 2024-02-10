@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.ImagesCropper
                     status = Status.Error;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.ImagesCropper
                 InfoFormat("The image {0} was cropped -> {3}", srcPath, Width, Height, destPath);
                 return true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

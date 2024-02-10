@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.MailsSender
                         {
                             mail = Mail.Parse(this, xMail, attachments);
                         }
-                        catch (ThreadAbortException)
+                        catch (ThreadInterruptedException)
                         {
                             throw;
                         }
@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.MailsSender
                                 atLeastOneSucceed = true;
                             }
                         }
-                        catch (ThreadAbortException)
+                        catch (ThreadInterruptedException)
                         {
                             throw;
                         }
@@ -89,7 +89,7 @@ namespace Wexflow.Tasks.MailsSender
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

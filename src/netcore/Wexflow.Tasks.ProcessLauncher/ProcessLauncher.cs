@@ -84,7 +84,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                         return new TaskStatus(Status.Error, false);
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }
@@ -159,7 +159,7 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                 return new TaskStatus(Status.Success, false);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

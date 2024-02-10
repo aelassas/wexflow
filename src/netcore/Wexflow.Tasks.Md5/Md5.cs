@@ -46,7 +46,7 @@ namespace Wexflow.Tasks.Md5
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

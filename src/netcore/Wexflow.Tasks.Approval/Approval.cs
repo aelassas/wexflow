@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.Approval
                     status = Status.Error;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

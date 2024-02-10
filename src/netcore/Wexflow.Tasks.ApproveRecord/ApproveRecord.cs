@@ -637,7 +637,7 @@ namespace Wexflow.Tasks.ApproveRecord
                     status = Core.Status.Error;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 var record = Workflow.Database.GetRecord(RecordId);
                 if (record != null)

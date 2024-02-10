@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.UglifyJs
             {
                 success = UglifyScripts(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.UglifyJs
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

@@ -64,7 +64,7 @@ namespace Wexflow.Tasks.FilesInfo
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

@@ -961,10 +961,11 @@ namespace Wexflow.Core
                 _jobsQueue.Enqueue(job);
                 return Guid.Empty;
             }
-            else if (IsRunning && EnableParallelJobs)
+
+            if (IsRunning && EnableParallelJobs)
             {
                 Workflow workflow = new(
-                      WexflowEngine
+                    WexflowEngine
                     , ++ParallelJobId
                     , Jobs
                     , DbId
@@ -975,7 +976,7 @@ namespace Wexflow.Core
                     , XsdPath
                     , Database
                     , GlobalVariables
-                    )
+                )
                 {
                     RestVariables = RestVariables,
                     StartedBy = startedBy
@@ -1204,7 +1205,7 @@ namespace Wexflow.Core
                     Database.DecrementRunningCount();
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 _stopCalled = true;
             }
@@ -1726,9 +1727,7 @@ namespace Wexflow.Core
                     _stopCalled = true;
                     if (_thread != null)
                     {
-#pragma warning disable SYSLIB0006 // Le type ou le membre est obsolète
-                        _thread.Abort();
-#pragma warning restore SYSLIB0006 // Le type ou le membre est obsolète
+                        _thread.Interrupt();
                         _thread.Join();
                     }
                     foreach (var task in Tasks)

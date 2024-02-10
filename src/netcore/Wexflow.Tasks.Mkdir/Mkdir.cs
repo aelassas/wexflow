@@ -39,7 +39,7 @@ namespace Wexflow.Tasks.Mkdir
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

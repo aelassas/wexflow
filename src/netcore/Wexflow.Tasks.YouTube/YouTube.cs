@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.YouTube
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }
@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.YouTube
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -164,7 +164,7 @@ namespace Wexflow.Tasks.YouTube
                 InfoFormat("Uploading the video file {0} to YouTube succeeded.", filePath);
                 return true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -33,7 +33,7 @@ namespace Wexflow.Tasks.ExecPython
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

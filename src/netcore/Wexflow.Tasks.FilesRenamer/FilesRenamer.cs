@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.FilesRenamer
                         Files.Add(new FileInf(destPath, file.TaskId));
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

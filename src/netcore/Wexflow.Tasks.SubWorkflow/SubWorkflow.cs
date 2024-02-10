@@ -106,7 +106,7 @@ namespace Wexflow.Tasks.SubWorkflow
                     success = false;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

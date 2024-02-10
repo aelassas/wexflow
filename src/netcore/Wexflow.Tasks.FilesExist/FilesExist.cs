@@ -58,7 +58,7 @@ namespace Wexflow.Tasks.FilesExist
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("The result has been written in: {0}", xmlPath);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

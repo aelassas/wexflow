@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.TextsEncryptor
                     status = Status.Error;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

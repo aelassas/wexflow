@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Untgz
             {
                 success = ExtractFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -81,7 +81,7 @@ namespace Wexflow.Tasks.Untgz
                             atLeastOneSuccess = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

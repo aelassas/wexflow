@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.Http
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

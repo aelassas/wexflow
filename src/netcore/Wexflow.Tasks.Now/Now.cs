@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.Now
                 InfoFormat("The value is: {0}", value);
                 succeeded = true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

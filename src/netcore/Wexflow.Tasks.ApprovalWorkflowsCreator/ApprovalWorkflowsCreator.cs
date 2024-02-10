@@ -104,7 +104,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                     success = false;
                                 }
                             }
-                            catch (ThreadAbortException)
+                            catch (ThreadInterruptedException)
                             {
                                 throw;
                             }
@@ -118,7 +118,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -50,7 +50,7 @@ namespace Wexflow.Tasks.ListFiles
                 Files.Add(xmlFile);
                 Info(xmlFile.ToString());
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

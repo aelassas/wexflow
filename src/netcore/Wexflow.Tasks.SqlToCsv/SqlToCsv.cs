@@ -78,7 +78,7 @@ namespace Wexflow.Tasks.SqlToCsv
                     Info("The script has been executed through the sql option of the task.");
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -102,7 +102,7 @@ namespace Wexflow.Tasks.SqlToCsv
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

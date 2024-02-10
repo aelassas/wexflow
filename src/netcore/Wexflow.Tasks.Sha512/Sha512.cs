@@ -46,7 +46,7 @@ namespace Wexflow.Tasks.Sha512
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

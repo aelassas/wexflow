@@ -156,7 +156,7 @@ namespace Wexflow.Tasks.MailsReceiver
                         break;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

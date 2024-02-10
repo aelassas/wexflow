@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.HttpDelete
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("DELETE request {0} executed whith success -> {1}", Url, destFile);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

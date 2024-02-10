@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }
@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

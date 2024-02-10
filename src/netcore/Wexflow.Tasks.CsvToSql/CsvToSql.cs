@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.CsvToSql
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

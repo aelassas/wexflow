@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                     status = Status.Error;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.RedditListComments
                 InfoFormat("Cake Day: {0}", reddit.Account.Me.Created.ToString("D"));
                 Info("Authentication succeeded.");
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.RedditListComments
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Comment history written in {0}", xmlPath);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

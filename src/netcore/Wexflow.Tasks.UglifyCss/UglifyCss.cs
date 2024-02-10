@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.UglifyCss
             {
                 success = UglifyCssFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -76,7 +76,7 @@ namespace Wexflow.Tasks.UglifyCss
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

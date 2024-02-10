@@ -51,7 +51,7 @@ namespace Wexflow.Tasks.FileMatch
                     InfoFormat("No file was found in the directory {0} matching the pattern {1}.", Dir, Pattern);
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

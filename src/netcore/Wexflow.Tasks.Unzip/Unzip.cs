@@ -60,7 +60,7 @@ namespace Wexflow.Tasks.Unzip
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

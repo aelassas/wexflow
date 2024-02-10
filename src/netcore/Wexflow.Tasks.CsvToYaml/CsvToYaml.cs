@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.CsvToYaml
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -71,7 +71,7 @@ namespace Wexflow.Tasks.CsvToYaml
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

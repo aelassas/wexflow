@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.Vimeo
             {
                 success = UploadVideos(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -100,7 +100,7 @@ namespace Wexflow.Tasks.Vimeo
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }
@@ -111,7 +111,7 @@ namespace Wexflow.Tasks.Vimeo
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

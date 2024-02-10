@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.Twitter
                     //}
                     Info("Authentication succeeded.");
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }
@@ -95,7 +95,7 @@ namespace Wexflow.Tasks.Twitter
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

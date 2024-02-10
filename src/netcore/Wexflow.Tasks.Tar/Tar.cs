@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.Tar
             {
                 success = CreateTar();
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -102,7 +102,7 @@ namespace Wexflow.Tasks.Tar
                     InfoFormat("Tar {0} created.", tarPath);
                     Files.Add(new FileInf(tarPath, Id));
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

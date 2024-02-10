@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                     Error("You must provide at least two images to overlay them.");
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -95,7 +95,7 @@ namespace Wexflow.Tasks.ImagesOverlay
 
                 return true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

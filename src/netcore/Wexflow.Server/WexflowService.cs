@@ -579,6 +579,8 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapPost(GetPattern("stop"), async context =>
             {
+                var res = false;
+
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
                 var password = auth.Password;
@@ -591,8 +593,7 @@ namespace Wexflow.Server
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
-                        WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
-                        await context.Response.WriteAsync(string.Empty);
+                        res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                     {
@@ -600,10 +601,11 @@ namespace Wexflow.Server
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                         if (check)
                         {
-                            WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
-                            await context.Response.WriteAsync(string.Empty);
+                            res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
                         }
                     }
+
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
                 }
                 else
                 {
@@ -3717,7 +3719,7 @@ namespace Wexflow.Server
                 {
                     var path = context.Request.Query["p"].ToString();
                     var fileName = Path.GetFileName(path);
-                    context.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{fileName}\"");
+                    context.Response.Headers.Append("Content-Disposition", $"attachment; filename=\"{fileName}\"");
                     await context.Response.SendFileAsync(path);
                 }
                 catch (Exception e)

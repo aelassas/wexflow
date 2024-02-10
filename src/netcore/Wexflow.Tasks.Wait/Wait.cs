@@ -27,7 +27,7 @@ namespace Wexflow.Tasks.Wait
             {
                 _ = _cancellationTokenSource.Token.WaitHandle.WaitOne(Duration);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

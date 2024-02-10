@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.FilesLoader
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

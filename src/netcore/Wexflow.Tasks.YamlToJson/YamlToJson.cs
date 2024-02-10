@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.YamlToJson
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.YamlToJson
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

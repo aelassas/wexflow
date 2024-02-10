@@ -52,7 +52,7 @@ namespace Wexflow.Tasks.ImagesResizer
                     status = Status.Error;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -77,7 +77,7 @@ namespace Wexflow.Tasks.ImagesResizer
                 InfoFormat("The image {0} was resized to {1}x{2} -> {3}", srcPath, Width, Height, destPath);
                 return true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.Zip
                     InfoFormat("Zip {0} created.", zipPath);
                     Files.Add(new FileInf(zipPath, Id));
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

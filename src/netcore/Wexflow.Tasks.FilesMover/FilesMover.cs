@@ -95,7 +95,7 @@ namespace Wexflow.Tasks.FilesMover
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

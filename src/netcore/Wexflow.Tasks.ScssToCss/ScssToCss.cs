@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.ScssToCss
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -68,7 +68,7 @@ namespace Wexflow.Tasks.ScssToCss
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

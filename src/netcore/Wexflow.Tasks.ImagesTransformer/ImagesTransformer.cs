@@ -90,7 +90,7 @@ namespace Wexflow.Tasks.ImagesTransformer
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

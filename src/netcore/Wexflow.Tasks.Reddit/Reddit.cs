@@ -36,7 +36,7 @@ namespace Wexflow.Tasks.Reddit
                     InfoFormat("Cake Day: {0}", reddit.Account.Me.Created.ToString("D"));
                     Info("Authentication succeeded.");
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }
@@ -104,7 +104,7 @@ namespace Wexflow.Tasks.Reddit
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

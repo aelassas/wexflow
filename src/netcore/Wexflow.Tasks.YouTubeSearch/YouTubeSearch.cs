@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.YouTubeSearch
             {
                 Search().Wait();
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -21,7 +21,7 @@ namespace Wexflow.Tasks.Template
 
                 return new TaskStatus(Status.Success);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

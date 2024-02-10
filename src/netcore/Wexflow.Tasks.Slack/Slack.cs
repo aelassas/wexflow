@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.Slack
                             }
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

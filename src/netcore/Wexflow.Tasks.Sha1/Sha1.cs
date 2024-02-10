@@ -46,7 +46,7 @@ namespace Wexflow.Tasks.Sha1
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }

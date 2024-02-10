@@ -117,7 +117,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
                     AddFiles(tmpFiles);
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

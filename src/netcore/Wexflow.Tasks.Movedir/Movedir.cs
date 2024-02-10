@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.Movedir
                     InfoFormat("Folder moved: {0} -> {1}", Folder, DestinationFolder);
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

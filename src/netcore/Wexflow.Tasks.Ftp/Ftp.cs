@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.Ftp
             {
                 success = DoWork(ref atLeastOneSuccess);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -117,7 +117,7 @@ namespace Wexflow.Tasks.Ftp
 
                         break;
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }
@@ -171,7 +171,7 @@ namespace Wexflow.Tasks.Ftp
 
                             break;
                         }
-                        catch (ThreadAbortException)
+                        catch (ThreadInterruptedException)
                         {
                             throw;
                         }

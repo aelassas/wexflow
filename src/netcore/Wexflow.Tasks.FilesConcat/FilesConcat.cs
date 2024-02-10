@@ -59,7 +59,7 @@ namespace Wexflow.Tasks.FilesConcat
                                 atLeastOneSucceed = true;
                             }
                         }
-                        catch (ThreadAbortException)
+                        catch (ThreadInterruptedException)
                         {
                             throw;
                         }

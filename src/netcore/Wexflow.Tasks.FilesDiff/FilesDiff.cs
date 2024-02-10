@@ -30,7 +30,7 @@ namespace Wexflow.Tasks.FilesDiff
                 CheckFiles();
                 ts = new TaskStatus(Status.Success);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -33,7 +33,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
             {
                 ListUploads().Wait();
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

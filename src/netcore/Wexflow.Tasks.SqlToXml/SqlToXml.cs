@@ -63,7 +63,7 @@ namespace Wexflow.Tasks.SqlToXml
                     Info("The script has been executed through the sql option of the task.");
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -87,7 +87,7 @@ namespace Wexflow.Tasks.SqlToXml
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

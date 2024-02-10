@@ -64,7 +64,7 @@ namespace Wexflow.Tasks.SshCmd
 
                 SendCommand(stream, Cmd);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

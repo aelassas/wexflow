@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.FolderExists
 
                 InfoFormat(success ? "The folder {0} exists." : "The folder {0} does not exist.", Folder);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

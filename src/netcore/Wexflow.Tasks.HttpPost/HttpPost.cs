@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.HttpPost
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("POST request {0} executed whith success -> {1}", Url, destFile);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.FilesRemover
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadInterruptedException)
                 {
                     throw;
                 }

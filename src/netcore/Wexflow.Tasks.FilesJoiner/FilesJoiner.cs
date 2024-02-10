@@ -128,7 +128,7 @@ namespace Wexflow.Tasks.FilesJoiner
                             using var input = File.OpenRead(file.Path);
                             input.CopyTo(output);
                         }
-                        catch (ThreadAbortException)
+                        catch (ThreadInterruptedException)
                         {
                             throw;
                         }

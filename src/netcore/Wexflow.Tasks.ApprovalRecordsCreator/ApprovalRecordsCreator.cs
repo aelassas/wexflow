@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                             success = false;
                         }
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadInterruptedException)
                     {
                         throw;
                     }
@@ -66,7 +66,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                 }
                 SharedMemory.Add(smKey, recordIds.ToArray());
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

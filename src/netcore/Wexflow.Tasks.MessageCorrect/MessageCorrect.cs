@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.MessageCorrect
 
                 return new TaskStatus(result ? Status.Success : Status.Error, result, message);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

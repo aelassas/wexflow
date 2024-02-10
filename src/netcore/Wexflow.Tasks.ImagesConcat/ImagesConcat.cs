@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.ImagesConcat
                     Error("You must provide at least two images to concatenate them.");
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
@@ -103,7 +103,7 @@ namespace Wexflow.Tasks.ImagesConcat
 
                 return true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

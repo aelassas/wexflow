@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.EnvironmentVariable
                 InfoFormat("The value of the environment variable '{0}' is: {1}", VariableName, value);
                 succeeded = true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }
