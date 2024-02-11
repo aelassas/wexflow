@@ -32,6 +32,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                     {
                         atLeastOneSuccess = true;
                     }
+                    WaitOne();
                 }
 
                 if (!succeeded && atLeastOneSuccess)

@@ -86,6 +86,10 @@ namespace Wexflow.Tasks.MailsSender
                             ErrorFormat("An error occured while sending the mail {0}. Error message: {1}", count, e.Message);
                             success = false;
                         }
+                        finally
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }

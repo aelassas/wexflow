@@ -136,6 +136,10 @@ namespace Wexflow.Tasks.Ftp
                             Thread.Sleep(_retryTimeout);
                         }
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
             else
@@ -189,6 +193,10 @@ namespace Wexflow.Tasks.Ftp
                                 InfoFormat("An error occured while processing the file {0}. Error: {1}. The task will tray again.", file.Path, e.Message);
                                 Thread.Sleep(_retryTimeout);
                             }
+                        }
+                        finally
+                        {
+                            WaitOne();
                         }
                     }
                 }

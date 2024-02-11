@@ -114,6 +114,10 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                     e, recordId);
                                 success = false;
                             }
+                            finally
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }

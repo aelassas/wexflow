@@ -57,6 +57,10 @@ namespace Wexflow.Tasks.Http
                     ErrorFormat("An error occured while downloading the file: {0}. Error: {1}", url, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

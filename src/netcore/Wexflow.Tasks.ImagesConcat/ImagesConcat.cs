@@ -93,6 +93,7 @@ namespace Wexflow.Tasks.ImagesConcat
                             graphics.DrawImage(img, new Point(width, 0));
                             width += img.Width;
                         }
+                        WaitOne();
                     }
 
                     finalImage.Save(destPath);

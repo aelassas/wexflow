@@ -76,6 +76,7 @@ namespace Wexflow.Tasks.SshCmd
             finally
             {
                 stream?.Close();
+                WaitOne();
             }
             var status = Status.Success;
 

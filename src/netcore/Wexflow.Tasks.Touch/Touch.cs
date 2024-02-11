@@ -45,6 +45,10 @@ namespace Wexflow.Tasks.Touch
                     ErrorFormat("An error occured while creating the file {0}", e, file);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

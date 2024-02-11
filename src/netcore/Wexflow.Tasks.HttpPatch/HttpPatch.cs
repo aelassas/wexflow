@@ -66,6 +66,10 @@ namespace Wexflow.Tasks.HttpPatch
                 ErrorFormat("An error occured while executing the PATCH request {0}: {1}", Url, e.Message);
                 status = Status.Error;
             }
+            finally
+            {
+                WaitOne();
+            }
             Info("Task finished.");
             return new TaskStatus(status);
         }

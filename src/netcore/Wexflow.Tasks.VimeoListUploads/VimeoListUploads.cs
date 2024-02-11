@@ -63,6 +63,10 @@ namespace Wexflow.Tasks.VimeoListUploads
                 ErrorFormat("An error occured while listing uploads: {0}", e.Message);
                 status = Status.Error;
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished.");
             return new TaskStatus(status);

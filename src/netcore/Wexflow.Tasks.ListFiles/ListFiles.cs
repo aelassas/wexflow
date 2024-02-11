@@ -39,6 +39,7 @@ namespace Wexflow.Tasks.ListFiles
                     {
                         xFiles.Add(file.ToXElement());
                         Info(file.ToString());
+                        WaitOne();
                     }
                 }
 

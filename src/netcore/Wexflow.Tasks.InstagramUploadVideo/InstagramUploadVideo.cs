@@ -78,6 +78,10 @@ namespace Wexflow.Tasks.InstagramUploadVideo
                         ErrorFormat("An error occured while uploading the video {0}: {1}", file.Path, e.Message);
                         succeeded = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
             catch (ThreadInterruptedException)

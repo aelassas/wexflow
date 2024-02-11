@@ -84,6 +84,10 @@ namespace Wexflow.Tasks.UglifyHtml
                     ErrorFormat("An error occured while uglifying the HTML file {0}: {1}", htmlFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
             return success;
         }

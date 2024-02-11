@@ -33,6 +33,7 @@ namespace Wexflow.Tasks.TextsEncryptor
                     {
                         atLeastOneSuccess = true;
                     }
+                    WaitOne();
                 }
 
                 if (!succeeded && atLeastOneSuccess)

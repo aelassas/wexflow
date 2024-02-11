@@ -116,6 +116,10 @@ namespace Wexflow.Tasks.CsvToSql
                 ErrorFormat("An error occured while converting the CSV {0} to SQL: {1}", csvPath, e.Message);
                 return false;
             }
+            finally
+            {
+                WaitOne();
+            }
         }
     }
 }

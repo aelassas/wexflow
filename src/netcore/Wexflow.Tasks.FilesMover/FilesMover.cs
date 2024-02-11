@@ -104,6 +104,10 @@ namespace Wexflow.Tasks.FilesMover
                     ErrorFormat("An error occured while moving the file {0} to {1}", e, file.Path, destFilePath);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

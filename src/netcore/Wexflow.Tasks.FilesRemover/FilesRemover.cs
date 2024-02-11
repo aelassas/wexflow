@@ -44,6 +44,10 @@ namespace Wexflow.Tasks.FilesRemover
                     ErrorFormat("An error occured while deleting the file {0}", e, file.Path);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

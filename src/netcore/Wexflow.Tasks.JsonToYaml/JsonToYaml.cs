@@ -85,6 +85,10 @@ namespace Wexflow.Tasks.JsonToYaml
                     ErrorFormat("An error occured while converting the JSON file {0}: {1}", yamlFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
             return success;
         }

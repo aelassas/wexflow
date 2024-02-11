@@ -41,6 +41,7 @@ namespace Wexflow.Tasks.ImagesResizer
                     {
                         atLeastOneSuccess = true;
                     }
+                    WaitOne();
                 }
 
                 if (!succeeded && atLeastOneSuccess)

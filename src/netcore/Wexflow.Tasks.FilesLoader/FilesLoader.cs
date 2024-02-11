@@ -44,6 +44,7 @@ namespace Wexflow.Tasks.FilesLoader
                                 Files.Add(fi);
                                 InfoFormat("File loaded: {0}", file);
                             }
+                            WaitOne();
                         }
                     }
                 }
@@ -59,6 +60,7 @@ namespace Wexflow.Tasks.FilesLoader
                                 Files.Add(fi);
                                 InfoFormat("File loaded: {0}", file);
                             }
+                            WaitOne();
                         }
                     }
                 }

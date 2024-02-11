@@ -40,6 +40,8 @@ namespace Wexflow.Tasks.FileMatch
                         success = true;
                         break;
                     }
+
+                    WaitOne();
                 }
 
                 if (success)
@@ -60,6 +62,7 @@ namespace Wexflow.Tasks.FileMatch
                 ErrorFormat("An error occured while checking directory {0}. Error: {1}", Dir, e.Message);
                 return new TaskStatus(Status.Error, false);
             }
+
 
             Info("Task finished");
 

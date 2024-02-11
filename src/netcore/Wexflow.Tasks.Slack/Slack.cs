@@ -76,6 +76,10 @@ namespace Wexflow.Tasks.Slack
                         ErrorFormat("An error occured while sending the messages of the file {0}.", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

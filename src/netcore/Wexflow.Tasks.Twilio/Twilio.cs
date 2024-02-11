@@ -50,6 +50,7 @@ namespace Wexflow.Tasks.Twilio
                 {
                     InfoFormat("SMS sent: message.Sid={0}", message.Sid);
                 }
+                WaitOne();
             }
             catch (ThreadInterruptedException)
             {

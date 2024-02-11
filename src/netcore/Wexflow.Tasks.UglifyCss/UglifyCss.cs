@@ -85,6 +85,10 @@ namespace Wexflow.Tasks.UglifyCss
                     ErrorFormat("An error occured while uglifying the CSS file {0}: {1}", cssFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             return success;

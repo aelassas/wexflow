@@ -35,6 +35,10 @@ namespace Wexflow.Tasks.FolderExists
                 ErrorFormat("An error occured while checking the folder {0}. Error: {1}", Folder, e.Message);
                 return new TaskStatus(Status.Error, false);
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished");
 

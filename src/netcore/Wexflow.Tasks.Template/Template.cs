@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.Template
             {
                 // Task logic goes here
 
+                WaitOne();
                 return new TaskStatus(Status.Success);
             }
             catch (ThreadInterruptedException)

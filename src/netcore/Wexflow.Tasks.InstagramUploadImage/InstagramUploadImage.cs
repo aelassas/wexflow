@@ -77,6 +77,10 @@ namespace Wexflow.Tasks.InstagramUploadImage
                         ErrorFormat("An error occured while uploading the image {0}: {1}", file.Path, e.Message);
                         succeeded = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
             catch (ThreadInterruptedException)

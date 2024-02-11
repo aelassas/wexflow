@@ -93,6 +93,10 @@ namespace Wexflow.Tasks.ProcessLauncher
                     ErrorFormat("Error in process command. Please read the documentation. Error: {0}", e.Message);
                     return new TaskStatus(Status.Error, false);
                 }
+                finally
+                {
+                    WaitOne();
+                }
 
                 if (StartProcess(ProcessPath, cmd, HideGui).Status == Status.Success)
                 {

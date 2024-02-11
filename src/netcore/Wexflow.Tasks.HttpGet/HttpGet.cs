@@ -45,6 +45,10 @@ namespace Wexflow.Tasks.HttpGet
                 ErrorFormat("An error occured while executing the GET request {0}: {1}", Url, e.Message);
                 status = Status.Error;
             }
+            finally
+            {
+                WaitOne();
+            }
             Info("Task finished.");
             return new TaskStatus(status);
         }

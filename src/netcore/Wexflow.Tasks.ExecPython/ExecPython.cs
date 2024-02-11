@@ -42,6 +42,10 @@ namespace Wexflow.Tasks.ExecPython
                     ErrorFormat("An error occured while executing the script {0}: {1}", pythonFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             if (!success && atLeastOneSuccess)

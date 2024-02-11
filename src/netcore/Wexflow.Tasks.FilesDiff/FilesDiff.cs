@@ -28,6 +28,7 @@ namespace Wexflow.Tasks.FilesDiff
             try
             {
                 CheckFiles();
+                WaitOne();
                 ts = new TaskStatus(Status.Success);
             }
             catch (ThreadInterruptedException)

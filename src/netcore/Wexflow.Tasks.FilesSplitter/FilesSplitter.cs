@@ -72,6 +72,10 @@ namespace Wexflow.Tasks.FilesSplitter
                         ErrorFormat("An error occured while splitting the file {0}", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

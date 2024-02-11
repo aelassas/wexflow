@@ -48,6 +48,10 @@ namespace Wexflow.Tasks.Mkdir
                     ErrorFormat("An error occured while creating the folder {0}", e, folder);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

@@ -56,6 +56,10 @@ namespace Wexflow.Tasks.Movedir
             {
                 ErrorFormat("An error occured while moving the folder {0} to {1}. Error: {2}", Folder, DestinationFolder, e.Message);
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished.");
             return new TaskStatus(succeeded ? Status.Success : Status.Error, false);

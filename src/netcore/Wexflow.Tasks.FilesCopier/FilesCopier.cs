@@ -78,6 +78,10 @@ namespace Wexflow.Tasks.FilesCopier
                     ErrorFormat("An error occured while copying the file {0} to {1}.", e, file.Path, destPath);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

@@ -79,6 +79,10 @@ namespace Wexflow.Tasks.RedditListPosts
                 ErrorFormat("An error occured while retrieving post history: {0}", e.Message);
                 status = Status.Error;
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished.");
             return new TaskStatus(status);

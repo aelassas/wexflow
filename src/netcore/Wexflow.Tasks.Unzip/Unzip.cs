@@ -69,6 +69,10 @@ namespace Wexflow.Tasks.Unzip
                         ErrorFormat("An error occured while extracting of the ZIP {0}", e, zip.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

@@ -87,6 +87,10 @@ namespace Wexflow.Tasks.SqlToCsv
                 ErrorFormat("An error occured while executing sql script. Error: {0}", e.Message);
                 success = false;
             }
+            finally
+            {
+                WaitOne();
+            }
 
             // Execute SQL files scripts
             foreach (var file in SelectFiles())
@@ -110,6 +114,10 @@ namespace Wexflow.Tasks.SqlToCsv
                 {
                     ErrorFormat("An error occured while executing sql script {0}. Error: {1}", file.Path, e.Message);
                     success = false;
+                }
+                finally
+                {
+                    WaitOne();
                 }
             }
 

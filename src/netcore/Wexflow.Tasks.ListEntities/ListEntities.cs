@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.ListEntities
                 foreach (var entity in entities)
                 {
                     InfoFormat("{{taskId: {0}, entity: {1}}}", entity.TaskId, entity);
+                    WaitOne();
                 }
             }
 

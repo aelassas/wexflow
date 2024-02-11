@@ -39,21 +39,6 @@ namespace Wexflow.Tasks.Twitter
                 {
                     TwitterCredentials credentials = new(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
                     client = new TwitterClient(credentials);
-
-                    //TweetinviConfig.ApplicationSettings.HttpRequestTimeout = 20000;
-                    //TweetinviConfig.CurrentThreadSettings.InitialiseFrom(TweetinviConfig.ApplicationSettings);
-
-                    //Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
-                    //var authenticatedUser = User.GetAuthenticatedUser();
-
-                    //if (authenticatedUser == null) // Something went wrong but we don't know what
-                    //{
-                    //    // We can get the latest exception received by Tweetinvi
-                    //    var latestException = ExceptionHandler.GetLastException();
-                    //    ErrorFormat("The following error occured : '{0}'", latestException.TwitterDescription);
-                    //    Error("Authentication failed.");
-                    //    return new TaskStatus(Status.Error);
-                    //}
                     Info("Authentication succeeded.");
                 }
                 catch (ThreadInterruptedException)
@@ -64,6 +49,10 @@ namespace Wexflow.Tasks.Twitter
                 {
                     ErrorFormat("Authentication failed: {0}", e.Message);
                     return new TaskStatus(Status.Error);
+                }
+                finally
+                {
+                    WaitOne();
                 }
 
                 foreach (var file in files)
@@ -103,6 +92,10 @@ namespace Wexflow.Tasks.Twitter
                     {
                         ErrorFormat("An error occured while sending the tweets of the file {0}.", e, file.Path);
                         success = false;
+                    }
+                    finally
+                    {
+                        WaitOne();
                     }
                 }
             }

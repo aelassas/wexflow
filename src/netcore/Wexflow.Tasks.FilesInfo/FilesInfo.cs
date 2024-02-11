@@ -73,6 +73,10 @@ namespace Wexflow.Tasks.FilesInfo
                         ErrorFormat("An error occured while generating file information of the file {0}", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
                 xdoc.Save(filesInfoPath);
                 Files.Add(new FileInf(filesInfoPath, Id));

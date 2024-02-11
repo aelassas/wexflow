@@ -55,6 +55,10 @@ namespace Wexflow.Tasks.Sha512
                         ErrorFormat("An error occured while generating the SHA-512 hash of the file {0}", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
                 xdoc.Save(md5Path);
                 Files.Add(new FileInf(md5Path, Id));

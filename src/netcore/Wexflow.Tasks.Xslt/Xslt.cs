@@ -126,6 +126,10 @@ namespace Wexflow.Tasks.Xslt
                     ErrorFormat("An error occured while transforming the file {0}", e, file.Path);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

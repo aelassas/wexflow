@@ -27,6 +27,7 @@ namespace Wexflow.Tasks.Guid
             for (var i = 0; i < GuidCount; i++)
             {
                 xguids.Add(new XElement("Guid", System.Guid.NewGuid()));
+                WaitOne();
             }
 
             XDocument xdoc = new(xguids);

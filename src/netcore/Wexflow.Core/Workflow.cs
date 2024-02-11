@@ -1783,6 +1783,13 @@ namespace Wexflow.Core
             return false;
         }
 
+        private readonly ManualResetEvent _event = new(true);
+
+        /// <summary>
+        /// If "unset" the thread will wait otherwise it will continue.
+        /// </summary>
+        internal void WaitOne() => _event.WaitOne();
+
         /// <summary>
         /// Suspends this workflow.
         /// </summary>
@@ -1792,9 +1799,11 @@ namespace Wexflow.Core
             {
                 try
                 {
-#pragma warning disable CS0618 // Le type ou le membre est obsolète
-                    _thread.Suspend();
-#pragma warning restore CS0618 // Le type ou le membre est obsolète
+                    //#pragma warning disable CS0618 // Le type ou le membre est obsolète
+                    //                    _thread.Suspend();
+                    //#pragma warning restore CS0618 // Le type ou le membre est obsolète
+                    // unset the reset event which will cause the workflow to pause
+                    _event.Reset();
                     IsPaused = true;
                     Database.IncrementPendingCount();
                     Database.DecrementRunningCount();
@@ -1827,9 +1836,11 @@ namespace Wexflow.Core
             {
                 try
                 {
-#pragma warning disable CS0618 // Le type ou le membre est obsolète
-                    _thread.Resume();
-#pragma warning restore CS0618 // Le type ou le membre est obsolète
+                    //#pragma warning disable CS0618 // Le type ou le membre est obsolète
+                    //                    _thread.Resume();
+                    //#pragma warning restore CS0618 // Le type ou le membre est obsolète
+                    // // set the reset event which will cause the workflow to continue
+                    _event.Set();
                     Database.IncrementRunningCount();
                     Database.DecrementPendingCount();
                     var entry = Database.GetEntry(Id, InstanceId);

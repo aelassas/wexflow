@@ -77,6 +77,10 @@ namespace Wexflow.Tasks.YouTube
                         ErrorFormat("An error occured while uploading the file {0}: {1}", file.Path, e.Message);
                         succeeded = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
             catch (ThreadInterruptedException)

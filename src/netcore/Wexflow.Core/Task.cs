@@ -447,5 +447,10 @@ namespace Wexflow.Core
                 Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {message}\r\n{e}");
             }
         }
+
+        /// <summary>
+        /// This method is necessary for suspend/resume the current task.
+        /// </summary>
+        public void WaitOne() => Workflow.WaitOne();
     }
 }

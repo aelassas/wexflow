@@ -50,6 +50,10 @@ namespace Wexflow.Tasks.XmlToCsv
                     ErrorFormat("An error occured while creating the Csv from the file {0}.", e, file.Path);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

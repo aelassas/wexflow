@@ -44,6 +44,10 @@ namespace Wexflow.Tasks.Rmdir
                     ErrorFormat("An error occured while deleting the folder {0}", e, folder);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

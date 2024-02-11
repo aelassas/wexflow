@@ -701,6 +701,10 @@ namespace Wexflow.Tasks.ApproveRecord
                 Error("An error occured during approval process.", e);
                 status = Core.Status.Error;
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Approval process finished.");
             return new TaskStatus(status);

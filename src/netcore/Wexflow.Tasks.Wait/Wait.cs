@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -25,7 +26,14 @@ namespace Wexflow.Tasks.Wait
 
             try
             {
-                _ = _cancellationTokenSource.Token.WaitHandle.WaitOne(Duration);
+                var duration = Duration.TotalMilliseconds;
+                double t = 0;
+                while (t < duration)
+                {
+                    _ = _cancellationTokenSource.Token.WaitHandle.WaitOne(TimeSpan.FromMilliseconds(1000));
+                    t += 1000;
+                    WaitOne();
+                }
             }
             catch (ThreadInterruptedException)
             {

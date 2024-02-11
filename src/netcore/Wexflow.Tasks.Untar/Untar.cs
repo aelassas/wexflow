@@ -89,6 +89,10 @@ namespace Wexflow.Tasks.Untar
                         ErrorFormat("An error occured while extracting of the TAR {0}: {1}", tar.Path, e.Message);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

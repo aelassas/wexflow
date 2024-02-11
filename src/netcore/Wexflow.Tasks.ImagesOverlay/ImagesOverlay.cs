@@ -85,6 +85,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                     {
                         using var img = Image.FromFile(imageFile.Path);
                         graphics.DrawImage(img, new Point(0, 0));
+                        WaitOne();
                     }
 
                     finalImage.Save(destPath);

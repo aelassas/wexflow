@@ -100,6 +100,8 @@ namespace Wexflow.Tasks.MailsReceiver
                                 {
                                     atLeastOneSucceed = true;
                                 }
+
+                                WaitOne();
                             }
 
                             client.Disconnect(true);

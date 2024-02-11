@@ -41,6 +41,10 @@ namespace Wexflow.Tasks.YouTubeSearch
                 status = Status.Error;
                 ErrorFormat("An error occured while searching for content: {0}", e.Message);
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished.");
             return new TaskStatus(status);

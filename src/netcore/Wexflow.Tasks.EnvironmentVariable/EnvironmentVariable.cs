@@ -34,6 +34,10 @@ namespace Wexflow.Tasks.EnvironmentVariable
             {
                 ErrorFormat("An error occured while retrieving environment variable. Error: {0}", e.Message);
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished.");
             return new TaskStatus(succeeded ? Status.Success : Status.Error, value);

@@ -85,6 +85,10 @@ namespace Wexflow.Tasks.UglifyJs
                     ErrorFormat("An error occured while uglifying the script {0}: {1}", jsFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
             return success;
         }

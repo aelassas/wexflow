@@ -55,6 +55,10 @@ namespace Wexflow.Tasks.Md5
                         ErrorFormat("An error occured while generating the md5 of the file {0}", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
                 xdoc.Save(md5Path);
                 Files.Add(new FileInf(md5Path, Id));

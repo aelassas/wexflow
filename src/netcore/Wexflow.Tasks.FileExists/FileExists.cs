@@ -35,6 +35,10 @@ namespace Wexflow.Tasks.FileExists
                 ErrorFormat("An error occured while checking file {0}. Error: {1}", File, e.Message);
                 return new TaskStatus(Status.Error, false);
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished");
 

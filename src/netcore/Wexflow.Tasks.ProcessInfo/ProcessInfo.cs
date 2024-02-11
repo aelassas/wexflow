@@ -46,6 +46,7 @@ namespace Wexflow.Tasks.ProcessInfo
                         , new XAttribute("threadCount", process.Threads.Count)
                         );
                     xprocesses.Add(xprocess);
+                    WaitOne();
                 }
 
                 XDocument xdoc = new(xprocesses);

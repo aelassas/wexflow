@@ -33,6 +33,7 @@ namespace Wexflow.Tasks.TextsDecryptor
                     {
                         atLeastOneSuccess = true;
                     }
+                    WaitOne();
                 }
 
                 if (!succeeded && atLeastOneSuccess)

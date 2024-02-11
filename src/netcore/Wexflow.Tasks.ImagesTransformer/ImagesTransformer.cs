@@ -99,6 +99,10 @@ namespace Wexflow.Tasks.ImagesTransformer
                     ErrorFormat("An error occured while transforming the image {0}. Error: {1}", file.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;

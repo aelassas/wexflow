@@ -43,6 +43,7 @@ namespace Wexflow.Tasks.ImagesCropper
                     {
                         atLeastOneSuccess = true;
                     }
+                    WaitOne();
                 }
 
                 if (!succeeded && atLeastOneSuccess)

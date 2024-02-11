@@ -115,6 +115,10 @@ namespace Wexflow.Tasks.SubWorkflow
                 ErrorFormat("An error occured while processing the sub workflow {0}.", e, WorkflowId);
                 success = false;
             }
+            finally
+            {
+                WaitOne();
+            }
 
             var status = Status.Success;
 

@@ -90,6 +90,10 @@ namespace Wexflow.Tasks.Untgz
                         ErrorFormat("An error occured while extracting of the TAR.GZ {0}", e, tgz.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
             return success;

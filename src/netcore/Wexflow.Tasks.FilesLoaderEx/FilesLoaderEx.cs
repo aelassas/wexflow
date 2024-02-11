@@ -66,6 +66,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
                                 FileInf fi = new(file, Id);
                                 folderFiles.Add(fi);
                             }
+                            WaitOne();
                         }
                     }
                 }
@@ -80,6 +81,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
                                 FileInf fi = new(file, Id);
                                 folderFiles.Add(fi);
                             }
+                            WaitOne();
                         }
                     }
                 }

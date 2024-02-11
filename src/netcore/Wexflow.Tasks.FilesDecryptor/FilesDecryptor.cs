@@ -32,6 +32,8 @@ namespace Wexflow.Tasks.FilesDecryptor
                     {
                         atLeastOneSuccess = true;
                     }
+
+                    WaitOne();
                 }
 
                 if (!succeeded && atLeastOneSuccess)

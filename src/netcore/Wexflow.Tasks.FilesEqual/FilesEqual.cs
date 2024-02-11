@@ -61,6 +61,7 @@ namespace Wexflow.Tasks.FilesEqual
 
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
+                WaitOne();
                 InfoFormat("The result has been written in: {0}", xmlPath);
             }
             catch (ThreadInterruptedException)

@@ -115,6 +115,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
                     xchannel.Add(xvideos);
 
                     nextPageToken = playlistItemsListResponse.NextPageToken;
+                    WaitOne();
                 }
 
                 xchannels.Add(xchannel);

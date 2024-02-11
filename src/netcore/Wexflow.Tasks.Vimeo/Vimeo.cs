@@ -109,6 +109,10 @@ namespace Wexflow.Tasks.Vimeo
                         ErrorFormat("An error occured while uploading the file {0}: {1}", file.Path, e.Message);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
             catch (ThreadInterruptedException)

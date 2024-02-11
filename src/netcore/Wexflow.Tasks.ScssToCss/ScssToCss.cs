@@ -77,6 +77,10 @@ namespace Wexflow.Tasks.ScssToCss
                     ErrorFormat("An error occured while converting the SCSS file {0}: {1}", scssFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
             return success;
         }

@@ -88,6 +88,7 @@ namespace Wexflow.Tasks.Tar
                         }
 
                         tar.CloseEntry();
+                        WaitOne();
                     }
 
                     // Finish/Close arent needed strictly as the using statement does this automatically

@@ -78,6 +78,10 @@ namespace Wexflow.Tasks.RedditListComments
                 ErrorFormat("An error occured while retrieving comment history: {0}", e.Message);
                 status = Status.Error;
             }
+            finally
+            {
+                WaitOne();
+            }
 
             Info("Task finished.");
             return new TaskStatus(status);

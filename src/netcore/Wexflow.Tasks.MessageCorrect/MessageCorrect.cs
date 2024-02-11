@@ -34,6 +34,10 @@ namespace Wexflow.Tasks.MessageCorrect
                 ErrorFormat("An error occured.", ex);
                 return new TaskStatus(Status.Error);
             }
+            finally
+            {
+                WaitOne();
+            }
         }
     }
 }

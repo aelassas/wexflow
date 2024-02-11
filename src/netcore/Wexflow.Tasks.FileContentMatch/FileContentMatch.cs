@@ -43,6 +43,8 @@ namespace Wexflow.Tasks.FileContentMatch
                     {
                         InfoFormat("No content matching the pattern {0} was found in the file {1}.", Pattern, file);
                     }
+
+                    WaitOne();
                 }
 
                 // Checking folders
@@ -63,6 +65,8 @@ namespace Wexflow.Tasks.FileContentMatch
                         {
                             InfoFormat("No content matching the pattern {0} was found in the file {1}.", Pattern, file);
                         }
+
+                        WaitOne();
                     }
                 }
 

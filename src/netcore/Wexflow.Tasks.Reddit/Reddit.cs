@@ -113,6 +113,10 @@ namespace Wexflow.Tasks.Reddit
                         ErrorFormat("An error occured while sending posts of the file {0}.", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

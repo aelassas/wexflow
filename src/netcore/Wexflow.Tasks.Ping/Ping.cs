@@ -38,7 +38,10 @@ namespace Wexflow.Tasks.Ping
                 ErrorFormat("An error occured while pinging the server {0}: {1}", Server, e.Message);
                 return new TaskStatus(Status.Error, false);
             }
-
+            finally
+            {
+                WaitOne();
+            }
             Info("Task finished");
 
             return new TaskStatus(Status.Success, success);

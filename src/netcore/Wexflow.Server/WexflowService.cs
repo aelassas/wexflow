@@ -621,6 +621,8 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapPost(GetPattern("suspend"), async context =>
             {
+                var res = false;
+
                 var auth = GetAuth(context.Request);
                 var username = auth.Username;
                 var password = auth.Password;
@@ -633,8 +635,7 @@ namespace Wexflow.Server
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
-                        WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
-                        await context.Response.WriteAsync(string.Empty);
+                        res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                     {
@@ -642,10 +643,11 @@ namespace Wexflow.Server
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                         if (check)
                         {
-                            WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
-                            await context.Response.WriteAsync(string.Empty);
+                            res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
                         }
                     }
+
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
                 }
                 else
                 {

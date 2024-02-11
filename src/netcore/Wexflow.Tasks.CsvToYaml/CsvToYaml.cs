@@ -80,6 +80,10 @@ namespace Wexflow.Tasks.CsvToYaml
                     ErrorFormat("An error occured while converting the CSV file {0}: {1}", csvFile.Path, e.Message);
                     success = false;
                 }
+                finally
+                {
+                    WaitOne();
+                }
             }
 
             return success;

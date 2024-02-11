@@ -50,6 +50,8 @@ namespace Wexflow.Tasks.Zip
                             sourceBytes = fs.Read(buffer, 0, buffer.Length);
                             entryStream.Write(buffer, 0, sourceBytes);
                         } while (sourceBytes > 0);
+
+                        WaitOne();
                     }
 
                     InfoFormat("Zip {0} created.", zipPath);

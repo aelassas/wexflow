@@ -57,6 +57,10 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                         ErrorFormat("An error occured while importing the record {0}.", e, file.Path);
                         success = false;
                     }
+                    finally
+                    {
+                        WaitOne();
+                    }
                 }
 
                 var smKey = "ApprovalRecordsCreator.RecordIds";

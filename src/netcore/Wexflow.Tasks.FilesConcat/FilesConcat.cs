@@ -68,6 +68,10 @@ namespace Wexflow.Tasks.FilesConcat
                             ErrorFormat("An error occured while concatenating the file {0}", e, file.Path);
                             success = false;
                         }
+                        finally
+                        {
+                            WaitOne();
+                        }
                     }
                 }
 

@@ -38,6 +38,7 @@ namespace Wexflow.Tasks.FilesExist
                         new XAttribute("path", file),
                         new XAttribute("name", Path.GetFileName(file)),
                         new XAttribute("exists", File.Exists(file))));
+                    WaitOne();
                 }
 
                 foreach (var folder in Folders)
@@ -46,6 +47,7 @@ namespace Wexflow.Tasks.FilesExist
                         new XAttribute("path", folder),
                         new XAttribute("name", Path.GetFileName(folder)),
                         new XAttribute("exists", Directory.Exists(folder))));
+                    WaitOne();
                 }
 
                 if (xdoc.Root != null)

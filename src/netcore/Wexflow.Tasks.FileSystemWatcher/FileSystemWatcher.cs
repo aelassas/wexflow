@@ -85,6 +85,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                     finally
                     {
                         Info("FileSystemWatcher.OnFound finished.");
+                        WaitOne();
                     }
                     try
                     {
