@@ -235,6 +235,7 @@ namespace Wexflow.Core
         /// </summary>
         public int RetryTimeout { get; private set; }
 
+        private readonly ManualResetEvent _event = new(true);
         private readonly Queue<Job> _jobsQueue;
         private Thread _thread;
         private HistoryEntry _historyEntry;
@@ -1296,7 +1297,7 @@ namespace Wexflow.Core
                     var doTasks = NodesToTasks(@if.DoNodes);
                     var otherwiseTasks = NodesToTasks(@if.ElseNodes);
 
-                    List<Task> ifTasks = new(doTasks);
+                    List<Task> ifTasks = [..doTasks];
                     foreach (var task in otherwiseTasks)
                     {
                         if (ifTasks.All(t => t.Id != task.Id))
@@ -1782,8 +1783,6 @@ namespace Wexflow.Core
 
             return false;
         }
-
-        private readonly ManualResetEvent _event = new(true);
 
         /// <summary>
         /// If "unset" the thread will wait otherwise it will continue.
