@@ -63,7 +63,6 @@ namespace Wexflow.Tasks.FileMatch
                 return new TaskStatus(Status.Error, false);
             }
 
-
             Info("Task finished");
 
             return new TaskStatus(Status.Success, success);
