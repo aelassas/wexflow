@@ -365,9 +365,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.Approval", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.Approval", "src\netcore\Wexflow.Tasks.Approval\Wexflow.Tasks.Approval.csproj", "{2637BAFA-CCF0-4097-8A25-DE38030D0E94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.NetCore.Tests", "src\tests\netcore\Wexflow.NetCore.Tests\Wexflow.NetCore.Tests.csproj", "{A6691195-94BC-4F89-962B-B50E22BC1067}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.NetCore.Tests", tests\netcore\Wexflow.NetCore.Tests\Wexflow.NetCore.Tests.csproj", "{A6691195-94BC-4F89-962B-B50E22BC1067}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tests", "src\tests\net\Wexflow.Tests\Wexflow.Tests.csproj", "{2F1EC7CE-A0EC-4F63-976C-83E75CDB725E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tests", tests\net\Wexflow.Tests\Wexflow.Tests.csproj", "{2F1EC7CE-A0EC-4F63-976C-83E75CDB725E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.VimeoListUploads", "src\net\Wexflow.Tasks.VimeoListUploads\Wexflow.Tasks.VimeoListUploads.csproj", "{3F34A171-865F-4E37-A871-706BA39C4E39}"
 EndProject
