@@ -199,443 +199,443 @@
     <Compile Include="Zip.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\net\Wexflow.Core.Db\Wexflow.Core.Db.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Core.Db\Wexflow.Core.Db.csproj">
       <Project>{ffe105a5-1c72-4e7d-bc48-5f5902376893}</Project>
       <Name>Wexflow.Core.Db</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Core\Wexflow.Core.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Core\Wexflow.Core.csproj">
       <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
       <Name>Wexflow.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ApprovalRecordsCreator\Wexflow.Tasks.ApprovalRecordsCreator.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ApprovalRecordsCreator\Wexflow.Tasks.ApprovalRecordsCreator.csproj">
       <Project>{5aee3696-ff81-423f-ab21-550aa85b0ccb}</Project>
       <Name>Wexflow.Tasks.ApprovalRecordsCreator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ApprovalWorkflowsCreator\Wexflow.Tasks.ApprovalWorkflowsCreator.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ApprovalWorkflowsCreator\Wexflow.Tasks.ApprovalWorkflowsCreator.csproj">
       <Project>{a175634e-7ee6-426a-a1f7-f1b90dbcc1e3}</Project>
       <Name>Wexflow.Tasks.ApprovalWorkflowsCreator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Approval\Wexflow.Tasks.Approval.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Approval\Wexflow.Tasks.Approval.csproj">
       <Project>{8bff752c-4eb0-49cb-a367-92046d78d010}</Project>
       <Name>Wexflow.Tasks.Approval</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ApproveRecord\Wexflow.Tasks.ApproveRecord.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ApproveRecord\Wexflow.Tasks.ApproveRecord.csproj">
       <Project>{69f2479a-876c-4f75-ac5e-585761bb5a17}</Project>
       <Name>Wexflow.Tasks.ApproveRecord</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.CsvToJson\Wexflow.Tasks.CsvToJson.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.CsvToJson\Wexflow.Tasks.CsvToJson.csproj">
       <Project>{dd553a49-a5ad-4f12-91cb-9fba28777ed2}</Project>
       <Name>Wexflow.Tasks.CsvToJson</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.CsvToSql\Wexflow.Tasks.CsvToSql.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.CsvToSql\Wexflow.Tasks.CsvToSql.csproj">
       <Project>{64b76fc5-b33d-4843-8708-bc8bd89fba15}</Project>
       <Name>Wexflow.Tasks.CsvToSql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.CsvToXml\Wexflow.Tasks.CsvToXml.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.CsvToXml\Wexflow.Tasks.CsvToXml.csproj">
       <Project>{40664177-8903-4c7b-ad0e-7b98bed6a3c8}</Project>
       <Name>Wexflow.Tasks.CsvToXml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.CsvToYaml\Wexflow.Tasks.CsvToYaml.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.CsvToYaml\Wexflow.Tasks.CsvToYaml.csproj">
       <Project>{09607358-cfc4-4365-9bdb-57c9ce6ce741}</Project>
       <Name>Wexflow.Tasks.CsvToYaml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.EnvironmentVariable\Wexflow.Tasks.EnvironmentVariable.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.EnvironmentVariable\Wexflow.Tasks.EnvironmentVariable.csproj">
       <Project>{4d6b8683-6296-4703-9dc8-ab911875a703}</Project>
       <Name>Wexflow.Tasks.EnvironmentVariable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ExecCs\Wexflow.Tasks.ExecCs.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ExecCs\Wexflow.Tasks.ExecCs.csproj">
       <Project>{485bbbd8-4ad9-4088-a91d-2766cc5cfa0e}</Project>
       <Name>Wexflow.Tasks.ExecCs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ExecPython\Wexflow.Tasks.ExecPython.csproj">
       <Project>{5abbae16-18e6-442a-a668-d3922fdacb63}</Project>
       <Name>Wexflow.Tasks.ExecPython</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ExecVb\Wexflow.Tasks.ExecVb.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ExecVb\Wexflow.Tasks.ExecVb.csproj">
       <Project>{25c5c91b-91b9-4cc6-9ce0-4d7cf9312496}</Project>
       <Name>Wexflow.Tasks.ExecVb</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FileContentMatch\Wexflow.Tasks.FileContentMatch.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FileContentMatch\Wexflow.Tasks.FileContentMatch.csproj">
       <Project>{f151425b-cb47-4ef6-adb7-d8c2d9ae0479}</Project>
       <Name>Wexflow.Tasks.FileContentMatch</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FileExists\Wexflow.Tasks.FileExists.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FileExists\Wexflow.Tasks.FileExists.csproj">
       <Project>{8ed85a48-a8e3-4565-a874-3562f081d14c}</Project>
       <Name>Wexflow.Tasks.FileExists</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FileMatch\Wexflow.Tasks.FileMatch.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FileMatch\Wexflow.Tasks.FileMatch.csproj">
       <Project>{5d8b91f0-6363-4015-9c95-6a07ce15d56d}</Project>
       <Name>Wexflow.Tasks.FileMatch</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesConcat\Wexflow.Tasks.FilesConcat.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesConcat\Wexflow.Tasks.FilesConcat.csproj">
       <Project>{215834bb-7c88-45f0-b376-76ffae93f4b2}</Project>
       <Name>Wexflow.Tasks.FilesConcat</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesCopier\Wexflow.Tasks.FilesCopier.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesCopier\Wexflow.Tasks.FilesCopier.csproj">
       <Project>{4f396126-2220-45ae-a90f-d655a3ab585f}</Project>
       <Name>Wexflow.Tasks.FilesCopier</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesDecryptor\Wexflow.Tasks.FilesDecryptor.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesDecryptor\Wexflow.Tasks.FilesDecryptor.csproj">
       <Project>{23ab8ee5-b04d-4876-9155-bfe7ac33e02d}</Project>
       <Name>Wexflow.Tasks.FilesDecryptor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesDiff\Wexflow.Tasks.FilesDiff.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesDiff\Wexflow.Tasks.FilesDiff.csproj">
       <Project>{ea90be5e-884e-4af0-bb46-d64b8fea3013}</Project>
       <Name>Wexflow.Tasks.FilesDiff</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesEncryptor\Wexflow.Tasks.FilesEncryptor.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesEncryptor\Wexflow.Tasks.FilesEncryptor.csproj">
       <Project>{34539ba1-7c7c-4844-80cf-d635151fc91a}</Project>
       <Name>Wexflow.Tasks.FilesEncryptor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesEqual\Wexflow.Tasks.FilesEqual.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesEqual\Wexflow.Tasks.FilesEqual.csproj">
       <Project>{a3d7f9d8-8359-4302-91a0-d00d4c1eda9b}</Project>
       <Name>Wexflow.Tasks.FilesEqual</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesExist\Wexflow.Tasks.FilesExist.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesExist\Wexflow.Tasks.FilesExist.csproj">
       <Project>{eda6a4d5-5814-4920-b2da-dd414894cbf5}</Project>
       <Name>Wexflow.Tasks.FilesExist</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesInfo\Wexflow.Tasks.FilesInfo.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesInfo\Wexflow.Tasks.FilesInfo.csproj">
       <Project>{4c64fc9a-edad-4741-9b1d-76f11a73532a}</Project>
       <Name>Wexflow.Tasks.FilesInfo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesJoiner\Wexflow.Tasks.FilesJoiner.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesJoiner\Wexflow.Tasks.FilesJoiner.csproj">
       <Project>{fc422775-d1f9-4566-b96d-e34530733f4a}</Project>
       <Name>Wexflow.Tasks.FilesJoiner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesLoaderEx\Wexflow.Tasks.FilesLoaderEx.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesLoaderEx\Wexflow.Tasks.FilesLoaderEx.csproj">
       <Project>{4d7ebc75-a7ed-4163-aebf-30a34ade0333}</Project>
       <Name>Wexflow.Tasks.FilesLoaderEx</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesLoader\Wexflow.Tasks.FilesLoader.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesLoader\Wexflow.Tasks.FilesLoader.csproj">
       <Project>{d9dd665a-a147-462c-bcee-3008559728b5}</Project>
       <Name>Wexflow.Tasks.FilesLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesMover\Wexflow.Tasks.FilesMover.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesMover\Wexflow.Tasks.FilesMover.csproj">
       <Project>{3abee317-3146-46a5-a59b-232177a0ab76}</Project>
       <Name>Wexflow.Tasks.FilesMover</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesRemover\Wexflow.Tasks.FilesRemover.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesRemover\Wexflow.Tasks.FilesRemover.csproj">
       <Project>{1dcff39a-5b91-49ce-b975-f47dff537a4b}</Project>
       <Name>Wexflow.Tasks.FilesRemover</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesRenamer\Wexflow.Tasks.FilesRenamer.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesRenamer\Wexflow.Tasks.FilesRenamer.csproj">
       <Project>{98a6156e-9784-4d83-8d39-c01976a32155}</Project>
       <Name>Wexflow.Tasks.FilesRenamer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FilesSplitter\Wexflow.Tasks.FilesSplitter.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FilesSplitter\Wexflow.Tasks.FilesSplitter.csproj">
       <Project>{7efe7108-621b-49a0-b592-77e402aadbdb}</Project>
       <Name>Wexflow.Tasks.FilesSplitter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FileSystemWatcher\Wexflow.Tasks.FileSystemWatcher.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FileSystemWatcher\Wexflow.Tasks.FileSystemWatcher.csproj">
       <Project>{9465947f-0326-491d-afba-4b64df1d282b}</Project>
       <Name>Wexflow.Tasks.FileSystemWatcher</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.FolderExists\Wexflow.Tasks.FolderExists.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.FolderExists\Wexflow.Tasks.FolderExists.csproj">
       <Project>{b7cbd3a6-8473-4ba3-b346-0894ead0d6c9}</Project>
       <Name>Wexflow.Tasks.FolderExists</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Ftp\Wexflow.Tasks.Ftp.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Ftp\Wexflow.Tasks.Ftp.csproj">
       <Project>{272ab358-72d6-446a-b339-e9a579a63b76}</Project>
       <Name>Wexflow.Tasks.Ftp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Guid\Wexflow.Tasks.Guid.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Guid\Wexflow.Tasks.Guid.csproj">
       <Project>{eb130173-426e-45e6-a852-60215e46fdf8}</Project>
       <Name>Wexflow.Tasks.Guid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HtmlToPdf\Wexflow.Tasks.HtmlToPdf.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HtmlToPdf\Wexflow.Tasks.HtmlToPdf.csproj">
       <Project>{3b5b4434-ab77-41f7-a25a-fc3e12df1275}</Project>
       <Name>Wexflow.Tasks.HtmlToPdf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HtmlToText\Wexflow.Tasks.HtmlToText.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HtmlToText\Wexflow.Tasks.HtmlToText.csproj">
       <Project>{142396bc-6475-4678-a4a4-b5175f49e660}</Project>
       <Name>Wexflow.Tasks.HtmlToText</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HttpDelete\Wexflow.Tasks.HttpDelete.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HttpDelete\Wexflow.Tasks.HttpDelete.csproj">
       <Project>{121e2e4e-3337-4650-8fbc-7315314779ac}</Project>
       <Name>Wexflow.Tasks.HttpDelete</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HttpGet\Wexflow.Tasks.HttpGet.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HttpGet\Wexflow.Tasks.HttpGet.csproj">
       <Project>{85a03aea-b876-4009-ac26-6cd1af34c6d0}</Project>
       <Name>Wexflow.Tasks.HttpGet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HttpPatch\Wexflow.Tasks.HttpPatch.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HttpPatch\Wexflow.Tasks.HttpPatch.csproj">
       <Project>{03b0c261-e9ef-466d-8fd8-4d30ce977218}</Project>
       <Name>Wexflow.Tasks.HttpPatch</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HttpPost\Wexflow.Tasks.HttpPost.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HttpPost\Wexflow.Tasks.HttpPost.csproj">
       <Project>{0d02fb10-246b-4c1e-bf51-595747d0ff3a}</Project>
       <Name>Wexflow.Tasks.HttpPost</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.HttpPut\Wexflow.Tasks.HttpPut.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.HttpPut\Wexflow.Tasks.HttpPut.csproj">
       <Project>{169e1c8f-2307-4e20-a8c5-f13a19fd9fc3}</Project>
       <Name>Wexflow.Tasks.HttpPut</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Http\Wexflow.Tasks.Http.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Http\Wexflow.Tasks.Http.csproj">
       <Project>{c249b3ea-e3a3-4975-b3ba-51bc9d7e5816}</Project>
       <Name>Wexflow.Tasks.Http</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ImagesConcat\Wexflow.Tasks.ImagesConcat.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ImagesConcat\Wexflow.Tasks.ImagesConcat.csproj">
       <Project>{7e3fe55c-4bbe-4d7f-b705-34d247815bb1}</Project>
       <Name>Wexflow.Tasks.ImagesConcat</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ImagesCropper\Wexflow.Tasks.ImagesCropper.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ImagesCropper\Wexflow.Tasks.ImagesCropper.csproj">
       <Project>{2c953aeb-0bb5-43a6-a42d-8aff18ad4dc1}</Project>
       <Name>Wexflow.Tasks.ImagesCropper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ImagesOverlay\Wexflow.Tasks.ImagesOverlay.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ImagesOverlay\Wexflow.Tasks.ImagesOverlay.csproj">
       <Project>{cc2b67b1-5f8d-4e5d-9062-b92b0d0aa9ef}</Project>
       <Name>Wexflow.Tasks.ImagesOverlay</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ImagesResizer\Wexflow.Tasks.ImagesResizer.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ImagesResizer\Wexflow.Tasks.ImagesResizer.csproj">
       <Project>{c62dde2e-17c7-41ce-9aa6-12f994939f1e}</Project>
       <Name>Wexflow.Tasks.ImagesResizer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ImagesTransformer\Wexflow.Tasks.ImagesTransformer.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ImagesTransformer\Wexflow.Tasks.ImagesTransformer.csproj">
       <Project>{d2ba9820-d5c7-4053-8e36-ac94c162c9b0}</Project>
       <Name>Wexflow.Tasks.ImagesTransformer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.InstagramUploadImage\Wexflow.Tasks.InstagramUploadImage.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.InstagramUploadImage\Wexflow.Tasks.InstagramUploadImage.csproj">
       <Project>{45d2177b-efb1-4790-8f08-e373840413d7}</Project>
       <Name>Wexflow.Tasks.InstagramUploadImage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.InstagramUploadVideo\Wexflow.Tasks.InstagramUploadVideo.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.InstagramUploadVideo\Wexflow.Tasks.InstagramUploadVideo.csproj">
       <Project>{882fcc8b-b7f6-4290-9c2d-ccdfbbc2e327}</Project>
       <Name>Wexflow.Tasks.InstagramUploadVideo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.IsoCreator\Wexflow.Tasks.IsoCreator.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.IsoCreator\Wexflow.Tasks.IsoCreator.csproj">
       <Project>{9cdfaf59-62b3-48ba-bcce-3359856d3835}</Project>
       <Name>Wexflow.Tasks.IsoCreator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.IsoExtractor\Wexflow.Tasks.IsoExtractor.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.IsoExtractor\Wexflow.Tasks.IsoExtractor.csproj">
       <Project>{8546cd00-1a5e-4455-bdd4-225716db1727}</Project>
       <Name>Wexflow.Tasks.IsoExtractor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.JsonToYaml\Wexflow.Tasks.JsonToYaml.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.JsonToYaml\Wexflow.Tasks.JsonToYaml.csproj">
       <Project>{57edb875-bb62-42b2-8851-8ce774b13457}</Project>
       <Name>Wexflow.Tasks.JsonToYaml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ListEntities\Wexflow.Tasks.ListEntities.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ListEntities\Wexflow.Tasks.ListEntities.csproj">
       <Project>{d03eb1f0-5dab-4e93-8b29-783c4135ab55}</Project>
       <Name>Wexflow.Tasks.ListEntities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ListFiles\Wexflow.Tasks.ListFiles.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ListFiles\Wexflow.Tasks.ListFiles.csproj">
       <Project>{8016d7d3-223b-484f-a78d-dfcdf8677607}</Project>
       <Name>Wexflow.Tasks.ListFiles</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.MailsReceiver\Wexflow.Tasks.MailsReceiver.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.MailsReceiver\Wexflow.Tasks.MailsReceiver.csproj">
       <Project>{e0481eca-ea10-4b91-ba37-f6c544398643}</Project>
       <Name>Wexflow.Tasks.MailsReceiver</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.MailsSender\Wexflow.Tasks.MailsSender.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.MailsSender\Wexflow.Tasks.MailsSender.csproj">
       <Project>{c12433e2-fb3d-472a-9c52-e2d8e60c0ab5}</Project>
       <Name>Wexflow.Tasks.MailsSender</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Md5\Wexflow.Tasks.Md5.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Md5\Wexflow.Tasks.Md5.csproj">
       <Project>{73f4e657-2d76-4fff-970a-788c8272d6a3}</Project>
       <Name>Wexflow.Tasks.Md5</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.MediaInfo\Wexflow.Tasks.MediaInfo.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.MediaInfo\Wexflow.Tasks.MediaInfo.csproj">
       <Project>{31f725ce-5047-4afd-a21e-58828f7ccb08}</Project>
       <Name>Wexflow.Tasks.MediaInfo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.MessageCorrect\Wexflow.Tasks.MessageCorrect.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.MessageCorrect\Wexflow.Tasks.MessageCorrect.csproj">
       <Project>{84156eee-3f8f-432d-8846-ab01481c922a}</Project>
       <Name>Wexflow.Tasks.MessageCorrect</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Mkdir\Wexflow.Tasks.Mkdir.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Mkdir\Wexflow.Tasks.Mkdir.csproj">
       <Project>{ff5a22b8-b594-4d2b-a3fe-10bd28038005}</Project>
       <Name>Wexflow.Tasks.Mkdir</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Movedir\Wexflow.Tasks.Movedir.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Movedir\Wexflow.Tasks.Movedir.csproj">
       <Project>{bbca7cf8-635a-4abe-b3c5-81c584db0d46}</Project>
       <Name>Wexflow.Tasks.Movedir</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Now\Wexflow.Tasks.Now.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Now\Wexflow.Tasks.Now.csproj">
       <Project>{f2f1e7e2-2707-40a7-a98d-b5bbd27c0787}</Project>
       <Name>Wexflow.Tasks.Now</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.PdfToText\Wexflow.Tasks.PdfToText.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.PdfToText\Wexflow.Tasks.PdfToText.csproj">
       <Project>{6c663245-2ce9-4996-bd01-edfc36d9384f}</Project>
       <Name>Wexflow.Tasks.PdfToText</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Ping\Wexflow.Tasks.Ping.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Ping\Wexflow.Tasks.Ping.csproj">
       <Project>{e9d7c7a8-6e79-4cc5-8ab1-f359290d70d0}</Project>
       <Name>Wexflow.Tasks.Ping</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ProcessInfo\Wexflow.Tasks.ProcessInfo.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ProcessInfo\Wexflow.Tasks.ProcessInfo.csproj">
       <Project>{479d962f-08e3-4b9c-bf45-18c85cf44222}</Project>
       <Name>Wexflow.Tasks.ProcessInfo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ProcessKiller\Wexflow.Tasks.ProcessKiller.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ProcessKiller\Wexflow.Tasks.ProcessKiller.csproj">
       <Project>{72597a39-8c74-4107-950d-c0ea0719aa35}</Project>
       <Name>Wexflow.Tasks.ProcessKiller</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.ProcessLauncher\Wexflow.Tasks.ProcessLauncher.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.ProcessLauncher\Wexflow.Tasks.ProcessLauncher.csproj">
       <Project>{22f4b18b-89bc-443a-ae3e-8863c2459d34}</Project>
       <Name>Wexflow.Tasks.ProcessLauncher</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Rmdir\Wexflow.Tasks.Rmdir.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Rmdir\Wexflow.Tasks.Rmdir.csproj">
       <Project>{f3f7276b-ac03-4db2-a1d8-28738434c72e}</Project>
       <Name>Wexflow.Tasks.Rmdir</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SevenZip\Wexflow.Tasks.SevenZip.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.SevenZip\Wexflow.Tasks.SevenZip.csproj">
       <Project>{fa30208c-6aaa-4bbd-9932-79e2bcd17ede}</Project>
       <Name>Wexflow.Tasks.SevenZip</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Sha1\Wexflow.Tasks.Sha1.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Sha1\Wexflow.Tasks.Sha1.csproj">
       <Project>{58e208f5-9943-48e5-86df-56f1ccfa8e75}</Project>
       <Name>Wexflow.Tasks.Sha1</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Sha256\Wexflow.Tasks.Sha256.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Sha256\Wexflow.Tasks.Sha256.csproj">
       <Project>{841f05bd-adfa-45d1-8c73-9ae0cdd6afd4}</Project>
       <Name>Wexflow.Tasks.Sha256</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Sha512\Wexflow.Tasks.Sha512.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Sha512\Wexflow.Tasks.Sha512.csproj">
       <Project>{261e8567-6ace-4591-80ec-658eede9ebcf}</Project>
       <Name>Wexflow.Tasks.Sha512</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Slack\Wexflow.Tasks.Slack.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Slack\Wexflow.Tasks.Slack.csproj">
       <Project>{b5c54157-6a34-41b3-9ec9-4cb1b6dc30ea}</Project>
       <Name>Wexflow.Tasks.Slack</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SpeechToText\Wexflow.Tasks.SpeechToText.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.SpeechToText\Wexflow.Tasks.SpeechToText.csproj">
       <Project>{300f2fdc-7fb9-49a9-ae91-8ecacf92fea8}</Project>
       <Name>Wexflow.Tasks.SpeechToText</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SqlToCsv\Wexflow.Tasks.SqlToCsv.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.SqlToCsv\Wexflow.Tasks.SqlToCsv.csproj">
       <Project>{fe20effb-272e-4673-86aa-a8c62e043450}</Project>
       <Name>Wexflow.Tasks.SqlToCsv</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SqlToXml\Wexflow.Tasks.SqlToXml.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.SqlToXml\Wexflow.Tasks.SqlToXml.csproj">
       <Project>{118258f3-0273-48f2-bd0c-5349ae14a99a}</Project>
       <Name>Wexflow.Tasks.SqlToXml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Sql\Wexflow.Tasks.Sql.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Sql\Wexflow.Tasks.Sql.csproj">
       <Project>{ef416670-6443-4c98-8d26-27d3741b8fb0}</Project>
       <Name>Wexflow.Tasks.Sql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SshCmd\Wexflow.Tasks.SshCmd.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.SshCmd\Wexflow.Tasks.SshCmd.csproj">
       <Project>{d2247c6a-d04e-4df0-bc2a-01d99c173e69}</Project>
       <Name>Wexflow.Tasks.SshCmd</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.SubWorkflow\Wexflow.Tasks.SubWorkflow.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.SubWorkflow\Wexflow.Tasks.SubWorkflow.csproj">
       <Project>{4630cd57-eb1e-48ef-99c3-5513c63f7b8d}</Project>
       <Name>Wexflow.Tasks.SubWorkflow</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Tar\Wexflow.Tasks.Tar.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Tar\Wexflow.Tasks.Tar.csproj">
       <Project>{d737b1bb-8a6d-4015-9b2c-3d6760eee6af}</Project>
       <Name>Wexflow.Tasks.Tar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.TextsDecryptor\Wexflow.Tasks.TextsDecryptor.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.TextsDecryptor\Wexflow.Tasks.TextsDecryptor.csproj">
       <Project>{6fd67ff8-eeda-41b1-bf5e-073d6039ba59}</Project>
       <Name>Wexflow.Tasks.TextsDecryptor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.TextsEncryptor\Wexflow.Tasks.TextsEncryptor.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.TextsEncryptor\Wexflow.Tasks.TextsEncryptor.csproj">
       <Project>{a9b590bc-6b24-4c1e-98e1-50f376f340c5}</Project>
       <Name>Wexflow.Tasks.TextsEncryptor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.TextToPdf\Wexflow.Tasks.TextToPdf.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.TextToPdf\Wexflow.Tasks.TextToPdf.csproj">
       <Project>{dd5c037c-f7ff-4d8d-8076-3386e30cb0fa}</Project>
       <Name>Wexflow.Tasks.TextToPdf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.TextToSpeech\Wexflow.Tasks.TextToSpeech.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.TextToSpeech\Wexflow.Tasks.TextToSpeech.csproj">
       <Project>{400071c8-ba8b-4264-b872-adc1a5107db5}</Project>
       <Name>Wexflow.Tasks.TextToSpeech</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Tgz\Wexflow.Tasks.Tgz.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Tgz\Wexflow.Tasks.Tgz.csproj">
       <Project>{f7184c59-67d4-4bf5-abd0-d6ea9c50b6b7}</Project>
       <Name>Wexflow.Tasks.Tgz</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Torrent\Wexflow.Tasks.Torrent.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Torrent\Wexflow.Tasks.Torrent.csproj">
       <Project>{6502945c-bc08-42c4-86f8-224b05832f2d}</Project>
       <Name>Wexflow.Tasks.Torrent</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Touch\Wexflow.Tasks.Touch.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Touch\Wexflow.Tasks.Touch.csproj">
       <Project>{701d8879-706f-4cf0-9783-41076e560124}</Project>
       <Name>Wexflow.Tasks.Touch</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Twilio\Wexflow.Tasks.Twilio.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Twilio\Wexflow.Tasks.Twilio.csproj">
       <Project>{c9e28222-5024-4e6d-b034-457c3bd788e9}</Project>
       <Name>Wexflow.Tasks.Twilio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Twitter\Wexflow.Tasks.Twitter.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Twitter\Wexflow.Tasks.Twitter.csproj">
       <Project>{d1b9e2ba-e783-4c26-89e8-28e13ae3220c}</Project>
       <Name>Wexflow.Tasks.Twitter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.UglifyCss\Wexflow.Tasks.UglifyCss.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.UglifyCss\Wexflow.Tasks.UglifyCss.csproj">
       <Project>{455c5db9-cd56-4841-a5cf-2a80646433c2}</Project>
       <Name>Wexflow.Tasks.UglifyCss</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.UglifyHtml\Wexflow.Tasks.UglifyHtml.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.UglifyHtml\Wexflow.Tasks.UglifyHtml.csproj">
       <Project>{db83cb0f-9ed6-4ec3-8735-4d1d0d5e4ce7}</Project>
       <Name>Wexflow.Tasks.UglifyHtml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.UglifyJs\Wexflow.Tasks.UglifyJs.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.UglifyJs\Wexflow.Tasks.UglifyJs.csproj">
       <Project>{47e16d9b-c471-4a21-b88c-5515d80fcd8c}</Project>
       <Name>Wexflow.Tasks.UglifyJs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Unrar\Wexflow.Tasks.Unrar.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Unrar\Wexflow.Tasks.Unrar.csproj">
       <Project>{72ef213e-99a7-410c-992e-327dcf119a3b}</Project>
       <Name>Wexflow.Tasks.Unrar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.UnSevenZip\Wexflow.Tasks.UnSevenZip.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.UnSevenZip\Wexflow.Tasks.UnSevenZip.csproj">
       <Project>{d72bbdc7-e818-4cb6-9814-0548bd98dcd4}</Project>
       <Name>Wexflow.Tasks.UnSevenZip</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Untar\Wexflow.Tasks.Untar.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Untar\Wexflow.Tasks.Untar.csproj">
       <Project>{7f8d838f-594e-47e7-aadc-6e57af9b9d57}</Project>
       <Name>Wexflow.Tasks.Untar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Untgz\Wexflow.Tasks.Untgz.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Untgz\Wexflow.Tasks.Untgz.csproj">
       <Project>{c2cc6b4b-381d-44c7-8c1f-3715a16909ca}</Project>
       <Name>Wexflow.Tasks.Untgz</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Unzip\Wexflow.Tasks.Unzip.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Unzip\Wexflow.Tasks.Unzip.csproj">
       <Project>{0e4a787c-10f9-4c52-9e9a-596f6d6e2536}</Project>
       <Name>Wexflow.Tasks.Unzip</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.VimeoListUploads\Wexflow.Tasks.VimeoListUploads.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.VimeoListUploads\Wexflow.Tasks.VimeoListUploads.csproj">
       <Project>{3f34a171-865f-4e37-a871-706ba39c4e39}</Project>
       <Name>Wexflow.Tasks.VimeoListUploads</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Vimeo\Wexflow.Tasks.Vimeo.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Vimeo\Wexflow.Tasks.Vimeo.csproj">
       <Project>{8bcf1509-4b79-44ac-bfe8-cf8c22c71f08}</Project>
       <Name>Wexflow.Tasks.Vimeo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Wait\Wexflow.Tasks.Wait.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Wait\Wexflow.Tasks.Wait.csproj">
       <Project>{81c8da3e-32cb-4084-84da-c531522318c3}</Project>
       <Name>Wexflow.Tasks.Wait</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.WebToHtml\Wexflow.Tasks.WebToHtml.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.WebToHtml\Wexflow.Tasks.WebToHtml.csproj">
       <Project>{850e6ec7-fd36-4b9d-8a55-67c68f5e4236}</Project>
       <Name>Wexflow.Tasks.WebToHtml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.WebToScreenshot\Wexflow.Tasks.WebToScreenshot.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.WebToScreenshot\Wexflow.Tasks.WebToScreenshot.csproj">
       <Project>{93c60793-44e3-468b-9460-915fb1003c4b}</Project>
       <Name>Wexflow.Tasks.WebToScreenshot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Wmi\Wexflow.Tasks.Wmi.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Wmi\Wexflow.Tasks.Wmi.csproj">
       <Project>{0bef411f-039f-4c4f-a0ff-8defcfe1c019}</Project>
       <Name>Wexflow.Tasks.Wmi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Workflow\Wexflow.Tasks.Workflow.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Workflow\Wexflow.Tasks.Workflow.csproj">
       <Project>{10f39219-fe79-4191-b63e-59ff217efc47}</Project>
       <Name>Wexflow.Tasks.Workflow</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.XmlToCsv\Wexflow.Tasks.XmlToCsv.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.XmlToCsv\Wexflow.Tasks.XmlToCsv.csproj">
       <Project>{39d75060-94b3-4164-9213-908ae208799c}</Project>
       <Name>Wexflow.Tasks.XmlToCsv</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Xslt\Wexflow.Tasks.Xslt.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Xslt\Wexflow.Tasks.Xslt.csproj">
       <Project>{68ae707e-1bc5-4af0-8b90-8ef0d2040359}</Project>
       <Name>Wexflow.Tasks.Xslt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.YamlToJson\Wexflow.Tasks.YamlToJson.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.YamlToJson\Wexflow.Tasks.YamlToJson.csproj">
       <Project>{4ee9980e-e749-427d-846f-de3773d65263}</Project>
       <Name>Wexflow.Tasks.YamlToJson</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\net\Wexflow.Tasks.Zip\Wexflow.Tasks.Zip.csproj">
+    <ProjectReference Include="..\..\..\src\net\Wexflow.Tasks.Zip\Wexflow.Tasks.Zip.csproj">
       <Project>{67f62b85-9457-429f-857d-7f9d41f5c8f3}</Project>
       <Name>Wexflow.Tasks.Zip</Name>
     </ProjectReference>
