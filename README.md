@@ -22,7 +22,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * Multiple Language support
 * RESTful API
 * Extensible
-* Supported Platforms: ![macOS](https://img.shields.io/badge/macOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![Linux](https://img.shields.io/badge/Linux-4630EB.svg?logo=UBUNTU&labelColor=E14D0E&logoColor=fff) ![Windows](https://img.shields.io/badge/Windows-4630EB.svg?logo=WINDOWS&labelColor=4285F4&logoColor=fff)
+* Supported Platforms: ![macOS](https://img.shields.io/badge/macOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![Linux](https://img.shields.io/badge/Linux-4630EB.svg?logo=UBUNTU&labelColor=E14D0E&logoColor=fff) ![Windows](https://img.shields.io/badge/Windows-4630EB.svg?logo=WINDOWS&labelColor=4285F4&logoColor=fff) ![Web](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=FBC117&logoColor=fff) ![Android](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![Docker](https://img.shields.io/badge/Docker-4630EB.svg?logo=DOCKER&labelColor=4285F4&logoColor=fff) 
 
 ### Links
 
