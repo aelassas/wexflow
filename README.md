@@ -22,6 +22,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * Multiple Language support
 * RESTful API
 * Extensible
+* Supported Platforms: ![macOS](https://img.shields.io/badge/macOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![Linux](https://img.shields.io/badge/Linux-4630EB.svg?logo=UBUNTU&labelColor=E14D0E&logoColor=fff) ![Windows](https://img.shields.io/badge/Windows-4630EB.svg?logo=WINDOWS&labelColor=4285F4&logoColor=fff)
 
 ### Links
 
