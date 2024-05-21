@@ -22,6 +22,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * Multiple Language support
 * RESTful API
 * Extensible
+* Supported Platforms: macOS, Linux, Windows, Docker
 
 ### Resources
 
