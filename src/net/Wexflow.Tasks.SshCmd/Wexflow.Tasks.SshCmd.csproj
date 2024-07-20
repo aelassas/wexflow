@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SSH.NET">
-      <Version>2023.0.1</Version>
+      <Version>2024.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

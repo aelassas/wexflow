@@ -108,10 +108,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ServiceStack.Kestrel" Version="8.1.2" />
+    <PackageReference Include="ServiceStack.Kestrel" Version="8.3.0" />
   </ItemGroup>
 
   <ItemGroup>

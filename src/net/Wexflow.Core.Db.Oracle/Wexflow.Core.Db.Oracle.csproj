@@ -120,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Oracle.ManagedDataAccess">
-      <Version>21.13.0</Version>
+      <Version>23.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
