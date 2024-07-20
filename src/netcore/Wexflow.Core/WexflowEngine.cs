@@ -180,7 +180,7 @@ namespace Wexflow.Core
             SmtpUser = smtpUser;
             SmtpPassword = smtpPassword;
             SmtpFrom = smtpFrom;
-            Workflows = new List<Workflow>();
+            Workflows = [];
 
             Logger.Info("");
             Logger.Info("Starting Wexflow Engine");
@@ -281,7 +281,7 @@ namespace Wexflow.Core
 
         private void LoadGlobalVariables()
         {
-            List<Variable> variables = new();
+            List<Variable> variables = [];
             var xdoc = XDocument.Load(GlobalVariablesFile);
 
             foreach (var xvariable in xdoc.Descendants("Variable"))
@@ -294,7 +294,7 @@ namespace Wexflow.Core
                 variables.Add(variable);
             }
 
-            GlobalVariables = variables.ToArray();
+            GlobalVariables = [.. variables];
         }
 
         private static string GetWexflowSetting(XDocument xdoc, string name)
@@ -342,7 +342,7 @@ namespace Wexflow.Core
                 Workflow wf = new(
                        this
                     , 1
-                    , new Dictionary<Guid, Workflow>()
+                    , []
                     , workflow.GetDbId()
                     , workflow.Xml
                     , TempFolder
@@ -394,7 +394,7 @@ namespace Wexflow.Core
                         _ = new Workflow(
                          this
                         , 1
-                        , new Dictionary<Guid, Workflow>()
+                        , []
                         , "-1"
                         , xml
                         , TempFolder
@@ -436,7 +436,7 @@ namespace Wexflow.Core
                     _ = new Workflow(
                         this
                         , 1
-                        , new Dictionary<Guid, Workflow>()
+                        , []
                         , "-1"
                         , xml
                         , TempFolder
@@ -644,7 +644,7 @@ namespace Wexflow.Core
             catch (Exception e)
             {
                 Logger.ErrorFormat("Error while retrieving user workflows of user {0}: {1}", userId, e.Message);
-                return Array.Empty<Workflow>();
+                return [];
             }
         }
 
@@ -683,7 +683,7 @@ namespace Wexflow.Core
             catch (Exception e)
             {
                 Logger.ErrorFormat("Error while retrieving administrators: {0}", e.Message);
-                return Array.Empty<User>();
+                return [];
             }
         }
 
@@ -701,7 +701,7 @@ namespace Wexflow.Core
             catch (Exception e)
             {
                 Logger.ErrorFormat("Error while retrieving administrators: {0}", e.Message);
-                return Array.Empty<User>();
+                return [];
             }
         }
 
@@ -1398,8 +1398,8 @@ namespace Wexflow.Core
 
                     var recordVersions = Database.GetVersions(recordId);
 
-                    List<string> versionsToDelete = new();
-                    List<Db.Version> versionsToDeleteObjs = new();
+                    List<string> versionsToDelete = [];
+                    List<Db.Version> versionsToDeleteObjs = [];
                     foreach (var version in recordVersions)
                     {
                         if (versions.All(v => v.FilePath != version.FilePath))
@@ -1408,7 +1408,7 @@ namespace Wexflow.Core
                             versionsToDeleteObjs.Add(version);
                         }
                     }
-                    Database.DeleteVersions(versionsToDelete.ToArray());
+                    Database.DeleteVersions([.. versionsToDelete]);
 
                     foreach (var version in versionsToDeleteObjs)
                     {
@@ -1510,7 +1510,7 @@ namespace Wexflow.Core
                 FilePath = destPath
             };
 
-            List<Db.Version> versions = new() { version };
+            List<Db.Version> versions = [version];
 
             var recordId = SaveRecord("-1", record, versions);
             return recordId;

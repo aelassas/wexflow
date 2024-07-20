@@ -1,0 +1,58 @@
+﻿[*.cs]
+
+# IDE0290: Utiliser le constructeur principal
+dotnet_diagnostic.IDE0290.severity = suggestion
+
+# IDE0300: Simplifier l'initialisation des collections
+dotnet_diagnostic.IDE0300.severity = suggestion
+
+# IDE0305: Simplifier l'initialisation des collections
+dotnet_diagnostic.IDE0305.severity = suggestion
+
+# CA1860: Éviter d’utiliser la méthode d’extension 'Enumerable.Any()'
+dotnet_diagnostic.CA1860.severity = suggestion
+
+# CA1510: Utilisation de l’assistant de levée ArgumentNullException
+dotnet_diagnostic.CA1510.severity = suggestion
+
+# CA1862: Utiliser les surcharges de méthode « StringComparison » pour effectuer des comparaisons de chaînes sans respect de la casse
+dotnet_diagnostic.CA1862.severity = suggestion
+
+# CA1311: Spécifier une culture ou utiliser une version invariante
+dotnet_diagnostic.CA1311.severity = silent
+
+# IDE0301: Simplifier l'initialisation des collections
+dotnet_diagnostic.IDE0301.severity = suggestion
+
+# CA1304: Spécifier CultureInfo
+dotnet_diagnostic.CA1304.severity = silent
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = suggestion
+
+# CA1861: Éviter les tableaux constants en tant qu’arguments
+dotnet_diagnostic.CA1861.severity = suggestion
+
+# Default severity for analyzer diagnostics with category 'Style'
+dotnet_analyzer_diagnostic.category-Style.severity = suggestion
+
+# CA1716: Les identificateurs ne doivent pas correspondre à des mots clés
+dotnet_diagnostic.CA1716.severity = suggestion
+
+# CA1711: Les identificateurs ne doivent pas avoir un suffixe incorrect
+dotnet_diagnostic.CA1711.severity = suggestion
+
+# CA1305: Spécifier IFormatProvider
+dotnet_diagnostic.CA1305.severity = suggestion
+
+# CA1513: Utiliser l’assistance de levée ObjectDisposedException
+dotnet_diagnostic.CA1513.severity = suggestion
+
+# CA2201: Ne pas lever de types d'exception réservés
+dotnet_diagnostic.CA2201.severity = suggestion
+
+# CA1001: Les types qui ont des champs supprimables doivent être supprimables
+dotnet_diagnostic.CA1001.severity = suggestion
+
+# CA1707: Les identificateurs ne doivent pas contenir de traits de soulignement
+dotnet_diagnostic.CA1707.severity = suggestion

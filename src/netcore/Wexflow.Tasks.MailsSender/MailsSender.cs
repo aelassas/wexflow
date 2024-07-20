@@ -174,7 +174,7 @@ namespace Wexflow.Tasks.MailsSender
 
         public FileInf[] SelectAttachments()
         {
-            List<FileInf> files = new();
+            List<FileInf> files = [];
             foreach (var xSelectFile in GetXSettings("selectAttachments"))
             {
                 var xTaskId = xSelectFile.Attribute("value");

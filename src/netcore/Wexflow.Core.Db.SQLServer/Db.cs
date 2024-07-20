@@ -258,7 +258,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<User> admins = new();
+                List<User> admins = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -301,7 +301,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Entry> entries = new();
+                List<Entry> entries = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -343,7 +343,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Entry> entries = new();
+                List<Entry> entries = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -614,7 +614,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -654,7 +654,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -696,7 +696,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -742,7 +742,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1089,7 +1089,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1129,7 +1129,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1171,7 +1171,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<string> workflowIds = new();
+                List<string> workflowIds = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1228,7 +1228,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Core.Db.Workflow> workflows = new();
+                List<Core.Db.Workflow> workflows = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1603,7 +1603,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1796,7 +1796,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1853,7 +1853,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1909,7 +1909,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -2032,7 +2032,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Version> versions = new();
+                List<Version> versions = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -2199,7 +2199,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Notification> notifications = new();
+                List<Notification> notifications = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -2345,7 +2345,7 @@ namespace Wexflow.Core.Db.SQLServer
         {
             lock (Padlock)
             {
-                List<Approver> approvers = new();
+                List<Approver> approvers = [];
 
                 using SqlConnection conn = new(_connectionString);
                 conn.Open();

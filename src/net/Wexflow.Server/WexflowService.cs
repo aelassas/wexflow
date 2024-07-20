@@ -4256,7 +4256,7 @@ namespace Wexflow.Server
                 {
                     var path = (string)Request.Query["p"].ToString();
                     var file = new FileStream(path, FileMode.Open);
-                    string fileName = Path.GetFileName(path);
+                    var fileName = Path.GetFileName(path);
 
                     var response = new StreamResponse(() => file, MimeTypes.GetMimeType(fileName));
                     return response.AsAttachment(fileName);

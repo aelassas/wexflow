@@ -43,10 +43,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         /// <param name="options">Options.</param>
         public PollingFileSystemWatcher(string path, string filter = "*", EnumerationOptions options = null)
         {
-            if (path == null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
+            ArgumentNullException.ThrowIfNull(path);
 
             if (!Directory.Exists(path))
             {

@@ -122,7 +122,7 @@ namespace Wexflow.Tasks.YouTube
                         GoogleClientSecrets.Load(stream).Secrets,
                         // This OAuth 2.0 access scope allows an application to upload files to the
                         // authenticated user's YouTube channel, but doesn't allow other types of access.
-                        new[] { YouTubeService.Scope.YoutubeUpload },
+                        [YouTubeService.Scope.YoutubeUpload],
                         User,
                         CancellationToken.None
                         );

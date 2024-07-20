@@ -193,7 +193,7 @@ namespace Wexflow.Tasks.SqlToXml
 
             if (reader.HasRows)
             {
-                List<string> columns = new();
+                List<string> columns = [];
 
                 for (var i = 0; i < reader.FieldCount; i++)
                 {

@@ -91,7 +91,7 @@ namespace Wexflow.Tasks.CsvToJson
 
         private static string Convert(string path, string separator)
         {
-            List<string[]> csv = new();
+            List<string[]> csv = [];
             var lines = File.ReadAllLines(path);
 
             foreach (var line in lines)
@@ -101,11 +101,11 @@ namespace Wexflow.Tasks.CsvToJson
 
             var properties = lines[0].Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
 
-            List<Dictionary<string, string>> listObjResult = new();
+            List<Dictionary<string, string>> listObjResult = [];
 
             for (var i = 1; i < lines.Length; i++)
             {
-                Dictionary<string, string> objResult = new();
+                Dictionary<string, string> objResult = [];
                 for (var j = 0; j < properties.Length; j++)
                 {
                     objResult.Add(properties[j], csv[i][j]);

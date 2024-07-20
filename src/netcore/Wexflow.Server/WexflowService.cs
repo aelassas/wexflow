@@ -532,7 +532,7 @@ namespace Wexflow.Server
                 var workflowId = o.Value<int>("WorkflowId");
                 var variables = o.Value<JArray>("Variables");
 
-                List<Core.Variable> vars = new();
+                List<Core.Variable> vars = [];
                 foreach (var variable in variables)
                 {
                     vars.Add(new Core.Variable { Key = variable.Value<string>("Name"), Value = variable.Value<string>("Value") });
@@ -789,15 +789,15 @@ namespace Wexflow.Server
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
-                        IList<TaskInfo> taskInfos = new List<TaskInfo>();
+                        IList<TaskInfo> taskInfos = [];
 
                         foreach (var task in wf.Tasks)
                         {
-                            IList<SettingInfo> settingInfos = new List<SettingInfo>();
+                            IList<SettingInfo> settingInfos = [];
 
                             foreach (var setting in task.Settings)
                             {
-                                IList<AttributeInfo> attributeInfos = new List<AttributeInfo>();
+                                IList<AttributeInfo> attributeInfos = [];
 
                                 foreach (var attribute in setting.Attributes)
                                 {
@@ -914,7 +914,7 @@ namespace Wexflow.Server
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
-                        List<Contracts.Variable> variables = new();
+                        List<Contracts.Variable> variables = [];
                         foreach (var variable in wf.LocalVariables)
                         {
                             variables.Add(new Contracts.Variable { Key = variable.Key, Value = variable.Value });
@@ -937,13 +937,13 @@ namespace Wexflow.Server
                             RetryTimeout = wf.RetryTimeout
                         };
 
-                        List<TaskInfo> tasks = new();
+                        List<TaskInfo> tasks = [];
                         foreach (var task in wf.Tasks)
                         {
-                            List<SettingInfo> settings = new();
+                            List<SettingInfo> settings = [];
                             foreach (var setting in task.Settings)
                             {
-                                List<AttributeInfo> attributes = new();
+                                List<AttributeInfo> attributes = [];
                                 foreach (var attr in setting.Attributes)
                                 {
                                     attributes.Add(new AttributeInfo(attr.Name, attr.Value));
@@ -1274,7 +1274,7 @@ namespace Wexflow.Server
                         _ = new Core.Workflow(
                                  WexflowServer.WexflowEngine
                               , 1
-                              , new Dictionary<Guid, Core.Workflow>()
+                              , []
                               , "-1"
                               , xdoc.ToString()
                               , WexflowServer.WexflowEngine.TempFolder
@@ -2462,7 +2462,7 @@ namespace Wexflow.Server
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
                     {
-                        IList<Node> nodes = new List<Node>();
+                        IList<Node> nodes = [];
 
                         foreach (var node in wf.ExecutionGraph.Nodes)
                         {
@@ -2570,7 +2570,7 @@ namespace Wexflow.Server
                         }
                         else
                         {
-                            List<Core.ExecutionGraph.Node> nodes = new();
+                            List<Core.ExecutionGraph.Node> nodes = [];
                             for (var i = 0; i < wf.Tasks.Length; i++)
                             {
                                 var task = wf.Tasks[i];
@@ -3521,7 +3521,7 @@ namespace Wexflow.Server
                     var res = false;
 
                     var o = JObject.Parse(json);
-                    var workflowDbIds = JsonConvert.DeserializeObject<string[]>((((JArray)o.SelectToken("WorkflowsToDelete"))!).ToString());
+                    var workflowDbIds = JsonConvert.DeserializeObject<string[]>(((JArray)o.SelectToken("WorkflowsToDelete"))!.ToString());
 
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
@@ -3902,7 +3902,7 @@ namespace Wexflow.Server
                             AssignedOn = string.IsNullOrEmpty(assignedOn) ? null : DateTime.ParseExact(assignedOn, dateTimeFormat, CultureInfo.InvariantCulture)
                         };
 
-                        List<Core.Db.Version> recordVersions = new();
+                        List<Core.Db.Version> recordVersions = [];
                         foreach (var version in versions)
                         {
                             recordVersions.Add(new Core.Db.Version
@@ -3977,7 +3977,7 @@ namespace Wexflow.Server
                 if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var recordsArray = WexflowServer.WexflowEngine.GetRecords(keyword);
-                    List<Contracts.Record> recordsList = new();
+                    List<Contracts.Record> recordsList = [];
                     foreach (var record in recordsArray)
                     {
                         var createdBy = !string.IsNullOrEmpty(record.CreatedBy) ? WexflowServer.WexflowEngine.GetUserById(record.CreatedBy) : null;
@@ -4003,7 +4003,7 @@ namespace Wexflow.Server
 
                         // Approvers
                         var approvers = WexflowServer.WexflowEngine.GetApprovers(record.GetDbId());
-                        List<Contracts.Approver> approversList = new();
+                        List<Contracts.Approver> approversList = [];
                         foreach (var approver in approvers)
                         {
                             var approverUser = WexflowServer.WexflowEngine.GetUserById(approver.UserId);
@@ -4022,7 +4022,7 @@ namespace Wexflow.Server
 
                         // Versions
                         var versions = WexflowServer.WexflowEngine.GetVersions(record.GetDbId());
-                        List<Contracts.Version> versionsList = new();
+                        List<Contracts.Version> versionsList = [];
                         foreach (var version in versions)
                         {
                             Contracts.Version v = new()
@@ -4066,7 +4066,7 @@ namespace Wexflow.Server
                 if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var recordsArray = WexflowServer.WexflowEngine.GetRecordsCreatedBy(createdBy.GetDbId());
-                    List<Contracts.Record> recordsList = new();
+                    List<Contracts.Record> recordsList = [];
                     foreach (var record in recordsArray)
                     {
                         var createdByUser = !string.IsNullOrEmpty(record.CreatedBy) ? WexflowServer.WexflowEngine.GetUserById(record.CreatedBy) : null;
@@ -4092,7 +4092,7 @@ namespace Wexflow.Server
 
                         // Approvers
                         var approvers = WexflowServer.WexflowEngine.GetApprovers(record.GetDbId());
-                        List<Contracts.Approver> approversList = new();
+                        List<Contracts.Approver> approversList = [];
                         foreach (var approver in approvers)
                         {
                             var approverUser = WexflowServer.WexflowEngine.GetUserById(approver.UserId);
@@ -4111,7 +4111,7 @@ namespace Wexflow.Server
 
                         // Versions
                         var versions = WexflowServer.WexflowEngine.GetVersions(record.GetDbId());
-                        List<Contracts.Version> versionsList = new();
+                        List<Contracts.Version> versionsList = [];
                         foreach (var version in versions)
                         {
                             Contracts.Version v = new()
@@ -4158,7 +4158,7 @@ namespace Wexflow.Server
                 if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var recordsArray = WexflowServer.WexflowEngine.GetRecordsCreatedByOrAssignedTo(createdBy != null ? createdBy.GetDbId() : string.Empty, assignedTo != null ? assignedTo.GetDbId() : string.Empty, keyword);
-                    List<Contracts.Record> recordsList = new();
+                    List<Contracts.Record> recordsList = [];
                     foreach (var record in recordsArray)
                     {
                         var createdByUser = !string.IsNullOrEmpty(record.CreatedBy) ? WexflowServer.WexflowEngine.GetUserById(record.CreatedBy) : null;
@@ -4184,7 +4184,7 @@ namespace Wexflow.Server
 
                         // Approvers
                         var approvers = WexflowServer.WexflowEngine.GetApprovers(record.GetDbId());
-                        List<Contracts.Approver> approversList = new();
+                        List<Contracts.Approver> approversList = [];
                         foreach (var approver in approvers)
                         {
                             var approverUser = WexflowServer.WexflowEngine.GetUserById(approver.UserId);
@@ -4203,7 +4203,7 @@ namespace Wexflow.Server
 
                         // Versions
                         var versions = WexflowServer.WexflowEngine.GetVersions(record.GetDbId());
-                        List<Contracts.Version> versionsList = new();
+                        List<Contracts.Version> versionsList = [];
                         foreach (var version in versions)
                         {
                             Contracts.Version v = new()
@@ -4368,7 +4368,7 @@ namespace Wexflow.Server
                 if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var notificationsArray = WexflowServer.WexflowEngine.GetNotifications(assignedTo.GetDbId(), keyword);
-                    List<Contracts.Notification> notificationList = new();
+                    List<Contracts.Notification> notificationList = [];
                     foreach (var notification in notificationsArray)
                     {
                         var assignedByUser = !string.IsNullOrEmpty(notification.AssignedBy) ? WexflowServer.WexflowEngine.GetUserById(notification.AssignedBy) : null;

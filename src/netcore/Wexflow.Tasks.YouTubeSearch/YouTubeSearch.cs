@@ -65,9 +65,9 @@ namespace Wexflow.Tasks.YouTubeSearch
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
 
-            List<string> videos = new();
-            List<string> channels = new();
-            List<string> playlists = new();
+            List<string> videos = [];
+            List<string> channels = [];
+            List<string> playlists = [];
 
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.

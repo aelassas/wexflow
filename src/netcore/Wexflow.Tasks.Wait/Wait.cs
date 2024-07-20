@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;

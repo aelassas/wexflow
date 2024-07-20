@@ -49,7 +49,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override FileInf[] List()
         {
-            List<FileInf> files = new();
+            List<FileInf> files = [];
 
             FtpClient client = new()
             {

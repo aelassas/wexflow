@@ -98,8 +98,8 @@ namespace Wexflow.Tasks.TextsEncryptor
             cryptoStream.FlushFinalBlock();
             // Create the final bytes as a concatenation of the random salt bytes, the random iv bytes and the cipher bytes.
             var cipherTextBytes = saltStringBytes;
-            cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
-            cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
+            cipherTextBytes = [.. cipherTextBytes, .. ivStringBytes];
+            cipherTextBytes = [.. cipherTextBytes, .. memoryStream.ToArray()];
             memoryStream.Close();
             cryptoStream.Close();
             return Convert.ToBase64String(cipherTextBytes);

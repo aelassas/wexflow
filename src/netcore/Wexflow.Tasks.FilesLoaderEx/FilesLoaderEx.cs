@@ -47,7 +47,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
             Info("Loading files...");
 
             var success = true;
-            List<FileInf> folderFiles = new();
+            List<FileInf> folderFiles = [];
 
             try
             {

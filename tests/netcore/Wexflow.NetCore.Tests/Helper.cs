@@ -43,7 +43,7 @@ namespace Wexflow.NetCore.Tests
 
         public static void SaveWorkflow(string xml, bool schedule)
         {
-            WexflowEngine.SaveWorkflow(USERNAME, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
+            _ = WexflowEngine.SaveWorkflow(USERNAME, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
         }
 
         public static void Run()

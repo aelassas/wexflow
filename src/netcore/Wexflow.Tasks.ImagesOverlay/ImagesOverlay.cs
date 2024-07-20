@@ -62,8 +62,8 @@ namespace Wexflow.Tasks.ImagesOverlay
         {
             try
             {
-                List<int> imageHeights = new();
-                List<int> imageWidths = new();
+                List<int> imageHeights = [];
+                List<int> imageWidths = [];
 
                 foreach (var imageFile in imageFiles)
                 {

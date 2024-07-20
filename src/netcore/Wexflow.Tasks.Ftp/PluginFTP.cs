@@ -40,7 +40,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override FileInf[] List()
         {
-            List<FileInf> files = new();
+            List<FileInf> files = [];
 
             FtpClient client = new() { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.Ftp
 
         public static FileInf[] ListFiles(FtpClient client, int taskId)
         {
-            List<FileInf> files = new();
+            List<FileInf> files = [];
 
             var ftpListItems = client.GetListing();
 

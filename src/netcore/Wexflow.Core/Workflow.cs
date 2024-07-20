@@ -269,7 +269,7 @@ namespace Wexflow.Core
             , Variable[] globalVariables)
         {
             WexflowEngine = wexflowEngine;
-            Logs = new List<string>();
+            Logs = [];
             JobId = jobId;
             ParallelJobId = jobId;
             Jobs = jobs;
@@ -282,11 +282,11 @@ namespace Wexflow.Core
             ApprovalFolder = approvalFolder;
             XsdPath = xsdPath;
             Database = database;
-            FilesPerTask = new Dictionary<int, List<FileInf>>();
-            EntitiesPerTask = new Dictionary<int, List<Entity>>();
-            SharedMemory = new Hashtable();
+            FilesPerTask = [];
+            EntitiesPerTask = [];
+            SharedMemory = [];
             GlobalVariables = globalVariables;
-            RestVariables = new List<Variable>();
+            RestVariables = [];
             StartedOn = DateTime.MinValue;
             Check();
             LoadLocalVariables();
@@ -340,7 +340,7 @@ namespace Wexflow.Core
             }
 
             var xdoc = XDocument.Parse(Xml);
-            List<Variable> localVariables = new();
+            List<Variable> localVariables = [];
 
             foreach (var xvariable in xdoc.XPathSelectElements("/wf:Workflow/wf:LocalVariables/wf:Variable",
                 XmlNamespaceManager))
@@ -357,7 +357,7 @@ namespace Wexflow.Core
                 localVariables.Add(variable);
             }
 
-            LocalVariables = localVariables.ToArray();
+            LocalVariables = [.. localVariables];
         }
 
         private string Parse(string src)
@@ -384,7 +384,7 @@ namespace Wexflow.Core
             //
             // Load local variables with their final values (parsed)
             //
-            List<Variable> localVariablesParsed = new();
+            List<Variable> localVariablesParsed = [];
             using (var xmlReader = XmlReader.Create(new StringReader(dest)))
             {
                 var xmlNameTable = xmlReader.NameTable;
@@ -530,7 +530,7 @@ namespace Wexflow.Core
             }
 
             // Loading tasks
-            List<Task> tasks = new();
+            List<Task> tasks = [];
             foreach (var xTask in xdoc.XPathSelectElements("/wf:Workflow/wf:Tasks/wf:Task", XmlNamespaceManager))
             {
                 var xAttribute = xTask.Attribute("name");
@@ -594,7 +594,7 @@ namespace Wexflow.Core
                     throw new Exception($"Name attribute of the task {xTask} does not exist.");
                 }
             }
-            Tasks = tasks.ToArray();
+            Tasks = [..tasks];
 
             // Loading execution graph
             var xExectionGraph = xdoc.XPathSelectElement("/wf:Workflow/wf:ExecutionGraph", XmlNamespaceManager);
@@ -603,7 +603,7 @@ namespace Wexflow.Core
                 var taskNodes = GetTaskNodes(xExectionGraph);
 
                 // Check startup node, parallel tasks and infinite loops
-                if (taskNodes.Any())
+                if (taskNodes.Length > 0)
                 {
                     CheckStartupNode(taskNodes, "Startup node with parentId=-1 not found in ExecutionGraph execution graph.");
                 }
@@ -845,10 +845,7 @@ namespace Wexflow.Core
 
         private static void CheckStartupNode(Node[] nodes, string errorMsg)
         {
-            if (nodes == null)
-            {
-                throw new ArgumentNullException(nameof(nodes)); // new ArgumentNullException()
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             if (nodes.All(n => n.ParentId != START_ID))
             {
@@ -1283,11 +1280,11 @@ namespace Wexflow.Core
 
         private Task[] NodesToTasks(Node[] nodes)
         {
-            List<Task> tasks = new();
+            List<Task> tasks = [];
 
             if (nodes == null)
             {
-                return tasks.ToArray();
+                return [.. tasks];
             }
 
             foreach (var node in nodes)
@@ -1297,7 +1294,7 @@ namespace Wexflow.Core
                     var doTasks = NodesToTasks(@if.DoNodes);
                     var otherwiseTasks = NodesToTasks(@if.ElseNodes);
 
-                    List<Task> ifTasks = [..doTasks];
+                    List<Task> ifTasks = [.. doTasks];
                     foreach (var task in otherwiseTasks)
                     {
                         if (ifTasks.All(t => t.Id != task.Id))
@@ -1335,7 +1332,7 @@ namespace Wexflow.Core
                 }
             }
 
-            return tasks.ToArray();
+            return [.. tasks];
         }
 
         private Status RunTasks(Node[] nodes, Task[] tasks, bool force)
@@ -1344,7 +1341,7 @@ namespace Wexflow.Core
             var warning = false;
             var atLeastOneSucceed = false;
 
-            if (nodes.Any())
+            if (nodes.Length > 0)
             {
                 var startNode = GetStartupNode(nodes);
 
@@ -1802,7 +1799,7 @@ namespace Wexflow.Core
                     //                    _thread.Suspend();
                     //#pragma warning restore CS0618 // Le type ou le membre est obsolète
                     // unset the reset event which will cause the workflow to pause
-                    _event.Reset();
+                    _ = _event.Reset();
                     IsPaused = true;
                     Database.IncrementPendingCount();
                     Database.DecrementRunningCount();
@@ -1839,7 +1836,7 @@ namespace Wexflow.Core
                     //                    _thread.Resume();
                     //#pragma warning restore CS0618 // Le type ou le membre est obsolète
                     // // set the reset event which will cause the workflow to continue
-                    _event.Set();
+                    _ = _event.Set();
                     Database.IncrementRunningCount();
                     Database.DecrementPendingCount();
                     var entry = Database.GetEntry(Id, InstanceId);

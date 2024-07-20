@@ -62,7 +62,7 @@ namespace Wexflow.Tasks.ImagesConcat
         {
             try
             {
-                List<int> imageHeights = new();
+                List<int> imageHeights = [];
                 var nIndex = 0;
                 var width = 0;
                 foreach (var imageFile in imageFiles)

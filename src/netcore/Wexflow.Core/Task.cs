@@ -72,7 +72,7 @@ namespace Wexflow.Core
 		protected Task(XElement xe, Workflow wf)
         {
             IsStopped = false;
-            Logs = new List<string>();
+            Logs = [];
             _xElement = xe;
             var xId = xe.Attribute("id") ?? throw new Exception("Task id attribute not found.");
             Id = int.Parse(xId.Value);
@@ -84,11 +84,11 @@ namespace Wexflow.Core
             IsEnabled = bool.Parse(xEnabled.Value);
             IsWaitingForApproval = false;
             Workflow = wf;
-            Workflow.FilesPerTask.Add(Id, new List<FileInf>());
-            Workflow.EntitiesPerTask.Add(Id, new List<Entity>());
+            Workflow.FilesPerTask.Add(Id, []);
+            Workflow.EntitiesPerTask.Add(Id, []);
 
             // settings
-            IList<Setting> settings = new List<Setting>();
+            IList<Setting> settings = [];
 
             foreach (var xSetting in xe.XPathSelectElements("wf:Setting", Workflow.XmlNamespaceManager))
             {
@@ -105,7 +105,7 @@ namespace Wexflow.Core
                 }
 
                 // setting attributes
-                IList<Attribute> attributes = new List<Attribute>();
+                IList<Attribute> attributes = [];
 
                 foreach (var xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName != "name" && attr.Name.LocalName != "value"))
                 {
@@ -113,11 +113,11 @@ namespace Wexflow.Core
                     attributes.Add(attr);
                 }
 
-                Setting setting = new(settingName, settingValue, attributes.ToArray());
+                Setting setting = new(settingName, settingValue, [.. attributes]);
                 settings.Add(setting);
             }
 
-            Settings = settings.ToArray();
+            Settings = [..settings];
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Wexflow.Core
         /// <returns>A list of the files loaded by this task through selectFiles setting.</returns>
         public FileInf[] SelectFiles()
         {
-            List<FileInf> files = new();
+            List<FileInf> files = [];
             foreach (var xSelectFile in GetXSettings("selectFiles"))
             {
                 var xTaskId = xSelectFile.Attribute("value");
@@ -261,7 +261,7 @@ namespace Wexflow.Core
                     files.AddRange(qf);
                 }
             }
-            return files.ToArray();
+            return [..files];
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace Wexflow.Core
         /// <returns>A list of files from the tags in selectFiles setting.</returns>
         public static IEnumerable<FileInf> QueryFiles(IEnumerable<FileInf> files, XElement xSelectFile)
         {
-            List<FileInf> fl = new();
+            List<FileInf> fl = [];
 
             if (xSelectFile.Attributes().Count(t => t.Name != "value") == 1)
             {
@@ -306,13 +306,13 @@ namespace Wexflow.Core
         /// <returns>A list of the entities loaded by this task through selectEntities setting.</returns>
         public Entity[] SelectEntities()
         {
-            List<Entity> entities = new();
+            List<Entity> entities = [];
             foreach (var id in GetSettings("selectEntities"))
             {
                 var taskId = int.Parse(id);
                 entities.AddRange(Workflow.EntitiesPerTask[taskId]);
             }
-            return entities.ToArray();
+            return [.. entities];
         }
 
         /// <summary>

@@ -209,7 +209,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<User> admins = new();
+                List<User> admins = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -252,7 +252,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Entry> entries = new();
+                List<Entry> entries = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -295,7 +295,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Entry> entries = new();
+                List<Entry> entries = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -562,7 +562,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -602,7 +602,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -645,7 +645,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -689,7 +689,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1033,7 +1033,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1074,7 +1074,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1117,7 +1117,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<string> workflowIds = new();
+                List<string> workflowIds = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1175,7 +1175,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Core.Db.Workflow> workflows = new();
+                List<Core.Db.Workflow> workflows = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1546,7 +1546,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1738,7 +1738,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1795,7 +1795,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1851,7 +1851,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -1974,7 +1974,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Version> versions = new();
+                List<Version> versions = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -2141,7 +2141,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Notification> notifications = new();
+                List<Notification> notifications = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();
@@ -2284,7 +2284,7 @@ namespace Wexflow.Core.Db.Firebird
         {
             lock (Padlock)
             {
-                List<Approver> approvers = new();
+                List<Approver> approvers = [];
 
                 using FbConnection conn = new(_connectionString);
                 conn.Open();

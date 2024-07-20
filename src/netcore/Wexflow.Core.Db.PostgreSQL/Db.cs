@@ -255,7 +255,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<User> admins = new();
+                List<User> admins = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -299,7 +299,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Entry> entries = new();
+                List<Entry> entries = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -342,7 +342,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Entry> entries = new();
+                List<Entry> entries = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -611,7 +611,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -651,7 +651,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -693,7 +693,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -737,7 +737,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<HistoryEntry> entries = new();
+                List<HistoryEntry> entries = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1086,7 +1086,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1126,7 +1126,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1168,7 +1168,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<string> workflowIds = new();
+                List<string> workflowIds = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1225,7 +1225,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Core.Db.Workflow> workflows = new();
+                List<Core.Db.Workflow> workflows = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1598,7 +1598,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<User> users = new();
+                List<User> users = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1789,7 +1789,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1846,7 +1846,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -1902,7 +1902,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Record> records = new();
+                List<Record> records = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -2023,7 +2023,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Version> versions = new();
+                List<Version> versions = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -2189,7 +2189,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Notification> notifications = new();
+                List<Notification> notifications = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
@@ -2332,7 +2332,7 @@ namespace Wexflow.Core.Db.PostgreSQL
         {
             lock (Padlock)
             {
-                List<Approver> approvers = new();
+                List<Approver> approvers = [];
 
                 using NpgsqlConnection conn = new(_connectionString);
                 conn.Open();
