@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.FilesJoiner
 
             foreach (var file in GetFiles())
             {
-                if (JoinFiles(file.FileName, file.Files.ToArray()))
+                if (JoinFiles(file.FileName, [.. file.Files]))
                 {
                     atLeastOneSucceed = true;
                 }

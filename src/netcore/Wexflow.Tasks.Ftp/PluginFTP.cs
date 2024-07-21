@@ -62,7 +62,7 @@ namespace Wexflow.Tasks.Ftp
 
             client.Disconnect();
 
-            return files.ToArray();
+            return [.. files];
         }
 
         public static FileInf[] ListFiles(FtpClient client, int taskId)
@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.Ftp
                 }
             }
 
-            return files.ToArray();
+            return [.. files];
         }
 
         public override void Upload(FileInf file)

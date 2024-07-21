@@ -59,7 +59,11 @@ namespace Wexflow.Tasks.RedditListComments
                         new XAttribute("author", SecurityElement.Escape(comment.Author) ?? throw new InvalidOperationException()),
                         new XAttribute("upvotes", comment.UpVotes),
                         new XAttribute("downvotes", comment.DownVotes), new XCData(comment.BodyHTML));
-                    if (xdoc.Root == null) throw new InvalidOperationException();
+                    if (xdoc.Root == null)
+                    {
+                        throw new InvalidOperationException();
+                    }
+
                     xdoc.Root.Add(xcomment);
                 }
 

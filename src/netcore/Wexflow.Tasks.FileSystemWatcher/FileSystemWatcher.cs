@@ -22,7 +22,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
         public static bool SafeMode { get; private set; }
         public static List<string> CurrentLogs { get; private set; }
 
-        private static readonly char[] separator = new[] { ',' };
+        private static readonly char[] separator = [','];
 
         public FileSystemWatcher(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -290,7 +290,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                 }
             }
 
-            return tasks.ToArray();
+            return [.. tasks];
         }
 
         private void ClearFiles()

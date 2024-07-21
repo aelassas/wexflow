@@ -25,7 +25,7 @@ namespace Wexflow.Tasks.ApproveRecord
         public string OnStopped { get; }
         public bool DeleteWorkflowOnApproval { get; }
 
-        private static readonly char[] separator = new[] { ',' };
+        private static readonly char[] separator = [','];
 
         public ApproveRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
@@ -735,7 +735,7 @@ namespace Wexflow.Tasks.ApproveRecord
                 }
             }
 
-            return tasks.ToArray();
+            return [.. tasks];
         }
 
         private static void Send(string host, int port, bool enableSsl, string user, string password, string to, string from, string subject, string body)

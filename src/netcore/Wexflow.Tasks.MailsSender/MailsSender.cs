@@ -195,7 +195,7 @@ namespace Wexflow.Tasks.MailsSender
                     files.AddRange(qf);
                 }
             }
-            return files.ToArray();
+            return [.. files];
         }
     }
 }

@@ -151,7 +151,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
 
         private static string[] GetFilesRecursive(string dir)
         {
-            return Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories).OrderBy(f => f).ToArray();
+            return [.. Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories).OrderBy(f => f)];
         }
 
         private static void RemoveRange(List<FileInf> items, IEnumerable<FileInf> remove)

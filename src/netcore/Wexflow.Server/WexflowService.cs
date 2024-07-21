@@ -200,7 +200,7 @@ namespace Wexflow.Server
                 var workflows = Array.Empty<WorkflowInfo>();
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -262,7 +262,7 @@ namespace Wexflow.Server
                 var workflows = Array.Empty<WorkflowInfo>();
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -337,7 +337,7 @@ namespace Wexflow.Server
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
 
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
@@ -395,7 +395,7 @@ namespace Wexflow.Server
 
                         var user = WexflowServer.WexflowEngine.GetUser(username);
 
-                        if (user.Password.Equals(password))
+                        if (user.Password.Equals(password, StringComparison.Ordinal))
                         {
                             if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                             {
@@ -447,7 +447,7 @@ namespace Wexflow.Server
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
 
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
@@ -484,7 +484,7 @@ namespace Wexflow.Server
                 var workflowId = int.Parse(context.Request.Query["w"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -541,7 +541,7 @@ namespace Wexflow.Server
                 var workflow = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId);
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -589,7 +589,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -631,7 +631,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -671,7 +671,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -713,7 +713,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -751,7 +751,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
@@ -784,7 +784,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
@@ -805,11 +805,11 @@ namespace Wexflow.Server
                                     attributeInfos.Add(attributeInfo);
                                 }
 
-                                SettingInfo settingInfo = new(setting.Name, setting.Value, attributeInfos.ToArray());
+                                SettingInfo settingInfo = new(setting.Name, setting.Value, [.. attributeInfos]);
                                 settingInfos.Add(settingInfo);
                             }
 
-                            TaskInfo taskInfo = new(task.Id, task.Name, task.Description, task.IsEnabled, settingInfos.ToArray());
+                            TaskInfo taskInfo = new(task.Id, task.Name, task.Description, task.IsEnabled, [.. settingInfos]);
 
                             taskInfos.Add(taskInfo);
                         }
@@ -841,7 +841,7 @@ namespace Wexflow.Server
 
                 var workflowId = 0;
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     try
                     {
@@ -878,7 +878,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
@@ -909,7 +909,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
@@ -932,7 +932,7 @@ namespace Wexflow.Server
                             IsApproval = wf.IsApproval,
                             EnableParallelJobs = wf.EnableParallelJobs,
                             Description = wf.Description,
-                            LocalVariables = variables.ToArray(),
+                            LocalVariables = [.. variables],
                             RetryCount = wf.RetryCount,
                             RetryTimeout = wf.RetryTimeout
                         };
@@ -949,15 +949,15 @@ namespace Wexflow.Server
                                     attributes.Add(new AttributeInfo(attr.Name, attr.Value));
                                 }
 
-                                settings.Add(new SettingInfo(setting.Name, setting.Value, attributes.ToArray()));
+                                settings.Add(new SettingInfo(setting.Name, setting.Value, [.. attributes]));
                             }
-                            tasks.Add(new TaskInfo(task.Id, task.Name, task.Description, task.IsEnabled, settings.ToArray()));
+                            tasks.Add(new TaskInfo(task.Id, task.Name, task.Description, task.IsEnabled, [.. settings]));
                         }
 
                         Contracts.Workflow.Workflow workflow = new()
                         {
                             WorkflowInfo = wi,
-                            Tasks = tasks.ToArray(),
+                            Tasks = [.. tasks],
                             ExecutionGraph = wf.ExecutionGraph
                         };
 
@@ -987,18 +987,18 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     TaskName[] taskNames;
                     try
                     {
                         var array = JArray.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksNamesFile));
-                        taskNames = array.ToObject<TaskName[]>().OrderBy(x => x.Name).ToArray();
+                        taskNames = [.. array.ToObject<TaskName[]>().OrderBy(x => x.Name)];
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
-                        taskNames = new[] { new TaskName { Name = "TasksNames.json is not valid." } };
+                        taskNames = [new TaskName { Name = "TasksNames.json is not valid." }];
                     }
 
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(taskNames));
@@ -1024,21 +1024,21 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     TaskName[] taskNames;
                     try
                     {
                         var array = JArray.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksNamesFile));
-                        taskNames = array
+                        taskNames = [.. array
                         .ToObject<TaskName[]>()
                         .Where(x => x.Name.ToUpper().Contains(keywordToUpper))
-                        .OrderBy(x => x.Name).ToArray();
+                        .OrderBy(x => x.Name)];
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
-                        taskNames = new[] { new TaskName { Name = "TasksNames.json is not valid." } };
+                        taskNames = [new TaskName { Name = "TasksNames.json is not valid." }];
                     }
 
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(taskNames));
@@ -1062,19 +1062,19 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     TaskSetting[] taskSettings;
                     try
                     {
                         var o = JObject.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksSettingsFile));
                         var token = o.SelectToken(context.Request.RouteValues["taskName"]?.ToString() ?? throw new InvalidOperationException());
-                        taskSettings = token != null ? token.ToObject<TaskSetting[]>() : Array.Empty<TaskSetting>();
+                        taskSettings = token != null ? token.ToObject<TaskSetting[]>() : [];
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
-                        taskSettings = new[] { new TaskSetting { Name = "TasksSettings.json is not valid." } };
+                        taskSettings = [new TaskSetting { Name = "TasksSettings.json is not valid." }];
                     }
 
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(taskSettings));
@@ -1100,7 +1100,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         var json = GetBody(context);
 
@@ -1180,7 +1180,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var workflowId = int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException());
                     foreach (var workflow in WexflowServer.WexflowEngine.Workflows)
@@ -1213,7 +1213,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var expression = context.Request.Query["e"].ToString();
                     var res = WexflowEngine.IsCronExpressionValid(expression);
@@ -1238,7 +1238,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var res = TimeSpan.TryParse(context.Request.RouteValues["period"]?.ToString(), out _);
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
@@ -1264,7 +1264,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         var json = GetBody(context);
                         var o = JObject.Parse(json);
@@ -1321,7 +1321,7 @@ namespace Wexflow.Server
                     var xml = (string)o.SelectToken("xml") ?? throw new InvalidOperationException();
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
@@ -1837,7 +1837,11 @@ namespace Wexflow.Server
                     var retryCount = (int)wi.SelectToken("RetryCount");
                     var retryTimeout = (int)wi.SelectToken("RetryTimeout");
 
-                    if (xdoc.Root == null) throw new InvalidOperationException("Root is null");
+                    if (xdoc.Root == null)
+                    {
+                        throw new InvalidOperationException("Root is null");
+                    }
+
                     xdoc.Root.Attribute("id")!.Value = workflowId.ToString();
                     xdoc.Root.Attribute("name")!.Value = workflowName ?? throw new InvalidOperationException();
                     xdoc.Root.Attribute("description")!.Value = workflowDesc ?? string.Empty;
@@ -2108,7 +2112,7 @@ namespace Wexflow.Server
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
 
-                    if (!user.Password.Equals(password))
+                    if (!user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         await WriteFalse(context);
                         return;
@@ -2160,7 +2164,7 @@ namespace Wexflow.Server
                     var wf = WexflowServer.WexflowEngine.Workflows.FirstOrDefault(w => w.Id == workflowId);
                     var res = false;
 
-                    if (!user.Password.Equals(password))
+                    if (!user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         await WriteFalse(context);
                         return;
@@ -2186,7 +2190,11 @@ namespace Wexflow.Server
                     if (wf != null)
                     {
                         var xdoc = wf.XDoc;
-                        if (xdoc.Root is null) throw new InvalidOperationException(" xdoc.Root is null");
+                        if (xdoc.Root is null)
+                        {
+                            throw new InvalidOperationException(" xdoc.Root is null");
+                        }
+
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
                         wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
                         xwfEnabled.Attribute("value")!.Value = false.ToString().ToLower();
@@ -2230,7 +2238,7 @@ namespace Wexflow.Server
                     var wf = WexflowServer.WexflowEngine.Workflows.FirstOrDefault(w => w.Id == workflowId);
                     var res = false;
 
-                    if (!user.Password.Equals(password))
+                    if (!user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         await WriteFalse(context);
                         return;
@@ -2256,7 +2264,11 @@ namespace Wexflow.Server
                     if (wf != null)
                     {
                         var xdoc = wf.XDoc;
-                        if (xdoc.Root is null) throw new InvalidOperationException("xdoc.Root is null");
+                        if (xdoc.Root is null)
+                        {
+                            throw new InvalidOperationException("xdoc.Root is null");
+                        }
+
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
                         wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
                         xwfEnabled.Attribute("value")!.Value = true.ToString().ToLower();
@@ -2327,7 +2339,7 @@ namespace Wexflow.Server
 
                     var isAuthorized = false;
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
@@ -2409,7 +2421,7 @@ namespace Wexflow.Server
                     {
                         var user = WexflowServer.WexflowEngine.GetUser(username);
 
-                        if (user.Password.Equals(password))
+                        if (user.Password.Equals(password, StringComparison.Ordinal))
                         {
                             if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                             {
@@ -2457,7 +2469,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
@@ -2512,7 +2524,7 @@ namespace Wexflow.Server
                 var graph = "<ExecutionGraph />";
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
@@ -2555,7 +2567,7 @@ namespace Wexflow.Server
                 var graph = "<xml />";
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
                     if (wf != null)
@@ -2694,13 +2706,13 @@ namespace Wexflow.Server
                 else if (!isFlowchart && !isEvent)
                 {
                     block.Add(new XElement("next",
-                        new XElement("block", new XAttribute("type", "onSuccess"), new XElement("statement", new XAttribute("name", "ON_SUCCESS"), NodeToBlockly(graph, GetStartupNode((graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                        new XElement("block", new XAttribute("type", "onSuccess"), new XElement("statement", new XAttribute("name", "ON_SUCCESS"), NodeToBlockly(graph, GetStartupNode((graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
                             , new XElement("next",
-                                new XElement("block", new XAttribute("type", "onWarning"), new XElement("statement", new XAttribute("name", "ON_WARNING"), NodeToBlockly(graph, GetStartupNode((graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                                new XElement("block", new XAttribute("type", "onWarning"), new XElement("statement", new XAttribute("name", "ON_WARNING"), NodeToBlockly(graph, GetStartupNode((graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
                                 , new XElement("next",
-                                new XElement("block", new XAttribute("type", "onError"), new XElement("statement", new XAttribute("name", "ON_ERROR"), NodeToBlockly(graph, GetStartupNode((graph.OnError ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnError ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                                new XElement("block", new XAttribute("type", "onError"), new XElement("statement", new XAttribute("name", "ON_ERROR"), NodeToBlockly(graph, GetStartupNode((graph.OnError ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnError ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
                                 , new XElement("next",
-                                new XElement("block", new XAttribute("type", "onRejected"), new XElement("statement", new XAttribute("name", "ON_REJECTED"), NodeToBlockly(graph, GetStartupNode((graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                                new XElement("block", new XAttribute("type", "onRejected"), new XElement("statement", new XAttribute("name", "ON_REJECTED"), NodeToBlockly(graph, GetStartupNode((graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
                                 ))))))
                             )));
                 }
@@ -2736,7 +2748,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var statusCount = WexflowServer.WexflowEngine.GetStatusCount();
                     StatusCount sc = new()
@@ -2775,7 +2787,7 @@ namespace Wexflow.Server
 
                 var othuser = WexflowServer.WexflowEngine.GetUser(qusername);
 
-                if (othuser.Password.Equals(qpassword))
+                if (othuser.Password.Equals(qpassword, StringComparison.Ordinal))
                 {
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     var dateTimeFormat = WexflowServer.Config["DateTimeFormat"];
@@ -2819,7 +2831,7 @@ namespace Wexflow.Server
                 var q = Array.Empty<User>();
                 var user = WexflowServer.WexflowEngine.GetUser(qusername);
 
-                if (user.Password.Equals(qpassword) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(qpassword, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var users = WexflowServer.WexflowEngine.GetUsers(keyword, (UserOrderBy)uo);
 
@@ -2855,7 +2867,7 @@ namespace Wexflow.Server
                 var q = Array.Empty<User>();
                 var user = WexflowServer.WexflowEngine.GetUser(qusername);
 
-                if (user.Password.Equals(qpassword) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(qpassword, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var users = WexflowServer.WexflowEngine.GetNonRestrictedUsers();
 
@@ -2895,7 +2907,7 @@ namespace Wexflow.Server
 
                 var user = WexflowServer.WexflowEngine.GetUser(qusername);
 
-                if (user.Password.Equals(qpassword) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(qpassword, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var users = WexflowServer.WexflowEngine.GetAdministrators(keyword, (UserOrderBy)uo);
                     var dateTimeFormat = WexflowServer.Config["DateTimeFormat"];
@@ -2936,7 +2948,7 @@ namespace Wexflow.Server
 
                     var user = WexflowServer.WexflowEngine.GetUser(qusername);
 
-                    if (user.Password.Equals(qpassword) && user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                    if (user.Password.Equals(qpassword, StringComparison.Ordinal) && user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
                         var userId = o.Value<string>("UserId");
                         var jArray = o.Value<JArray>("UserWorkflows");
@@ -2976,7 +2988,7 @@ namespace Wexflow.Server
 
                 var user = WexflowServer.WexflowEngine.GetUser(qusername);
 
-                if (user.Password.Equals(qpassword) && user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                if (user.Password.Equals(qpassword, StringComparison.Ordinal) && user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     try
                     {
@@ -3024,7 +3036,7 @@ namespace Wexflow.Server
                 {
                     var res = false;
                     var user = WexflowServer.WexflowEngine.GetUser(qusername);
-                    if (user.Password.Equals(qpassword) && user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                    if (user.Password.Equals(qpassword, StringComparison.Ordinal) && user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
                         WexflowServer.WexflowEngine.InsertUser(username, password, (Core.Db.UserProfile)userProfile, email);
                         res = true;
@@ -3060,7 +3072,7 @@ namespace Wexflow.Server
                 {
                     var res = false;
                     var user = WexflowServer.WexflowEngine.GetUser(qusername);
-                    if (user.Password.Equals(qpassword) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(qpassword, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         WexflowServer.WexflowEngine.UpdateUser(userId, username, password, (Core.Db.UserProfile)userProfile, email);
                         res = true;
@@ -3095,7 +3107,7 @@ namespace Wexflow.Server
                 {
                     var res = false;
                     var user = WexflowServer.WexflowEngine.GetUser(qusername);
-                    if (user.Password.Equals(qpassword) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(qpassword, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         WexflowServer.WexflowEngine.UpdateUsernameAndEmailAndUserProfile(userId, username, email, up);
                         res = true;
@@ -3128,7 +3140,7 @@ namespace Wexflow.Server
                 {
                     var res = false;
                     var user = WexflowServer.WexflowEngine.GetUser(qusername);
-                    if (user.Password.Equals(qpassword) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(qpassword, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         WexflowServer.WexflowEngine.DeleteUser(username, password);
                         res = true;
@@ -3248,7 +3260,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var keyword = context.Request.Query["s"].ToString();
                     var from = double.Parse(context.Request.Query["from"].ToString());
@@ -3298,7 +3310,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var keyword = context.Request.Query["s"].ToString();
                     var from = double.Parse(context.Request.Query["from"].ToString());
@@ -3347,7 +3359,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var keyword = context.Request.Query["s"].ToString();
                     var from = double.Parse(context.Request.Query["from"].ToString());
@@ -3379,7 +3391,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var keyword = context.Request.Query["s"].ToString();
                     var from = double.Parse(context.Request.Query["from"].ToString());
@@ -3411,7 +3423,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var date = WexflowServer.WexflowEngine.GetHistoryEntryStatusDateMin();
                     DateTime baseDate = new(1970, 1, 1);
@@ -3438,7 +3450,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var date = WexflowServer.WexflowEngine.GetHistoryEntryStatusDateMax();
                     DateTime baseDate = new(1970, 1, 1);
@@ -3465,7 +3477,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var date = WexflowServer.WexflowEngine.GetEntryStatusDateMin();
                     DateTime baseDate = new(1970, 1, 1);
@@ -3492,7 +3504,7 @@ namespace Wexflow.Server
                 var password = auth.Password;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password))
+                if (user.Password.Equals(password, StringComparison.Ordinal))
                 {
                     var date = WexflowServer.WexflowEngine.GetEntryStatusDateMax();
                     DateTime baseDate = new(1970, 1, 1);
@@ -3528,7 +3540,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
@@ -3587,7 +3599,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         res = WexflowServer.WexflowEngine.GetEntryLogs(entryId);
                     }
@@ -3617,7 +3629,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password))
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
                         var res = WexflowServer.WexflowEngine.GetHistoryEntryLogs(entryId);
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
@@ -3644,7 +3656,7 @@ namespace Wexflow.Server
         {
             if (File.Exists(filePath))
             {
-                string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+                string[] sizes = ["B", "KB", "MB", "GB", "TB"];
                 double len = new FileInfo(filePath).Length;
                 var order = 0;
                 while (len >= 1024 && order < sizes.Length - 1)
@@ -3683,7 +3695,7 @@ namespace Wexflow.Server
                     await file.CopyToAsync(ms);
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var recordId = context.Request.Query["r"].ToString();
                         var guid = Guid.NewGuid().ToString();
@@ -3747,7 +3759,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var path = context.Request.Query["p"].ToString();
 
@@ -3798,7 +3810,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var json = GetBody(context);
                         var o = JObject.Parse(json);
@@ -3862,7 +3874,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var json = GetBody(context);
                         var o = JObject.Parse(json);
@@ -3942,7 +3954,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var json = GetBody(context);
                         var recordIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
@@ -3974,7 +3986,7 @@ namespace Wexflow.Server
                 var records = Array.Empty<Contracts.Record>();
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var recordsArray = WexflowServer.WexflowEngine.GetRecords(keyword);
                     List<Contracts.Record> recordsList = [];
@@ -4018,7 +4030,7 @@ namespace Wexflow.Server
                                 approversList.Add(a);
                             }
                         }
-                        r.Approvers = approversList.ToArray();
+                        r.Approvers = [.. approversList];
 
                         // Versions
                         var versions = WexflowServer.WexflowEngine.GetVersions(record.GetDbId());
@@ -4036,10 +4048,10 @@ namespace Wexflow.Server
                             };
                             versionsList.Add(v);
                         }
-                        r.Versions = versionsList.ToArray();
+                        r.Versions = [.. versionsList];
                         recordsList.Add(r);
                     }
-                    records = recordsList.ToArray();
+                    records = [.. recordsList];
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(records));
@@ -4063,7 +4075,7 @@ namespace Wexflow.Server
                 var records = Array.Empty<Contracts.Record>();
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var recordsArray = WexflowServer.WexflowEngine.GetRecordsCreatedBy(createdBy.GetDbId());
                     List<Contracts.Record> recordsList = [];
@@ -4107,7 +4119,7 @@ namespace Wexflow.Server
                                 approversList.Add(a);
                             }
                         }
-                        r.Approvers = approversList.ToArray();
+                        r.Approvers = [.. approversList];
 
                         // Versions
                         var versions = WexflowServer.WexflowEngine.GetVersions(record.GetDbId());
@@ -4125,10 +4137,10 @@ namespace Wexflow.Server
                             };
                             versionsList.Add(v);
                         }
-                        r.Versions = versionsList.ToArray();
+                        r.Versions = [.. versionsList];
                         recordsList.Add(r);
                     }
-                    records = recordsList.ToArray();
+                    records = [.. recordsList];
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(records));
@@ -4155,7 +4167,7 @@ namespace Wexflow.Server
                 var records = Array.Empty<Contracts.Record>();
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var recordsArray = WexflowServer.WexflowEngine.GetRecordsCreatedByOrAssignedTo(createdBy != null ? createdBy.GetDbId() : string.Empty, assignedTo != null ? assignedTo.GetDbId() : string.Empty, keyword);
                     List<Contracts.Record> recordsList = [];
@@ -4199,7 +4211,7 @@ namespace Wexflow.Server
                                 approversList.Add(a);
                             }
                         }
-                        r.Approvers = approversList.ToArray();
+                        r.Approvers = [.. approversList];
 
                         // Versions
                         var versions = WexflowServer.WexflowEngine.GetVersions(record.GetDbId());
@@ -4217,10 +4229,10 @@ namespace Wexflow.Server
                             };
                             versionsList.Add(v);
                         }
-                        r.Versions = versionsList.ToArray();
+                        r.Versions = [.. versionsList];
                         recordsList.Add(r);
                     }
-                    records = recordsList.ToArray();
+                    records = [.. recordsList];
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(records));
@@ -4244,7 +4256,7 @@ namespace Wexflow.Server
                 var res = false;
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     res = WexflowServer.WexflowEngine.HasNotifications(assignedTo.GetDbId());
                 }
@@ -4268,7 +4280,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var json = GetBody(context);
                         var notificationIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
@@ -4299,7 +4311,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var json = GetBody(context);
                         var notificationIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
@@ -4331,7 +4343,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var json = GetBody(context);
                         var notificationIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
@@ -4365,7 +4377,7 @@ namespace Wexflow.Server
                 var notifications = Array.Empty<Contracts.Notification>();
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
-                if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                 {
                     var notificationsArray = WexflowServer.WexflowEngine.GetNotifications(assignedTo.GetDbId(), keyword);
                     List<Contracts.Notification> notificationList = [];
@@ -4384,7 +4396,7 @@ namespace Wexflow.Server
                         };
                         notificationList.Add(n);
                     }
-                    notifications = notificationList.ToArray();
+                    notifications = [.. notificationList];
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(notifications));
@@ -4449,7 +4461,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var assignedToUsername = context.Request.Query["a"].ToString();
                         var message = context.Request.Query["m"].ToString();
@@ -4482,7 +4494,7 @@ namespace Wexflow.Server
                     var password = auth.Password;
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (user.Password.Equals(password) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
+                    if (user.Password.Equals(password, StringComparison.Ordinal) && (user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
                         var recordId = context.Request.Query["r"].ToString();
                         var message = context.Request.Query["m"].ToString();

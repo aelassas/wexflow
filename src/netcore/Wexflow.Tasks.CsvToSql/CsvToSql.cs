@@ -98,7 +98,7 @@ namespace Wexflow.Tasks.CsvToSql
                             sw.Write($"'{value}'");
                         }
 
-                        if (!values.Last().Equals(value))
+                        if (!values.Last().Equals(value, StringComparison.Ordinal))
                         {
                             sw.Write(", ");
                         }

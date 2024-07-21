@@ -48,7 +48,7 @@ namespace Wexflow.Tasks.Ftp
                 client.Disconnect();
             }
 
-            return files.ToArray();
+            return [.. files];
         }
 
         public override void Upload(FileInf file)

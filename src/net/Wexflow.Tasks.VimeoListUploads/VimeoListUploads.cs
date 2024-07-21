@@ -49,7 +49,11 @@ namespace Wexflow.Tasks.VimeoListUploads
                         ));
                 }
 
-                if (xdoc.Root == null) throw new InvalidOperationException();
+                if (xdoc.Root == null)
+                {
+                    throw new InvalidOperationException();
+                }
+
                 xdoc.Root.Add(xvideos);
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));

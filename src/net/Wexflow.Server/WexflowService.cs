@@ -2033,7 +2033,11 @@ namespace Wexflow.Server
                     var retryCount = (int)wi.SelectToken("RetryCount");
                     var retryTimeout = (int)wi.SelectToken("RetryTimeout");
 
-                    if (xdoc.Root == null) throw new InvalidOperationException("Root is null");
+                    if (xdoc.Root == null)
+                    {
+                        throw new InvalidOperationException("Root is null");
+                    }
+
                     (xdoc.Root.Attribute("id") ?? throw new InvalidOperationException()).Value = workflowId.ToString();
                     (xdoc.Root.Attribute("name") ?? throw new InvalidOperationException()).Value = workflowName;
                     (xdoc.Root.Attribute("description") ?? throw new InvalidOperationException()).Value = workflowDesc;
@@ -2392,7 +2396,11 @@ namespace Wexflow.Server
                     if (wf != null)
                     {
                         var xdoc = wf.XDoc;
-                        if (xdoc.Root == null) throw new InvalidOperationException();
+                        if (xdoc.Root == null)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
                         wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
                         (xwfEnabled.Attribute("value") ?? throw new InvalidOperationException()).Value = false.ToString().ToLower();
@@ -2470,7 +2478,11 @@ namespace Wexflow.Server
                     if (wf != null)
                     {
                         var xdoc = wf.XDoc;
-                        if (xdoc.Root == null) throw new InvalidOperationException();
+                        if (xdoc.Root == null)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
                         wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
                         (xwfEnabled.Attribute("value") ?? throw new InvalidOperationException()).Value = true.ToString().ToLower();
@@ -2984,7 +2996,9 @@ namespace Wexflow.Server
         }
 
         private Core.ExecutionGraph.Node GetStartupNode(IEnumerable<Core.ExecutionGraph.Node> nodes)
-            => nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.START_ID);
+        {
+            return nodes.FirstOrDefault(n => n.ParentId == Core.Workflow.START_ID);
+        }
 
         /// <summary>
         /// Returns status count.

@@ -60,7 +60,11 @@ namespace Wexflow.Tasks.RedditListPosts
                         new XAttribute("title", SecurityElement.Escape(post.Title) ?? throw new InvalidOperationException()),
                         new XAttribute("upvotes", post.UpVotes),
                         new XAttribute("downvotes", post.DownVotes));
-                    if (xdoc.Root == null) throw new InvalidOperationException();
+                    if (xdoc.Root == null)
+                    {
+                        throw new InvalidOperationException();
+                    }
+
                     xdoc.Root.Add(xpost);
                 }
 

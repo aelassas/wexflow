@@ -121,7 +121,11 @@ namespace Wexflow.Tasks.YouTubeListUploads
                 xchannels.Add(xchannel);
             }
 
-            if (xdoc.Root == null) throw new InvalidOperationException();
+            if (xdoc.Root == null)
+            {
+                throw new InvalidOperationException();
+            }
+
             xdoc.Root.Add(xchannels);
             xdoc.Save(xmlPath);
             Files.Add(new FileInf(xmlPath, Id));

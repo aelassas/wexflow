@@ -65,7 +65,7 @@ namespace Wexflow.Tasks.Rmdir
             return new TaskStatus(status, false);
         }
 
-        private void RmdirRec(string folder)
+        private static void RmdirRec(string folder)
         {
             foreach (var file in Directory.GetFiles(folder))
             {

@@ -104,7 +104,11 @@ namespace Wexflow.Tasks.YouTubeSearch
             InfoFormat("Channels:\n{0}\n", string.Join("\n", channels));
             InfoFormat("Playlists:\n{0}\n", string.Join("\n", playlists));
 
-            if (xdoc.Root == null) throw new InvalidOperationException();
+            if (xdoc.Root == null)
+            {
+                throw new InvalidOperationException();
+            }
+
             xdoc.Root.Add(xvideos);
             xdoc.Root.Add(xchannels);
             xdoc.Root.Add(xplaylists);
