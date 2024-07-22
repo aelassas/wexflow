@@ -3,12 +3,16 @@
     /// <summary>
     /// Task status.
     /// </summary>
-    public class TaskStatus
+    /// <remarks>
+    /// Creates a new TaskStatus. This constructor is designed for sequential tasks.
+    /// </remarks>
+    /// <param name="status">Status.</param>
+    public class TaskStatus(Status status)
     {
         /// <summary>
         /// Status.
         /// </summary>
-        public Status Status { get; set; }
+        public Status Status { get; set; } = status;
         /// <summary>
         /// If and While condition.
         /// </summary>
@@ -17,15 +21,6 @@
         /// Switch/Case value.
         /// </summary>
         public string SwitchValue { get; set; }
-
-        /// <summary>
-        /// Creates a new TaskStatus. This constructor is designed for sequential tasks.
-        /// </summary>
-        /// <param name="status">Status.</param>
-        public TaskStatus(Status status)
-        {
-            Status = status;
-        }
 
         /// <summary>
         /// Creates a new TaskStatus. This constructor is designed for If/While flowchart tasks.

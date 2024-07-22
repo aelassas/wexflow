@@ -421,6 +421,9 @@ namespace Wexflow.Core.Db.Firebird
 
                             _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                             break;
+
+                        default:
+                            break;
                     }
 
                     _ = sqlBuilder.Append(';');
@@ -847,6 +850,9 @@ namespace Wexflow.Core.Db.Firebird
                         case EntryOrderBy.StatusDescending:
 
                             _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
+                            break;
+
+                        default:
                             break;
                     }
 

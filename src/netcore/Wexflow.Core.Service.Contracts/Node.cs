@@ -3,20 +3,13 @@
 namespace Wexflow.Core.Service.Contracts
 {
     [DataContract]
-    public class Node
+    public class Node(string id, string name, string parentId)
     {
         [DataMember]
-        public string Id { get; private set; }
+        public string Id { get; private set; } = id;
         [DataMember]
-        public string Name { get; private set; }
+        public string Name { get; private set; } = name;
         [DataMember]
-        public string ParentId { get; private set; }
-
-        public Node(string id, string name, string parentId)
-        {
-            Id = id;
-            Name = name;
-            ParentId = parentId;
-        }
+        public string ParentId { get; private set; } = parentId;
     }
 }

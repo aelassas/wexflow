@@ -27,14 +27,9 @@ namespace Wexflow.Core.Db
         UsernameDescending
     }
 
-    public abstract class Db
+    public abstract class Db(string connectionString)
     {
-        public string ConnectionString { get; }
-
-        protected Db(string connectionString)
-        {
-            ConnectionString = connectionString;
-        }
+        public string ConnectionString { get; } = connectionString;
 
         protected void InsertDefaultUser()
         {

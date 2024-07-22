@@ -101,8 +101,8 @@ namespace Wexflow.Tasks.Untgz
 
         private static void ExtractTgz(string gzArchiveName, string destFolder)
         {
-            Stream inStream = File.OpenRead(gzArchiveName);
-            Stream gzipStream = new GZipInputStream(inStream);
+            var inStream = File.OpenRead(gzArchiveName);
+            var gzipStream = new GZipInputStream(inStream);
 
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
             tarArchive.ExtractContents(destFolder);

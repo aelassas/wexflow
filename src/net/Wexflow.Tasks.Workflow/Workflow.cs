@@ -151,6 +151,8 @@ namespace Wexflow.Tasks.Workflow
                                 ErrorFormat("Can't reject the workflow {0} because it's not waiting for approval.", id);
                             }
                             break;
+                        default:
+                            break;
                     }
                 }
                 catch (Exception e)

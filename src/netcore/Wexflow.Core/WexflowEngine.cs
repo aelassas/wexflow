@@ -139,7 +139,7 @@ namespace Wexflow.Core
             ["quartz.serializer.type"] = "json"
         };
 
-        private static readonly ISchedulerFactory SchedulerFactory = new StdSchedulerFactory(QuartzProperties);
+        private static readonly StdSchedulerFactory SchedulerFactory = new(QuartzProperties);
         private static readonly IScheduler QuartzScheduler = SchedulerFactory.GetScheduler().Result;
 
         /// <summary>
@@ -220,6 +220,8 @@ namespace Wexflow.Core
                     break;
                 case DbType.MariaDB:
                     Database = new Db.MariaDB.Db(ConnectionString);
+                    break;
+                default:
                     break;
             }
 

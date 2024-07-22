@@ -3,17 +3,11 @@
 namespace Wexflow.Core.Service.Contracts
 {
     [DataContract]
-    public class AttributeInfo
+    public class AttributeInfo(string name, string value)
     {
         [DataMember]
-        public string Name { get; set; }
+        public string Name { get; set; } = name;
         [DataMember]
-        public string Value { get; set; }
-
-        public AttributeInfo(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
+        public string Value { get; set; } = value;
     }
 }

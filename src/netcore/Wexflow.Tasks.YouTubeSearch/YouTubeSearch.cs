@@ -97,6 +97,9 @@ namespace Wexflow.Tasks.YouTubeSearch
                         playlists.Add($"{searchResult.Snippet.Title} ({searchResult.Id.PlaylistId})");
                         xplaylists.Add(new XElement("Playlist", new XAttribute("id", searchResult.Id.PlaylistId), new XAttribute("title", searchResult.Snippet.Title)));
                         break;
+
+                    default:
+                        break;
                 }
             }
 

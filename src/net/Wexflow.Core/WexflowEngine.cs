@@ -226,6 +226,8 @@ namespace Wexflow.Core
                 case DbType.MariaDB:
                     Database = new Db.MariaDB.Db(ConnectionString);
                     break;
+                default:
+                    break;
             }
 
             Database?.Init();

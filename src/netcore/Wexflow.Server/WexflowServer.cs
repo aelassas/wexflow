@@ -193,6 +193,9 @@ namespace Wexflow.Server
                             Logger.ErrorFormat("Error while deleting the workflow {0}", ex, path);
                         }
                         break;
+
+                    default:
+                        break;
                 }
             }
         }

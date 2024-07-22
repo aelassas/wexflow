@@ -2,14 +2,9 @@
 
 namespace Wexflow.Core.Db.Firebird
 {
-    public class Helper
+    public class Helper(string connectionString)
     {
-        private readonly string _connectionString;
-
-        public Helper(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        private readonly string _connectionString = connectionString;
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {

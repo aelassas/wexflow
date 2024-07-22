@@ -594,7 +594,7 @@ namespace Wexflow.Core
                     throw new Exception($"Name attribute of the task {xTask} does not exist.");
                 }
             }
-            Tasks = [..tasks];
+            Tasks = [.. tasks];
 
             // Loading execution graph
             var xExectionGraph = xdoc.XPathSelectElement("/wf:Workflow/wf:ExecutionGraph", XmlNamespaceManager);
@@ -702,7 +702,7 @@ namespace Wexflow.Core
         {
             var nodes = xExectionGraph
                 .Elements()
-                .Where(xe => xe.Name.LocalName != "OnSuccess" && xe.Name.LocalName != "OnWarning" && xe.Name.LocalName != "OnError" && xe.Name.LocalName != "OnRejected")
+                .Where(xe => xe.Name.LocalName is not "OnSuccess" and not "OnWarning" and not "OnError" and not "OnRejected")
                 .Select(XNodeToNode)
                 .ToArray();
 
@@ -1191,6 +1191,8 @@ namespace Wexflow.Core
                                 Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Rejected;
                                 break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -1414,7 +1416,7 @@ namespace Wexflow.Core
                 }
             }
 
-            if (enumerable.Any() && !success && atLeastOneSucceed)
+            if (enumerable.Length > 0 && !success && atLeastOneSucceed)
             {
                 warning = true;
             }
@@ -1564,7 +1566,7 @@ namespace Wexflow.Core
                             }
                         }
                     }
-                    else if (status.Condition == false)
+                    else if (!status.Condition)
                     {
                         if (@if.ElseNodes is { Length: > 0 })
                         {
@@ -1626,7 +1628,7 @@ namespace Wexflow.Core
                                 RunTasks(doWhileTasks, @while.Nodes, doWhileStartNode, force, ref success, ref warning, ref atLeastOneSucceed);
                             }
                         }
-                        else if (status.Condition == false)
+                        else if (!status.Condition)
                         {
                             break;
                         }
@@ -1687,7 +1689,7 @@ namespace Wexflow.Core
                             }
                         }
 
-                        if (!aCaseHasBeenExecuted && @switch.Default != null && @switch.Default.Any())
+                        if (!aCaseHasBeenExecuted && @switch.Default != null && @switch.Default.Length > 0)
                         {
                             // Build Tasks
                             var defalutTasks = NodesToTasks(@switch.Default);

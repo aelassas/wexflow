@@ -81,7 +81,7 @@ namespace Wexflow.Tasks.Xslt
                                             select new Tag(xTag.Name.ToString(), xTag.Value)).ToList();
 
                                 var fileToEdit = (from f in Workflow.FilesPerTask[taskId]
-                                                  where f.FileName.Equals(fileName)
+                                                  where f.FileName.Equals(fileName, StringComparison.Ordinal)
                                                   select f).FirstOrDefault();
 
                                 if (fileToEdit != null)

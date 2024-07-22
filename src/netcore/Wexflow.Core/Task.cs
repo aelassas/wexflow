@@ -107,7 +107,7 @@ namespace Wexflow.Core
                 // setting attributes
                 IList<Attribute> attributes = [];
 
-                foreach (var xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName != "name" && attr.Name.LocalName != "value"))
+                foreach (var xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName is not "name" and not "value"))
                 {
                     Attribute attr = new(xAttribute.Name.LocalName, xAttribute.Value);
                     attributes.Add(attr);
@@ -117,7 +117,7 @@ namespace Wexflow.Core
                 settings.Add(setting);
             }
 
-            Settings = [..settings];
+            Settings = [.. settings];
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Wexflow.Core
                     files.AddRange(qf);
                 }
             }
-            return [..files];
+            return [.. files];
         }
 
         /// <summary>

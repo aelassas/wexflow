@@ -13,21 +13,11 @@ namespace Wexflow.Core.PollingFileSystemWatcher
     // It has optimized Equals and GetHasCode
     // It implements removals by marking values as "removed" (Path==null) and then garbage collecting them when table is resized
     [Serializable]
-    internal class PathToFileStateHashtable
+    internal class PathToFileStateHashtable(int capacity = 4)
     {
         private int _nextValuesIndex = 1; // the first Values slot is reserved so that default(Bucket) knows that it is not pointing to any value.
-        public FileState[] Values { get; private set; }
-        private Bucket[] _buckets;
-
-        public PathToFileStateHashtable(int capacity = 4)
-        {
-            Values = new FileState[capacity];
-
-            // +1 is needed so that there are always more buckets than values.
-            // this is so that unsuccesful search always terminates (as it terminates at an empty bucket)
-            // note that today the "+1" is not strictly required, as one Values slot is reserved, but I am future proofing here
-            _buckets = new Bucket[GetPrime(capacity + 1)];
-        }
+        public FileState[] Values { get; private set; } = new FileState[capacity];
+        private Bucket[] _buckets = new Bucket[GetPrime(capacity + 1)];
 
         public int Count { get; private set; }
 
@@ -204,16 +194,10 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             return new Enumerator(this);
         }
 
-        public struct Enumerator
+        public struct Enumerator(PathToFileStateHashtable table)
         {
-            private readonly PathToFileStateHashtable _table;
-            private int _index;
-
-            public Enumerator(PathToFileStateHashtable table)
-            {
-                _table = table;
-                _index = 0;
-            }
+            private readonly PathToFileStateHashtable _table = table;
+            private int _index = 0;
 
             public bool MoveNext()
             {

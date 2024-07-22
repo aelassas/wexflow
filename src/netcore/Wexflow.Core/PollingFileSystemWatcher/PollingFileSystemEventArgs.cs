@@ -7,14 +7,9 @@ using System;
 #pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
-    public class PollingFileSystemEventArgs : EventArgs
+    public class PollingFileSystemEventArgs(FileChange[] changes) : EventArgs
     {
-        public PollingFileSystemEventArgs(FileChange[] changes)
-        {
-            Changes = changes;
-        }
-
-        public FileChange[] Changes { get; }
+        public FileChange[] Changes { get; } = changes;
     }
 }
 #pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement

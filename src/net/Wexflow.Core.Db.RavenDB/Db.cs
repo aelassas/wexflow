@@ -316,6 +316,9 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Where(u => u.UserProfile == UserProfile.Administrator)
                                     .OrderByDescending(u => u.Username)
                                     .ToArray();
+
+                            default:
+                                break;
                         }
 
                         return Array.Empty<User>();
@@ -491,6 +494,9 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
+
+                            default:
+                                break;
                         }
 
                         return Array.Empty<Entry>();
@@ -814,6 +820,9 @@ namespace Wexflow.Core.Db.RavenDB
                                     .Skip(skip)
                                     .Take(entriesCount)
                                     .ToArray();
+
+                            default:
+                                break;
                         }
 
                         return Array.Empty<HistoryEntry>();
@@ -1029,6 +1038,8 @@ namespace Wexflow.Core.Db.RavenDB
                                 return col.Search(u => u.Username, keywordToLower).OrderBy(u => u.Username).ToArray();
                             case UserOrderBy.UsernameDescending:
                                 return col.Search(u => u.Username, keywordToLower).OrderByDescending(u => u.Username).ToArray();
+                            default:
+                                break;
                         }
 
                         return Array.Empty<User>();

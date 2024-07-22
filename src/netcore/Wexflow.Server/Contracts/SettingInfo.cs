@@ -1,18 +1,11 @@
 ﻿namespace Wexflow.Server.Contracts
 {
-    public class SettingInfo
+    public class SettingInfo(string name, string value, AttributeInfo[] attributes)
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = name;
 
-        public string Value { get; set; }
+        public string Value { get; set; } = value;
 
-        public AttributeInfo[] Attributes { get; set; }
-
-        public SettingInfo(string name, string value, AttributeInfo[] attributes)
-        {
-            Name = name;
-            Value = value;
-            Attributes = attributes;
-        }
+        public AttributeInfo[] Attributes { get; set; } = attributes;
     }
 }

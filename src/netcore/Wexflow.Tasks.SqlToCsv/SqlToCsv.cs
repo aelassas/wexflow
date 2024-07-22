@@ -200,6 +200,8 @@ namespace Wexflow.Tasks.SqlToCsv
                         ConvertToCsv(connection, command);
                     }
                     break;
+                default:
+                    break;
             }
         }
 

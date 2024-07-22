@@ -56,8 +56,8 @@ namespace Wexflow.Tasks.Slack
 
                             if (client.Users != null)
                             {
-                                var user = client.Users.Find(x => x.name.Equals(username));
-                                var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id));
+                                var user = client.Users.Find(x => x.name.Equals(username, StringComparison.Ordinal));
+                                var dmchannel = client.DirectMessages.Find(x => x.user.Equals(user.id, StringComparison.Ordinal));
                                 client.PostMessage(_ => Info($"Message '{text}' sent to {dmchannel.id}."), dmchannel.id, text);
 
                                 if (!atLeastOneSucceed)

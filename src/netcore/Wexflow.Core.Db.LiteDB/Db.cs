@@ -497,13 +497,13 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public override Core.Db.User GetUserById(string userId)
+        public override Core.Db.User GetUserById(string id)
         {
             lock (Padlock)
             {
                 var col = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
-                var id = int.Parse(userId);
-                var user = col.FindOne(u => u.Id == id);
+                var userId = int.Parse(id);
+                var user = col.FindOne(u => u.Id == userId);
                 return user;
             }
         }
@@ -570,9 +570,12 @@ namespace Wexflow.Core.Db.LiteDB
                         {
                             return col.Find(Query.All("Username", Query.Descending));
                         }
+
+                    default:
+                        break;
                 }
 
-                return Array.Empty<User>();
+                return [];
             }
         }
 
@@ -626,9 +629,12 @@ namespace Wexflow.Core.Db.LiteDB
                             q.Where.Add(Query.EQ("UserProfile", UserProfile.Administrator.ToString()));
                             return col.Find(q);
                         }
+
+                    default:
+                        break;
                 }
 
-                return Array.Empty<User>();
+                return [];
             }
         }
 
@@ -696,7 +702,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var keywordToUpper = keyword.ToUpper();
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
-                return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper));
+                return col.Find(e => e.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase) || e.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase));
             }
         }
 
@@ -706,7 +712,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var keywordToUpper = keyword.ToUpper();
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
-                return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper), (page - 1) * entriesCount, entriesCount);
+                return col.Find(e => e.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase) || e.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase), (page - 1) * entriesCount, entriesCount);
             }
         }
 
@@ -962,9 +968,12 @@ namespace Wexflow.Core.Db.LiteDB
                             , skip
                             , entriesCount
                         );
+
+                    default:
+                        break;
                 }
 
-                return Array.Empty<HistoryEntry>();
+                return [];
             }
         }
 
@@ -1220,9 +1229,12 @@ namespace Wexflow.Core.Db.LiteDB
                             , skip
                             , entriesCount
                         );
+
+                    default:
+                        break;
                 }
 
-                return Array.Empty<Entry>();
+                return [];
             }
         }
 
@@ -1232,7 +1244,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var keywordToUpper = keyword.ToUpper();
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
-                return col.Find(e => e.Name.ToUpper().Contains(keywordToUpper) || e.Description.ToUpper().Contains(keywordToUpper)).LongCount();
+                return col.Find(e => e.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase) || e.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)).LongCount();
             }
         }
 
@@ -1270,7 +1282,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate")).ToArray();
-                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                return q.Length > 0 ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1280,7 +1292,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.HistoryEntry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate", Query.Descending)).ToArray();
-                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                return q.Length > 0 ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1290,7 +1302,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.Entry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate")).ToArray();
-                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                return q.Length > 0 ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1300,7 +1312,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<HistoryEntry>(Core.Db.Entry.DOCUMENT_NAME);
                 var q = col.Find(Query.All("StatusDate", Query.Descending)).ToArray();
-                return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                return q.Length > 0 ? q.Select(e => e.StatusDate).First() : DateTime.Now;
             }
         }
 
@@ -1385,12 +1397,12 @@ namespace Wexflow.Core.Db.LiteDB
             }
         }
 
-        public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowId)
+        public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
             lock (Padlock)
             {
                 var col = _db.GetCollection<UserWorkflow>(Core.Db.UserWorkflow.DOCUMENT_NAME);
-                _ = col.DeleteMany(uw => uw.WorkflowId == workflowId);
+                _ = col.DeleteMany(uw => uw.WorkflowId == workflowDbId);
             }
         }
 
@@ -1525,7 +1537,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
-                var records = col.Find(r => r.Name.ToUpper().Contains(keywordToUpper) || (!string.IsNullOrEmpty(r.Description) && r.Description.ToUpper().Contains(keywordToUpper))).OrderByDescending(r => r.CreatedOn).ToList();
+                var records = col.Find(r => r.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase) || (!string.IsNullOrEmpty(r.Description) && r.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase))).OrderByDescending(r => r.CreatedOn).ToList();
                 return records;
             }
         }
@@ -1546,7 +1558,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<Record>(Core.Db.Record.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
-                var records = col.Find(r => (r.CreatedBy == createdBy || r.AssignedTo == assingedTo) && (r.Name.ToUpper().Contains(keywordToUpper) || (!string.IsNullOrEmpty(r.Description) && r.Description.ToUpper().Contains(keywordToUpper)))).OrderByDescending(r => r.CreatedOn).ToList();
+                var records = col.Find(r => (r.CreatedBy == createdBy || r.AssignedTo == assingedTo) && (r.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase) || (!string.IsNullOrEmpty(r.Description) && r.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)))).OrderByDescending(r => r.CreatedOn).ToList();
                 return records;
             }
         }
@@ -1682,7 +1694,7 @@ namespace Wexflow.Core.Db.LiteDB
             {
                 var col = _db.GetCollection<Notification>(Core.Db.Notification.DOCUMENT_NAME);
                 var keywordToUpper = keyword.ToUpper();
-                var notifications = col.Find(n => n.AssignedTo == assignedTo && n.Message.ToUpper().Contains(keywordToUpper)).OrderByDescending(n => n.AssignedOn).ToList();
+                var notifications = col.Find(n => n.AssignedTo == assignedTo && n.Message.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)).OrderByDescending(n => n.AssignedOn).ToList();
                 return notifications;
             }
         }

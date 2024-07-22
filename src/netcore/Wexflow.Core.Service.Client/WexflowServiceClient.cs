@@ -8,14 +8,9 @@ using Wexflow.Core.Service.Contracts;
 
 namespace Wexflow.Core.Service.Client
 {
-    public class WexflowServiceClient
+    public class WexflowServiceClient(string uri)
     {
-        public string Uri { get; }
-
-        public WexflowServiceClient(string uri)
-        {
-            Uri = uri.TrimEnd('/');
-        }
+        public string Uri { get; } = uri.TrimEnd('/');
 
         private static async Task<string> DownloadStringAsync(HttpClient client, string url, string username, string password)
         {

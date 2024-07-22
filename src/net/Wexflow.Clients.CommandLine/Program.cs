@@ -130,6 +130,8 @@ namespace Wexflow.Clients.CommandLine
                                }
                                client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
                                break;
+                           default:
+                               break;
                        }
                    });
 

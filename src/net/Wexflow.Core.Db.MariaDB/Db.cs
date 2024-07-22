@@ -22,7 +22,7 @@ namespace Wexflow.Core.Db.MariaDB
             var password = string.Empty;
             var database = string.Empty;
 
-            var connectionStringParts = Db._connectionString.Split(';');
+            var connectionStringParts = _connectionString.Split(';');
 
             foreach (var part in connectionStringParts)
             {
@@ -52,7 +52,7 @@ namespace Wexflow.Core.Db.MariaDB
                 }
             }
 
-            var helper = new Helper(Db._connectionString);
+            var helper = new Helper(_connectionString);
             Helper.CreateDatabaseIfNotExists(server, port, user, password, database);
             helper.CreateTableIfNotExists(Core.Db.Entry.DOCUMENT_NAME, Entry.TABLE_STRUCT);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DOCUMENT_NAME, HistoryEntry.TABLE_STRUCT);
@@ -458,6 +458,9 @@ namespace Wexflow.Core.Db.MariaDB
                         case EntryOrderBy.StatusDescending:
 
                             _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
+                            break;
+
+                        default:
                             break;
                     }
 
@@ -887,6 +890,9 @@ namespace Wexflow.Core.Db.MariaDB
                         case EntryOrderBy.StatusDescending:
 
                             _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
+                            break;
+
+                        default:
                             break;
                     }
 

@@ -49,6 +49,8 @@ namespace Wexflow.NetCore.Tests
                 case "Sunday":
                     Assert.IsTrue(stopwatch.ElapsedMilliseconds > 7000);
                     break;
+                default:
+                    break;
             }
         }
     }

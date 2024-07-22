@@ -177,6 +177,8 @@ namespace Wexflow.Tasks.Sql
                         ExecSql(conn, comm);
                     }
                     break;
+                default:
+                    break;
             }
         }
 

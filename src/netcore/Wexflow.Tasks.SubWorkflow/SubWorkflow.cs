@@ -55,6 +55,8 @@ namespace Wexflow.Tasks.SubWorkflow
                                 case KickOffMode.Async:
                                     _ = workflow.StartAsync(Workflow.StartedBy);
                                     break;
+                                default:
+                                    break;
                             }
                             break;
                         case KickOffAction.Stop:
@@ -97,6 +99,8 @@ namespace Wexflow.Tasks.SubWorkflow
                                 success = false;
                                 ErrorFormat("The workflow {0} is not waiting for approval to be rejected.", WorkflowId);
                             }
+                            break;
+                        default:
                             break;
                     }
                 }

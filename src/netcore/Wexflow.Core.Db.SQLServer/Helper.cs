@@ -2,14 +2,9 @@
 
 namespace Wexflow.Core.Db.SQLServer
 {
-    public class Helper
+    public class Helper(string connectionString)
     {
-        private readonly string _connectionString;
-
-        public Helper(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        private readonly string _connectionString = connectionString;
 
         public static void CreateDatabaseIfNotExists(string server, bool trustedConnection, string userId, string password, string databaseName)
         {

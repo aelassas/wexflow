@@ -63,7 +63,7 @@ namespace Wexflow.Tasks.Tgz
 
                     foreach (var file in files)
                     {
-                        using (Stream inputStream = File.OpenRead(file.Path))
+                        using (var inputStream = File.OpenRead(file.Path))
                         {
                             var fileSize = inputStream.Length;
 

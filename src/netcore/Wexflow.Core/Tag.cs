@@ -3,26 +3,20 @@
     /// <summary>
     /// Tag.
     /// </summary>
-    public class Tag
+    /// <remarks>
+    /// Creates a new tag.
+    /// </remarks>
+    /// <param name="key">Tag key.</param>
+    /// <param name="value">Tag value.</param>
+    public class Tag(string key, string value)
     {
         /// <summary>
         /// Tag key.
         /// </summary>
-        public string Key { get; private set; }
+        public string Key { get; private set; } = key;
         /// <summary>
         /// Tag value.
         /// </summary>
-        public string Value { get; private set; }
-
-        /// <summary>
-        /// Creates a new tag.
-        /// </summary>
-        /// <param name="key">Tag key.</param>
-        /// <param name="value">Tag value.</param>
-        public Tag(string key, string value)
-        {
-            Key = key;
-            Value = value;
-        }
+        public string Value { get; private set; } = value;
     }
 }

@@ -22,7 +22,7 @@ namespace Wexflow.Core.Db.MariaDB
             var password = string.Empty;
             var database = string.Empty;
 
-            var connectionStringParts = Db._connectionString.Split(';');
+            var connectionStringParts = _connectionString.Split(';');
 
             foreach (var part in connectionStringParts)
             {
@@ -52,7 +52,7 @@ namespace Wexflow.Core.Db.MariaDB
                 }
             }
 
-            Helper helper = new(Db._connectionString);
+            Helper helper = new(_connectionString);
             Helper.CreateDatabaseIfNotExists(server, port, user, password, database);
             helper.CreateTableIfNotExists(Core.Db.Entry.DOCUMENT_NAME, Entry.TABLE_STRUCT);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DOCUMENT_NAME, HistoryEntry.TABLE_STRUCT);
@@ -410,6 +410,9 @@ namespace Wexflow.Core.Db.MariaDB
                     case EntryOrderBy.StatusDescending:
 
                         _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
+                        break;
+
+                    default:
                         break;
                 }
 
@@ -804,6 +807,9 @@ namespace Wexflow.Core.Db.MariaDB
 
                         _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
+
+                    default:
+                        break;
                 }
 
                 _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
@@ -1028,7 +1034,7 @@ namespace Wexflow.Core.Db.MariaDB
             }
         }
 
-        public override Core.Db.User GetUserById(string userId)
+        public override Core.Db.User GetUserById(string id)
         {
             lock (Padlock)
             {
@@ -1043,7 +1049,7 @@ namespace Wexflow.Core.Db.MariaDB
                     + User.COLUMN_NAME_CREATED_ON + ", "
                     + User.COLUMN_NAME_MODIFIED_ON
                     + " FROM " + Core.Db.User.DOCUMENT_NAME
-                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(userId) + "'"
+                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(id) + "'"
                     + ";", conn);
 
                 using var reader = command.ExecuteReader();

@@ -570,6 +570,9 @@ namespace Wexflow.Core.Db.LiteDB
                         {
                             return col.Find(Query.All("Username", Query.Descending));
                         }
+
+                    default:
+                        break;
                 }
 
                 return Array.Empty<User>();
@@ -626,6 +629,9 @@ namespace Wexflow.Core.Db.LiteDB
                             q.Where.Add(Query.EQ("UserProfile", UserProfile.Administrator.ToString()));
                             return col.Find(q);
                         }
+
+                    default:
+                        break;
                 }
 
                 return Array.Empty<User>();
@@ -962,6 +968,9 @@ namespace Wexflow.Core.Db.LiteDB
                             , skip
                             , entriesCount
                         );
+
+                    default:
+                        break;
                 }
 
                 return Array.Empty<HistoryEntry>();
@@ -1220,6 +1229,9 @@ namespace Wexflow.Core.Db.LiteDB
                             , skip
                             , entriesCount
                         );
+
+                    default:
+                        break;
                 }
 
                 return Array.Empty<Entry>();

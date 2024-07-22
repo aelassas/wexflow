@@ -3,26 +3,20 @@
     /// <summary>
     /// Node.
     /// </summary>
-    public class Node
+    /// <remarks>
+    /// Creates a new node.
+    /// </remarks>
+    /// <param name="id">Node id.</param>
+    /// <param name="parentId">Node parent id.</param>
+    public class Node(int id, int parentId)
     {
         /// <summary>
         /// Node Id.
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; set; } = id;
         /// <summary>
         /// Node parent Id.
         /// </summary>
-        public int ParentId { get; set; }
-
-        /// <summary>
-        /// Creates a new node.
-        /// </summary>
-        /// <param name="id">Node id.</param>
-        /// <param name="parentId">Node parent id.</param>
-        public Node(int id, int parentId)
-        {
-            Id = id;
-            ParentId = parentId;
-        }
+        public int ParentId { get; set; } = parentId;
     }
 }

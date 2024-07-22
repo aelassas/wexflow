@@ -41,7 +41,7 @@ namespace Wexflow.Core.Db.RavenDB
 
             _store = new DocumentStore
             {
-                Urls = new[] { ravenUrl },
+                Urls = [ravenUrl],
                 Database = database
             };
 

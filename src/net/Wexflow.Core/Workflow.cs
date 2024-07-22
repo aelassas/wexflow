@@ -1138,6 +1138,8 @@ namespace Wexflow.Core
                                 Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Rejected;
                                 break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -1511,7 +1513,7 @@ namespace Wexflow.Core
                             }
                         }
                     }
-                    else if (status.Condition == false)
+                    else if (!status.Condition)
                     {
                         if (@if.ElseNodes != null && @if.ElseNodes.Length > 0)
                         {
@@ -1573,7 +1575,7 @@ namespace Wexflow.Core
                                 RunTasks(doWhileTasks, @while.Nodes, doWhileStartNode, force, ref success, ref warning, ref atLeastOneSucceed);
                             }
                         }
-                        else if (status.Condition == false)
+                        else if (!status.Condition)
                         {
                             break;
                         }

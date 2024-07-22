@@ -209,6 +209,8 @@ namespace Wexflow.Tasks.SqlToXml
                         ConvertToXml(connenction, command);
                     }
                     break;
+                default:
+                    break;
             }
         }
 

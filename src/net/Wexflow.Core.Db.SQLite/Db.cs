@@ -440,6 +440,9 @@ namespace Wexflow.Core.Db.SQLite
 
                             _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                             break;
+
+                        default:
+                            break;
                     }
 
                     _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
@@ -867,6 +870,9 @@ namespace Wexflow.Core.Db.SQLite
                         case EntryOrderBy.StatusDescending:
 
                             _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
+                            break;
+
+                        default:
                             break;
                     }
 

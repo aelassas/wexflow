@@ -3,32 +3,25 @@
     /// <summary>
     /// Setting.
     /// </summary>
-    public class Setting
+    /// <remarks>
+    /// Creates a new setting.
+    /// </remarks>
+    /// <param name="name">Setting name.</param>
+    /// <param name="value">Setting value.</param>
+    /// <param name="attributes">Setting attributes.</param>
+    public class Setting(string name, string value, Attribute[] attributes)
     {
         /// <summary>
         /// Setting name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = name;
         /// <summary>
         /// Settings value.
         /// </summary>
-        public string Value { get; set; }
+        public string Value { get; set; } = value;
         /// <summary>
         /// Setting attributes.
         /// </summary>
-        public Attribute[] Attributes { get; set; }
-
-        /// <summary>
-        /// Creates a new setting.
-        /// </summary>
-        /// <param name="name">Setting name.</param>
-        /// <param name="value">Setting value.</param>
-        /// <param name="attributes">Setting attributes.</param>
-        public Setting(string name, string value, Attribute[] attributes)
-        {
-            Name = name;
-            Value = value;
-            Attributes = attributes;
-        }
+        public Attribute[] Attributes { get; set; } = attributes;
     }
 }
