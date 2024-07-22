@@ -423,6 +423,9 @@ namespace Wexflow.Core.Db.Oracle
 
                             _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                             break;
+
+                        default:
+                            break;
                     }
 
                     _ = sqlBuilder.Append(" OFFSET ").Append((page - 1) * entriesCount).Append(" ROWS FETCH NEXT ").Append(entriesCount).Append(" ROWS ONLY");
@@ -840,6 +843,9 @@ namespace Wexflow.Core.Db.Oracle
                         case EntryOrderBy.StatusDescending:
 
                             _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
+                            break;
+
+                        default:
                             break;
                     }
 

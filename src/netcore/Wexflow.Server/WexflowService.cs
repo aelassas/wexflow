@@ -207,8 +207,8 @@ namespace Wexflow.Server
                         workflows = WexflowServer.WexflowEngine.Workflows
                             .ToList()
                             .Where(wf =>
-                                    wf.Name.ToUpper().Contains(keywordToUpper)
-                                    || wf.Description.ToUpper().Contains(keywordToUpper)
+                                    wf.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
+                                    || wf.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
                                     || wf.Id.ToString().Contains(keywordToUpper))
                             .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.InstanceId, wf.Name, wf.FilePath,
                                 (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.EnableParallelJobs, wf.IsWaitingForApproval, wf.Description, wf.IsRunning, wf.IsPaused,
@@ -226,8 +226,8 @@ namespace Wexflow.Server
                         workflows = WexflowServer.WexflowEngine.GetUserWorkflows(user.GetDbId())
                                                 .ToList()
                                                 .Where(wf =>
-                                                    wf.Name.ToUpper().Contains(keywordToUpper)
-                                                    || wf.Description.ToUpper().Contains(keywordToUpper)
+                                                    wf.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
+                                                    || wf.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
                                                     || wf.Id.ToString().Contains(keywordToUpper))
                                                 .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.InstanceId, wf.Name, wf.FilePath,
                                                     (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.EnableParallelJobs, wf.IsWaitingForApproval, wf.Description, wf.IsRunning, wf.IsPaused,
@@ -270,8 +270,8 @@ namespace Wexflow.Server
                             .ToList()
                             .Where(wf =>
                                 wf.IsApproval &&
-                                (wf.Name.ToUpper().Contains(keywordToUpper)
-                                || wf.Description.ToUpper().Contains(keywordToUpper)
+                                (wf.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
+                                || wf.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
                                 || wf.Id.ToString().Contains(keywordToUpper)))
                             .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.InstanceId, wf.Name, wf.FilePath,
                                 (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.EnableParallelJobs, wf.IsWaitingForApproval, wf.Description, wf.IsRunning, wf.IsPaused,
@@ -290,8 +290,8 @@ namespace Wexflow.Server
                                                 .ToList()
                                                 .Where(wf =>
                                                     wf.IsApproval &&
-                                                    (wf.Name.ToUpper().Contains(keywordToUpper)
-                                                    || wf.Description.ToUpper().Contains(keywordToUpper)
+                                                    (wf.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
+                                                    || wf.Description.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase)
                                                     || wf.Id.ToString().Contains(keywordToUpper)))
                                                 .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.InstanceId, wf.Name, wf.FilePath,
                                                     (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.EnableParallelJobs, wf.IsWaitingForApproval, wf.Description, wf.IsRunning, wf.IsPaused,
@@ -1032,7 +1032,7 @@ namespace Wexflow.Server
                         var array = JArray.Parse(await File.ReadAllTextAsync(WexflowServer.WexflowEngine.TasksNamesFile));
                         taskNames = [.. array
                         .ToObject<TaskName[]>()
-                        .Where(x => x.Name.ToUpper().Contains(keywordToUpper))
+                        .Where(x => x.Name.Contains(keywordToUpper, StringComparison.CurrentCultureIgnoreCase))
                         .OrderBy(x => x.Name)];
                     }
                     catch (Exception e)
@@ -1416,7 +1416,7 @@ namespace Wexflow.Server
 
         private static Auth GetAuth(HttpRequest request)
         {
-            var auth = request.Headers["Authorization"].First();
+            var auth = request.Headers.Authorization.First();
             auth = auth.Replace("Basic ", string.Empty);
             auth = DecodeBase64(auth);
             var authParts = auth.Split(':');
@@ -2633,7 +2633,7 @@ namespace Wexflow.Server
         {
             XElement block = new("block");
 
-            if (nodes.Any())
+            if (nodes.Length > 0)
             {
                 if (node is If)
                 {

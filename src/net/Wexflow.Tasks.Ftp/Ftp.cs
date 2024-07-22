@@ -173,6 +173,8 @@ namespace Wexflow.Tasks.Ftp
                                     _plugin.Delete(file);
                                     _ = Workflow.FilesPerTask[file.TaskId].Remove(file);
                                     break;
+                                default:
+                                    break;
                             }
 
                             if (!atLeastOneSuccess)

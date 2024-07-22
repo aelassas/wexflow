@@ -411,6 +411,9 @@ namespace Wexflow.Core.Db.MySQL
 
                         _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
+
+                    default:
+                        break;
                 }
 
                 _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
@@ -804,6 +807,9 @@ namespace Wexflow.Core.Db.MySQL
 
                         _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
+
+                    default:
+                        break;
                 }
 
                 _ = sqlBuilder.Append(" LIMIT ").Append(entriesCount).Append(" OFFSET ").Append((page - 1) * entriesCount).Append(';');
@@ -1028,7 +1034,7 @@ namespace Wexflow.Core.Db.MySQL
             }
         }
 
-        public override Core.Db.User GetUserById(string userId)
+        public override Core.Db.User GetUserById(string id)
         {
             lock (Padlock)
             {
@@ -1043,7 +1049,7 @@ namespace Wexflow.Core.Db.MySQL
                     + User.COLUMN_NAME_CREATED_ON + ", "
                     + User.COLUMN_NAME_MODIFIED_ON
                     + " FROM " + Core.Db.User.DOCUMENT_NAME
-                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(userId) + "'"
+                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(id) + "'"
                     + ";", conn);
 
                 using var reader = command.ExecuteReader();

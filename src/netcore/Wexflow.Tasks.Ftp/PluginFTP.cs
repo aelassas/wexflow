@@ -102,7 +102,7 @@ namespace Wexflow.Tasks.Ftp
 
         public static void UploadFile(FtpClient client, FileInf file)
         {
-            using Stream istream = File.Open(file.Path, FileMode.Open, FileAccess.Read);
+            using var istream = File.Open(file.Path, FileMode.Open, FileAccess.Read);
             using var ostream = client.OpenWrite(file.RenameToOrName);
             var buffer = new byte[BUFFER_SIZE];
             int r;
@@ -135,7 +135,7 @@ namespace Wexflow.Tasks.Ftp
         {
             var destFileName = System.IO.Path.Combine(task.Workflow.WorkflowTempFolder, file.FileName);
             using (var istream = client.OpenRead(file.Path))
-            using (Stream ostream = File.Create(destFileName))
+            using (var ostream = File.Create(destFileName))
             {
                 // istream.Position is incremented accordingly to the reads you perform
                 // istream.Length == file size if the server supports getting the file size

@@ -374,6 +374,9 @@ namespace Wexflow.Core.Db.Oracle
 
                         _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
+
+                    default:
+                        break;
                 }
 
                 _ = sqlBuilder.Append(" OFFSET ").Append((page - 1) * entriesCount).Append(" ROWS FETCH NEXT ").Append(entriesCount).Append(" ROWS ONLY");
@@ -757,6 +760,9 @@ namespace Wexflow.Core.Db.Oracle
 
                         _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
                         break;
+
+                    default:
+                        break;
                 }
 
                 _ = sqlBuilder.Append(" OFFSET ").Append((page - 1) * entriesCount).Append(" ROWS FETCH NEXT ").Append(entriesCount).Append(" ROWS ONLY");
@@ -970,7 +976,7 @@ namespace Wexflow.Core.Db.Oracle
             }
         }
 
-        public override Core.Db.User GetUserById(string userId)
+        public override Core.Db.User GetUserById(string id)
         {
             lock (Padlock)
             {
@@ -985,7 +991,7 @@ namespace Wexflow.Core.Db.Oracle
                     + User.COLUMN_NAME_CREATED_ON + ", "
                     + User.COLUMN_NAME_MODIFIED_ON
                     + " FROM " + Core.Db.User.DOCUMENT_NAME
-                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(userId) + "'"
+                    + " WHERE " + User.COLUMN_NAME_ID + " = '" + int.Parse(id) + "'"
                     , conn);
                 using var reader = command.ExecuteReader();
                 if (reader.Read())

@@ -22,7 +22,7 @@ namespace Wexflow.Tasks.FilesJoiner
 
         private static (string RenamedPath, int Number) GetNumberPart(string path)
         {
-            var lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
+            var lastUnderscoreIndex = path.LastIndexOf('_');
             if (lastUnderscoreIndex == -1)
             {
                 return (path, -1);

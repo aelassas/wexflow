@@ -114,6 +114,8 @@ namespace Wexflow.Tasks.ImagesTransformer
                             case ImgFormat.Wmf:
                                 img.Save(destFilePath, ImageFormat.Wmf);
                                 break;
+                            default:
+                                break;
                         }
                     }
                     Files.Add(new FileInf(destFilePath, Id));

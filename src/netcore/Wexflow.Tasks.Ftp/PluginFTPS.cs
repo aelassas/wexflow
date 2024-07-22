@@ -21,6 +21,8 @@ namespace Wexflow.Tasks.Ftp
                 case EncryptionMode.Implicit:
                     _encryptionMode = FtpEncryptionMode.Implicit;
                     break;
+                default:
+                    break;
             }
         }
 

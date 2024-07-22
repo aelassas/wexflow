@@ -264,6 +264,9 @@ namespace Wexflow.Tasks.FileSystemWatcher
                             ErrorFormat("An error while updating PollingFileSystemWatcher.OnDeleted database entry.", ex);
                         }
                         break;
+
+                    default:
+                        break;
                 }
             }
         }

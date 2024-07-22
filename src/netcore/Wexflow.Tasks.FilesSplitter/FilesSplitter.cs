@@ -36,12 +36,12 @@ namespace Wexflow.Tasks.FilesSplitter
                         const int bufferSize = 20 * 1024;
                         var buffer = new byte[bufferSize];
 
-                        using (Stream input = File.OpenRead(file.Path))
+                        using (var input = File.OpenRead(file.Path))
                         {
                             while (input.Position < input.Length)
                             {
                                 var chunkPath = Path.Combine(Workflow.WorkflowTempFolder, $"{file.FileName}_{index + 1}");
-                                using (Stream output = File.Create(chunkPath))
+                                using (var output = File.Create(chunkPath))
                                 {
                                     int remaining = ChunkSize, bytesRead;
                                     while (remaining > 0 && (bytesRead = input.Read(buffer, 0, Math.Min(remaining, bufferSize))) > 0)

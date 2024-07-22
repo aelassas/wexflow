@@ -208,6 +208,8 @@ namespace Wexflow.Core.Db.MongoDB
                         return col.Find(u => u.Username.ToLower().Contains(keywordToLower) && u.UserProfile == UserProfile.Administrator).Sort(Builders<User>.Sort.Ascending(u => u.Username)).ToEnumerable();
                     case UserOrderBy.UsernameDescending:
                         return col.Find(u => u.Username.ToLower().Contains(keywordToLower) && u.UserProfile == UserProfile.Administrator).Sort(Builders<User>.Sort.Descending(u => u.Username)).ToEnumerable();
+                    default:
+                        break;
                 }
 
                 return Array.Empty<User>();
@@ -374,6 +376,8 @@ namespace Wexflow.Core.Db.MongoDB
                         return col.Find(u => u.Username.ToLower().Contains(keywordToLower)).Sort(Builders<User>.Sort.Ascending(u => u.Username)).ToEnumerable();
                     case UserOrderBy.UsernameDescending:
                         return col.Find(u => u.Username.ToLower().Contains(keywordToLower)).Sort(Builders<User>.Sort.Descending(u => u.Username)).ToEnumerable();
+                    default:
+                        break;
                 }
 
                 return Array.Empty<User>();
@@ -481,6 +485,9 @@ namespace Wexflow.Core.Db.MongoDB
                     case EntryOrderBy.StatusDescending:
 
                         return col.Find(he => (he.Name.ToLower().Contains(keywordToLower) || he.Description.ToLower().Contains(keywordToLower)) && he.StatusDate > from && he.StatusDate < to).Sort(Builders<HistoryEntry>.Sort.Descending(he => he.Status)).ToEnumerable().Skip(skip).Take(entriesCount);
+
+                    default:
+                        break;
                 }
 
                 return Array.Empty<HistoryEntry>();
@@ -544,6 +551,9 @@ namespace Wexflow.Core.Db.MongoDB
                     case EntryOrderBy.StatusDescending:
 
                         return col.Find(e => (e.Name.ToLower().Contains(keywordToLower) || e.Description.ToLower().Contains(keywordToLower)) && e.StatusDate > from && e.StatusDate < to).Sort(Builders<Entry>.Sort.Descending(e => e.Status)).ToEnumerable().Skip(skip).Take(entriesCount);
+
+                    default:
+                        break;
                 }
 
                 return Array.Empty<Entry>();

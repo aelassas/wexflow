@@ -156,6 +156,8 @@ namespace Wexflow.Tasks.MailsReceiver
                             client.Disconnect(true);
                         }
                         break;
+                    default:
+                        break;
                 }
             }
             catch (ThreadAbortException)

@@ -461,6 +461,9 @@ namespace Wexflow.Core.Db.SQLServer
 
                             _ = sqlBuilder.Append(Entry.COLUMN_NAME_STATUS).Append(" DESC");
                             break;
+
+                        default:
+                            break;
                     }
 
                     _ = sqlBuilder
@@ -893,6 +896,9 @@ namespace Wexflow.Core.Db.SQLServer
                         case EntryOrderBy.StatusDescending:
 
                             _ = sqlBuilder.Append(HistoryEntry.COLUMN_NAME_STATUS).Append(" DESC");
+                            break;
+
+                        default:
                             break;
                     }
 

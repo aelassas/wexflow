@@ -53,6 +53,8 @@ namespace Wexflow.Tasks.Ftp
                     var passphrase = GetSetting("passphrase", string.Empty);
                     _plugin = new PluginSftp(this, server, port, user, password, path, privateKeyPath, passphrase);
                     break;
+                default:
+                    break;
             }
             _cmd = (FtpCommad)Enum.Parse(typeof(FtpCommad), GetSetting("command"), true);
             _retryCount = int.Parse(GetSetting("retryCount", "3"));
@@ -165,6 +167,8 @@ namespace Wexflow.Tasks.Ftp
                                 case FtpCommad.Delete:
                                     _plugin.Delete(file);
                                     _ = Workflow.FilesPerTask[file.TaskId].Remove(file);
+                                    break;
+                                default:
                                     break;
                             }
 
