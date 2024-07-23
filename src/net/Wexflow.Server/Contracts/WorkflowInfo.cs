@@ -10,7 +10,7 @@ namespace Wexflow.Server.Contracts
         Cron
     }
 
-    public class WorkflowInfo : IComparable
+    public class WorkflowInfo : IComparable<WorkflowInfo>
     {
         public string DbId { get; set; }
 
@@ -95,10 +95,6 @@ namespace Wexflow.Server.Contracts
             RetryTimeout = retryTimeout;
         }
 
-        public int CompareTo(object obj)
-        {
-            var wfi = (WorkflowInfo)obj;
-            return wfi.Id.CompareTo(Id);
-        }
+        public int CompareTo(WorkflowInfo other) => other.Id.CompareTo(Id);
     }
 }
