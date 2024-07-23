@@ -65,7 +65,7 @@ namespace Wexflow.Tasks.Movedir
             return new TaskStatus(succeeded ? Status.Success : Status.Error, false);
         }
 
-        private void DeleteRec(string dir)
+        private static void DeleteRec(string dir)
         {
             foreach (var file in Directory.GetFiles(dir))
             {

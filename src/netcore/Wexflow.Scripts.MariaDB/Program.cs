@@ -4,7 +4,7 @@ using Wexflow.Core.Db.MariaDB;
 
 namespace Wexflow.Scripts.MariaDB
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {

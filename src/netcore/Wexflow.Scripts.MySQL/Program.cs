@@ -4,7 +4,7 @@ using Wexflow.Core.Db.MySQL;
 
 namespace Wexflow.Scripts.MySQL
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {

@@ -9,7 +9,7 @@ using Wexflow.Core.Service.Contracts;
 
 namespace Wexflow.Clients.CommandLine
 {
-    internal class Program
+    internal sealed class Program
     {
         private enum Operation
         {
@@ -22,7 +22,7 @@ namespace Wexflow.Clients.CommandLine
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local
-        private class Options
+        private sealed class Options
         {
             [Option('o', "operation", Required = true, HelpText = "start|suspend|resume|stop|approve|reject")]
             // ReSharper disable once UnusedAutoPropertyAccessor.Local

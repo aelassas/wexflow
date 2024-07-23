@@ -5,7 +5,7 @@ using Wexflow.Core.Db.SQLite;
 
 namespace Wexflow.Scripts.SQLite
 {
-    internal class Program
+    internal sealed class Program
     {
         private static IConfiguration _config;
 

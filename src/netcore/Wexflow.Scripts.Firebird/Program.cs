@@ -4,7 +4,7 @@ using Wexflow.Core.Db.Firebird;
 
 namespace Wexflow.Scripts.Firebird
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {

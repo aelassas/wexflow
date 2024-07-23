@@ -4,7 +4,7 @@ using Wexflow.Scripts.Core;
 
 namespace Wexflow.Scripts.LiteDB
 {
-    internal class Program
+    internal sealed class Program
     {
         private static IConfiguration? _config;
 

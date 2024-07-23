@@ -4,9 +4,9 @@ using Wexflow.Core.Service.Client;
 
 namespace Wexflow.Scripts.RunAllWorkflows
 {
-    internal class Program
+    internal sealed class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {

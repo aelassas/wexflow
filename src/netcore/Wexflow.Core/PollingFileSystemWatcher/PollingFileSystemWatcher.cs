@@ -90,10 +90,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
 
         public void Start()
         {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException(nameof(PollingFileSystemWatcher));
-            }
+            ObjectDisposedException.ThrowIf(_disposed, nameof(PollingFileSystemWatcher));
 
             if (_started)
             {

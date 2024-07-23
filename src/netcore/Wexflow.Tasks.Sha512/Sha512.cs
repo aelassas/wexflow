@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.Sha512
                 {
                     try
                     {
-                        var sha1 = GetSha1(file.Path);
+                        var sha1 = GetSha512(file.Path);
                         xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
                                 new XAttribute("name", file.FileName),
@@ -79,7 +79,7 @@ namespace Wexflow.Tasks.Sha512
             return new TaskStatus(status, false);
         }
 
-        private static string GetSha1(string filePath)
+        private static string GetSha512(string filePath)
         {
             using var stream = File.OpenRead(filePath);
             using var alg = SHA512.Create();

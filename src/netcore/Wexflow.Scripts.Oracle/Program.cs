@@ -4,7 +4,7 @@ using Wexflow.Core.Db.Oracle;
 
 namespace Wexflow.Scripts.Oracle
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {

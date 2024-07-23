@@ -13,7 +13,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
     // It has optimized Equals and GetHasCode
     // It implements removals by marking values as "removed" (Path==null) and then garbage collecting them when table is resized
     [Serializable]
-    internal class PathToFileStateHashtable(int capacity = 4)
+    internal sealed class PathToFileStateHashtable(int capacity = 4)
     {
         private int _nextValuesIndex = 1; // the first Values slot is reserved so that default(Bucket) knows that it is not pointing to any value.
         public FileState[] Values { get; private set; } = new FileState[capacity];

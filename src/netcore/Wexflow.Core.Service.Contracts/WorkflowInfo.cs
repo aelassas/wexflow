@@ -66,5 +66,45 @@ namespace Wexflow.Core.Service.Contracts
             var wfi = (WorkflowInfo)obj;
             return wfi.Id.CompareTo(Id);
         }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is null ? false : throw new NotImplementedException());
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(WorkflowInfo left, WorkflowInfo right)
+        {
+            return left is null ? right is null : left.Equals(right);
+        }
+
+        public static bool operator !=(WorkflowInfo left, WorkflowInfo right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(WorkflowInfo left, WorkflowInfo right)
+        {
+            return left is null ? right is not null : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(WorkflowInfo left, WorkflowInfo right)
+        {
+            return left is null || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(WorkflowInfo left, WorkflowInfo right)
+        {
+            return left is not null && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(WorkflowInfo left, WorkflowInfo right)
+        {
+            return left is null ? right is null : left.CompareTo(right) >= 0;
+        }
     }
 }

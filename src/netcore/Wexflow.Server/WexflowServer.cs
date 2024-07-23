@@ -193,7 +193,8 @@ namespace Wexflow.Server
                             Logger.ErrorFormat("Error while deleting the workflow {0}", ex, path);
                         }
                         break;
-
+                    case WatcherChangeTypes.Renamed:
+                    case WatcherChangeTypes.All:
                     default:
                         break;
                 }

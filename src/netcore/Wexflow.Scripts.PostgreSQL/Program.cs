@@ -4,7 +4,7 @@ using Wexflow.Core.Db.PostgreSQL;
 
 namespace Wexflow.Scripts.PostgreSQL
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {

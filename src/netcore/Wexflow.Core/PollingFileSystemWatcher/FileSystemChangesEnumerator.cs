@@ -8,7 +8,7 @@ using System.IO.Enumeration;
 
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
-    internal class FileSystemChangeEnumerator : FileSystemEnumerator<string>
+    internal sealed class FileSystemChangeEnumerator : FileSystemEnumerator<string>
     {
         private FileChangeList _changes;
         private string _currentDirectory;

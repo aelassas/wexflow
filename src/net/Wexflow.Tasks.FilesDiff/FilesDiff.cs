@@ -88,6 +88,8 @@ namespace Wexflow.Tasks.FilesDiff
                         case ChangeType.Modified:
                             sw.Write("~ ");
                             break;
+                        case ChangeType.Unchanged:
+                        case ChangeType.Imaginary:
                         default:
                             sw.Write("  ");
                             break;

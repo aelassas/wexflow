@@ -5,7 +5,7 @@ using Wexflow.Scripts.Core;
 
 namespace Wexflow.Scripts.RavenDB
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {

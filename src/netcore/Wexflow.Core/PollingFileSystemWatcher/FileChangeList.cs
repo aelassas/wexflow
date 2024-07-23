@@ -70,7 +70,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             return result;
         }
 
-        private class Comparer : IComparer<FileChange>
+        private sealed class Comparer : IComparer<FileChange>
         {
             public static readonly IComparer<FileChange> ColumnDefault = new Comparer();
 

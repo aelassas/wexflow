@@ -4,7 +4,7 @@ using Wexflow.Core.Db.SQLServer;
 
 namespace Wexflow.Scripts.SQLServer
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main()
         {
