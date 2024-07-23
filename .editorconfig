@@ -52,7 +52,7 @@ dotnet_diagnostic.CA1513.severity = suggestion
 dotnet_diagnostic.CA2201.severity = silent
 
 # CA1001: Les types qui ont des champs supprimables doivent être supprimables
-dotnet_diagnostic.CA1001.severity = suggestion
+dotnet_diagnostic.CA1001.severity = silent
 
 # CA1707: Les identificateurs ne doivent pas contenir de traits de soulignement
 dotnet_diagnostic.CA1707.severity = silent
