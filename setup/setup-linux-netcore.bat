@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=7.9
+set version=8.0
 set dst=wexflow
 set zip=wexflow-%version%-linux-netcore.zip
 set dstDir=.\%dst%
