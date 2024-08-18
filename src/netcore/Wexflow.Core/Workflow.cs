@@ -23,6 +23,8 @@ namespace Wexflow.Core
     /// </summary>
     public class Workflow
     {
+        private readonly object padLock = new();
+
         /// <summary>
         /// This constant is used to determine the key size of the encryption algorithm in bits.
         /// We divide this by 8 within the code below to get the equivalent number of bytes.
@@ -1005,7 +1007,7 @@ namespace Wexflow.Core
 
             try
             {
-                lock (this)
+                lock (padLock)
                 {
                     StartedOn = DateTime.Now;
                     StartedBy = startedBy;
@@ -1767,7 +1769,7 @@ namespace Wexflow.Core
                     //    _ = job.Workflow.StartAsync(StartedBy);
                     //}
 
-                    foreach(var job in _jobsQueue)
+                    foreach (var job in _jobsQueue)
                     {
                         _ = job.Workflow.Stop(stoppedBy);
                     }

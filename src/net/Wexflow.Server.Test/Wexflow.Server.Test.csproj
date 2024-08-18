@@ -88,13 +88,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Wexflow.Core.Service.Client\Wexflow.Core.Service.Client.csproj">
       <Project>{3cfa5f19-d8e1-4af8-9b6a-dcb959c035db}</Project>
       <Name>Wexflow.Core.Service.Client</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
