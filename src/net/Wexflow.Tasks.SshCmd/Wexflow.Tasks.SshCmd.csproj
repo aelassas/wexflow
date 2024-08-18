@@ -86,18 +86,18 @@
     <Compile Include="StringExt.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
-      <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
-      <Name>Wexflow.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="SshCmd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SSH.NET">
       <Version>2024.1.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
+      <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
+      <Name>Wexflow.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

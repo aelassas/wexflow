@@ -126,7 +126,7 @@
       <Version>4.1.12</Version>
     </PackageReference>
     <PackageReference Include="Oracle.ManagedDataAccess">
-      <Version>23.5.0</Version>
+      <Version>23.5.1</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
