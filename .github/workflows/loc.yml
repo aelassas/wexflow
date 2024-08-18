@@ -15,6 +15,8 @@ jobs:
         with:
           debug: true
           directory: ./
+          badge_label: lines of code
+          badge_color: green
           badge: ./output/badge.svg
           ignore: '.github|samples|setup|README.md|LICENSE.txt'
 
