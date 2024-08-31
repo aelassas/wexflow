@@ -596,7 +596,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Server.Test", "src\net\Wexflow.Server.Test\Wexflow.Server.Test.csproj", "{D9572452-7118-4570-ACF0-7BCAF6DC92B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Server.Test", "src\netcore\Wexflow.Server.Test\Wexflow.Server.Test.csproj", "{40F36818-10CA-4EEC-A38F-A8BA43332BB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Server.Test", "src\netcore\Wexflow.Server.Test\Wexflow.Server.Test.csproj", "{40F36818-10CA-4EEC-A38F-A8BA43332BB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -3810,8 +3810,8 @@ Global
 		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|x64.ActiveCfg = Release|x64
 		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|x64.Build.0 = Release|x64
-		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|x86.ActiveCfg = Release|Any CPU
-		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|x86.Build.0 = Release|Any CPU
+		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|x86.ActiveCfg = Release|x86
+		{D9572452-7118-4570-ACF0-7BCAF6DC92B3}.Release|x86.Build.0 = Release|x86
 		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -3822,8 +3822,8 @@ Global
 		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|x64.ActiveCfg = Release|x64
 		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|x64.Build.0 = Release|x64
-		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|x86.ActiveCfg = Release|Any CPU
-		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|x86.Build.0 = Release|Any CPU
+		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|x86.ActiveCfg = Release|x86
+		{40F36818-10CA-4EEC-A38F-A8BA43332BB4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
