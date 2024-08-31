@@ -890,8 +890,9 @@ namespace Wexflow.Core
         /// </summary>
         /// <param name="startedBy">Username of the user that started the workflow.</param>
         /// <param name="workflowId">Workflow Id.</param>
+        /// <param name="restVariables">Rest variables</param>
         /// <returns>Instance id.</returns>
-        public Guid StartWorkflow(string startedBy, int workflowId)
+        public Guid StartWorkflow(string startedBy, int workflowId, List<Variable> restVariables = null)
         {
             var wf = GetWorkflow(workflowId);
 
@@ -903,7 +904,7 @@ namespace Wexflow.Core
             {
                 if (wf.IsEnabled)
                 {
-                    var instanceId = wf.StartAsync(startedBy);
+                    var instanceId = wf.StartAsync(startedBy, restVariables);
                     return instanceId;
                 }
             }

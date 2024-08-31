@@ -22,10 +22,14 @@ namespace Wexflow.Core.Service.Client
             return responseString;
         }
 
-        private static async Task<string> UploadStringAsync(HttpClient client, string url, string username, string password)
+        private static async Task<string> UploadStringAsync(HttpClient client, string url, string username, string password, string body = "")
         {
             HttpRequestMessage request = new(HttpMethod.Post, url);
             request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
+            if (!string.IsNullOrEmpty(body))
+            {
+                request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+            }
             var response = await client.SendAsync(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
@@ -69,6 +73,14 @@ namespace Wexflow.Core.Service.Client
             var uri = $"{Uri}/start?w={id}";
             using HttpClient webClient = new();
             var instanceId = await UploadStringAsync(webClient, uri, username, password);
+            return Guid.Parse(instanceId.Replace("\"", string.Empty));
+        }
+
+        public async Task<Guid> StartWorkflowWithVariables(string payload, string username, string password)
+        {
+            var uri = $"{Uri}/start-with-variables";
+            using HttpClient webClient = new();
+            var instanceId = await UploadStringAsync(webClient, uri, username, password, payload);
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
         }
 

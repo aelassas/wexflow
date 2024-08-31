@@ -22,7 +22,7 @@ namespace Wexflow.Core
     /// </summary>
     public class Workflow
     {
-        private readonly object padLock = new object();
+        private readonly object padlock = new object();
 
         /// <summary>
         /// This constant is used to determine the key size of the encryption algorithm in bits.
@@ -899,8 +899,9 @@ namespace Wexflow.Core
         /// Starts this workflow asynchronously.
         /// </summary>
         /// <param name="startedBy">Username of the user that started the workflow.</param>
+        /// <param name="restVariables">Rest variables</param>
         /// <returns>Instance Id.</returns>
-        public Guid StartAsync(string startedBy)
+        public Guid StartAsync(string startedBy, List<Variable> restVariables = null)
         {
             if (IsRunning && !EnableParallelJobs)
             {
@@ -928,14 +929,14 @@ namespace Wexflow.Core
                     RestVariables = RestVariables,
                     StartedBy = startedBy
                 };
-                return workflow.StartAsync(startedBy);
+                return workflow.StartAsync(startedBy, restVariables);
             }
 
             StartedOn = DateTime.Now;
             StartedBy = startedBy;
             var instanceId = Guid.NewGuid();
             var warning = false;
-            var thread = new Thread(() => StartSync(startedBy, instanceId, ref warning));
+            var thread = new Thread(() => StartSync(startedBy, instanceId, ref warning, restVariables));
             _thread = thread;
             thread.Start();
 
@@ -948,18 +949,29 @@ namespace Wexflow.Core
         /// <param name="startedBy">Username of the user that started the workflow.</param>
         /// <param name="instanceId">Instance id.</param>
         /// <param name="resultWarning">Indicates whether the final result is warning or not.</param>
-        public bool StartSync(string startedBy, Guid instanceId, ref bool resultWarning)
+        /// <param name="restVariables">Rest variables</param>
+        /// <returns>Result.</returns>
+        public bool StartSync(string startedBy, Guid instanceId, ref bool resultWarning, List<Variable> restVariables = null)
         {
             var resultSuccess = true;
 
             try
             {
-                lock (padLock)
+                lock (padlock)
                 {
                     StartedOn = DateTime.Now;
                     StartedBy = startedBy;
                     InstanceId = instanceId;
                     Jobs.Add(InstanceId, this);
+
+                    //
+                    // Add rest variables
+                    //
+                    if (restVariables != null)
+                    {
+                        RestVariables.Clear();
+                        RestVariables.AddRange(restVariables);
+                    }
 
                     //
                     // Parse the workflow definition (Global variables and local variables.)

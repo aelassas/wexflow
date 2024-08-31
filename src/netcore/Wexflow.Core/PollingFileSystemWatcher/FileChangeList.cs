@@ -57,7 +57,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             Array.Sort(_changes, 0, _count, Comparer.ColumnDefault);
         }
 
-        public readonly override string ToString()
+        public override readonly string ToString()
         {
             return _count.ToString();
         }

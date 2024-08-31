@@ -233,7 +233,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             }
             public readonly bool IsEmpty => ValuesIndex == 0;
 
-            public readonly override string ToString()
+            public override readonly string ToString()
             {
                 return IsEmpty ? "empty" : Key.ToString();
             }
@@ -245,7 +245,7 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             public string Directory;
             public string File;
 
-            public readonly override string ToString()
+            public override readonly string ToString()
             {
                 return File;
             }

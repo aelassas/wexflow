@@ -16,7 +16,26 @@ namespace Wexflow.Server.Test
             void startWorkflow()
             {
                 Thread.CurrentThread.IsBackground = true;
-                var jobId = client.StartWorkflow(41, username, password);
+                //var jobId = client.StartWorkflow(41, username, password);
+                //Console.WriteLine(jobId);
+
+                var payload = $@"
+                {{
+	                ""WorkflowId"":131,
+	                ""Variables"":[
+	                  {{
+		                 ""Name"":""restVar1"",
+		                 ""Value"":""C:\\WexflowTesting\\file1.txt""
+	                  }},
+	                  {{
+		                 ""Name"":""restVar2"",
+		                 ""Value"":""C:\\WexflowTesting\\file2.txt""
+	                  }}
+	                ]
+                }}
+                ";
+
+                var jobId = client.StartWorkflowWithVariables(payload, username, password);
                 Console.WriteLine(jobId);
             }
 

@@ -532,10 +532,10 @@ namespace Wexflow.Server
                 var workflowId = o.Value<int>("WorkflowId");
                 var variables = o.Value<JArray>("Variables");
 
-                List<Core.Variable> vars = [];
+                List<Core.Variable> restVariables = [];
                 foreach (var variable in variables)
                 {
-                    vars.Add(new Core.Variable { Key = variable.Value<string>("Name"), Value = variable.Value<string>("Value") });
+                    restVariables.Add(new Core.Variable { Key = variable.Value<string>("Name"), Value = variable.Value<string>("Value") });
                 }
 
                 var workflow = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId);
@@ -545,9 +545,7 @@ namespace Wexflow.Server
                 {
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
-                        workflow.RestVariables.Clear();
-                        workflow.RestVariables.AddRange(vars);
-                        var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
+                        var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
 
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(instanceId.ToString()));
                     }
@@ -557,9 +555,7 @@ namespace Wexflow.Server
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                         if (check)
                         {
-                            workflow.RestVariables.Clear();
-                            workflow.RestVariables.AddRange(vars);
-                            var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
+                            var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
 
                             await context.Response.WriteAsync(JsonConvert.SerializeObject(instanceId.ToString()));
                         }

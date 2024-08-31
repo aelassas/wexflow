@@ -14,7 +14,25 @@ try
     async void startWorkflow()
     {
         Thread.CurrentThread.IsBackground = true;
-        var jobId = await client.StartWorkflow(41, username, password);
+        //var jobId = await client.StartWorkflow(41, username, password);
+        //Console.WriteLine(jobId);
+        var payload = $@"
+        {{
+	        ""WorkflowId"":138,
+	        ""Variables"":[
+	          {{
+		         ""Name"":""restVar1"",
+		         ""Value"":""C:\\WexflowTesting\\file1.txt""
+	          }},
+	          {{
+		         ""Name"":""restVar2"",
+		         ""Value"":""C:\\WexflowTesting\\file2.txt""
+	          }}
+	        ]
+        }}
+        ";
+
+        var jobId = await client.StartWorkflowWithVariables(payload, username, password);
         Console.WriteLine(jobId);
     }
 

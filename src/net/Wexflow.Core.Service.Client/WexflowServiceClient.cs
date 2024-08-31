@@ -60,6 +60,15 @@ namespace Wexflow.Core.Service.Client
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
         }
 
+        public Guid StartWorkflowWithVariables(string payload, string username, string password)
+        {
+            var uri = $"{Uri}/start-with-variables";
+            var webClient = new WebClient();
+            webClient.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
+            var instanceId = webClient.UploadString(uri, payload);
+            return Guid.Parse(instanceId.Replace("\"", string.Empty));
+        }
+
         public void StopWorkflow(int id, Guid instanceId, string username, string password)
         {
             var uri = $"{Uri}/stop?w={id}&i={instanceId}";
