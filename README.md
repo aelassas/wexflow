@@ -38,10 +38,9 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * [Docker Image](https://github.com/aelassas/wexflow/wiki/Docker)
 * [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 
-<!--
 ### Sponsors
 
 [![JetBrains](https://wexflow.github.io/content/jetbrains.png)](https://www.jetbrains.com/)
--->
+
 ### License
 Wexflow is [MIT licensed](https://github.com/aelassas/wexflow/blob/main/LICENSE.txt).
