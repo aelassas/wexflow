@@ -19,6 +19,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * Sequential workflows
 * Flowchart workflows
 * Approval workflows
+* 6+ databases supported
 * 100+ activities
 * Cron scheduling
 * Extensive logging
