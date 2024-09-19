@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Drawing;
+using SkiaSharp;
 using System.IO;
 using System.Runtime.Versioning;
 
@@ -33,7 +33,7 @@ namespace Wexflow.NetCore.Tests
             Assert.AreEqual(1, images.Length);
 
             // Checking the image size
-            using var image = Image.FromFile(images[0]);
+            using var image = SKImage.FromEncodedData(images[0]);
             Assert.AreEqual(1024, image.Width);
             Assert.AreEqual(768, image.Height);
         }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -28,10 +28,8 @@ namespace Wexflow.Tasks.ImagesOverlay
 
                 if (imageFiles.Length >= 2)
                 {
-                    var extension = Path.GetExtension(imageFiles[0].FileName);
-
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        $"ImagesOverlay_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}{extension}");
+                        $"ImagesOverlay_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.png");
 
                     var res = OverlayImages(imageFiles, destPath);
                     if (!res)
@@ -67,7 +65,7 @@ namespace Wexflow.Tasks.ImagesOverlay
 
                 foreach (var imageFile in imageFiles)
                 {
-                    using var img = Image.FromFile(imageFile.Path);
+                    using var img = SKImage.FromEncodedData(imageFile.Path);
                     imageHeights.Add(img.Height);
                     imageWidths.Add(img.Width);
                 }
@@ -77,18 +75,22 @@ namespace Wexflow.Tasks.ImagesOverlay
                 var height = imageHeights[^1];
                 var width = imageWidths[^1];
 
-                using (Bitmap finalImage = new(width, height))
-                using (var graphics = Graphics.FromImage(finalImage))
+                var imageInfo = new SKImageInfo(width, height);
+                using (var surface = SKSurface.Create(imageInfo))
                 {
-                    graphics.Clear(SystemColors.AppWorkspace);
+                    var canvas = surface.Canvas;
+
                     foreach (var imageFile in imageFiles)
                     {
-                        using var img = Image.FromFile(imageFile.Path);
-                        graphics.DrawImage(img, new Point(0, 0));
+                        var image = SKImage.FromEncodedData(imageFile.Path);
+                        var bitmap = SKBitmap.FromImage(image);
+                        canvas.DrawBitmap(bitmap, new SKPoint(0, 0));
                         WaitOne();
                     }
 
-                    finalImage.Save(destPath);
+                    using var img = surface.Snapshot();
+                    using var data = img.Encode();
+                    File.WriteAllBytes(destPath, data.ToArray());
                 }
 
                 InfoFormat("Image overlaying succeeded: {0}", destPath);

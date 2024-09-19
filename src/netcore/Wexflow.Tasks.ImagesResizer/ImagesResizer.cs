@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+﻿using SkiaSharp;
+using System;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -71,9 +69,13 @@ namespace Wexflow.Tasks.ImagesResizer
         {
             try
             {
-                using var src = Image.FromFile(srcPath);
-                using Image dest = ResizeImage(src, Width, Height);
-                dest.Save(destPath);
+                using var skBitmap = SKBitmap.Decode(srcPath);
+                using var scaledBitmap = skBitmap.Resize(new SKImageInfo(Width, Height), SKFilterQuality.Medium);
+                using var scaledImage = SKImage.FromBitmap(scaledBitmap);
+                using var codec = SKCodec.Create(srcPath);
+                using var data = scaledImage.Encode(codec.EncodedFormat, 80);
+                File.WriteAllBytes(destPath, data.ToArray());
+
                 Files.Add(new FileInf(destPath, Id));
                 InfoFormat("The image {0} was resized to {1}x{2} -> {3}", srcPath, Width, Height, destPath);
                 return true;
@@ -87,27 +89,6 @@ namespace Wexflow.Tasks.ImagesResizer
                 ErrorFormat("An error occured while resizing the image {0}: {1}", srcPath, e.Message);
                 return false;
             }
-        }
-
-        private static Bitmap ResizeImage(Image image, int width, int height)
-        {
-            Rectangle destRect = new(0, 0, width, height);
-            Bitmap destImage = new(width, height);
-
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-            using var graphics = Graphics.FromImage(destImage);
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = CompositingQuality.HighQuality;
-            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            graphics.SmoothingMode = SmoothingMode.HighQuality;
-            graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            using ImageAttributes wrapMode = new();
-            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-
-            return destImage;
         }
     }
 }
