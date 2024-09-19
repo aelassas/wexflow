@@ -2,7 +2,7 @@
 
 set version=8.3
 set dst=wexflow
-set zip=wexflow-%version%-linux-x64-netcore.zip
+set zip=wexflow-%version%-linux-netcore.zip
 set dstDir=.\%dst%
 set backend=Backend
 
