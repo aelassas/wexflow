@@ -96,7 +96,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="YamlDotNet">
-      <Version>16.0.0</Version>
+      <Version>16.1.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
