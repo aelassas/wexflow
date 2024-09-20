@@ -42,66 +42,66 @@ xcopy "..\src\backend\Wexflow.Backend\css\images\*" %dstDir%\%backend%\css\image
 copy "..\src\backend\Wexflow.Backend\js\*.js" %dstDir%\%backend%\js
 
 :: Wexflow server
-dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Server
+dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Server
 copy netcore\windows\install.bat %dstDir%
 copy netcore\windows\run.bat %dstDir%
 
 :: MongoDB script
-dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
+dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
 copy netcore\windows\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
 xcopy "..\samples\netcore\windows\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows\ /s /e
 copy netcore\windows\install-MongoDB.bat %dstDir%
 
 :: RavenDB script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RavenDB
+::dotnet publish ..\src\netcore\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RavenDB
 ::copy netcore\windows\RavenDB\appsettings.json %dstDir%\Wexflow.Scripts.RavenDB
 ::copy netcore\windows\install-RavenDB.bat %dstDir%
 
 :: PostgreSQL script
-dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
+dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
 copy netcore\windows\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
 copy netcore\windows\install-PostgreSQL.bat %dstDir%
 
 :: SQLServer script
-dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
 copy netcore\windows\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
 copy netcore\windows\install-SQLServer.bat %dstDir%
 
 :: MySQL script
-dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
+dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
 copy netcore\windows\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
 copy netcore\windows\install-MySQL.bat %dstDir%
 
 :: SQLite script
-dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
 copy netcore\windows\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
 copy netcore\windows\install-SQLite.bat %dstDir%
 
 :: LiteDB script
-dotnet publish ..\src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.LiteDB
+dotnet publish ..\src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.LiteDB
 copy netcore\windows\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
 copy netcore\windows\install-LiteDB.bat %dstDir%
 
 :: Firebird script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird
+::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird
 ::copy netcore\windows\Firebird\appsettings.json %dstDir%\Wexflow.Scripts.Firebird
 ::copy netcore\windows\install-Firebird.bat %dstDir%
 
 :: Oracle script
-dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
+dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
 copy netcore\windows\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
 copy netcore\windows\install-Oracle.bat %dstDir%
 
 :: MariaDB script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB
+::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB
 ::copy netcore\windows\MariaDB\appsettings.json %dstDir%\Wexflow.Scripts.MariaDB
 ::copy netcore\windows\install-MariaDB.bat %dstDir%
 
 :: Wexflow.Clients.CommandLine
-dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.CommandLine.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Clients.CommandLine
+dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.CommandLine.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Clients.CommandLine
 
 :: Wexflow.Scripts.RunAllWorkflows
-dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj -r win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
+dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
 copy netcore\windows\run-all-workflows.bat %dstDir%
 
 :: License
