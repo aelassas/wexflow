@@ -10,7 +10,7 @@ Wexflow provides a cross-platform workflow server, a backend for designing, mana
 
 Wexflow provides 100+ activities for different kind of tasks and allows custom integration with other solutions through custom activities and Wexflow API.
 
-### Features
+## Features
 
 * Cross-platform workflow server
 * Powerful backend
@@ -29,7 +29,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * Extensible
 * Supported Platforms: macOS, Linux, Windows, Docker
 
-### Resources
+## Resources
 
 1. [Installing](https://github.com/aelassas/wexflow/wiki/Installing)
     1. [Windows](https://github.com/aelassas/wexflow/wiki/Installing#windows-net)
@@ -70,9 +70,9 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
     3. [PHP client](https://github.com/aelassas/wexflow/wiki/PHP-client)
 18. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 
-### Sponsors
+## Sponsors
 
 [![JetBrains](https://wexflow.github.io/content/jetbrains.png)](https://www.jetbrains.com/)
 
-### License
+## License
 Wexflow is [MIT licensed](https://github.com/aelassas/wexflow/blob/main/LICENSE.txt).
