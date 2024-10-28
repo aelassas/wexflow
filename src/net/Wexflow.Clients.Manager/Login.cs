@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -94,20 +94,17 @@ namespace Wexflow.Clients.Manager
         public static string GetMd5(string input)
         {
             // Use input string to calculate MD5 hash
-            using (var md5 = MD5.Create())
-            {
-                var inputBytes = Encoding.ASCII.GetBytes(input);
-                var hashBytes = md5.ComputeHash(inputBytes);
+            var inputBytes = Encoding.ASCII.GetBytes(input);
+            var hashBytes = MD5.HashData(inputBytes);
 
-                // Convert the byte array to hexadecimal string
-                var sb = new StringBuilder();
-                // ReSharper disable once ForCanBeConvertedToForeach
-                for (var i = 0; i < hashBytes.Length; i++)
-                {
-                    _ = sb.Append(hashBytes[i].ToString("x2"));
-                }
-                return sb.ToString();
+            // Convert the byte array to hexadecimal string
+            var sb = new StringBuilder();
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < hashBytes.Length; i++)
+            {
+                _ = sb.Append(hashBytes[i].ToString("x2"));
             }
+            return sb.ToString();
         }
 
         private void LnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

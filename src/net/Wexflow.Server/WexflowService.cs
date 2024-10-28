@@ -1,4 +1,4 @@
-﻿using Nancy;
+using Nancy;
 using Nancy.Extensions;
 using Nancy.IO;
 using Nancy.Responses;
@@ -1172,7 +1172,7 @@ namespace Wexflow.Server
                     {
                         var o = JObject.Parse(File.ReadAllText(WexflowServer.WexflowEngine.TasksSettingsFile));
                         dynamic token = o.SelectToken(args.taskName);
-                        taskSettings = token != null ? token.ToObject<TaskSetting[]>() : new TaskSetting[] { };
+                        taskSettings = token != null ? token.ToObject<TaskSetting[]>() : Array.Empty<TaskSetting>();
                     }
                     catch (Exception e)
                     {
@@ -2891,7 +2891,7 @@ namespace Wexflow.Server
         {
             var block = new XElement("block");
 
-            if (nodes.Any())
+            if (nodes.Length != 0)
             {
                 if (node is If)
                 {

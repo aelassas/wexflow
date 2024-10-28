@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -584,7 +584,7 @@ namespace Wexflow.Core
                     var taskNodes = GetTaskNodes(xExectionGraph);
 
                     // Check startup node, parallel tasks and infinite loops
-                    if (taskNodes.Any())
+                    if (taskNodes.Length != 0)
                     {
                         CheckStartupNode(taskNodes, "Startup node with parentId=-1 not found in ExecutionGraph execution graph.");
                     }
@@ -1313,7 +1313,7 @@ namespace Wexflow.Core
             var warning = false;
             var atLeastOneSucceed = false;
 
-            if (nodes.Any())
+            if (nodes.Length != 0)
             {
                 var startNode = GetStartupNode(nodes);
 
@@ -1386,7 +1386,7 @@ namespace Wexflow.Core
                 }
             }
 
-            if (enumerable.Any() && !success && atLeastOneSucceed)
+            if (enumerable.Length != 0 && !success && atLeastOneSucceed)
             {
                 warning = true;
             }
