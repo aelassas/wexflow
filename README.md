@@ -45,7 +45,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 6. [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
 7. [Android App](https://github.com/aelassas/wexflow/wiki/Android-App)
 8. [Samples](https://github.com/aelassas/wexflow/wiki/Samples)
-9. [Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
+9. [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 10. [Local Variables](https://github.com/aelassas/wexflow/wiki/Local-Variables)
 11. [Global Variables](https://github.com/aelassas/wexflow/wiki/Global-Variables)
 12. [REST Variables](https://github.com/aelassas/wexflow/wiki/REST-Variables)
