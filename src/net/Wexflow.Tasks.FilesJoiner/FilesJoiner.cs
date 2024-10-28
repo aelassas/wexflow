@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -28,7 +28,7 @@ namespace Wexflow.Tasks.FilesJoiner
 
         private int GetNumberPartInt(string path)
         {
-            var lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
+            var lastUnderscoreIndex = path.LastIndexOf('_');
             if (lastUnderscoreIndex == -1)
             {
                 return -1;
@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.FilesJoiner
 
         private string GetNumberPartString(string path)
         {
-            var lastUnderscoreIndex = path.LastIndexOf("_", StringComparison.InvariantCulture);
+            var lastUnderscoreIndex = path.LastIndexOf('_');
             if (lastUnderscoreIndex == -1)
             {
                 return path;

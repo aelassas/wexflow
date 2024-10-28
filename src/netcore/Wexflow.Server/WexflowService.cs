@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
@@ -3559,7 +3559,6 @@ namespace Wexflow.Server
                                         Console.WriteLine(e);
                                         tres = false;
                                     }
-
                                 }
                             }
                             res = tres;
