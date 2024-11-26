@@ -26,12 +26,13 @@ namespace Wexflow.Tasks.ExecPython
             {
                 try
                 {
-                    Exec(pythonFile.Path);
+                    var res = Exec(pythonFile.Path);
                     InfoFormat("The script {0} has been executed.", pythonFile.Path);
-                    if (!atLeastOneSuccess)
+                    if (res && !atLeastOneSuccess)
                     {
                         atLeastOneSuccess = true;
                     }
+                    success &= res;
                 }
                 catch (ThreadInterruptedException)
                 {
@@ -61,7 +62,7 @@ namespace Wexflow.Tasks.ExecPython
             return new Core.TaskStatus(status);
         }
 
-        private void Exec(string pyScriptPath)
+        private bool Exec(string pyScriptPath)
         {
             ProcessStartInfo startInfo = new(PythonPath, pyScriptPath)
             {
@@ -78,6 +79,10 @@ namespace Wexflow.Tasks.ExecPython
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process.WaitForExit();
+            InfoFormat("ExitCode for {0}: {1}", pyScriptPath, process.ExitCode);
+
+            var res = process.ExitCode == 0;
+            return res;
         }
 
         private void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)

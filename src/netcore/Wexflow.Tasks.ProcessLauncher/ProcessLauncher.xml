@@ -37,5 +37,7 @@
     <Setting name="generatesFiles" value="true|false" />
     <!-- Optional and defaults to false. Indicates whether to load all the files generated in the temporary folder by the command or not.-->
     <Setting name="loadAllFiles" value="true|false" />
+    <!-- Optional and defaults to false. Indicates whether to ignore exit code or not.-->
+    <Setting name="ignoreExitCode" value="true|false" />
   </Task>
 </Tasks>

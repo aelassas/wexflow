@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.ProcessLauncher
         public bool HideGui { get; set; }
         public bool GeneratesFiles { get; set; }
         public bool LoadAllFiles { get; set; }
+        public bool IgnoreExitCode { get; set; }
 
         private const string VAR_FILE_PATH = "$filePath";
         private const string VAR_FILE_NAME = "$fileName";
@@ -29,6 +30,7 @@ namespace Wexflow.Tasks.ProcessLauncher
             HideGui = bool.Parse(GetSetting("hideGui"));
             GeneratesFiles = bool.Parse(GetSetting("generatesFiles"));
             LoadAllFiles = bool.Parse(GetSetting("loadAllFiles", "false"));
+            IgnoreExitCode = bool.Parse(GetSetting("ignoreExitCode", "false"));
         }
 
         public override TaskStatus Run()
@@ -160,8 +162,10 @@ namespace Wexflow.Tasks.ProcessLauncher
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
                 process.WaitForExit();
+                InfoFormat("ExitCode: {0}", process.ExitCode);
 
-                return new TaskStatus(Status.Success, false);
+                var status = process.ExitCode == 0 || IgnoreExitCode ? Status.Success : Status.Error;
+                return new TaskStatus(status, false);
             }
             catch (ThreadInterruptedException)
             {
