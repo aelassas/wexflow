@@ -1316,6 +1316,14 @@ namespace Wexflow.Server
                     var path = (string)o.SelectToken("filePath");
                     var xml = (string)o.SelectToken("xml") ?? throw new InvalidOperationException();
 
+                    var idFromXml = WexflowServer.WexflowEngine.GetWorkflowId(xml);
+
+                    if (idFromXml != workflowId)
+                    {
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new SaveResult { FilePath = path, Result = false, WrongWorkflowId = true }));
+                        return;
+                    }
+
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password, StringComparison.Ordinal))
                     {

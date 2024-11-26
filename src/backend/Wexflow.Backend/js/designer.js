@@ -366,6 +366,7 @@
                         "Tasks": []
                     }
                     tasks = {};
+                    initialWorkflow = null;
 
                     if (json || xml || graph) {
                         document.getElementById("code-container").style.display = "none";
@@ -2075,6 +2076,17 @@
             }
         }
 
+        function wrongWorkflowId(workflowId) {
+            const initialWorkflowId = (initialWorkflow && Number.parseInt(initialWorkflow.WorkflowInfo.Id)) || -1
+            const wrongWorkflowId = initialWorkflowId > -1 && initialWorkflowId !== Number.parseInt(workflowId)
+
+            if (wrongWorkflowId) {
+                window.Common.toastInfo(`${language.get("toast-workflow-id-change")}${initialWorkflowId}`);
+                return true;
+            }
+            return false
+        }
+
         function save(callback) {
             if (diag === true) {
                 updateTasks();
@@ -2114,7 +2126,11 @@
 
                 let wfIdStr = document.getElementById("wfid").value;
                 if (isInt(wfIdStr)) {
-                    let workflowId = parseInt(wfIdStr);
+                    let workflowId = Number.parseInt(wfIdStr);
+                    // Prevent changing workflow id
+                    if (wrongWorkflowId(workflowId)) {
+                        return;
+                    }
 
                     if (checkId === true) {
                         window.Common.get(uri + "/is-workflow-id-valid/" + workflowId,
@@ -2241,6 +2257,14 @@
 
             } else if (json === true) {
                 let json = JSON.parse(editor.getValue());
+
+                // Prevent changing workflow id
+                const workflowId = Number.parseInt(initialWorkflow?.WorkflowInfo?.Id || workflow.WorkflowInfo.Id, 10)
+                if (workflowId !== Number.parseInt(json.WorkflowInfo.Id, 10)) {
+                    window.Common.toastInfo(`${language.get("toast-workflow-id-change")}${workflowId}`);
+                    return;
+                }
+
                 window.Common.post(uri + "/save", function (res) {
                     if (res.Result === true) {
                         checkId = false;
@@ -2264,11 +2288,18 @@
                 }, json, auth);
             } else if (xml === true) {
                 let json = {
-                    workflowId: workflow.WorkflowInfo.Id,
+                    workflowId: initialWorkflow?.WorkflowInfo?.Id || workflow.WorkflowInfo.Id,
                     filePath: workflow.WorkflowInfo.FilePath,
                     xml: editor.getValue()
                 };
+
                 window.Common.post(uri + "/save-xml", function (res) {
+                    // Prevent changing workflow id
+                    if (res.WrongWorkflowId === true) {
+                        window.Common.toastInfo(`${language.get("toast-workflow-id-change")}${json.workflowId}`);
+                        return;
+                    }
+
                     if (res.Result === true) {
                         checkId = false;
                         openSavePopup = false;

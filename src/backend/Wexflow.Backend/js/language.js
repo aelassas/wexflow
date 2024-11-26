@@ -137,6 +137,7 @@
     languages["en"]["toast-workflow-period-error"] = "The period format is not valid. The valid format is: dd.hh:mm:ss";
     languages["en"]["toast-workflow-id"] = "The workflow id is already in use. Enter another one.";
     languages["en"]["toast-workflow-id-error"] = "Enter a valid workflow id.";
+    languages["en"]["toast-workflow-id-change"] = "The workflow id cannot be changed. Reset Workflow id to: ";
     languages["en"]["toast-save-workflow-json"] = "Workflow saved and loaded successfully from JSON view.";
     languages["en"]["toast-save-workflow-json-error"] = "An error occurred while saving the workflow from JSON view.";
     languages["en"]["toast-save-workflow-xml"] = "Workflow saved and loaded successfully from XML view.";
@@ -368,6 +369,7 @@
     languages["fr"]["toast-workflow-period-error"] = "La période n'est pas valide. Le format valide est : dd.hh:mm:ss";
     languages["fr"]["toast-workflow-id"] = "Le workflow id est déjà utilisé. Entrez-en un nouveau.";
     languages["fr"]["toast-workflow-id-error"] = "Entrez un workflow id valide.";
+    languages["fr"]["toast-workflow-id-change"] = "Le workflow id ne peux pas être modifié. Réinitialiser Workflow id à : ";
     languages["fr"]["toast-save-workflow-json"] = "Workflow sauvegardé et chargé avec succès depuis la vue  JSON.";
     languages["fr"]["toast-save-workflow-json-error"] = "Une erreur s'est produite lors de la sauvegarde du workflow depuis la vue JSON.";
     languages["fr"]["toast-save-workflow-xml"] = "Workflow sauvegardé et chargé avec succès depuis la vue  XML.";
@@ -599,6 +601,7 @@
     languages["da"]["toast-workflow-period-error"] = "Periodeformatet er ikke gyldigt. Det gyldige format er: dd.hh: mm: ss";
     languages["da"]["toast-workflow-id"] = "opgaves-idet er allerede i brug. Indtast et andet.";
     languages["da"]["toast-workflow-id-error"] = "Indtast et gyldigt workflow-id.";
+    languages["da"]["toast-workflow-id-change"] = "Workflow id'et kan ikke ændres. Nulstil Workflow id til: ";
     languages["da"]["toast-save-workflow-json"] = "Arbejdsproces er gemt og indlæst med succes fra JSON-visningen.";
     languages["da"]["toast-save-workflow-json-error"] = "Der opstod en fejl under lagring af workflow fra JSON-visningen.";
     languages["da"]["toast-save-workflow-xml"] = "Arbejdsproces er gemt og indlæst med succes fra XML-visning.";

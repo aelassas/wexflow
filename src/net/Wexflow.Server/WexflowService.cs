@@ -1481,6 +1481,21 @@ namespace Wexflow.Server
                     var path = (string)o.SelectToken("filePath");
                     var xml = (string)o.SelectToken("xml") ?? throw new InvalidOperationException();
 
+                    var idFromXml = WexflowServer.WexflowEngine.GetWorkflowId(xml);
+
+                    if (idFromXml != workflowId)
+                    {
+                        var ressrWrongWorkflowId = new SaveResult { FilePath = path, Result = false, WrongWorkflowId = true };
+                        var resStrWrongWorkflowId = JsonConvert.SerializeObject(ressrWrongWorkflowId);
+                        var resBytesWrongWorkflowId = Encoding.UTF8.GetBytes(resStrWrongWorkflowId);
+
+                        return new Response
+                        {
+                            ContentType = "application/json",
+                            Contents = s => s.Write(resBytesWrongWorkflowId, 0, resBytesWrongWorkflowId.Length)
+                        };
+                    }
+
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password))
                     {
