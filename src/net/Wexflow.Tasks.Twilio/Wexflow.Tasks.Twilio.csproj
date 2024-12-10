@@ -90,18 +90,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
-      <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
-      <Name>Wexflow.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Twilio.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Twilio">
       <Version>7.3.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
+      <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
+      <Name>Wexflow.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

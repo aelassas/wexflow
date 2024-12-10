@@ -82,18 +82,18 @@
     <Compile Include="VimeoListUploads.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
-      <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
-      <Name>Wexflow.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="VimeoListUploads.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="VimeoDotNet">
       <Version>3.2.4</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj">
+      <Project>{46257949-80b5-48f2-9b83-29354c339869}</Project>
+      <Name>Wexflow.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
