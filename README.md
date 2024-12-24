@@ -31,7 +31,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * Extensible
 * Supported Platforms: macOS, Linux, Windows, Docker
 
-## Resources
+## Documentation
 
 1. [Installing](https://github.com/aelassas/wexflow/wiki/Installing)
     1. [Windows](https://github.com/aelassas/wexflow/wiki/Installing#windows-net)
