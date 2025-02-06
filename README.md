@@ -72,6 +72,12 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
     3. [PHP client](https://github.com/aelassas/wexflow/wiki/PHP-client)
 18. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 
+## Support
+
+If you find this project helpful, consider buying me a coffee.
+
+<a href="https://www.buymeacoffee.com/aelassas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ## Sponsors
 
 [![JetBrains](https://wexflow.github.io/content/jetbrains.png)](https://www.jetbrains.com/)
