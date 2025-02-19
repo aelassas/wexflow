@@ -226,6 +226,14 @@
       <Project>{5d8b91f0-6363-4015-9c95-6a07ce15d56d}</Project>
       <Name>Wexflow.Tasks.FileMatch</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FileNotExist\Wexflow.Tasks.FileNotExist.csproj">
+      <Project>{434ffdfe-9187-4972-beee-233a95841bfb}</Project>
+      <Name>Wexflow.Tasks.FileNotExist</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wexflow.Tasks.FileNotMatch\Wexflow.Tasks.FileNotMatch.csproj">
+      <Project>{de744e7d-be52-4ae8-a6c2-ba43d86d70bd}</Project>
+      <Name>Wexflow.Tasks.FileNotMatch</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wexflow.Tasks.FilesConcat\Wexflow.Tasks.FilesConcat.csproj">
       <Project>{215834bb-7c88-45f0-b376-76ffae93f4b2}</Project>
       <Name>Wexflow.Tasks.FilesConcat</Name>

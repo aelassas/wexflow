@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>8.4.0</Version>
+    <Version>8.5.0</Version>
     <StartupObject>Wexflow.Server.WexflowServer</StartupObject>
   </PropertyGroup>
 
@@ -129,6 +129,8 @@
     <ProjectReference Include="..\Wexflow.Tasks.FileContentMatch\Wexflow.Tasks.FileContentMatch.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FileExists\Wexflow.Tasks.FileExists.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FileMatch\Wexflow.Tasks.FileMatch.csproj" />
+    <ProjectReference Include="..\Wexflow.Tasks.FileNotExist\Wexflow.Tasks.FileNotExist.csproj" />
+    <ProjectReference Include="..\Wexflow.Tasks.FileNotMatch\Wexflow.Tasks.FileNotMatch.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FilesConcat\Wexflow.Tasks.FilesConcat.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FilesCopier\Wexflow.Tasks.FilesCopier.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.FilesDecryptor\Wexflow.Tasks.FilesDecryptor.csproj" />

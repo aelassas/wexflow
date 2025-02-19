@@ -12,6 +12,8 @@
 	{ "Name": "FileContentMatch", "Description": "A flowchart task that checks whether the content of a file matches a regex pattern."},
 	{ "Name": "FileExists", "Description": "A flowchart task that checks whether a file exists or not."},
 	{ "Name": "FileMatch", "Description": "A flowchart task that checks whether a file exists or not in a directory by using a regex pattern."},
+  { "Name": "FileNotExist", "Description": "A flowchart task that checks whether a file does not exist."},
+  { "Name": "FileNotMatch", "Description": "A flowchart task that checks whether a file does not exist in a directory by using a regex pattern."},
 	{ "Name": "FilesConcat", "Description": "Concatenates a collection of files."},
 	{ "Name": "FilesCopier", "Description": "Copies a collection of files to a destination folder."},
 	{ "Name": "FilesDecryptor", "Description": "Decrypts a collection of files encrypted by the task FilesEncryptor."},

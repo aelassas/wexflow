@@ -26,32 +26,21 @@ namespace Wexflow.Tasks.FileExists
         {
             Info("Checking file...");
 
-            bool success;
+            bool success = false;
+            TaskStatus status = null;
 
             try
             {
-                try
+                if (!string.IsNullOrEmpty(SmbComputerName) && !string.IsNullOrEmpty(SmbUsername) && !string.IsNullOrEmpty(SmbPassword))
                 {
-                    if (!string.IsNullOrEmpty(SmbComputerName) && !string.IsNullOrEmpty(SmbUsername) && !string.IsNullOrEmpty(SmbPassword))
-                    {
-                        using (NetworkShareAccesser.Access(SmbComputerName, SmbDomain, SmbUsername, SmbPassword))
-                        {
-                            success = CheckFile();
-                        }
-                    }
-                    else
+                    using (NetworkShareAccesser.Access(SmbComputerName, SmbDomain, SmbUsername, SmbPassword))
                     {
                         success = CheckFile();
                     }
                 }
-                catch (ThreadAbortException)
+                else
                 {
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    ErrorFormat("An error occured while checking the file.", e);
-                    success = false;
+                    success = CheckFile();
                 }
             }
             catch (ThreadAbortException)
@@ -60,13 +49,13 @@ namespace Wexflow.Tasks.FileExists
             }
             catch (Exception e)
             {
-                ErrorFormat("An error occured while checking file {0}. Error: {1}", File, e.Message);
-                return new TaskStatus(Status.Error, false);
+                ErrorFormat("An error occured while checking the file.", e);
+                status = new TaskStatus(Status.Error, false);
             }
 
             Info("Task finished");
 
-            return new TaskStatus(Status.Success, success);
+            return status ?? new TaskStatus(Status.Success, success);
         }
 
         private bool CheckFile()

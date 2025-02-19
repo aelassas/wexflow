@@ -1,5 +1,5 @@
 #define MyAppName "Wexflow"
-#define MyAppVersion "8.4"
+#define MyAppVersion "8.5"
 #define MyAppPublisher "Akram El Assas"
 #define MyAppPublisherURL "https://wexflow.github.io/"
 #define MyAppExeName "Wexflow.Clients.Manager.exe"
@@ -93,6 +93,9 @@ Source: "..\src\backend\Wexflow.Backend\js\*.js"; DestDir: "{app}\Backend\js"; F
 Source: "..\src\net\Wexflow.Core\Workflow.xml"; DestDir: "{app}\Documentation\"; DestName: "_Workflow.xml"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.CsvToXml\CsvToXml.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.FileExists\FileExists.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.FileMatch\FileMatch.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.FileNotExist\FileNotExist.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Tasks.FileNotMatch\FileNotMatch.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.FilesConcat\FilesConcat.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.FilesCopier\FilesCopier.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.FilesExist\FilesExist.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
@@ -160,7 +163,6 @@ Source: "..\src\net\Wexflow.Tasks.IsoExtractor\IsoExtractor.xml"; DestDir: "{app
 Source: "..\src\net\Wexflow.Tasks.SevenZip\SevenZip.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.TextToSpeech\TextToSpeech.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.SpeechToText\SpeechToText.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Tasks.FileMatch\FileMatch.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.Ping\Ping.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.WebToScreenshot\WebToScreenshot.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.WebToHtml\WebToHtml.xml"; DestDir: "{app}\Documentation"; Flags: ignoreversion

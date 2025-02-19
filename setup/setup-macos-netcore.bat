@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=8.4
+set version=8.5
 set dst=wexflow
 set zip=wexflow-%version%-macos-netcore.zip
 set dstDir=.\%dst%
@@ -100,6 +100,9 @@ copy "netcore\doc\_README.txt" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Core\Workflow.xml" %dstDir%\Documentation\_Workflow.xml
 copy "..\src\netcore\Wexflow.Tasks.CsvToXml\CsvToXml.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.FileExists\FileExists.xml" %dstDir%\Documentation\
+copy "..\src\netcore\Wexflow.Tasks.FileMatch\FileMatch.xml" %dstDir%\Documentation\
+copy "..\src\netcore\Wexflow.Tasks.FileNotExist\FileNotExist.xml" %dstDir%\Documentation\
+copy "..\src\netcore\Wexflow.Tasks.FileNotMatch\FileNotMatch.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.FilesConcat\FilesConcat.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.FilesCopier\FilesCopier.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.FilesExist\FilesExist.xml" %dstDir%\Documentation\
@@ -154,7 +157,6 @@ copy "..\src\netcore\Wexflow.Tasks.FilesEncryptor\FilesEncryptor.xml" %dstDir%\D
 copy "..\src\netcore\Wexflow.Tasks.FilesDecryptor\FilesDecryptor.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.TextsEncryptor\TextsEncryptor.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.TextsDecryptor\TextsDecryptor.xml" %dstDir%\Documentation\
-copy "..\src\netcore\Wexflow.Tasks.FileMatch\FileMatch.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.Ping\Ping.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.HttpPost\HttpPost.xml" %dstDir%\Documentation\
 copy "..\src\netcore\Wexflow.Tasks.HttpPut\HttpPut.xml" %dstDir%\Documentation\

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    FileNotExist is a flowchart task that checks whether a file does not exist.
+  -->
+  <Task id="$int" name="FileNotExist" description="$string" enabled="true|false">
+    <!-- 
+      The file path to check. Example: C:\WexflowTesting\file1.txt
+    -->
+    <Setting name="file" value="$string" />    
+  </Task>
+</Tasks>
