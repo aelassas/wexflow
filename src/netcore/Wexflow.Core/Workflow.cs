@@ -367,12 +367,32 @@ namespace Wexflow.Core
             string dest;
 
             //
-            // Parse global variables.
+            // Parse functions.
+            // $DateTime(): current unix timestamp in milliseconds
+            // $Guid(): new Guid
             //
             using (StringReader sr = new(src))
             using (StringWriter sw = new())
             {
-                while (sr.ReadLine() is { } line)
+                long unixTimestampMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    line = line.Replace("$DateTime()", unixTimestampMilliseconds.ToString());
+                    line = line.Replace("$Guid()", Guid.NewGuid().ToString());
+                    sw.WriteLine(line);
+                }
+                dest = sw.ToString();
+            }
+
+            //
+            // Parse global variables.
+            //
+            using (StringReader sr = new(dest))
+            using (StringWriter sw = new())
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
                     foreach (var variable in GlobalVariables)
                     {
@@ -425,7 +445,8 @@ namespace Wexflow.Core
             using (StringReader sr = new(dest))
             using (StringWriter sw = new())
             {
-                while (sr.ReadLine() is { } line)
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
                     var pattern = "{.*?}";
                     var m = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
@@ -453,7 +474,8 @@ namespace Wexflow.Core
             using (StringReader sr = new(res))
             using (StringWriter sw = new())
             {
-                while (sr.ReadLine() is { } line)
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
                     foreach (var variable in RestVariables)
                     {

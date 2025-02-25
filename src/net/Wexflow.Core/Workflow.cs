@@ -367,9 +367,28 @@ namespace Wexflow.Core
             string dest;
 
             //
-            // Parse global variables.
+            // Parse functions.
+            // $DateTime(): current unix timestamp in milliseconds
+            // $Guid(): new Guid
             //
             using (var sr = new StringReader(src))
+            using (var sw = new StringWriter())
+            {
+                long unixTimestampMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    line = line.Replace("$DateTime()", unixTimestampMilliseconds.ToString());
+                    line = line.Replace("$Guid()", Guid.NewGuid().ToString());
+                    sw.WriteLine(line);
+                }
+                dest = sw.ToString();
+            }
+
+            //
+            // Parse global variables.
+            //
+            using (var sr = new StringReader(dest))
             using (var sw = new StringWriter())
             {
                 string line;
