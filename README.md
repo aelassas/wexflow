@@ -6,7 +6,7 @@
 [![Latest release](https://img.shields.io/github/v/release/aelassas/wexflow?label=Release&logo=github)](https://github.com/aelassas/wexflow/releases/latest)
 -->
 
-Wexflow is an open-source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
+Wexflow is an open-source, cross-platform workflow engine and automation platform designed to streamline and automate recurring tasks. Developed primarily in .NET, it offers a robust solution for building automation and workflow processes with ease.
 
 Wexflow provides a cross-platform workflow server, an admin dashboard for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
