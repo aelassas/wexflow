@@ -16,7 +16,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 
 * Cross-platform workflow server
 * Powerful dashboard
-* UI designer
+* Visual designer with Drag & Drop
 * Native Android App
 * Sequential workflows
 * Flowchart workflows
