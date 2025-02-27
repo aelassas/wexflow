@@ -6,7 +6,7 @@
 [![Latest release](https://img.shields.io/github/v/release/aelassas/wexflow?label=Release&logo=github)](https://github.com/aelassas/wexflow/releases/latest)
 -->
 
-Wexflow is an open-source, cross-platform workflow engine and automation platform designed to streamline and automate recurring tasks. Developed primarily in .NET, it offers a robust solution for building automation and workflow processes with ease.
+Wexflow is an open-source, cross-platform workflow engine and automation platform designed to streamline and automate recurring tasks. Wexflow offers a robust solution for building automation and workflow processes with ease.
 
 Wexflow provides a cross-platform workflow server, an admin dashboard for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
@@ -30,6 +30,12 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 * RESTful API
 * Extensible
 * Supported Platforms: macOS, Linux, Windows, Docker
+
+## Support
+
+If you find this project helpful, consider buying me a coffee.
+
+<a href="https://www.buymeacoffee.com/aelassas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Documentation
 
@@ -111,17 +117,9 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
     3. [PHP client](https://github.com/aelassas/wexflow/wiki/PHP-client)
 18. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 
-## Support
-
-If you find this project helpful, consider buying me a coffee.
-
-<a href="https://www.buymeacoffee.com/aelassas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-<!--
 ## Sponsors
 
 [![JetBrains](https://wexflow.github.io/content/jetbrains.png)](https://www.jetbrains.com/)
--->
 
 ## License
 
