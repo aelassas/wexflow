@@ -6,7 +6,9 @@
 [![Latest release](https://img.shields.io/github/v/release/aelassas/wexflow?label=Release&logo=github)](https://github.com/aelassas/wexflow/releases/latest)
 -->
 
-Wexflow is an open-source and cross-platform workflow engine and automation platform that aims to automate recurring tasks. With the help of Wexflow, building automation and workflow processes become easy.
+## Wexflow
+
+Wexflow is an open-source, cross-platform workflow engine and automation platform designed to streamline and automate recurring tasks. Wexflow offers a robust solution for building automation and workflow processes with ease.
 
 Wexflow provides a cross-platform workflow server, an admin dashboard for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
 
@@ -16,7 +18,7 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 
 * Cross-platform workflow server
 * Powerful dashboard
-* UI designer
+* Visual designer with Drag & Drop
 * Native Android App
 * Sequential workflows
 * Flowchart workflows
@@ -59,6 +61,12 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
         3. [YouTube approval workflow](https://github.com/aelassas/wexflow/wiki/Samples#youtube-approval-workflow)
         4. [Form submission approval workflow](https://github.com/aelassas/wexflow/wiki/Samples#form-submission-approval-workflow)
    5. [Workflow events](https://github.com/aelassas/wexflow/wiki/Samples#workflow-events)
+10. [Local Variables](https://github.com/aelassas/wexflow/wiki/Local-Variables)
+11. [Global Variables](https://github.com/aelassas/wexflow/wiki/Global-Variables)
+12. [REST Variables](https://github.com/aelassas/wexflow/wiki/REST-Variables)
+12. [Functions](https://github.com/aelassas/wexflow/wiki/Functions)
+13. [Cron Scheduling](https://github.com/aelassas/wexflow/wiki/Cron-Scheduling)
+14. [Logging](https://github.com/aelassas/wexflow/wiki/Logging)
 9. [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
     1. [File system tasks](https://github.com/aelassas/Wexflow/wiki/Tasks#file-system-tasks)
     2. [Encryption tasks](https://github.com/aelassas/Wexflow/wiki/Tasks#encryption-tasks)
@@ -86,11 +94,6 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
     24. [Approval tasks](https://github.com/aelassas/Wexflow/wiki/Tasks#approval-tasks)
     25. [Notification tasks](https://github.com/aelassas/Wexflow/wiki/Tasks#notification-tasks)
     26. [SMS tasks](https://github.com/aelassas/Wexflow/wiki/Tasks#sms-tasks)
-10. [Local Variables](https://github.com/aelassas/wexflow/wiki/Local-Variables)
-11. [Global Variables](https://github.com/aelassas/wexflow/wiki/Global-Variables)
-12. [REST Variables](https://github.com/aelassas/wexflow/wiki/REST-Variables)
-13. [Cron Scheduling](https://github.com/aelassas/wexflow/wiki/Cron-Scheduling)
-14. [Logging](https://github.com/aelassas/wexflow/wiki/Logging)
 15. [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
     1. [General](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#general)
     2. [.NET Core](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#net-core)
