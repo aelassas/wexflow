@@ -726,6 +726,7 @@
                     };
 
                     let index = parseInt(event.target.closest(".block").querySelector(".blockid").value);
+
                     if (!tasks[index] && isNaN(index) === false) {
                         tasks[index] = {
                             "Id": getNewTaskId(),
@@ -1581,18 +1582,22 @@
                                                     taskSettings += "</td>";
                                                     taskSettings += "</tr>";
 
-                                                    if (settingType === "bool") {
-                                                        tasks[index].Settings.push({
-                                                            "Name": settingName,
-                                                            "Value": "false",
-                                                            "Attributes": []
-                                                        });
-                                                    } else {
-                                                        tasks[index].Settings.push({
-                                                            "Name": settingName,
-                                                            "Value": "",
-                                                            "Attributes": []
-                                                        });
+                                                    if (tasks[index].Name === taskname) {
+
+                                                        if (settingType === "bool") {
+                                                            tasks[index].Settings.push({
+                                                                "Name": settingName,
+                                                                "Value": "false",
+                                                                "Attributes": []
+                                                            });
+                                                        } else {
+                                                            tasks[index].Settings.push({
+                                                                "Name": settingName,
+                                                                "Value": "",
+                                                                "Attributes": []
+                                                            });
+                                                        }
+
                                                     }
 
                                                     defaultSettingIndex++;
@@ -2005,7 +2010,11 @@
 
                             // update workflow
                             workflow.Tasks = [];
-                            for (let i = 0; i < blocks.length; i++) {
+                            for (let i = 0; i < blockid; i++) {
+                                workflow.Tasks.push(tasks[parseInt(blocks[i].data[2].value)]);
+                            }
+
+                            for (let i = blockid + 1; i < blocks.length; i++) {
                                 workflow.Tasks.push(tasks[parseInt(blocks[i].data[2].value)]);
                             }
 
@@ -2947,7 +2956,6 @@
 
         // xml click
         function openXmlView(xmlVal) {
-
             diag = false;
             json = false;
             graph = false;
