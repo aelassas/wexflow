@@ -1394,6 +1394,7 @@ namespace Wexflow.Core
                     Logs.AddRange(task.Logs);
                     continue;
                 }
+                task.Logs.Clear();
                 var status = RunTask(task);
                 Logs.AddRange(task.Logs);
                 success &= status.Status == Status.Success;
@@ -1439,6 +1440,7 @@ namespace Wexflow.Core
                     {
                         if (task.IsEnabled && !task.IsStopped && (!IsApproval || (IsApproval && !IsRejected) || force))
                         {
+                            task.Logs.Clear();
                             var status = RunTask(task);
                             Logs.AddRange(task.Logs);
 
@@ -1473,6 +1475,7 @@ namespace Wexflow.Core
                                     {
                                         if (childTask.IsEnabled && !childTask.IsStopped && (!IsApproval || (IsApproval && !IsRejected) || force))
                                         {
+                                            childTask.Logs.Clear();
                                             var childStatus = RunTask(childTask);
                                             Logs.AddRange(childTask.Logs);
 
@@ -1529,6 +1532,7 @@ namespace Wexflow.Core
             {
                 if (ifTask.IsEnabled && !ifTask.IsStopped && (!IsApproval || (IsApproval && !IsRejected)))
                 {
+                    ifTask.Logs.Clear();
                     var status = RunTask(ifTask);
                     Logs.AddRange(ifTask.Logs);
 
@@ -1594,6 +1598,7 @@ namespace Wexflow.Core
                 {
                     while (true)
                     {
+                        whileTask.Logs.Clear();
                         var status = RunTask(whileTask);
                         Logs.AddRange(whileTask.Logs);
 
@@ -1646,6 +1651,7 @@ namespace Wexflow.Core
             {
                 if (switchTask.IsEnabled && !switchTask.IsStopped && (!IsApproval || (IsApproval && !IsRejected)))
                 {
+                    switchTask.Logs.Clear();
                     var status = RunTask(switchTask);
                     Logs.AddRange(switchTask.Logs);
 

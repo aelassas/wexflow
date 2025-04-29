@@ -62,7 +62,7 @@ namespace Wexflow.Tasks.FileExists
         {
             var success = System.IO.File.Exists(File);
 
-            InfoFormat(success ? "The file {0} exist." : "The file {0} does not exist.", File);
+            InfoFormat(success ? "The file {0} exists." : "The file {0} does not exist.", File);
 
             return success;
         }

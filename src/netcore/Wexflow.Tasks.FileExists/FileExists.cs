@@ -24,7 +24,7 @@ namespace Wexflow.Tasks.FileExists
             {
                 success = System.IO.File.Exists(File);
 
-                InfoFormat(success ? "The file {0} exists." : "The file {0} does not exists.", File);
+                InfoFormat(success ? "The file {0} exists." : "The file {0} does not exist.", File);
             }
             catch (ThreadInterruptedException)
             {
