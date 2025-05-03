@@ -1728,6 +1728,7 @@ namespace Wexflow.Core
                     foreach (var task in Tasks)
                     {
                         task.Stop();
+
                         //if (ExecutionGraph == null)
                         //{
                         //    Logs.AddRange(task.Logs);
