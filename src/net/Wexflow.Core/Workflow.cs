@@ -1728,7 +1728,10 @@ namespace Wexflow.Core
                     foreach (var task in Tasks)
                     {
                         task.Stop();
-                        Logs.AddRange(task.Logs);
+                        //if (ExecutionGraph == null)
+                        //{
+                        //    Logs.AddRange(task.Logs);
+                        //}
                     }
                     var logs = string.Join("\r\n", Logs);
                     IsWaitingForApproval = false;
