@@ -37,11 +37,13 @@ namespace Wexflow.Tasks.HttpPatch
             var status = Status.Success;
             try
             {
-                using HttpClient client = new();
+                var handler = new HttpClientHandler
+                {
+                    SslProtocols = SslProtocols.Tls12,
+                    AllowAutoRedirect = true
+                };
+                using HttpClient client = new(handler);
                 using StringContent httpContent = new(Payload, Encoding.UTF8, Type);
-
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = TLS12;
 
                 if (!string.IsNullOrEmpty(AuthorizationScheme) && !string.IsNullOrEmpty(AuthorizationParameter))
                 {

@@ -28,9 +28,6 @@ namespace Wexflow.Tasks.Http
             var success = true;
             var atLeastOneSucceed = false;
 
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = TLS12;
-
             foreach (var url in Urls)
             {
                 try
@@ -80,7 +77,12 @@ namespace Wexflow.Tasks.Http
 
         private static async System.Threading.Tasks.Task DownloadFile(string url, string path)
         {
-            using HttpClient client = new();
+            var handler = new HttpClientHandler
+            {
+                SslProtocols = SslProtocols.Tls12,
+                AllowAutoRedirect = true
+            };
+            using HttpClient client = new(handler);
             var response = await client.GetAsync(url);
             await using FileStream fs = new(path, FileMode.CreateNew);
             await response.Content.CopyToAsync(fs);
