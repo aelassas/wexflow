@@ -16,8 +16,8 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>8.8.0</Version>
-    <AssemblyVersion>8.8.0</AssemblyVersion>
+    <Version>8.9.0</Version>
+    <AssemblyVersion>8.9.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
