@@ -48,7 +48,19 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 
 ## Support
 
-If this project has been valuable in your work or research, consider supporting its ongoing development and maintenance. You can contribute through [GitHub Sponsorship](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://buymeacoffee.com/aelassas). Even a simple star on the GitHub repository helps spread the word, increases visibility and is greatly appreciated.
+If this project helped you in your work, saved you time, or inspired you in any way, please consider supporting its ongoing development. Open-source software requires time, effort, and resources to maintain—your support helps keep this project alive, up-to-date, and accessible to everyone.
+
+You can contribute in several ways:
+
+- **⭐ Star the repository** – It helps increase visibility and shows your appreciation.
+- **💬 Share the project** – Recommend it to colleagues, communities, or on social media.
+- **☕ Donate or sponsor** – If you'd like to financially support the development, you can do so via:
+
+  - [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly)
+  - [PayPal](https://www.paypal.me/aelassaspp)
+  - [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas)
+
+Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
 
 <a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
