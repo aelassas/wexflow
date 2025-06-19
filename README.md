@@ -16,22 +16,30 @@ Wexflow provides 100+ activities for different kind of tasks and allows custom i
 
 ## Features
 
+### ⚙️ Workflow Engine
 * Cross-platform workflow server
-* Powerful dashboard
-* Visual designer with Drag & Drop
-* Native Android App
-* Sequential workflows
-* Flowchart workflows
-* Approval workflows
-* 6+ databases supported
-* 100+ activities
-* Cron scheduling
-* Extensive logging
-* Real-time stats
-* Multiple Language support
-* RESTful API
-* Extensible
-* Supported Platforms: macOS, Linux, Windows, Docker
+* Supports sequential, flowchart, and approval workflows
+* Cron-based scheduling
+* 100+ built-in activities
+* 6+ database engines supported
+* Extensible architecture for custom activities
+
+### 🖥️ UI & Visualization
+* Powerful web dashboard
+* Visual workflow designer with drag & drop interface
+* Real-time workflow statistics and monitoring
+* Extensive logging for transparency and debugging
+
+### 📱 Multi-Platform Support
+* Native Android app
+* Responsive web interface
+
+### 🌍 Internationalization & APIs
+* Multiple language support (English, French, Danish)
+* RESTful API for integration with external systems
+
+### 💻 Deployment & Compatibility
+* Runs on macOS, Linux, Windows, and Docker
 
 ## Support
 
