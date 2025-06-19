@@ -2303,6 +2303,12 @@
                 };
 
                 window.Common.post(uri + "/save-xml", function (res) {
+                    // Check XML
+                    if (res.WrongXml === true) {
+                        window.Common.toastError(language.get("toast-save-workflow-xml-not-valid"));
+                        return;
+                    }
+
                     // Prevent changing workflow id
                     if (res.WrongWorkflowId === true) {
                         window.Common.toastInfo(`${language.get("toast-workflow-id-change")}${json.workflowId}`);

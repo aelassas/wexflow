@@ -1318,6 +1318,20 @@ namespace Wexflow.Server
 
                     var idFromXml = WexflowServer.WexflowEngine.GetWorkflowId(xml);
 
+                    if (idFromXml == -1)
+                    {
+                        await context.Response.WriteAsync(
+                            JsonConvert.SerializeObject(
+                            new SaveResult
+                            {
+                                FilePath = path,
+                                Result = false,
+                                WrongWorkflowId = false,
+                                WrongXml = true,
+                            }));
+                        return;
+                    }
+
                     if (idFromXml != workflowId)
                     {
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(new SaveResult { FilePath = path, Result = false, WrongWorkflowId = true }));

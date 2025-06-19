@@ -142,6 +142,7 @@
     languages["en"]["toast-save-workflow-json-error"] = "An error occurred while saving the workflow from JSON view.";
     languages["en"]["toast-save-workflow-xml"] = "Workflow saved and loaded successfully from XML view.";
     languages["en"]["toast-save-workflow-xml-error"] = "An error occurred while saving the workflow from XML view.";
+    languages["en"]["toast-save-workflow-xml-not-valid"] = "Workflow XML not valid.";
     languages["en"]["toast-graph-error"] = "An error occurred while retrieving the graph.";
     languages["en"]["toast-graph-save-error"] = "You must save the workflow to view the graph.";
     languages["en"]["toast-workflows-deleted"] = "Workflows deleted with success.";
@@ -374,6 +375,7 @@
     languages["fr"]["toast-save-workflow-json-error"] = "Une erreur s'est produite lors de la sauvegarde du workflow depuis la vue JSON.";
     languages["fr"]["toast-save-workflow-xml"] = "Workflow sauvegardé et chargé avec succès depuis la vue  XML.";
     languages["fr"]["toast-save-workflow-xml-error"] = "Une erreur s'est produite lors de la sauvegarde du workflow depuis la vue XML.";
+    languages["fr"]["toast-save-workflow-xml-not-valid"] = "Workflow XML non valide.";
     languages["fr"]["toast-graph-error"] = "Une erreur s'est produite lors de la récupération du graphe.";
     languages["fr"]["toast-graph-save-error"] = "Vous devez enregistrer le workflow pour voir le graphe.";
     languages["fr"]["toast-workflows-deleted"] = "Workflows supprimés avec succès.";
@@ -606,6 +608,7 @@
     languages["da"]["toast-save-workflow-json-error"] = "Der opstod en fejl under lagring af workflow fra JSON-visningen.";
     languages["da"]["toast-save-workflow-xml"] = "Arbejdsproces er gemt og indlæst med succes fra XML-visning.";
     languages["da"]["toast-save-workflow-xml-error"] = "Der opstod en fejl under lagring af workflow fra XML-visning.";
+    languages["da"]["toast-save-workflow-xml-not-valid"] = "Workflow-XML er ikke gyldig.";
     languages["da"]["toast-graph-error"] = "Der opstod en fejl under hentning af grafen.";
     languages["da"]["toast-graph-save-error"] = "Du skal gemme opgavern for at se grafen.";
     languages["da"]["toast-workflows-deleted"] = "opgaver er slettet med succes.";

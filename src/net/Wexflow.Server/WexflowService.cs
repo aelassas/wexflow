@@ -1483,6 +1483,19 @@ namespace Wexflow.Server
 
                     var idFromXml = WexflowServer.WexflowEngine.GetWorkflowId(xml);
 
+                    if (idFromXml == -1)
+                    {
+                        var ressrWrongWorkflowId = new SaveResult { FilePath = path, Result = false, WrongWorkflowId = false, WrongXml = true };
+                        var resStrWrongWorkflowId = JsonConvert.SerializeObject(ressrWrongWorkflowId);
+                        var resBytesWrongWorkflowId = Encoding.UTF8.GetBytes(resStrWrongWorkflowId);
+
+                        return new Response
+                        {
+                            ContentType = "application/json",
+                            Contents = s => s.Write(resBytesWrongWorkflowId, 0, resBytesWrongWorkflowId.Length)
+                        };
+                    }
+
                     if (idFromXml != workflowId)
                     {
                         var ressrWrongWorkflowId = new SaveResult { FilePath = path, Result = false, WrongWorkflowId = true };
