@@ -52,9 +52,9 @@ If this project helped you in your work, saved you time, or inspired you in any 
 
 You can contribute in several ways:
 
-- **⭐ Star the repository** – It helps increase visibility and shows your appreciation.
-- **💬 Share the project** – Recommend it to colleagues, communities, or on social media.
-- **☕ Donate or sponsor** – If you'd like to financially support the development, you can do so via:
+- **Star the repository** – It helps increase visibility and shows your appreciation.
+- **Share the project** – Recommend it to colleagues, communities, or on social media.
+- **Donate or sponsor** – If you'd like to financially support the development, you can do so via:
 
   - [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly)
   - [PayPal](https://www.paypal.me/aelassaspp)
