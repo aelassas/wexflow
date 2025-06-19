@@ -21,5 +21,5 @@ function Touch-CsprojFiles {
     }
 }
 
-# Reload Intellisense for all .csproj files in the .NET 4.8 projects
+# Reload Intellisense for all .csproj files in .NET 4.8 projects
 Touch-CsprojFiles -ProjectRoot ".\net"
