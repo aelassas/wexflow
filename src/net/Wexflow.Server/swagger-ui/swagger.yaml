@@ -142,7 +142,7 @@ paths:
     get:
       tags:
       - Dashboard
-      summary: Returns job entry
+      summary: Returns job entry. If jobId is not specified, it returns the latest job entry of the workflow.
       parameters:
       - name: w
         in: query

@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using LiteDB.Engine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -332,7 +333,11 @@ namespace Wexflow.Core.Db.LiteDB
             lock (Padlock)
             {
                 var col = _db.GetCollection<Entry>(Core.Db.Entry.DOCUMENT_NAME);
-                return col.FindOne(e => e.WorkflowId == workflowId);
+                //return col.FindOne(e => e.WorkflowId == WorkflowId);
+                var query = Query.All("StatusDate", Query.Descending);
+                query.Where.Add(Query.EQ("WorkflowId", workflowId));
+
+                return col.FindOne(query);
             }
         }
 

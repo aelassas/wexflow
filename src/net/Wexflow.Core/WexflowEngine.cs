@@ -1290,7 +1290,18 @@ namespace Wexflow.Core
         }
 
         /// <summary>
-        /// Returns a job entry.
+        /// Returns latest workflow entry.
+        /// </summary>
+        /// <param name="workflowId">Workflow Id.</param>
+        /// <returns></returns>
+        public Entry GetEntry(int workflowId)
+        {
+            var col = Database.GetEntry(workflowId);
+            return col;
+        }
+
+        /// <summary>
+        /// Returns a workflow job entry.
         /// </summary>
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="jobId">Job Id.</param>

@@ -27,14 +27,19 @@ namespace Wexflow.Core.Db
         UsernameDescending
     }
 
-    public abstract class Db(string connectionString)
+    public abstract class Db
     {
-        public string ConnectionString { get; } = connectionString;
+        public string ConnectionString { get; }
+
+        protected Db(string connectionString)
+        {
+            ConnectionString = connectionString;
+        }
 
         protected void InsertDefaultUser()
         {
             var password = GetMd5("wexflow2018");
-            User user = new() { Username = "admin", Password = password, UserProfile = UserProfile.SuperAdministrator };
+            var user = new User { Username = "admin", Password = password, UserProfile = UserProfile.SuperAdministrator };
             InsertUser(user);
         }
 
@@ -131,17 +136,19 @@ namespace Wexflow.Core.Db
         public static string GetMd5(string input)
         {
             // Use input string to calculate MD5 hash
-            var inputBytes = Encoding.ASCII.GetBytes(input);
-            var hashBytes = MD5.HashData(inputBytes);
-
-            // Convert the byte array to hexadecimal string
-            StringBuilder sb = new();
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (var i = 0; i < hashBytes.Length; i++)
+            using (var md5 = MD5.Create())
             {
-                _ = sb.Append(hashBytes[i].ToString("x2"));
+                var inputBytes = Encoding.ASCII.GetBytes(input);
+                var hashBytes = md5.ComputeHash(inputBytes);
+                // Convert the byte array to hexadecimal string
+                var sb = new StringBuilder();
+                // ReSharper disable once ForCanBeConvertedToForeach
+                for (var i = 0; i < hashBytes.Length; i++)
+                {
+                    _ = sb.Append(hashBytes[i].ToString("x2"));
+                }
+                return sb.ToString();
             }
-            return sb.ToString();
         }
     }
 }

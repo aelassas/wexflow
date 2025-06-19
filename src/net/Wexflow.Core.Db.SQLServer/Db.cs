@@ -528,7 +528,7 @@ namespace Wexflow.Core.Db.SQLServer
                 {
                     conn.Open();
 
-                    using (var command = new SqlCommand("SELECT "
+                    using (var command = new SqlCommand("SELECT TOP 1 "
                         + Entry.COLUMN_NAME_ID + ", "
                         + Entry.COLUMN_NAME_NAME + ", "
                         + Entry.COLUMN_NAME_DESCRIPTION + ", "
@@ -538,7 +538,9 @@ namespace Wexflow.Core.Db.SQLServer
                         + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
                         + Entry.COLUMN_NAME_JOB_ID
                         + " FROM " + Core.Db.Entry.DOCUMENT_NAME
-                        + " WHERE " + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId + ";", conn))
+                        + " WHERE " + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId
+                        + " ORDER BY " + Entry.COLUMN_NAME_STATUS_DATE + " DESC;"
+                        , conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {

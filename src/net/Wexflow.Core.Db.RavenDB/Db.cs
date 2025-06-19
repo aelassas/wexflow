@@ -542,7 +542,7 @@ namespace Wexflow.Core.Db.RavenDB
                     try
                     {
                         var col = session.Query<Entry>();
-                        return col.FirstOrDefault(e => e.WorkflowId == workflowId);
+                        return col.Where(e => e.WorkflowId == workflowId).OrderByDescending(e => e.StatusDate).FirstOrDefault();
                     }
                     catch (Exception)
                     {

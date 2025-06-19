@@ -496,7 +496,9 @@ namespace Wexflow.Core.Db.Firebird
                         + Entry.COLUMN_NAME_WORKFLOW_ID + ", "
                         + Entry.COLUMN_NAME_JOB_ID
                         + " FROM " + Core.Db.Entry.DOCUMENT_NAME
-                        + " WHERE " + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId + ";", conn))
+                        + " WHERE " + Entry.COLUMN_NAME_WORKFLOW_ID + " = " + workflowId
+                        + " ORDER BY " + Entry.COLUMN_NAME_STATUS_DATE + " DESC;"
+                        , conn))
                     {
                         using (var reader = command.ExecuteReader())
                         {

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -4167,7 +4168,7 @@ namespace Wexflow.Server
                 try
                 {
                     var workflowId = int.Parse(Request.Query["w"].ToString());
-                    var jobId = Guid.Parse(Request.Query["i"].ToString());
+                    var jobIdStr = Request.Query["i"].ToString();
                     Contracts.Entry res = null;
                     var auth = GetAuth(Request);
                     var username = auth.Username;
@@ -4176,7 +4177,18 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
-                        var e = WexflowServer.WexflowEngine.GetEntry(workflowId, jobId);
+                        Core.Db.Entry e = null;
+
+                        if (!string.IsNullOrEmpty(jobIdStr))
+                        {
+                            var jobId = Guid.Parse(jobIdStr);
+                            e = WexflowServer.WexflowEngine.GetEntry(workflowId, jobId);
+                        }
+                        else
+                        {
+                            e = WexflowServer.WexflowEngine.GetEntry(workflowId);
+                        }
+
                         if (e != null)
                         {
                             res = new Contracts.Entry

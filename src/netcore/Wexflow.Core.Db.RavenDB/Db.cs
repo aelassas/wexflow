@@ -14,7 +14,7 @@ namespace Wexflow.Core.Db.RavenDB
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object Padlock = new();
+        private static readonly object Padlock = new object();
         private static DocumentStore _store;
 
         public Db(string connectionString) : base(connectionString)
@@ -41,7 +41,7 @@ namespace Wexflow.Core.Db.RavenDB
 
             _store = new DocumentStore
             {
-                Urls = [ravenUrl],
+                Urls = new[] { ravenUrl },
                 Database = database
             };
 
@@ -67,42 +67,44 @@ namespace Wexflow.Core.Db.RavenDB
 
         public override void Init()
         {
-            using var session = _store.OpenSession();
-            // StatusCount
-            ClearStatusCount();
-
-            StatusCount statusCount = new()
+            using (var session = _store.OpenSession())
             {
-                PendingCount = 0,
-                RunningCount = 0,
-                DoneCount = 0,
-                FailedCount = 0,
-                WarningCount = 0,
-                DisabledCount = 0,
-                StoppedCount = 0
-            };
-            session.Store(statusCount);
-            session.SaveChanges();
+                // StatusCount
+                ClearStatusCount();
 
-            // Entries
-            ClearEntries();
+                var statusCount = new StatusCount
+                {
+                    PendingCount = 0,
+                    RunningCount = 0,
+                    DoneCount = 0,
+                    FailedCount = 0,
+                    WarningCount = 0,
+                    DisabledCount = 0,
+                    StoppedCount = 0
+                };
+                session.Store(statusCount);
+                session.SaveChanges();
 
-            // Insert default user if necessary
-            var usersCol = session.Query<User>();
-            try
-            {
-                if (!usersCol.Any())
+                // Entries
+                ClearEntries();
+
+                // Insert default user if necessary
+                var usersCol = session.Query<User>();
+                try
+                {
+                    if (!usersCol.Any())
+                    {
+                        InsertDefaultUser();
+                    }
+                }
+                catch (Exception) // Create document if it does not exist
                 {
                     InsertDefaultUser();
                 }
             }
-            catch (Exception) // Create document if it does not exist
-            {
-                InsertDefaultUser();
-            }
         }
 
-        private static void DeleteAll(string documentName)
+        private void DeleteAll(string documentName)
         {
             lock (Padlock)
             {
@@ -115,7 +117,7 @@ namespace Wexflow.Core.Db.RavenDB
             }
         }
 
-        private static void Wait()
+        private void Wait()
         {
             while (_store.Maintenance.ForDatabase(_store.Database).Send(new GetStatisticsOperation()).StaleIndexes.Length > 0)
             {
@@ -127,16 +129,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<UserWorkflow>();
-                    var res = col.FirstOrDefault(uw => uw.UserId == userId && uw.WorkflowId == workflowId);
-                    return res != null;
-                }
-                catch (Exception)
-                {
-                    return false;
+                    try
+                    {
+                        var col = session.Query<UserWorkflow>();
+                        var res = col.FirstOrDefault(uw => uw.UserId == userId && uw.WorkflowId == workflowId);
+                        return res != null;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
                 }
             }
         }
@@ -155,14 +159,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.PendingCount--;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.PendingCount--;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -171,14 +177,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.RunningCount--;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.RunningCount--;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -187,19 +195,21 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<User>();
-                var user = col.FirstOrDefault(u => u.Username == username);
-                if (user != null && user.Password == password)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(user);
-                    DeleteUserWorkflowRelationsByUserId(user.Id);
-                    session.SaveChanges();
-                    Wait();
-                }
-                else
-                {
-                    throw new Exception("The password is incorrect.");
+                    var col = session.Query<User>();
+                    var user = col.FirstOrDefault(u => u.Username == username);
+                    if (user != null && user.Password == password)
+                    {
+                        session.Delete(user);
+                        DeleteUserWorkflowRelationsByUserId(user.Id);
+                        session.SaveChanges();
+                        Wait();
+                    }
+                    else
+                    {
+                        throw new Exception("The password is incorrect.");
+                    }
                 }
             }
         }
@@ -208,15 +218,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<UserWorkflow>();
-                var rels = col.Where(uw => uw.UserId == userId).ToArray();
-                foreach (var rel in rels)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(rel);
+                    var col = session.Query<UserWorkflow>();
+                    var rels = col.Where(uw => uw.UserId == userId).ToArray();
+                    foreach (var rel in rels)
+                    {
+                        session.Delete(rel);
+                    }
+                    session.SaveChanges();
+                    Wait();
                 }
-                session.SaveChanges();
-                Wait();
             }
         }
 
@@ -224,15 +236,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<UserWorkflow>();
-                var rels = col.Where(uw => uw.WorkflowId == workflowDbId).ToArray();
-                foreach (var rel in rels)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(rel);
+                    var col = session.Query<UserWorkflow>();
+                    var rels = col.Where(uw => uw.WorkflowId == workflowDbId).ToArray();
+                    foreach (var rel in rels)
+                    {
+                        session.Delete(rel);
+                    }
+                    session.SaveChanges();
+                    Wait();
                 }
-                session.SaveChanges();
-                Wait();
             }
         }
 
@@ -240,15 +254,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Workflow>();
-                var wf = col.FirstOrDefault(e => e.Id == id);
-                if (wf != null)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(wf);
+                    var col = session.Query<Workflow>();
+                    var wf = col.FirstOrDefault(e => e.Id == id);
+                    if (wf != null)
+                    {
+                        session.Delete(wf);
+                    }
+                    session.SaveChanges();
+                    Wait();
                 }
-                session.SaveChanges();
-                Wait();
             }
         }
 
@@ -256,20 +272,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Workflow>();
-
-                foreach (var id in ids)
+                using (var session = _store.OpenSession())
                 {
-                    var wf = col.FirstOrDefault(w => w.Id == id);
-                    if (wf != null)
-                    {
-                        session.Delete(wf);
-                    }
-                }
+                    var col = session.Query<Workflow>();
 
-                session.SaveChanges();
-                Wait();
+                    foreach (var id in ids)
+                    {
+                        var wf = col.FirstOrDefault(w => w.Id == id);
+                        if (wf != null)
+                        {
+                            session.Delete(wf);
+                        }
+                    }
+
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -277,27 +295,38 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<User>();
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-
-                    return uo switch
+                    try
                     {
-                        UserOrderBy.UsernameAscending => [.. col.Search(u => u.Username, keywordToLower)
-                            .Where(u => u.UserProfile == UserProfile.Administrator)
-                            .OrderBy(u => u.Username)],
-                        UserOrderBy.UsernameDescending => col.Search(u => u.Username, keywordToLower)
-                            .Where(u => u.UserProfile == UserProfile.Administrator)
-                            .OrderByDescending(u => u.Username)
-                            .ToArray(),
-                        _ => []
-                    };
-                }
-                catch (Exception)
-                {
-                    return [];
+                        var col = session.Query<User>();
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+
+                        switch (uo)
+                        {
+                            case UserOrderBy.UsernameAscending:
+                                return col
+                                    .Search(u => u.Username, keywordToLower)
+                                    .Where(u => u.UserProfile == UserProfile.Administrator)
+                                    .OrderBy(u => u.Username)
+                                    .ToArray();
+                            case UserOrderBy.UsernameDescending:
+                                return col
+                                    .Search(u => u.Username, keywordToLower)
+                                    .Where(u => u.UserProfile == UserProfile.Administrator)
+                                    .OrderByDescending(u => u.Username)
+                                    .ToArray();
+
+                            default:
+                                break;
+                        }
+
+                        return Array.Empty<User>();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<User>();
+                    }
                 }
             }
         }
@@ -306,15 +335,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Entry>().ToArray();
-                    return col;
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var col = session.Query<Entry>().ToArray();
+                        return col;
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<Entry>();
+                    }
                 }
             }
         }
@@ -323,104 +354,157 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Entry>();
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var skip = (page - 1) * entriesCount;
-
-                    return eo switch
+                    try
                     {
-                        EntryOrderBy.StatusDateAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.StatusDate)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.StatusDateDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.StatusDate)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.WorkflowIdAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.WorkflowId)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.WorkflowIdDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.WorkflowId)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.NameAscending => [.. col.Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.Name)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.NameDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.Name)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.LaunchTypeAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.LaunchType)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.LaunchTypeDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.LaunchType)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.DescriptionAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.Description)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.DescriptionDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.Description)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.StatusAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.Status)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.StatusDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.Status)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        _ => []
-                    };
-                }
-                catch (Exception)
-                {
-                    return [];
+                        var col = session.Query<Entry>();
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var skip = (page - 1) * entriesCount;
+
+                        switch (eo)
+                        {
+                            case EntryOrderBy.StatusDateAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.StatusDate).Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.StatusDateDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.StatusDate)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.WorkflowIdAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.WorkflowId)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.WorkflowIdDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.WorkflowId)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.NameAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.Name)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.NameDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.Name)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.LaunchTypeAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.LaunchType)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.LaunchTypeDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.LaunchType)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.DescriptionAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.Description)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.DescriptionDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.Description)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.StatusAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.Status)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.StatusDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.Status)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            default:
+                                break;
+                        }
+
+                        return Array.Empty<Entry>();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<Entry>();
+                    }
                 }
             }
         }
@@ -429,20 +513,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var col = session.Query<Entry>();
+                    try
+                    {
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var col = session.Query<Entry>();
 
-                    return col
-                        .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                        .Search(e => e.Description, keywordToLower)
-                        .Count(e => e.StatusDate > from && e.StatusDate < to);
-                }
-                catch (Exception)
-                {
-                    return 0;
+                        return col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Count(e => e.StatusDate > from && e.StatusDate < to);
+                    }
+                    catch (Exception)
+                    {
+                        return 0;
+                    }
                 }
             }
         }
@@ -451,15 +537,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Entry>();
-                    return col.FirstOrDefault(e => e.WorkflowId == workflowId);
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<Entry>();
+                        return col.Where(e => e.WorkflowId == workflowId).OrderByDescending(e => e.StatusDate).FirstOrDefault();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -468,15 +556,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Entry>();
-                    return col.FirstOrDefault(e => e.WorkflowId == workflowId && e.JobId == jobId.ToString());
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<Entry>();
+                        return col.FirstOrDefault(e => e.WorkflowId == workflowId && e.JobId == jobId.ToString());
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -485,16 +575,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Entry>();
-                    var q = col.OrderByDescending(e => e.StatusDate);
-                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
-                }
-                catch (Exception)
-                {
-                    return DateTime.Now;
+                    try
+                    {
+                        var col = session.Query<Entry>();
+                        var q = col.OrderByDescending(e => e.StatusDate);
+                        return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                    }
+                    catch (Exception)
+                    {
+                        return DateTime.Now;
+                    }
                 }
             }
         }
@@ -503,16 +595,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Entry>();
-                    var q = col.OrderBy(e => e.StatusDate);
-                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
-                }
-                catch (Exception)
-                {
-                    return DateTime.Now;
+                    try
+                    {
+                        var col = session.Query<Entry>();
+                        var q = col.OrderBy(e => e.StatusDate);
+                        return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                    }
+                    catch (Exception)
+                    {
+                        return DateTime.Now;
+                    }
                 }
             }
         }
@@ -521,15 +615,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<HistoryEntry>().ToArray();
-                    return col;
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var col = session.Query<HistoryEntry>().ToArray();
+                        return col;
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<HistoryEntry>();
+                    }
                 }
             }
         }
@@ -538,18 +634,21 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var col = session.Query<HistoryEntry>();
-                    return [.. col
-                        .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                        .Search(e => e.Description, keywordToLower)];
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var col = session.Query<HistoryEntry>();
+                        return col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .ToArray();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<HistoryEntry>();
+                    }
                 }
             }
         }
@@ -558,19 +657,21 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var col = session.Query<HistoryEntry>();
-                    return [.. col
-                        .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                        .Search(e => e.Description, keywordToLower)
-                        .Skip((page - 1) * entriesCount).Take(entriesCount)];
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var col = session.Query<HistoryEntry>();
+                        return col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Skip((page - 1) * entriesCount).Take(entriesCount).ToArray();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<HistoryEntry>();
+                    }
                 }
             }
         }
@@ -579,104 +680,157 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<HistoryEntry>();
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var skip = (page - 1) * entriesCount;
-
-                    return heo switch
+                    try
                     {
-                        EntryOrderBy.StatusDateAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.StatusDate)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.StatusDateDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.StatusDate)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.WorkflowIdAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.WorkflowId)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.WorkflowIdDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.WorkflowId)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.NameAscending => [.. col.Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.Name)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.NameDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.Name)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.LaunchTypeAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.LaunchType)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.LaunchTypeDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.LaunchType)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.DescriptionAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.Description)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.DescriptionDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.Description)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.StatusAscending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderBy(e => e.Status)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        EntryOrderBy.StatusDescending => [.. col
-                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                            .Search(e => e.Description, keywordToLower)
-                            .Where(e => e.StatusDate > from && e.StatusDate < to)
-                            .OrderByDescending(e => e.Status)
-                            .Skip(skip)
-                            .Take(entriesCount)],
-                        _ => []
-                    };
-                }
-                catch (Exception)
-                {
-                    return [];
+                        var col = session.Query<HistoryEntry>();
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var skip = (page - 1) * entriesCount;
+
+                        switch (heo)
+                        {
+                            case EntryOrderBy.StatusDateAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.StatusDate).Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.StatusDateDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.StatusDate)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.WorkflowIdAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.WorkflowId)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.WorkflowIdDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.WorkflowId)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.NameAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.Name)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.NameDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.Name)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.LaunchTypeAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.LaunchType)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.LaunchTypeDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.LaunchType)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.DescriptionAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.Description)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.DescriptionDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.Description)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.StatusAscending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderBy(e => e.Status)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            case EntryOrderBy.StatusDescending:
+
+                                return col
+                                    .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                                    .Search(e => e.Description, keywordToLower)
+                                    .Where(e => e.StatusDate > from && e.StatusDate < to)
+                                    .OrderByDescending(e => e.Status)
+                                    .Skip(skip)
+                                    .Take(entriesCount)
+                                    .ToArray();
+
+                            default:
+                                break;
+                        }
+
+                        return Array.Empty<HistoryEntry>();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<HistoryEntry>();
+                    }
                 }
             }
         }
@@ -685,19 +839,21 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var col = session.Query<HistoryEntry>();
-                    return col
-                        .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                        .Search(e => e.Description, keywordToLower)
-                        .Count();
-                }
-                catch (Exception)
-                {
-                    return 0;
+                    try
+                    {
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var col = session.Query<HistoryEntry>();
+                        return col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Count();
+                    }
+                    catch (Exception)
+                    {
+                        return 0;
+                    }
                 }
             }
         }
@@ -706,20 +862,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                    var col = session.Query<HistoryEntry>();
+                    try
+                    {
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                        var col = session.Query<HistoryEntry>();
 
-                    return col
-                        .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
-                        .Search(e => e.Description, keywordToLower)
-                        .Count(e => e.StatusDate > from && e.StatusDate < to);
-                }
-                catch (Exception)
-                {
-                    return 0;
+                        return col
+                            .Search(e => e.Name, keywordToLower, options: SearchOptions.Or)
+                            .Search(e => e.Description, keywordToLower)
+                            .Count(e => e.StatusDate > from && e.StatusDate < to);
+                    }
+                    catch (Exception)
+                    {
+                        return 0;
+                    }
                 }
             }
         }
@@ -728,16 +886,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<HistoryEntry>();
-                    var q = col.OrderByDescending(e => e.StatusDate);
-                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
-                }
-                catch (Exception)
-                {
-                    return DateTime.Now;
+                    try
+                    {
+                        var col = session.Query<HistoryEntry>();
+                        var q = col.OrderByDescending(e => e.StatusDate);
+                        return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                    }
+                    catch (Exception)
+                    {
+                        return DateTime.Now;
+                    }
                 }
             }
         }
@@ -746,16 +906,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<HistoryEntry>();
-                    var q = col.OrderBy(e => e.StatusDate);
-                    return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
-                }
-                catch (Exception)
-                {
-                    return DateTime.Now;
+                    try
+                    {
+                        var col = session.Query<HistoryEntry>();
+                        var q = col.OrderBy(e => e.StatusDate);
+                        return q.Any() ? q.Select(e => e.StatusDate).First() : DateTime.Now;
+                    }
+                    catch (Exception)
+                    {
+                        return DateTime.Now;
+                    }
                 }
             }
         }
@@ -764,16 +926,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<User>();
-                    var user = col.First(u => u.Username == username);
-                    return user.Password;
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<User>();
+                        var user = col.First(u => u.Username == username);
+                        return user.Password;
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -782,16 +946,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<StatusCount>();
-                    var statusCount = col.FirstOrDefault();
-                    return statusCount;
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<StatusCount>();
+                        var statusCount = col.FirstOrDefault();
+                        return statusCount;
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -800,34 +966,38 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<User>();
-                    var user = col.FirstOrDefault(u => u.Username == username);
-                    return user;
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<User>();
+                        var user = col.FirstOrDefault(u => u.Username == username);
+                        return user;
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
 
-        public override Core.Db.User GetUserById(string id)
+        public override Core.Db.User GetUserById(string userId)
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<User>();
-                    var user = col.FirstOrDefault(u => u.Id == id);
-                    return user;
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<User>();
+                        var user = col.FirstOrDefault(u => u.Id == userId);
+                        return user;
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -836,15 +1006,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<User>();
-                    return [.. col];
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var col = session.Query<User>();
+                        return col.ToArray();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<User>();
+                    }
                 }
             }
         }
@@ -853,22 +1025,29 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<User>();
-                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-
-                    return uo switch
+                    try
                     {
-                        UserOrderBy.UsernameAscending => [.. col.Search(u => u.Username, keywordToLower).OrderBy(u => u.Username)],
-                        UserOrderBy.UsernameDescending => [.. col.Search(u => u.Username, keywordToLower).OrderByDescending(u => u.Username)],
-                        _ => []
-                    };
-                }
-                catch (Exception)
-                {
-                    return [];
+                        var col = session.Query<User>();
+                        var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+
+                        switch (uo)
+                        {
+                            case UserOrderBy.UsernameAscending:
+                                return col.Search(u => u.Username, keywordToLower).OrderBy(u => u.Username).ToArray();
+                            case UserOrderBy.UsernameDescending:
+                                return col.Search(u => u.Username, keywordToLower).OrderByDescending(u => u.Username).ToArray();
+                            default:
+                                break;
+                        }
+
+                        return Array.Empty<User>();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<User>();
+                    }
                 }
             }
         }
@@ -877,15 +1056,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<UserWorkflow>();
-                    return [.. col.Where(uw => uw.UserId == userId).Select(uw => uw.WorkflowId)];
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var col = session.Query<UserWorkflow>();
+                        return col.Where(uw => uw.UserId == userId).Select(uw => uw.WorkflowId).ToArray();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<string>();
+                    }
                 }
             }
         }
@@ -894,15 +1075,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Workflow>();
-                    return col.FirstOrDefault(w => w.Id == id);
-                }
-                catch (Exception)
-                {
-                    return null;
+                    try
+                    {
+                        var col = session.Query<Workflow>();
+                        return col.FirstOrDefault(w => w.Id == id);
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -911,15 +1094,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                try
+                using (var session = _store.OpenSession())
                 {
-                    var col = session.Query<Workflow>();
-                    return [.. col];
-                }
-                catch (Exception)
-                {
-                    return [];
+                    try
+                    {
+                        var col = session.Query<Workflow>();
+                        return col.ToArray();
+                    }
+                    catch (Exception)
+                    {
+                        return Array.Empty<Workflow>();
+                    }
                 }
             }
         }
@@ -928,14 +1113,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.DisabledCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.DisabledCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -944,14 +1131,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.RejectedCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.RejectedCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -960,14 +1149,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.DoneCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.DoneCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -976,14 +1167,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.FailedCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.FailedCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -992,14 +1185,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.PendingCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.PendingCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -1008,14 +1203,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.RunningCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.RunningCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -1024,14 +1221,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.StoppedCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.StoppedCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -1040,14 +1239,16 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<StatusCount>();
-                var statusCount = col.FirstOrDefault();
-                if (statusCount != null)
+                using (var session = _store.OpenSession())
                 {
-                    statusCount.WarningCount++;
-                    session.SaveChanges();
-                    Wait();
+                    var col = session.Query<StatusCount>();
+                    var statusCount = col.FirstOrDefault();
+                    if (statusCount != null)
+                    {
+                        statusCount.WarningCount++;
+                        session.SaveChanges();
+                        Wait();
+                    }
                 }
             }
         }
@@ -1056,21 +1257,23 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                Entry ie = new()
+                using (var session = _store.OpenSession())
                 {
-                    Description = entry.Description,
-                    LaunchType = entry.LaunchType,
-                    Name = entry.Name,
-                    Status = entry.Status,
-                    StatusDate = entry.StatusDate,
-                    WorkflowId = entry.WorkflowId,
-                    JobId = entry.JobId,
-                    Logs = entry.Logs
-                };
-                session.Store(ie);
-                session.SaveChanges();
-                Wait();
+                    var ie = new Entry
+                    {
+                        Description = entry.Description,
+                        LaunchType = entry.LaunchType,
+                        Name = entry.Name,
+                        Status = entry.Status,
+                        StatusDate = entry.StatusDate,
+                        WorkflowId = entry.WorkflowId,
+                        JobId = entry.JobId,
+                        Logs = entry.Logs
+                    };
+                    session.Store(ie);
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1078,20 +1281,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                HistoryEntry he = new()
+                using (var session = _store.OpenSession())
                 {
-                    Description = entry.Description,
-                    LaunchType = entry.LaunchType,
-                    Name = entry.Name,
-                    Status = entry.Status,
-                    StatusDate = entry.StatusDate,
-                    WorkflowId = entry.WorkflowId,
-                    Logs = entry.Logs
-                };
-                session.Store(he);
-                session.SaveChanges();
-                Wait();
+                    var he = new HistoryEntry
+                    {
+                        Description = entry.Description,
+                        LaunchType = entry.LaunchType,
+                        Name = entry.Name,
+                        Status = entry.Status,
+                        StatusDate = entry.StatusDate,
+                        WorkflowId = entry.WorkflowId,
+                        Logs = entry.Logs
+                    };
+                    session.Store(he);
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1099,20 +1304,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                user.CreatedOn = DateTime.Now;
-                User nu = new()
+                using (var session = _store.OpenSession())
                 {
-                    CreatedOn = user.CreatedOn,
-                    Email = user.Email,
-                    ModifiedOn = user.ModifiedOn,
-                    Password = user.Password,
-                    Username = user.Username,
-                    UserProfile = user.UserProfile
-                };
-                session.Store(nu);
-                session.SaveChanges();
-                Wait();
+                    user.CreatedOn = DateTime.Now;
+                    var nu = new User
+                    {
+                        CreatedOn = user.CreatedOn,
+                        Email = user.Email,
+                        ModifiedOn = user.ModifiedOn,
+                        Password = user.Password,
+                        Username = user.Username,
+                        UserProfile = user.UserProfile
+                    };
+                    session.Store(nu);
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1120,15 +1327,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                UserWorkflow uw = new()
+                using (var session = _store.OpenSession())
                 {
-                    UserId = userWorkflow.UserId,
-                    WorkflowId = userWorkflow.WorkflowId
-                };
-                session.Store(uw);
-                session.SaveChanges();
-                Wait();
+                    var uw = new UserWorkflow
+                    {
+                        UserId = userWorkflow.UserId,
+                        WorkflowId = userWorkflow.WorkflowId
+                    };
+                    session.Store(uw);
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1136,12 +1345,14 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                Workflow wf = new() { Xml = workflow.Xml };
-                session.Store(wf);
-                session.SaveChanges();
-                Wait();
-                return wf.Id;
+                using (var session = _store.OpenSession())
+                {
+                    var wf = new Workflow { Xml = workflow.Xml };
+                    session.Store(wf);
+                    session.SaveChanges();
+                    Wait();
+                    return wf.Id;
+                }
             }
         }
 
@@ -1149,20 +1360,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Entry>();
-                var ue = col.First(e => e.Id == id);
-                ue.Name = entry.Name;
-                ue.Description = entry.Description;
-                ue.LaunchType = entry.LaunchType;
-                ue.Status = entry.Status;
-                ue.StatusDate = entry.StatusDate;
-                ue.WorkflowId = entry.WorkflowId;
-                ue.JobId = entry.JobId;
-                ue.Logs = entry.Logs;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Entry>();
+                    var ue = col.First(e => e.Id == id);
+                    ue.Name = entry.Name;
+                    ue.Description = entry.Description;
+                    ue.LaunchType = entry.LaunchType;
+                    ue.Status = entry.Status;
+                    ue.StatusDate = entry.StatusDate;
+                    ue.WorkflowId = entry.WorkflowId;
+                    ue.JobId = entry.JobId;
+                    ue.Logs = entry.Logs;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1170,13 +1383,15 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<User>();
-                var dbUser = col.First(u => u.Username == username);
-                dbUser.Password = password;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<User>();
+                    var dbUser = col.First(u => u.Username == username);
+                    dbUser.Password = password;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1184,17 +1399,19 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<User>();
-                var uu = col.First(u => u.Id == id);
-                uu.ModifiedOn = DateTime.Now;
-                uu.Username = user.Username;
-                uu.Password = user.Password;
-                uu.UserProfile = user.UserProfile;
-                uu.Email = user.Email;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<User>();
+                    var uu = col.First(u => u.Id == id);
+                    uu.ModifiedOn = DateTime.Now;
+                    uu.Username = user.Username;
+                    uu.Password = user.Password;
+                    uu.UserProfile = user.UserProfile;
+                    uu.Email = user.Email;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1202,16 +1419,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<User>();
-                var uu = col.First(u => u.Id == userId);
-                uu.ModifiedOn = DateTime.Now;
-                uu.Username = username;
-                uu.UserProfile = up;
-                uu.Email = email;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<User>();
+                    var uu = col.First(u => u.Id == userId);
+                    uu.ModifiedOn = DateTime.Now;
+                    uu.Username = username;
+                    uu.UserProfile = up;
+                    uu.Email = email;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1219,13 +1438,15 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Workflow>();
-                var wf = col.First(w => w.Id == dbId);
-                wf.Xml = workflow.Xml;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Workflow>();
+                    var wf = col.First(w => w.Id == dbId);
+                    wf.Xml = workflow.Xml;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1233,10 +1454,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Entry>();
-                var entry = col.First(e => e.Id == entryId);
-                return entry.Logs;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Entry>();
+                    var entry = col.First(e => e.Id == entryId);
+                    return entry.Logs;
+                }
             }
         }
 
@@ -1244,10 +1467,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<HistoryEntry>();
-                var entry = col.First(e => e.Id == entryId);
-                return entry.Logs;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<HistoryEntry>();
+                    var entry = col.First(e => e.Id == entryId);
+                    return entry.Logs;
+                }
             }
         }
 
@@ -1255,11 +1480,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-
-                var col = session.Query<User>();
-                var users = col.Where(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username).ToList();
-                return users;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<User>();
+                    var users = col.Where(u => u.UserProfile == UserProfile.SuperAdministrator || u.UserProfile == UserProfile.Administrator).OrderBy(u => u.Username).ToList();
+                    return users;
+                }
             }
         }
 
@@ -1267,25 +1493,27 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                Record r = new()
+                using (var session = _store.OpenSession())
                 {
-                    Approved = record.Approved,
-                    AssignedOn = record.AssignedOn,
-                    AssignedTo = record.AssignedTo,
-                    Comments = record.Comments,
-                    CreatedBy = record.CreatedBy,
-                    CreatedOn = DateTime.Now,
-                    Description = record.Description,
-                    EndDate = record.EndDate,
-                    ManagerComments = record.ManagerComments,
-                    Name = record.Name,
-                    StartDate = record.StartDate
-                };
-                session.Store(r);
-                session.SaveChanges();
-                Wait();
-                return r.Id;
+                    var r = new Record
+                    {
+                        Approved = record.Approved,
+                        AssignedOn = record.AssignedOn,
+                        AssignedTo = record.AssignedTo,
+                        Comments = record.Comments,
+                        CreatedBy = record.CreatedBy,
+                        CreatedOn = DateTime.Now,
+                        Description = record.Description,
+                        EndDate = record.EndDate,
+                        ManagerComments = record.ManagerComments,
+                        Name = record.Name,
+                        StartDate = record.StartDate
+                    };
+                    session.Store(r);
+                    session.SaveChanges();
+                    Wait();
+                    return r.Id;
+                }
             }
         }
 
@@ -1293,26 +1521,28 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Record>();
-                var recordFromDb = col.First(r => r.Id == recordId);
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Record>();
+                    var recordFromDb = col.First(r => r.Id == recordId);
 
-                recordFromDb.Approved = record.Approved;
-                recordFromDb.AssignedOn = record.AssignedOn;
-                recordFromDb.AssignedTo = record.AssignedTo;
-                recordFromDb.Comments = record.Comments;
-                recordFromDb.CreatedBy = record.CreatedBy;
-                recordFromDb.CreatedOn = recordFromDb.CreatedOn;
-                recordFromDb.Description = record.Description;
-                recordFromDb.EndDate = record.EndDate;
-                recordFromDb.ManagerComments = record.ManagerComments;
-                recordFromDb.Name = record.Name;
-                recordFromDb.StartDate = record.StartDate;
-                recordFromDb.ModifiedBy = record.ModifiedBy;
-                recordFromDb.ModifiedOn = DateTime.Now;
+                    recordFromDb.Approved = record.Approved;
+                    recordFromDb.AssignedOn = record.AssignedOn;
+                    recordFromDb.AssignedTo = record.AssignedTo;
+                    recordFromDb.Comments = record.Comments;
+                    recordFromDb.CreatedBy = record.CreatedBy;
+                    recordFromDb.CreatedOn = recordFromDb.CreatedOn;
+                    recordFromDb.Description = record.Description;
+                    recordFromDb.EndDate = record.EndDate;
+                    recordFromDb.ManagerComments = record.ManagerComments;
+                    recordFromDb.Name = record.Name;
+                    recordFromDb.StartDate = record.StartDate;
+                    recordFromDb.ModifiedBy = record.ModifiedBy;
+                    recordFromDb.ModifiedOn = DateTime.Now;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1320,20 +1550,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Record>();
-
-                foreach (var id in recordIds)
+                using (var session = _store.OpenSession())
                 {
-                    var record = col.FirstOrDefault(r => r.Id == id);
-                    if (record != null)
-                    {
-                        session.Delete(record);
-                    }
-                }
+                    var col = session.Query<Record>();
 
-                session.SaveChanges();
-                Wait();
+                    foreach (var id in recordIds)
+                    {
+                        var record = col.FirstOrDefault(r => r.Id == id);
+                        if (record != null)
+                        {
+                            session.Delete(record);
+                        }
+                    }
+
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1341,10 +1573,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Record>();
-                var record = col.FirstOrDefault(r => r.Id == id);
-                return record;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Record>();
+                    var record = col.FirstOrDefault(r => r.Id == id);
+                    return record;
+                }
             }
         }
 
@@ -1352,15 +1586,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Record>();
-                var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                var records = col
-                    .Search(r => r.Name, keywordToLower, options: SearchOptions.Or)
-                    .Search(r => r.Description, keywordToLower)
-                    .OrderByDescending(r => r.CreatedOn)
-                    .ToList();
-                return records;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Record>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var records = col
+                        .Search(r => r.Name, keywordToLower, options: SearchOptions.Or)
+                        .Search(r => r.Description, keywordToLower)
+                        .OrderByDescending(r => r.CreatedOn)
+                        .ToList();
+                    return records;
+                }
             }
         }
 
@@ -1368,10 +1604,12 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Record>();
-                var records = col.Where(r => r.CreatedBy == createdBy).OrderBy(r => r.Name).ToList();
-                return records;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Record>();
+                    var records = col.Where(r => r.CreatedBy == createdBy).OrderBy(r => r.Name).ToList();
+                    return records;
+                }
             }
         }
 
@@ -1379,17 +1617,19 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Record>();
-                var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Record>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
 
-                var records = col
-                    .Where(r => r.CreatedBy == createdBy || r.AssignedTo == assingedTo)
-                    .Search(r => r.Name, keywordToLower, options: SearchOptions.Or)
-                    .Search(r => r.Description, keywordToLower)
-                    .OrderByDescending(r => r.CreatedOn)
-                    .ToList();
-                return records;
+                    var records = col
+                        .Where(r => r.CreatedBy == createdBy || r.AssignedTo == assingedTo)
+                        .Search(r => r.Name, keywordToLower, options: SearchOptions.Or)
+                        .Search(r => r.Description, keywordToLower)
+                        .OrderByDescending(r => r.CreatedOn)
+                        .ToList();
+                    return records;
+                }
             }
         }
 
@@ -1397,17 +1637,19 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                Version v = new()
+                using (var session = _store.OpenSession())
                 {
-                    RecordId = version.RecordId,
-                    CreatedOn = DateTime.Now,
-                    FilePath = version.FilePath
-                };
-                session.Store(v);
-                session.SaveChanges();
-                Wait();
-                return v.Id;
+                    var v = new Version
+                    {
+                        RecordId = version.RecordId,
+                        CreatedOn = DateTime.Now,
+                        FilePath = version.FilePath
+                    };
+                    session.Store(v);
+                    session.SaveChanges();
+                    Wait();
+                    return v.Id;
+                }
             }
         }
 
@@ -1415,16 +1657,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Version>();
-                var versionFromDb = col.First(v => v.Id == versionId);
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Version>();
+                    var versionFromDb = col.First(v => v.Id == versionId);
 
-                versionFromDb.RecordId = version.RecordId;
-                versionFromDb.CreatedOn = versionFromDb.CreatedOn;
-                versionFromDb.FilePath = version.FilePath;
+                    versionFromDb.RecordId = version.RecordId;
+                    versionFromDb.CreatedOn = versionFromDb.CreatedOn;
+                    versionFromDb.FilePath = version.FilePath;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1432,20 +1676,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Version>();
-
-                foreach (var id in versionIds)
+                using (var session = _store.OpenSession())
                 {
-                    var version = col.FirstOrDefault(v => v.Id == id);
-                    if (version != null)
-                    {
-                        session.Delete(version);
-                    }
-                }
+                    var col = session.Query<Version>();
 
-                session.SaveChanges();
-                Wait();
+                    foreach (var id in versionIds)
+                    {
+                        var version = col.FirstOrDefault(v => v.Id == id);
+                        if (version != null)
+                        {
+                            session.Delete(version);
+                        }
+                    }
+
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1453,11 +1699,13 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Version>();
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Version>();
 
-                var versions = col.Where(v => v.RecordId == recordId).OrderBy(r => r.CreatedOn).ToList();
-                return versions;
+                    var versions = col.Where(v => v.RecordId == recordId).OrderBy(r => r.CreatedOn).ToList();
+                    return versions;
+                }
             }
         }
 
@@ -1465,11 +1713,13 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Version>();
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Version>();
 
-                var version = col.Where(v => v.RecordId == recordId).OrderByDescending(r => r.CreatedOn).FirstOrDefault();
-                return version;
+                    var version = col.Where(v => v.RecordId == recordId).OrderByDescending(r => r.CreatedOn).FirstOrDefault();
+                    return version;
+                }
             }
         }
 
@@ -1477,21 +1727,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-
-                Notification n = new()
+                using (var session = _store.OpenSession())
                 {
-                    AssignedBy = notification.AssignedBy,
-                    AssignedOn = notification.AssignedOn,
-                    AssignedTo = notification.AssignedTo,
-                    Message = notification.Message,
-                    IsRead = notification.IsRead
-                };
+                    var n = new Notification
+                    {
+                        AssignedBy = notification.AssignedBy,
+                        AssignedOn = notification.AssignedOn,
+                        AssignedTo = notification.AssignedTo,
+                        Message = notification.Message,
+                        IsRead = notification.IsRead
+                    };
 
-                session.Store(n);
-                session.SaveChanges();
-                Wait();
-                return n.Id;
+                    session.Store(n);
+                    session.SaveChanges();
+                    Wait();
+                    return n.Id;
+                }
             }
         }
 
@@ -1499,20 +1750,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Notification>();
-
-                foreach (var id in notificationIds)
+                using (var session = _store.OpenSession())
                 {
-                    var notification = col.FirstOrDefault(n => n.Id == id);
-                    if (notification != null)
-                    {
-                        notification.IsRead = true;
-                    }
-                }
+                    var col = session.Query<Notification>();
 
-                session.SaveChanges();
-                Wait();
+                    foreach (var id in notificationIds)
+                    {
+                        var notification = col.FirstOrDefault(n => n.Id == id);
+                        if (notification != null)
+                        {
+                            notification.IsRead = true;
+                        }
+                    }
+
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1520,20 +1773,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Notification>();
-
-                foreach (var id in notificationIds)
+                using (var session = _store.OpenSession())
                 {
-                    var notification = col.FirstOrDefault(n => n.Id == id);
-                    if (notification != null)
-                    {
-                        notification.IsRead = false;
-                    }
-                }
+                    var col = session.Query<Notification>();
 
-                session.SaveChanges();
-                Wait();
+                    foreach (var id in notificationIds)
+                    {
+                        var notification = col.FirstOrDefault(n => n.Id == id);
+                        if (notification != null)
+                        {
+                            notification.IsRead = false;
+                        }
+                    }
+
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1541,20 +1796,22 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Notification>();
-
-                foreach (var id in notificationIds)
+                using (var session = _store.OpenSession())
                 {
-                    var notification = col.FirstOrDefault(n => n.Id == id);
-                    if (notification != null)
-                    {
-                        session.Delete(notification);
-                    }
-                }
+                    var col = session.Query<Notification>();
 
-                session.SaveChanges();
-                Wait();
+                    foreach (var id in notificationIds)
+                    {
+                        var notification = col.FirstOrDefault(n => n.Id == id);
+                        if (notification != null)
+                        {
+                            session.Delete(notification);
+                        }
+                    }
+
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1562,15 +1819,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Notification>();
-                var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
-                var notifications = col
-                    .Where(n => n.AssignedTo == assignedTo)
-                    .Search(n => n.Message, keywordToLower)
-                    .OrderByDescending(n => n.AssignedOn)
-                    .ToList();
-                return notifications;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Notification>();
+                    var keywordToLower = string.IsNullOrEmpty(keyword) ? "*" : "*" + keyword.ToLower() + "*";
+                    var notifications = col
+                        .Where(n => n.AssignedTo == assignedTo)
+                        .Search(n => n.Message, keywordToLower)
+                        .OrderByDescending(n => n.AssignedOn)
+                        .ToList();
+                    return notifications;
+                }
             }
         }
 
@@ -1578,11 +1837,13 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Notification>();
-                var notifications = col.Where(n => n.AssignedTo == assignedTo && !n.IsRead);
-                var hasNotifications = notifications.Any();
-                return hasNotifications;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Notification>();
+                    var notifications = col.Where(n => n.AssignedTo == assignedTo && !n.IsRead);
+                    var hasNotifications = notifications.Any();
+                    return hasNotifications;
+                }
             }
         }
 
@@ -1590,18 +1851,20 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                Approver a = new()
+                using (var session = _store.OpenSession())
                 {
-                    UserId = approver.UserId,
-                    RecordId = approver.RecordId,
-                    Approved = approver.Approved,
-                    ApprovedOn = approver.ApprovedOn
-                };
-                session.Store(a);
-                session.SaveChanges();
-                Wait();
-                return a.Id;
+                    var a = new Approver
+                    {
+                        UserId = approver.UserId,
+                        RecordId = approver.RecordId,
+                        Approved = approver.Approved,
+                        ApprovedOn = approver.ApprovedOn
+                    };
+                    session.Store(a);
+                    session.SaveChanges();
+                    Wait();
+                    return a.Id;
+                }
             }
         }
 
@@ -1609,16 +1872,18 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Approver>();
-                var ua = col.First(a => a.Id == approverId);
-                ua.UserId = approver.UserId;
-                ua.RecordId = approver.RecordId;
-                ua.Approved = approver.Approved;
-                ua.ApprovedOn = approver.ApprovedOn;
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Approver>();
+                    var ua = col.First(a => a.Id == approverId);
+                    ua.UserId = approver.UserId;
+                    ua.RecordId = approver.RecordId;
+                    ua.Approved = approver.Approved;
+                    ua.ApprovedOn = approver.ApprovedOn;
 
-                session.SaveChanges();
-                Wait();
+                    session.SaveChanges();
+                    Wait();
+                }
             }
         }
 
@@ -1626,15 +1891,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Approver>();
-                var approvers = col.Where(a => a.RecordId == recordId).ToArray();
-                foreach (var approver in approvers)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(approver);
+                    var col = session.Query<Approver>();
+                    var approvers = col.Where(a => a.RecordId == recordId).ToArray();
+                    foreach (var approver in approvers)
+                    {
+                        session.Delete(approver);
+                    }
+                    session.SaveChanges();
+                    Wait();
                 }
-                session.SaveChanges();
-                Wait();
             }
         }
 
@@ -1642,15 +1909,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Approver>();
-                var approvers = col.Where(a => a.Approved && a.RecordId == recordId).ToArray();
-                foreach (var approver in approvers)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(approver);
+                    var col = session.Query<Approver>();
+                    var approvers = col.Where(a => a.Approved && a.RecordId == recordId).ToArray();
+                    foreach (var approver in approvers)
+                    {
+                        session.Delete(approver);
+                    }
+                    session.SaveChanges();
+                    Wait();
                 }
-                session.SaveChanges();
-                Wait();
             }
         }
 
@@ -1658,15 +1927,17 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Approver>();
-                var approvers = col.Where(a => a.UserId == userId).ToArray();
-                foreach (var approver in approvers)
+                using (var session = _store.OpenSession())
                 {
-                    session.Delete(approver);
+                    var col = session.Query<Approver>();
+                    var approvers = col.Where(a => a.UserId == userId).ToArray();
+                    foreach (var approver in approvers)
+                    {
+                        session.Delete(approver);
+                    }
+                    session.SaveChanges();
+                    Wait();
                 }
-                session.SaveChanges();
-                Wait();
             }
         }
 
@@ -1674,9 +1945,11 @@ namespace Wexflow.Core.Db.RavenDB
         {
             lock (Padlock)
             {
-                using var session = _store.OpenSession();
-                var col = session.Query<Approver>();
-                return col.Where(a => a.RecordId == recordId).ToList();
+                using (var session = _store.OpenSession())
+                {
+                    var col = session.Query<Approver>();
+                    return col.Where(a => a.RecordId == recordId).ToList();
+                }
             }
         }
 

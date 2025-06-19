@@ -3651,7 +3651,7 @@ namespace Wexflow.Server
                 try
                 {
                     var workflowId = int.Parse(context.Request.Query["w"].ToString());
-                    var jobId = Guid.Parse(context.Request.Query["i"].ToString());
+                    var jobIdStr = context.Request.Query["i"].ToString();
                     Contracts.Entry res = null;
                     var auth = GetAuth(context.Request);
                     var username = auth.Username;
@@ -3660,7 +3660,18 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password, StringComparison.Ordinal))
                     {
-                        var e = WexflowServer.WexflowEngine.GetEntry(workflowId, jobId);
+                        Core.Db.Entry e = null;
+
+                        if (!string.IsNullOrEmpty(jobIdStr))
+                        {
+                            var jobId = Guid.Parse(jobIdStr);
+                            e = WexflowServer.WexflowEngine.GetEntry(workflowId, jobId);
+                        }
+                        else
+                        {
+                            e = WexflowServer.WexflowEngine.GetEntry(workflowId);
+                        }
+
                         if (e != null)
                         {
                             res = new Contracts.Entry
