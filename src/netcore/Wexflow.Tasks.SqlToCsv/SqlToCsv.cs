@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.SqlToCsv
         public SqlToCsv(XElement xe, Workflow wf)
             : base(xe, wf)
         {
-            DbType = (Type)Enum.Parse(typeof(Type), GetSetting("type"), true);
+            DbType = Enum.Parse<Type>(GetSetting("type"), true);
             ConnectionString = GetSetting("connectionString");
             SqlScript = GetSetting("sql", string.Empty);
             QuoteString = GetSetting("quote", string.Empty);

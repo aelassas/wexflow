@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.Ftp
             var user = GetSetting("user");
             var password = GetSetting("password");
             var path = GetSetting("path");
-            var protocol = (Protocol)Enum.Parse(typeof(Protocol), GetSetting("protocol"), true);
+            var protocol = Enum.Parse<Protocol>(GetSetting("protocol"), true);
             var debugLogs = bool.Parse(GetSetting("debugLogs", "false"));
             switch (protocol)
             {
@@ -45,7 +45,7 @@ namespace Wexflow.Tasks.Ftp
                     _plugin = new PluginFtp(this, server, port, user, password, path, debugLogs);
                     break;
                 case Protocol.Ftps:
-                    var encryptionMode = (EncryptionMode)Enum.Parse(typeof(EncryptionMode), GetSetting("encryption"), true);
+                    var encryptionMode = Enum.Parse<EncryptionMode>(GetSetting("encryption"), true);
                     _plugin = new PluginFtps(this, server, port, user, password, path, encryptionMode, debugLogs);
                     break;
                 case Protocol.Sftp:
@@ -56,7 +56,7 @@ namespace Wexflow.Tasks.Ftp
                 default:
                     break;
             }
-            _cmd = (FtpCommad)Enum.Parse(typeof(FtpCommad), GetSetting("command"), true);
+            _cmd = Enum.Parse<FtpCommad>(GetSetting("command"), true);
             _retryCount = int.Parse(GetSetting("retryCount", "3"));
             _retryTimeout = int.Parse(GetSetting("retryTimeout", "1500"));
             SmbComputerName = GetSetting("smbComputerName");

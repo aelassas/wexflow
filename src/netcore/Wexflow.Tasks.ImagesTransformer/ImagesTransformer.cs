@@ -31,7 +31,7 @@ namespace Wexflow.Tasks.ImagesTransformer
             : base(xe, wf)
         {
             OutputFilePattern = GetSetting("outputFilePattern");
-            OutputFormat = (ImgFormat)Enum.Parse(typeof(ImgFormat), GetSetting("outputFormat"), true);
+            OutputFormat = Enum.Parse<ImgFormat>(GetSetting("outputFormat"), true);
         }
 
         public override TaskStatus Run()

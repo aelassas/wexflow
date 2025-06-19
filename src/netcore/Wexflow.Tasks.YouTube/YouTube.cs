@@ -55,7 +55,7 @@ namespace Wexflow.Tasks.YouTube
                             var desc = xvideo.Element("Description")!.Value;
                             var tags = xvideo.Element("Tags")!.Value.Split(',');
                             var categoryId = xvideo.Element("CategoryId")!.Value;
-                            var ps = (PrivacyStatus)Enum.Parse(typeof(PrivacyStatus), xvideo.Element("PrivacyStatus")!.Value, true);
+                            var ps = Enum.Parse<PrivacyStatus>(xvideo.Element("PrivacyStatus")!.Value, true);
                             var filePath = xvideo.Element("FilePath")!.Value;
 
                             var succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);

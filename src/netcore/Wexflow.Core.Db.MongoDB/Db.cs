@@ -38,7 +38,7 @@ namespace Wexflow.Core.Db.MongoDB
                     }
                     else if (connPart.StartsWith("SslProtocols="))
                     {
-                        sslProtocols = (SslProtocols)Enum.Parse(typeof(SslProtocols), connPart.Replace("SslProtocols=", string.Empty), true);
+                        sslProtocols = Enum.Parse<SslProtocols>(connPart.Replace("SslProtocols=", string.Empty), true);
                     }
                 }
             }

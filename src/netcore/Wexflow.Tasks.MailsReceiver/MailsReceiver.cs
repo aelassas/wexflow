@@ -38,7 +38,7 @@ namespace Wexflow.Tasks.MailsReceiver
             Password = GetSetting("password");
             MessageCount = int.Parse(GetSetting("messageCount"));
             DeleteMessages = bool.Parse(GetSetting("deleteMessages", "false"));
-            Protocol = (Protocol)Enum.Parse(typeof(Protocol), GetSetting("protocol", "pop3"), true);
+            Protocol = Enum.Parse<Protocol>(GetSetting("protocol", "pop3"), true);
         }
 
         public override TaskStatus Run()

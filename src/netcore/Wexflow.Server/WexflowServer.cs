@@ -35,7 +35,7 @@ namespace Wexflow.Server
             _superAdminUsername = Config["SuperAdminUsername"];
 
             var settingsFile = Config["WexflowSettingsFile"];
-            var logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? (Core.LogLevel)Enum.Parse(typeof(Core.LogLevel), Config["LogLevel"], true) : Core.LogLevel.All;
+            var logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? Enum.Parse<Core.LogLevel>(Config["LogLevel"], true) : Core.LogLevel.All;
             var enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"] ?? throw new InvalidOperationException());
             var enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"] ?? throw new InvalidOperationException());
             var enableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"] ?? throw new InvalidOperationException());

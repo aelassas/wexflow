@@ -28,8 +28,8 @@ namespace Wexflow.Tasks.SubWorkflow
         public SubWorkflow(XElement xe, Workflow wf) : base(xe, wf)
         {
             WorkflowId = int.Parse(GetSetting("id"));
-            Action = (KickOffAction)Enum.Parse(typeof(KickOffAction), GetSetting("action", "start"), true);
-            Mode = (KickOffMode)Enum.Parse(typeof(KickOffMode), GetSetting("mode", "sync"), true);
+            Action = Enum.Parse<KickOffAction>(GetSetting("action", "start"), true);
+            Mode = Enum.Parse<KickOffMode>(GetSetting("mode", "sync"), true);
         }
 
         public override TaskStatus Run()
