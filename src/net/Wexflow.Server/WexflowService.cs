@@ -4168,7 +4168,8 @@ namespace Wexflow.Server
                 try
                 {
                     var workflowId = int.Parse(Request.Query["w"].ToString());
-                    var jobIdStr = Request.Query["i"].ToString();
+                    var jobIdStr = Request.Query["i"].HasValue ? Request.Query["i"].Value : string.Empty;
+
                     Contracts.Entry res = null;
                     var auth = GetAuth(Request);
                     var username = auth.Username;
