@@ -1,4 +1,7 @@
-﻿namespace Wexflow.Server.Contracts.Workflow
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Wexflow.Server.Contracts.Workflow
 {
     public class WorkflowInfo
     {
@@ -15,5 +18,7 @@
         public int RetryCount { get; set; }
         public int RetryTimeout { get; set; }
         public Variable[] LocalVariables { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status Status { get; set; }
     }
 }

@@ -125,6 +125,7 @@
     <Compile Include="Contracts\Node.cs" />
     <Compile Include="Contracts\Record.cs" />
     <Compile Include="Contracts\SaveResult.cs" />
+    <Compile Include="Contracts\Status.cs" />
     <Compile Include="Contracts\TaskSetting.cs" />
     <Compile Include="Contracts\SettingInfo.cs" />
     <Compile Include="Contracts\StatusCount.cs" />

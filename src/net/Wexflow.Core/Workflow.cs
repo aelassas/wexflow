@@ -235,6 +235,10 @@ namespace Wexflow.Core
         /// The retry timeout between two tries. Default is 1500ms.
         /// </summary>
         public int RetryTimeout { get; private set; }
+        /// <summary>
+        /// Job Status.
+        /// </summary>
+        public Db.Status JobStatus { get; private set; }
 
         private readonly Queue<Job> _jobsQueue;
         private Thread _thread;
@@ -981,6 +985,7 @@ namespace Wexflow.Core
                     StartedOn = DateTime.Now;
                     StartedBy = startedBy;
                     InstanceId = instanceId;
+                    JobStatus = Db.Status.Running;
                     Jobs.Add(InstanceId, this);
 
                     //
@@ -1067,6 +1072,7 @@ namespace Wexflow.Core
                                     LogWorkflowFinished();
                                     Database.IncrementRejectedCount();
                                     entry.Status = Db.Status.Rejected;
+                                    JobStatus = Db.Status.Rejected;
                                     entry.StatusDate = DateTime.Now;
                                     entry.Logs = string.Join("\r\n", Logs);
                                     Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1079,6 +1085,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementDoneCount();
                                         entry.Status = Db.Status.Done;
+                                        JobStatus = Db.Status.Done;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1089,6 +1096,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementWarningCount();
                                         entry.Status = Db.Status.Warning;
+                                        JobStatus = Db.Status.Warning;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1100,6 +1108,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementFailedCount();
                                         entry.Status = Db.Status.Failed;
+                                        JobStatus = Db.Status.Failed;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1126,6 +1135,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementDoneCount();
                                         entry.Status = Db.Status.Done;
+                                        JobStatus = Db.Status.Done;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1140,6 +1150,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementWarningCount();
                                         entry.Status = Db.Status.Warning;
+                                        JobStatus = Db.Status.Warning;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1155,6 +1166,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementFailedCount();
                                         entry.Status = Db.Status.Failed;
+                                        JobStatus = Db.Status.Failed;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1170,6 +1182,7 @@ namespace Wexflow.Core
                                         LogWorkflowFinished();
                                         Database.IncrementRejectedCount();
                                         entry.Status = Db.Status.Rejected;
+                                        JobStatus = Db.Status.Rejected;
                                         entry.StatusDate = DateTime.Now;
                                         entry.Logs = string.Join("\r\n", Logs);
                                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1204,6 +1217,7 @@ namespace Wexflow.Core
                         Database.DecrementRunningCount();
                         Database.IncrementFailedCount();
                         entry.Status = Db.Status.Failed;
+                        JobStatus = Db.Status.Failed;
                         entry.StatusDate = DateTime.Now;
                         entry.Logs = string.Join("\r\n", Logs);
                         Database.UpdateEntry(entry.GetDbId(), entry);
@@ -1740,6 +1754,7 @@ namespace Wexflow.Core
                     Database.IncrementStoppedCount();
                     var entry = Database.GetEntry(Id, InstanceId);
                     entry.Status = Db.Status.Stopped;
+                    JobStatus = Db.Status.Stopped;
                     entry.StatusDate = DateTime.Now;
                     entry.Logs = logs;
                     Database.UpdateEntry(entry.GetDbId(), entry);

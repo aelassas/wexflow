@@ -138,6 +138,26 @@ paths:
         200:
           description: successful operation
           content: {}
+  /entry:
+    get:
+      tags:
+      - Dashboard
+      summary: Returns job entry
+      parameters:
+      - name: w
+        in: query
+        description: Workflow id
+        schema:
+          type: number
+      - name: i
+        in: query
+        description: Job instance id
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content: {}
   /upload-version:
     post:
       tags:

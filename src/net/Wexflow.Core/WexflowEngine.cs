@@ -1290,6 +1290,18 @@ namespace Wexflow.Core
         }
 
         /// <summary>
+        /// Returns a job entry.
+        /// </summary>
+        /// <param name="workflowId">Workflow Id.</param>
+        /// <param name="jobId">Job Id.</param>
+        /// <returns></returns>
+        public Entry GetEntry(int workflowId, Guid jobId)
+        {
+            var col = Database.GetEntry(workflowId, jobId);
+            return col;
+        }
+
+        /// <summary>
         /// Gets the number of history entries by search keyword and date filter.
         /// </summary>
         /// <param name="keyword">Search keyword.</param>

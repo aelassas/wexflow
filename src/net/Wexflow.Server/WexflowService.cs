@@ -47,6 +47,7 @@ namespace Wexflow.Server
             GetEntryStatusDateMin();
             GetEntryStatusDateMax();
             GetEntryLogs();
+            GetEntry();
 
             //
             // Records
@@ -183,6 +184,7 @@ namespace Wexflow.Server
                                , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                                , wf.RetryCount
                                , wf.RetryTimeout
+                               , wf.JobStatus
                                )
                             )
                             .ToArray();
@@ -203,6 +205,7 @@ namespace Wexflow.Server
                                                    , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                                                    , wf.RetryCount
                                                    , wf.RetryTimeout
+                                                   , wf.JobStatus
                                                    )
                                                 )
                                                 .ToArray();
@@ -255,6 +258,7 @@ namespace Wexflow.Server
                                , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                                , wf.RetryCount
                                , wf.RetryTimeout
+                               , wf.JobStatus
                                )
                             )
                             .ToArray();
@@ -276,6 +280,7 @@ namespace Wexflow.Server
                                                    , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                                                    , wf.RetryCount
                                                    , wf.RetryTimeout
+                                                   , wf.JobStatus
                                                    ))
                                                 .ToArray();
                     }
@@ -315,6 +320,7 @@ namespace Wexflow.Server
                         , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                         , wf.RetryCount
                         , wf.RetryTimeout
+                        , wf.JobStatus
                         );
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
@@ -388,6 +394,7 @@ namespace Wexflow.Server
                             , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                             , wf.RetryCount
                             , wf.RetryTimeout
+                            , wf.JobStatus
                             );
 
                         var user = WexflowServer.WexflowEngine.GetUser(username);
@@ -455,6 +462,7 @@ namespace Wexflow.Server
                             , w.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                             , wf.RetryCount
                             , wf.RetryTimeout
+                            , wf.JobStatus
                             ));
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
@@ -3349,6 +3357,7 @@ namespace Wexflow.Server
                            , wf.StartedOn.ToString(WexflowServer.Config["DateTimeFormat"])
                            , wf.RetryCount
                            , wf.RetryTimeout
+                           , wf.JobStatus
                            ))
                             .ToArray();
                     }
@@ -4121,6 +4130,67 @@ namespace Wexflow.Server
                     if (user.Password.Equals(password))
                     {
                         res = WexflowServer.WexflowEngine.GetEntryLogs(entryId);
+                    }
+
+                    var resStr = JsonConvert.SerializeObject(res);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+
+                    var resStr = JsonConvert.SerializeObject(string.Empty);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+                }
+            });
+        }
+
+        /// <summary>
+        /// Returns an entry from workflowId and jobId.
+        /// </summary>
+        private void GetEntry()
+        {
+            Get(GetPattern("entry"), args =>
+            {
+                try
+                {
+                    var workflowId = int.Parse(Request.Query["w"].ToString());
+                    var jobId = Guid.Parse(Request.Query["i"].ToString());
+                    Contracts.Entry res = null;
+                    var auth = GetAuth(Request);
+                    var username = auth.Username;
+                    var password = auth.Password;
+
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    if (user.Password.Equals(password, StringComparison.Ordinal))
+                    {
+                        var e = WexflowServer.WexflowEngine.GetEntry(workflowId, jobId);
+                        if (e != null)
+                        {
+                            res = new Contracts.Entry
+                            {
+                                Id = e.GetDbId(),
+                                WorkflowId = e.WorkflowId,
+                                Name = e.Name,
+                                LaunchType = (LaunchType)(int)e.LaunchType,
+                                Description = e.Description,
+                                Status = (Contracts.Status)(int)e.Status,
+                                //StatusDate = (e.StatusDate - baseDate).TotalMilliseconds
+                                StatusDate = e.StatusDate.ToString(WexflowServer.Config["DateTimeFormat"])
+                            };
+                        }
                     }
 
                     var resStr = JsonConvert.SerializeObject(res);
