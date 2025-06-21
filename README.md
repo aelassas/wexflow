@@ -45,21 +45,9 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 
 ## Support
 
-If this project helped you in your work, saved you time, or inspired you in any way, please consider supporting its ongoing development. Open-source software requires time, effort, and resources to maintain—your support helps keep this project alive, up-to-date, and accessible to everyone.
+If this project helped you, saved you time, or inspired you in any way, please consider supporting its future growth and maintenance. You can show your support by starring the repository (it helps increase visibility and shows your appreciation), sharing the project (recommend it to colleagues, communities, or on social media), or making a donation (if you'd like to financially support the development) via [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas). Every bit of support helps keep the projects active, maintained, and accessible to all. Open-source software requires time, effort, and resources to maintain—your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
 
-You can contribute in several ways:
-
-- **Star the repository** – It helps increase visibility and shows your appreciation.
-- **Share the project** – Recommend it to colleagues, communities, or on social media.
-- **Donate or sponsor** – If you'd like to financially support the development, you can do so via:
-
-  - [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly)
-  - [PayPal](https://www.paypal.me/aelassaspp)
-  - [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas)
-
-Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
-
-<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
+<!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>-->
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
 
