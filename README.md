@@ -18,7 +18,7 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 
 ## Features
 
-### ⚙️ Workflow Engine
+### Workflow Engine
 * Cross-platform workflow server
 * Supports sequential, flowchart, and approval workflows
 * Cron-based scheduling
@@ -26,21 +26,21 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 * 6+ database engines supported
 * Extensible architecture for custom activities
 
-### 🖥️ UI & Visualization
+### UI & Visualization
 * Powerful web dashboard
 * Visual workflow designer with drag & drop interface
 * Real-time workflow statistics and monitoring
 * Extensive logging for transparency and debugging
 
-### 📱 Multi-Platform Support
+### Multi-Platform Support
 * Native Android app
 * Responsive web interface
 
-### 🌍 Internationalization & APIs
+### Internationalization & APIs
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
 
-### 💻 Deployment & Compatibility
+### Deployment & Compatibility
 * Runs on macOS, Linux, Windows, and Docker
 
 ## Support
