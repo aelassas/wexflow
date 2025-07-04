@@ -6,6 +6,8 @@
 [![Latest release](https://img.shields.io/github/v/release/aelassas/wexflow?label=Release&logo=github)](https://github.com/aelassas/wexflow/releases/latest)
 -->
 
+[![](https://wexflow.github.io/content/cover.png)](https://wexflow.github.io/)
+
 ## Wexflow
 
 Wexflow is an open-source and cross-platform workflow engine and automation platform built to simplify and automate recurring tasks. It provides a cross-platform workflow server, an admin panel for designing, managing, and tracking workflows, sequential workflows, flowchart workflows, and approval workflows on generic business objects called records.
@@ -47,7 +49,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
 
 <!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>-->
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
-<a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
+<a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" width="160"></a>
 
 ## Documentation
 
