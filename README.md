@@ -40,6 +40,10 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
 
+### Security & Performance
+* Docker support for easy deployment
+* Error monitoring
+
 ### Deployment & Compatibility
 * Runs on macOS, Linux, Windows, and Docker
 
