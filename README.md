@@ -39,6 +39,7 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 ### Internationalization & APIs
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
+* Extensible with Custom Activities via NuGet
 
 ### Security & Performance
 * Docker support for easy deployment
