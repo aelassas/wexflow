@@ -56,6 +56,18 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" width="160"></a>
 
+### Website Source Code (wexflow.github.io)
+
+The source code for the official Wexflow website is available here:
+
+[https://github.com/wexflow/wexflow.github.io](https://github.com/wexflow/wexflow.github.io)
+
+It features a clean landing page with multilingual support, dark mode, and SEO optimizations to help it reach users in different languages and regions.
+
+The codebase is modular and follows SOLID, DRY, and separation of concerns principles. It uses GitHub Actions for automatic builds and deployments. The Android demo app download link is dynamically fetched and updated on the site.
+
+Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
+
 ## Documentation
 
 1. [Installing](https://github.com/aelassas/wexflow/wiki/Installing)
