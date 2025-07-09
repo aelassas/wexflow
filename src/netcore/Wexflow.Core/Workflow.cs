@@ -728,126 +728,27 @@ namespace Wexflow.Core
 
         private Node[] GetTaskNodes(XElement xExectionGraph)
         {
-            var nodes = xExectionGraph
+            int depth = 0;
+            var xNodes = xExectionGraph
                 .Elements()
-                .Where(xe => xe.Name.LocalName is not "OnSuccess" and not "OnWarning" and not "OnError" and not "OnRejected")
-                .Select(XNodeToNode)
+                .Where(xe => xe.Name.LocalName != "OnSuccess" && xe.Name.LocalName != "OnWarning" && xe.Name.LocalName != "OnError" && xe.Name.LocalName != "OnRejected")
                 .ToArray();
 
+            var nodesList = new List<Node>();
+            foreach (var xNode in xNodes)
+            {
+                var node = XNodeToNode(xNode, ref depth);
+                nodesList.Add(node);
+            }
+
+            var nodes = nodesList.ToArray();
             return nodes;
         }
 
-        private If XIfToIf(XElement xIf)
+        private Node XNodeToNode(XElement xNode, ref int depth)
         {
-            var xId = xIf.Attribute("id") ?? throw new Exception("If id attribute not found.");
-            var id = int.Parse(xId.Value);
-            var xParent = xIf.Attribute("parent") ?? throw new Exception("If parent attribute not found.");
-            var parentId = int.Parse(xParent.Value);
-            var xIfId = xIf.Attribute("if") ?? throw new Exception("If attribute not found.");
-            var ifId = int.Parse(xIfId.Value);
+            int currentDepth = depth; // Copy current depth by value to get depth at each level
 
-            // Do nodes
-            var doNodes = (xIf.XPathSelectElement("wf:Do", XmlNamespaceManager) ?? throw new InvalidOperationException("wf:Do not found"))
-                .Elements()
-                .Select(XNodeToNode)
-                .ToArray();
-
-            CheckStartupNode(doNodes, "Startup node with parentId=-1 not found in DoIf>Do execution graph.");
-            CheckParallelTasks(doNodes, "Parallel tasks execution detected in DoIf>Do execution graph.");
-            CheckInfiniteLoop(doNodes, "Infinite loop detected in DoIf>Do execution graph.");
-
-            // Otherwise nodes
-            Node[] elseNodes = null;
-            var xElse = xIf.XPathSelectElement("wf:Else", XmlNamespaceManager);
-            if (xElse != null)
-            {
-                elseNodes = xElse
-                    .Elements()
-                    .Select(XNodeToNode)
-                    .ToArray();
-
-                CheckStartupNode(elseNodes, "Startup node with parentId=-1 not found in DoIf>Otherwise execution graph.");
-                CheckParallelTasks(elseNodes, "Parallel tasks execution detected in DoIf>Otherwise execution graph.");
-                CheckInfiniteLoop(elseNodes, "Infinite loop detected in DoIf>Otherwise execution graph.");
-            }
-
-            return new If(id, parentId, ifId, doNodes, elseNodes);
-        }
-
-        private While XWhileToWhile(XElement xWhile)
-        {
-            var xId = xWhile.Attribute("id") ?? throw new Exception("While Id attribute not found.");
-            var id = int.Parse(xId.Value);
-            var xParent = xWhile.Attribute("parent") ?? throw new Exception("While parent attribute not found.");
-            var parentId = int.Parse(xParent.Value);
-            var xWhileId = xWhile.Attribute("while") ?? throw new Exception("While attribute not found.");
-            var whileId = int.Parse(xWhileId.Value);
-
-            var doNodes = xWhile
-                .Elements()
-                .Select(XNodeToNode)
-                .ToArray();
-
-            CheckStartupNode(doNodes, "Startup node with parentId=-1 not found in DoWhile>Do execution graph.");
-            CheckParallelTasks(doNodes, "Parallel tasks execution detected in DoWhile>Do execution graph.");
-            CheckInfiniteLoop(doNodes, "Infinite loop detected in DoWhile>Do execution graph.");
-
-            return new While(id, parentId, whileId, doNodes);
-        }
-
-        private Switch XSwitchToSwitch(XElement xSwitch)
-        {
-            var xId = xSwitch.Attribute("id") ?? throw new Exception("Switch Id attribute not found.");
-            var id = int.Parse(xId.Value);
-            var xParent = xSwitch.Attribute("parent") ?? throw new Exception("Switch parent attribute not found.");
-            var parentId = int.Parse(xParent.Value);
-            var xSwitchId = xSwitch.Attribute("switch") ?? throw new Exception("Switch attribute not found.");
-            var switchId = int.Parse(xSwitchId.Value);
-
-            var cases = xSwitch
-                .XPathSelectElements("wf:Case", XmlNamespaceManager)
-                .Select(xCase =>
-                {
-                    var xValue = xCase.Attribute("value") ?? throw new Exception("Case value attribute not found.");
-                    var val = xValue.Value;
-
-                    var nodes = xCase
-                        .Elements()
-                        .Select(XNodeToNode)
-                        .ToArray();
-
-                    var nodeName = $"Switch>Case(value={val})";
-                    CheckStartupNode(nodes, $"Startup node with parentId=-1 not found in {nodeName} execution graph.");
-                    CheckParallelTasks(nodes, $"Parallel tasks execution detected in {nodeName} execution graph.");
-                    CheckInfiniteLoop(nodes, $"Infinite loop detected in {nodeName} execution graph.");
-
-                    return new Case(val, nodes);
-                });
-
-            var xDefault = xSwitch.XPathSelectElement("wf:Default", XmlNamespaceManager);
-            if (xDefault == null)
-            {
-                return new Switch(id, parentId, switchId, cases, null);
-            }
-
-            var @default = xDefault
-                .Elements()
-                .Select(XNodeToNode)
-                .ToArray();
-
-            if (@default.Length > 0)
-            {
-                CheckStartupNode(@default,
-                    "Startup node with parentId=-1 not found in Switch>Default execution graph.");
-                CheckParallelTasks(@default, "Parallel tasks execution detected in Switch>Default execution graph.");
-                CheckInfiniteLoop(@default, "Infinite loop detected in Switch>Default execution graph.");
-            }
-
-            return new Switch(id, parentId, switchId, cases, @default);
-        }
-
-        private Node XNodeToNode(XElement xNode)
-        {
             switch (xNode.Name.LocalName)
             {
                 case "Task":
@@ -858,18 +759,164 @@ namespace Wexflow.Core
                         .Attribute("id") ?? throw new Exception("Parent id not found.");
                     var parentId = int.Parse(xParentId.Value);
 
-                    Node node = new(id, parentId);
+                    Node node = new Node(id, parentId, currentDepth);
                     return node;
                 case "If":
-                    return XIfToIf(xNode);
+                    return XIfToIf(xNode, ref depth);
                 case "While":
-                    return XWhileToWhile(xNode);
+                    return XWhileToWhile(xNode, ref depth);
                 case "Switch":
-                    return XSwitchToSwitch(xNode);
+                    return XSwitchToSwitch(xNode, ref depth);
                 default:
                     throw new Exception(xNode.Name.LocalName + " is not supported.");
             }
         }
+
+        private If XIfToIf(XElement xIf, ref int depth)
+        {
+            int currentDepth = depth; // current depth
+
+            depth++;
+
+            var xId = xIf.Attribute("id") ?? throw new Exception("If id attribute not found.");
+            var id = int.Parse(xId.Value);
+            var xParent = xIf.Attribute("parent") ?? throw new Exception("If parent attribute not found.");
+            var parentId = int.Parse(xParent.Value);
+            var xIfId = xIf.Attribute("if") ?? throw new Exception("If attribute not found.");
+            var ifId = int.Parse(xIfId.Value);
+
+            // Do nodes
+            var xNodes = (xIf.XPathSelectElement("wf:Do", XmlNamespaceManager) ?? throw new InvalidOperationException("wf:Do not found"))
+              .Elements();
+            var doNodesList = new List<Node>();
+            foreach (var xNode in xNodes)
+            {
+                var node = XNodeToNode(xNode, ref depth);
+                doNodesList.Add(node);
+            }
+            var doNodes = doNodesList.ToArray();
+
+            CheckStartupNode(doNodes, "Startup node with parentId=-1 not found in DoIf>Do execution graph.");
+            CheckParallelTasks(doNodes, "Parallel tasks execution detected in DoIf>Do execution graph.");
+            CheckInfiniteLoop(doNodes, "Infinite loop detected in DoIf>Do execution graph.");
+
+            // Otherwise nodes
+            Node[] elseNodes = null;
+            var xElse = xIf.XPathSelectElement("wf:Else", XmlNamespaceManager);
+            if (xElse != null)
+            {
+                var elseNodesList = new List<Node>();
+                var xElseNodes = xElse.Elements();
+                foreach (var xNode in xElseNodes)
+                {
+                    var node = XNodeToNode(xNode, ref depth);
+                    elseNodesList.Add(node);
+                }
+                elseNodes = elseNodesList.ToArray();
+
+                CheckStartupNode(elseNodes, "Startup node with parentId=-1 not found in DoIf>Otherwise execution graph.");
+                CheckParallelTasks(elseNodes, "Parallel tasks execution detected in DoIf>Otherwise execution graph.");
+                CheckInfiniteLoop(elseNodes, "Infinite loop detected in DoIf>Otherwise execution graph.");
+            }
+
+            return new If(id, parentId, ifId, doNodes, elseNodes, currentDepth);
+        }
+
+        private While XWhileToWhile(XElement xWhile, ref int depth)
+        {
+            int currentDepth = depth; // current depth
+
+            depth++;
+
+            var xId = xWhile.Attribute("id") ?? throw new Exception("While Id attribute not found.");
+            var id = int.Parse(xId.Value);
+            var xParent = xWhile.Attribute("parent") ?? throw new Exception("While parent attribute not found.");
+            var parentId = int.Parse(xParent.Value);
+            var xWhileId = xWhile.Attribute("while") ?? throw new Exception("While attribute not found.");
+            var whileId = int.Parse(xWhileId.Value);
+
+            var xNodes = xWhile.Elements();
+            var nodesList = new List<Node>();
+            foreach (var xNode in xNodes)
+            {
+                var node = XNodeToNode(xNode, ref depth);
+                nodesList.Add(node);
+            }
+            var doNodes = nodesList.ToArray();
+
+            CheckStartupNode(doNodes, "Startup node with parentId=-1 not found in DoWhile>Do execution graph.");
+            CheckParallelTasks(doNodes, "Parallel tasks execution detected in DoWhile>Do execution graph.");
+            CheckInfiniteLoop(doNodes, "Infinite loop detected in DoWhile>Do execution graph.");
+
+            return new While(id, parentId, whileId, doNodes, currentDepth);
+        }
+
+        private Switch XSwitchToSwitch(XElement xSwitch, ref int depth)
+        {
+            int currentDepth = depth; // current depth
+
+            depth++;
+
+            var xId = xSwitch.Attribute("id") ?? throw new Exception("Switch Id attribute not found.");
+            var id = int.Parse(xId.Value);
+            var xParent = xSwitch.Attribute("parent") ?? throw new Exception("Switch parent attribute not found.");
+            var parentId = int.Parse(xParent.Value);
+            var xSwitchId = xSwitch.Attribute("switch") ?? throw new Exception("Switch attribute not found.");
+            var switchId = int.Parse(xSwitchId.Value);
+
+            var xCases = xSwitch.XPathSelectElements("wf:Case", XmlNamespaceManager);
+            var casesList = new List<Case>();
+
+            foreach (var xCase in xCases)
+            {
+                var xValue = xCase.Attribute("value") ?? throw new Exception("Case value attribute not found.");
+                var val = xValue.Value;
+
+                var xNodes = xCase.Elements();
+                var nodesList = new List<Node>();
+                foreach (var xNode in xNodes)
+                {
+                    var node = XNodeToNode(xNode, ref depth);
+                    nodesList.Add(node);
+                }
+                var nodes = nodesList.ToArray();
+
+                var nodeName = $"Switch>Case(value={val})";
+                CheckStartupNode(nodes, $"Startup node with parentId=-1 not found in {nodeName} execution graph.");
+                CheckParallelTasks(nodes, $"Parallel tasks execution detected in {nodeName} execution graph.");
+                CheckInfiniteLoop(nodes, $"Infinite loop detected in {nodeName} execution graph.");
+
+                var caseNode = new Case(val, nodes);
+                casesList.Add(caseNode);
+            }
+            var cases = casesList.ToArray();
+
+            var xDefault = xSwitch.XPathSelectElement("wf:Default", XmlNamespaceManager);
+            if (xDefault == null)
+            {
+                return new Switch(id, parentId, switchId, cases, null, currentDepth);
+            }
+
+            var xDefaultNodes = xDefault.Elements();
+            var defaultNodesList = new List<Node>();
+            foreach (var xNode in xDefaultNodes)
+            {
+                var node = XNodeToNode(xNode, ref depth);
+                defaultNodesList.Add(node);
+            }
+            var @default = defaultNodesList.ToArray();
+
+            if (@default.Length > 0)
+            {
+                CheckStartupNode(@default,
+                    "Startup node with parentId=-1 not found in Switch>Default execution graph.");
+                CheckParallelTasks(@default, "Parallel tasks execution detected in Switch>Default execution graph.");
+                CheckInfiniteLoop(@default, "Infinite loop detected in Switch>Default execution graph.");
+            }
+
+            return new Switch(id, parentId, switchId, cases, @default, currentDepth);
+        }
+
 
         private static void CheckStartupNode(Node[] nodes, string errorMsg)
         {

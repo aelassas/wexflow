@@ -2657,21 +2657,21 @@ namespace Wexflow.Server
 
         private XElement NodeToBlockly(Core.ExecutionGraph.Graph graph, Core.ExecutionGraph.Node node, Core.ExecutionGraph.Node[] nodes, bool isFlowchart, bool isEvent, ref int depth)
         {
-            XElement block = new("block");
+            var block = new XElement("block");
 
-            if (nodes.Length > 0)
+            if (nodes.Length != 0)
             {
                 if (node is If)
                 {
                     if (node is If @if)
                     {
                         block.Add(new XAttribute("type", "if"), new XElement("field", new XAttribute("name", "IF"), @if.IfId));
-                        XElement @do = new("statement", new XAttribute("name", "DO"));
+                        var @do = new XElement("statement", new XAttribute("name", "DO"));
                         @do.Add(NodeToBlockly(graph, GetStartupNode(@if.DoNodes), @if.DoNodes, true, isEvent, ref depth));
                         block.Add(@do);
-                        if (@if.ElseNodes is { Length: > 0 })
+                        if (@if.ElseNodes != null && @if.ElseNodes.Length > 0)
                         {
-                            XElement @else = new("statement", new XAttribute("name", "ELSE"));
+                            var @else = new XElement("statement", new XAttribute("name", "ELSE"));
                             @else.Add(NodeToBlockly(graph, GetStartupNode(@if.ElseNodes), @if.ElseNodes, true, isEvent, ref depth));
                             block.Add(@else);
                         }
@@ -2683,7 +2683,7 @@ namespace Wexflow.Server
                     if (node is While @while)
                     {
                         block.Add(new XAttribute("type", "while"), new XElement("field", new XAttribute("name", "WHILE"), @while.WhileId));
-                        XElement @do = new("statement", new XAttribute("name", "DO"));
+                        var @do = new XElement("statement", new XAttribute("name", "DO"));
                         @do.Add(NodeToBlockly(graph, GetStartupNode(@while.Nodes), @while.Nodes, true, isEvent, ref depth));
                         block.Add(@do);
                         depth = 0;
@@ -2694,16 +2694,16 @@ namespace Wexflow.Server
                     if (node is Switch @switch)
                     {
                         block.Add(new XAttribute("type", "switch"), new XElement("field", new XAttribute("name", "SWITCH"), @switch.SwitchId));
-                        XElement @case = new("statement", new XAttribute("name", "CASE"));
+                        var @case = new XElement("statement", new XAttribute("name", "CASE"));
                         if (@switch.Cases.Length > 0)
                         {
                             var xcases = SwitchCasesToBlockly(graph, @switch.Cases[0], 0, @switch.Cases.Length > 1 ? @switch.Cases[1] : null, @switch, true, isEvent, ref depth);
                             @case.Add(xcases);
                         }
                         block.Add(@case);
-                        if (@switch.Default is { Length: > 0 })
+                        if (@switch.Default != null && @switch.Default.Length > 0)
                         {
-                            XElement @default = new("statement", new XAttribute("name", "DEFAULT"));
+                            var @default = new XElement("statement", new XAttribute("name", "DEFAULT"));
                             @default.Add(NodeToBlockly(graph, GetStartupNode(@switch.Default), @switch.Default, true, isEvent, ref depth));
                             block.Add(@default);
                         }
@@ -2729,20 +2729,24 @@ namespace Wexflow.Server
                 {
                     block.Add(new XElement("next", NodeToBlockly(graph, childNode, nodes, isFlowchart, isEvent, ref depth)));
                 }
-                // TODO: fix event nodes duplicated in inner flowchart nodes
-                //else if (!isFlowchart && !isEvent)
-                //{
-                //    block.Add(new XElement("next",
-                //        new XElement("block", new XAttribute("type", "onSuccess"), new XElement("statement", new XAttribute("name", "ON_SUCCESS"), NodeToBlockly(graph, GetStartupNode((graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
-                //            , new XElement("next",
-                //                new XElement("block", new XAttribute("type", "onWarning"), new XElement("statement", new XAttribute("name", "ON_WARNING"), NodeToBlockly(graph, GetStartupNode((graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
-                //                , new XElement("next",
-                //                new XElement("block", new XAttribute("type", "onError"), new XElement("statement", new XAttribute("name", "ON_ERROR"), NodeToBlockly(graph, GetStartupNode((graph.OnError ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnError ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
-                //                , new XElement("next",
-                //                new XElement("block", new XAttribute("type", "onRejected"), new XElement("statement", new XAttribute("name", "ON_REJECTED"), NodeToBlockly(graph, GetStartupNode((graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent([])).Nodes), (graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent([])).Nodes, false, true, ref depth))
-                //                ))))))
-                //            )));
-                //}
+                else if (!isFlowchart && !isEvent)
+                {
+                    var lastNode = graph.Nodes.LastOrDefault();
+
+                    if (lastNode?.Id == node.Id && lastNode?.Depth == node.Depth)
+                    {
+                        block.Add(new XElement("next",
+                        new XElement("block", new XAttribute("type", "onSuccess"), new XElement("statement", new XAttribute("name", "ON_SUCCESS"), NodeToBlockly(graph, GetStartupNode((graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnSuccess ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                            , new XElement("next",
+                                new XElement("block", new XAttribute("type", "onWarning"), new XElement("statement", new XAttribute("name", "ON_WARNING"), NodeToBlockly(graph, GetStartupNode((graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnWarning ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                                , new XElement("next",
+                                new XElement("block", new XAttribute("type", "onError"), new XElement("statement", new XAttribute("name", "ON_ERROR"), NodeToBlockly(graph, GetStartupNode((graph.OnError ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnError ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                                , new XElement("next",
+                                new XElement("block", new XAttribute("type", "onRejected"), new XElement("statement", new XAttribute("name", "ON_REJECTED"), NodeToBlockly(graph, GetStartupNode((graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes), (graph.OnRejected ?? new Core.ExecutionGraph.GraphEvent(Array.Empty<Core.ExecutionGraph.Node>())).Nodes, false, true, ref depth))
+                                ))))))
+                            )));
+                    }
+                }
             }
 
             return block.Attribute("type") == null ? null : block;

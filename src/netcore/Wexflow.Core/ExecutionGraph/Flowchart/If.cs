@@ -29,7 +29,8 @@ namespace Wexflow.Core.ExecutionGraph.Flowchart
         /// <param name="ifId">If Id.</param>
         /// <param name="doNodes">Do nodes.</param>
         /// <param name="elseNodes">Else nodes.</param>
-        public If(int id, int parentId, int ifId, IEnumerable<Node> doNodes, IEnumerable<Node> elseNodes) : base(id, parentId)
+        /// <param name="depth">Depth.</param>
+        public If(int id, int parentId, int ifId, IEnumerable<Node> doNodes, IEnumerable<Node> elseNodes, int depth = 0) : base(id, parentId)
         {
             IfId = ifId;
             if (doNodes != null)
@@ -40,6 +41,7 @@ namespace Wexflow.Core.ExecutionGraph.Flowchart
             {
                 ElseNodes = elseNodes.ToArray();
             }
+            Depth = depth;
         }
     }
 }

@@ -29,7 +29,8 @@ namespace Wexflow.Core.ExecutionGraph.Flowchart
         /// <param name="switchId">Switch Id.</param>
         /// <param name="cases">Cases.</param>
         /// <param name="default">Default case.</param>
-        public Switch(int id, int parentId, int switchId, IEnumerable<Case> cases, IEnumerable<Node> @default) : base(id, parentId)
+        /// <param name="depth">Depth.</param>
+        public Switch(int id, int parentId, int switchId, IEnumerable<Case> cases, IEnumerable<Node> @default, int depth) : base(id, parentId)
         {
             SwitchId = switchId;
             if (cases != null)
@@ -40,6 +41,7 @@ namespace Wexflow.Core.ExecutionGraph.Flowchart
             {
                 Default = @default.ToArray();
             }
+            Depth = depth;
         }
     }
 }

@@ -8,7 +8,8 @@
     /// </remarks>
     /// <param name="id">Node id.</param>
     /// <param name="parentId">Node parent id.</param>
-    public class Node(int id, int parentId)
+    /// <param name="depth">Node depth.</param>
+    public class Node(int id, int parentId, int depth = 0)
     {
         /// <summary>
         /// Node Id.
@@ -18,5 +19,9 @@
         /// Node parent Id.
         /// </summary>
         public int ParentId { get; set; } = parentId;
+        /// <summary>
+        /// Node depth.
+        /// </summary>
+        public int Depth { get; set; } = depth;
     }
 }

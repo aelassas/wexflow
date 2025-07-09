@@ -24,13 +24,15 @@ namespace Wexflow.Core.ExecutionGraph.Flowchart
         /// <param name="parentId">Parent Id.</param>
         /// <param name="whileId">While Id.</param>
         /// <param name="nodes">Nodes.</param>
-        public While(int id, int parentId, int whileId, IEnumerable<Node> nodes) : base(id, parentId)
+        /// <param name="depth">Depth.</param>
+        public While(int id, int parentId, int whileId, IEnumerable<Node> nodes, int depth =0) : base(id, parentId)
         {
             WhileId = whileId;
             if (nodes != null)
             {
                 Nodes = nodes.ToArray();
             }
+            Depth = depth;
         }
     }
 }
