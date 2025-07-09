@@ -1458,35 +1458,29 @@ namespace Wexflow.Server
             var switchId = (int?)node.SelectToken("SwitchId");
             if (ifId != null)
             {
-                XElement xif = new(Xn + "If", new XAttribute("id", (int)node.SelectToken("Id")),
+                var xif = new XElement(Xn + "If", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("if", ifId));
 
-                XElement xdo = new(Xn + "Do");
+                var xdo = new XElement(Xn + "Do");
                 var doNodes = (JArray)node.SelectToken("DoNodes");
                 if (doNodes != null)
                 {
                     foreach (var doNode in doNodes)
                     {
-                        var taskId = (int)doNode.SelectToken("Id");
-                        var parentId = (int)doNode.SelectToken("ParentId");
-                        xdo.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xdo.Add(JsonNodeToXmlNode(doNode));
                     }
                 }
                 xif.Add(xdo);
 
-                XElement xelse = new(Xn + "Else");
+                var xelse = new XElement(Xn + "Else");
                 var elseNodesToken = node.SelectToken("ElseNodes");
-                if (elseNodesToken is { HasValues: true })
+                if (elseNodesToken != null && elseNodesToken.HasValues)
                 {
                     var elseNodes = (JArray)elseNodesToken;
                     foreach (var elseNode in elseNodes)
                     {
-                        var taskId = (int)elseNode.SelectToken("Id");
-                        var parentId = (int)elseNode.SelectToken("ParentId");
-                        xelse.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xelse.Add(JsonNodeToXmlNode(elseNode));
                     }
 
                     if (elseNodes.Count > 0) // Fix
@@ -1499,7 +1493,7 @@ namespace Wexflow.Server
             }
             else if (whileId != null)
             {
-                XElement xwhile = new(Xn + "While", new XAttribute("id", (int)node.SelectToken("Id")),
+                var xwhile = new XElement(Xn + "While", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("while", whileId));
 
@@ -1508,10 +1502,7 @@ namespace Wexflow.Server
                 {
                     foreach (var doNode in doNodes)
                     {
-                        var taskId = (int)doNode.SelectToken("Id");
-                        var parentId = (int)doNode.SelectToken("ParentId");
-                        xwhile.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xwhile.Add(JsonNodeToXmlNode(doNode));
                     }
                 }
 
@@ -1519,26 +1510,23 @@ namespace Wexflow.Server
             }
             else if (switchId != null)
             {
-                XElement xswitch = new(Xn + "Switch", new XAttribute("id", (int)node.SelectToken("Id")),
+                var xswitch = new XElement(Xn + "Switch", new XAttribute("id", (int)node.SelectToken("Id")),
                     new XAttribute("parent", (int)node.SelectToken("ParentId")),
                     new XAttribute("switch", switchId));
 
-                var cases = (JArray)node.SelectToken("Cases");
-                foreach (var @case in cases!)
+                var cases = (JArray)node.SelectToken("Cases") ?? throw new InvalidOperationException();
+                foreach (var @case in cases)
                 {
-                    var value = (string)@case.SelectToken("Value");
+                    var value = (string)@case.SelectToken("Value") ?? throw new InvalidOperationException();
 
-                    XElement xcase = new(Xn + "Case", new XAttribute("value", value ?? string.Empty));
+                    var xcase = new XElement(Xn + "Case", new XAttribute("value", value));
 
                     var doNodes = (JArray)@case.SelectToken("Nodes");
                     if (doNodes != null)
                     {
                         foreach (var doNode in doNodes)
                         {
-                            var taskId = (int)doNode.SelectToken("Id");
-                            var parentId = (int)doNode.SelectToken("ParentId");
-                            xcase.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                                new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                            xcase.Add(JsonNodeToXmlNode(doNode));
                         }
                     }
 
@@ -1546,16 +1534,13 @@ namespace Wexflow.Server
                 }
 
                 var @default = (JArray)node.SelectToken("Default");
-                if (@default is { Count: > 0 })
+                if (@default != null && @default.Count > 0)
                 {
-                    XElement xdefault = new(Xn + "Default");
+                    var xdefault = new XElement(Xn + "Default");
 
                     foreach (var doNode in @default)
                     {
-                        var taskId = (int)doNode.SelectToken("Id");
-                        var parentId = (int)doNode.SelectToken("ParentId");
-                        xdefault.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xdefault.Add(JsonNodeToXmlNode(doNode));
                     }
 
                     xswitch.Add(xdefault);
@@ -1567,7 +1552,7 @@ namespace Wexflow.Server
             {
                 var taskId = (int)node.SelectToken("Id");
                 var parentId = (int)node.SelectToken("ParentId");
-                XElement xtask = new(Xn + "Task", new XAttribute("id", taskId),
+                var xtask = new XElement(Xn + "Task", new XAttribute("id", taskId),
                     new XElement(Xn + "Parent", new XAttribute("id", parentId)));
                 return xtask;
             }

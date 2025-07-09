@@ -1653,7 +1653,7 @@ namespace Wexflow.Server
             };
         }
 
-        private XElement JsonNodeToXmlNode(JToken node)
+        private static XElement JsonNodeToXmlNode(JToken node)
         {
             var ifId = (int?)node.SelectToken("IfId");
             var whileId = (int?)node.SelectToken("WhileId");
@@ -1670,10 +1670,7 @@ namespace Wexflow.Server
                 {
                     foreach (var doNode in doNodes)
                     {
-                        var taskId = (int)doNode.SelectToken("Id");
-                        var parentId = (int)doNode.SelectToken("ParentId");
-                        xdo.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xdo.Add(JsonNodeToXmlNode(doNode));
                     }
                 }
                 xif.Add(xdo);
@@ -1685,10 +1682,7 @@ namespace Wexflow.Server
                     var elseNodes = (JArray)elseNodesToken;
                     foreach (var elseNode in elseNodes)
                     {
-                        var taskId = (int)elseNode.SelectToken("Id");
-                        var parentId = (int)elseNode.SelectToken("ParentId");
-                        xelse.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xelse.Add(JsonNodeToXmlNode(elseNode));
                     }
 
                     if (elseNodes.Count > 0) // Fix
@@ -1710,10 +1704,7 @@ namespace Wexflow.Server
                 {
                     foreach (var doNode in doNodes)
                     {
-                        var taskId = (int)doNode.SelectToken("Id");
-                        var parentId = (int)doNode.SelectToken("ParentId");
-                        xwhile.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xwhile.Add(JsonNodeToXmlNode(doNode));
                     }
                 }
 
@@ -1737,10 +1728,7 @@ namespace Wexflow.Server
                     {
                         foreach (var doNode in doNodes)
                         {
-                            var taskId = (int)doNode.SelectToken("Id");
-                            var parentId = (int)doNode.SelectToken("ParentId");
-                            xcase.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                                new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                            xcase.Add(JsonNodeToXmlNode(doNode));
                         }
                     }
 
@@ -1754,10 +1742,7 @@ namespace Wexflow.Server
 
                     foreach (var doNode in @default)
                     {
-                        var taskId = (int)doNode.SelectToken("Id");
-                        var parentId = (int)doNode.SelectToken("ParentId");
-                        xdefault.Add(new XElement(Xn + "Task", new XAttribute("id", taskId),
-                            new XElement(Xn + "Parent", new XAttribute("id", parentId))));
+                        xdefault.Add(JsonNodeToXmlNode(doNode));
                     }
 
                     xswitch.Add(xdefault);
