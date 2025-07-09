@@ -2404,6 +2404,10 @@
 
             let self = this;
             let openDiagView = function () {
+                // enable save and run buttons
+                enableBtn('run', true)
+                enableBtn('save', true)
+
                 diag = true;
                 graph = false;
                 json = false;
@@ -2431,9 +2435,24 @@
 
         };
 
+        function enableBtn(id, enabled) {
+            const btn = document.getElementById(id)
+            if (btn) {
+                if (enabled) {
+                    btn.classList.remove('btn-disabled')
+                } else {
+                    btn.classList.add('btn-disabled')
+                }
+
+            }
+        }
         // graph click
 
         function openGraph(workflowId) {
+            // disable save and run buttons
+            enableBtn('run', false)
+            enableBtn('save', false)
+
             // task
             let taskJson = {
                 "message0": "Task %1",
@@ -2754,6 +2773,10 @@
 
         // json click
         function openJsonView(jsonVal) {
+            // enable save and run buttons
+            enableBtn('run', true)
+            enableBtn('save', true)
+
             diag = false;
             graph = false;
             json = true;
@@ -2962,6 +2985,10 @@
 
         // xml click
         function openXmlView(xmlVal) {
+            // enable save and run buttons
+            enableBtn('run', true)
+            enableBtn('save', true)
+
             diag = false;
             json = false;
             graph = false;
