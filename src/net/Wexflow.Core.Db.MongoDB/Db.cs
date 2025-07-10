@@ -77,12 +77,26 @@ namespace Wexflow.Core.Db.MongoDB
             // Entries
             ClearEntries();
 
-            // Insert default user if necessary
+            // Insert admin user if it does not exist
+            // Backward compatibility: update admin password from MD5 hash to SHA256 hash of "wexflow2018"
             var usersCol = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
-            if (usersCol.CountDocuments(FilterDefinition<User>.Empty) == 0)
+            var user = usersCol.Find(u => u.Username == "admin").FirstOrDefault();
+            if (user == null)
             {
                 InsertDefaultUser();
             }
+            else
+            {
+                if (IsMd5(user.Password))
+                {
+                    var passwordHash = ComputeSha256("wexflow2018");
+                    var update = Builders<User>.Update
+                    .Set(u => u.Password, passwordHash);
+
+                    _ = usersCol.UpdateOne(u => u.Id == user.Id, update);
+                }
+            }
+
         }
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()

@@ -3591,7 +3591,7 @@ namespace Wexflow.Server
                     try
                     {
                         var newPassword = $"wexflow{GenerateRandomNumber()}";
-                        var newPasswordHash = Db.GetMd5(newPassword);
+                        var newPasswordHash = Db.ComputeSha256(newPassword);
 
                         // Send email
                         var subject = $"Wexflow - Password reset of user {username}";

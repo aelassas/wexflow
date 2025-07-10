@@ -15,7 +15,7 @@ namespace Wexflow.Core.Service.Client
         private static async Task<string> DownloadStringAsync(HttpClient client, string url, string username, string password)
         {
             HttpRequestMessage request = new(HttpMethod.Get, url);
-            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
+            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{ComputeSha256(password)}")}");
             var response = await client.SendAsync(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
@@ -25,7 +25,7 @@ namespace Wexflow.Core.Service.Client
         private static async Task<string> UploadStringAsync(HttpClient client, string url, string username, string password, string body = "")
         {
             HttpRequestMessage request = new(HttpMethod.Post, url);
-            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{GetMd5(password)}")}");
+            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{ComputeSha256(password)}")}");
             if (!string.IsNullOrEmpty(body))
             {
                 request.Content = new StringContent(body, Encoding.UTF8, "application/json");
@@ -50,6 +50,21 @@ namespace Wexflow.Core.Service.Client
                 _ = sb.Append(hashBytes[i].ToString("x2"));
             }
             return sb.ToString();
+        }
+
+        private static string ComputeSha256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2")); // Lowercase hex
+
+                return sb.ToString();
+            }
         }
 
         private static string Base64Encode(string plainText)

@@ -154,7 +154,7 @@
 
     txtSearch.onkeyup = function (e) {
         e.preventDefault();
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
             loadUsers();
         }
     };
@@ -483,7 +483,7 @@
     //confirmPasswordText.onkeyup = function(e) {
     //    e.preventDefault();
 
-    //    if (e.keyCode === 13) {
+    //    if (e.key === 'Enter') {
     //        save();
     //    }
 
@@ -506,7 +506,7 @@
                 window.Common.toastInfo(language.get("toast-username"));
             } else {
                 window.Common.get(uri + "/user?username=" + encodeURIComponent(username),
-                    function (u) {
+                    async function (u) {
                         if (typeof u === "undefined") {
                             if (up === -1) {
                                 window.Common.toastInfo(language.get("toast-userprofile"));
@@ -519,7 +519,7 @@
                                     } else if (emailText.value === "" || validateEmail(emailText.value) === false) {
                                         window.Common.toastInfo(language.get("toast-email-error"));
                                     } else {
-                                        let hashedPass = window.MD5(password);
+                                        let hashedPass = await window.sha256(password);
                                         window.Common.post(
                                             uri + "/insert-user?username=" + encodeURIComponent(username) + "&password=" + hashedPass + "&up=" + up + "&email=" + encodeURIComponent(emailText.value),
                                             function (val) {
@@ -587,7 +587,7 @@
                     window.Common.toastInfo(language.get("toast-userprofile"));
                 } else {
                     window.Common.get(uri + "/user?username=" + encodeURIComponent(txtUsername.value),
-                        function (u) {
+                        async function (u) {
                             if (typeof u !== "undefined" && u !== null && u.Username !== selectedUsername) {
                                 window.Common.toastInfo(language.get("toast-username-exists"));
                             } else {
@@ -597,7 +597,7 @@
                                     if (newPasswordText.value === "") {
                                         window.Common.toastInfo(language.get("toast-password"));
                                     } else {
-                                        let pass = window.MD5(newPasswordText.value);
+                                        let pass = await window.sha256(newPasswordText.value);
 
                                         if (pass !== u.Password) {
                                             window.Common.toastInfo(language.get("toast-password-incorrect"));
@@ -619,8 +619,8 @@
 
             } else {
                 window.Common.get(uri + "/user?username=" + encodeURIComponent(selectedUsername),
-                    function (u) {
-                        let oldPassword = window.MD5(oldPasswordText.value);
+                    async function (u) {
+                        let oldPassword = await window.sha256(oldPasswordText.value);
                         if (u.UserProfile === 0 && u.Password !== oldPassword) {
                             window.Common.toastInfo(language.get("toast-old-password-incorrect"));
                         } else {
@@ -630,7 +630,7 @@
                             } else if (newPasswordText.value === "" || confirmPasswordText.value === "") {
                                 window.Common.toastInfo(language.get("toast-new-password"));
                             } else {
-                                let newPassword = window.MD5(newPasswordText.value);
+                                let newPassword = await window.sha256(newPasswordText.value);
                                 let up = getSelectedProfile();
 
                                 if (txtUsername.value === "") {

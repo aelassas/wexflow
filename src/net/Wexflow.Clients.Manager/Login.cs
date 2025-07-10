@@ -68,7 +68,7 @@ namespace Wexflow.Clients.Manager
                         }
                         else
                         {
-                            if (user.Password == GetMd5(password))
+                            if (user.Password == ComputeSha256(password))
                             {
                                 Username = user.Username;
                                 Password = password;
@@ -105,6 +105,21 @@ namespace Wexflow.Clients.Manager
                 {
                     _ = sb.Append(hashBytes[i].ToString("x2"));
                 }
+                return sb.ToString();
+            }
+        }
+
+        public static string ComputeSha256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2")); // Lowercase hex
+
                 return sb.ToString();
             }
         }

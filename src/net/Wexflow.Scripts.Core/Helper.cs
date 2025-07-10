@@ -62,7 +62,7 @@ namespace Wexflow.Scripts.Core
                     {
                         CreatedOn = DateTime.Now,
                         Username = "wexflow",
-                        Password = Db.GetMd5("wexflow2018"),
+                        Password = Db.ComputeSha256("wexflow2018"),
                         UserProfile = UserProfile.Administrator
                     });
                     user = db.GetUser("wexflow");

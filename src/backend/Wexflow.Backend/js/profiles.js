@@ -119,7 +119,7 @@
     };
 
     txtSearch.onkeyup = function (e) {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
             loadUsers(selectedUsername, true);
         }
     }

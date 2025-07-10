@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Wexflow.Core.Db
 {
@@ -38,7 +39,7 @@ namespace Wexflow.Core.Db
 
         protected void InsertDefaultUser()
         {
-            var password = GetMd5("wexflow2018");
+            var password = ComputeSha256("wexflow2018");
             var user = new User { Username = "admin", Password = password, UserProfile = UserProfile.SuperAdministrator };
             InsertUser(user);
         }
@@ -149,6 +150,29 @@ namespace Wexflow.Core.Db
                 }
                 return sb.ToString();
             }
+        }
+
+        public static string ComputeSha256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2")); // Lowercase hex
+
+                return sb.ToString();
+            }
+        }
+
+        public static bool IsMd5(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return false;
+
+            // MD5 hashes are 32 hex characters (case-insensitive)
+            return Regex.IsMatch(input, @"\A\b[0-9a-fA-F]{32}\b\Z");
         }
     }
 }

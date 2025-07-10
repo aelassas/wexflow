@@ -2340,12 +2340,12 @@
         }
 
         window.onkeydown = function (event) {
-            if ((event.ctrlKey || event.metaKey || event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) && event.keyCode === 83) {
+            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
                 event.preventDefault();
                 save();
                 return false;
             }
-            else if ((event.ctrlKey || event.metaKey || event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) && event.keyCode === 79) {
+            else if ((event.ctrlKey || event.metaKey) && event.key === 'o') {
                 event.preventDefault();
                 browse();
                 return false;

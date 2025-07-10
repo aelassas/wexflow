@@ -50,23 +50,23 @@ window.Login = function () {
     let usernameTxt = document.getElementById("txt-username");
     let passwordTxt = document.getElementById("txt-password");
 
-    loginBtn.onclick = function () {
-        login();
+    loginBtn.onclick = async function () {
+        await login();
     };
 
     passwordTxt.onkeyup = function (event) {
         event.preventDefault();
 
-        if (event.keyCode === 13) {
+        if (event.key === 'Enter') {
             login();
         }
     };
 
-    function login() {
+    async function login() {
 
         let username = usernameTxt.value;
         let password = passwordTxt.value;
-        let passwordHash = window.MD5(password);
+        let passwordHash = await window.sha256(password);
         auth = "Basic " + btoa(username + ":" + passwordHash);
 
         if (username === "" || password === "") {

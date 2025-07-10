@@ -10,19 +10,19 @@ window.Login = function () {
         login();
     };
 
-    passwordTxt.onkeyup = function (event) {
+    passwordTxt.onkeyup =async function (event) {
         event.preventDefault();
 
-        if (event.keyCode === 13) {
-            login();
+        if (event.key === 'Enter') {
+            await login();
         }
     };
 
-    function login() {
+    async function login() {
 
         var username = usernameTxt.value;
         var password = passwordTxt.value;
-        var passwordHash = window.MD5(password);
+        var passwordHash = await window.sha256(password);
         auth = "Basic " + btoa(username + ":" + passwordHash);
 
         if (username === "" || password === "") {

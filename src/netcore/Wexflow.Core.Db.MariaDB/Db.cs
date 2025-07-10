@@ -112,21 +112,52 @@ namespace Wexflow.Core.Db.MariaDB
             // Entries
             ClearEntries();
 
-            // Insert default user if necessary
+            // Insert admin user if it does not exist
+            // Backward compatibility: update admin password from MD5 hash to SHA256 hash of "wexflow2018"
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
 
-                using (var command = new MySqlCommand("SELECT COUNT(*) FROM " + Core.Db.User.DOCUMENT_NAME + ";", conn))
+                using (var command = new MySqlCommand("SELECT " +
+                    User.COLUMN_NAME_ID + ", " +
+                    User.COLUMN_NAME_PASSWORD +
+                    " FROM " + Core.Db.User.DOCUMENT_NAME +
+                    " WHERE " + User.COLUMN_NAME_USERNAME + " = @username;", conn))
                 {
-                    var usersCount = (long)(command.ExecuteScalar() ?? throw new InvalidOperationException());
+                    command.Parameters.AddWithValue("@username", "admin");
 
-                    if (usersCount == 0)
+                    using (var reader = command.ExecuteReader())
                     {
-                        InsertDefaultUser();
+                        if (reader.Read())
+                        {
+                            var id = Convert.ToInt64(reader[User.COLUMN_NAME_ID]);
+                            var password = reader[User.COLUMN_NAME_PASSWORD]?.ToString();
+
+                            if (IsMd5(password))
+                            {
+                                var sha256Password = ComputeSha256("wexflow2018"); // Set to default SHA256 password
+
+                                reader.Close(); // Close reader before running UPDATE
+
+                                using (var updateCmd = new MySqlCommand("UPDATE " +
+                                    Core.Db.User.DOCUMENT_NAME +
+                                    " SET " + User.COLUMN_NAME_PASSWORD + " = @sha256Password " +
+                                    "WHERE " + User.COLUMN_NAME_ID + " = @id;", conn))
+                                {
+                                    updateCmd.Parameters.AddWithValue("@sha256Password", sha256Password);
+                                    updateCmd.Parameters.AddWithValue("@id", id);
+                                    updateCmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            InsertDefaultUser();
+                        }
                     }
                 }
             }
+
         }
 
         public override bool CheckUserWorkflow(string userId, string workflowId)

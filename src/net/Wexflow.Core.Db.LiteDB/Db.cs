@@ -41,11 +41,21 @@ namespace Wexflow.Core.Db.LiteDB
             // Entries
             ClearEntries();
 
-            // Insert default user if necessary
+            // Insert admin user if it does not exist
+            // Backward compatibility: update admin password from MD5 hash to SHA256 hash of "wexflow2018"
             var usersCol = _db.GetCollection<User>(Core.Db.User.DOCUMENT_NAME);
-            if (usersCol.Count() == 0)
+            var user = usersCol.FindOne(u => u.Username == "admin");
+            if (user == null)
             {
                 InsertDefaultUser();
+            }
+            else
+            {
+                if (IsMd5(user.Password))
+                {
+                    user.Password = ComputeSha256("wexflow2018");
+                    _ = usersCol.Update(user);
+                }
             }
         }
 

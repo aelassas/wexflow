@@ -202,7 +202,7 @@
                             searchText.onkeyup = function (event) {
                                 event.preventDefault();
 
-                                if (event.keyCode === 13) { // Enter
+                                if (event.key === 'Enter') { // Enter
                                     loadWorkflows();
                                     notify("");
                                     window.Common.disableButton(startButton, true);

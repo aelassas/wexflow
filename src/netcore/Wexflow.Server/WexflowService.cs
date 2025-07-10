@@ -2802,8 +2802,8 @@ namespace Wexflow.Server
                 var username = context.Request.Query["username"].ToString();
 
                 var othuser = WexflowServer.WexflowEngine.GetUser(qusername);
-
-                if (othuser.Password.Equals(qpassword, StringComparison.Ordinal))
+                
+                if (othuser != null && othuser.Password.Equals(qpassword, StringComparison.Ordinal))
                 {
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     var dateTimeFormat = WexflowServer.Config["DateTimeFormat"];
@@ -3189,7 +3189,7 @@ namespace Wexflow.Server
                     try
                     {
                         var newPassword = $"wexflow{GenerateRandomNumber()}";
-                        var newPasswordHash = Db.GetMd5(newPassword);
+                        var newPasswordHash = Db.ComputeSha256(newPassword);
 
                         // Send email
                         var subject = $"Wexflow - Password reset of user {username}";

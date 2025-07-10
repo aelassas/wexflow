@@ -150,7 +150,7 @@
 
     searchText.onkeyup = function (event) {
         event.preventDefault();
-        if (event.keyCode === 13) { // Enter
+        if (event.key === 'Enter') { // Enter
             loadWorkflows();
         }
     };
@@ -191,7 +191,7 @@
     // CTRL+S
     window.onkeydown = function (event) {
         if (selectedId !== -1 && newWorkflow === false) { // CTRL+S
-            if ((event.ctrlKey || event.metaKey || event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) && event.keyCode === 83) {
+            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
                 var selected = document.getElementsByClassName("selected");
                 if (selected.length > 0) {
                     var id = parseInt(selected[0].getElementsByClassName("wf-id")[0].innerHTML);
