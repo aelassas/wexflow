@@ -4,7 +4,7 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 	  <DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms> 
-    <Version>9.1.0</Version>
+    <Version>9.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
