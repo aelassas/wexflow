@@ -18,6 +18,15 @@ Wexflow targets both developers and technical users who need automation (file op
 
 Whether you're automating simple scheduled jobs or orchestrating complex business processes, Wexflow offers a flexible, extensible, and developer-friendly solution.
 
+## Would Wexflow work as a Business Process Management solution?
+
+Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow does not natively support BPMN, human workflows, or built-in user forms. So if your business processes require a lot of human interaction, approvals, or business rule evaluation, Wexflow would be limited.
+
+Wexflow excels at automating technical tasks, such as moving or transforming files, uploading to FTP/SFTP, running scripts (PowerShell, Bash, Python, etc.), scheduling and chaining tasks, triggering workflows by events, manual input, cron or watchfolders, designing flows visually (Designer UI), integrating with APIs and databases, supporting conditional logic (if/else, switch, while).
+
+You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
+
+
 ## Features
 
 ### Workflow Engine
