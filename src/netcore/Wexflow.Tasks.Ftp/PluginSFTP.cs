@@ -19,18 +19,38 @@ namespace Wexflow.Tasks.Ftp
 
         private ConnectionInfo GetConnectionInfo()
         {
-            // Setup Credentials and Server Information
-            var connInfo = !string.IsNullOrEmpty(PrivateKeyPath) && !string.IsNullOrEmpty(Passphrase)
-                ? new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password), new PrivateKeyAuthenticationMethod(User, new PrivateKeyFile(PrivateKeyPath, Passphrase)))
-                : new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password));
+            AuthenticationMethod[] authMethods;
+
+            if (!string.IsNullOrEmpty(PrivateKeyPath))
+            {
+                var keyFile = string.IsNullOrEmpty(Passphrase)
+                    ? new PrivateKeyFile(PrivateKeyPath)
+                    : new PrivateKeyFile(PrivateKeyPath, Passphrase);
+
+                authMethods = new AuthenticationMethod[]
+                {
+                    new PasswordAuthenticationMethod(User, Password),
+                    new PrivateKeyAuthenticationMethod(User, keyFile)
+                };
+            }
+            else
+            {
+                authMethods = new AuthenticationMethod[]
+                {
+                    new PasswordAuthenticationMethod(User, Password)
+                };
+            }
+
+            var connInfo = new ConnectionInfo(Server, Port, User, authMethods);
             return connInfo;
+
         }
 
         public override FileInf[] List()
         {
-            List<FileInf> files = [];
+            var files = new List<FileInf>();
 
-            using (SftpClient client = new(GetConnectionInfo()))
+            using (var client = new SftpClient(GetConnectionInfo()))
             {
                 client.Connect();
                 client.ChangeDirectory(Path);
@@ -48,51 +68,57 @@ namespace Wexflow.Tasks.Ftp
                 client.Disconnect();
             }
 
-            return [.. files];
+            return files.ToArray();
         }
 
         public override void Upload(FileInf file)
         {
-            using SftpClient client = new(GetConnectionInfo());
-            client.Connect();
-            client.ChangeDirectory(Path);
-
-            using (var fileStream = File.OpenRead(file.Path))
+            using (var client = new SftpClient(GetConnectionInfo()))
             {
-                client.UploadFile(fileStream, file.RenameToOrName, true);
-            }
-            Task.InfoFormat("[PluginSFTP] file {0} sent to {1}.", file.Path, Server);
+                client.Connect();
+                client.ChangeDirectory(Path);
 
-            client.Disconnect();
+                using (var fileStream = File.OpenRead(file.Path))
+                {
+                    client.UploadFile(fileStream, file.RenameToOrName, true);
+                }
+                Task.InfoFormat("[PluginSFTP] file {0} sent to {1}.", file.Path, Server);
+
+                client.Disconnect();
+            }
         }
 
         public override void Download(FileInf file)
         {
-            using SftpClient client = new(GetConnectionInfo());
-            client.Connect();
-            client.ChangeDirectory(Path);
-
-            var destFileName = System.IO.Path.Combine(Task.Workflow.WorkflowTempFolder, file.FileName);
-            using (var ostream = File.Create(destFileName))
+            using (var client = new SftpClient(GetConnectionInfo()))
             {
-                client.DownloadFile(file.Path, ostream);
-                Task.Files.Add(new FileInf(destFileName, Task.Id));
-            }
-            Task.InfoFormat("[PluginSFTP] file {0} downloaded from {1}.", file.Path, Server);
+                client.Connect();
+                client.ChangeDirectory(Path);
 
-            client.Disconnect();
+                var destFileName = System.IO.Path.Combine(Task.Workflow.WorkflowTempFolder, file.FileName);
+                using (var ostream = File.Create(destFileName))
+                {
+                    client.DownloadFile(file.Path, ostream);
+                    Task.Files.Add(new FileInf(destFileName, Task.Id));
+                }
+                Task.InfoFormat("[PluginSFTP] file {0} downloaded from {1}.", file.Path, Server);
+
+                client.Disconnect();
+            }
         }
 
         public override void Delete(FileInf file)
         {
-            using SftpClient client = new(GetConnectionInfo());
-            client.Connect();
-            client.ChangeDirectory(Path);
+            using (var client = new SftpClient(GetConnectionInfo()))
+            {
+                client.Connect();
+                client.ChangeDirectory(Path);
 
-            client.DeleteFile(file.Path);
-            Task.InfoFormat("[PluginSFTP] file {0} deleted from {1}.", file.Path, Server);
+                client.DeleteFile(file.Path);
+                Task.InfoFormat("[PluginSFTP] file {0} deleted from {1}.", file.Path, Server);
 
-            client.Disconnect();
+                client.Disconnect();
+            }
         }
     }
 }

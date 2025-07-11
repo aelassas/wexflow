@@ -11,7 +11,7 @@
 		<Task id="100" name="Ftp" description="Sending files" enabled="true">
 			<Setting name="command" value="upload" />
 			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
-			<Setting name="server" value="127.0.1" />
+			<Setting name="server" value="127.0.0.1" />
 			<Setting name="port" value="21" />
 			<Setting name="user" value="user" />
 			<Setting name="password" value="password" />
@@ -21,7 +21,7 @@
 		<Task id="1" name="Ftp" description="Listing files" enabled="true">
 			<Setting name="command" value="list" />
 			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
-			<Setting name="server" value="127.0.1" />
+			<Setting name="server" value="127.0.0.1" />
 			<Setting name="port" value="21" />
 			<Setting name="user" value="user" />
 			<Setting name="password" value="password" />
@@ -30,7 +30,7 @@
 		<Task id="2" name="Ftp" description="Deleting files" enabled="true">
 			<Setting name="command" value="delete" />
 			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
-			<Setting name="server" value="127.0.1" />
+			<Setting name="server" value="127.0.0.1" />
 			<Setting name="port" value="21" />
 			<Setting name="user" value="user" />
 			<Setting name="password" value="password" />
@@ -44,7 +44,7 @@
 		<Task id="4" name="Ftp" description="Sending files" enabled="true">
 			<Setting name="command" value="upload" />
 			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
-			<Setting name="server" value="127.0.1" />
+			<Setting name="server" value="127.0.0.1" />
 			<Setting name="port" value="21" />
 			<Setting name="user" value="user" />
 			<Setting name="password" value="password" />
@@ -54,7 +54,7 @@
 		<Task id="5" name="Ftp" description="Listing files" enabled="true">
 			<Setting name="command" value="list" />
 			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
-			<Setting name="server" value="127.0.1" />
+			<Setting name="server" value="127.0.0.1" />
 			<Setting name="port" value="21" />
 			<Setting name="user" value="user" />
 			<Setting name="password" value="password" />
@@ -64,7 +64,7 @@
 		<Task id="7" name="Ftp" description="Downloading files" enabled="true">
 			<Setting name="command" value="download" />
 			<Setting name="protocol" value="ftp" /> <!-- ftp|ftps|sftp -->
-			<Setting name="server" value="127.0.1" />
+			<Setting name="server" value="127.0.0.1" />
 			<Setting name="port" value="21" />
 			<Setting name="user" value="user" />
 			<Setting name="password" value="password" />

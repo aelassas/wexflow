@@ -36,12 +36,12 @@ namespace Wexflow.Scripts.LiteDB
         private static void BuildDatabase(string info)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            var path1 = Path.Combine(
+            var dbDir = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..",
-                "samples", "net", "Wexflow", "Database", "Wexflow.db");
-            var path2 = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..",
-                "samples", "net", "Wexflow", "Database", "Wexflow-log.db");
+                "samples", "net", "Wexflow", "Database");
+
+            var path1 = Path.Combine(dbDir, "Wexflow.db");
+            var path2 = Path.Combine(dbDir, "Wexflow-log.db");
 
             var connString = $"Filename={path1}; Connection=direct";
 
@@ -59,6 +59,15 @@ namespace Wexflow.Scripts.LiteDB
             Helper.InsertWorkflowsAndUser(db);
             Helper.InsertRecords(db, "litedb");
             db.Dispose();
+
+            // cleanup Wexflow-backup*.db
+            var backupPattern = "Wexflow-backup*.db";
+            var backupFiles = Directory.GetFiles(dbDir, backupPattern);
+            foreach (var file in backupFiles)
+            {
+                File.Delete(file);
+            }
+
         }
     }
 }

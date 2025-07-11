@@ -12,7 +12,7 @@
     <Setting name="command" value="list|upload|download|delete" />
     <!--- FTP Protocol. Possible values: ftp|ftps|sftp-->
     <Setting name="protocol" value="ftp|ftps|sftp" />
-    <!-- Encryption mode. This option is only necessary for FTPS protocol. Possible values: explicit|implicit.-->
+    <!-- Encryption mode. This option is only necessary for FTPS protocol. Possible values: explicit|implicit. Default: explicit-->
     <Setting name="encryption" value="explicit|implicit" />
     <!-- The server host address. -->
     <Setting name="server" value="$string" />

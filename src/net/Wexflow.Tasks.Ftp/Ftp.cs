@@ -45,7 +45,7 @@ namespace Wexflow.Tasks.Ftp
                     _plugin = new PluginFtp(this, server, port, user, password, path, debugLogs);
                     break;
                 case Protocol.Ftps:
-                    var encryptionMode = (EncryptionMode)Enum.Parse(typeof(EncryptionMode), GetSetting("encryption"), true);
+                    var encryptionMode = (EncryptionMode)Enum.Parse(typeof(EncryptionMode), GetSetting("encryption", "explicit"), true);
                     _plugin = new PluginFtps(this, server, port, user, password, path, encryptionMode, debugLogs);
                     break;
                 case Protocol.Sftp:

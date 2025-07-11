@@ -44,12 +44,12 @@ namespace Wexflow.Scripts.LiteDB
         private static void BuildDatabase(string info, string platformFolder, IConfiguration config)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            var path1 = Path.Combine(
+            var dbDir = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
-                "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow.db");
-            var path2 = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..",
-                "samples", "netcore", platformFolder, "Wexflow", "Database", "Wexflow-log.db");
+                "samples", "netcore", platformFolder, "Wexflow", "Database");
+
+            var path1 = Path.Combine(dbDir, "Wexflow.db");
+            var path2 = Path.Combine(dbDir, "Wexflow-log.db");
             var connString = $"Filename={path1}; Connection=direct";
 
             var workflowsFolder = Path.Combine(
@@ -85,6 +85,14 @@ namespace Wexflow.Scripts.LiteDB
             var isUnix = platformFolder is "linux" or "macos";
             Helper.InsertRecords(db, "litedb", recordsFolder, config["documentFile"], config["invoiceFile"], config["timesheetFile"], isUnix);
             db.Dispose();
+
+            // cleanup Wexflow-backup*.db
+            var backupPattern = "Wexflow-backup*.db";
+            var backupFiles = Directory.GetFiles(dbDir, backupPattern);
+            foreach (var file in backupFiles)
+            {
+                File.Delete(file);
+            }
         }
     }
 }

@@ -35,9 +35,11 @@ namespace Wexflow.Scripts.SQLite
         private static void BuildDatabase(string info)
         {
             Console.WriteLine($"=== Build {info} database ===");
-            var path1 = Path.Combine(
+            var dbDir = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..",
-                "samples", "net", "Wexflow", "Database", "Wexflow.sqlite");
+                "samples", "net", "Wexflow", "Database");
+
+            var path1 = Path.Combine(dbDir, "Wexflow.sqlite");
 
             var connString = $"Data Source={path1};Version=3;";
 

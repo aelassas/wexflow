@@ -19,11 +19,31 @@ namespace Wexflow.Tasks.Ftp
 
         private ConnectionInfo GetConnectionInfo()
         {
-            // Setup Credentials and Server Information
-            var connInfo = !string.IsNullOrEmpty(PrivateKeyPath) && !string.IsNullOrEmpty(Passphrase)
-                ? new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password), new PrivateKeyAuthenticationMethod(User, new PrivateKeyFile(PrivateKeyPath, Passphrase)))
-                : new ConnectionInfo(Server, Port, User, new PasswordAuthenticationMethod(User, Password));
+            AuthenticationMethod[] authMethods;
+
+            if (!string.IsNullOrEmpty(PrivateKeyPath))
+            {
+                var keyFile = string.IsNullOrEmpty(Passphrase)
+                    ? new PrivateKeyFile(PrivateKeyPath)
+                    : new PrivateKeyFile(PrivateKeyPath, Passphrase);
+
+                authMethods = new AuthenticationMethod[]
+                {
+                    new PasswordAuthenticationMethod(User, Password),
+                    new PrivateKeyAuthenticationMethod(User, keyFile)
+                };
+            }
+            else
+            {
+                authMethods = new AuthenticationMethod[]
+                {
+                    new PasswordAuthenticationMethod(User, Password)
+                };
+            }
+
+            var connInfo = new ConnectionInfo(Server, Port, User, authMethods);
             return connInfo;
+
         }
 
         public override FileInf[] List()

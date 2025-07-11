@@ -51,9 +51,9 @@ namespace Wexflow.Tasks.Ftp
 
         public override FileInf[] List()
         {
-            List<FileInf> files = [];
+            var files = new List<FileInf>();
 
-            FtpClient client = new()
+            var client = new FtpClient
             {
                 Host = Server,
                 Port = Port,
@@ -82,12 +82,12 @@ namespace Wexflow.Tasks.Ftp
 
             client.Disconnect();
 
-            return [.. files];
+            return files.ToArray();
         }
 
         public override void Upload(FileInf file)
         {
-            FtpClient client = new() { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
+            var client = new FtpClient { Host = Server, Port = Port, Credentials = new NetworkCredential(User, Password) };
 
             if (DebugLogs)
             {
@@ -114,7 +114,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Download(FileInf file)
         {
-            FtpClient client = new()
+            var client = new FtpClient
             {
                 Host = Server,
                 Port = Port,
@@ -140,7 +140,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override void Delete(FileInf file)
         {
-            FtpClient client = new()
+            var client = new FtpClient
             {
                 Host = Server,
                 Port = Port,
