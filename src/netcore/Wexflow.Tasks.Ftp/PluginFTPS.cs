@@ -69,7 +69,7 @@ namespace Wexflow.Tasks.Ftp
             client.Config.EncryptionMode = _encryptionMode;
             client.Config.ValidateAnyCertificate = true;
             client.ValidateCertificate += OnValidateCertificate;
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             var ftpFiles = PluginFtp.ListFiles(client, Task.Id);
@@ -98,7 +98,7 @@ namespace Wexflow.Tasks.Ftp
             client.Config.DataConnectionType = FtpDataConnectionType.PASV;
             client.Config.EncryptionMode = _encryptionMode;
 
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             PluginFtp.UploadFile(client, file);
@@ -129,7 +129,7 @@ namespace Wexflow.Tasks.Ftp
             }
 
             client.ValidateCertificate += OnValidateCertificate;
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             PluginFtp.DownloadFile(client, file, Task);
@@ -154,7 +154,7 @@ namespace Wexflow.Tasks.Ftp
             }
 
             client.ValidateCertificate += OnValidateCertificate;
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             client.DeleteFile(file.Path);

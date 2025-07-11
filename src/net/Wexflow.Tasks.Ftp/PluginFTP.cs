@@ -49,7 +49,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             var ftpFiles = ListFiles(client, Task.Id);
@@ -91,7 +91,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             UploadFile(client, file);
@@ -124,7 +124,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             DownloadFile(client, file, Task);
@@ -166,7 +166,7 @@ namespace Wexflow.Tasks.Ftp
                 client.LegacyLogger = OnLogEvent;
             }
 
-            client.Connect();
+            client.AutoConnect();
             client.SetWorkingDirectory(Path);
 
             client.DeleteFile(file.Path);
