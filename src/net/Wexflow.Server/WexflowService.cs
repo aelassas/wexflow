@@ -40,6 +40,11 @@ namespace Wexflow.Server
             Get("/", _ => Response.AsRedirect("/swagger-ui/index.html"));
 
             //
+            // Greeting
+            //
+            Hello();
+
+            //
             // Dashboard
             //
             GetStatusCount();
@@ -150,6 +155,25 @@ namespace Wexflow.Server
         }
 
         private static string GetPattern(string pattern) => $"/{ROOT}/{pattern}";
+
+        /// <summary>
+        /// Returns a JSON message confirming the service is running.
+        /// </summary>
+        private void Hello()
+        {
+            Get(GetPattern("hello"), args =>
+            {
+                var resStr = JsonConvert.SerializeObject(new { message = "Wexflow Service is runninng..." });
+                var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                return new Response
+                {
+                    ContentType = "application/json",
+                    Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                };
+
+            });
+        }
 
         /// <summary>
         /// Search for workflows.

@@ -13,66 +13,73 @@ namespace Wexflow.Server
 {
     public class Startup
     {
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .SetBasePath(env.ContentRootPath);
+            _config = configuration;
+        }
 
-            var config = builder.Build();
-
-            AppConfiguration appConfig = new();
-            config.Bind(appConfig);
-
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
             if (env.IsDevelopment())
             {
-                _ = app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
 
-            //
-            // Swagger UI
-            //
-            var webBuilder = WebApplication.CreateBuilder();
-            var path = Path.Combine(webBuilder.Environment.ContentRootPath, "swagger-ui");
+            var https = bool.TryParse(_config["HTTPS"], out var res) && res;
+            if (https)
+            {
+                app.UseHttpsRedirection();
+            }
 
-            FileExtensionContentTypeProvider extensionProvider = new();
+            var path = Path.Combine(env.ContentRootPath, "swagger-ui");
+
+            var extensionProvider = new FileExtensionContentTypeProvider();
             extensionProvider.Mappings.Add(".yaml", "application/x-yaml");
             extensionProvider.Mappings.Add(".yml", "application/x-yaml");
 
-            PhysicalFileProvider fileProvider = new(path);
-            _ = app.UseDefaultFiles(new DefaultFilesOptions
+            var fileProvider = new PhysicalFileProvider(path);
+
+            app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = fileProvider,
-                RequestPath = new PathString("")
+                RequestPath = ""
             });
-            _ = app.UseStaticFiles(new StaticFileOptions
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = fileProvider,
                 ContentTypeProvider = extensionProvider,
-                RequestPath = new PathString("")
+                RequestPath = ""
             });
 
-            //
-            // Wexflow Service
-            //
-            _ = app.UseMiddleware<WexflowMiddleware>();
-            _ = app.UseRouting();
-            _ = app.UseAuthorization();
-            _ = app.UseCors(policyBuilder => policyBuilder
-                                                        .AllowAnyHeader()
-                                                        .AllowAnyMethod()
-                                                        .SetIsOriginAllowed(_ => true)
-                                                        .AllowCredentials()
+            app.UseMiddleware<WexflowMiddleware>();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseCors(policyBuilder => policyBuilder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(_ => true)
+                .AllowCredentials()
             );
-            _ = app.UseEndpoints(endpoints =>
+
+            app.UseEndpoints(endpoints =>
             {
-                WexflowService wexflowService = new(endpoints);
+                var wexflowService = new WexflowService(endpoints);
                 wexflowService.Map();
             });
         }
 
-        public static void ConfigureServices(IServiceCollection services)
+
+        public void ConfigureServices(IServiceCollection services)
         {
+            var port = _config.GetValue<int>("WexflowServicePort");
+
+            _ = services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = port;
+            });
             _ = services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;

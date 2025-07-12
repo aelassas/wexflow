@@ -97,7 +97,8 @@ namespace Wexflow.Server
             _webApp?.Dispose();
 
             var port = int.Parse(Config["WexflowServicePort"]);
-            var url = $"http://+:{port}";
+            var https = bool.TryParse(Config["HTTPS"], out var res) && res;
+            var url = $"{(https ? "https" : "http")}://+:{port}";
             _webApp = WebApp.Start<Startup>(url);
         }
 

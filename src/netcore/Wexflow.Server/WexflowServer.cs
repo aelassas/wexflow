@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml;
 using Wexflow.Core;
@@ -98,11 +100,28 @@ namespace Wexflow.Server
 
             var port = int.Parse(Config["WexflowServicePort"]);
 
+            var https = bool.TryParse(Config["HTTPS"], out var res) && res;
+            var pfxFile = Config["PfxFile"];
+            var pfxPassword = Config["PfxPassword"];
+
             var host = new WebHostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseKestrel((_, options) =>
                 {
-                    options.ListenAnyIP(port);
+                    if (https && File.Exists(pfxFile))
+                    {
+                        options.ListenAnyIP(port, listenOptions =>
+                        {
+                            listenOptions.UseHttps(pfxFile, pfxPassword);
+                        });
+                    }
+                    else
+                    {
+                        // Fallback to HTTP (not recommended for production)
+                        options.ListenAnyIP(port);
+                    }
+
+                    options.AllowSynchronousIO = true;
                 })
                 .UseStartup<Startup>()
                 .Build();

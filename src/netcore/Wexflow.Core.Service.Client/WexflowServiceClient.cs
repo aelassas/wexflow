@@ -36,22 +36,6 @@ namespace Wexflow.Core.Service.Client
             return responseString;
         }
 
-        private static string GetMd5(string input)
-        {
-            // Use input string to calculate MD5 hash
-            var inputBytes = Encoding.ASCII.GetBytes(input);
-            var hashBytes = MD5.HashData(inputBytes);
-
-            // Convert the byte array to hexadecimal string
-            StringBuilder sb = new();
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (var i = 0; i < hashBytes.Length; i++)
-            {
-                _ = sb.Append(hashBytes[i].ToString("x2"));
-            }
-            return sb.ToString();
-        }
-
         private static string ComputeSha256(string input)
         {
             using (SHA256 sha256 = SHA256.Create())

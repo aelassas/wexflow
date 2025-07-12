@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack;
+using SlackAPI.WebSocketMessages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -40,6 +41,11 @@ namespace Wexflow.Server
 
         public void Map()
         {
+            //
+            // Greeting
+            //
+            Hello();
+
             //
             // Dashboard
             //
@@ -183,6 +189,17 @@ namespace Wexflow.Server
         {
             context.Response.StatusCode = 204;
             await context.Response.WriteAsync(JsonConvert.SerializeObject("Workflow not found!"));
+        }
+
+        /// <summary>
+        /// Returns a JSON message confirming the service is running.
+        /// </summary>
+        private void Hello()
+        {
+            _ = _endpoints.MapGet(GetPattern("hello"), async context =>
+            {
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Wexflow Service is running..." }));
+            });
         }
 
         /// <summary>
@@ -2802,7 +2819,7 @@ namespace Wexflow.Server
                 var username = context.Request.Query["username"].ToString();
 
                 var othuser = WexflowServer.WexflowEngine.GetUser(qusername);
-                
+
                 if (othuser != null && othuser.Password.Equals(qpassword, StringComparison.Ordinal))
                 {
                     var user = WexflowServer.WexflowEngine.GetUser(username);
