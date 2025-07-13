@@ -40,7 +40,7 @@ SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease 
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 ;Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Types]
@@ -52,6 +52,7 @@ Name: "program"; Description: "Program Files"; Types: full custom; Flags: fixed
 Name: "samples"; Description: "Workflow samples"; Types: full
 
 [Files]
+Source: "..\src\net\Wexflow.Clients.Manager\Wexflow.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; Wexflow server
 ;Source: "..\src\net\Wexflow.Core.Db.MongoDB\bin\x64\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Core.Db.SQLite\bin\x64\Release\x64\SQLite.Interop.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -78,16 +79,16 @@ Source: "..\src\net\Wexflow.Clients.CommandLine\bin\x64\Release\Wexflow.Clients.
 Source: "..\src\net\Wexflow.Clients.CommandLine\bin\x64\Release\Wexflow.Clients.CommandLine.exe.config"; DestDir: "{app}\Wexflow.Clients.CommandLine"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Clients.CommandLine\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Clients.CommandLine"; Flags: ignoreversion
 
-; Wexflow Backend
-Source: "..\src\backend\Wexflow.Backend\*.html"; DestDir: "{app}\Backend"; Flags: ignoreversion
+; Wexflow Admin
+Source: "..\src\admin\Wexflow.Admin\*.html"; DestDir: "{app}\Admin"; Flags: ignoreversion
 
-Source: "..\src\backend\Wexflow.Backend\images\*"; DestDir: "{app}\Backend\images"; Flags: ignoreversion
-Source: "..\src\backend\Wexflow.Backend\assets\*"; DestDir: "{app}\Backend\assets"; Flags: ignoreversion
+Source: "..\src\admin\Wexflow.Admin\images\*"; DestDir: "{app}\Admin\images"; Flags: ignoreversion
+Source: "..\src\admin\Wexflow.Admin\assets\*"; DestDir: "{app}\Admin\assets"; Flags: ignoreversion
 
-Source: "..\src\backend\Wexflow.Backend\css\*.css"; DestDir: "{app}\Backend\css"; Flags: ignoreversion
-Source: "..\src\backend\Wexflow.Backend\css\images\*"; DestDir: "{app}\Backend\css\images"; Flags: ignoreversion
+Source: "..\src\admin\Wexflow.Admin\css\*.css"; DestDir: "{app}\Admin\css"; Flags: ignoreversion
+Source: "..\src\admin\Wexflow.Admin\css\images\*"; DestDir: "{app}\Admin\css\images"; Flags: ignoreversion
 
-Source: "..\src\backend\Wexflow.Backend\js\*.js"; DestDir: "{app}\Backend\js"; Flags: ignoreversion
+Source: "..\src\admin\Wexflow.Admin\js\*.js"; DestDir: "{app}\Admin\js"; Flags: ignoreversion
 
 ; Wexflow's Documentation
 Source: "..\src\net\Wexflow.Core\Workflow.xml"; DestDir: "{app}\Documentation\"; DestName: "_Workflow.xml"; Flags: ignoreversion
@@ -291,8 +292,8 @@ Source: "..\src\net\Wexflow.Scripts.RunAllWorkflows\bin\x64\Release\*.dll"; Dest
 
 [Icons]
 Name: "{commonprograms}\{#MyAppName}\Manager"; Filename: "{app}\Manager\{#MyAppExeName}";
-Name: "{commonprograms}\{#MyAppName}\Backend"; Filename: "{app}\Backend\index.html";
-Name: "{commonprograms}\{#MyAppName}\Swagger"; Filename: "http://localhost:8000";
+Name: "{commonprograms}\{#MyAppName}\Admin Panel"; Filename: "http://localhost:8000/"; IconFilename: "{app}\Wexflow.ico";
+Name: "{commonprograms}\{#MyAppName}\Swagger"; Filename: "http://localhost:8000/swagger/"; IconFilename: "{app}\Wexflow.ico";
 ;Name: "{commonprograms}\{#MyAppName}\Start Wexflow Windows Service"; Filename: {sys}\sc.exe; Parameters: "start Wexflow" ; IconFilename: "{app}\Wexflow.ico";
 ;Name: "{commonprograms}\{#MyAppName}\Stop Wexflow Windows Service"; Filename: {sys}\sc.exe; Parameters: "stop Wexflow" ; IconFilename: "{app}\Wexflow.ico";
 Name: "{commonprograms}\{#MyAppName}\Configuration"; Filename: "C:\Wexflow\";
@@ -311,7 +312,8 @@ Name: "{commonprograms}\{#MyAppName}\Install LiteDB samples"; Filename: "{app}\W
 ;Name: "{commonprograms}\{#MyAppName}\Run All Workflows"; Filename: "{app}\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.exe";
 Name: "{commonprograms}\{#MyAppName}\Uninstall"; Filename: "{uninstallexe}";
 
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: desktopicon
+;Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commondesktop}\Wexflow Admin"; Filename: "http://localhost:8000/"; IconFilename: "{app}\Wexflow.ico"; Tasks: desktopicon
 ;Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]

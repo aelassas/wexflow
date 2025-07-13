@@ -195,7 +195,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.CsvToJson", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.CsvToYaml", "src\net\Wexflow.Tasks.CsvToYaml\Wexflow.Tasks.CsvToYaml.csproj", "{09607358-CFC4-4365-9BDB-57C9CE6CE741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Backend", "src\backend\Wexflow.Backend\Wexflow.Backend.csproj", "{C181F37A-30A6-45C6-A191-5672DE38F51F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Admin", "src\admin\Wexflow.Admin\Wexflow.Admin.csproj", "{C181F37A-30A6-45C6-A191-5672DE38F51F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Core.Db.LiteDB", "src\net\Wexflow.Core.Db.LiteDB\Wexflow.Core.Db.LiteDB.csproj", "{2BBB9F04-49D7-49A7-A065-4B2C81E66307}"
 EndProject
@@ -323,7 +323,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.EnvironmentVa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.EnvironmentVariable", "src\netcore\Wexflow.Tasks.EnvironmentVariable\Wexflow.Tasks.EnvironmentVariable.csproj", "{1C3C251F-E8A6-47AF-AF15-E38469840763}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{70188444-B660-4771-9A13-522E4ED76674}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{70188444-B660-4771-9A13-522E4ED76674}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wexflow.Server", "Wexflow.Server", "{432B6823-FB53-4893-A5B0-FA49E9593275}"
 EndProject

@@ -105,6 +105,7 @@ namespace Wexflow.Server
             var pfxPassword = Config["PfxPassword"];
 
             var host = new WebHostBuilder()
+                .UseConfiguration(Config)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseKestrel((_, options) =>
                 {

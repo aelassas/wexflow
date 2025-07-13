@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
 
 namespace Wexflow.Server
@@ -27,30 +28,75 @@ namespace Wexflow.Server
                 app.UseDeveloperExceptionPage();
             }
 
+            // https
             var https = bool.TryParse(_config["HTTPS"], out var res) && res;
             if (https)
             {
                 app.UseHttpsRedirection();
             }
 
-            var path = Path.Combine(env.ContentRootPath, "swagger-ui");
+            // redirects
+            app.Use(async (context, next) =>
+            {
+                var path = context.Request.Path.Value;
+
+                if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.Redirect("/admin");
+                    return;
+                }
+
+                if (string.Equals(path, "/swagger", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.Redirect("/swagger-ui");
+                    return;
+                }
+
+                await next();
+            });
+
+            // admin
+            var adminFolder = Path.GetFullPath(_config["AdminFolder"]);
+
+            if (!Directory.Exists(adminFolder))
+            {
+                throw new DirectoryNotFoundException($"Admin folder not found: {adminFolder}");
+            }
 
             var extensionProvider = new FileExtensionContentTypeProvider();
-            extensionProvider.Mappings.Add(".yaml", "application/x-yaml");
-            extensionProvider.Mappings.Add(".yml", "application/x-yaml");
-
-            var fileProvider = new PhysicalFileProvider(path);
+            var fileProvider = new PhysicalFileProvider(adminFolder);
 
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = fileProvider,
-                RequestPath = ""
+                RequestPath = "/admin"
             });
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = fileProvider,
                 ContentTypeProvider = extensionProvider,
-                RequestPath = ""
+                RequestPath = "/admin"
+            });
+
+            // swagger
+            var path = Path.Combine(env.ContentRootPath, "swagger-ui");
+
+            extensionProvider = new FileExtensionContentTypeProvider();
+            extensionProvider.Mappings.Add(".yaml", "application/x-yaml");
+            extensionProvider.Mappings.Add(".yml", "application/x-yaml");
+
+            fileProvider = new PhysicalFileProvider(path);
+
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                FileProvider = fileProvider,
+                RequestPath = "/swagger-ui"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = fileProvider,
+                ContentTypeProvider = extensionProvider,
+                RequestPath = "/swagger-ui"
             });
 
             app.UseMiddleware<WexflowMiddleware>();

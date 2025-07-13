@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -37,7 +38,10 @@ namespace Wexflow.Server
             //
             // Index
             //
-            Get("/", _ => Response.AsRedirect("/swagger-ui/index.html"));
+            Get("/", _ => Response.AsRedirect("/admin/index.html"));
+            Get("/admin", _ => Response.AsRedirect("/admin/index.html"));
+            Get("/swagger-ui", _ => Response.AsRedirect("/swagger-ui/index.html"));
+            Get("/swagger", _ => Response.AsRedirect("/swagger-ui"));
 
             //
             // Greeting

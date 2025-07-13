@@ -10,7 +10,10 @@ namespace Wexflow.Server
             // Configure diagnostics
             app.UseErrorPage();
 #endif
-            _ = app.UseNancy();
+            _ = app.UseNancy(options =>
+            {
+                options.Bootstrapper = new Bootstrapper();
+            });
         }
     }
 }

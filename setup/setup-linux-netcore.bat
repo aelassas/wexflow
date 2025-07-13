@@ -4,7 +4,7 @@ set version=9.2
 set dst=wexflow
 set zip=wexflow-%version%-linux-netcore.zip
 set dstDir=.\%dst%
-set backend=Backend
+set admin=Admin
 
 if exist %zip% del %zip%
 if exist %dstDir% rmdir /s /q %dstDir%
@@ -12,11 +12,11 @@ mkdir %dstDir%
 mkdir %dstDir%\Wexflow\
 mkdir %dstDir%\Wexflow\Database\
 mkdir %dstDir%\WexflowTesting\
-mkdir %dstDir%\%backend%\
-mkdir %dstDir%\%backend%\images\
-mkdir %dstDir%\%backend%\css\
-mkdir %dstDir%\%backend%\css\images\
-mkdir %dstDir%\%backend%\js\
+mkdir %dstDir%\%admin%\
+mkdir %dstDir%\%admin%\images\
+mkdir %dstDir%\%admin%\css\
+mkdir %dstDir%\%admin%\css\images\
+mkdir %dstDir%\%admin%\js\
 ::mkdir %dstDir%\Wexflow.Scripts.MongoDB
 ::mkdir %dstDir%\Wexflow.Scripts.MongoDB\Workflows
 mkdir %dstDir%\Documentation\
@@ -29,17 +29,17 @@ xcopy ..\samples\netcore\linux\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e
 xcopy ..\samples\netcore\linux\Wexflow\* %dstDir%\Wexflow\ /s /e
 copy ..\src\netcore\Wexflow.Core\Workflow.xsd %dstDir%\Wexflow\
 
-:: Wexflow backend
-copy "..\src\backend\Wexflow.Backend\*.html" %dstDir%\%backend%\
+:: Wexflow admin
+copy "..\src\admin\Wexflow.Admin\*.html" %dstDir%\%admin%\
 
-xcopy "..\src\backend\Wexflow.Backend\images\*" %dstDir%\%backend%\images\ /s /e
+xcopy "..\src\admin\Wexflow.Admin\images\*" %dstDir%\%admin%\images\ /s /e
 
-xcopy "..\src\backend\Wexflow.Backend\assets\*" %dstDir%\%backend%\assets\ /s /e
+xcopy "..\src\admin\Wexflow.Admin\assets\*" %dstDir%\%admin%\assets\ /s /e
 
-copy "..\src\backend\Wexflow.Backend\css\*.css" %dstDir%\%backend%\css
-xcopy "..\src\backend\Wexflow.Backend\css\images\*" %dstDir%\%backend%\css\images`\ /s /e
+copy "..\src\admin\Wexflow.Admin\css\*.css" %dstDir%\%admin%\css
+xcopy "..\src\admin\Wexflow.Admin\css\images\*" %dstDir%\%admin%\css\images`\ /s /e
 
-copy "..\src\backend\Wexflow.Backend\js\*.js" %dstDir%\%backend%\js
+copy "..\src\admin\Wexflow.Admin\js\*.js" %dstDir%\%admin%\js
 
 :: Wexflow server
 dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Server
