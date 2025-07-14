@@ -18,14 +18,6 @@ Wexflow targets both developers and technical users who need automation (file op
 
 Whether you're automating simple scheduled jobs or orchestrating complex business processes, Wexflow offers a flexible, extensible, and developer-friendly solution.
 
-After [installing](https://github.com/aelassas/wexflow/wiki/Installing) Wexflow, you can access the admin panel at:
-
-- **URL:** http://localhost:8000/
-- **Username:** admin
-- **Password:** wexflow2018
-
-> **Security Note:** For your safety, please change the default password after your first login.
-
 ## Quick Links
 * [Download](https://github.com/aelassas/wexflow/releases/latest)
 * [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
@@ -35,6 +27,17 @@ After [installing](https://github.com/aelassas/wexflow/wiki/Installing) Wexflow,
 * [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 * [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
 
+## Admin Panel Login
+
+Once Wexflow is installed, you can access the admin panel at:
+
+- **URL:** http://localhost:8000/  
+- **Username:** `admin`  
+- **Password:** `wexflow2018`
+
+**Important:** For your security, change the default password after your first login.
+
+
 ## Is Wexflow a Business Process Management Solution?
 
 Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow does not natively support BPMN, human workflows, or built-in user forms. So if your business processes require a lot of human interaction, approvals, or business rule evaluation, Wexflow would be limited.
@@ -42,7 +45,6 @@ Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow
 Wexflow excels at automating technical tasks, such as moving or transforming files, uploading to FTP/SFTP, running scripts (PowerShell, Bash, Python, etc.), scheduling and chaining tasks, triggering workflows by events, manual input, cron or watchfolders, designing flows visually (Designer UI), integrating with APIs and databases, supporting conditional logic (if/else, switch, while).
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
-
 
 ## Features
 
