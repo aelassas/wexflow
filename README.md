@@ -37,7 +37,6 @@ Once Wexflow is installed, you can access the admin panel at:
 
 **Important:** For your security, change the default password after your first login.
 
-
 ## Is Wexflow a Business Process Management Solution?
 
 Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow does not natively support BPMN, human workflows, or built-in user forms. So if your business processes require a lot of human interaction, approvals, or business rule evaluation, Wexflow would be limited.
@@ -45,6 +44,21 @@ Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow
 Wexflow excels at automating technical tasks, such as moving or transforming files, uploading to FTP/SFTP, running scripts (PowerShell, Bash, Python, etc.), scheduling and chaining tasks, triggering workflows by events, manual input, cron or watchfolders, designing flows visually (Designer UI), integrating with APIs and databases, supporting conditional logic (if/else, switch, while).
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
+
+## How Does Wexflow Compare?
+
+| Feature / Tool         | **Wexflow**            | Zapier         | Power Automate   | n8n             | Apache Airflow   |
+|------------------------|------------------------|----------------|------------------|------------------|------------------|
+| **Open Source**        | ✅ Yes                 | ❌ No          | ❌ No            | ✅ Yes          | ✅ Yes           |
+| **Self-Hosted**        | ✅ Yes                 | ❌ No          | ✅ (Premium)     | ✅ Yes          | ✅ Yes           |
+| **Visual Designer**    | ✅ Built-in (Web)      | ✅ Yes         | ✅ Yes           | ✅ Yes          | 🟡 Limited (via plugins) |
+| **Custom Task Support**| ✅ C# tasks, scripts   | ❌ No          | 🟡 Limited       | ✅ JS functions | ✅ Python         |
+| **Execution Graph**    | ✅ Yes (Flowchart)     | ❌ No          | ❌ No            | 🟡 Simple logic | ✅ DAGs          |
+| **Trigger Types**      | Cron, Events, Watchers | App events     | App events       | Cron, Webhooks  | Cron, DAG Triggers |
+| **Offline Usage**      | ✅ Yes                 | ❌ No          | ❌ No            | ✅ Yes          | ✅ Yes           |
+| **Best For**           | Devs & Sysadmins       | Non-tech users | Business users   | Devs & startups | Data engineers   |
+
+Wexflow gives you full control, extensibility, and offline capability with no vendor lock-in.
 
 ## Features
 
