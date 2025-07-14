@@ -104,6 +104,8 @@ namespace Wexflow.Server
             var pfxFile = Config["PfxFile"];
             var pfxPassword = Config["PfxPassword"];
 
+            JwtHelper.Initialize(Config); // Inject into JwtHelper
+
             var host = new WebHostBuilder()
                 .UseConfiguration(Config)
                 .UseContentRoot(Directory.GetCurrentDirectory())

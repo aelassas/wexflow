@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Wexflow.Core.Auth;
 
 namespace Wexflow.Core.Db
 {
@@ -173,6 +174,16 @@ namespace Wexflow.Core.Db
 
             // MD5 hashes are 32 hex characters (case-insensitive)
             return Regex.IsMatch(input, @"\A\b[0-9a-fA-F]{32}\b\Z");
+        }
+
+        public static string HashPassword(string password)
+        {
+            return PasswordHasher.HashPassword(password);
+        }
+
+        public static bool VerifyPassword(string password, string storedHash)
+        {
+            return PasswordHasher.VerifyPassword(password, storedHash);
         }
     }
 }

@@ -139,6 +139,7 @@
     <Compile Include="Contracts\Workflow\WorkflowInfo.cs" />
     <Compile Include="IAppConfiguration.cs" />
     <Compile Include="Contracts\Notification.cs" />
+    <Compile Include="JwtHelper.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -159,6 +160,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core.Auth\Wexflow.Core.Auth.csproj">
+      <Project>{5676e57f-d5db-45cc-bfae-e517e72fe21f}</Project>
+      <Name>Wexflow.Core.Auth</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wexflow.Core.Db\Wexflow.Core.Db.csproj">
       <Project>{ffe105a5-1c72-4e7d-bc48-5f5902376893}</Project>
       <Name>Wexflow.Core.Db</Name>
@@ -692,11 +697,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Tokens">
+      <Version>8.12.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
       <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Nancy.Owin">
       <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+      <Version>8.12.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

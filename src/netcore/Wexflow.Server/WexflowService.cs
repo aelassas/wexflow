@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack;
-using SlackAPI.WebSocketMessages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Wexflow.Core;
+using Wexflow.Core.Auth;
 using Wexflow.Core.Db;
 using Wexflow.Core.ExecutionGraph.Flowchart;
 using Wexflow.Server.Contracts;
@@ -33,10 +34,16 @@ namespace Wexflow.Server
         private static readonly XNamespace Xn = "urn:wexflow-schema";
 
         private readonly IEndpointRouteBuilder _endpoints;
+        private readonly IConfiguration _config;
+        private readonly int _jwtExpireAtMinutes;
 
-        public WexflowService(IEndpointRouteBuilder endpoints)
+        public WexflowService(IEndpointRouteBuilder endpoints, IConfiguration config)
         {
             _endpoints = endpoints;
+            _config = config;
+            _jwtExpireAtMinutes = int.TryParse(config["JwtExpireAtMinutes"], out var res)
+                ? res
+                : 1440;
         }
 
         public void Map()
@@ -45,6 +52,11 @@ namespace Wexflow.Server
             // Greeting
             //
             Hello();
+
+            //
+            // Auth
+            //
+            Login();
 
             //
             // Dashboard
@@ -199,6 +211,36 @@ namespace Wexflow.Server
             _ = _endpoints.MapGet(GetPattern("hello"), async context =>
             {
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Wexflow Service is running..." }));
+            });
+        }
+
+        /// <summary>
+        /// Login with username and password. Returns a JWT token if successful.
+        /// </summary>
+        private void Login()
+        {
+            _ = _endpoints.MapPost(GetPattern("login"), async context =>
+            {
+                var json = GetBody(context);
+                var o = JObject.Parse(json);
+                var username = o.Value<string>("username");
+                var password = o.Value<string>("password");
+                var stayConnected = o.Value<bool>("stayConnected");
+
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    if (user != null && PasswordHasher.VerifyPassword(password, user.Password))
+                    {
+                        var token = JwtHelper.GenerateToken(username, _jwtExpireAtMinutes, stayConnected);
+
+                        context.Response.ContentType = "application/json";
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new { access_token = token }));
+                        return;
+                    }
+                }
+
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             });
         }
 

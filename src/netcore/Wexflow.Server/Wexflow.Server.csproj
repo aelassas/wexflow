@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -17,7 +17,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <None Remove="swagger-ui\authenticate.js" />
     <None Remove="swagger-ui\common.js" />
@@ -112,9 +112,11 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ServiceStack.Kestrel" Version="8.8.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core.Auth\Wexflow.Core.Auth.csproj" />
     <ProjectReference Include="..\Wexflow.Core\Wexflow.Core.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.ApprovalRecordsCreator\Wexflow.Tasks.ApprovalRecordsCreator.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.ApprovalWorkflowsCreator\Wexflow.Tasks.ApprovalWorkflowsCreator.csproj" />

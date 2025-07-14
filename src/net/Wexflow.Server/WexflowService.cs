@@ -15,9 +15,11 @@ using System.Net.Mail;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Wexflow.Core;
+using Wexflow.Core.Auth;
 using Wexflow.Core.Db;
 using Wexflow.Core.ExecutionGraph.Flowchart;
 using Wexflow.Server.Contracts;
@@ -33,8 +35,17 @@ namespace Wexflow.Server
         private const string ROOT = "api/v1";
         private static readonly XNamespace Xn = "urn:wexflow-schema";
 
+        private readonly int _jwtExpireAtMinutes;
+
         public WexflowService()
         {
+            //
+            // Config
+            //
+            _jwtExpireAtMinutes = int.TryParse(ConfigurationManager.AppSettings["JwtExpireAtMinutes"], out var res)
+                ? res
+                : 1440;
+
             //
             // Index
             //
@@ -47,6 +58,11 @@ namespace Wexflow.Server
             // Greeting
             //
             Hello();
+
+            //
+            // Auth
+            //
+            Login();
 
             //
             // Dashboard
@@ -175,6 +191,36 @@ namespace Wexflow.Server
                     ContentType = "application/json",
                     Contents = s => s.Write(resBytes, 0, resBytes.Length)
                 };
+
+            });
+        }
+
+
+        /// <summary>
+        /// Login with username and password. Returns a JWT token if successful.
+        /// </summary>
+        private void Login()
+        {
+            Get(GetPattern("login"), args =>
+            {
+                var json = RequestStream.FromStream(Request.Body).AsString();
+
+                var o = JObject.Parse(json);
+                var username = o.Value<string>("username");
+                var password = o.Value<string>("password");
+                var stayConnected = o.Value<bool>("stayConnected");
+
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    if (PasswordHasher.VerifyPassword(password, user.Password))
+                    {
+                        var token = JwtHelper.GenerateToken(username, _jwtExpireAtMinutes, stayConnected);
+                        return Response.AsJson(new { access_token = token });
+                    }
+                }
+
+                return Nancy.HttpStatusCode.Unauthorized;
 
             });
         }

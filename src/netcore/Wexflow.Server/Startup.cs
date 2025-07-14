@@ -111,7 +111,7 @@ namespace Wexflow.Server
 
             app.UseEndpoints(endpoints =>
             {
-                var wexflowService = new WexflowService(endpoints);
+                var wexflowService = new WexflowService(endpoints, _config);
                 wexflowService.Map();
             });
         }

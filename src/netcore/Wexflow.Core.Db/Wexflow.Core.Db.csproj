@@ -11,6 +11,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core.Auth\Wexflow.Core.Auth.csproj" />
+  </ItemGroup>
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>

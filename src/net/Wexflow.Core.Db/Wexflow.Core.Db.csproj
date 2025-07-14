@@ -103,5 +103,11 @@
     <Compile Include="Version.cs" />
     <Compile Include="Workflow.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core.Auth\Wexflow.Core.Auth.csproj">
+      <Project>{5676e57f-d5db-45cc-bfae-e517e72fe21f}</Project>
+      <Name>Wexflow.Core.Auth</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
