@@ -93,7 +93,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Windows](https://github.com/aelassas/wexflow/wiki/Installing#windows-net)  
    1. [Linux](https://github.com/aelassas/wexflow/wiki/Installing#linux-net-core)  
    1. [macOS](https://github.com/aelassas/wexflow/wiki/Installing#macos-net-core)  
-1. [SSL](https://github.com/aelassas/wexflow/wiki/SSL)
+1. [SSL/HTTPS](https://github.com/aelassas/wexflow/wiki/SSL)
 1. [Screenshots](https://github.com/aelassas/wexflow/wiki/Screenshots)  
 1. [Docker](https://github.com/aelassas/wexflow/wiki/Docker)  
 1. [Configuration](https://github.com/aelassas/wexflow/wiki/Configuration)  
