@@ -18,6 +18,14 @@ Wexflow targets both developers and technical users who need automation (file op
 
 Whether you're automating simple scheduled jobs or orchestrating complex business processes, Wexflow offers a flexible, extensible, and developer-friendly solution.
 
+After [installing](https://github.com/aelassas/wexflow/wiki/Installing) Wexflow, you can access the admin panel at:
+
+- **URL:** http://localhost:8000/
+- **Username:** admin
+- **Password:** wexflow2018
+
+> **Security Note:** For your safety, please change the default password after your first login.
+
 ## Is Wexflow a Business Process Management Solution?
 
 Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow does not natively support BPMN, human workflows, or built-in user forms. So if your business processes require a lot of human interaction, approvals, or business rule evaluation, Wexflow would be limited.
