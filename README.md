@@ -10,7 +10,7 @@
 
 ## Wexflow
 
-Wexflow is an open-source and cross-platform workflow engine and automation platform built to simplify and automate recurring tasks. It provides a cross-platform workflow server, an admin panel for designing, managing, and tracking workflows, sequential workflows, and flowchart workflows.
+Wexflow is a cross-platform, open-source workflow engine and automation platform designed to streamline and automate recurring tasks. It comes with a powerful workflow server, a modern admin panel for managing workflows, and supports both sequential and flowchart-based workflows.
 
 With over 100 built-in activities, Wexflow supports a wide range of tasks out of the box—from file operations and system processes to scripting, networking, and more. You can also extend its capabilities by creating custom activities or integrating with external systems via the Wexflow API.
 
@@ -25,6 +25,15 @@ After [installing](https://github.com/aelassas/wexflow/wiki/Installing) Wexflow,
 - **Password:** wexflow2018
 
 > **Security Note:** For your safety, please change the default password after your first login.
+
+## Quick Links
+* [Download](https://github.com/aelassas/wexflow/releases/latest)
+* [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
+* [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
+* [Configuration](https://github.com/aelassas/wexflow/wiki/Configuration)
+* [REST API](https://github.com/aelassas/wexflow/wiki/RESTful-API)
+* [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
+* [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
 
 ## Is Wexflow a Business Process Management Solution?
 
