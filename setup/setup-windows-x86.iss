@@ -82,7 +82,7 @@ Source: "..\src\admin\Wexflow.Admin\assets\*"; DestDir: "{app}\Admin\assets"; Fl
 Source: "..\src\admin\Wexflow.Admin\css\*.css"; DestDir: "{app}\Admin\css"; Flags: ignoreversion
 Source: "..\src\admin\Wexflow.Admin\css\images\*"; DestDir: "{app}\Admin\css\images"; Flags: ignoreversion
 
-Source: "..\src\admin\Wexflow.Admin\js\*.js"; DestDir: "{app}\Admin\js"; Flags: ignoreversion
+Source: "..\src\admin\Wexflow.Admin\js\*"; DestDir: "{app}\Admin\js"; Flags: ignoreversion recursesubdirs
 
 ; Wexflow's Documentation
 Source: "..\src\net\Wexflow.Core\Workflow.xml"; DestDir: "{app}\Documentation\"; DestName: "_Workflow.xml"; Flags: ignoreversion
