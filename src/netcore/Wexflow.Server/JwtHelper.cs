@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -14,8 +15,9 @@ namespace Wexflow.Server
         private static string SecretKey = null;
         private static byte[] Key = null;
 
-        private const string Issuer = "wexflow";
-        private const string Audience = "wexflow-users";
+        public static string Issuer = "wexflow";
+        public static string Audience = "wexflow-users";
+        public static string AuthCookieName = "wf-auth";
 
         public static void Initialize(IConfiguration config)
         {
@@ -26,8 +28,9 @@ namespace Wexflow.Server
         public static string GenerateToken(string username, int expireMinutes = 60, bool stayConnected = false)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+            var now = DateTime.UtcNow;
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
                 new Claim(JwtRegisteredClaimNames.Sub, username),
@@ -35,27 +38,43 @@ namespace Wexflow.Server
                 new Claim("stay", stayConnected ? "1" : "0")
             };
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Issuer = Issuer,
-                Audience = Audience,
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(Key),
-                    SecurityAlgorithms.HmacSha256Signature
-                )
-            };
+            var signingCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(Key),
+                SecurityAlgorithms.HmacSha256
+            );
 
-            if (!stayConnected)
+            JwtSecurityToken token;
+
+            if (stayConnected)
             {
-                tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(expireMinutes);
+                // No expiration
+                token = new JwtSecurityToken(
+                    issuer: Issuer,
+                    audience: Audience,
+                    claims: claims,
+                    notBefore: now,
+                    signingCredentials: signingCredentials
+                );
+            }
+            else
+            {
+                // With expiration
+                token = new JwtSecurityToken(
+                    issuer: Issuer,
+                    audience: Audience,
+                    claims: claims,
+                    notBefore: now,
+                    expires: now.AddMinutes(expireMinutes),
+                    signingCredentials: signingCredentials
+                );
             }
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
-        public static ClaimsPrincipal? ValidateToken(string token, bool allowNoExpiration = true)
+
+
+        public static ClaimsPrincipal ValidateToken(string token, bool allowNoExpiration = true)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -63,12 +82,13 @@ namespace Wexflow.Server
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidIssuer = Issuer,
-                ValidAudience = Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Key),
                 ValidateIssuerSigningKey = true,
-                ValidateLifetime = !allowNoExpiration,
-                ClockSkew = TimeSpan.Zero
+                ValidateLifetime = true,
+                RequireExpirationTime = false,
+                ClockSkew = TimeSpan.Zero,
+                IssuerSigningKey = new SymmetricSecurityKey(Key),
+                ValidIssuer = Issuer,
+                ValidAudience = Audience
             };
 
             try
@@ -90,5 +110,6 @@ namespace Wexflow.Server
                 return null;
             }
         }
+
     }
 }

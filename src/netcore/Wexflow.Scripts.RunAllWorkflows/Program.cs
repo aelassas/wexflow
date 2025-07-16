@@ -11,11 +11,12 @@ try
     var username = config["Username"];
     var password = config["Password"];
 
-    var workflows = await client.Search(string.Empty, username, password);
+    var token = await client.Login(username, password);
+    var workflows = await client.Search(string.Empty, token);
 
     foreach (var workflow in workflows)
     {
-        Console.WriteLine($"Starting workflow {workflow.Id} - {workflow.Name} => {await client.StartWorkflow(workflow.Id, username, password)}");
+        Console.WriteLine($"Starting workflow {workflow.Id} - {workflow.Name} => {await client.StartWorkflow(workflow.Id, token)}");
     }
 }
 catch (Exception e)

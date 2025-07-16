@@ -85,9 +85,6 @@
     let workflowTimer = null;
     let jobTimer = null;
     let timerInterval = 1000; // ms
-    let username = "";
-    let password = "";
-    let auth = "";
 
     let html = "<div id='wf-container'>"
         + "<div id='wf-cmd'>"
@@ -135,7 +132,7 @@
     let rejectButton = document.getElementById("wf-reject");
     let searchButton = document.getElementById("wf-search-action");
     let searchText = document.getElementById("wf-search-text");
-    let suser = getUser();
+    let suser = window.getUser();
 
 
     if (suser === null || suser === "") {
@@ -143,13 +140,9 @@
     } else {
         let user = JSON.parse(suser);
 
-        username = user.Username;
-        password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
@@ -176,8 +169,7 @@
                             divWorkflows.style.display = "block";
 
                             btnLogout.onclick = function () {
-                                window.deleteUser();
-                                window.Common.redirectToLoginPage();
+                                window.logout();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
@@ -216,7 +208,7 @@
 
                             loadWorkflows();
 
-                        }, function () { }, auth);
+                        }, function () { });
                     } else {
                         window.Common.redirectToLoginPage();
                     }
@@ -224,7 +216,7 @@
                 }
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     function compareById(wf1, wf2) {
@@ -311,7 +303,7 @@
                     window.Common.get(uri + "/workflow?w=" + wid, function (d) {
                         func(d);
                     },
-                        function () { }, auth);
+                        function () { });
                 }
 
                 function updateButtons(wid, force) {
@@ -372,7 +364,7 @@
                             window.Common.disableButton(resumeButton, true);
                             notify("");
                         }
-                    }, function () { }, auth);
+                    }, function () { });
                 }
 
                 function jobStatusChanged(job) {
@@ -526,7 +518,7 @@
                                         }
                                     }
                                 }, function () {
-                                }, auth);
+                                });
 
                             }, timerInterval);
 
@@ -541,7 +533,7 @@
                 startButton.onclick = function () {
                     let startUri = uri + "/start?w=" + selectedId;
                     window.Common.post(startUri, function () {
-                    }, function () { }, "", auth);
+                    }, function () { }, "");
                 };
 
                 suspendButton.onclick = function () {
@@ -555,7 +547,7 @@
                         } else {
                             window.Common.toastInfo(language.get("op-not-supported"));
                         }
-                    }, function () { }, "", auth);
+                    }, function () { }, "");
                 };
 
                 resumeButton.onclick = function () {
@@ -565,7 +557,7 @@
                     let resumeUri = uri + "/resume?w=" + selectedId + "&i=" + jobId;
                     window.Common.post(resumeUri, function () {
                         updateJobButtons(selectedId, jobId, true);
-                    }, function () { }, "", auth);
+                    }, function () { }, "");
                 };
 
                 stopButton.onclick = function () {
@@ -581,7 +573,7 @@
                                 window.Common.toastInfo(language.get("op-not-supported"));
                             }
                         },
-                        function () { }, "", auth);
+                        function () { }, "");
                 };
 
                 approveButton.onclick = function () {
@@ -601,7 +593,7 @@
                                 window.Common.toastError(language.get("job-approved-error-part-1") + jobId + language.get("job-approved-error-part-2") + selectedId + ".");
                             }
                         },
-                        function () { }, "", auth);
+                        function () { }, "");
                 };
 
                 rejectButton.onclick = function () {
@@ -623,14 +615,14 @@
                                 window.Common.toastError(language.get("job-rejected-error-part-1") + jobId + language.get("job-approved-error-part-2") + selectedId + ".");
                             }
                         },
-                        function () { }, "", auth);
+                        function () { }, "");
                 };
 
                 // End of get workflows
             },
             function () {
                 window.Common.toastError(language.get("workflows-server-error"));
-            }, auth);
+            });
     }
 
     function notify(msg) {

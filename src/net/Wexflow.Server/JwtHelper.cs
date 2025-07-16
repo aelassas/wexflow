@@ -1,7 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -13,60 +15,91 @@ namespace Wexflow.Server
         private static readonly byte[] Key = Encoding.UTF8.GetBytes(SecretKey);
         private const string Issuer = "wexflow";
         private const string Audience = "wexflow-users";
+        public static string AuthCookieName = "wf-auth";
 
         public static string GenerateToken(string username, int expireMinutes = 60, bool stayConnected = false)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+            var now = DateTime.UtcNow;
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
                 new Claim(JwtRegisteredClaimNames.Sub, username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("stay", stayConnected ? "1" : "0")
             };
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Issuer = Issuer,
-                Audience = Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature)
-            };
+            var signingCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(Key),
+                SecurityAlgorithms.HmacSha256
+            );
 
-            if (!stayConnected)
+            JwtSecurityToken token;
+
+            if (stayConnected)
             {
-                tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(expireMinutes);
+                // No expiration
+                token = new JwtSecurityToken(
+                    issuer: Issuer,
+                    audience: Audience,
+                    claims: claims,
+                    notBefore: now,
+                    signingCredentials: signingCredentials
+                );
+            }
+            else
+            {
+                // With expiration
+                token = new JwtSecurityToken(
+                    issuer: Issuer,
+                    audience: Audience,
+                    claims: claims,
+                    notBefore: now,
+                    expires: now.AddMinutes(expireMinutes),
+                    signingCredentials: signingCredentials
+                );
             }
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
 
-        public static ClaimsPrincipal ValidateToken(string token)
+
+        public static ClaimsPrincipal ValidateToken(string token, bool allowNoExpiration = true)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var parameters = new TokenValidationParameters
+            var validationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidIssuer = Issuer,
-                ValidAudience = Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Key),
-                ClockSkew = TimeSpan.Zero,
+                ValidateIssuerSigningKey = true,
                 ValidateLifetime = true,
-                ValidateIssuerSigningKey = true
+                RequireExpirationTime = false,
+                ClockSkew = TimeSpan.Zero,
+                IssuerSigningKey = new SymmetricSecurityKey(Key),
+                ValidIssuer = Issuer,
+                ValidAudience = Audience
             };
 
             try
             {
-                var principal = tokenHandler.ValidateToken(token, parameters, out _);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+
+                // Extra check: only allow tokens with 'stay' == "1" to skip expiration
+                if (!allowNoExpiration && validatedToken is JwtSecurityToken jwt &&
+                    jwt.Claims.FirstOrDefault(c => c.Type == "stay")?.Value == "1")
+                {
+                    // Even if 'exp' is missing, allow if "stay" == 1
+                    return principal;
+                }
+
                 return principal;
             }
             catch
             {
-                return null; // invalid token
+                return null;
             }
         }
     }

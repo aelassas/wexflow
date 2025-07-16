@@ -93,11 +93,9 @@
     let wfclose = document.getElementById("wfclose");
     let wfpropwrap = document.getElementById("wfpropwrap");
     let canvas = document.getElementById("canvas");
-    let suser = getUser();
+    let suser = window.getUser();
     let username = "";
-    let password = "";
     let userProfile = -1;
-    let auth = "";
 
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
@@ -105,12 +103,10 @@
         let user = JSON.parse(suser);
 
         username = user.Username;
-        password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
 
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else {
 
@@ -146,7 +142,7 @@
 
                             load();
 
-                        }, function () { }, auth);
+                        }, function () { });
                     } else {
                         window.Common.redirectToLoginPage();
                     }
@@ -154,7 +150,7 @@
                 }
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     function load() {
@@ -268,8 +264,7 @@
         btnLogout.onclick = function () {
 
             let redirect = function () {
-                window.deleteUser();
-                window.Common.redirectToLoginPage();
+                window.logout();
             }
 
             saveChanges(function () {
@@ -294,7 +289,7 @@
                 },
                 function () {
                     window.Common.toastError(language.get("toast-task-names-error"));
-                }, auth);
+                });
         }
         loadTasks();
 
@@ -392,7 +387,7 @@
                 },
                 function () {
                     window.Common.toastError(language.get("toast-workflow-id-error"));
-                }, auth);
+                });
 
 
         };
@@ -670,7 +665,7 @@
                         }
                     }, function () {
                         window.Common.toastError(language.get("toast-workflow-delete-error"));
-                    }, "", auth);
+                    }, "");
             }
         });
 
@@ -953,16 +948,16 @@
                                             if (userProfile === 0) { // super-admin
                                                 window.Common.get(uri + "/search-records?s=", function (records) {
                                                     loadSettingValue(records, []);
-                                                }, function () { }, auth);
+                                                }, function () { });
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     loadSettingValue(records, []);
-                                                }, function () { }, auth);
+                                                }, function () { });
                                             }
                                         } else if (settingType === "user") {
                                             window.Common.get(uri + "/non-restricted-users", function (users) {
                                                 loadSettingValue([], users);
-                                            }, function () { }, auth);
+                                            }, function () { });
                                         } else {
                                             loadSettingValue([], []);
                                         }
@@ -992,7 +987,7 @@
                                     goToBottom("proplist");
                                 }, function () {
                                     window.Common.toastError(language.get("toast-settings-error"));
-                                }, auth);
+                                });
 
                             return false;
                         };
@@ -1331,29 +1326,29 @@
                                                 window.Common.get(uri + "/search-records?s=", function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
-                                                    }, function () { }, auth);
-                                                }, function () { }, auth);
+                                                    }, function () { });
+                                                }, function () { });
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
-                                                    }, function () { }, auth);
-                                                }, function () { }, auth);
+                                                    }, function () { });
+                                                }, function () { });
                                             }
                                         } else if (hasRecordSetting === true && hasUserSetting === false) {
                                             if (userProfile === 0) { // super-admin
                                                 window.Common.get(uri + "/search-records?s=", function (records) {
                                                     loadSettings(records, []);
-                                                }, function () { }, auth);
+                                                }, function () { });
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     loadSettings(records, []);
-                                                }, function () { }, auth);
+                                                }, function () { });
                                             }
                                         } else if (hasRecordSetting === false && hasUserSetting === true) {
                                             window.Common.get(uri + "/non-restricted-users", function (users) {
                                                 loadSettings([], users);
-                                            }, function () { }, auth);
+                                            }, function () { });
                                         } else {
                                             loadSettings([], []);
                                         }
@@ -1393,7 +1388,7 @@
                                 },
                                 function () {
                                     window.Common.toastError(language.get("toast-settings-error"));
-                                }, auth);
+                                });
                         } else {
                             window.Common.get(uri + "/settings/" + taskname,
                                 function (defaultSettings) {
@@ -1730,29 +1725,29 @@
                                                 window.Common.get(uri + "/search-records?s=", function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
-                                                    }, function () { }, auth);
-                                                }, function () { }, auth);
+                                                    }, function () { });
+                                                }, function () { });
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     window.Common.get(uri + "/non-restricted-users", function (users) {
                                                         loadSettings(records, users);
-                                                    }, function () { }, auth);
-                                                }, function () { }, auth);
+                                                    }, function () { });
+                                                }, function () { });
                                             }
                                         } else if (hasRecordSetting === true && hasUserSetting === false) {
                                             if (userProfile === 0) { // super-admin
                                                 window.Common.get(uri + "/search-records?s=", function (records) {
                                                     loadSettings(records, []);
-                                                }, function () { }, auth);
+                                                }, function () { });
                                             } else if (userProfile === 1) { // admin
                                                 window.Common.get(uri + "/records-created-by?c=" + username, function (records) {
                                                     loadSettings(records, []);
-                                                }, function () { }, auth);
+                                                }, function () { });
                                             }
                                         } else if (hasRecordSetting === false && hasUserSetting === true) {
                                             window.Common.get(uri + "/non-restricted-users", function (users) {
                                                 loadSettings([], users);
-                                            }, function () { }, auth);
+                                            }, function () { });
                                         } else {
                                             loadSettings([], []);
                                         }
@@ -1793,7 +1788,7 @@
                                 },
                                 function () {
                                     window.Common.toastError(language.get("toast-settings-error"));
-                                }, auth);
+                                });
 
                         }
                     }
@@ -2120,7 +2115,7 @@
                         }
                     }, function () {
                         window.Common.toastError(language.get("toast-save-workflow-diag-error"));
-                    }, workflow, auth);
+                    }, workflow);
                 };
 
                 if (isInt(document.getElementById("wfretrycount").value) === false) {
@@ -2170,7 +2165,7 @@
                                                                     window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                 }
                                                             },
-                                                            function () { }, auth
+                                                            function () { }
                                                         );
                                                     } // Cron expression validation
                                                     else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -2187,7 +2182,7 @@
                                                                     }
                                                                 }
                                                             },
-                                                            function () { }, auth
+                                                            function () { }
                                                         );
                                                     } else {
                                                         saveFunc();
@@ -2201,7 +2196,7 @@
                                     window.Common.toastInfo(language.get("toast-workflow-id"));
                                 }
                             },
-                            function () { }, auth
+                            function () { }
                         );
                     } else {
 
@@ -2230,7 +2225,7 @@
                                                         window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                     }
                                                 },
-                                                function () { }, auth
+                                                function () { }
                                             );
                                         } // Cron expression validation
                                         else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -2247,7 +2242,7 @@
                                                         }
                                                     }
                                                 },
-                                                function () { }, auth
+                                                function () { }
                                             );
                                         } else {
                                             saveFunc();
@@ -2294,7 +2289,7 @@
                     }
                 }, function () {
                     window.Common.toastError(language.get("toast-save-workflow-json-error"));
-                }, json, auth);
+                }, json);
             } else if (xml === true) {
                 let json = {
                     workflowId: initialWorkflow?.WorkflowInfo?.Id || workflow.WorkflowInfo.Id,
@@ -2335,7 +2330,7 @@
                     }
                 }, function () {
                     window.Common.toastError(language.get("toast-save-workflow-xml-error"));
-                }, json, auth);
+                }, json);
             }
         }
 
@@ -2361,7 +2356,7 @@
                 let startUri = uri + "/start?w=" + workflow.WorkflowInfo.Id;
                 window.Common.post(startUri, function () {
                     window.Common.toastSuccess(language.get("toast-save-and-run"));
-                }, function () { }, "", auth);
+                }, function () { }, "");
             });
         };
 
@@ -2744,7 +2739,7 @@
                     Blockly.svgResize(workspace);
                 }, function () {
                     window.Common.toastInfo(language.get("toast-graph-error"));
-                }, auth);
+                });
 
             } else {
                 window.Common.toastInfo(language.get("toast-graph-save-error"));
@@ -2875,7 +2870,7 @@
                                                                         window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                     }
                                                                 },
-                                                                function () { }, auth
+                                                                function () { }
                                                             );
                                                         } // Cron expression validation
                                                         else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -2892,7 +2887,7 @@
                                                                         }
                                                                     }
                                                                 },
-                                                                function () { }, auth
+                                                                function () { }
                                                             );
                                                         } else {
                                                             openJsonView(jsonVal);
@@ -2906,7 +2901,7 @@
                                         window.Common.toastInfo(language.get("toast-workflow-id"));
                                     }
                                 },
-                                function () { }, auth
+                                function () { }
                             );
                         } else {
 
@@ -2935,7 +2930,7 @@
                                                             window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } // Cron expression validation
                                             else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -2952,7 +2947,7 @@
                                                             }
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } else {
                                                 openJsonView(jsonVal);
@@ -3140,7 +3135,7 @@
                                                                             window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                         }
                                                                     },
-                                                                    function () { }, auth
+                                                                    function () { }
                                                                 );
                                                             } // Cron expression validation
                                                             else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -3157,7 +3152,7 @@
                                                                             }
                                                                         }
                                                                     },
-                                                                    function () { }, auth
+                                                                    function () { }
                                                                 );
                                                             } else {
                                                                 openXmlView(getXml());
@@ -3171,7 +3166,7 @@
                                             window.Common.toastInfo(language.get("toast-workflow-id"));
                                         }
                                     },
-                                    function () { }, auth
+                                    function () { }
                                 );
                             } else {
 
@@ -3200,7 +3195,7 @@
                                                                 window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                             }
                                                         },
-                                                        function () { }, auth
+                                                        function () { }
                                                     );
                                                 } // Cron expression validation
                                                 else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -3217,7 +3212,7 @@
                                                                 }
                                                             }
                                                         },
-                                                        function () { }, auth
+                                                        function () { }
                                                     );
                                                 } else {
                                                     openXmlView(getXml());
@@ -3238,7 +3233,7 @@
                         openXmlView(getXml());
                     }
                 }, function () {
-                }, auth);
+                });
             };
 
             //saveChanges(function () {
@@ -3246,7 +3241,7 @@
             //    let workflowId = parseInt(document.getElementById("wfid").value);
             //    window.Common.get(uri + "/xml/" + workflowId, function (val) {
             //        openXmlView(val);
-            //    }, function () { }, auth);
+            //    }, function () { });
             //}, function () {
             //    // onCancel
             //    openXml();
@@ -3424,7 +3419,7 @@
                         }
 
                     }
-                }, function () { }, auth);
+                }, function () { });
 
         }
 
@@ -3572,7 +3567,7 @@
 
                                     }, function () {
                                         window.Common.toastError(language.get("workflows-server-error"));
-                                    }, auth);
+                                    });
                             }
                         };
 
@@ -3804,7 +3799,7 @@
 
                                                 }, function () {
                                                     window.Common.toastError(language.get("workflows-server-error"));
-                                                }, auth);
+                                                });
 
                                         } else {
                                             window.Common.toastError(language.get("toast-workflows-delete-error"));
@@ -3813,7 +3808,7 @@
                                         window.Common.toastError(language.get("toast-workflows-delete-error"));
                                     }, {
                                         "WorkflowsToDelete": workflowsToDelete
-                                    }, auth);
+                                    });
                                 }
                             } else {
                                 window.Common.toastInfo(language.get("toast-workflows-delete-info"));
@@ -3830,7 +3825,7 @@
                     function () {
                         document.getElementById("overlay").style.display = "none";
                         window.Common.toastError(language.get("workflows-server-error"));
-                    }, auth);
+                    });
             }
         }
 
@@ -3903,7 +3898,7 @@
                                 }
                             }, function () {
                                 window.Common.toastError(language.get("toast-save-workflow-diag-error"));
-                            }, workflow, auth);
+                            }, workflow);
                         };
 
                         let wfIdStr = document.getElementById("wfid").value;
@@ -3939,7 +3934,7 @@
                                                                             window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                                         }
                                                                     },
-                                                                    function () { }, auth
+                                                                    function () { }
                                                                 );
                                                             } // Cron expression validation
                                                             else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -3956,7 +3951,7 @@
                                                                             }
                                                                         }
                                                                     },
-                                                                    function () { }, auth
+                                                                    function () { }
                                                                 );
                                                             } else {
                                                                 saveFunc();
@@ -3970,7 +3965,7 @@
                                             window.Common.toastInfo(language.get("toast-workflow-id"));
                                         }
                                     },
-                                    function () { }, auth
+                                    function () { }
                                 );
                             } else {
 
@@ -3999,7 +3994,7 @@
                                                                 window.Common.toastInfo(language.get("toast-workflow-period-error"));
                                                             }
                                                         },
-                                                        function () { }, auth
+                                                        function () { }
                                                     );
                                                 } // Cron expression validation
                                                 else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -4016,7 +4011,7 @@
                                                                 }
                                                             }
                                                         },
-                                                        function () { }, auth
+                                                        function () { }
                                                     );
                                                 } else {
                                                     saveFunc();
@@ -4046,7 +4041,7 @@
                                             loadDiagram(id, res.FilePath);
                                             removeworkflow.style.display = "block";
                                             window.Common.toastSuccess(language.get("toast-save-workflow-json"));
-                                        }, function () { }, auth);
+                                        }, function () { });
                                 } else {
                                     let wfId = parseInt(document.getElementById("wfid").value);
                                     loadDiagram(wfId, res.FilePath);
@@ -4062,7 +4057,7 @@
                             }
                         }, function () {
                             window.Common.toastError(language.get("toast-save-workflow-json-error"));
-                        }, json, auth);
+                        }, json);
                     } else if (xml === true) {
                         let json = {
                             workflowId: workflow.WorkflowInfo.Id,
@@ -4082,7 +4077,7 @@
                                             loadDiagram(id, res.FilePath);
                                             removeworkflow.style.display = "block";
                                             window.Common.toastSuccess(language.get("toast-save-workflow-xml"));
-                                        }, function () { }, auth);
+                                        }, function () { });
                                 } else {
                                     loadDiagram(wfId, res.FilePath);
                                     removeworkflow.style.display = "block";
@@ -4098,14 +4093,14 @@
                                                 initialWorkflow = JSON.parse(JSON.stringify(val));
                                                 onSave();
                                             }
-                                        }, function () { }, auth);
+                                        }, function () { });
                                 }
                             } else {
                                 window.Common.toastError(language.get("toast-save-workflow-xml-error"));
                             }
                         }, function () {
                             window.Common.toastError(language.get("toast-save-workflow-xml-error"));
-                        }, json, auth);
+                        }, json);
                     }
                 } else {
                     // load view
@@ -4115,13 +4110,13 @@
                                 function (val) {
                                     openJsonView(JSON.stringify(val, null, '\t'));
                                     jsonEditorChanged = false;
-                                }, function () { }, auth);
+                                }, function () { });
                         } else if (xml === true) {
                             window.Common.get(uri + "/xml/" + id,
                                 function (val) {
                                     openXmlView(val);
                                     xmlEditorChanged = false;
-                                }, function () { }, auth);
+                                }, function () { });
                         } else if (graph === true) {
                             openGraph(id);
                         }
@@ -4142,13 +4137,13 @@
                             function (val) {
                                 openJsonView(JSON.stringify(val, null, '\t'));
                                 jsonEditorChanged = false;
-                            }, function () { }, auth);
+                            }, function () { });
                     } else if (xml === true) {
                         window.Common.get(uri + "/xml/" + id,
                             function (val) {
                                 openXmlView(val);
                                 xmlEditorChanged = false;
-                            }, function () { }, auth);
+                            }, function () { });
                     } else if (graph === true) {
                         openGraph(id);
                     }
@@ -4246,7 +4241,7 @@
                                                                         exportModal.close();
                                                                     }
                                                                 },
-                                                                function () { }, auth
+                                                                function () { }
                                                             );
                                                         } // Cron expression validation
                                                         else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -4264,7 +4259,7 @@
                                                                         }
                                                                     }
                                                                 },
-                                                                function () { }, auth
+                                                                function () { }
                                                             );
                                                         } else {
                                                             downloadJson();
@@ -4278,7 +4273,7 @@
                                         window.Common.toastInfo(language.get("toast-workflow-id"));
                                     }
                                 },
-                                function () { }, auth);
+                                function () { });
                         } else {
 
                             if (document.getElementById("wfname").value === "") {
@@ -4310,7 +4305,7 @@
                                                             exportModal.close();
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } // Cron expression validation
                                             else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -4328,7 +4323,7 @@
                                                             }
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } else {
                                                 downloadJson();
@@ -4392,7 +4387,7 @@
                                 download(xmlVal, 'workflow-' + document.getElementById("wfid").value + '.xml', 'text/xml')
 
                                 exportModal.close();
-                            }, function () { }, auth);
+                            }, function () { });
                         }
                     };
 
@@ -4434,7 +4429,7 @@
                                                                         exportModal.close();
                                                                     }
                                                                 },
-                                                                function () { }, auth
+                                                                function () { }
                                                             );
                                                         } // Cron expression validation
                                                         else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -4452,7 +4447,7 @@
                                                                         }
                                                                     }
                                                                 },
-                                                                function () { }, auth
+                                                                function () { }
                                                             );
                                                         } else {
                                                             downloadXml();
@@ -4466,7 +4461,7 @@
                                         window.Common.toastInfo(language.get("toast-workflow-id"));
                                     }
                                 },
-                                function () { }, auth);
+                                function () { });
                         } else {
 
                             if (document.getElementById("wfname").value === "") {
@@ -4499,7 +4494,7 @@
                                                             exportModal.close();
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } // Cron expression validation
                                             else if (lt === "cron" && document.getElementById("wfcronexp").value !== "") {
@@ -4517,7 +4512,7 @@
                                                             }
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } else {
                                                 downloadXml();
@@ -4566,12 +4561,12 @@
                             window.Common.get(uri + "/json/" + res.WorkflowId,
                                 function (val) {
                                     openJsonView(JSON.stringify(val, null, '\t'));
-                                }, function () { }, auth);
+                                }, function () { });
                         } else if (xml === true) {
                             window.Common.get(uri + "/xml/" + res.WorkflowId,
                                 function (val) {
                                     openXmlView(val);
-                                }, function () { }, auth);
+                                }, function () { });
                         } else if (graph === true) {
                             openGraph(res.WorkflowId);
                         }
@@ -4588,7 +4583,7 @@
                 }, function () {
                     filedialog.value = "";
                     window.Common.toastError(language.get("toast-upload-error") + file.name);
-                }, fd, auth, true);
+                }, fd, true);
 
             };
 

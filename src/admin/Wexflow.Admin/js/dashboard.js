@@ -92,28 +92,21 @@
     let lnkNotifications = document.getElementById("lnk-notifications");
     let imgNotifications = document.getElementById("img-notifications");
 
-    let suser = getUser();
+    let suser = window.getUser();
     let page = 1;
     let numberOfPages = 0;
     let heo = 1;
     let from = null;
     let to = null;
-    let qusername = "";
-    let qpassword = "";
-    let auth = "";
 
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
-        qusername = user.Username;
-        qpassword = user.Password;
-        auth = "Basic " + btoa(qusername + ":" + qpassword);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else {
 
@@ -123,12 +116,11 @@
                         divEntries.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            window.deleteUser();
-                            window.Common.redirectToLoginPage();
+                            window.logout();
                         };
 
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
-
+                        
                         if (u.UserProfile === 0 || u.UserProfile === 1) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
@@ -252,19 +244,19 @@
                                                 loadEntries();
 
                                             },
-                                            function () { }, auth);
+                                            function () { });
 
                                     },
-                                    function () { }, auth);
+                                    function () { });
                             },
-                            function () { }, auth);
+                            function () { });
 
 
-                    }, function () { }, auth);
+                    }, function () { });
                 }
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     function updateStatusCount() {
@@ -278,7 +270,7 @@
             statusStopped.innerHTML = data.StoppedCount;
         }, function () {
             //alert("An error occured while retrieving workflows. Check Wexflow Web Service Uri and check that Wexflow Windows Service is running correctly.");
-        }, auth);
+        });
     }
 
     function updatePager() {
@@ -287,7 +279,7 @@
             function (count) {
                 updatePagerControls(count);
             },
-            function () { }, auth);
+            function () { });
     }
 
     function updatePagerControls(count) {
@@ -408,7 +400,7 @@
 
                         }, function () {
                             window.Common.toastError("An error occured while retrieving logs.");
-                        }, auth);
+                        });
 
                     };
                 }
@@ -567,7 +559,7 @@
 
             }, function () {
                 window.Common.toastError("An error occured while retrieving entries. Check that Wexflow server is running correctly.");
-            }, auth);
+            });
     }
 
 }

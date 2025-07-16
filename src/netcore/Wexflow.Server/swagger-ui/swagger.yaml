@@ -14,6 +14,7 @@ externalDocs:
 servers:
 - url: //localhost:8000/api/v1
 tags:
+- name: Default
 - name: Dashboard
   description: Operations about dashboard
 - name: Records
@@ -31,6 +32,15 @@ tags:
 - name: Notifications
   description: Operations about notifications
 paths:
+  /hello:
+    get:
+      tags:
+      - Default
+      summary: Returns a JSON message confirming the service is running
+      responses:
+        200:
+          description: successful operation
+          content: {}
   /status-count:
     get:
       tags:
@@ -972,6 +982,26 @@ paths:
       - name: id
         in: query
         description: Entry id
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content: {}
+  /verify-password:
+    post:
+      tags:
+      - Users
+      summary: Verifies user's password
+      parameters:
+      - name: username
+        in: query
+        description: Username
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Password
         schema:
           type: string
       responses:

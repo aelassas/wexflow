@@ -103,7 +103,7 @@ namespace Wexflow.Clients.Manager
                         _wexflowServiceClient = new WexflowServiceClient(WexflowWebServiceUri);
 
                         var keyword = textBoxSearch.Text.ToUpper();
-                        _workflows = _wexflowServiceClient.Search(keyword, Login.Username, Login.Password);
+                        _workflows = _wexflowServiceClient.Search(keyword, Login.Token);
                     }
                     catch (Exception ex)
                     {
@@ -208,7 +208,7 @@ namespace Wexflow.Clients.Manager
                     _windowsServiceWasStopped = false;
                     backgroundWorker1.RunWorkerAsync();
                 }
-                return _wexflowServiceClient.GetWorkflow(Login.Username, Login.Password, id);
+                return _wexflowServiceClient.GetWorkflow(Login.Token, id);
             }
 
             _windowsServiceWasStopped = true;
@@ -228,7 +228,7 @@ namespace Wexflow.Clients.Manager
             var wfId = GetSlectedWorkflowId();
             if (wfId > -1)
             {
-                var instanceId = _wexflowServiceClient.StartWorkflow(wfId, Login.Username, Login.Password);
+                var instanceId = _wexflowServiceClient.StartWorkflow(wfId, Login.Token);
                 _jobs[wfId] = instanceId;
             }
         }
@@ -240,7 +240,7 @@ namespace Wexflow.Clients.Manager
             {
                 if (_jobs.TryGetValue(wfId, out var job))
                 {
-                    _wexflowServiceClient.SuspendWorkflow(wfId, job, Login.Username, Login.Password);
+                    _wexflowServiceClient.SuspendWorkflow(wfId, job, Login.Token);
                     UpdateButtons(wfId, true);
                 }
                 else
@@ -257,7 +257,7 @@ namespace Wexflow.Clients.Manager
             {
                 if (_jobs.TryGetValue(wfId, out var job))
                 {
-                    _wexflowServiceClient.ResumeWorkflow(wfId, job, Login.Username, Login.Password);
+                    _wexflowServiceClient.ResumeWorkflow(wfId, job, Login.Token);
                 }
                 else
                 {
@@ -273,7 +273,7 @@ namespace Wexflow.Clients.Manager
             {
                 if (_jobs.TryGetValue(wfId, out var job))
                 {
-                    _wexflowServiceClient.StopWorkflow(wfId, job, Login.Username, Login.Password);
+                    _wexflowServiceClient.StopWorkflow(wfId, job, Login.Token);
                     UpdateButtons(wfId, true);
                 }
                 else
@@ -521,7 +521,7 @@ namespace Wexflow.Clients.Manager
             {
                 if (_jobs.TryGetValue(wfId, out var job))
                 {
-                    _wexflowServiceClient.ApproveWorkflow(wfId, job, Login.Username, Login.Password);
+                    _wexflowServiceClient.ApproveWorkflow(wfId, job, Login.Token);
                     UpdateButtons(wfId, true);
                 }
                 else
@@ -538,7 +538,7 @@ namespace Wexflow.Clients.Manager
             {
                 if (_jobs.TryGetValue(wfId, out var job))
                 {
-                    _wexflowServiceClient.RejectWorkflow(wfId, job, Login.Username, Login.Password);
+                    _wexflowServiceClient.RejectWorkflow(wfId, job, Login.Token);
                     UpdateButtons(wfId, true);
                 }
                 else

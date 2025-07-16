@@ -14,16 +14,21 @@
 
     get: function (url, callback, errorCallback, auth) {
         var xmlhttp = new XMLHttpRequest();
+        xmlhttp.withCredentials = true
         xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200 && callback) {
-                if (this.responseText !== "") {
-                    var data = JSON.parse(this.responseText);
-                    callback(data);
-                } else {
-                    callback();
+            if (this.status == 401) {
+                window.logout();
+            } else {
+                if (this.readyState === 4 && this.status === 200 && callback) {
+                    if (this.responseText !== "") {
+                        var data = JSON.parse(this.responseText);
+                        callback(data);
+                    } else {
+                        callback();
+                    }
+                } else if (this.status >= 400 && errorCallback) {
+                    //errorCallback();
                 }
-            } else if (this.status >= 400 && errorCallback) {
-                errorCallback();
             }
         };
         xmlhttp.onerror = function () {
@@ -36,16 +41,21 @@
 
     post: function (url, callback, errorCallback, content, auth, isFile) {
         var xmlhttp = new XMLHttpRequest();
+        xmlhttp.withCredentials = true
         xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200 && callback) {
-                if (this.responseText !== "") {
-                    var data = JSON.parse(this.responseText);
-                    callback(data);
-                } else {
-                    callback();
+            if (this.status == 401) {
+                window.logout();
+            } else {
+                if (this.readyState === 4 && this.status === 200 && callback) {
+                    if (this.responseText !== "") {
+                        var data = JSON.parse(this.responseText);
+                        callback(data);
+                    } else {
+                        callback();
+                    }
+                } else if (this.status >= 400 && errorCallback) {
+                    errorCallback();
                 }
-            } else if (this.status >= 400 && errorCallback) {
-                errorCallback();
             }
         };
         xmlhttp.onerror = function () {

@@ -87,9 +87,9 @@ namespace Wexflow.Core.Db.MongoDB
             }
             else
             {
-                if (IsMd5(user.Password))
+                if (IsMd5(user.Password) || IsSha256(user.Password))
                 {
-                    var passwordHash = ComputeSha256("wexflow2018");
+                    var passwordHash = HashPassword("wexflow2018");
                     var update = Builders<User>.Update
                     .Set(u => u.Password, passwordHash);
 

@@ -88,64 +88,58 @@
                 window.Common.redirectToLoginPage();
             } else {
                 var user = JSON.parse(suser);
-                var auth = "Basic " + btoa(user.Username + ":" + user.Password);
 
                 window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
                     function (u) {
-                        if (user.Password !== u.Password) {
-                            window.Common.redirectToLoginPage();
-                        } else {
-                            if (u.UserProfile === 0 || u.UserProfile === 1) {
+                        if (u.UserProfile === 0 || u.UserProfile === 1) {
 
-                                var btnLogout = document.getElementById("btn-logout");
-                                btnLogout.onclick = function () {
-                                    window.deleteUser();
-                                    window.Common.redirectToLoginPage();
-                                };
-                                btnLogout.innerHTML = "Logout (" + user.Username + ")";
-
-                                // Begin Swagger UI call region
-                                const ui = SwaggerUIBundle({
-                                    url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/swagger-ui/swagger.yaml",
-                                    dom_id: '#swagger-ui',
-                                    defaultModelsExpandDepth: -1,
-                                    deepLinking: true,
-                                    presets: [
-                                        SwaggerUIBundle.presets.apis
-                                        //SwaggerUIStandalonePreset
-                                    ],
-                                    plugins: [
-                                        SwaggerUIBundle.plugins.DownloadUrl
-                                    ],
-                                    //layout: "StandaloneLayout",
-                                });
-                                // End Swagger UI call region
-
-                                ui.getConfigs().requestInterceptor = (req) => {
-                                    if (!req.loadSpec) {
-                                        // Add the header to "try it out" calls but not spec fetches
-                                        //req.headers.Authorization = auth;
-                                        req.headers = {
-                                            "Authorization": auth,
-                                            "Access-Control-Allow-Origin": "*",
-                                            "Access-Control-Request-Method": "POST,GET,PUT,DELETE,OPTIONS",
-                                            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-
-                                        };
-                                    }
-                                    req.contextUrl = window.location.origin + "/";
-                                    req.url = req.url.replace(/http(s){0,1}:\/\/[^/]*\//i, req.contextUrl);
-                                    return req;
-                                };
-
-                                window.ui = ui;
-                            } else {
+                            var btnLogout = document.getElementById("btn-logout");
+                            btnLogout.onclick = function () {
+                                window.deleteUser();
                                 window.Common.redirectToLoginPage();
-                            }
+                            };
+                            btnLogout.innerHTML = "Logout (" + user.Username + ")";
 
+                            // Begin Swagger UI call region
+                            const ui = SwaggerUIBundle({
+                                url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/swagger-ui/swagger.yaml",
+                                dom_id: '#swagger-ui',
+                                defaultModelsExpandDepth: -1,
+                                deepLinking: true,
+                                presets: [
+                                    SwaggerUIBundle.presets.apis
+                                    //SwaggerUIStandalonePreset
+                                ],
+                                plugins: [
+                                    SwaggerUIBundle.plugins.DownloadUrl
+                                ],
+                                //layout: "StandaloneLayout",
+                            });
+                            // End Swagger UI call region
+
+                            ui.getConfigs().requestInterceptor = (req) => {
+                                if (!req.loadSpec) {
+                                    // Add the header to "try it out" calls but not spec fetches
+                                    //req.headers.Authorization = auth;
+                                    req.headers = {
+                                        //"Authorization": auth,
+                                        "Access-Control-Allow-Origin": "*",
+                                        "Access-Control-Request-Method": "POST,GET,PUT,DELETE,OPTIONS",
+                                        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+
+                                    };
+                                }
+                                req.contextUrl = window.location.origin + "/";
+                                req.url = req.url.replace(/http(s){0,1}:\/\/[^/]*\//i, req.contextUrl);
+                                return req;
+                            };
+
+                            window.ui = ui;
+                        } else {
+                            window.Common.redirectToLoginPage();
                         }
                     },
-                    function () { }, auth);
+                    function () { });
 
             }
         }

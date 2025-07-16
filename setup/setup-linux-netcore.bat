@@ -39,7 +39,7 @@ xcopy "..\src\admin\Wexflow.Admin\assets\*" %dstDir%\%admin%\assets\ /s /e
 copy "..\src\admin\Wexflow.Admin\css\*.css" %dstDir%\%admin%\css
 xcopy "..\src\admin\Wexflow.Admin\css\images\*" %dstDir%\%admin%\css\images`\ /s /e
 
-copy "..\src\admin\Wexflow.Admin\js\*.js" %dstDir%\%admin%\js
+xcopy "..\src\admin\Wexflow.Admin\js\*" "%dstDir%\%admin%\js\" /s /e /y /i
 
 :: Wexflow server
 dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Server

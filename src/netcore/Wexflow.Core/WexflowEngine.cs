@@ -133,13 +133,16 @@ namespace Wexflow.Core
         //
         // Quartz scheduler
         //
-        private static readonly NameValueCollection QuartzProperties = new()
+        private static readonly NameValueCollection QuartzProperties = new NameValueCollection
         {
             // JSON serialization is the one supported under .NET Core (binary isn't)
-            ["quartz.serializer.type"] = "json"
+            //["quartz.serializer.type"] = "json"
+
+            // "binary" is alias for "Quartz.Simpl.BinaryObjectSerializer, Quartz" 
+            ["quartz.serializer.type"] = "binary"
         };
 
-        private static readonly StdSchedulerFactory SchedulerFactory = new(QuartzProperties);
+        private static readonly ISchedulerFactory SchedulerFactory = new StdSchedulerFactory(QuartzProperties);
         private static readonly IScheduler QuartzScheduler = SchedulerFactory.GetScheduler().Result;
 
         /// <summary>
@@ -180,7 +183,7 @@ namespace Wexflow.Core
             SmtpUser = smtpUser;
             SmtpPassword = smtpPassword;
             SmtpFrom = smtpFrom;
-            Workflows = [];
+            Workflows = new List<Workflow>();
 
             Logger.Info("");
             Logger.Info("Starting Wexflow Engine");
@@ -283,12 +286,12 @@ namespace Wexflow.Core
 
         private void LoadGlobalVariables()
         {
-            List<Variable> variables = [];
+            var variables = new List<Variable>();
             var xdoc = XDocument.Load(GlobalVariablesFile);
 
             foreach (var xvariable in xdoc.Descendants("Variable"))
             {
-                Variable variable = new()
+                var variable = new Variable
                 {
                     Key = (xvariable.Attribute("name") ?? throw new InvalidOperationException("name attribute of global variable not found")).Value,
                     Value = (xvariable.Attribute("value") ?? throw new InvalidOperationException("value attribute of global variable not found")).Value
@@ -296,7 +299,7 @@ namespace Wexflow.Core
                 variables.Add(variable);
             }
 
-            GlobalVariables = [.. variables];
+            GlobalVariables = variables.ToArray();
         }
 
         private static string GetWexflowSetting(XDocument xdoc, string name)
@@ -341,10 +344,10 @@ namespace Wexflow.Core
         {
             try
             {
-                Workflow wf = new(
+                var wf = new Workflow(
                        this
                     , 1
-                    , []
+                    , new Dictionary<Guid, Workflow>()
                     , workflow.GetDbId()
                     , workflow.Xml
                     , TempFolder
@@ -375,36 +378,79 @@ namespace Wexflow.Core
         {
             try
             {
-                using var xmlReader = XmlReader.Create(new StringReader(xml));
-                XmlNamespaceManager xmlNamespaceManager = null;
-                var xmlNameTable = xmlReader.NameTable;
-                if (xmlNameTable != null)
+                using (var xmlReader = XmlReader.Create(new StringReader(xml)))
                 {
-                    xmlNamespaceManager = new XmlNamespaceManager(xmlNameTable);
-                    xmlNamespaceManager.AddNamespace("wf", "urn:wexflow-schema");
-                }
+                    XmlNamespaceManager xmlNamespaceManager = null;
+                    var xmlNameTable = xmlReader.NameTable;
+                    if (xmlNameTable != null)
+                    {
+                        xmlNamespaceManager = new XmlNamespaceManager(xmlNameTable);
+                        xmlNamespaceManager.AddNamespace("wf", "urn:wexflow-schema");
+                    }
 
-                var xdoc = XDocument.Parse(xml);
-                var id = int.Parse(((xdoc.XPathSelectElement("/wf:Workflow", xmlNamespaceManager) ?? throw new InvalidOperationException()).Attribute("id") ?? throw new InvalidOperationException("id attribute of workflow not found")).Value);
-                var workflow = Workflows.FirstOrDefault(w => w.Id == id);
+                    var xdoc = XDocument.Parse(xml);
+                    var id = int.Parse(((xdoc.XPathSelectElement("/wf:Workflow", xmlNamespaceManager) ?? throw new InvalidOperationException()).Attribute("id") ?? throw new InvalidOperationException("id attribute of workflow not found")).Value);
+                    var workflow = Workflows.FirstOrDefault(w => w.Id == id);
 
-                if (workflow == null) // insert
-                {
+                    if (workflow == null) // insert
+                    {
+                        // check the workflow before to save it
+                        try
+                        {
+                            _ = new Workflow(
+                              this
+                            , 1
+                            , new Dictionary<Guid, Workflow>()
+                            , "-1"
+                            , xml
+                            , TempFolder
+                            , TasksFolder
+                            , ApprovalFolder
+                            , XsdPath
+                            , Database
+                            , GlobalVariables
+                            );
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.ErrorFormat("An error occured while saving the workflow {0}:", e, xml);
+                            return "-1";
+                        }
+                        var dbId = Database.InsertWorkflow(new Db.Workflow { Xml = xml });
+
+                        if (userProfile == UserProfile.Administrator)
+                        {
+                            InsertUserWorkflowRelation(userId, dbId);
+                        }
+
+                        var wfFromDb = Database.GetWorkflow(dbId);
+                        var newWorkflow = LoadWorkflowFromDatabase(wfFromDb);
+
+                        Logger.InfoFormat("New workflow {0} has been created. The workflow will be loaded.", newWorkflow.Name);
+                        Workflows.Add(newWorkflow);
+                        if (schedule)
+                        {
+                            ScheduleWorkflow(newWorkflow);
+                        }
+                        return dbId;
+                    }
+
+                    // update
                     // check the workflow before to save it
                     try
                     {
                         _ = new Workflow(
-                         this
-                        , 1
-                        , []
-                        , "-1"
-                        , xml
-                        , TempFolder
-                        , TasksFolder
-                        , ApprovalFolder
-                        , XsdPath
-                        , Database
-                        , GlobalVariables
+                            this
+                            , 1
+                            , new Dictionary<Guid, Workflow>()
+                            , "-1"
+                            , xml
+                            , TempFolder
+                            , TasksFolder
+                            , ApprovalFolder
+                            , XsdPath
+                            , Database
+                            , GlobalVariables
                         );
                     }
                     catch (Exception e)
@@ -412,70 +458,29 @@ namespace Wexflow.Core
                         Logger.ErrorFormat("An error occured while saving the workflow {0}:", e, xml);
                         return "-1";
                     }
-                    var dbId = Database.InsertWorkflow(new Db.Workflow { Xml = xml });
 
-                    if (userProfile == UserProfile.Administrator)
+                    var workflowFromDb = Database.GetWorkflow(workflow.DbId);
+                    workflowFromDb.Xml = xml;
+                    Database.UpdateWorkflow(workflow.DbId, workflowFromDb);
+
+                    var changedWorkflow = Workflows.SingleOrDefault(wf => wf.DbId == workflowFromDb.GetDbId());
+
+                    if (changedWorkflow != null)
                     {
-                        InsertUserWorkflowRelation(userId, dbId);
+                        _ = changedWorkflow.Stop(SuperAdminUsername);
+
+                        StopCronJobs(changedWorkflow);
+                        _ = Workflows.Remove(changedWorkflow);
+                        Logger.InfoFormat("A change in the workflow {0} has been detected. The workflow will be reloaded.", changedWorkflow.Name);
+
+                        var updatedWorkflow = LoadWorkflowFromDatabase(workflowFromDb);
+                        Workflows.Add(updatedWorkflow);
+                        if (schedule)
+                        {
+                            ScheduleWorkflow(updatedWorkflow);
+                        }
+                        return changedWorkflow.DbId;
                     }
-
-                    var wfFromDb = Database.GetWorkflow(dbId);
-                    var newWorkflow = LoadWorkflowFromDatabase(wfFromDb);
-
-                    Logger.InfoFormat("New workflow {0} has been created. The workflow will be loaded.", newWorkflow.Name);
-                    Workflows.Add(newWorkflow);
-                    if (schedule)
-                    {
-                        ScheduleWorkflow(newWorkflow);
-                    }
-                    return dbId;
-                }
-
-                // update
-                // check the workflow before to save it
-                try
-                {
-                    _ = new Workflow(
-                        this
-                        , 1
-                        , []
-                        , "-1"
-                        , xml
-                        , TempFolder
-                        , TasksFolder
-                        , ApprovalFolder
-                        , XsdPath
-                        , Database
-                        , GlobalVariables
-                    );
-                }
-                catch (Exception e)
-                {
-                    Logger.ErrorFormat("An error occured while saving the workflow {0}:", e, xml);
-                    return "-1";
-                }
-
-                var workflowFromDb = Database.GetWorkflow(workflow.DbId);
-                workflowFromDb.Xml = xml;
-                Database.UpdateWorkflow(workflow.DbId, workflowFromDb);
-
-                var changedWorkflow = Workflows.SingleOrDefault(wf => wf.DbId == workflowFromDb.GetDbId());
-
-                if (changedWorkflow != null)
-                {
-                    _ = changedWorkflow.Stop(SuperAdminUsername);
-
-                    StopCronJobs(changedWorkflow);
-                    _ = Workflows.Remove(changedWorkflow);
-                    Logger.InfoFormat("A change in the workflow {0} has been detected. The workflow will be reloaded.", changedWorkflow.Name);
-
-                    var updatedWorkflow = LoadWorkflowFromDatabase(workflowFromDb);
-                    Workflows.Add(updatedWorkflow);
-                    if (schedule)
-                    {
-                        ScheduleWorkflow(updatedWorkflow);
-                    }
-                    return changedWorkflow.DbId;
                 }
             }
             catch (Exception e)
@@ -495,18 +500,20 @@ namespace Wexflow.Core
         {
             try
             {
-                using var xmlReader = XmlReader.Create(new StringReader(xml));
-                XmlNamespaceManager xmlNamespaceManager = null;
-                var xmlNameTable = xmlReader.NameTable;
-                if (xmlNameTable != null)
+                using (var xmlReader = XmlReader.Create(new StringReader(xml)))
                 {
-                    xmlNamespaceManager = new XmlNamespaceManager(xmlNameTable);
-                    xmlNamespaceManager.AddNamespace("wf", "urn:wexflow-schema");
-                }
+                    XmlNamespaceManager xmlNamespaceManager = null;
+                    var xmlNameTable = xmlReader.NameTable;
+                    if (xmlNameTable != null)
+                    {
+                        xmlNamespaceManager = new XmlNamespaceManager(xmlNameTable);
+                        xmlNamespaceManager.AddNamespace("wf", "urn:wexflow-schema");
+                    }
 
-                var xdoc = XDocument.Parse(xml);
-                var id = int.Parse(((xdoc.XPathSelectElement("/wf:Workflow", xmlNamespaceManager) ?? throw new InvalidOperationException()).Attribute("id") ?? throw new InvalidOperationException("id attribute of workflow not found")).Value);
-                return id;
+                    var xdoc = XDocument.Parse(xml);
+                    var id = int.Parse(((xdoc.XPathSelectElement("/wf:Workflow", xmlNamespaceManager) ?? throw new InvalidOperationException()).Attribute("id") ?? throw new InvalidOperationException("id attribute of workflow not found")).Value);
+                    return id;
+                }
             }
             catch (Exception e)
             {
@@ -675,7 +682,7 @@ namespace Wexflow.Core
             catch (Exception e)
             {
                 Logger.ErrorFormat("Error while retrieving user workflows of user {0}: {1}", userId, e.Message);
-                return [];
+                return Array.Empty<Workflow>();
             }
         }
 
@@ -714,7 +721,7 @@ namespace Wexflow.Core
             catch (Exception e)
             {
                 Logger.ErrorFormat("Error while retrieving administrators: {0}", e.Message);
-                return [];
+                return Array.Empty<User>();
             }
         }
 
@@ -732,7 +739,7 @@ namespace Wexflow.Core
             catch (Exception e)
             {
                 Logger.ErrorFormat("Error while retrieving administrators: {0}", e.Message);
-                return [];
+                return Array.Empty<User>();
             }
         }
 
@@ -1143,10 +1150,11 @@ namespace Wexflow.Core
         /// <param name="email">Email.</param>
         public void InsertUser(string username, string password, UserProfile userProfile, string email)
         {
+            var hashedPassword = Db.Db.HashPassword(password);
             Database.InsertUser(new User
             {
                 Username = username,
-                Password = password,
+                Password = hashedPassword,
                 UserProfile = userProfile,
                 Email = email
             });
@@ -1162,11 +1170,12 @@ namespace Wexflow.Core
         /// <param name="email">User's email.</param>
         public void UpdateUser(string userId, string username, string password, UserProfile userProfile, string email)
         {
+            var hashedPassword = Db.Db.HashPassword(password);
             var user = Database.GetUserById(userId);
             Database.UpdateUser(userId, new User
             {
                 Username = username,
-                Password = password,
+                Password = hashedPassword,
                 UserProfile = userProfile,
                 Email = email,
                 CreatedOn = user.CreatedOn
@@ -1410,7 +1419,7 @@ namespace Wexflow.Core
 
                     foreach (var version in versions)
                     {
-                        Db.Version v = new()
+                        var v = new Db.Version
                         {
                             RecordId = id,
                             FilePath = version.FilePath,
@@ -1453,8 +1462,8 @@ namespace Wexflow.Core
 
                     var recordVersions = Database.GetVersions(recordId);
 
-                    List<string> versionsToDelete = [];
-                    List<Db.Version> versionsToDeleteObjs = [];
+                    var versionsToDelete = new List<string>();
+                    var versionsToDeleteObjs = new List<Db.Version>();
                     foreach (var version in recordVersions)
                     {
                         if (versions.All(v => v.FilePath != version.FilePath))
@@ -1463,7 +1472,7 @@ namespace Wexflow.Core
                             versionsToDeleteObjs.Add(version);
                         }
                     }
-                    Database.DeleteVersions([.. versionsToDelete]);
+                    Database.DeleteVersions(versionsToDelete.ToArray());
 
                     foreach (var version in versionsToDeleteObjs)
                     {
@@ -1554,18 +1563,18 @@ namespace Wexflow.Core
             }
 
             var admin = GetUser(createdBy);
-            Record record = new()
+            var record = new Record
             {
                 Name = Path.GetFileNameWithoutExtension(fileName),
                 CreatedBy = admin.GetDbId()
             };
 
-            Db.Version version = new()
+            var version = new Db.Version
             {
                 FilePath = destPath
             };
 
-            List<Db.Version> versions = [version];
+            var versions = new List<Db.Version> { version };
 
             var recordId = SaveRecord("-1", record, versions);
             return recordId;

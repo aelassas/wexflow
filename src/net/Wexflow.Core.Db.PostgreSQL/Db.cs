@@ -134,7 +134,7 @@ namespace Wexflow.Core.Db.PostgreSQL
 
                             if (IsMd5(password))
                             {
-                                var sha256Password = ComputeSha256("wexflow2018"); // Set to default SHA256 password
+                                var sha256Password = HashPassword("wexflow2018"); // Set to default SHA256 password
 
                                 reader.Close(); // Close reader before running UPDATE
 

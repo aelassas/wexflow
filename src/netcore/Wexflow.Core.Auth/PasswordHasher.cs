@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace Wexflow.Core.Auth
 {
@@ -68,7 +69,15 @@ namespace Wexflow.Core.Auth
         // Constant-time comparison
         private static bool FixedTimeEquals(byte[] a, byte[] b)
         {
-            return CryptographicOperations.FixedTimeEquals(a, b);
+            if (a.Length != b.Length)
+                return false;
+
+            int result = 0;
+            for (int i = 0; i < a.Length; i++)
+            {
+                result |= a[i] ^ b[i];
+            }
+            return result == 0;
         }
     }
 }

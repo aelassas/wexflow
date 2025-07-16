@@ -78,25 +78,18 @@
     let page = 1;
     let numberOfPages = 0;
     let heo = 1;
-    let suser = getUser();
+    let suser = window.getUser();
     let from = null;
     let to = null;
-    let username = "";
-    let password = "";
-    let auth = "";
 
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
-        username = user.Username;
-        password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else {
                     window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
@@ -123,8 +116,7 @@
                         divEntriesAction.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            window.deleteUser();
-                            window.Common.redirectToLoginPage();
+                            window.logout();
                         };
 
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
@@ -224,20 +216,20 @@
                                                 loadEntries();
 
                                             },
-                                            function () { }, auth);
+                                            function () { });
 
                                     },
-                                    function () { }, auth);
+                                    function () { });
 
 
                             },
-                            function () { }, auth);
+                            function () { });
 
-                    }, function () { }, auth);
+                    }, function () { });
                 }
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     function updatePager() {
@@ -246,7 +238,7 @@
             function (count) {
                 updatePagerControls(count);
             },
-            function () { }, auth);
+            function () { });
     }
 
     function updatePagerControls(count) {
@@ -366,7 +358,7 @@
 
                         }, function () {
                             window.Common.toastError("An error occured while retrieving logs.");
-                        }, auth);
+                        });
                     };
                 }
 
@@ -524,7 +516,7 @@
 
             }, function () {
                 //alert("An error occured while retrieving entries. Check that Wexflow Windows Service is running correctly.");
-            }, auth);
+            });
     }
 
 }

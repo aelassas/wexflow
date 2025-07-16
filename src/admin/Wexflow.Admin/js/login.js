@@ -1,6 +1,5 @@
 window.Login = function () {
 
-    let auth = "";
     let uri = window.Common.trimEnd(window.Settings.Uri, "/");
     let suser = window.getUser();
 
@@ -10,26 +9,22 @@ window.Login = function () {
     if (suser) {
         let user = JSON.parse(suser);
 
-        qusername = user.Username;
-        qpassword = user.Password;
-        auth = "Basic " + btoa(qusername + ":" + qpassword);
-
         const _logout = () => {
             window.logout(() => {
                 load();
             });
         };
 
-        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
-            function (u) {
-                if (u && user.Password === u.Password) {
+        window.Common.post(uri + "/validate-token?u=" + encodeURIComponent(user.Username),
+            function (res) {
+                if (res.valid === true) {
                     window.location.replace("dashboard.html");
                 } else {
                     _logout();
                 }
             }, function () {
                 _logout();
-            }, auth);
+            }, null);
     } else {
         load();
     }
@@ -40,6 +35,7 @@ window.Login = function () {
         document.getElementById("lbl-username").innerHTML = language.get("username");
         document.getElementById("lbl-password").innerHTML = language.get("password");
         document.getElementById("forgot-password").innerHTML = language.get("forgot-password");
+        document.getElementById("lbl-stay-connected").innerHTML = language.get("stay-connected");
         document.getElementById("btn-login").value = language.get("login");
     };
 
@@ -49,42 +45,60 @@ window.Login = function () {
     let loginBtn = document.getElementById("btn-login");
     let usernameTxt = document.getElementById("txt-username");
     let passwordTxt = document.getElementById("txt-password");
+    let divkStayConnected = document.getElementById("stay-connected");
+    let chkStayConnected = document.getElementById("chk-stay-connected");
 
     loginBtn.onclick = async function () {
         await login();
     };
 
-    passwordTxt.onkeyup = function (event) {
+    passwordTxt.onkeyup = async function (event) {
         event.preventDefault();
 
         if (event.key === 'Enter') {
-            login();
+            await login();
         }
     };
+
+    divkStayConnected.onclick = function () {
+        chkStayConnected.checked = !chkStayConnected.checked;
+    }
+
+    chkStayConnected.onclick = function () {
+        chkStayConnected.checked = !chkStayConnected.checked;
+    }
 
     async function login() {
 
         let username = usernameTxt.value;
         let password = passwordTxt.value;
-        let passwordHash = await window.sha256(password);
-        auth = "Basic " + btoa(username + ":" + passwordHash);
+        let stayConnected = chkStayConnected.checked;
 
         if (username === "" || password === "") {
             window.Common.toastInfo(language.get("valid-username"));
         } else {
-            window.Common.get(uri + "/user?username=" + encodeURIComponent(username), function (user) {
-                if (typeof user === "undefined" || user === null) {
-                    window.Common.toastError(language.get("wrong-credentials"));
-                } else {
-                    if (passwordHash === user.Password) {
-                        window.authorize(username, passwordHash, user.UserProfile);
-                        window.location.replace("dashboard.html");
-                    } else {
-                        window.Common.toastError(language.get("wrong-password"));
-                    }
-
+            try {
+                const res = await fetch(uri + "/login",
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ username, password, stayConnected }),
+                    })
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status} - ${res.statusText}`)
                 }
-            }, function () { }, auth);
+                const data = await res.json()
+                if (data.access_token) {
+                    window.authorize(username);
+                    window.location.replace("dashboard.html");
+                }
+            } catch (err) {
+                console.error("Login failed:", err);
+                window.Common.toastError(language.get("wrong-credentials"));
+            }
         }
     }
 

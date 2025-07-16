@@ -135,18 +135,18 @@ namespace Wexflow.Core.Db.SQLServer
                             var id = Convert.ToInt64(reader[User.COLUMN_NAME_ID]);
                             var password = reader[User.COLUMN_NAME_PASSWORD]?.ToString();
 
-                            if (IsMd5(password))
+                            if (IsMd5(password) || IsSha256(password))
                             {
-                                var sha256Password = ComputeSha256("wexflow2018"); // Set to default SHA256 password
+                                var hashedPassword = HashPassword("wexflow2018"); // Set to default password
 
                                 reader.Close(); // Close reader before running UPDATE
 
                                 using (var updateCmd = new SqlCommand("UPDATE " +
                                     Core.Db.User.DOCUMENT_NAME +
-                                    " SET " + User.COLUMN_NAME_PASSWORD + " = @sha256Password " +
+                                    " SET " + User.COLUMN_NAME_PASSWORD + " = @hashedPassword " +
                                     "WHERE " + User.COLUMN_NAME_ID + " = @id;", conn))
                                 {
-                                    updateCmd.Parameters.AddWithValue("@sha256Password", sha256Password);
+                                    updateCmd.Parameters.AddWithValue("@hashedPassword", hashedPassword);
                                     updateCmd.Parameters.AddWithValue("@id", id);
                                     updateCmd.ExecuteNonQuery();
                                 }

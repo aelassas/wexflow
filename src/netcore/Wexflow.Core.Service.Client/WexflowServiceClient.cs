@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -12,20 +13,26 @@ namespace Wexflow.Core.Service.Client
     {
         public string Uri { get; } = uri.TrimEnd('/');
 
-        private static async Task<string> DownloadStringAsync(HttpClient client, string url, string username, string password)
+        private static async Task<string> DownloadStringAsync(HttpClient client, string url, string token)
         {
             HttpRequestMessage request = new(HttpMethod.Get, url);
-            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{ComputeSha256(password)}")}");
+            if (!string.IsNullOrEmpty(token))
+            {
+                request.Headers.Add("Authorization", $"Bearer {token}");
+            }
             var response = await client.SendAsync(request);
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
             return responseString;
         }
 
-        private static async Task<string> UploadStringAsync(HttpClient client, string url, string username, string password, string body = "")
+        private static async Task<string> UploadStringAsync(HttpClient client, string url, string token, string body = "")
         {
             HttpRequestMessage request = new(HttpMethod.Post, url);
-            request.Headers.Add("Authorization", $"Basic {Base64Encode($"{username}:{ComputeSha256(password)}")}");
+            if (!string.IsNullOrEmpty(token))
+            {
+                request.Headers.Add("Authorization", $"Bearer {token}");
+            }
             if (!string.IsNullOrEmpty(body))
             {
                 request.Content = new StringContent(body, Encoding.UTF8, "application/json");
@@ -36,102 +43,96 @@ namespace Wexflow.Core.Service.Client
             return responseString;
         }
 
-        private static string ComputeSha256(string input)
+        public async Task<string> Login(string username, string password)
         {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = Encoding.UTF8.GetBytes(input);
-                byte[] hashBytes = sha256.ComputeHash(bytes);
+            var uri = $"{Uri}/login";
+            using HttpClient webClient = new();
 
-                StringBuilder sb = new StringBuilder();
-                foreach (byte b in hashBytes)
-                    sb.Append(b.ToString("x2")); // Lowercase hex
+            var requestBody = JsonConvert.SerializeObject(new { username, password });
+            var response = await UploadStringAsync(webClient, uri, null, requestBody);
 
-                return sb.ToString();
-            }
+            // Deserialize response JSON into a dynamic object
+            dynamic res = JsonConvert.DeserializeObject(response);
+
+            // Return the access_token property
+            return res?.access_token;
         }
 
-        private static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            return Convert.ToBase64String(plainTextBytes);
-        }
-
-        public async Task<WorkflowInfo[]> Search(string keyword, string username, string password)
+        public async Task<WorkflowInfo[]> Search(string keyword, string token)
         {
             var uri = $"{Uri}/search?s={keyword}";
             using HttpClient webClient = new();
 
-            var response = await DownloadStringAsync(webClient, uri, username, password);
+            var response = await DownloadStringAsync(webClient, uri, token);
             var workflows = JsonConvert.DeserializeObject<WorkflowInfo[]>(response);
             return workflows;
         }
 
-        public async Task<Guid> StartWorkflow(int id, string username, string password)
+        public async Task<Guid> StartWorkflow(int id, string token)
         {
             var uri = $"{Uri}/start?w={id}";
             using HttpClient webClient = new();
-            var instanceId = await UploadStringAsync(webClient, uri, username, password);
+            var instanceId = await UploadStringAsync(webClient, uri, token);
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
         }
 
-        public async Task<Guid> StartWorkflowWithVariables(string payload, string username, string password)
+        public async Task<Guid> StartWorkflowWithVariables(string payload, string token)
         {
             var uri = $"{Uri}/start-with-variables";
             using HttpClient webClient = new();
-            var instanceId = await UploadStringAsync(webClient, uri, username, password, payload);
+            var instanceId = await UploadStringAsync(webClient, uri, token, payload);
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
         }
 
-        public async Task StopWorkflow(int id, Guid instanceId, string username, string password)
+        public async Task StopWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/stop?w={id}&i={instanceId}";
             using HttpClient webClient = new();
-            _ = await UploadStringAsync(webClient, uri, username, password);
+            _ = await UploadStringAsync(webClient, uri, token);
         }
 
-        public async Task SuspendWorkflow(int id, Guid instanceId, string username, string password)
+        public async Task SuspendWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/suspend?w={id}&i={instanceId}";
             using HttpClient webClient = new();
-            _ = await UploadStringAsync(webClient, uri, username, password);
+            _ = await UploadStringAsync(webClient, uri, token);
         }
 
-        public async Task ResumeWorkflow(int id, Guid instanceId, string username, string password)
+        public async Task ResumeWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/resume?w={id}&i={instanceId}";
             using HttpClient webClient = new();
-            _ = await UploadStringAsync(webClient, uri, username, password);
+            _ = await UploadStringAsync(webClient, uri, token);
         }
 
-        public async Task ApproveWorkflow(int id, Guid instanceId, string username, string password)
+        public async Task ApproveWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/approve?w={id}&i={instanceId}";
             using HttpClient webClient = new();
-            _ = await UploadStringAsync(webClient, uri, username, password);
+            _ = await UploadStringAsync(webClient, uri, token);
         }
 
-        public async Task RejectWorkflow(int id, Guid instanceId, string username, string password)
+        public async Task RejectWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/reject?w={id}&i={instanceId}";
             using HttpClient webClient = new();
-            _ = await UploadStringAsync(webClient, uri, username, password);
+            _ = await UploadStringAsync(webClient, uri, token);
         }
 
-        public async Task<WorkflowInfo> GetWorkflow(string username, string password, int id)
+        public async Task<WorkflowInfo> GetWorkflow(string token, int id)
         {
             var uri = $"{Uri}/workflow?w={id}";
             using HttpClient webClient = new();
-            var response = await DownloadStringAsync(webClient, uri, username, password);
+            var response = await DownloadStringAsync(webClient, uri, token);
             var workflow = JsonConvert.DeserializeObject<WorkflowInfo>(response);
             return workflow;
         }
 
-        public async Task<User> GetUser(string qusername, string qpassword, string username)
+        public async Task<User> GetUser(string username, string token)
         {
             var uri = $"{Uri}/user?username={System.Uri.EscapeDataString(username)}";
             using HttpClient webClient = new();
-            var response = await DownloadStringAsync(webClient, uri, qusername, qpassword);
+            var response = await DownloadStringAsync(webClient, uri, token);
             var user = JsonConvert.DeserializeObject<User>(response);
             return user;
         }

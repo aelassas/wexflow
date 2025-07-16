@@ -1,1 +1,0 @@
-uglifyjs jquery.min.js jquery.toast.min.js bootstrap.min.js common.js authenticate.js language.core.js notifications.js -o notifications.min.js -c -m

@@ -4,13 +4,12 @@ window.Login = function () {
     var loginBtn = document.getElementById("btn-login");
     var usernameTxt = document.getElementById("txt-username");
     var passwordTxt = document.getElementById("txt-password");
-    var auth = "";
 
-    loginBtn.onclick = function () {
-        login();
+    loginBtn.onclick = async function () {
+        await login();
     };
 
-    passwordTxt.onkeyup =async function (event) {
+    passwordTxt.onkeyup = async function (event) {
         event.preventDefault();
 
         if (event.key === 'Enter') {
@@ -20,27 +19,35 @@ window.Login = function () {
 
     async function login() {
 
-        var username = usernameTxt.value;
-        var password = passwordTxt.value;
-        var passwordHash = await window.sha256(password);
-        auth = "Basic " + btoa(username + ":" + passwordHash);
+        let username = usernameTxt.value;
+        let password = passwordTxt.value;
+        let stayConnected = true;
 
         if (username === "" || password === "") {
-            alert("Enter a valid username and password.");
+            window.Common.toastInfo(language.get("valid-username"));
         } else {
-            window.Common.get(uri + "/user?username=" + encodeURIComponent(username), function (user) {
-                if (typeof user === "undefined" || user === null) {
-                    alert("Wrong credentials.");
-                } else {
-                    if (passwordHash === user.Password) {
-                        window.authorize(username, passwordHash, user.UserProfile);
-                        window.location.replace("doc.html");
-                    } else {
-                        alert("The password is incorrect.");
-                    }
-
+            try {
+                const res = await fetch(uri + "/login",
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ username, password, stayConnected }),
+                    })
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status} - ${res.statusText}`)
                 }
-            }, function () { }, auth);
+                const data = await res.json()
+                if (data.access_token) {
+                    window.authorize(username);
+                    window.location.replace("doc.html");
+                }
+            } catch (err) {
+                console.error("Login failed:", err);
+                alert("Wrong Credentials");
+            }
         }
     }
 

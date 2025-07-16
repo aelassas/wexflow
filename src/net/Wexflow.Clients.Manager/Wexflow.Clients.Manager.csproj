@@ -160,6 +160,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Wexflow.Core.Auth\Wexflow.Core.Auth.csproj">
+      <Project>{5676e57f-d5db-45cc-bfae-e517e72fe21f}</Project>
+      <Name>Wexflow.Core.Auth</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wexflow.Core.Service.Client\Wexflow.Core.Service.Client.csproj">
       <Project>{3CFA5F19-D8E1-4AF8-9B6A-DCB959C035DB}</Project>
       <Name>Wexflow.Core.Service.Client</Name>

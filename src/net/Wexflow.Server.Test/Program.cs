@@ -35,7 +35,8 @@ namespace Wexflow.Server.Test
                 }}
                 ";
 
-                var jobId = client.StartWorkflowWithVariables(payload, username, password);
+                var token = client.Login(username, password);
+                var jobId = client.StartWorkflowWithVariables(payload, token);
                 Console.WriteLine(jobId);
             }
 

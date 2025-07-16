@@ -40,7 +40,7 @@ namespace Wexflow.Core.Db
 
         protected void InsertDefaultUser()
         {
-            var password = ComputeSha256("wexflow2018");
+            var password = HashPassword("wexflow2018");
             var user = new User { Username = "admin", Password = password, UserProfile = UserProfile.SuperAdministrator };
             InsertUser(user);
         }
@@ -176,6 +176,14 @@ namespace Wexflow.Core.Db
             return Regex.IsMatch(input, @"\A\b[0-9a-fA-F]{32}\b\Z");
         }
 
+        public static bool IsSha256(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return false;
+
+            // SHA-256 hash is 64 hex characters (0-9, a-f) (case-insensitive)
+            return Regex.IsMatch(input, "^[a-fA-F0-9]{64}$");
+        }
+
         public static string HashPassword(string password)
         {
             return PasswordHasher.HashPassword(password);
@@ -185,5 +193,6 @@ namespace Wexflow.Core.Db
         {
             return PasswordHasher.VerifyPassword(password, storedHash);
         }
+
     }
 }

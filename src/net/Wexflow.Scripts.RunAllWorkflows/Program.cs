@@ -14,11 +14,12 @@ namespace Wexflow.Scripts.RunAllWorkflows
                 var username = ConfigurationManager.AppSettings["Username"];
                 var password = ConfigurationManager.AppSettings["Password"];
 
-                var workflows = client.Search(string.Empty, username, password);
+                var token = client.Login(username, password);
+                var workflows = client.Search(string.Empty, token);
 
                 foreach (var workflow in workflows)
                 {
-                    Console.WriteLine($"Starting workflow {workflow.Id} - {workflow.Name} => {client.StartWorkflow(workflow.Id, username, password)}");
+                    Console.WriteLine($"Starting workflow {workflow.Id} - {workflow.Name} => {client.StartWorkflow(workflow.Id, token)}");
                 }
             }
             catch (Exception e)

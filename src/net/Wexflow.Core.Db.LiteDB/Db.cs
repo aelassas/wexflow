@@ -51,9 +51,9 @@ namespace Wexflow.Core.Db.LiteDB
             }
             else
             {
-                if (IsMd5(user.Password))
+                if (IsMd5(user.Password) || IsSha256(user.Password))
                 {
-                    user.Password = ComputeSha256("wexflow2018");
+                    user.Password = HashPassword("wexflow2018");
                     _ = usersCol.Update(user);
                 }
             }

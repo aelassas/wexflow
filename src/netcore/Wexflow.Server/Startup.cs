@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -7,8 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Wexflow.Server
 {
@@ -109,6 +114,48 @@ namespace Wexflow.Server
                 .AllowCredentials()
             );
 
+            // jwt middleware
+            app.Use(async (context, next) =>
+            {
+                var path = context.Request.Path.Value?.TrimEnd('/');
+                var root = $"/{WexflowService.ROOT.Trim('/')}";
+
+                if (string.Equals(path, $"{root}/hello", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(path, $"{root}/login", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(path, $"{root}/logout", StringComparison.OrdinalIgnoreCase)
+                    )
+                {
+                    // Skip JWT validation
+                    await next();
+                    return;
+                }
+
+                // Run authentication middleware
+                var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                if (string.IsNullOrEmpty(authHeader) && context.Request.Cookies.TryGetValue("wf-auth", out var cookieToken))
+                {
+                    authHeader = $"Bearer {cookieToken}";
+                }
+
+                if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+                {
+                    var token = authHeader.Substring("Bearer ".Length).Trim();
+
+                    var principal = JwtHelper.ValidateToken(token);
+                    if (principal != null)
+                    {
+                        context.User = principal;
+                        await next();
+                        return;
+                    }
+                }
+
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync("Unauthorized");
+
+            });
+
+            // map endpoints
             app.UseEndpoints(endpoints =>
             {
                 var wexflowService = new WexflowService(endpoints, _config);

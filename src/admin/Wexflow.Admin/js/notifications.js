@@ -47,23 +47,17 @@
     let imgNotifications = document.getElementById("img-notifications");
     let searchText = this.document.getElementById("search-notifications");
     let user = null;
-    let username = "";
-    let auth = "";
 
-    let suser = getUser();
+    let suser = window.getUser();
 
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
         user = JSON.parse(suser);
 
-        username = user.Username;
-        let password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else {
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
@@ -90,8 +84,7 @@
                             document.getElementById("content").style.display = "block";
 
                             btnLogout.onclick = function () {
-                                window.deleteUser();
-                                window.Common.redirectToLoginPage();
+                                window.logout();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
@@ -107,7 +100,7 @@
 
                             loadNotifications();
 
-                        }, function () { }, auth);
+                        }, function () { });
                     } else {
                         window.Common.redirectToLoginPage();
                     }
@@ -115,7 +108,7 @@
                 }
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     function loadNotifications() {
@@ -197,7 +190,7 @@
                                         //            } else {
                                         //                window.Common.toastError("An error occured while notifying the assignor.");
                                         //            }
-                                        //        }, function () { }, "", auth);
+                                        //        }, function () { }, "");
 
                                         //        break;
                                         //    }
@@ -211,9 +204,9 @@
                                     imgNotifications.src = "images/notification.png";
                                 }
                             }
-                        }, function () { }, auth);
+                        }, function () { });
                     }
-                }, function () { }, notificationIds, auth);
+                }, function () { }, notificationIds);
             };
 
             document.getElementById("btn-mark-as-unread").onclick = function () {
@@ -244,9 +237,9 @@
                                     imgNotifications.src = "images/notification.png";
                                 }
                             }
-                        }, function () { }, auth);
+                        }, function () { });
                     }
-                }, function () { }, notificationIds, auth);
+                }, function () { }, notificationIds);
             };
 
             document.getElementById("btn-delete").onclick = function () {
@@ -278,7 +271,7 @@
                                             //            } else {
                                             //                window.Common.toastError("An error occured while notifying the assignor.");
                                             //            }
-                                            //        }, function () { }, "", auth);
+                                            //        }, function () { }, "");
 
                                             //        break;
                                             //    }
@@ -288,7 +281,7 @@
                                     }
                                 }
                             }
-                        }, function () { }, notificationIds, auth);
+                        }, function () { }, notificationIds);
                     }
                 }
             };
@@ -309,6 +302,6 @@
                 }
             };
 
-        }, function () { }, auth);
+        }, function () { });
     }
 };

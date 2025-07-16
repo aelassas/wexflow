@@ -11,10 +11,7 @@
     //var lnkApproval = document.getElementById("lnk-approval");
     var lnkUsers = document.getElementById("lnk-users");
     var lnkProfiles = document.getElementById("lnk-profiles");
-    var suser = getUser();
-    var username = "";
-    var password = "";
-    var auth = "";
+    var suser = window.getUser();
     //var osname = window.Common.os();
 
     if (suser === null || suser === "") {
@@ -22,13 +19,9 @@
     } else {
         var user = JSON.parse(suser);
 
-        username = user.Username;
-        password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else {
 
@@ -48,8 +41,7 @@
                         divDesigner.style.display = "block";
 
                         btnLogout.onclick = function () {
-                            window.deleteUser();
-                            window.Common.redirectToLoginPage();
+                            window.logout();
                         };
 
                         btnLogout.innerHTML = "Logout (" + u.Username + ")";
@@ -60,7 +52,7 @@
 
                 }
             },
-            function () { }, auth);
+            function () { });
     }
 
     var selectedId = -1;
@@ -183,7 +175,7 @@
                     //"Username": username,
                     //"Password": password,
                     "WorkflowsToDelete": workflowsToDelete
-                }, auth);
+                });
             }
         }
     };
@@ -505,12 +497,12 @@
                         },
                         function () {
                             window.Common.toastError("An error occured while retrieving task names.");
-                        }, auth);
+                        });
                 }
             },
             function () {
                 window.Common.toastError("An error occured while getting a new workflow id.");
-            }, auth);
+            });
 
     };
 
@@ -572,7 +564,7 @@
                                                             window.Common.toastInfo("The period format is not valid. The valid format is: dd.hh:mm:ss");
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } // Cron expression validation
                                             else if (lt === "cron" && document.getElementById("wf-cron").value !== "") {
@@ -589,7 +581,7 @@
                                                             }
                                                         }
                                                     },
-                                                    function () { }, auth
+                                                    function () { }
                                                 );
                                             } else {
                                                 saveFunc();
@@ -603,7 +595,7 @@
                             window.Common.toastInfo("The workflow id is already in use. Enter another one.");
                         }
                     },
-                    function () { }, auth
+                    function () { }
                 );
             } else {
 
@@ -650,7 +642,7 @@
                                                 window.Common.toastInfo("The period format is not valid. The valid format is: dd.hh:mm:ss");
                                             }
                                         },
-                                        function () { }, auth
+                                        function () { }
                                     );
                                 } // Cron expression validation
                                 else if (lt === "cron" && document.getElementById("wf-cron").value !== "") {
@@ -667,7 +659,7 @@
                                                 }
                                             }
                                         },
-                                        function () { }, auth
+                                        function () { }
                                     );
                                 } else {
                                     saveFunc();
@@ -747,7 +739,7 @@
                 retries = 0;
             }
 
-        }, { "xml": xml }, auth);   // End of isXmlWorkflowValid.
+        }, { "xml": xml });   // End of isXmlWorkflowValid.
     }
 
     function saveXml(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback) {
@@ -765,7 +757,7 @@
                     window.Common.toastInfo("The workflow id " + vcurrentWorkflowId + " is already in use. Enter another one.");
                 }
             },
-                function () { }, auth
+                function () { }
             );
         } else {
             saveXmlQuery(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback);
@@ -932,7 +924,7 @@
                                 }
                             }, function () {
                                 window.Common.toastError("An error occured while deleting the workflow" + workflowId + ".");
-                            }, "", auth);
+                            }, "");
 
                     } else {
                         loadWorkflows(function () {
@@ -1052,7 +1044,7 @@
                     window.Common.toastError("An error occured while saving the workflow " + workflowId + ".");
                     retries = 0;
                 }
-            }, json, auth);  // End of saveXml.
+            }, json);  // End of saveXml.
     }
 
     function saveWorkflow(workflowId, selectedWorkflowId, scrollToWorkflow, callback, jsonWorkflow) {
@@ -1071,7 +1063,7 @@
                     window.Common.toastInfo("The workflow id " + vcurrentWorkflowId + " is already in use. Enter another one.");
                 }
             },
-                function () { }, auth
+                function () { }
             );
         } else {
             saveWorkflowQuery(workflowId, selectedWorkflowId, scrollToWorkflow, callback, jsonWorkflow);
@@ -1235,7 +1227,7 @@
                             },
                             function () {
                                 window.Common.toastError("An error occured while deleting the workflow" + workflowId + ".");
-                            }, "", auth);
+                            }, "");
 
                     } else {
                         loadWorkflows(function () {
@@ -1392,7 +1384,7 @@
                     window.Common.toastError("An error occured while saving the workflow " + workflowId + ".");
                     retries = 0;
                 }
-            }, json, auth);
+            }, json);
     }
 
     //function updateWorkflowStatus(workflowId) {
@@ -1503,7 +1495,7 @@
                 function () {
                     window.Common.toastError("An error occured while deleting the workflow" + workflowId + ".");
                     document.getElementById("wf-delete").disabled = false;
-                }, "", auth);
+                }, "");
         } else {
             document.getElementById("wf-delete").disabled = false;
         }
@@ -1601,7 +1593,7 @@
                     },
                     function () {
                         window.Common.toastError("An error occured while retrieving settings.");
-                    }, auth);
+                    });
             } else {
                 workflowTasks[workflowId][index].Settings = [];
                 wfSettingsTable.innerHTML = "";
@@ -1739,7 +1731,7 @@
                 },
                 function () {
                     window.Common.toastError("An error occured while retrieving the settings.");
-                }, auth);
+                });
         }
 
     }
@@ -1889,7 +1881,7 @@
             function (w) {
                 func(w);
             },
-            function () { }, auth);
+            function () { });
     }
 
     function getTasks(wid, func) {
@@ -1897,7 +1889,7 @@
             function (tasks) {
                 func(tasks);
             },
-            function () { }, auth);
+            function () { });
     }
 
     function getXml(wid, func) {
@@ -1905,7 +1897,7 @@
             function (val) {
                 func(val);
             },
-            function () { }, auth);
+            function () { });
     }
 
     function getJson(wid, func) {
@@ -1913,7 +1905,7 @@
             function (val) {
                 func(val);
             },
-            function () { }, auth);
+            function () { });
     }
 
     //function loadExecutionGraph(workflow) {
@@ -2008,7 +2000,7 @@
     //            },
     //            function () {
     //                window.Common.toastError("An error occured while retrieving the execution graph of this workflow.");
-    //            }, auth);
+    //            });
     //    }
     //    // end of execution graph
     //}
@@ -2268,7 +2260,7 @@
             },
             function () {
                 window.Common.toastError("An error occured while retrieving the XML of the task " + task.Id + ".");
-            }, task, auth);
+            }, task);
     }
 
     function doc(workflowId, btn) {
@@ -2933,7 +2925,7 @@
                                 },
                                 function () {
                                     window.Common.toastError("An error occured while retrieving settings.");
-                                }, auth);
+                                });
                         } else {
                             workflowTasks[workflowId][m].Settings = [];
                             wfSettingsTable.innerHTML = "";
@@ -3039,7 +3031,7 @@
 
             function () {
                 window.Common.toastError("An error occured while retrieving task names.");
-            }, auth);
+            });
     }
 
     function cancel(workflowId) {
@@ -3077,7 +3069,7 @@
             },
             function () {
                 window.Common.toastError("An error occured while retrieving workflows. Check that wexflow server is running correctly.");
-            }, auth);
+            });
 
     }
 

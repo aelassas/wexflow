@@ -27,7 +27,6 @@
     <None Remove="swagger-ui\index.html" />
     <None Remove="swagger-ui\login.css" />
     <None Remove="swagger-ui\login.js" />
-    <None Remove="swagger-ui\md5.js" />
     <None Remove="swagger-ui\oauth2-redirect.html" />
     <None Remove="swagger-ui\settings.js" />
     <None Remove="swagger-ui\swagger-ui-bundle.js" />
@@ -55,9 +54,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="swagger-ui\login.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="swagger-ui\md5.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="swagger-ui\settings.js">
@@ -108,8 +104,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ServiceStack.Kestrel" Version="8.8.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />

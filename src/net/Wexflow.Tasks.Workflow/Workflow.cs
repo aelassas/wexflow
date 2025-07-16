@@ -46,7 +46,8 @@ namespace Wexflow.Tasks.Workflow
                 try
                 {
                     var client = new WexflowServiceClient(WexflowWebServiceUri);
-                    var wfInfo = client.GetWorkflow(Username, Password, id);
+                    var token = client.Login(Username, Password);
+                    var wfInfo = client.GetWorkflow(token, id);
                     switch (Action)
                     {
                         case WorkflowAction.Start:
@@ -57,7 +58,7 @@ namespace Wexflow.Tasks.Workflow
                             }
                             else
                             {
-                                var instanceId = client.StartWorkflow(id, Username, Password);
+                                var instanceId = client.StartWorkflow(id, token);
                                 Jobs[id] = instanceId;
                                 InfoFormat("Workflow {0} started.", id);
                                 if (!atLeastOneSucceed)
@@ -70,7 +71,7 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsRunning)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                client.SuspendWorkflow(id, jobId, Username, Password);
+                                client.SuspendWorkflow(id, jobId, token);
                                 InfoFormat("Workflow {0} suspended.", id);
                                 if (!atLeastOneSucceed)
                                 {
@@ -87,7 +88,7 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsPaused)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                client.ResumeWorkflow(id, jobId, Username, Password);
+                                client.ResumeWorkflow(id, jobId, token);
                                 InfoFormat("Workflow {0} resumed.", id);
                                 if (!atLeastOneSucceed)
                                 {
@@ -104,7 +105,7 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsRunning)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                client.StopWorkflow(id, jobId, Username, Password);
+                                client.StopWorkflow(id, jobId, token);
                                 InfoFormat("Workflow {0} stopped.", id);
                                 if (!atLeastOneSucceed)
                                 {
@@ -121,7 +122,7 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsApproval && wfInfo.IsWaitingForApproval)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                client.ApproveWorkflow(id, jobId, Username, Password);
+                                client.ApproveWorkflow(id, jobId, token);
                                 InfoFormat("Workflow {0} approved.", id);
                                 if (!atLeastOneSucceed)
                                 {
@@ -138,7 +139,7 @@ namespace Wexflow.Tasks.Workflow
                             if (wfInfo.IsApproval && wfInfo.IsWaitingForApproval)
                             {
                                 var jobId = Workflow.WexflowEngine.GetWorkflow(id).Jobs.Select(j => j.Key).FirstOrDefault();
-                                client.RejectWorkflow(id, jobId, Username, Password);
+                                client.RejectWorkflow(id, jobId, token);
                                 InfoFormat("Workflow {0} rejected.", id);
                                 if (!atLeastOneSucceed)
                                 {

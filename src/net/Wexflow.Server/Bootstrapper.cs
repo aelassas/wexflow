@@ -31,6 +31,14 @@ namespace Wexflow.Server
             _ = container.Register(_appConfig);
         }
 
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
+        {
+            base.ApplicationStartup(container, pipelines);
+
+            // Register the global JWT pipeline
+            pipelines.BeforeRequest += JwtPipeline.Before;
+        }
+
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
         {
             pipelines.AfterRequest += ctx =>

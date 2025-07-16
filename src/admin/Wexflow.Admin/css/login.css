@@ -20,10 +20,28 @@
         width: 170px;
     }
 
+    #login #stay-connected {
+        padding: 10px 0;
+        width: fit-content;
+        cursor: pointer;
+    }
+
+    #login #chk-stay-connected {
+        width: fit-content;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    #login #stay-connected label {
+        width: fit-content;
+        margin-left: 5px;
+        cursor: pointer;
+        user-select: none;
+    }
+
 #login-action {
-    position: absolute;
+    position: relative;
     right: 21px;
-    top: 73px;
     left: 0;
 }
 

@@ -56,28 +56,21 @@
     let btnSearch = document.getElementById("users-search-action");
     let divWorkflows = document.getElementById("workflows");
     let btnSave = document.getElementById("users-save-action");
-    let suser = getUser();
+    let suser = window.getUser();
     let uo = 0;
     let selectedUserId = "";
     let selectedUsername = "";
     let workflows = [];
     let userWorkflows = [];    // [{"UserId": 1, "WorkflowId": 6}, ...]
-    let username = "";
-    let password = "";
-    let auth = "";
 
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
-        username = user.Username;
-        password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u ) {
                     window.Common.redirectToLoginPage();
                 } else if (u.UserProfile === 0) {
                     window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
@@ -99,19 +92,18 @@
                         }
 
                         btnLogout.onclick = function () {
-                            window.deleteUser();
-                            window.Common.redirectToLoginPage();
+                            window.logout();
                         };
 
                         loadUsers();
-                    }, function () { }, auth);
+                    }, function () { });
                 } else {
                     window.Common.redirectToLoginPage();
                 }
 
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     btnSearch.onclick = function () {
@@ -227,7 +219,7 @@
                 }
 
             },
-            function () { }, auth);
+            function () { });
     }
 
     function loadRightPanel() {
@@ -354,7 +346,7 @@
                         }
                     }, function () {
                         window.Common.toastError("An error occured while retrieving user workflows.");
-                    }, auth);
+                    });
 
                 document.getElementById("check-all").onchange = function () {
                     let workflowsTable = document.getElementById("wf-workflows-table");
@@ -393,7 +385,7 @@
                 // End of get workflows
             }, function () {
                 window.Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
-            }, auth);
+            });
 
     }
 
@@ -430,7 +422,7 @@
             }
         }, function () {
             window.Common.toastError("An error occured while saving workflow relations.");
-        }, { "UserId": selectedUserId, "UserWorkflows": userWorkflows }, auth);
+        }, { "UserId": selectedUserId, "UserWorkflows": userWorkflows });
     };
 
 }

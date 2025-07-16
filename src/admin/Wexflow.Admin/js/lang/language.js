@@ -20,6 +20,7 @@
     languages["en"]["about"] = "About";
     languages["en"]["username"] = "Username";
     languages["en"]["password"] = "Password";
+    languages["en"]["stay-connected"] = "Stay Connected";
     languages["en"]["forgot-password"] = "Forgot Password?";
     languages["en"]["login"] = "Sign in";
     languages["en"]["valid-username"] = "Enter a valid username and password.";
@@ -253,6 +254,7 @@
     languages["fr"]["about"] = "À propos";
     languages["fr"]["username"] = "Utilisateur";
     languages["fr"]["password"] = "Mot de passe";
+    languages["fr"]["stay-connected"] = "Rester Connecté";
     languages["fr"]["forgot-password"] = "Mot de passe oublié ?";
     languages["fr"]["login"] = "Se connecter";
     languages["fr"]["valid-username"] = "Entrez un nom d'utilisateur et un mot de passe valides.";
@@ -486,6 +488,7 @@
     languages["da"]["about"] = "Om";
     languages["da"]["username"] = "Brugernavn";
     languages["da"]["password"] = "Adgangskode";
+    languages["da"]["stay-connected"] = "Hold forbindelsen";
     languages["da"]["forgot-password"] = "Glemt adgangskode?";
     languages["da"]["login"] = "Log ind";
     languages["da"]["valid-username"] = "Indtast et gyldigt brugernavn og adgangskode.";

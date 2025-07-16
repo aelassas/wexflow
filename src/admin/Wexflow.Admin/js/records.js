@@ -88,28 +88,23 @@
     let lnkNotifications = document.getElementById("lnk-notifications");
     let imgNotifications = document.getElementById("img-notifications");
     let searchText = document.getElementById("search-records");
-    let username = "";
-    let password = "";
     let userProfile = -1;
-    let auth = "";
     let modal = null;
 
-    let suser = getUser();
+    let suser = window.getUser();
+    let username;
 
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
         let user = JSON.parse(suser);
 
-        username = user.Username;
-        password = user.Password;
-        auth = "Basic " + btoa(username + ":" + password);
-
         window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u || user.Password !== u.Password) {
+                if (!u) {
                     window.Common.redirectToLoginPage();
                 } else {
+                    username = user.Username;
                     if (u.UserProfile === 0 || u.UserProfile === 1) {
                         window.Common.get(uri + "/has-notifications?a=" + encodeURIComponent(user.Username), function (hasNotifications) {
                             lnkRecords.style.display = "inline";
@@ -139,8 +134,7 @@
                             document.getElementById("content").style.display = "block";
 
                             btnLogout.onclick = function () {
-                                window.deleteUser();
-                                window.Common.redirectToLoginPage();
+                                window.logout();
                             };
                             document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
 
@@ -156,7 +150,7 @@
 
                             loadRecords();
 
-                        }, function () { }, auth);
+                        }, function () { });
                     } else {
                         window.Common.redirectToLoginPage();
                     }
@@ -164,7 +158,7 @@
                 }
             }, function () {
                 window.logout();
-            }, auth);
+            });
     }
 
     function loadRecords() {
@@ -335,7 +329,7 @@
                                             break;
                                         }
                                     }
-                                    let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/api/v1/download-file?p=" + encodeURIComponent(version.FilePath);
+                                    let url = window.Settings.Uri.trimEnd('/') + "/download-file?p=" + encodeURIComponent(version.FilePath);
                                     window.open(url, "_self");
                                 };
                             }
@@ -404,7 +398,7 @@
 
                                         // Download version
                                         cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                            let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/wexflow/download-file?p=" + encodeURIComponent(res.FilePath);
+                                            let url = window.Settings.Uri.trimEnd('/') + "/download-file?p=" + encodeURIComponent(res.FilePath);
                                             window.open(url, "_self");
                                         };
 
@@ -430,13 +424,13 @@
                                                     window.Common.toastError(language.get("toast-version-file-delete-error"));
                                                 }
 
-                                            }, function () { }, "", auth);
+                                            }, function () { }, "");
                                         };
 
                                         jBoxContent.querySelector(".spn-upload-version").innerHTML = "";
                                     }
                                     filedialog.value = "";
-                                }, function () { }, fd, auth, true);
+                                }, function () { }, fd, null, true);
                             };
 
                             jBoxContent.querySelector(".btn-upload-version").onclick = function () {
@@ -494,7 +488,7 @@
                                                 } else {
                                                     window.Common.toastError(language.get("toast-approvers-notify-error"));
                                                 }
-                                            }, function () { }, "", auth);
+                                            }, function () { }, "");
                                         }
                                         // Notify record.AssignedTo
                                         if (record.AssignedTo !== "" && username !== record.AssignedTo) {
@@ -505,7 +499,7 @@
                                                 } else {
                                                     window.Common.toastError(language.get("toast-assigned-to-notify-error"));
                                                 }
-                                            }, function () { }, "", auth);
+                                            }, function () { }, "");
                                         }
                                         modal.close();
                                         modal.destroy();
@@ -514,7 +508,7 @@
                                     } else {
                                         window.Common.toastError(language.get("toast-record-save-error"));
                                     }
-                                }, function () { }, editedRecord, auth);
+                                }, function () { }, editedRecord);
                             };
 
                             jBoxFooter.querySelector(".record-cancel").onclick = function () {
@@ -526,7 +520,7 @@
                                     }
                                     modal.close();
                                     modal.destroy();
-                                }, function () { }, editedRecord, auth);
+                                }, function () { }, editedRecord);
                             };
 
                             jBoxFooter.querySelector(".record-delete").onclick = function () {
@@ -545,7 +539,7 @@
                                             }
 
                                         }
-                                    }, function () { }, [recordId], auth);
+                                    }, function () { }, [recordId]);
                                 }
                             };
                         },
@@ -554,7 +548,7 @@
                                 if (res === false) {
                                     window.Common.toastError(language.get("toast-modifications-cancel-error"));
                                 }
-                            }, function () { }, editedRecord, auth);
+                            }, function () { }, editedRecord);
                         }
                     });
                     modal.open();
@@ -597,7 +591,7 @@
                                     }
                                 }
                             }
-                        }, function () { }, recordIds, auth);
+                        }, function () { }, recordIds);
                     }
                 }
             };
@@ -675,7 +669,7 @@
                                     goToBottom(jBoxContent);
 
                                     cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                        let url = "http://" + encodeURIComponent(username) + ":" + encodeURIComponent(password) + "@" + window.Settings.Hostname + ":" + window.Settings.Port + "/api/v1/download-file?p=" + encodeURIComponent(res.FilePath);
+                                        let url = window.Settings.Uri.trimEnd('/') + + "/download-file?p=" + encodeURIComponent(res.FilePath);
                                         window.open(url, "_self");
                                     };
 
@@ -701,13 +695,13 @@
                                                 window.Common.toastError(language.get("toast-version-file-delete-error"));
                                             }
 
-                                        }, function () { }, "", auth);
+                                        }, function () { }, "");
                                     };
 
                                     jBoxContent.querySelector(".spn-upload-version").innerHTML = "";
                                 }
                                 filedialog.value = "";
-                            }, function () { }, fd, auth, true);
+                            }, function () { }, fd, null, true);
                         };
 
                         jBoxContent.querySelector(".btn-upload-version").onclick = function () {
@@ -777,7 +771,7 @@
                                 } else {
                                     window.Common.toastError(language.get("toast-record-save-error"));
                                 }
-                            }, function () { }, newRecord, auth);
+                            }, function () { }, newRecord);
                         };
 
                         jBoxFooter.querySelector(".record-cancel").onclick = function () {
@@ -789,7 +783,7 @@
                                 }
                                 modal.close();
                                 modal.destroy();
-                            }, function () { }, newRecord, auth);
+                            }, function () { }, newRecord);
                         };
 
                         jBoxFooter.querySelector(".record-delete").style.display = "none";
@@ -799,7 +793,7 @@
                             if (res === false) {
                                 window.Common.toastError(language.get("toast-modifications-cancel-error"));
                             }
-                        }, function () { }, newRecord, auth);
+                        }, function () { }, newRecord);
                     }
                 });
                 modal.open();
@@ -812,11 +806,11 @@
         if (userProfile === 0) {
             window.Common.get(uri + "/search-records?s=" + encodeURIComponent(searchText.value), function (records) {
                 loadRecordsTable(records);
-            }, function () { }, auth);
+            }, function () { });
         } else if (userProfile === 1) {
             window.Common.get(uri + "/search-records-created-by-or-assigned-to?s=" + encodeURIComponent(searchText.value) + "&c=" + encodeURIComponent(username) + "&a=" + encodeURIComponent(username), function (records) {
                 loadRecordsTable(records);
-            }, function () { }, auth);
+            }, function () { });
         }
 
         function goToBottom(element) {

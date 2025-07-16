@@ -1152,10 +1152,11 @@ namespace Wexflow.Core
         /// <param name="email">Email.</param>
         public void InsertUser(string username, string password, UserProfile userProfile, string email)
         {
+            var hashedPassword = Db.Db.HashPassword(password);
             Database.InsertUser(new User
             {
                 Username = username,
-                Password = password,
+                Password = hashedPassword,
                 UserProfile = userProfile,
                 Email = email
             });
@@ -1171,11 +1172,12 @@ namespace Wexflow.Core
         /// <param name="email">User's email.</param>
         public void UpdateUser(string userId, string username, string password, UserProfile userProfile, string email)
         {
+            var hashedPassword = Db.Db.HashPassword(password);
             var user = Database.GetUserById(userId);
             Database.UpdateUser(userId, new User
             {
                 Username = username,
-                Password = password,
+                Password = hashedPassword,
                 UserProfile = userProfile,
                 Email = email,
                 CreatedOn = user.CreatedOn

@@ -56,8 +56,9 @@ namespace Wexflow.Clients.CommandLine
                     WexflowServiceClient client = new(config["WexflowWebServiceUri"]);
                     var username = config["Username"];
                     var password = config["Password"];
+                    var token = await client.Login(username, password);
 
-                    var workflows = await client.Search(string.Empty, username, password);
+                    var workflows = await client.Search(string.Empty, token);
                     if (workflows.All(w => w.Id != o.WorkflowId))
                     {
                         Console.WriteLine("Workflow id {0} is incorrect.", o.WorkflowId);
@@ -68,18 +69,18 @@ namespace Wexflow.Clients.CommandLine
                     switch (o.Operation)
                     {
                         case Operation.Start:
-                            var instanceId = await client.StartWorkflow(o.WorkflowId, username, password);
+                            var instanceId = await client.StartWorkflow(o.WorkflowId, token);
                             Console.WriteLine("JobId: {0}", instanceId);
 
                             if (o.Wait)
                             {
                                 await Task.Delay(1000);
-                                workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                                workflow = await client.GetWorkflow(token, o.WorkflowId);
                                 var isRunning = workflow.IsRunning;
                                 while (isRunning)
                                 {
                                     await Task.Delay(100);
-                                    workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                                    workflow = await client.GetWorkflow(token, o.WorkflowId);
                                     isRunning = workflow.IsRunning;
                                 }
                             }
@@ -87,58 +88,58 @@ namespace Wexflow.Clients.CommandLine
                             break;
 
                         case Operation.Suspend:
-                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            workflow = await client.GetWorkflow(token, o.WorkflowId);
                             if (!workflow.IsRunning)
                             {
                                 Console.WriteLine("Workflow {0} is not running to be suspended.", o.WorkflowId);
                                 return await Task.FromResult(1);
                             }
 
-                            await client.SuspendWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            await client.SuspendWorkflow(o.WorkflowId, Guid.Parse(o.JobId), token);
                             break;
 
                         case Operation.Stop:
-                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            workflow = await client.GetWorkflow(token, o.WorkflowId);
                             if (!workflow.IsRunning)
                             {
                                 Console.WriteLine("Workflow {0} is not running to be stopped.", o.WorkflowId);
                                 return await Task.FromResult(1);
                             }
 
-                            await client.StopWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            await client.StopWorkflow(o.WorkflowId, Guid.Parse(o.JobId), token);
                             break;
 
                         case Operation.Resume:
-                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            workflow = await client.GetWorkflow(token, o.WorkflowId);
                             if (!workflow.IsPaused)
                             {
                                 Console.WriteLine("Workflow {0} is not suspended to be resumed.", o.WorkflowId);
                                 return await Task.FromResult(1);
                             }
 
-                            await client.ResumeWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            await client.ResumeWorkflow(o.WorkflowId, Guid.Parse(o.JobId), token);
                             break;
 
                         case Operation.Approve:
-                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            workflow = await client.GetWorkflow(token, o.WorkflowId);
                             if (!workflow.IsWaitingForApproval)
                             {
                                 Console.WriteLine("Workflow {0} is not waiting for approval to be approved.", o.WorkflowId);
                                 return await Task.FromResult(1);
                             }
 
-                            await client.ApproveWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            await client.ApproveWorkflow(o.WorkflowId, Guid.Parse(o.JobId), token);
                             break;
 
                         case Operation.Reject:
-                            workflow = await client.GetWorkflow(username, password, o.WorkflowId);
+                            workflow = await client.GetWorkflow(token, o.WorkflowId);
                             if (!workflow.IsWaitingForApproval)
                             {
                                 Console.WriteLine("Workflow {0} is not waiting for approval to be rejected.", o.WorkflowId);
                                 return await Task.FromResult(1);
                             }
 
-                            await client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), username, password);
+                            await client.RejectWorkflow(o.WorkflowId, Guid.Parse(o.JobId), token);
                             break;
                         default:
                             break;

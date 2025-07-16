@@ -32,7 +32,8 @@ try
         }}
         ";
 
-        var jobId = await client.StartWorkflowWithVariables(payload, username, password);
+        var token = await client.Login(username, password);
+        var jobId = await client.StartWorkflowWithVariables(payload, token);
         Console.WriteLine(jobId);
     }
 

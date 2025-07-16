@@ -1,1 +1,0 @@
-uglifycss bootstrap.min.css jquery.toast.min.css users.css --output users.min.css

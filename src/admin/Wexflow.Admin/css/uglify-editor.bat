@@ -1,1 +1,0 @@
-uglifycss bootstrap.min.css bootstrap-toggle.min.css vs2015.css jquery.toast.min.css editor.css --output editor.min.css
