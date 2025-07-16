@@ -81,7 +81,6 @@ window.Login = function () {
                 const res = await fetch(uri + "/login",
                     {
                         method: "POST",
-                        credentials: "include",
                         headers: {
                             "Content-Type": "application/json",
                         },
