@@ -70,9 +70,7 @@ Source: "..\src\net\Wexflow.Tasks.WebToScreenshot\bin\x64\Release\selenium-manag
 ; Wexflow Manager
 Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\Wexflow.Clients.Manager.exe"; DestDir: "{app}\Manager"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\Wexflow.Clients.Manager.exe.config"; DestDir: "{app}\Manager"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\Wexflow.Core.Service.Client.dll"; DestDir: "{app}\Manager"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\Newtonsoft.Json.dll"; DestDir: "{app}\Manager"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\Wexflow.Core.Service.Contracts.dll"; DestDir: "{app}\Manager"; Flags: ignoreversion
+Source: "..\src\net\Wexflow.Clients.Manager\bin\x64\Release\*.dll"; DestDir: "{app}\Manager"; Flags: ignoreversion
 
 ; Wexflow.Clients.CommandLine
 Source: "..\src\net\Wexflow.Clients.CommandLine\bin\x64\Release\Wexflow.Clients.CommandLine.exe"; DestDir: "{app}\Wexflow.Clients.CommandLine"; Flags: ignoreversion

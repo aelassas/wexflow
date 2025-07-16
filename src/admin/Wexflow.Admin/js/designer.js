@@ -104,7 +104,7 @@
 
         username = user.Username;
 
-        window.Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+        window.Common.post(uri + "/validate-user?username=" + encodeURIComponent(user.Username),
             function (u) {
                 if (!u ) {
                     window.Common.redirectToLoginPage();

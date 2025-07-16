@@ -59,6 +59,7 @@ namespace Wexflow.Server
             Login();
             Logout();
             ValidateToken();
+            ValidateUser();
             VerifyPassword();
 
             //
@@ -295,6 +296,45 @@ namespace Wexflow.Server
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     await context.Response.WriteAsync("Invalid or expired token");
                 }
+            });
+        }
+
+        /// <summary>
+        /// Validates user.
+        /// </summary>
+        private void ValidateUser()
+        {
+            _ = _endpoints.MapPost(GetPattern("validate-user"), async context =>
+            {
+                var username = context.Request.Query["username"].ToString();
+                var identity = context.User?.Identity;
+
+                if (identity?.IsAuthenticated == true && string.Equals(identity.Name, username, StringComparison.OrdinalIgnoreCase))
+                {
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    var dateTimeFormat = WexflowServer.Config["DateTimeFormat"];
+
+                    if (user != null)
+                    {
+                        User u = new()
+                        {
+                            Id = user.GetDbId(),
+                            Username = user.Username,
+                            Password = user.Password,
+                            UserProfile = (UserProfile)(int)user.UserProfile,
+                            Email = user.Email,
+                            CreatedOn = user.CreatedOn.ToString(dateTimeFormat),
+                            ModifiedOn = user.ModifiedOn.ToString(dateTimeFormat)
+                        };
+
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(u));
+                        return;
+                    }
+                }
+
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync("Invalid or expired token");
+
             });
         }
 

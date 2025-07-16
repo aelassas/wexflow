@@ -68,6 +68,7 @@ namespace Wexflow.Server
             Login();
             Logout();
             ValidateToken();
+            ValidateUser();
             VerifyPassword();
 
             //
@@ -283,8 +284,10 @@ namespace Wexflow.Server
         {
             Post(GetPattern("validate-token"), args =>
             {
+                var username = Request.Query["u"].ToString();
+                var identity = Context.CurrentUser.Identity;
 
-                if (Context.CurrentUser.Identity.IsAuthenticated == true)
+                if (identity.IsAuthenticated == true && string.Equals(identity.Name, username, StringComparison.OrdinalIgnoreCase))
                 {
                     return Response.AsJson(new { valid = true });
                 }
@@ -292,6 +295,49 @@ namespace Wexflow.Server
                 {
                     return Nancy.HttpStatusCode.Unauthorized;
                 }
+            });
+        }
+
+        /// <summary>
+        /// Validates user.
+        /// </summary>
+        private void ValidateUser()
+        {
+            Post(GetPattern("validate-user"), args =>
+            {
+                var username = Request.Query["username"].ToString();
+                var identity = Context.CurrentUser.Identity;
+
+                if (identity.IsAuthenticated == true && string.Equals(identity.Name, username, StringComparison.OrdinalIgnoreCase))
+                {
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    var dateTimeFormat = WexflowServer.Config["DateTimeFormat"];
+
+                    if (user != null)
+                    {
+                        var u = new User
+                        {
+                            Id = user.GetDbId(),
+                            Username = user.Username,
+                            Password = user.Password,
+                            UserProfile = (UserProfile)(int)user.UserProfile,
+                            Email = user.Email,
+                            CreatedOn = user.CreatedOn.ToString(dateTimeFormat),
+                            ModifiedOn = user.ModifiedOn.ToString(dateTimeFormat)
+                        };
+
+                        var uStr = JsonConvert.SerializeObject(u);
+                        var uBytes = Encoding.UTF8.GetBytes(uStr);
+
+                        return new Response
+                        {
+                            ContentType = "application/json",
+                            Contents = s => s.Write(uBytes, 0, uBytes.Length)
+                        };
+                    }
+                }
+
+                return Nancy.HttpStatusCode.Unauthorized;
 
             });
         }
