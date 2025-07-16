@@ -86,6 +86,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 * Extensible with Custom Activities via NuGet
 
 ### Security & Performance
+* [Secure against XSS, CSRF, brute force, token theft, and insecure password storage](https://github.com/aelassas/wexflow/wiki/Wexflow-Security)
 * Docker support for easy deployment
 * Error monitoring
 
@@ -129,6 +130,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Wexflow Server](https://github.com/aelassas/wexflow/wiki/Configuration#wexflow-server)  
    1. [Wexflow.xml](https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml)  
    1. [Backend](https://github.com/aelassas/wexflow/wiki/Configuration#backend)  
+   1. [Authentication](https://github.com/aelassas/wexflow/wiki/Wexflow-Security)
 1. [Persistence Providers](https://github.com/aelassas/wexflow/wiki/Persistence-Providers)  
 1. [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)  
 1. [Android App](https://github.com/aelassas/wexflow/wiki/Android-App)  
