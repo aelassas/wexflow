@@ -178,11 +178,11 @@
             this.panel1.Size = new System.Drawing.Size(901, 36);
             this.panel1.TabIndex = 6;
             // 
-            // buttonDisapprove
+            // buttonReject
             // 
             this.buttonReject.Enabled = false;
             this.buttonReject.Location = new System.Drawing.Point(419, 9);
-            this.buttonReject.Name = "buttonDisapprove";
+            this.buttonReject.Name = "buttonReject";
             this.buttonReject.Size = new System.Drawing.Size(75, 23);
             this.buttonReject.TabIndex = 10;
             this.buttonReject.Text = "Reject";
@@ -242,7 +242,7 @@
             this.buttonBackend.Name = "buttonBackend";
             this.buttonBackend.Size = new System.Drawing.Size(82, 23);
             this.buttonBackend.TabIndex = 5;
-            this.buttonBackend.Text = "Backend";
+            this.buttonBackend.Text = "Admin Panel";
             this.buttonBackend.UseVisualStyleBackColor = true;
             this.buttonBackend.Click += new System.EventHandler(this.ButtonBackend_Click);
             // 
@@ -336,6 +336,7 @@
             this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

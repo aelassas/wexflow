@@ -190,7 +190,7 @@ namespace Wexflow.Server
         {
             Get(GetPattern("hello"), args =>
             {
-                var resStr = JsonConvert.SerializeObject(new { message = "Wexflow Service is runninng..." });
+                var resStr = JsonConvert.SerializeObject(new { message = "Wexflow Service is running..." });
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
 
                 return new Response

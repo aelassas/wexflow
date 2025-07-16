@@ -45,7 +45,6 @@ window.Login = function () {
     let loginBtn = document.getElementById("btn-login");
     let usernameTxt = document.getElementById("txt-username");
     let passwordTxt = document.getElementById("txt-password");
-    let divkStayConnected = document.getElementById("stay-connected");
     let chkStayConnected = document.getElementById("chk-stay-connected");
 
     loginBtn.onclick = async function () {
@@ -60,14 +59,6 @@ window.Login = function () {
         }
     };
 
-    divkStayConnected.onclick = function () {
-        chkStayConnected.checked = !chkStayConnected.checked;
-    }
-
-    chkStayConnected.onclick = function () {
-        chkStayConnected.checked = !chkStayConnected.checked;
-    }
-
     async function login() {
 
         let username = usernameTxt.value;
@@ -78,13 +69,15 @@ window.Login = function () {
             window.Common.toastInfo(language.get("valid-username"));
         } else {
             try {
+                const payload = { username, password, stayConnected }
+
                 const res = await fetch(uri + "/login",
                     {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({ username, password, stayConnected }),
+                        body: JSON.stringify(payload),
                     })
                 if (!res.ok) {
                     throw new Error(`HTTP ${res.status} - ${res.statusText}`)

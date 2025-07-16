@@ -21,7 +21,7 @@ namespace Wexflow.Clients.Manager
         private const string ENABLED = "Enabled";
         private const string APPROVAL = "Approval";
         private const string WEXFLOW_SERVER_PATH = @"..\Wexflow.Server.exe.config";
-        private const string BACKEND = @"..\Backend\index.html";
+        //private const string WEXFLOW_SERVER_PATH = @"E:\dev\wexflow\src\src\net\Wexflow.Server\bin\Debug\Wexflow.Server.exe.config";
 
         private WexflowServiceClient _wexflowServiceClient;
         private WorkflowInfo[] _workflows;
@@ -33,6 +33,9 @@ namespace Wexflow.Clients.Manager
         private readonly string _logfile;
         private readonly ResourceManager _resources = new ResourceManager(typeof(Manager));
         private bool _serviceRestarted;
+
+        private bool _https = false;
+        private int _port = -1;
 
         public Manager()
         {
@@ -54,11 +57,21 @@ namespace Wexflow.Clients.Manager
                     {
                         _logfile = nodeList[0].Value;
                     }
+                    var httpsNode = root.SelectSingleNode("/configuration/appSettings/add[@key='HTTPS']/@value");
+                    if (httpsNode != null)
+                    {
+                        _https = bool.TryParse(httpsNode.Value, out var res) && res;
+                    }
+                    var portNode = root.SelectSingleNode("/configuration/appSettings/add[@key='WexflowServicePort']/@value");
+                    if (portNode != null)
+                    {
+                        _port = int.Parse(portNode.Value);
+                    }
                 }
             }
 
             buttonLogs.Enabled = !string.IsNullOrEmpty(_logfile);
-            buttonBackend.Enabled = File.Exists(BACKEND);
+            buttonBackend.Enabled = _port > -1;
             buttonRestart.Enabled = !Program.DebugMode;
 
             dataGridViewWorkflows.MouseWheel += MouseWheelEvt;
@@ -424,9 +437,11 @@ namespace Wexflow.Clients.Manager
 
         private void ButtonBackend_Click(object sender, EventArgs e)
         {
-            if (File.Exists(BACKEND))
+            if (_port > -1)
             {
-                _ = Process.Start(BACKEND, "");
+                var protocol = _https ? "https://" : "http://";
+                var url = $"{protocol}localhost:{_port}";
+                Process.Start(url);
             }
         }
 

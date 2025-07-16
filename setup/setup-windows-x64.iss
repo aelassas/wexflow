@@ -311,6 +311,7 @@ Name: "{commonprograms}\{#MyAppName}\Install LiteDB samples"; Filename: "{app}\W
 Name: "{commonprograms}\{#MyAppName}\Uninstall"; Filename: "{uninstallexe}";
 
 ;Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commondesktop}\Wexflow Manager"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{commondesktop}\Wexflow Admin"; Filename: "http://localhost:8000/"; IconFilename: "{app}\Wexflow.ico"; Tasks: desktopicon
 ;Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\Manager\{#MyAppExeName}"; Tasks: quicklaunchicon
 
