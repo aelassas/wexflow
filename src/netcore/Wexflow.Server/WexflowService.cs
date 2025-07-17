@@ -403,7 +403,7 @@ namespace Wexflow.Server
                     throw new BadHttpRequestException("Missing or invalid workflowId or jobId.");
                 }
 
-                if(!WexflowServer.WexflowEngine.Workflows.Any(wf=>wf.Id == workflowId))
+                if (!WexflowServer.WexflowEngine.Workflows.Any(wf => wf.Id == workflowId))
                 {
                     throw new BadHttpRequestException("Invalid workflowId.");
                 }
@@ -425,25 +425,23 @@ namespace Wexflow.Server
                         return;
                     }
 
-                    if (!string.Equals(status, "running", StringComparison.OrdinalIgnoreCase))
+                    _ = System.Threading.Tasks.Task.Run(async () =>
                     {
-                        _ = System.Threading.Tasks.Task.Run(async () =>
+                        var json = JsonConvert.SerializeObject(new
                         {
-                            var json = Newtonsoft.Json.JsonConvert.SerializeObject(new
-                            {
-                                workflowId,
-                                jobId,
-                                status
-                            });
-
-                            var message = $"data: {json}\n\n";
-                            await context.Response.WriteAsync(message);
-                            await context.Response.Body.FlushAsync();
-
-                            broadcaster.Unsubscribe(workflowId, jobId, Send);
-                            tcs.TrySetResult();
+                            workflowId,
+                            jobId,
+                            status
                         });
-                    }
+
+                        var message = $"data: {json}\n\n";
+                        await context.Response.WriteAsync(message);
+                        await context.Response.Body.FlushAsync();
+
+                        broadcaster.Unsubscribe(workflowId, jobId, Send);
+                        tcs.TrySetResult();
+                    });
+
                 }
 
                 broadcaster.Subscribe(workflowId, jobId, Send);
