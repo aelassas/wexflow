@@ -162,6 +162,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
       1. [PHP client](https://github.com/aelassas/wexflow/wiki/PHP-client)
    1. [Security Considerations](https://github.com/aelassas/wexflow/wiki/RESTful-API#security-considerations)
    1. [Swagger](https://github.com/aelassas/wexflow/wiki/RESTful-API#swagger)
+   1. [Workflow Notifications via SSE](https://github.com/aelassas/wexflow/wiki/RESTful-API#workflow-notifications-via-sse)
    1. [Endpoints](https://github.com/aelassas/wexflow/wiki/RESTful-API#endpoints)
 1. [Logging](https://github.com/aelassas/wexflow/wiki/Logging)  
 1. [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)  
@@ -204,7 +205,6 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Notification tasks](https://github.com/aelassas/wexflow/wiki/Tasks#notification-tasks)  
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
-
 
 ## Sponsors
 
