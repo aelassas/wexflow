@@ -3,6 +3,7 @@ body {
     background: #FFFFFF;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 12px;
+    display: none;
 }
 
 .jq-toast-single {
@@ -20,21 +21,21 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-#header a {
-    color: #FFFFFF;
-    font-size: 12px;
-    margin: 20px;
-    float: left;
-    font-weight: bold;
-    -webkit-font-smoothing: antialiased;
-    line-height: 5px;
-    white-space: nowrap;
-    text-decoration: none;
-}
+    #header a {
+        color: #FFFFFF;
+        font-size: 12px;
+        margin: 20px;
+        float: left;
+        font-weight: bold;
+        -webkit-font-smoothing: antialiased;
+        line-height: 5px;
+        white-space: nowrap;
+        text-decoration: none;
+    }
 
-#header .header-right {
-    float: right;
-}
+    #header .header-right {
+        float: right;
+    }
 
 
 #login {

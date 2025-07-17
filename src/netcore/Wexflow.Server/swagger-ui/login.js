@@ -1,9 +1,38 @@
 window.Login = function () {
 
-    var uri = window.Common.trimEnd(window.Settings.Uri, "/");
-    var loginBtn = document.getElementById("btn-login");
-    var usernameTxt = document.getElementById("txt-username");
-    var passwordTxt = document.getElementById("txt-password");
+    const uri = window.Common.trimEnd(window.Settings.Uri, "/");
+
+    let suser = window.getUser();
+
+    document.body.style.display = 'none';
+    const load = () => document.body.style.display = 'block';
+
+    if (suser) {
+        let user = JSON.parse(suser);
+
+        const _logout = () => {
+            window.logout(() => {
+                load();
+            });
+        };
+
+        window.Common.post(uri + "/validate-token?u=" + encodeURIComponent(user.Username),
+            function (res) {
+                if (res.valid === true) {
+                    window.location.replace("doc.html");
+                } else {
+                    _logout();
+                }
+            }, function () {
+                _logout();
+            }, null);
+    } else {
+        load();
+    }
+
+    const loginBtn = document.getElementById("btn-login");
+    const usernameTxt = document.getElementById("txt-username");
+    const passwordTxt = document.getElementById("txt-password");
 
     loginBtn.onclick = async function () {
         await login();

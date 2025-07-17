@@ -53,7 +53,7 @@ namespace Wexflow.Server
             // Index
             //
             Get("/", _ => Response.AsRedirect("/admin/index.html"));
-            Get("/admin", _ => Response.AsRedirect("/admin/index.html"));
+            Get("/admin", _ => Response.AsRedirect("/"));
             Get("/swagger-ui", _ => Response.AsRedirect("/swagger-ui/index.html"));
             Get("/swagger", _ => Response.AsRedirect("/swagger-ui"));
 

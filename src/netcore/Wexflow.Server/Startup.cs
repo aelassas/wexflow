@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -9,11 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Wexflow.Server
 {
@@ -119,8 +115,10 @@ namespace Wexflow.Server
             {
                 var path = context.Request.Path.Value?.TrimEnd('/');
                 var root = $"/{WexflowService.ROOT.Trim('/')}";
+                if (root == "/") root = "";
 
-                if (string.Equals(path, $"{root}/hello", StringComparison.OrdinalIgnoreCase) ||
+                if (
+                    string.Equals(path, $"{root}/hello", StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(path, $"{root}/login", StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(path, $"{root}/logout", StringComparison.OrdinalIgnoreCase)
                     )

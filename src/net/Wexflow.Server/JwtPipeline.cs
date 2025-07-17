@@ -10,18 +10,19 @@ namespace Wexflow.Server
         {
             var path = ctx.Request.Path.TrimEnd('/');
             var root = $"/{WexflowService.ROOT.Trim('/')}";
+            if (root == "/") root = "";
 
             if (
-            string.IsNullOrEmpty(path) ||
-            Regex.IsMatch(path, "/swagger", RegexOptions.IgnoreCase) ||
-            string.Equals(path, $"{root}/hello", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(path, $"{root}/login", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(path, $"{root}/logout", StringComparison.OrdinalIgnoreCase)
-            )
+                string.IsNullOrEmpty(path) ||
+                Regex.IsMatch(path, "^/swagger", RegexOptions.IgnoreCase) ||
+                Regex.IsMatch(path, "^/admin", RegexOptions.IgnoreCase) ||
+                string.Equals(path, $"{root}/hello", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(path, $"{root}/login", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(path, $"{root}/logout", StringComparison.OrdinalIgnoreCase)
+               )
             {
                 return null; // Skip JWT auth
             }
-
 
             var authHeader = ctx.Request.Headers.Authorization;
             if (string.IsNullOrEmpty(authHeader) && ctx.Request.Cookies.TryGetValue("wf-auth", out var cookieToken))
