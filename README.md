@@ -86,7 +86,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 * Extensible with Custom Activities via NuGet
 
 ### Security & Performance
-* [Secure against XSS, CSRF, brute force, token theft, and insecure password storage](https://github.com/aelassas/wexflow/wiki/Wexflow-Security)
+* [Secure against XSS, XST, CSRF, MITM, brute force, token theft, and insecure passwords](https://github.com/aelassas/wexflow/wiki/Wexflow-Security)
 * Docker support for easy deployment
 * Error monitoring
 
