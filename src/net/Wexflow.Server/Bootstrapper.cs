@@ -35,7 +35,29 @@ namespace Wexflow.Server
         {
             base.ApplicationStartup(container, pipelines);
 
-            // Register the global JWT pipeline
+            // disable HTTP TRACE method to prevent Cross-Site Tracing (XST) attacks
+            pipelines.BeforeRequest += ctx =>
+            {
+                if (ctx.Request.Method.Equals("TRACE", StringComparison.OrdinalIgnoreCase))
+                {
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.MethodNotAllowed,
+                        ContentType = "text/plain",
+                        Contents = stream =>
+                        {
+                            using (var writer = new StreamWriter(stream))
+                            {
+                                writer.Write("HTTP TRACE method is not allowed.");
+                            }
+                        }
+                    };
+                }
+
+                return null; // Continue as normal
+            };
+
+            // register the global JWT pipeline
             pipelines.BeforeRequest += JwtPipeline.Before;
         }
 

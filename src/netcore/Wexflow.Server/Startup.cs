@@ -56,6 +56,19 @@ namespace Wexflow.Server
                 await next();
             });
 
+            // disable HTTP TRACE method to prevent Cross-Site Tracing (XST) attacks
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Method.Equals("TRACE", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                    await context.Response.WriteAsync("HTTP TRACE method is not allowed.");
+                    return;
+                }
+
+                await next();
+            });
+
             // admin
             var adminFolder = Path.GetFullPath(_config["AdminFolder"]);
 
