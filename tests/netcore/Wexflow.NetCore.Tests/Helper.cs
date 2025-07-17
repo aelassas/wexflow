@@ -8,7 +8,10 @@ namespace Wexflow.NetCore.Tests
 {
     public class Helper
     {
+        private static WorkflowStatusBroadcaster _broadcaster = new WorkflowStatusBroadcaster();
+
         private static readonly WexflowEngine WexflowEngine = new(
+            _broadcaster,
             Environment.OSVersion.Platform == PlatformID.Unix
             ? "/opt/wexflow/Wexflow/Wexflow.xml"
             : (Environment.OSVersion.Platform == PlatformID.MacOSX

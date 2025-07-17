@@ -67,7 +67,7 @@ namespace Wexflow.Server
             //
             // SSE
             //
-            MapWorkflowStatusSseEndpoint();
+            WorkflowStatusSse();
 
             //
             // Dashboard
@@ -391,7 +391,7 @@ namespace Wexflow.Server
         /// <exception cref="BadHttpRequestException">
         /// Thrown if <c>workflowId</c> is invalid or <c>jobId</c> is missing.
         /// </exception>
-        private void MapWorkflowStatusSseEndpoint()
+        private void WorkflowStatusSse()
         {
             _ = _endpoints.MapGet(GetPattern("sse/{workflowId:int}/{jobId}"), async context =>
             {
