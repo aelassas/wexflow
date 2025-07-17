@@ -127,9 +127,9 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Screenshots](https://github.com/aelassas/wexflow/wiki/Screenshots)  
 1. [Docker](https://github.com/aelassas/wexflow/wiki/Docker)  
 1. [Configuration](https://github.com/aelassas/wexflow/wiki/Configuration)  
-   1. [Wexflow Server](https://github.com/aelassas/wexflow/wiki/Configuration#wexflow-server)  
-   1. [Wexflow.xml](https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml)  
-   1. [Backend](https://github.com/aelassas/wexflow/wiki/Configuration#backend)  
+   1. [Wexflow Server](https://github.com/aelassas/wexflow/wiki/Configuration#wexflow-server-configuration)  
+   1. [Wexflow.xml](https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml-configuration-file)  
+   1. [Admin Panel](https://github.com/aelassas/wexflow/wiki/Configuration#admin-panel-configuration)  
    1. [Authentication](https://github.com/aelassas/wexflow/wiki/Wexflow-Security)
 1. [Persistence Providers](https://github.com/aelassas/wexflow/wiki/Persistence-Providers)  
 1. [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)  
@@ -154,10 +154,15 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Cron Scheduling](https://github.com/aelassas/wexflow/wiki/Cron-Scheduling)
 1. [Command Line Client](https://github.com/aelassas/wexflow/wiki/Command-Line-Client)  
 1. [RESTful API](https://github.com/aelassas/wexflow/wiki/RESTful-API)  
-   1. [API](https://github.com/aelassas/wexflow/wiki/RESTful-API)  
-   1. [C# client](https://github.com/aelassas/wexflow/wiki/C%23-Client)  
-   1. [JavaScript client](https://github.com/aelassas/wexflow/wiki/JavaScript-Client)  
-   1. [PHP client](https://github.com/aelassas/wexflow/wiki/PHP-client)
+   1. [Introduction](https://github.com/aelassas/wexflow/wiki/RESTful-API#introduction)
+   1. [JWT Authentication](https://github.com/aelassas/wexflow/wiki/RESTful-API#jwt-authentication)
+   1. [Sample Clients](https://github.com/aelassas/wexflow/wiki/RESTful-API#sample-clients)
+      1. [C# client](https://github.com/aelassas/wexflow/wiki/C%23-Client)  
+      1. [JavaScript client](https://github.com/aelassas/wexflow/wiki/JavaScript-Client)  
+      1. [PHP client](https://github.com/aelassas/wexflow/wiki/PHP-client)
+   1. [Security Considerations](https://github.com/aelassas/wexflow/wiki/RESTful-API#security-considerations)
+   1. [Swagger](https://github.com/aelassas/wexflow/wiki/RESTful-API#swagger)
+   1. [Endpoints](https://github.com/aelassas/wexflow/wiki/RESTful-API#endpoints)
 1. [Logging](https://github.com/aelassas/wexflow/wiki/Logging)  
 1. [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)  
    1. [General](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#general)  
@@ -200,11 +205,10 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 
-<!--
+
 ## Sponsors
 
-[![JetBrains](https://wexflow.github.io/content/jetbrains.png)](https://www.jetbrains.com/)
--->
+<img alt="JetBrains" src="https://wexflow.github.io/content/jetbrains.png" width="120" />
 
 ## License
 
