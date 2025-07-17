@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Linq;
+using Wexflow.Core;
 
 namespace Wexflow.Server
 {
@@ -177,6 +178,43 @@ namespace Wexflow.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register WorkflowStatusBroadcaster as singleton
+            services.AddSingleton<WorkflowStatusBroadcaster>();
+
+            // Register WexflowEngine and inject broadcaster and other params
+            services.AddSingleton(sp =>
+            {
+                var broadcaster = sp.GetRequiredService<WorkflowStatusBroadcaster>();
+                var settingsFile = _config["WexflowSettingsFile"];
+                var superAdminUsername = _config["SuperAdminUsername"];
+                var logLevel = !string.IsNullOrEmpty(_config["LogLevel"]) ? Enum.Parse<Core.LogLevel>(_config["LogLevel"], true) : Core.LogLevel.All;
+                var enableWorkflowsHotFolder = bool.Parse(_config["EnableWorkflowsHotFolder"] ?? throw new InvalidOperationException());
+                var enableRecordsHotFolder = bool.Parse(_config["EnableRecordsHotFolder"] ?? throw new InvalidOperationException());
+                var enableEmailNotifications = bool.Parse(_config["EnableEmailNotifications"] ?? throw new InvalidOperationException());
+                var smtpHost = _config["Smtp.Host"];
+                var smtpPort = int.Parse(_config["Smtp.Port"] ?? throw new InvalidOperationException());
+                var smtpEnableSsl = bool.Parse(_config["Smtp.EnableSsl"] ?? throw new InvalidOperationException());
+                var smtpUser = _config["Smtp.User"];
+                var smtpPassword = _config["Smtp.Password"];
+                var smtpFrom = _config["Smtp.From"];
+
+                var wexflowEngine = new WexflowEngine(
+                      broadcaster
+                    , settingsFile
+                    , logLevel
+                    , enableWorkflowsHotFolder
+                    , superAdminUsername
+                    , enableEmailNotifications
+                    , smtpHost
+                    , smtpPort
+                    , smtpEnableSsl
+                    , smtpUser
+                    , smtpPassword
+                    , smtpFrom
+                    );
+                return wexflowEngine;
+            });
+
             var port = _config.GetValue<int>("WexflowServicePort");
 
             _ = services.AddHttpsRedirection(options =>

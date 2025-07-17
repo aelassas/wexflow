@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack;
@@ -14,6 +15,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Wexflow.Core;
@@ -61,6 +63,11 @@ namespace Wexflow.Server
             ValidateToken();
             ValidateUser();
             VerifyPassword();
+
+            //
+            // SSE
+            //
+            MapWorkflowStatusSseEndpoint();
 
             //
             // Dashboard
@@ -366,6 +373,89 @@ namespace Wexflow.Server
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
+            });
+        }
+
+        /// <summary>
+        /// Maps a Server-Sent Events (SSE) endpoint that notifies the client
+        /// when a workflow job finishes and sends its final status as a single SSE message.
+        /// </summary>
+        /// <remarks>
+        /// The route pattern is <c>sse/{workflowId:int}/{jobId}</c>.  
+        /// This endpoint is intended for clients who want to be notified when a long-running job
+        /// completes (successfully or with failure), without polling the API continuously.
+        /// </remarks>
+        /// <example>
+        /// GET /sse/42/abc123
+        /// </example>
+        /// <exception cref="BadHttpRequestException">
+        /// Thrown if <c>workflowId</c> is invalid or <c>jobId</c> is missing.
+        /// </exception>
+        private void MapWorkflowStatusSseEndpoint()
+        {
+            _ = _endpoints.MapGet(GetPattern("sse/{workflowId:int}/{jobId}"), async context =>
+            {
+                if (
+                    !int.TryParse(context.Request.RouteValues["workflowId"]?.ToString(), out var workflowId) ||
+                    string.IsNullOrEmpty(context.Request.RouteValues["jobId"]?.ToString())
+                    )
+                {
+                    throw new BadHttpRequestException("Missing or invalid workflowId or jobId.");
+                }
+
+                if(!WexflowServer.WexflowEngine.Workflows.Any(wf=>wf.Id == workflowId))
+                {
+                    throw new BadHttpRequestException("Invalid workflowId.");
+                }
+
+                var jobId = context.Request.RouteValues["jobId"].ToString();
+
+                context.Response.Headers["Content-Type"] = "text/event-stream";
+                context.Response.Headers["Cache-Control"] = "no-cache";
+                context.Response.Headers["Connection"] = "keep-alive";
+
+                var broadcaster = context.RequestServices.GetRequiredService<WorkflowStatusBroadcaster>();
+                var tcs = new TaskCompletionSource();
+
+                void Send(string status)
+                {
+                    if (context.RequestAborted.IsCancellationRequested)
+                    {
+                        tcs.TrySetResult();
+                        return;
+                    }
+
+                    if (!string.Equals(status, "running", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _ = System.Threading.Tasks.Task.Run(async () =>
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.SerializeObject(new
+                            {
+                                workflowId,
+                                jobId,
+                                status
+                            });
+
+                            var message = $"data: {json}\n\n";
+                            await context.Response.WriteAsync(message);
+                            await context.Response.Body.FlushAsync();
+
+                            broadcaster.Unsubscribe(workflowId, jobId, Send);
+                            tcs.TrySetResult();
+                        });
+                    }
+                }
+
+                broadcaster.Subscribe(workflowId, jobId, Send);
+
+                var cancellation = context.RequestAborted.Register(() =>
+                {
+                    broadcaster.Unsubscribe(workflowId, jobId, Send);
+                    tcs.TrySetResult();
+                });
+
+                await tcs.Task;
+                cancellation.Dispose();
             });
         }
 

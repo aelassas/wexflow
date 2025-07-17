@@ -17,6 +17,9 @@ namespace Wexflow.Core
     /// </summary>
     public class WexflowEngine
     {
+        private readonly WorkflowStatusBroadcaster _broadcaster;
+
+        #region Properties
         /// <summary>
         /// Log level.
         /// </summary>
@@ -129,6 +132,7 @@ namespace Wexflow.Core
         /// Global variables.
         /// </summary>
         public Variable[] GlobalVariables { get; private set; }
+        #endregion
 
         //
         // Quartz scheduler
@@ -148,6 +152,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Creates a new instance of Wexflow engine.
         /// </summary>
+        /// <param name="broadcaster">Workflow Job Status Broadcaster.</param>
         /// <param name="settingsFile">Settings file path.</param>
         /// <param name="logLevel">Log level.</param>
         /// <param name="enableWorkflowsHotFolder">Indicates whether workflows hot folder is enabled or not.</param>
@@ -159,7 +164,9 @@ namespace Wexflow.Core
         /// <param name="smtpUser">SMTP user.</param>
         /// <param name="smtpPassword">SMTP password.</param>
         /// <param name="smtpFrom">SMTP from.</param>
-        public WexflowEngine(string settingsFile
+        public WexflowEngine(
+              WorkflowStatusBroadcaster broadcaster,
+              string settingsFile
             , LogLevel logLevel
             , bool enableWorkflowsHotFolder
             , string superAdminUsername
@@ -172,6 +179,7 @@ namespace Wexflow.Core
             , string smtpFrom
             )
         {
+            _broadcaster = broadcaster; // injected shared broadcaster instance
             SettingsFile = settingsFile;
             LogLevel = logLevel;
             EnableWorkflowsHotFolder = enableWorkflowsHotFolder;
@@ -233,6 +241,17 @@ namespace Wexflow.Core
             LoadGlobalVariables();
 
             LoadWorkflows();
+        }
+
+        /// <summary>
+        /// Updates the status of a job within a workflow and broadcasts the new status to subscribers.
+        /// </summary>
+        /// <param name="workflowId">The identifier of the workflow containing the job.</param>
+        /// <param name="jobId">The identifier of the job whose status is updated.</param>
+        /// <param name="newStatus">The new status value of the job.</param>
+        public void UpdateJobStatus(int workflowId, string jobId, string newStatus)
+        {
+            _broadcaster.Broadcast(workflowId, jobId, newStatus);
         }
 
         /// <summary>

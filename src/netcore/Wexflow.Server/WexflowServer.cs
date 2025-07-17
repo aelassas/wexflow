@@ -3,6 +3,7 @@ using log4net.Config;
 using log4net.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Linq;
@@ -32,70 +33,6 @@ namespace Wexflow.Server
             log4NetConfig.Load(File.OpenRead("log4net.config"));
             var repo = LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
             _ = XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
-
-            _superAdminUsername = Config["SuperAdminUsername"];
-
-            var settingsFile = Config["WexflowSettingsFile"];
-            var logLevel = !string.IsNullOrEmpty(Config["LogLevel"]) ? Enum.Parse<Core.LogLevel>(Config["LogLevel"], true) : Core.LogLevel.All;
-            var enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"] ?? throw new InvalidOperationException());
-            var enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"] ?? throw new InvalidOperationException());
-            var enableEmailNotifications = bool.Parse(Config["EnableEmailNotifications"] ?? throw new InvalidOperationException());
-            var smtpHost = Config["Smtp.Host"];
-            var smtpPort = int.Parse(Config["Smtp.Port"] ?? throw new InvalidOperationException());
-            var smtpEnableSsl = bool.Parse(Config["Smtp.EnableSsl"] ?? throw new InvalidOperationException());
-            var smtpUser = Config["Smtp.User"];
-            var smtpPassword = Config["Smtp.Password"];
-            var smtpFrom = Config["Smtp.From"];
-
-            WexflowEngine = new WexflowEngine(
-                settingsFile
-                , logLevel
-                , enableWorkflowsHotFolder
-                , _superAdminUsername
-                , enableEmailNotifications
-                , smtpHost
-                , smtpPort
-                , smtpEnableSsl
-                , smtpUser
-                , smtpPassword
-                , smtpFrom
-                );
-
-            if (enableWorkflowsHotFolder)
-            {
-                InitializeWorkflowsFileSystemWatcher();
-            }
-            else
-            {
-                Logger.Info("Workflows hot folder is disabled.");
-            }
-
-            if (enableRecordsHotFolder)
-            {
-                // On file found.
-                foreach (var file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
-                {
-                    var recordId = WexflowEngine.SaveRecordFromFile(file, _superAdminUsername);
-
-                    if (recordId != "-1")
-                    {
-                        Logger.Info($"Record inserted from file {file}. RecordId: {recordId}");
-                    }
-                    else
-                    {
-                        Logger.Error($"An error occured while inserting a record from the file {file}.");
-                    }
-                }
-
-                // On file created.
-                InitializeRecordsFileSystemWatcher();
-            }
-            else
-            {
-                Logger.Info("Records hot folder is disabled.");
-            }
-
-            WexflowEngine.Run();
 
             var port = int.Parse(Config["WexflowServicePort"]);
 
@@ -128,6 +65,57 @@ namespace Wexflow.Server
                 .UseStartup<Startup>()
                 .Build();
 
+
+            // Start Wexflow engine
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                WexflowEngine = services.GetRequiredService<WexflowEngine>();
+
+                _superAdminUsername = Config["SuperAdminUsername"];
+
+                var enableWorkflowsHotFolder = bool.Parse(Config["EnableWorkflowsHotFolder"] ?? throw new InvalidOperationException());
+                var enableRecordsHotFolder = bool.Parse(Config["EnableRecordsHotFolder"] ?? throw new InvalidOperationException());
+
+                if (enableWorkflowsHotFolder)
+                {
+                    InitializeWorkflowsFileSystemWatcher();
+                }
+                else
+                {
+                    Logger.Info("Workflows hot folder is disabled.");
+                }
+
+                if (enableRecordsHotFolder)
+                {
+                    // On file found.
+                    foreach (var file in Directory.GetFiles(WexflowEngine.RecordsHotFolder))
+                    {
+                        var recordId = WexflowEngine.SaveRecordFromFile(file, _superAdminUsername);
+
+                        if (recordId != "-1")
+                        {
+                            Logger.Info($"Record inserted from file {file}. RecordId: {recordId}");
+                        }
+                        else
+                        {
+                            Logger.Error($"An error occured while inserting a record from the file {file}.");
+                        }
+                    }
+
+                    // On file created.
+                    InitializeRecordsFileSystemWatcher();
+                }
+                else
+                {
+                    Logger.Info("Records hot folder is disabled.");
+                }
+
+                WexflowEngine.Run();
+            }
+
+            // Now start the web host and keep it running
             host.Run();
 
             Console.Write("Press any key to stop Wexflow server...");
