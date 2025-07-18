@@ -201,7 +201,8 @@ namespace Wexflow.Server
         private static async System.Threading.Tasks.Task Unauthorized(HttpContext context)
         {
             context.Response.StatusCode = 401;
-            await context.Response.WriteAsync(JsonConvert.SerializeObject("Unauthorized!"));
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = "Unauthorized!" }));
         }
 
         private static async System.Threading.Tasks.Task Error(HttpContext context, Exception e)
@@ -210,10 +211,9 @@ namespace Wexflow.Server
             await WriteFalse(context);
         }
 
-        private static async System.Threading.Tasks.Task WorkflowNotFound(HttpContext context)
+        private static void NotFound(HttpContext context)
         {
             context.Response.StatusCode = 204;
-            await context.Response.WriteAsync(JsonConvert.SerializeObject("Workflow not found!"));
         }
 
         #endregion
@@ -409,6 +409,28 @@ namespace Wexflow.Server
                     throw new BadHttpRequestException("Invalid workflowId.");
                 }
 
+                // check user profile
+                var username = context.User.Identity?.Name;
+                var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = true;
+
+                if (user.UserProfile == Core.Db.UserProfile.Administrator)
+                {
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflow.DbId);
+                }
+
+                if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
+                }
+
+                // authorized
                 var jobId = context.Request.RouteValues["jobId"].ToString();
 
                 context.Response.Headers["Content-Type"] = "text/event-stream";
@@ -625,7 +647,7 @@ namespace Wexflow.Server
                 }
                 else
                 {
-                    await WorkflowNotFound(context);
+                    NotFound(context);
                 }
             });
         }
@@ -682,7 +704,7 @@ namespace Wexflow.Server
                 }
                 else
                 {
-                    await WorkflowNotFound(context);
+                    NotFound(context);
                 }
             });
         }
@@ -745,6 +767,8 @@ namespace Wexflow.Server
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
 
+                var authorized = true;
+
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
@@ -753,12 +777,21 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(instanceId.ToString()));
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
                 }
 
             });
@@ -795,6 +828,8 @@ namespace Wexflow.Server
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
 
+                var authorized = true;
+
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
@@ -804,13 +839,22 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = workflow.DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
 
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(instanceId.ToString()));
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
                 }
 
             });
@@ -831,6 +875,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = true;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -839,11 +884,21 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
@@ -866,6 +921,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = true;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -874,11 +930,21 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
@@ -899,6 +965,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = true;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -908,12 +975,21 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         WexflowServer.WexflowEngine.ResumeWorkflow(workflowId, instanceId);
                         await context.Response.WriteAsync(string.Empty);
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
                 }
 
             });
@@ -934,6 +1010,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = true;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -942,11 +1019,21 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.ApproveWorkflow(workflowId, instanceId, username);
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
                 }
 
 
@@ -969,6 +1056,7 @@ namespace Wexflow.Server
                 var instanceId = Guid.Parse(context.Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = true;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -977,11 +1065,21 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.RejectWorkflow(workflowId, instanceId, username);
                     }
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
                 }
 
 
@@ -1029,7 +1127,7 @@ namespace Wexflow.Server
                 }
                 else
                 {
-                    await WorkflowNotFound(context);
+                    NotFound(context);
                 }
 
             });
@@ -1073,16 +1171,40 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapGet(GetPattern("xml/{id}"), async context =>
             {
+                var username = context.User.Identity?.Name;
 
                 var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
-                if (wf != null)
+
+                if (wf == null)
                 {
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(wf.Xml));
+                    NotFound(context);
+                    return;
                 }
-                else
+
+                var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
+
+                if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
-                    await WorkflowNotFound(context);
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), wf.DbId);
                 }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                {
+                    authorized = true;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
+                }
+
+
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(wf.Xml));
 
             });
         }
@@ -1094,64 +1216,88 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapGet(GetPattern("json/{id}"), async context =>
             {
-
+                var username = context.User.Identity?.Name;
 
                 var wf = WexflowServer.WexflowEngine.GetWorkflow(int.Parse(context.Request.RouteValues["id"]?.ToString() ?? throw new InvalidOperationException()));
-                if (wf != null)
+
+                if (wf == null)
                 {
-                    List<Contracts.Variable> variables = [];
-                    foreach (var variable in wf.LocalVariables)
-                    {
-                        variables.Add(new Contracts.Variable { Key = variable.Key, Value = variable.Value });
-                    }
+                    NotFound(context);
+                    return;
+                }
 
-                    Contracts.Workflow.WorkflowInfo wi = new()
-                    {
-                        Id = wf.Id,
-                        Name = wf.Name,
-                        FilePath = wf.FilePath,
-                        LaunchType = (int)wf.LaunchType,
-                        Period = wf.Period.ToString(),
-                        CronExpression = wf.CronExpression,
-                        IsEnabled = wf.IsEnabled,
-                        IsApproval = wf.IsApproval,
-                        EnableParallelJobs = wf.EnableParallelJobs,
-                        Description = wf.Description,
-                        LocalVariables = [.. variables],
-                        RetryCount = wf.RetryCount,
-                        RetryTimeout = wf.RetryTimeout
-                    };
+                var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
-                    List<TaskInfo> tasks = [];
-                    foreach (var task in wf.Tasks)
+                if (user.UserProfile == Core.Db.UserProfile.Administrator)
+                {
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), wf.DbId);
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                {
+                    authorized = false;
+                }
+                else if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                {
+                    authorized = true;
+                }
+
+                if (!authorized)
+                {
+                    await Unauthorized(context);
+                    return;
+                }
+
+
+                List<Contracts.Variable> variables = [];
+                foreach (var variable in wf.LocalVariables)
+                {
+                    variables.Add(new Contracts.Variable { Key = variable.Key, Value = variable.Value });
+                }
+
+                Contracts.Workflow.WorkflowInfo wi = new()
+                {
+                    Id = wf.Id,
+                    Name = wf.Name,
+                    FilePath = wf.FilePath,
+                    LaunchType = (int)wf.LaunchType,
+                    Period = wf.Period.ToString(),
+                    CronExpression = wf.CronExpression,
+                    IsEnabled = wf.IsEnabled,
+                    IsApproval = wf.IsApproval,
+                    EnableParallelJobs = wf.EnableParallelJobs,
+                    Description = wf.Description,
+                    LocalVariables = [.. variables],
+                    RetryCount = wf.RetryCount,
+                    RetryTimeout = wf.RetryTimeout
+                };
+
+                List<TaskInfo> tasks = [];
+                foreach (var task in wf.Tasks)
+                {
+                    List<SettingInfo> settings = [];
+                    foreach (var setting in task.Settings)
                     {
-                        List<SettingInfo> settings = [];
-                        foreach (var setting in task.Settings)
+                        List<AttributeInfo> attributes = [];
+                        foreach (var attr in setting.Attributes)
                         {
-                            List<AttributeInfo> attributes = [];
-                            foreach (var attr in setting.Attributes)
-                            {
-                                attributes.Add(new AttributeInfo(attr.Name, attr.Value));
-                            }
-
-                            settings.Add(new SettingInfo(setting.Name, setting.Value, [.. attributes]));
+                            attributes.Add(new AttributeInfo(attr.Name, attr.Value));
                         }
-                        tasks.Add(new TaskInfo(task.Id, task.Name, task.Description, task.IsEnabled, [.. settings]));
+
+                        settings.Add(new SettingInfo(setting.Name, setting.Value, [.. attributes]));
                     }
-
-                    Contracts.Workflow.Workflow workflow = new()
-                    {
-                        WorkflowInfo = wi,
-                        Tasks = [.. tasks],
-                        ExecutionGraph = wf.ExecutionGraph
-                    };
-
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(workflow));
+                    tasks.Add(new TaskInfo(task.Id, task.Name, task.Description, task.IsEnabled, [.. settings]));
                 }
-                else
+
+                Contracts.Workflow.Workflow workflow = new()
                 {
-                    await WorkflowNotFound(context);
-                }
+                    WorkflowInfo = wi,
+                    Tasks = [.. tasks],
+                    ExecutionGraph = wf.ExecutionGraph
+                };
+
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(workflow));
+
 
             });
         }
@@ -1514,13 +1660,6 @@ namespace Wexflow.Server
         //        .Replace("\\\"", "\"")
         //        .Replace("\\\\", "\\");
         //}
-
-        private static string DecodeBase64(string str)
-        {
-            var data = Convert.FromBase64String(str);
-            var decodedString = Encoding.UTF8.GetString(data);
-            return decodedString;
-        }
 
         private static XElement JsonNodeToXmlNode(JToken node)
         {
@@ -2273,7 +2412,7 @@ namespace Wexflow.Server
                     }
                     else
                     {
-                        await WorkflowNotFound(context);
+                        NotFound(context);
                         return;
                     }
 
@@ -2339,7 +2478,7 @@ namespace Wexflow.Server
                     }
                     else
                     {
-                        await WorkflowNotFound(context);
+                        NotFound(context);
                         return;
                     }
 
@@ -2495,7 +2634,7 @@ namespace Wexflow.Server
                     }
                     else
                     {
-                        await WorkflowNotFound(context);
+                        NotFound(context);
                     }
                 }
                 catch (Exception e)
@@ -2630,7 +2769,7 @@ namespace Wexflow.Server
                 }
                 else
                 {
-                    await WorkflowNotFound(context);
+                    NotFound(context);
                 }
 
             });

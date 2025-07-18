@@ -728,6 +728,7 @@ namespace Wexflow.Server
                 int workflowId = int.Parse(Request.Query["w"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -745,8 +746,8 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
 
@@ -761,6 +762,10 @@ namespace Wexflow.Server
                     }
                 }
 
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
+                }
 
                 return new Response
                 {
@@ -793,6 +798,7 @@ namespace Wexflow.Server
                 var workflow = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId);
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
@@ -810,8 +816,8 @@ namespace Wexflow.Server
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = workflow.DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
 
@@ -826,6 +832,10 @@ namespace Wexflow.Server
                     }
                 }
 
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
+                }
 
                 return new Response
                 {
@@ -849,21 +859,27 @@ namespace Wexflow.Server
                 dynamic instanceId = Guid.Parse(Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
+                    authorized = true;
                 }
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.StopWorkflow(workflowId, instanceId, username);
                     }
                 }
 
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
+                }
 
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
@@ -891,21 +907,27 @@ namespace Wexflow.Server
                 dynamic instanceId = Guid.Parse(Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
+                    authorized = true;
                 }
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.SuspendWorkflow(workflowId, instanceId);
                     }
                 }
 
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
+                }
 
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
@@ -931,19 +953,26 @@ namespace Wexflow.Server
                 dynamic instanceId = Guid.Parse(Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     WexflowServer.WexflowEngine.ResumeWorkflow(workflowId, instanceId);
+                    authorized = true;
                 }
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         WexflowServer.WexflowEngine.ResumeWorkflow(workflowId, instanceId);
                     }
+                }
+
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
                 }
 
 
@@ -969,21 +998,27 @@ namespace Wexflow.Server
                 dynamic instanceId = Guid.Parse(Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     res = WexflowServer.WexflowEngine.ApproveWorkflow(workflowId, instanceId, username);
+                    authorized = true;
                 }
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.ApproveWorkflow(workflowId, instanceId, username);
                     }
                 }
 
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
+                }
 
                 var resStr = JsonConvert.SerializeObject(res);
                 var resBytes = Encoding.UTF8.GetBytes(resStr);
@@ -1011,19 +1046,26 @@ namespace Wexflow.Server
                 dynamic instanceId = Guid.Parse(Request.Query["i"].ToString());
 
                 var user = WexflowServer.WexflowEngine.GetUser(username);
+                var authorized = false;
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
                     res = WexflowServer.WexflowEngine.RejectWorkflow(workflowId, instanceId, username);
+                    authorized = true;
                 }
                 else if (user.UserProfile == Core.Db.UserProfile.Administrator)
                 {
                     var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == workflowId).DbId;
-                    var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
-                    if (check)
+                    authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
+                    if (authorized)
                     {
                         res = WexflowServer.WexflowEngine.RejectWorkflow(workflowId, instanceId, username);
                     }
+                }
+
+                if (!authorized)
+                {
+                    return Nancy.HttpStatusCode.Unauthorized;
                 }
 
 
@@ -1138,11 +1180,31 @@ namespace Wexflow.Server
             Get(GetPattern("xml/{id}"), args =>
             {
                 var username = Context.CurrentUser.Identity.Name;
-
+                var user = WexflowServer.WexflowEngine.GetUser(username);
 
                 Core.Workflow wf = WexflowServer.WexflowEngine.GetWorkflow(args.id);
                 if (wf != null)
                 {
+                    var authorized = false;
+
+                    if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                    {
+                        authorized = true;
+                    }
+                    else if (user.UserProfile == Core.Db.UserProfile.Administrator)
+                    {
+                        authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), wf.DbId);
+                    }
+                    else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                    {
+                        authorized = false;
+                    }
+
+                    if (!authorized)
+                    {
+                        return Nancy.HttpStatusCode.Unauthorized;
+                    }
+
                     //var xmlStr = JsonConvert.SerializeObject(wf.XDoc.ToString());
                     var xmlStr = JsonConvert.SerializeObject(wf.Xml);
                     var xmlBytes = Encoding.UTF8.GetBytes(xmlStr);
@@ -1170,11 +1232,31 @@ namespace Wexflow.Server
             Get(GetPattern("json/{id}"), args =>
             {
                 var username = Context.CurrentUser.Identity.Name;
-
+                var user = WexflowServer.WexflowEngine.GetUser(username);
 
                 Core.Workflow wf = WexflowServer.WexflowEngine.GetWorkflow(args.id);
                 if (wf != null)
                 {
+                    var authorized = false;
+
+                    if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
+                    {
+                        authorized = true;
+                    }
+                    else if (user.UserProfile == Core.Db.UserProfile.Administrator)
+                    {
+                        authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), wf.DbId);
+                    }
+                    else if (user.UserProfile == Core.Db.UserProfile.Restricted)
+                    {
+                        authorized = false;
+                    }
+
+                    if (!authorized)
+                    {
+                        return Nancy.HttpStatusCode.Unauthorized;
+                    }
+
                     var variables = new List<Contracts.Variable>();
                     foreach (var variable in wf.LocalVariables)
                     {
