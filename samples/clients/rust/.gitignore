@@ -1,0 +1,41 @@
+# Rust build files
+/target/
+
+# Cargo generated files
+**/Cargo.lock
+
+# Ignore editor swap files and project configs
+*.swp
+*.swo
+*.idea/
+*.vscode/
+*.DS_Store
+*.iml
+
+# Backup files
+*~
+*.bak
+
+# Logs
+*.log
+
+# MacOS files
+.DS_Store
+
+# Windows thumbnail cache files
+Thumbs.db
+
+# Other system files
+desktop.ini
+
+# Ignore generated docs
+/doc/
+
+# Ignore coverage files
+coverage/
+
+# If you use JetBrains IDEs
+.idea/
+
+# If you use Visual Studio Code
+.vscode/
