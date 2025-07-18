@@ -68,6 +68,7 @@ namespace Wexflow.Server
             // SSE
             //
             WorkflowStatusSse();
+            StatusCountSse();
 
             //
             // Dashboard
@@ -479,6 +480,49 @@ namespace Wexflow.Server
                 cancellation.Dispose();
             });
         }
+
+        /// <summary>
+        /// Maps the Server-Sent Events (SSE) endpoint for streaming real-time <see cref="StatusCount"/> updates.
+        /// Clients connecting to this endpoint receive updates whenever the workflow status counts change.
+        /// </summary>
+        private void StatusCountSse()
+        {
+            _ = _endpoints.MapGet(GetPattern("sse/status-count"), async context =>
+            {
+                context.Response.Headers["Content-Type"] = "text/event-stream";
+                context.Response.Headers["Cache-Control"] = "no-cache";
+                context.Response.Headers["Connection"] = "keep-alive";
+
+                var cancellationToken = context.RequestAborted;
+
+                // Add this response to the list of SSE subscribers
+                WexflowServer.StatusCountClients.TryAdd(context.Response, true);
+
+                try
+                {
+                    // Keep the connection open until the client disconnects
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        // Optionally send a comment to keep the connection alive every 15 seconds
+                        await context.Response.WriteAsync(": keep-alive\n\n", cancellationToken);
+                        await context.Response.Body.FlushAsync(cancellationToken);
+
+                        // Wait before sending next keep-alive or update
+                        await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(15), cancellationToken);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // Client disconnected
+                }
+                finally
+                {
+                    // Remove this client from the subscribers list on disconnect
+                    WexflowServer.StatusCountClients.TryRemove(context.Response, out _);
+                }
+            });
+        }
+
 
         /// <summary>
         /// Search for workflows.

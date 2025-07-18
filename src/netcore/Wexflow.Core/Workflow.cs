@@ -243,6 +243,12 @@ namespace Wexflow.Core
         public Db.Status JobStatus { get; private set; }
         #endregion
 
+        /// <summary>
+        /// Occurs when the status of any workflow changes, such as when a workflow ends, stops, or transitions status.
+        /// Subscribers can use this event to react to workflow status updates.
+        /// </summary>
+        public static event Action OnStatusChanged;
+
         private readonly ManualResetEvent _event = new(true);
         private readonly Queue<Job> _jobsQueue;
         private Thread _thread;
@@ -1083,7 +1089,7 @@ namespace Wexflow.Core
         {
             var resultSuccess = true;
 
-            var jobStatus = Db.Status.Running;
+            JobStatus = Db.Status.Running;
             try
             {
                 lock (padlock)
@@ -1091,7 +1097,6 @@ namespace Wexflow.Core
                     StartedOn = DateTime.Now;
                     StartedBy = startedBy;
                     InstanceId = instanceId;
-                    JobStatus = Db.Status.Running;
                     Jobs.Add(InstanceId, this);
 
                     //
@@ -1155,6 +1160,9 @@ namespace Wexflow.Core
                         Description = Description
                     };
 
+                    // broadcast statusCount
+                    OnStatusChanged?.Invoke();
+
                     try
                     {
                         IsRunning = true;
@@ -1177,7 +1185,6 @@ namespace Wexflow.Core
                                 {
                                     LogWorkflowFinished();
                                     Database.IncrementRejectedCount();
-                                    jobStatus = Db.Status.Rejected;
                                     entry.Status = Db.Status.Rejected;
                                     JobStatus = Db.Status.Rejected;
                                     entry.StatusDate = DateTime.Now;
@@ -1191,7 +1198,6 @@ namespace Wexflow.Core
                                     {
                                         LogWorkflowFinished();
                                         Database.IncrementDoneCount();
-                                        jobStatus = Db.Status.Done;
                                         entry.Status = Db.Status.Done;
                                         JobStatus = Db.Status.Done;
                                         entry.StatusDate = DateTime.Now;
@@ -1203,7 +1209,6 @@ namespace Wexflow.Core
                                     {
                                         LogWorkflowFinished();
                                         Database.IncrementWarningCount();
-                                        jobStatus = Db.Status.Warning;
                                         entry.Status = Db.Status.Warning;
                                         JobStatus = Db.Status.Warning;
                                         entry.StatusDate = DateTime.Now;
@@ -1216,7 +1221,6 @@ namespace Wexflow.Core
                                     {
                                         LogWorkflowFinished();
                                         Database.IncrementFailedCount();
-                                        jobStatus = Db.Status.Failed;
                                         entry.Status = Db.Status.Failed;
                                         JobStatus = Db.Status.Failed;
                                         entry.StatusDate = DateTime.Now;
@@ -1260,7 +1264,6 @@ namespace Wexflow.Core
                                         }
                                         LogWorkflowFinished();
                                         Database.IncrementWarningCount();
-                                        jobStatus = Db.Status.Warning;
                                         entry.Status = Db.Status.Warning;
                                         JobStatus = Db.Status.Warning;
                                         entry.StatusDate = DateTime.Now;
@@ -1277,7 +1280,6 @@ namespace Wexflow.Core
                                         }
                                         LogWorkflowFinished();
                                         Database.IncrementFailedCount();
-                                        jobStatus = Db.Status.Failed;
                                         entry.Status = Db.Status.Failed;
                                         JobStatus = Db.Status.Failed;
                                         entry.StatusDate = DateTime.Now;
@@ -1294,7 +1296,6 @@ namespace Wexflow.Core
                                         }
                                         LogWorkflowFinished();
                                         Database.IncrementRejectedCount();
-                                        jobStatus = Db.Status.Rejected;
                                         entry.Status = Db.Status.Rejected;
                                         JobStatus = Db.Status.Rejected;
                                         entry.StatusDate = DateTime.Now;
@@ -1330,7 +1331,6 @@ namespace Wexflow.Core
                         }
                         Database.DecrementRunningCount();
                         Database.IncrementFailedCount();
-                        jobStatus = Db.Status.Failed;
                         entry.Status = Db.Status.Failed;
                         JobStatus = Db.Status.Failed;
                         entry.StatusDate = DateTime.Now;
@@ -1344,7 +1344,10 @@ namespace Wexflow.Core
                     finally
                     {
                         // broadcast final status
-                        WexflowEngine.UpdateJobStatus(Id, InstanceId.ToString(), jobStatus.ToString());
+                        WexflowEngine.UpdateJobStatus(Id, InstanceId.ToString(), JobStatus.ToString());
+
+                        // broadcast statusCount
+                        OnStatusChanged?.Invoke();
 
                         // Cleanup
                         if (!_stopCalled)
@@ -1887,6 +1890,9 @@ namespace Wexflow.Core
                     // broadcast final status
                     WexflowEngine.UpdateJobStatus(Id, InstanceId.ToString(), Db.Status.Stopped.ToString());
 
+                    // broadcast statusCount
+                    OnStatusChanged?.Invoke();
+
                     //if (_jobsQueue.Count > 0)
                     //{
                     //    var job = _jobsQueue.Dequeue();
@@ -1949,6 +1955,10 @@ namespace Wexflow.Core
                     entry.Status = Db.Status.Pending;
                     entry.StatusDate = DateTime.Now;
                     Database.UpdateEntry(entry.GetDbId(), entry);
+
+                    // broadcast statusCount
+                    OnStatusChanged?.Invoke();
+
                     return true;
                 }
                 catch (Exception e)
@@ -1985,6 +1995,9 @@ namespace Wexflow.Core
                     entry.Status = Db.Status.Running;
                     entry.StatusDate = DateTime.Now;
                     Database.UpdateEntry(entry.GetDbId(), entry);
+
+                    // broadcast statusCount
+                    OnStatusChanged?.Invoke();
                 }
                 catch (Exception e)
                 {

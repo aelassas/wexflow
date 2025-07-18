@@ -5,6 +5,7 @@
     return {
         Hostname: hostname,
         Port: port,
-        Uri: "http://" + hostname + ":" + port + "/api/v1/"
+        Uri: "http://" + hostname + ":" + port + "/api/v1/",
+        SSE: true,
     };
 })();

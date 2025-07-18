@@ -2,15 +2,20 @@
 using log4net.Config;
 using log4net.Repository;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Xml;
 using Wexflow.Core;
+using Wexflow.Core.Db;
 using Wexflow.Core.PollingFileSystemWatcher;
 
 namespace Wexflow.Server
@@ -22,6 +27,52 @@ namespace Wexflow.Server
         public static PollingFileSystemWatcher Watcher { get; set; }
         public static IConfiguration Config { get; set; }
         public static WexflowEngine WexflowEngine { get; set; }
+
+        /// <summary>
+        /// A thread-safe collection of currently connected SSE client HTTP responses for status count updates.
+        /// Key: HttpResponse of the SSE client connection.
+        /// Value: dummy bool just to utilize ConcurrentDictionary as a set.
+        /// </summary>
+        public static ConcurrentDictionary<HttpResponse, bool> StatusCountClients { get; } = new();
+
+        /// <summary>
+        /// Broadcasts the given <see cref="StatusCount"/> object to all connected SSE clients.
+        /// Sends the serialized JSON as an SSE event named "statusCount".
+        /// </summary>
+        /// <param name="statusCount">The current status counts to broadcast.</param>
+        public static void BroadcastStatusCount(StatusCount statusCount)
+        {
+            // Serialize the StatusCount object to JSON using Newtonsoft.Json
+            var json = JsonConvert.SerializeObject(statusCount);
+
+            // Format the SSE message with event name and data
+            var message = $"event: statusCount\ndata: {json}\n\n";
+            var data = Encoding.UTF8.GetBytes(message);
+
+            foreach (var kvp in StatusCountClients)
+            {
+                var response = kvp.Key;
+                if (!response.HttpContext.RequestAborted.IsCancellationRequested)
+                {
+                    try
+                    {
+                        // Write asynchronously but fire-and-forget here (consider awaiting if you want)
+                        response.Body.WriteAsync(data, 0, data.Length);
+                        response.Body.FlushAsync();
+                    }
+                    catch
+                    {
+                        // Remove disconnected clients
+                        StatusCountClients.TryRemove(response, out _);
+                    }
+                }
+                else
+                {
+                    // Remove aborted clients
+                    StatusCountClients.TryRemove(response, out _);
+                }
+            }
+        }
 
         public static void Main()
         {
@@ -111,6 +162,13 @@ namespace Wexflow.Server
                 {
                     Logger.Info("Records hot folder is disabled.");
                 }
+
+                // Broadcast the updated StatusCount
+                Core.Workflow.OnStatusChanged += () =>
+                {
+                    var statusCount = WexflowEngine.GetStatusCount();
+                    BroadcastStatusCount(statusCount);
+                };
 
                 WexflowEngine.Run();
             }

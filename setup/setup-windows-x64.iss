@@ -86,7 +86,8 @@ Source: "..\src\admin\Wexflow.Admin\assets\*"; DestDir: "{app}\Admin\assets"; Fl
 Source: "..\src\admin\Wexflow.Admin\css\*.css"; DestDir: "{app}\Admin\css"; Flags: ignoreversion
 Source: "..\src\admin\Wexflow.Admin\css\images\*"; DestDir: "{app}\Admin\css\images"; Flags: ignoreversion
 
-Source: "..\src\admin\Wexflow.Admin\js\*"; DestDir: "{app}\Admin\js"; Flags: ignoreversion recursesubdirs
+Source: "..\src\admin\Wexflow.Admin\js\*"; DestDir: "{app}\Admin\js"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\src\admin\Wexflow.Admin\js\settings.net.js"; DestDir: "{app}\Admin\js"; DestName: "settings.js"; Flags: ignoreversion
 
 ; Wexflow's Documentation
 Source: "..\src\net\Wexflow.Core\Workflow.xml"; DestDir: "{app}\Documentation\"; DestName: "_Workflow.xml"; Flags: ignoreversion
@@ -287,6 +288,10 @@ Source: "..\src\net\Wexflow.Scripts.RunAllWorkflows\bin\x64\Release\Wexflow.Scri
 Source: "..\src\net\Wexflow.Scripts.RunAllWorkflows\bin\x64\Release\*.dll"; DestDir: "{app}\Wexflow.Scripts.RunAllWorkflows"; Flags: ignoreversion recursesubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+[Run]
+Filename: "{cmd}"; Parameters: "/C del /Q ""{app}\Admin\js\settings.net.js"""; StatusMsg: "Cleaning up config files..."
+Filename: "{cmd}"; Parameters: "/C del /Q ""{app}\Admin\js\settings.netcore.js"""; StatusMsg: "Cleaning up config files..."
 
 [Icons]
 Name: "{commonprograms}\{#MyAppName}\Manager"; Filename: "{app}\Manager\{#MyAppExeName}";

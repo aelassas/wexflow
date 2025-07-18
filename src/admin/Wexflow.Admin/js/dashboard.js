@@ -99,6 +99,25 @@
     let from = null;
     let to = null;
 
+    let previousStatusCount = null;
+    const debounceEntriesTimeout = 300; // ms
+
+    function shouldUpdateEntries() {
+        const entriesTable = document.querySelector("#entries-table > tbody");
+
+        return page === 1 && entriesTable && entriesTable.scrollTop === 0;
+    }
+
+    function updateEntries() {
+        if (shouldUpdateEntries()) {
+            clearTimeout(refreshTimeout);
+            refreshTimeout = setTimeout(() => {
+                loadEntries();
+                updatePager();
+            }, debounceEntriesTimeout); // wait 300ms before refreshing (debounce)
+        }
+    }
+
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
@@ -106,7 +125,7 @@
 
         window.Common.post(uri + "/validate-user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u ) {
+                if (!u) {
                     window.Common.redirectToLoginPage();
                 } else {
 
@@ -120,7 +139,7 @@
                         };
 
                         document.getElementById("spn-username").innerHTML = " (" + u.Username + ")";
-                        
+
                         if (u.UserProfile === 0 || u.UserProfile === 1) {
                             lnkRecords.style.display = "inline";
                             lnkManager.style.display = "inline";
@@ -154,13 +173,38 @@
                                         window.Common.get(uri + "/entries-count-by-date?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
                                             function (count) {
 
+                                                // Fetch initial status count
                                                 updateStatusCount();
 
-                                                setInterval(function () {
+                                                if (window.Settings.SSE) {
+                                                    // .net 9.0+
 
-                                                    updateStatusCount();
+                                                    // Subscribe to SSE updates
+                                                    try {
+                                                        const evtSource = new EventSource(`${uri}/sse/status-count`)
 
-                                                }, refreshTimeout);
+                                                        evtSource.addEventListener('statusCount', (event) => {
+                                                            const newStatusCount = JSON.parse(event.data);
+                                                            updateStatusCount(newStatusCount);
+
+                                                            updateEntries();
+                                                        })
+
+                                                        evtSource.onerror = (err) => {
+                                                            console.error('SSE connection error:', err)
+                                                        }
+                                                    } catch (err) {
+                                                        console.error('Error connecting to SSE:', err)
+                                                    }
+
+                                                } else {
+                                                    // Backward compatibility with .net 4.8
+                                                    setInterval(function () {
+
+                                                        updateStatusCount();
+
+                                                    }, refreshTimeout);
+                                                }
 
                                                 $(txtFrom).datepicker({
                                                     changeMonth: true,
@@ -259,18 +303,45 @@
             });
     }
 
-    function updateStatusCount() {
-        window.Common.get(uri + "/status-count", function (data) {
-            statusPending.innerHTML = data.PendingCount;
-            statusRunning.innerHTML = data.RunningCount;
-            statusDone.innerHTML = data.DoneCount;
-            statusFailed.innerHTML = data.FailedCount;
-            statusWarning.innerHTML = data.WarningCount;
-            statusDisapproved.innerHTML = data.RejectedCount;
-            statusStopped.innerHTML = data.StoppedCount;
-        }, function () {
-            //alert("An error occured while retrieving workflows. Check Wexflow Web Service Uri and check that Wexflow Windows Service is running correctly.");
-        });
+    function renderStatusCounts(data) {
+        statusPending.innerHTML = data.PendingCount;
+        statusRunning.innerHTML = data.RunningCount;
+        statusDone.innerHTML = data.DoneCount;
+        statusFailed.innerHTML = data.FailedCount;
+        statusWarning.innerHTML = data.WarningCount;
+        statusDisapproved.innerHTML = data.RejectedCount;
+        statusStopped.innerHTML = data.StoppedCount;
+    }
+
+    function updateStatusCount(statusCount) {
+        if (statusCount) {
+            renderStatusCounts(statusCount);
+
+            previousStatusCount = statusCount;
+        } else {
+            window.Common.get(uri + "/status-count", function (data) {
+
+                // update entries if statusCount changes
+                if (previousStatusCount &&
+                    (previousStatusCount.PendingCount !== data.PendingCount ||
+                        previousStatusCount.RunningCount !== data.RunningCount ||
+                        previousStatusCount.DoneCount !== data.DoneCount ||
+                        previousStatusCount.FailedCount !== data.FailedCount ||
+                        previousStatusCount.WarningCount !== data.WarningCount ||
+                        previousStatusCount.RejectedCount !== data.RejectedCount ||
+                        previousStatusCount.StoppedCount !== data.StoppedCount)
+                ) {
+                    updateEntries();
+                }
+
+                renderStatusCounts(data);
+
+                previousStatusCount = data;
+            }, function () {
+                //alert("An error occured while retrieving workflows. Check Wexflow Web Service Uri and check that Wexflow Windows Service is running correctly.");
+            });
+        }
+
     }
 
     function updatePager() {

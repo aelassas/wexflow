@@ -218,6 +218,8 @@
     <Content Include="images\warning-small.png" />
     <Content Include="images\warning.png" />
     <Content Include="index.html" />
+    <Content Include="js\settings.net.js" />
+    <Content Include="js\settings.netcore.js" />
     <Content Include="js\utils\authenticate.js" />
     <Content Include="js\utils\common.js" />
     <Content Include="js\libs\cytoscape-dagre.min.js" />
