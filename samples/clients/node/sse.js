@@ -57,7 +57,7 @@ try {
       // This event is triggered when the workflow job finishes or stops.
       // The SSE data arrives as a JSON-formatted string in event.data.
       // Parse this string into a JavaScript object for easy access to properties.
-      // Check this doc for full list of statuse: 
+      // For the complete list of workflow statuses, see:
       // https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE#statuses
       const data = JSON.parse(event.data)
       console.log('Received SSE JSON:', data)
