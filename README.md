@@ -165,6 +165,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
       1. [Rust Client](https://github.com/aelassas/wexflow/wiki/Rust-Client)
       1. [Ruby Client](https://github.com/aelassas/wexflow/wiki/Ruby-Client)
       1. [Java Client](https://github.com/aelassas/wexflow/wiki/Java-Client)
+      1. [C++ Client](https://github.com/aelassas/wexflow/wiki/CPP-Client)
    1. [Security Considerations](https://github.com/aelassas/wexflow/wiki/RESTful-API#security-considerations)
    1. [Swagger](https://github.com/aelassas/wexflow/wiki/RESTful-API#swagger)
    1. [Workflow Notifications via SSE](https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE)
