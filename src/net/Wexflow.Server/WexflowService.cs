@@ -220,7 +220,7 @@ namespace Wexflow.Server
                 if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
                 {
                     var user = WexflowServer.WexflowEngine.GetUser(username);
-                    if (PasswordHasher.VerifyPassword(password, user.Password))
+                    if (user != null && PasswordHasher.VerifyPassword(password, user.Password))
                     {
                         var token = JwtHelper.GenerateToken(username, _jwtExpireAtMinutes, stayConnected);
 

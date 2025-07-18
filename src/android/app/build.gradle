@@ -1,22 +1,32 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
+    namespace 'com.wexflow'
+
+    compileSdk 35
+
     defaultConfig {
         applicationId "com.wexflow"
-        minSdkVersion 23
-        targetSdkVersion 33
-        compileSdk 33
+        minSdk 23
+        targetSdk 33
         versionCode 1
-        versionName "7.4"
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        versionName "9.4"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.wexflow'
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     lint {
         abortOnError false
         checkReleaseBuilds false
@@ -24,12 +34,13 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.9.0'
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.preference:preference:1.2.1'
+
+    testImplementation 'junit:junit:4.13.2'  // updated junit
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.6.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    api 'androidx.appcompat:appcompat:1.6.1'
-    testImplementation 'junit:junit:4.12'
-    implementation 'androidx.preference:preference:1.2.0'
+    }
 }

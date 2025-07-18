@@ -25,8 +25,7 @@ import java.util.concurrent.Executors;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    public static String Username = "";
-    public static String Password = "";
+    public static String Token = "";
 
     private SharedPreferences sharedPref;
 
@@ -80,39 +79,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (!username.isEmpty() && !password.isEmpty()) {
-            Username = username;
-            Password = md5(password);
             UserLoginTask task = new UserLoginTask(username, password);
             executor.execute(() -> {
-                Boolean success = task.doInBackground();
-                handler.post(() -> task.onPostExecute(success));
+                String token = task.doInBackground();
+                handler.post(() -> task.onPostExecute(token));
+                Token = token;
             });
         }
-    }
-
-    private String md5(final String s) {
-        final String MD5 = "MD5";
-        try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
-            digest.update(s.getBytes());
-            byte[] messageDigest = digest.digest();
-
-            // Create Hex String
-            StringBuilder hexString = new StringBuilder();
-            for (byte aMessageDigest : messageDigest) {
-                StringBuilder h = new StringBuilder(Integer.toHexString(0xFF & aMessageDigest));
-                while (h.length() < 2) {
-                    h.insert(0, "0");
-                }
-                hexString.append(h);
-            }
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
     /**
@@ -135,39 +108,40 @@ public class LoginActivity extends AppCompatActivity {
             userNotFound = false;
         }
 
-        protected Boolean doInBackground() {
+        protected String doInBackground() {
 
             try {
                 String uri = sharedPref.getString(SettingsActivity.KEY_PREF_WEXFLOW_URI, getResources().getString(R.string.pref_wexflow_defualt_value));
                 WexflowServiceClient client = new WexflowServiceClient(uri);
-                String passwordHash = md5(this.mPassword);
-                User user = client.getUser(mUsername, passwordHash, mUsername);
+                String token = client.login(mUsername, mPassword);
+
+                User user = client.getUser(token, mUsername);
 
                 String password = user.getPassword();
                 UserProfile up = user.getUserProfile();
 
-                if ((up.equals(UserProfile.SuperAdministrator) || up.equals(UserProfile.Administrator)) && password.equals(passwordHash)) {
-                    return true;
+                if ((up.equals(UserProfile.SuperAdministrator) || up.equals(UserProfile.Administrator))) {
+                    return token;
                 } else {
                     if (up.equals(UserProfile.Restricted)) {
                         restrictedAccess = true;
                     }
 
-                    return false;
+                    return "";
                 }
 
             } catch (JSONException e) {
                 userNotFound = true;
-                return false;
+                return "";
             } catch (Exception e) {
                 errorOccurred = true;
-                return false;
+                return "";
             }
 
         }
 
-        protected void onPostExecute(final Boolean success) {
-            if (success) {
+        protected void onPostExecute(final String token) {
+            if (!token.isEmpty()) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 LoginActivity.this.startActivity(intent);
             } else {
@@ -176,20 +150,15 @@ public class LoginActivity extends AppCompatActivity {
                     mUsernameView.setError(getString(R.string.error_user_not_found));
                     mUsernameView.requestFocus();
                 } else {
-                    if (errorOccurred) {
-                        mPasswordView.setError(getString(R.string.error_exception));
-                    } else {
-                        if (restrictedAccess)
-                            mPasswordView.setError(getString(R.string.error_restricted_access));
-                        else {
-                            mPasswordView.setError(getString(R.string.error_incorrect_password));
-                        }
+                    if (restrictedAccess)
+                        mPasswordView.setError(getString(R.string.error_restricted_access));
+                    else {
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
                     }
                     mPasswordView.requestFocus();
                 }
             }
         }
-
 
     }
 }

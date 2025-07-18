@@ -2,7 +2,7 @@
     <string name="app_name">Wexflow</string>
     <string name="menu_settings">Settings</string>
     <string name="pref_wexflow_uri">Wexflow Web Service URI</string>
-    <string name="pref_wexflow_defualt_value">http://192.168.0.197:8000/api/v1</string>
+    <string name="pref_wexflow_defualt_value">http://192.168.1.108:8000/api/v1</string>
     <string name="btnStart">Start</string>
     <string name="btnSuspend">Suspend</string>
     <string name="btnResume">Resume</string>
@@ -21,7 +21,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_incorrect_password">This password is incorrect.</string>
+    <string name="error_incorrect_password">Incorrect username or password.</string>
     <string name="error_restricted_access">This user does not have enough rights to access this application.</string>
     <string name="error_exception">An error occurred during authentication.</string>
     <string name="error_field_required">This field is required.</string>
