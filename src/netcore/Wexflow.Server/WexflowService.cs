@@ -403,7 +403,8 @@ namespace Wexflow.Server
                     throw new BadHttpRequestException("Missing or invalid workflowId or jobId.");
                 }
 
-                if (!WexflowServer.WexflowEngine.Workflows.Any(wf => wf.Id == workflowId))
+                var workflow = WexflowServer.WexflowEngine.Workflows.FirstOrDefault(wf => wf.Id == workflowId);
+                if (workflow == null)
                 {
                     throw new BadHttpRequestException("Invalid workflowId.");
                 }
@@ -424,14 +425,15 @@ namespace Wexflow.Server
                         tcs.TrySetResult();
                         return;
                     }
-
                     _ = System.Threading.Tasks.Task.Run(async () =>
                     {
                         var json = JsonConvert.SerializeObject(new
                         {
                             workflowId,
                             jobId,
-                            status
+                            status,
+                            name = workflow.Name,
+                            description = workflow.Description,
                         });
 
                         var message = $"data: {json}\n\n";
@@ -441,7 +443,6 @@ namespace Wexflow.Server
                         broadcaster.Unsubscribe(workflowId, jobId, Send);
                         tcs.TrySetResult();
                     });
-
                 }
 
                 broadcaster.Subscribe(workflowId, jobId, Send);

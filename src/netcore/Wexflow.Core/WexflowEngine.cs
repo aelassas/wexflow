@@ -248,10 +248,10 @@ namespace Wexflow.Core
         /// </summary>
         /// <param name="workflowId">The identifier of the workflow containing the job.</param>
         /// <param name="jobId">The identifier of the job whose status is updated.</param>
-        /// <param name="newStatus">The new status value of the job.</param>
-        public void UpdateJobStatus(int workflowId, string jobId, string newStatus)
+        /// <param name="status">The status of the job.</param>
+        public void UpdateJobStatus(int workflowId, string jobId, string status)
         {
-            _broadcaster.Broadcast(workflowId, jobId, newStatus);
+            _broadcaster.Broadcast(workflowId, jobId, status);
         }
 
         /// <summary>

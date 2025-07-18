@@ -59,8 +59,8 @@ try {
       // Parse this string into a JavaScript object for easy access to properties.
       const data = JSON.parse(event.data)
       console.log('Received SSE JSON:', data)
-      
-      // Access properties like data.workflowId, data.jobId, data.status
+
+      // Access properties like data.workflowId, data.jobId, data.status, data.name, data.description
 
       // Close connection if needed, e.g. after final status received
       es.close()
