@@ -69,6 +69,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 * 100+ built-in activities
 * 6+ database engines supported
 * Extensible architecture for custom activities
+* [Push Notifications via SSE - Get real-time workflow job updates without polling](https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE)
 
 ### UI & Visualization
 * Powerful web dashboard
@@ -83,6 +84,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 ### Internationalization & APIs
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
+* [REST API Clients – Official examples for popular languages (C#, JS, PHP, Python, Go, Rust, Ruby, Java, C++)](https://github.com/aelassas/wexflow/wiki/RESTful-API#sample-clients)
 * Extensible with Custom Activities via NuGet
 
 ### Security & Performance
