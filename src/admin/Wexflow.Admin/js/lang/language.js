@@ -15,6 +15,7 @@
     //
     // en
     //
+    languages["en"]["disconnected"] = "Disconnected from server";
     languages["en"]["language"] = "Language";
     languages["en"]["help"] = "Help";
     languages["en"]["about"] = "About";
@@ -246,9 +247,10 @@
     languages["en"]["toast-workflow-retry-count-error"] = "Task Retries is invalid.";
     languages["en"]["toast-workflow-retry-timeout-error"] = "Task Retries Timeout is invalid.";
 
-    // 
+    //
     // fr
     //
+    languages["fr"]["disconnected"] = "Déconnecté du serveur";
     languages["fr"]["language"] = "Langue";
     languages["fr"]["help"] = "Aide";
     languages["fr"]["about"] = "À propos";
@@ -483,6 +485,7 @@
     //
     // da
     //
+    languages["da"]["disconnected"] = "Afbrudt forbindelse til server";
     languages["da"]["language"] = "Sprog";
     languages["da"]["help"] = "Hjælp";
     languages["da"]["about"] = "Om";

@@ -15,6 +15,6 @@ window.Settings = (function () {
         Port: port,
         Uri: "http://" + hostname + ":" + port + "/api/v1/",
         SSE: true,
-        Version: "net9"
+        Version: "netcore",
     };
 })();

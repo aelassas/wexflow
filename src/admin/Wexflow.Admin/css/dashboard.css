@@ -128,3 +128,16 @@
 #entries-table img {
     margin-right: 10px;
 }
+
+#sse-status {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: #D9433A;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    display: none;
+}

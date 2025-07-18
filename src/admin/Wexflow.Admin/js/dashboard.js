@@ -29,6 +29,8 @@
         document.getElementById("lbl-to").innerHTML = language.get("lbl-to");
         document.getElementById("btn-search").value = language.get("btn-search");
 
+        document.getElementById("sse-status").innerHTML = language.get("disconnected");
+
         let statusPendingLabels = document.getElementsByClassName("st-pending");
         for (let i = 0; i < statusPendingLabels.length; i++) {
             statusPendingLabels[i].innerHTML = language.get("status-pending-label");
@@ -99,25 +101,6 @@
     let from = null;
     let to = null;
 
-    let previousStatusCount = null;
-    const debounceEntriesTimeout = 300; // ms
-
-    function shouldUpdateEntries() {
-        const entriesTable = document.querySelector("#entries-table > tbody");
-
-        return page === 1 && entriesTable && entriesTable.scrollTop === 0;
-    }
-
-    function updateEntries() {
-        if (shouldUpdateEntries()) {
-            clearTimeout(refreshTimeout);
-            refreshTimeout = setTimeout(() => {
-                loadEntries();
-                updatePager();
-            }, debounceEntriesTimeout); // wait 300ms before refreshing (debounce)
-        }
-    }
-
     if (suser === null || suser === "") {
         window.Common.redirectToLoginPage();
     } else {
@@ -173,11 +156,26 @@
                                         window.Common.get(uri + "/entries-count-by-date?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime(),
                                             function (count) {
 
-                                                // Fetch initial status count
-                                                updateStatusCount();
+                                                // Fetch initial status count and entries
+                                                updateStatusCountAndEntries();
 
-                                                if (window.Settings.SSE) {
-                                                    // .net 9.0+
+                                                // Default version is "net48", which works for both .NET 4.8 and .NET 9.0+
+                                                // To enable SSE, Version must be "netcore" and SSE must be true
+                                                const version = window.Settings.Version || "net48";
+                                                const sse = version === "netcore" && window.Settings.SSE;
+
+                                                if (sse) {
+                                                    // .NET 9.0+ with SSE support
+
+                                                    const sseStatusEl = document.getElementById("sse-status");
+
+                                                    function showDisconnectedBadge() {
+                                                        sseStatusEl.style.display = "block";
+                                                    }
+
+                                                    function hideDisconnectedBadge() {
+                                                        sseStatusEl.style.display = "none";
+                                                    }
 
                                                     // Subscribe to SSE updates
                                                     try {
@@ -185,23 +183,28 @@
 
                                                         evtSource.addEventListener('statusCount', (event) => {
                                                             const newStatusCount = JSON.parse(event.data);
-                                                            updateStatusCount(newStatusCount);
-
-                                                            updateEntries();
+                                                            updateStatusCountAndEntries(newStatusCount);
                                                         })
 
+                                                        evtSource.onopen = () => {
+                                                            // Connection established or re-established
+                                                            hideDisconnectedBadge();
+                                                        };
+
                                                         evtSource.onerror = (err) => {
-                                                            console.error('SSE connection error:', err)
+                                                            // Connection lost — will auto-retry in background
+                                                            console.warn("SSE disconnected. Retrying...");
+                                                            showDisconnectedBadge();
                                                         }
                                                     } catch (err) {
                                                         console.error('Error connecting to SSE:', err)
                                                     }
 
                                                 } else {
-                                                    // Backward compatibility with .net 4.8
+                                                    // Fallback for .NET 4.8 or when SSE is disabled
                                                     setInterval(function () {
 
-                                                        updateStatusCount();
+                                                        updateStatusCountAndEntries(); // Polling fallback
 
                                                     }, refreshTimeout);
                                                 }
@@ -303,6 +306,25 @@
             });
     }
 
+    let previousStatusCount = null;
+    const debounceEntriesTimeout = 300; // ms
+
+    function shouldUpdateEntries() {
+        const entriesTable = document.querySelector("#entries-table > tbody");
+
+        return page === 1 && entriesTable && entriesTable.scrollTop === 0;
+    }
+
+    function updateEntries() {
+        if (shouldUpdateEntries()) {
+            clearTimeout(refreshTimeout);
+            refreshTimeout = setTimeout(() => {
+                loadEntries();
+                updatePager();
+            }, debounceEntriesTimeout); // wait before refreshing (debounce)
+        }
+    }
+
     function renderStatusCounts(data) {
         statusPending.innerHTML = data.PendingCount;
         statusRunning.innerHTML = data.RunningCount;
@@ -313,12 +335,16 @@
         statusStopped.innerHTML = data.StoppedCount;
     }
 
-    function updateStatusCount(statusCount) {
+    function updateStatusCountAndEntries(statusCount) {
         if (statusCount) {
+            // sse
             renderStatusCounts(statusCount);
+
+            updateEntries();
 
             previousStatusCount = statusCount;
         } else {
+            // polling
             window.Common.get(uri + "/status-count", function (data) {
 
                 // update entries if statusCount changes
