@@ -450,12 +450,22 @@ namespace Wexflow.Clients.Manager
             var about = _resources.GetString("Form1_toolStripMenuItem1_Click_About");
             var title = _resources.GetString("Form1_toolStripMenuItem1_Click_About_Title");
 
-            if (MessageBox.Show(about
-                , title
-                , MessageBoxButtons.YesNo
-                , MessageBoxIcon.Information) == DialogResult.Yes)
+            var result = MessageBox.Show(
+                about,
+                title,
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Information
+            );
+
+            switch (result)
             {
-                _ = Process.Start("https://github.com/aelassas/Wexflow/releases/latest");
+                case DialogResult.OK:
+                    _ = Process.Start("https://github.com/aelassas/Wexflow/releases/latest");
+                    break;
+                case DialogResult.Cancel:
+                case DialogResult.None:
+                    // User clicked No or closed the dialog — do nothing
+                    break;
             }
         }
 
