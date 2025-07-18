@@ -38,18 +38,6 @@ class WexflowServiceClient {
         disableKeepAlive();
     }
 
-    // Simple method to extract access_token from JSON response
-    private String parseAccessToken(String json) {
-        // This is a naive parse, for production use a JSON library like Jackson or Gson
-        String tokenKey = "\"access_token\":\"";
-        int start = json.indexOf(tokenKey);
-        if (start == -1) return null;
-        start += tokenKey.length();
-        int end = json.indexOf("\"", start);
-        if (end == -1) return null;
-        return json.substring(start, end);
-    }
-
     public String login(String username, String password) throws Exception {
         HttpURLConnection conn = null;
 
