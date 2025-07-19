@@ -96,7 +96,7 @@ async fn listen_to_sse(client: &Client, url: &str, token: &str) -> Result<(), Bo
                             serde_json::to_string_pretty(&value)?
                         );
                         println!("SSE connection closed");
-                        return Ok(()); // Like JS code: exit after first message
+                        return Ok(()); // Exit after first message
                     }
                     Err(err) => {
                         println!("Failed to parse SSE JSON: {}", err);

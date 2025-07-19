@@ -49,7 +49,7 @@ def listen_to_sse(url, token):
             data = json.loads(event.data)
             print('Received SSE JSON:')
             print(json.dumps(data, indent=2))
-            break  # Like JS code, stop after first message
+            break  # Stop after first message
         except Exception as e:
             print(f'Failed to parse SSE JSON: {e}')
             break

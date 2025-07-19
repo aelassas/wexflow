@@ -68,7 +68,7 @@ async Task ListenToSseAsync(string url, string token)
         var doc = JsonDocument.Parse(json);
         Console.WriteLine("Received SSE JSON:");
         Console.WriteLine(doc.RootElement.ToString());
-        break; // Close after first message like original code
+        break; // Close after first message
       }
       catch (Exception ex)
       {

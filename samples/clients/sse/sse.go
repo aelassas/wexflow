@@ -117,7 +117,7 @@ func listenToSSE(url, token string) error {
 				out, _ := json.MarshalIndent(parsed, "", "  ")
 				fmt.Println(string(out))
 			}
-			break // Close after first SSE event like the JS code
+			break // Close after first SSE event
 		}
 	}
 
