@@ -339,7 +339,6 @@
         if (statusCount) {
             // sse
             renderStatusCounts(statusCount);
-
             updateEntries();
 
             previousStatusCount = statusCount;
@@ -357,10 +356,14 @@
                         previousStatusCount.RejectedCount !== data.RejectedCount ||
                         previousStatusCount.StoppedCount !== data.StoppedCount)
                 ) {
+                    renderStatusCounts(data);
                     updateEntries();
                 }
 
-                renderStatusCounts(data);
+                // first fetch
+                if (!previousStatusCount) {
+                    renderStatusCounts(data);
+                }
 
                 previousStatusCount = data;
             }, function () {
