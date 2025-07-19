@@ -27,6 +27,7 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 * [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 * [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
 
+<!--
 ## Admin Panel Login
 
 Once Wexflow is installed, you can access the admin panel at:
@@ -36,6 +37,7 @@ Once Wexflow is installed, you can access the admin panel at:
 - **Password:** `wexflow2018`
 
 **Important:** For your security, change the default password after your first login.
+-->
 
 ## Is Wexflow a Business Process Management Solution?
 
