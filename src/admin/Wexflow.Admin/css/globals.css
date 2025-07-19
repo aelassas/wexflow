@@ -36,6 +36,12 @@
         float: right;
     }
 
+    #header #github-btn {
+        float: right;
+        margin-top: 11px;
+        margin-right: 20px;
+    }
+
 #lang {
     margin-top: 10px;
     margin-right: 20px;
