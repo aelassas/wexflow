@@ -164,6 +164,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
       1. [Python SSE Client](https://github.com/aelassas/wexflow/wiki/Python-SSE-Client)
       1. [Go SSE Client](https://github.com/aelassas/wexflow/wiki/Go-SSE-Client)
       1. [Rust SSE Client](https://github.com/aelassas/wexflow/wiki/Rust-SSE-Client)
+      1. [Ruby SSE Client](https://github.com/aelassas/wexflow/wiki/Ruby-SSE-Client)
       1. [Java SSE Client](https://github.com/aelassas/wexflow/wiki/Java-SSE-Client)
       1. [C++ SSE Client](https://github.com/aelassas/wexflow/wiki/CPP-SSE-Client)
    1. [Endpoints](https://github.com/aelassas/wexflow/wiki/RESTful-API#endpoints)
