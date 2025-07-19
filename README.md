@@ -45,6 +45,7 @@ Wexflow excels at automating technical tasks, such as moving or transforming fil
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
 
+<!--
 ## How Does Wexflow Compare?
 
 | Feature / Tool         | **Wexflow**            | Zapier         | Power Automate   | n8n             | Apache Airflow   |
@@ -59,6 +60,7 @@ You can use Wexflow if your processes are mostly system-based, such as back-offi
 | **Best For**           | Devs & Sysadmins       | Non-tech users | Business users   | Devs & startups | Data engineers   |
 
 Wexflow gives you full control, extensibility, and offline capability with no vendor lock-in.
+-->
 
 ## Features
 
@@ -103,6 +105,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" width="160"></a>
 
+<!--
 ## Website Source Code (wexflow.github.io)
 
 The source code for the official Wexflow website is available here:
@@ -118,6 +121,7 @@ The codebase follows the Separation of Concerns (SoC) principle, with a modular 
 The website loads in under 1.5 seconds on slow 4G with **0ms blocking**, **0 layout shift**, and a blazing **Speed Index of 0.8**.
 
 Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
+-->
 
 ## Documentation
 
