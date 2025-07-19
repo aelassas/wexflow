@@ -1,2 +1,5 @@
 *.class
 *.exe
+bin/
+obj/
+target/
