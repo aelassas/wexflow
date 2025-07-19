@@ -346,7 +346,7 @@
             // polling
             window.Common.get(uri + "/status-count", function (data) {
 
-                // update entries if statusCount changes
+                // update statusCount and entries if statusCount changes
                 if (previousStatusCount &&
                     (previousStatusCount.PendingCount !== data.PendingCount ||
                         previousStatusCount.RunningCount !== data.RunningCount ||
