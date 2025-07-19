@@ -329,8 +329,9 @@
                                             break;
                                         }
                                     }
-                                    let url = window.Settings.Uri.trimEnd('/') + "/download-file?p=" + encodeURIComponent(version.FilePath);
-                                    window.open(url, "_self");
+
+                                    let url = window.Common.trimEnd(window.Settings.Uri, '/') + "/download-file?p=" + encodeURIComponent(version.FilePath);
+                                    window.Common.download(url);
                                 };
                             }
 
@@ -398,8 +399,8 @@
 
                                         // Download version
                                         cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                            let url = window.Settings.Uri.trimEnd('/') + "/download-file?p=" + encodeURIComponent(res.FilePath);
-                                            window.open(url, "_self");
+                                            let url = window.Common.trimEnd(window.Settings.Uri, '/') + "/download-file?p=" + encodeURIComponent(res.FilePath);
+                                            window.Common.download(url);
                                         };
 
                                         cell5.querySelector(".btn-delete-version").onclick = function () {
@@ -669,8 +670,8 @@
                                     goToBottom(jBoxContent);
 
                                     cell2.querySelector(".lnk-version-file-name").onclick = function () {
-                                        let url = window.Settings.Uri.trimEnd('/') + + "/download-file?p=" + encodeURIComponent(res.FilePath);
-                                        window.open(url, "_self");
+                                        let url = window.Common.trimEnd(window.Settings.Uri, '/') + "/download-file?p=" + encodeURIComponent(res.FilePath);
+                                        window.Common.download(url);
                                     };
 
                                     cell5.querySelector(".btn-delete-version").onclick = function () {

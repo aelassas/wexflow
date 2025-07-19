@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -74,7 +75,7 @@ namespace Wexflow.Server
             }
         }
 
-        public static void Main()
+        public static void Main(string[] args)
         {
             Config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -93,29 +94,32 @@ namespace Wexflow.Server
 
             JwtHelper.Initialize(Config); // Inject into JwtHelper
 
-            var host = new WebHostBuilder()
-                .UseConfiguration(Config)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel((_, options) =>
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    if (https && File.Exists(pfxFile))
-                    {
-                        options.ListenAnyIP(port, listenOptions =>
-                        {
-                            listenOptions.UseHttps(pfxFile, pfxPassword);
-                        });
-                    }
-                    else
-                    {
-                        // Fallback to HTTP (not recommended for production)
-                        options.ListenAnyIP(port);
-                    }
-
-                    options.AllowSynchronousIO = true;
+                    config.AddConfiguration(Config); // Use existing config
                 })
-                .UseStartup<Startup>()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .ConfigureKestrel(options =>
+                        {
+                            if (https && File.Exists(pfxFile))
+                            {
+                                options.ListenAnyIP(port, listenOptions =>
+                                {
+                                    listenOptions.UseHttps(pfxFile, pfxPassword);
+                                });
+                            }
+                            else
+                            {
+                                options.ListenAnyIP(port);
+                            }
+                        })
+                        .UseStartup<Startup>();
+                })
                 .Build();
-
 
             // Start Wexflow engine
             using (var scope = host.Services.CreateScope())

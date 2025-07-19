@@ -237,7 +237,7 @@ namespace Wexflow.Server
         {
             _ = _endpoints.MapPost(GetPattern("login"), async context =>
             {
-                var json = GetBody(context);
+                var json = await GetBodyAsync(context);
                 var o = JObject.Parse(json);
                 var username = o.Value<string>("username");
                 var password = o.Value<string>("password");
@@ -841,10 +841,10 @@ namespace Wexflow.Server
             });
         }
 
-        private static string GetBody(HttpContext context)
+        private static async Task<string> GetBodyAsync(HttpContext context)
         {
-            using StreamReader reader = new(context.Request.Body, Encoding.UTF8, true, 1024, true);
-            var body = reader.ReadToEnd();
+            using StreamReader reader = new(context.Request.Body, Encoding.UTF8, true, 1024, leaveOpen: true);
+            var body = await reader.ReadToEndAsync(); // Non-blocking
             return body;
         }
 
@@ -857,7 +857,7 @@ namespace Wexflow.Server
             {
                 var username = context.User.Identity?.Name;
 
-                var json = GetBody(context);
+                var json = await GetBodyAsync(context);
                 var o = JObject.Parse(json);
                 var workflowId = o.Value<int>("WorkflowId");
                 var variables = o.Value<JArray>("Variables");
@@ -1439,7 +1439,7 @@ namespace Wexflow.Server
                 {
 
 
-                    var json = GetBody(context);
+                    var json = await GetBodyAsync(context);
 
                     var task = JObject.Parse(json);
 
@@ -1565,7 +1565,7 @@ namespace Wexflow.Server
                 try
                 {
 
-                    var json = GetBody(context);
+                    var json = await GetBodyAsync(context);
                     var o = JObject.Parse(json);
                     var xml = o.Value<string>("xml");
                     var xdoc = XDocument.Parse(xml);
@@ -1605,7 +1605,7 @@ namespace Wexflow.Server
                 {
                     var username = context.User.Identity?.Name;
 
-                    var json = GetBody(context);
+                    var json = await GetBodyAsync(context);
                     var res = false;
 
                     var o = JObject.Parse(json);
@@ -2364,7 +2364,7 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    var json = GetBody(context);
+                    var json = await GetBodyAsync(context);
 
                     var o = JObject.Parse(json);
                     var wi = o.SelectToken("WorkflowInfo") ?? throw new InvalidOperationException();
@@ -3132,7 +3132,7 @@ namespace Wexflow.Server
                 {
                     var qusername = context.User.Identity?.Name;
 
-                    var json = GetBody(context);
+                    var json = await GetBodyAsync(context);
 
                     var res = false;
                     var o = JObject.Parse(json);
@@ -3629,7 +3629,7 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    var json = GetBody(context);
+                    var json = await GetBodyAsync(context);
 
                     var res = false;
 
@@ -3935,7 +3935,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if ((user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
-                        var json = GetBody(context);
+                        var json = await GetBodyAsync(context);
                         var o = JObject.Parse(json);
                         var versions = JsonConvert.DeserializeObject<Contracts.Version[]>(o.Value<JArray>("Versions").ToString());
 
@@ -3997,7 +3997,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if ((user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
-                        var json = GetBody(context);
+                        var json = await GetBodyAsync(context);
                         var o = JObject.Parse(json);
 
                         var id = o.Value<string>("Id");
@@ -4075,7 +4075,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if ((user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
-                        var json = GetBody(context);
+                        var json = await GetBodyAsync(context);
                         var recordIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
                         res = WexflowServer.WexflowEngine.DeleteRecords(recordIds);
                     }
@@ -4391,7 +4391,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if ((user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
-                        var json = GetBody(context);
+                        var json = await GetBodyAsync(context);
                         var notificationIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
                         res = WexflowServer.WexflowEngine.MarkNotificationsAsRead(notificationIds);
                     }
@@ -4420,7 +4420,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if ((user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
-                        var json = GetBody(context);
+                        var json = await GetBodyAsync(context);
                         var notificationIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
                         res = WexflowServer.WexflowEngine.MarkNotificationsAsUnread(notificationIds);
                     }
@@ -4450,7 +4450,7 @@ namespace Wexflow.Server
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if ((user.UserProfile == Core.Db.UserProfile.SuperAdministrator || user.UserProfile == Core.Db.UserProfile.Administrator))
                     {
-                        var json = GetBody(context);
+                        var json = await GetBodyAsync(context);
                         var notificationIds = JsonConvert.DeserializeObject<string[]>(JArray.Parse(json).ToString());
                         res = WexflowServer.WexflowEngine.DeleteNotifications(notificationIds);
                     }

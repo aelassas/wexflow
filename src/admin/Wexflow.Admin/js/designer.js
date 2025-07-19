@@ -106,7 +106,7 @@
 
         window.Common.post(uri + "/validate-user?username=" + encodeURIComponent(user.Username),
             function (u) {
-                if (!u ) {
+                if (!u) {
                     window.Common.redirectToLoginPage();
                 } else {
 
@@ -4583,7 +4583,7 @@
                 }, function () {
                     filedialog.value = "";
                     window.Common.toastError(language.get("toast-upload-error") + file.name);
-                }, fd, true);
+                }, fd, null, true);
 
             };
 

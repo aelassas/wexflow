@@ -73,6 +73,39 @@
         }
     },
 
+    download: async function downloadFile(url) {
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include' // send cookies if any, but no JWT header
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const disposition = response.headers.get('Content-Disposition');
+        let filename = 'download';
+
+        if (disposition && disposition.includes('filename=')) {
+            const match = disposition.match(/filename="?([^"]+)"?/);
+            if (match && match[1]) {
+                filename = match[1];
+            }
+        }
+
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        link.href = blobUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000);
+    },
+
     launchType: function (lt) {
         switch (lt) {
             case 0:
@@ -176,6 +209,13 @@
             arr.splice(index, 1);
         }
         return arr;
-    }
+    },
+
+    trimEnd: function (str, char) {
+        if (!char) return str
+        const escapedChar = char.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&') // Escape regex special chars
+        const regex = new RegExp(`${escapedChar}+$`)
+        return str.replace(regex, '')
+    },
 
 };
