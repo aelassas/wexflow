@@ -18,7 +18,7 @@ jobs:
           badge_label: lines of code
           badge_color: green
           badge: ./output/badge.svg
-          ignore: '.github|setup|README.md|LICENSE.txt|samples/net|samples/netcore|samples/WexflowTesting'
+          ignore: '.github|setup|README.md|LICENSE.txt|samples/net|samples/netcore|samples/WexflowTesting|.svg|.png|.jpg|.jpeg'
 
       - name: Print the output
         run: |
