@@ -51,7 +51,7 @@ namespace Wexflow.Tasks.CsvToXml
                 ErrorFormat("An error occured while creating XMLs.", e);
                 success = false;
             }
-
+            
             var status = Status.Success;
 
             if (!success && atLeastOneSuccess)

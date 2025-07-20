@@ -1,44 +1,70 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
     <id>Wexflow</id>
     <version>9.5.0</version>
     <title>Wexflow</title>
     <authors>Akram El Assas</authors>
-    <owners>akram.elassas</owners>
     <license type="file">LICENSE.txt</license>
     <projectUrl>https://wexflow.github.io</projectUrl>
     <repository type="git" url="https://github.com/aelassas/Wexflow" />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Core assembly of Wexflow workflow engine.</description>
-    <releaseNotes>Bug fixes, performance enhancements and under the hood updates.</releaseNotes>
-    <copyright>Copyright (c) 2017-2023 Akram El Assas.</copyright>
-    <tags>Wexflow Workflow</tags>
+    <description>Core assembly of Wexflow, a powerful and extensible open-source workflow engine with support for custom tasks, database providers, and multi-platform runtimes.</description>
+    <releaseNotes>Bug fixes, performance enhancements, and internal improvements.</releaseNotes>
+    <copyright>Copyright © 2017–2025 Akram El Assas.</copyright>
+    <tags>wexflow workflow engine automation scheduler</tags>
     <readme>docs\README.md</readme>
+
     <dependencies>
       <group targetFramework="net48">
         <dependency id="log4net" version="3.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" />
+        <dependency id="System.Buffers" version="4.5.1" />
+        <dependency id="System.Numerics.Vectors" version="4.5.0" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.3" />
+        <dependency id="System.Memory" version="4.5.4" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="4.7.1" />
         <dependency id="Quartz" version="3.13.0" />
       </group>
       <group targetFramework="net8.0">
         <dependency id="log4net" version="3.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" />
+        <dependency id="Microsoft.NETCore.Platforms" version="2.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
         <dependency id="Quartz" version="3.13.0" />
         <dependency id="Quartz.Serialization.Json" version="3.13.0" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+        <dependency id="System.Security.AccessControl" version="4.5.0" />
+        <dependency id="System.Security.Cryptography.ProtectedData" version="4.5.0" />
+        <dependency id="System.Security.Permissions" version="4.5.0" />
+        <dependency id="System.Security.Principal.Windows" version="4.5.0" />
       </group>
       <group targetFramework="net9.0">
         <dependency id="log4net" version="3.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" />
+        <dependency id="Microsoft.NETCore.Platforms" version="2.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
         <dependency id="Quartz" version="3.13.0" />
         <dependency id="Quartz.Serialization.Json" version="3.13.0" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+        <dependency id="System.Security.AccessControl" version="4.5.0" />
+        <dependency id="System.Security.Cryptography.ProtectedData" version="4.5.0" />
+        <dependency id="System.Security.Permissions" version="4.5.0" />
+        <dependency id="System.Security.Principal.Windows" version="4.5.0" />
       </group>
     </dependencies>
+
     <packageTypes>
       <packageType name="Dependency" />
     </packageTypes>
   </metadata>
+
   <files>
-    <file src="..\..\..\LICENSE.txt" />
+    <!-- License and Readme -->
+    <file src="..\..\..\LICENSE.txt" target="" />
     <file src=".\docs\README.md" target="docs\" />
 
+    <!-- .NET Framework 4.8 DLLs -->
     <file src=".\bin\Debug\Wexflow.Core.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.pdb" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.xml" target="lib\net48" />
@@ -65,54 +91,14 @@
     <file src=".\bin\Debug\Wexflow.Core.Db.MariaDB.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.MariaDB.pdb" target="lib\net48" />
 
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.xml" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.LiteDB.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.LiteDB.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MongoDB.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.RavenDB.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.RavenDB.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.PostgreSQL.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.PostgreSQL.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLServer.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLServer.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MySQL.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MySQL.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLite.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.SQLite.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Firebird.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Firebird.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Oracle.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.Oracle.pdb" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MariaDB.dll" target="lib\net8.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\Wexflow.Core.Db.MariaDB.pdb" target="lib\net8.0" />
+    <!-- .NET 8.0 DLLs -->
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\*.dll" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\*.pdb" target="lib\net8.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net8.0\*.xml" target="lib\net8.0" />
 
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.xml" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.LiteDB.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.LiteDB.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.MongoDB.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.RavenDB.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.RavenDB.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.PostgreSQL.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.PostgreSQL.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.SQLServer.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.SQLServer.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.MySQL.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.MySQL.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.SQLite.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.SQLite.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.Firebird.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.Firebird.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.Oracle.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.Oracle.pdb" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.MariaDB.dll" target="lib\net9.0" />
-    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\Wexflow.Core.Db.MariaDB.pdb" target="lib\net9.0" />
+    <!-- .NET 9.0 DLLs -->
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\*.dll" target="lib\net9.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\*.pdb" target="lib\net9.0" />
+    <file src="..\..\..\src\netcore\Wexflow.Core\bin\Debug\net9.0\*.xml" target="lib\net9.0" />
   </files>
 </package>
