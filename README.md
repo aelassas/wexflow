@@ -197,6 +197,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
        1. [Settings](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#settings)
        1. [Loading Files](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#loading-files)
        1. [Loading Entities](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#loading-entities)
+       1. [Need A Starting Point?](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#need-a-starting-point)
    1. [Installing Your Custom Task in Wexflow](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#installing-your-custom-task-in-wexflow)
        1. [.NET Framework 4.8 (Legacy Version)](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#net-framework-48-legacy-version)
        1. [.NET 8.0+ (Stable Version)](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#net-80-stable-version)
