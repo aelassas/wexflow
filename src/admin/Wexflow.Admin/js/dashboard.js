@@ -179,12 +179,15 @@
 
                                                     // Subscribe to SSE updates
                                                     try {
-                                                        const evtSource = new EventSource(`${uri}/sse/status-count`)
+                                                        const evtSource = new EventSource(`${uri}/sse/status-count`);
+
+                                                        const debounceDelay = 300; // ms
+                                                        const debouncedUpdate = window.Common.debounce(updateStatusCountAndEntries, debounceDelay);
 
                                                         evtSource.addEventListener('statusCount', (event) => {
                                                             const newStatusCount = JSON.parse(event.data);
-                                                            updateStatusCountAndEntries(newStatusCount);
-                                                        })
+                                                            debouncedUpdate(newStatusCount);
+                                                        });
 
                                                         evtSource.onopen = () => {
                                                             // Connection established or re-established
@@ -195,9 +198,9 @@
                                                             // Connection lost — will auto-retry in background
                                                             console.warn("SSE disconnected. Retrying...");
                                                             showDisconnectedBadge();
-                                                        }
+                                                        };
                                                     } catch (err) {
-                                                        console.error('Error connecting to SSE:', err)
+                                                        console.error('Error connecting to SSE:', err);
                                                     }
 
                                                 } else {
@@ -307,7 +310,6 @@
     }
 
     let previousStatusCount = null;
-    const debounceEntriesTimeout = 300; // ms
 
     function shouldUpdateEntries() {
         const entriesTable = document.querySelector("#entries-table > tbody");
@@ -317,11 +319,8 @@
 
     function updateEntries() {
         if (shouldUpdateEntries()) {
-            clearTimeout(refreshTimeout);
-            refreshTimeout = setTimeout(() => {
-                loadEntries();
-                updatePager();
-            }, debounceEntriesTimeout); // wait before refreshing (debounce)
+            loadEntries();
+            updatePager();
         }
     }
 
