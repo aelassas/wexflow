@@ -68,6 +68,8 @@
     <file src=".\bin\Debug\Wexflow.Core.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.pdb" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.xml" target="lib\net48" />
+    <file src=".\bin\Debug\Wexflow.Core.Auth.dll" target="lib\net48" />
+    <file src=".\bin\Debug\Wexflow.Core.Auth.pdb" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.dll" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.pdb" target="lib\net48" />
     <file src=".\bin\Debug\Wexflow.Core.Db.LiteDB.dll" target="lib\net48" />
