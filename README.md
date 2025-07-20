@@ -19,13 +19,13 @@ Wexflow targets both developers and technical users who need automation (file op
 Whether you're automating simple scheduled jobs or orchestrating complex business processes, Wexflow offers a flexible, extensible, and developer-friendly solution.
 
 ## Quick Links
-* [Download](https://github.com/aelassas/wexflow/releases/latest)
-* [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
-* [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
-* [Configuration](https://github.com/aelassas/wexflow/wiki/Configuration)
-* [REST API](https://github.com/aelassas/wexflow/wiki/RESTful-API)
-* [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
-* [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
+- [Download Latest Release](https://github.com/aelassas/wexflow/releases/latest)
+- [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
+- [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
+- [Configuration Guide](https://github.com/aelassas/wexflow/wiki/Configuration)
+- [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)
+- [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
+- [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
 
 <!--
 ## Admin Panel Login
