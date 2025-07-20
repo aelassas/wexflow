@@ -148,7 +148,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Functions](https://github.com/aelassas/wexflow/wiki/Functions)  
 1. [Cron Scheduling](https://github.com/aelassas/wexflow/wiki/Cron-Scheduling)
 1. [Command Line Interface (CLI)](https://github.com/aelassas/wexflow/wiki/Command-Line-Client)  
-1. [RESTful API](https://github.com/aelassas/wexflow/wiki/RESTful-API)  
+1. [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)  
    1. [Introduction](https://github.com/aelassas/wexflow/wiki/RESTful-API#introduction)
    1. [JWT Authentication](https://github.com/aelassas/wexflow/wiki/RESTful-API#jwt-authentication)
    1. [Sample Clients](https://github.com/aelassas/wexflow/wiki/RESTful-API#sample-clients)
