@@ -8,12 +8,11 @@ Use this package to create **custom tasks** that can be integrated into your wor
 
 Full documentation for creating custom tasks is available [here](https://github.com/aelassas/wexflow/wiki/Custom-Tasks).
 
-
 ## Features
 
 - Base class for custom task development
 - Integrated logging and utility helpers
-- Compatible with all Wexflow editions .NET 4.8 and .NET 8.0+)
+- Compatible with all Wexflow editions .NET 4.8 (Legacy) and .NET 8.0+ (Stable)
 - Cross-platform support
 
 ## Installation
@@ -88,16 +87,16 @@ namespace Wexflow.Tasks.MyTask
 
 **Need a starting point?**
 
-- For **.NET Framework 4.8 (Legacy Version)**, you can find a complete example of a custom task here:  
+- For **.NET Framework 4.8 (Legacy)**, you can find a complete example of a custom task here:  
   [Wexflow.Tasks.Template (.NET 4.8)](https://github.com/aelassas/wexflow/tree/main/src/net/Wexflow.Tasks.Template)
 
-- For **.NET 8.0+ (Stable Version)**, check out the full example here:  
+- For **.NET 8.0+ (Stable)**, check out the full example here:  
   [Wexflow.Tasks.Template (.NET 8.0+)](https://github.com/aelassas/wexflow/tree/main/src/netcore/Wexflow.Tasks.Template)
 
 
 ## Installing Your Custom Task in Wexflow
 
-### .NET Framework 4.8 (Legacy Version)
+### .NET Framework 4.8 (Legacy)
 
 Once you've finished coding your custom task, compile the class library project and copy the `Wexflow.Tasks.MyTask.dll` assembly into one of the following folders:
 
@@ -108,21 +107,16 @@ The `Tasks` folder path can be configured via the `tasksFolder` setting in the c
 
 **Important:** The namespace and DLL filename of your task **must start with `Wexflow.Tasks`**.
 
-### .NET 8.0+ (Stable Version)
+### .NET 8.0+ (Stable)
 
 If you're using the .NET 8.0+ version of Wexflow, copy `Wexflow.Tasks.MyTask.dll` to the appropriate platform-specific folder:
 
 - **Windows**:
-  - `C:\Wexflow-netcore\Tasks`
-  - `.\Wexflow.Server`
+  - `C:\Wexflow-netcore\Tasks` or `.\Wexflow.Server`
 - **Linux**:
-  - `/opt/wexflow/Wexflow/Tasks`
-  - `/opt/wexflow/Wexflow.Server`
+  - `/opt/wexflow/Wexflow/Tasks` or `/opt/wexflow/Wexflow.Server`
 - **macOS**:
-  - `/Applications/wexflow/Wexflow/Tasks`
-  - `/Applications/wexflow/Wexflow.Server`
-
-
+  - `/Applications/wexflow/Wexflow/Tasks` or `/Applications/wexflow/Wexflow.Server`
 
 ### Referenced Assemblies
 
@@ -134,8 +128,6 @@ If your custom task depends on additional assemblies (DLLs), copy them as follow
   - **Linux**: `/opt/wexflow/Wexflow/Tasks` or `/opt/wexflow/Wexflow.Server`
   - **macOS**: `/Applications/wexflow/Wexflow/Tasks` or `/Applications/wexflow/Wexflow.Server`
 
-
-
 ### Updating a Custom Task
 
 To update an existing custom task:
@@ -145,11 +137,9 @@ To update an existing custom task:
 
 - **.NET 4.8**: Restart the **Wexflow Windows Service**
 - **.NET 8.0+**:
-  - **Windows**: Run `.\run.bat`
+  - **Windows**: Run `.\run.bat` or restart Wexflow Service if you installed it as a Windows Service
   - **Linux**: Run `sudo systemctl restart wexflow`
   - **macOS**: Run `dotnet /Applications/wexflow/Wexflow.Server/Wexflow.Server.dll`
-
-
 
 ### Using Your Custom Task
 
