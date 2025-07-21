@@ -40,4 +40,4 @@ window.Settings = (function () {
          */
         DebounceDelay: 300,
     };
-})()
+})();
