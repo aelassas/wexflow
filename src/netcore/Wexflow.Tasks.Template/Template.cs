@@ -11,7 +11,6 @@ namespace Wexflow.Tasks.Template
         {
             // Initialize task settings from the XML element if needed
             // Example: string settingValue = GetSetting("mySetting");
-
         }
 
         public override TaskStatus Run()

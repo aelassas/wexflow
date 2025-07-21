@@ -10,7 +10,7 @@ namespace Wexflow.Tasks.Template
         public Template(XElement xe, Workflow wf)
             : base(xe, wf)
         {
-            // Task settings goes here
+            // Task settings go here
         }
 
         public override TaskStatus Run()
