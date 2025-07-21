@@ -165,8 +165,8 @@ Example using the XML editor:
 ```xml
 <Workflow xmlns="urn:wexflow-schema" id="99" name="Workflow_MyWorkflow" description="Workflow_MyWorkflow">
     <Settings>
-        <Setting name="launchType" value="trigger" /> /<!-- startup | trigger | periodic | cron -->
-        <Setting name="enabled" value="true" />      <!-- true | false -->
+        <Setting name="launchType" value="trigger" />
+        <Setting name="enabled" value="true" />
     </Settings>
     <Tasks>
         <Task id="1" name="MyTask" description="My task description" enabled="true">
