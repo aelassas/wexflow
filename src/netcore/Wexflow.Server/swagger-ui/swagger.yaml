@@ -7,7 +7,7 @@ info:
   license:
     name: MIT
     url: https://github.com/aelassas/wexflow/wiki/License
-  version: 9.5
+  version: 9.6
 externalDocs:
   description: Find out more about Wexflow
   url: https://wexflow.github.io

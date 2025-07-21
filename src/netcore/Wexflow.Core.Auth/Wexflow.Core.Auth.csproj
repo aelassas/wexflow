@@ -18,5 +18,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <Version>9.6.0</Version>
+    <AssemblyVersion>9.6.0</AssemblyVersion>
   </PropertyGroup>
 </Project>

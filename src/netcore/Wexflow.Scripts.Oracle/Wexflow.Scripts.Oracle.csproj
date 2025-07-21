@@ -4,8 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <Platforms>AnyCPU;x64;x86</Platforms> 
-    <Version>9.5.0</Version>
-    <AssemblyVersion>9.5.0</AssemblyVersion>
+    <Version>9.6.0</Version>
+    <AssemblyVersion>9.6.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
