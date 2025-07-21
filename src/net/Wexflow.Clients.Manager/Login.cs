@@ -2,8 +2,6 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
 using Wexflow.Core.Auth;
 using Wexflow.Core.Service.Client;

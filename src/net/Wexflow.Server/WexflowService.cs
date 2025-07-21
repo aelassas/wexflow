@@ -1,5 +1,3 @@
-using Microsoft.IdentityModel.Tokens.Experimental;
-using Microsoft.Owin;
 using Nancy;
 using Nancy.Cookies;
 using Nancy.Extensions;
@@ -15,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
