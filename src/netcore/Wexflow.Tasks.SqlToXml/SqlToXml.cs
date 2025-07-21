@@ -141,13 +141,13 @@ namespace Wexflow.Tasks.SqlToXml
                     }
                     break;
                 case Type.Access:
-#pragma warning disable CA1416 // Valider la compatibilité de la plateforme
+#pragma warning disable CA1416
                     using (OleDbConnection conn = new(ConnectionString))
                     using (OleDbCommand comm = new(sql, conn))
                     {
                         ConvertToXml(conn, comm);
                     }
-#pragma warning restore CA1416 // Valider la compatibilité de la plateforme
+#pragma warning restore CA1416
                     break;
                 case Type.Oracle:
                     using (OracleConnection connection = new(ConnectionString))

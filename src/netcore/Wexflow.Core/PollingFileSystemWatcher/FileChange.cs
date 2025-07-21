@@ -5,7 +5,7 @@
 using System.Diagnostics;
 using System.IO;
 
-#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
     public readonly struct FileChange
@@ -23,4 +23,4 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         public WatcherChangeTypes ChangeType { get; }
     }
 }
-#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning restore CS1591

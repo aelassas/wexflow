@@ -4,7 +4,7 @@
 
 using System;
 
-#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
     public class PollingFileSystemEventArgs(FileChange[] changes) : EventArgs
@@ -12,4 +12,4 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         public FileChange[] Changes { get; } = changes;
     }
 }
-#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning restore CS1591

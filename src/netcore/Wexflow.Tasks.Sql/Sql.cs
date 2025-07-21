@@ -135,13 +135,13 @@ namespace Wexflow.Tasks.Sql
                     }
                     break;
                 case Type.Access:
-#pragma warning disable CA1416 // Valider la compatibilité de la plateforme
+#pragma warning disable CA1416
                     using (OleDbConnection conn = new(ConnectionString))
                     {
                         OleDbCommand comm = new(sql, conn);
                         ExecSql(conn, comm);
                     }
-#pragma warning restore CA1416 // Valider la compatibilité de la plateforme
+#pragma warning restore CA1416
                     break;
                 case Type.Oracle:
                     using (OracleConnection conn = new(ConnectionString))

@@ -86,9 +86,9 @@ namespace Wexflow.Tasks.HtmlToPdf
 
                         var doc = new Document();
                         _ = PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));
-#pragma warning disable CS0612 // Le type ou le membre est obsolète
+#pragma warning disable CS0612
                         var worker = new HTMLWorker(doc);
-#pragma warning restore CS0612 // Le type ou le membre est obsolète
+#pragma warning restore CS0612
                         doc.Open();
                         worker.StartDocument();
                         worker.Parse(new StreamReader(new FileStream(file.Path, FileMode.Open)));

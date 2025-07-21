@@ -87,9 +87,9 @@ namespace Wexflow.Tasks.Sha1
         private static string GetSha1(string filePath)
         {
             using var stream = File.OpenRead(filePath);
-#pragma warning disable CA5350 // Ne pas utiliser d'algorithmes de chiffrement faibles
+#pragma warning disable CA5350
             using var alg = SHA1.Create();
-#pragma warning restore CA5350 // Ne pas utiliser d'algorithmes de chiffrement faibles
+#pragma warning restore CA5350
             StringBuilder sb = new();
 
             var hashValue = alg.ComputeHash(stream);

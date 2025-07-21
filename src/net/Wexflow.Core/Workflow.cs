@@ -1849,9 +1849,9 @@ namespace Wexflow.Core
             {
                 try
                 {
-#pragma warning disable CS0618 // Le type ou le membre est obsolète
+#pragma warning disable CS0618
                     _thread.Suspend();
-#pragma warning restore CS0618 // Le type ou le membre est obsolète
+#pragma warning restore CS0618
                     IsPaused = true;
                     Database.IncrementPendingCount();
                     Database.DecrementRunningCount();

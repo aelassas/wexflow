@@ -87,7 +87,7 @@ namespace Wexflow.Tasks.Md5
         private static string GetMd5(string filePath)
         {
             StringBuilder sb = new();
-#pragma warning disable CA5351 // Ne pas utiliser d'algorithmes de chiffrement cassés
+#pragma warning disable CA5351
             using (var md5 = MD5.Create())
             {
                 using var stream = File.OpenRead(filePath);
@@ -98,7 +98,7 @@ namespace Wexflow.Tasks.Md5
                     _ = sb.Append(bt.ToString("x2"));
                 }
             }
-#pragma warning restore CA5351 // Ne pas utiliser d'algorithmes de chiffrement cassés
+#pragma warning restore CA5351
             return sb.ToString();
         }
     }

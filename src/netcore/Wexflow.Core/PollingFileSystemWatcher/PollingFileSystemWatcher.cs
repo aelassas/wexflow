@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Threading;
 
-#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable CS1591
 namespace Wexflow.Core.PollingFileSystemWatcher
 {
     /// <summary>
@@ -202,9 +202,9 @@ namespace Wexflow.Core.PollingFileSystemWatcher
             _disposed = true;
             var isSuccess = _timer.Dispose(notifyObject);
             Dispose(true);
-#pragma warning disable CA1816 // Les méthodes Dispose doivent appeler SuppressFinalize
+#pragma warning disable CA1816
             GC.SuppressFinalize(this);
-#pragma warning restore CA1816 // Les méthodes Dispose doivent appeler SuppressFinalize
+#pragma warning restore CA1816
 
             return isSuccess;
         }
@@ -269,4 +269,4 @@ namespace Wexflow.Core.PollingFileSystemWatcher
         #endregion
     }
 }
-#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning restore CS1591
