@@ -150,7 +150,7 @@ Once installed, your task can be used in workflows like this:
 </Task>
 ```
 
-**Important:*** Make sure the `name` attribute matches the class name of your task (e.g., `MyTask`).
+**Important:** Make sure the `name` attribute matches the class name of your task (e.g., `MyTask`).
 
 You can also define settings for your task using the `<Setting>` elements, which can be accessed in your task code via:
 ```cs
