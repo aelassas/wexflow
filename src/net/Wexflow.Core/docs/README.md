@@ -149,6 +149,19 @@ Once installed, your task can be used in workflows like this:
     <Setting name="settingName" value="settingValue" />
 </Task>
 ```
+
+**Important:*** Make sure the `name` attribute matches the class name of your task (e.g., `MyTask`).
+
+You can also define settings for your task using the `<Setting>` elements, which can be accessed in your task code via:
+```cs
+string settingValue = this.GetSetting("settingName");
+string settingValue = this.GetSetting("settingName", defaultValue);
+string[] settingValues = this.GetSettings("settingName");
+bool settingValue = this.GetSettingBool("settingName", defaultValue);
+int settingValue = this.GetSettingInt("settingName", defaultValue);
+int[] settingValues = this.GetSettingsInt("settingName", defaultValue);
+```
+
 You can then test your custom task by creating a new workflow using either the **Designer** or the **XML editor**.
 
 Example using the XML editor:
