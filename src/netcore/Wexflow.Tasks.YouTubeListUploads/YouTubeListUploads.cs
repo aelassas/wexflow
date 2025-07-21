@@ -23,17 +23,18 @@ namespace Wexflow.Tasks.YouTubeListUploads
             ClientSecrets = GetSetting("clientSecrets");
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Listing uploads...");
 
             var status = Status.Success;
 
             try
             {
-                ListUploads().Wait();
+                await ListUploadsAsync();
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -47,7 +48,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
             return new TaskStatus(status);
         }
 
-        private async System.Threading.Tasks.Task ListUploads()
+        private async System.Threading.Tasks.Task ListUploadsAsync()
         {
             UserCredential credential;
             await using (FileStream stream = new(ClientSecrets, FileMode.Open, FileAccess.Read))
@@ -97,6 +98,7 @@ namespace Wexflow.Tasks.YouTubeListUploads
                 var nextPageToken = "";
                 while (nextPageToken != null)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
                     playlistItemsListRequest.PlaylistId = uploadsListId;
                     playlistItemsListRequest.MaxResults = 50;
@@ -115,7 +117,10 @@ namespace Wexflow.Tasks.YouTubeListUploads
                     xchannel.Add(xvideos);
 
                     nextPageToken = playlistItemsListResponse.NextPageToken;
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 xchannels.Add(xchannel);

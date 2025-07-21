@@ -33,10 +33,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesRenamerTest()
+        public async System.Threading.Tasks.Task FilesRenamerTest()
         {
             Assert.AreEqual(false, File.Exists(SrcRenamed));
-            _ = Helper.StartWorkflow(36);
+            _ = await Helper.StartWorkflow(36);
             Assert.AreEqual(true, File.Exists(SrcRenamed));
         }
     }

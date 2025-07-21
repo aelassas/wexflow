@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void SlackTest()
+        public async System.Threading.Tasks.Task SlackTest()
         {
-            _ = Helper.StartWorkflow(137);
+            _ = await Helper.StartWorkflow(137);
             // TODO
         }
     }

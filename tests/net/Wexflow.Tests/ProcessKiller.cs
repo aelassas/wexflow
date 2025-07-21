@@ -19,9 +19,9 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ProcessKillerTest()
+        public async System.Threading.Tasks.Task ProcessKillerTest()
         {
-            _ = Helper.StartWorkflow(58);
+            _ = await Helper.StartWorkflow(58);
             var notepadProcesses = Process.GetProcessesByName("notepad");
             Assert.IsTrue(notepadProcesses.Length == 0);
         }

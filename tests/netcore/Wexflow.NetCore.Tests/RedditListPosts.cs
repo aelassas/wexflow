@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void RedditListPostsTest()
+        public async System.Threading.Tasks.Task RedditListPostsTest()
         {
-            _ = Helper.StartWorkflow(129);
+            _ = await Helper.StartWorkflow(129);
             // TODO
         }
     }

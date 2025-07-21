@@ -42,9 +42,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesLoaderTest()
+        public async System.Threading.Tasks.Task FilesLoaderTest()
         {
-            _ = Helper.StartWorkflow(3);
+            _ = await Helper.StartWorkflow(3);
 
             // Check the workflow result
             var files = Directory.GetFiles(TempFolder, "ListFiles*.xml", SearchOption.AllDirectories);

@@ -17,6 +17,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Importing records...");
 
             var success = true;
@@ -29,6 +30,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
 
                 foreach (var file in files)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     try
                     {
                         var recordId = Workflow.WexflowEngine.SaveRecordFromFile(file.Path, CreatedBy);
@@ -48,7 +50,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                             success = false;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -59,7 +61,10 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
 
@@ -70,7 +75,7 @@ namespace Wexflow.Tasks.ApprovalRecordsCreator
                 }
                 SharedMemory.Add(smKey, recordIds.ToArray());
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

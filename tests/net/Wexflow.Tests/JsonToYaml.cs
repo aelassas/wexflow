@@ -23,11 +23,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void JsonToYamlTest()
+        public async System.Threading.Tasks.Task JsonToYamlTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(111);
+            _ = await Helper.StartWorkflow(111);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

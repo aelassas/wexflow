@@ -39,9 +39,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void CsvToXmlTest()
+        public async System.Threading.Tasks.Task CsvToXmlTest()
         {
-            _ = Helper.StartWorkflow(1);
+            _ = await Helper.StartWorkflow(1);
 
             // Check the workflow result
             var xmlFiles = Directory.GetFiles(@"C:\WexflowTesting\CsvToXml\", "*.xml");

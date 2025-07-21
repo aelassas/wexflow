@@ -16,9 +16,9 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void WorkflowTest()
+        public async System.Threading.Tasks.Task WorkflowTest()
         {
-            _ = Helper.StartWorkflow(45);
+            _ = await Helper.StartWorkflow(45);
             // TODO
         }
     }

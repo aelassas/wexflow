@@ -24,6 +24,7 @@ namespace Wexflow.Tasks.FileContentMatch
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Checking file...");
 
             var success = true;
@@ -32,6 +33,7 @@ namespace Wexflow.Tasks.FileContentMatch
                 // Checking files
                 foreach (var file in FilesToCheck)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
 
                     if (res)
@@ -44,7 +46,10 @@ namespace Wexflow.Tasks.FileContentMatch
                         InfoFormat("No content matching the pattern {0} was found in the file {1}.", Pattern, file);
                     }
 
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 // Checking folders
@@ -54,6 +59,7 @@ namespace Wexflow.Tasks.FileContentMatch
 
                     foreach (var file in files)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var res = Regex.Match(File.ReadAllText(file), Pattern, RegexOptions.Multiline).Success;
 
                         if (res)
@@ -66,7 +72,10 @@ namespace Wexflow.Tasks.FileContentMatch
                             InfoFormat("No content matching the pattern {0} was found in the file {1}.", Pattern, file);
                         }
 
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
 
@@ -75,7 +84,7 @@ namespace Wexflow.Tasks.FileContentMatch
                     success = false;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

@@ -35,6 +35,7 @@ namespace Wexflow.Tasks.ProcessLauncher
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Launching process...");
 
             if (GeneratesFiles && !(ProcessCmd.Contains(VAR_FILE_NAME) && ProcessCmd.Contains(VAR_OUTPUT) && (ProcessCmd.Contains(VAR_FILE_NAME) || ProcessCmd.Contains(VAR_FILE_NAME_WITHOUT_EXTENSION))))
@@ -58,6 +59,7 @@ namespace Wexflow.Tasks.ProcessLauncher
 
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     cmd = ProcessCmd.Replace($"{{{VAR_FILE_PATH}}}", $"\"{file.Path}\"");
 
                     var outputRegex = OutputRegex();
@@ -86,7 +88,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                         return new TaskStatus(Status.Error, false);
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -97,7 +99,10 @@ namespace Wexflow.Tasks.ProcessLauncher
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (StartProcess(ProcessPath, cmd, HideGui).Status == Status.Success)
@@ -167,7 +172,7 @@ namespace Wexflow.Tasks.ProcessLauncher
                 var status = process.ExitCode == 0 || IgnoreExitCode ? Status.Success : Status.Error;
                 return new TaskStatus(status, false);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

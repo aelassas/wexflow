@@ -16,10 +16,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void VimeoTest()
+        public async System.Threading.Tasks.Task VimeoTest()
         {
             // TODO
-            _ = Helper.StartWorkflow(136);
+            _ = await Helper.StartWorkflow(136);
         }
     }
 }

@@ -22,11 +22,11 @@ namespace Wexflow.Tests
 
         //[Ignore("There is an issue whith TuesPechkin and MSTest but it works fine on prod.")]
         [TestMethod]
-        public void HtmlToPdfTest()
+        public async System.Threading.Tasks.Task HtmlToPdfTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(65);
+            _ = await Helper.StartWorkflow(65);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
         }

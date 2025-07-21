@@ -17,6 +17,7 @@ namespace Wexflow.Tasks.Sha256
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Generating SHA-256 hashes...");
 
             var success = true;
@@ -34,6 +35,7 @@ namespace Wexflow.Tasks.Sha256
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var sha1 = GetSha256(file.Path);
                         xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
@@ -46,7 +48,7 @@ namespace Wexflow.Tasks.Sha256
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -57,7 +59,10 @@ namespace Wexflow.Tasks.Sha256
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
                 xdoc.Save(md5Path);

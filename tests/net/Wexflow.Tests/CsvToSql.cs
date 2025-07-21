@@ -27,11 +27,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void CsvToSqlTest()
+        public async System.Threading.Tasks.Task CsvToSqlTest()
         {
             var files = GetSqlScripts();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(76);
+            _ = await Helper.StartWorkflow(76);
             files = GetSqlScripts();
             Assert.AreEqual(2, files.Length);
             foreach (var file in files)

@@ -16,17 +16,19 @@ namespace Wexflow.Tasks.FileNotExist
 
         public override Core.TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Checking file...");
 
             bool fileExists;
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 fileExists = System.IO.File.Exists(File);
 
                 InfoFormat(fileExists ? "The file {0} exists." : "The file {0} does not exist.", File);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -37,7 +39,10 @@ namespace Wexflow.Tasks.FileNotExist
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished");

@@ -28,10 +28,12 @@ namespace Wexflow.Tasks.HttpPut
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Executing PUT request...");
             var status = Status.Success;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var putTask = Put(Url, AuthorizationScheme, AuthorizationParameter, Payload);
                 putTask.Wait();
                 var result = putTask.Result;
@@ -41,7 +43,7 @@ namespace Wexflow.Tasks.HttpPut
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("PUT request {0} executed whith success -> {1}", Url, destFile);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -52,7 +54,10 @@ namespace Wexflow.Tasks.HttpPut
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             Info("Task finished.");
             return new TaskStatus(status);

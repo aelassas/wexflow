@@ -20,6 +20,7 @@ namespace Wexflow.Tasks.Tgz
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating tgz archive...");
 
             bool success;
@@ -27,7 +28,7 @@ namespace Wexflow.Tasks.Tgz
             {
                 success = CreateTgz();
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -63,6 +64,7 @@ namespace Wexflow.Tasks.Tgz
 
                     foreach (var file in files)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         using (var inputStream = File.OpenRead(file.Path))
                         {
                             var fileSize = inputStream.Length;
@@ -89,7 +91,10 @@ namespace Wexflow.Tasks.Tgz
                             }
                         }
                         tar.CloseEntry();
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
 
                     // Finish/Close arent needed strictly as the using statement does this automatically
@@ -105,7 +110,7 @@ namespace Wexflow.Tasks.Tgz
                     InfoFormat("Tgz {0} created.", tgzPath);
                     Files.Add(new FileInf(tgzPath, Id));
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }

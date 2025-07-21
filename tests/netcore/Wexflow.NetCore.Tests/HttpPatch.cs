@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void HttpPatchTest()
+        public async System.Threading.Tasks.Task HttpPatchTest()
         {
-            _ = Helper.StartWorkflow(102);
+            _ = await Helper.StartWorkflow(102);
             // TODO
         }
     }

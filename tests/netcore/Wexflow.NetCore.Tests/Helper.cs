@@ -59,9 +59,9 @@ namespace Wexflow.NetCore.Tests
             WexflowEngine.Stop(false, false);
         }
 
-        public static System.Guid StartWorkflow(int workflowId)
+        public static async System.Threading.Tasks.Task<System.Guid> StartWorkflow(int workflowId)
         {
-            var instanceId = WexflowEngine.StartWorkflow(USERNAME, workflowId);
+            var instanceId = await WexflowEngine.StartWorkflowAsync(USERNAME, workflowId);
 
             // Wait until the workflow finishes
             Thread.Sleep(1000);
@@ -79,9 +79,9 @@ namespace Wexflow.NetCore.Tests
             return instanceId;
         }
 
-        public static System.Guid StartWorkflowAsync(int workflowId)
+        public static async System.Threading.Tasks.Task<System.Guid> StartWorkflowAsync(int workflowId)
         {
-            return WexflowEngine.StartWorkflow(USERNAME, workflowId);
+            return await WexflowEngine.StartWorkflowAsync(USERNAME, workflowId);
         }
 
         public static void StopWorkflow(int workflowId, System.Guid instanceId)

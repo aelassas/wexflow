@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.ImagesOverlay
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Overlaying images...");
             var status = Status.Success;
 
@@ -42,7 +43,7 @@ namespace Wexflow.Tasks.ImagesOverlay
                     Error("You must provide at least two images to overlay them.");
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -82,10 +83,14 @@ namespace Wexflow.Tasks.ImagesOverlay
 
                     foreach (var imageFile in imageFiles)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var image = SKImage.FromEncodedData(imageFile.Path);
                         var bitmap = SKBitmap.FromImage(image);
                         canvas.DrawBitmap(bitmap, new SKPoint(0, 0));
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
 
                     using var img = surface.Snapshot();
@@ -98,7 +103,7 @@ namespace Wexflow.Tasks.ImagesOverlay
 
                 return true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

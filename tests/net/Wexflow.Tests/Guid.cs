@@ -24,11 +24,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void GuidTest()
+        public async System.Threading.Tasks.Task GuidTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(68);
+            _ = await Helper.StartWorkflow(68);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var xdoc = XDocument.Load(files[0]);

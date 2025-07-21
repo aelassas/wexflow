@@ -19,10 +19,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void NowTest()
+        public async System.Threading.Tasks.Task NowTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(51);
+            _ = await Helper.StartWorkflow(51);
             stopwatch.Stop();
 
             var day = string.Format(new CultureInfo("en-US"), "{0:dddd}", DateTime.Now);

@@ -23,6 +23,7 @@ namespace Wexflow.Tasks.Http
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Downloading files...");
 
             var success = true;
@@ -32,6 +33,7 @@ namespace Wexflow.Tasks.Http
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var fileName = Path.GetFileName(url) ?? throw new Exception("File name is null");
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, fileName);
 
@@ -45,7 +47,7 @@ namespace Wexflow.Tasks.Http
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -56,7 +58,10 @@ namespace Wexflow.Tasks.Http
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

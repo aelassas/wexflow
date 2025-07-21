@@ -32,8 +32,9 @@ namespace Wexflow.Tasks.YouTube
             ClientSecrets = GetSetting("clientSecrets");
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Uploading videos...");
 
             var succeeded = true;
@@ -47,6 +48,7 @@ namespace Wexflow.Tasks.YouTube
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var xdoc = XDocument.Load(file.Path);
 
                         foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
@@ -58,9 +60,8 @@ namespace Wexflow.Tasks.YouTube
                             var ps = Enum.Parse<PrivacyStatus>(xvideo.Element("PrivacyStatus")!.Value, true);
                             var filePath = xvideo.Element("FilePath")!.Value;
 
-                            var succeededTask = UploadVideo(title, desc, tags, categoryId, ps, filePath);
-                            succeededTask.Wait();
-                            succeeded &= succeededTask.Result;
+                            var succeededTask = await UploadVideoAsync(title, desc, tags, categoryId, ps, filePath);
+                            succeeded &= succeededTask;
 
                             if (succeeded && !atLeastOneSucceed)
                             {
@@ -68,7 +69,7 @@ namespace Wexflow.Tasks.YouTube
                             }
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -79,11 +80,14 @@ namespace Wexflow.Tasks.YouTube
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -108,7 +112,7 @@ namespace Wexflow.Tasks.YouTube
             return new TaskStatus(status);
         }
 
-        private async System.Threading.Tasks.Task<bool> UploadVideo(string title, string desc, string[] tags, string categoryId, PrivacyStatus ps, string filePath)
+        private async System.Threading.Tasks.Task<bool> UploadVideoAsync(string title, string desc, string[] tags, string categoryId, PrivacyStatus ps, string filePath)
         {
             try
             {
@@ -168,7 +172,7 @@ namespace Wexflow.Tasks.YouTube
                 InfoFormat("Uploading the video file {0} to YouTube succeeded.", filePath);
                 return true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

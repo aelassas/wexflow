@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void UnrarTest()
+        public async System.Threading.Tasks.Task UnrarTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(79);
+            _ = await Helper.StartWorkflow(79);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

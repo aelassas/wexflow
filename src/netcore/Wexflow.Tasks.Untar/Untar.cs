@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.Untar
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Extracting TAR archives...");
 
             bool success;
@@ -27,7 +28,7 @@ namespace Wexflow.Tasks.Untar
             {
                 success = UntarFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -63,6 +64,7 @@ namespace Wexflow.Tasks.Untar
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var destFolder = Path.Combine(DestDir
                             , $"{Path.GetFileNameWithoutExtension(tar.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
@@ -80,7 +82,7 @@ namespace Wexflow.Tasks.Untar
                             atLeastOneSuccess = true;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -91,7 +93,10 @@ namespace Wexflow.Tasks.Untar
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }

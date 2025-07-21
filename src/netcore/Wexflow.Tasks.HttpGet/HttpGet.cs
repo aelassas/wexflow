@@ -23,10 +23,12 @@ namespace Wexflow.Tasks.HttpGet
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Executing GET request...");
             var status = Status.Success;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var getTask = Post(Url, AuthorizationScheme, AuthorizationParameter);
                 getTask.Wait();
                 var result = getTask.Result;
@@ -36,7 +38,7 @@ namespace Wexflow.Tasks.HttpGet
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("GET request {0} executed with success -> {1}", Url, destFile);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -47,7 +49,10 @@ namespace Wexflow.Tasks.HttpGet
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             Info("Task finished.");
             return new TaskStatus(status);

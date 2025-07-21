@@ -31,11 +31,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void TouchTest()
+        public async System.Threading.Tasks.Task TouchTest()
         {
             Assert.AreEqual(false, File.Exists(File1));
             Assert.AreEqual(false, File.Exists(File2));
-            _ = Helper.StartWorkflow(15);
+            _ = await Helper.StartWorkflow(15);
             Assert.AreEqual(true, File.Exists(File1));
             Assert.AreEqual(true, File.Exists(File2));
         }

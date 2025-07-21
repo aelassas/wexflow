@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.ExecPython
 
         public override Core.TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Executing python scripts...");
 
             var status = Status.Success;
@@ -26,6 +27,7 @@ namespace Wexflow.Tasks.ExecPython
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var res = Exec(pythonFile.Path);
                     InfoFormat("The script {0} has been executed.", pythonFile.Path);
                     if (res && !atLeastOneSuccess)
@@ -34,7 +36,7 @@ namespace Wexflow.Tasks.ExecPython
                     }
                     success &= res;
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -45,7 +47,10 @@ namespace Wexflow.Tasks.ExecPython
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

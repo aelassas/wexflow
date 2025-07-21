@@ -27,6 +27,7 @@ namespace Wexflow.Tasks.ImagesCropper
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Cropping images...");
             var status = Status.Success;
             var succeeded = true;
@@ -37,13 +38,17 @@ namespace Wexflow.Tasks.ImagesCropper
                 var images = SelectFiles();
                 foreach (var image in images)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     succeeded &= Crop(image.Path, destPath);
                     if (!atLeastOneSuccess && succeeded)
                     {
                         atLeastOneSuccess = true;
                     }
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -55,7 +60,7 @@ namespace Wexflow.Tasks.ImagesCropper
                     status = Status.Error;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -88,7 +93,7 @@ namespace Wexflow.Tasks.ImagesCropper
                 InfoFormat("The image {0} was cropped -> {3}", srcPath, Width, Height, destPath);
                 return true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

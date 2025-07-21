@@ -20,6 +20,10 @@
         /// <summary>
         /// Rejected.
         /// </summary>
-        Rejected
+        Rejected,
+        /// <summary>
+        /// Not Implemented.
+        /// </summary>
+        NotImplemented
     }
 }

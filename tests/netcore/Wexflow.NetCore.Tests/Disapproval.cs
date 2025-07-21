@@ -18,10 +18,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void DisapprovalTest()
+        public async System.Threading.Tasks.Task DisapprovalTest()
         {
             var workflowId = 132;
-            var instanceId = Helper.StartWorkflow(workflowId);
+            var instanceId = await Helper.StartWorkflow(workflowId);
             Thread.Sleep(500);
             Helper.RejectWorkflow(workflowId, instanceId);
             var stopwatch = Stopwatch.StartNew();

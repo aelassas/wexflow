@@ -29,10 +29,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void FilesRemoverTest()
+        public async System.Threading.Tasks.Task FilesRemoverTest()
         {
             Assert.AreEqual(true, File.Exists(Src));
-            _ = Helper.StartWorkflow(5);
+            _ = await Helper.StartWorkflow(5);
             Assert.AreEqual(false, File.Exists(Src));
         }
     }

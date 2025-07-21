@@ -13,6 +13,7 @@ namespace Wexflow.Core
     /// </summary>
     public abstract class Task
     {
+        #region Properties
         /// <summary>
         /// Task Id.
         /// </summary>
@@ -61,6 +62,7 @@ namespace Wexflow.Core
         /// Hashtable used as shared memory for tasks.
         /// </summary>
         public Hashtable SharedMemory => Workflow.SharedMemory;
+        #endregion
 
         private readonly XElement _xElement;
 
@@ -121,10 +123,32 @@ namespace Wexflow.Core
         }
 
         /// <summary>
-        /// Starts the task.
+        /// Executes the task synchronously.
         /// </summary>
-        /// <returns>Task status.</returns>
-        public abstract TaskStatus Run();
+        /// <remarks>
+        /// This method is intended to be overridden in derived classes.
+        /// The default implementation throws a <see cref="NotImplementedException"/> to indicate
+        /// that the method must be implemented if called.
+        /// </remarks>
+        /// <returns>A <see cref="TaskStatus"/> indicating the result of the task execution.</returns>
+        /// <exception cref="NotImplementedException">
+        /// Thrown if the method is not overridden in a derived class and is invoked.
+        /// </exception>
+        public virtual TaskStatus Run()
+        {
+            // Default implementation throws exception to enforce override if called
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Starts the task asynchronously with backward compatibility.
+        /// If not overridden, this runs the synchronous Run() method in a separate thread.
+        /// </summary>
+        /// <returns>A Task representing the asynchronous execution, returning the TaskStatus.</returns>
+        public virtual System.Threading.Tasks.Task<TaskStatus> RunAsync()
+        {
+            return System.Threading.Tasks.Task.Run(Run);
+        }
 
         /// <summary>
         /// Stops the current task.
@@ -447,5 +471,6 @@ namespace Wexflow.Core
                 Logs.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}  ERROR - {message}\r\n{e}");
             }
         }
+
     }
 }

@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.MessageCorrect
         {
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var o = SharedMemory["message"];
                 var message = o == null ? string.Empty : o.ToString();
                 var result = message!.Contains(CheckString, StringComparison.CurrentCulture);
@@ -25,7 +26,7 @@ namespace Wexflow.Tasks.MessageCorrect
 
                 return new TaskStatus(result ? Status.Success : Status.Error, result, message);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -36,7 +37,10 @@ namespace Wexflow.Tasks.MessageCorrect
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
         }
     }

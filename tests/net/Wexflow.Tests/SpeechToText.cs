@@ -22,10 +22,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void SpeechToTextTest()
+        public async System.Threading.Tasks.Task SpeechToTextTest()
         {
             Assert.AreEqual(false, File.Exists(TextFile));
-            _ = Helper.StartWorkflow(91);
+            _ = await Helper.StartWorkflow(91);
             Assert.AreEqual(true, File.Exists(TextFile));
         }
     }

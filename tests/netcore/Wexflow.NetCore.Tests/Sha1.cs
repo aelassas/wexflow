@@ -29,11 +29,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void Sha1Test()
+        public async System.Threading.Tasks.Task Sha1Test()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(46);
+            _ = await Helper.StartWorkflow(46);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

@@ -25,6 +25,7 @@ namespace Wexflow.Tasks.Twitter
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Sending tweets...");
 
             var success = true;
@@ -41,7 +42,7 @@ namespace Wexflow.Tasks.Twitter
                     client = new TwitterClient(credentials);
                     Info("Authentication succeeded.");
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -52,13 +53,17 @@ namespace Wexflow.Tasks.Twitter
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 foreach (var file in files)
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var xdoc = XDocument.Load(file.Path);
                         foreach (var xTweet in xdoc.XPathSelectElements("Tweets/Tweet"))
                         {
@@ -84,7 +89,7 @@ namespace Wexflow.Tasks.Twitter
                             }
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -95,7 +100,10 @@ namespace Wexflow.Tasks.Twitter
                     }
                     finally
                     {
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
                         WaitOne();
+                    }
                     }
                 }
             }

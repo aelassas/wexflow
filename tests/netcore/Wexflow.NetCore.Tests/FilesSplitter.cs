@@ -21,11 +21,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesSplitterTest()
+        public async System.Threading.Tasks.Task FilesSplitterTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(57);
+            _ = await Helper.StartWorkflow(57);
             files = GetFiles();
             Assert.AreEqual(510, files.Length);
         }

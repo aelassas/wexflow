@@ -16,9 +16,9 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void HttpPutTest()
+        public async System.Threading.Tasks.Task HttpPutTest()
         {
-            _ = Helper.StartWorkflow(101);
+            _ = await Helper.StartWorkflow(101);
             // TODO
         }
     }

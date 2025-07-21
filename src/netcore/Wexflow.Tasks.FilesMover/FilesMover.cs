@@ -24,6 +24,7 @@ namespace Wexflow.Tasks.FilesMover
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Moving files...");
 
             var success = true;
@@ -32,6 +33,7 @@ namespace Wexflow.Tasks.FilesMover
             var files = SelectFiles();
             for (var i = files.Length - 1; i > -1; i--)
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var file = files[i];
                 var fileName = Path.GetFileName(file.Path);
                 string destFilePath;
@@ -95,7 +97,7 @@ namespace Wexflow.Tasks.FilesMover
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -106,7 +108,10 @@ namespace Wexflow.Tasks.FilesMover
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

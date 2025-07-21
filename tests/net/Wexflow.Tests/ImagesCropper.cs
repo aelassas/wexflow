@@ -50,12 +50,12 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ImagesCropperTest()
+        public async System.Threading.Tasks.Task ImagesCropperTest()
         {
             Assert.AreEqual(false, File.Exists(Dest1));
             Assert.AreEqual(false, File.Exists(Dest2));
             Assert.AreEqual(false, File.Exists(Dest3));
-            _ = Helper.StartWorkflow(74);
+            _ = await Helper.StartWorkflow(74);
             Assert.AreEqual(true, File.Exists(Dest1));
             Assert.AreEqual(true, File.Exists(Dest2));
             Assert.AreEqual(true, File.Exists(Dest3));

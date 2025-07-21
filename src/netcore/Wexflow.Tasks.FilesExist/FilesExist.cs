@@ -20,6 +20,7 @@ namespace Wexflow.Tasks.FilesExist
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Checking...");
 
             var success = true;
@@ -34,20 +35,28 @@ namespace Wexflow.Tasks.FilesExist
 
                 foreach (var file in FFiles)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     xFiles.Add(new XElement("File",
                         new XAttribute("path", file),
                         new XAttribute("name", Path.GetFileName(file)),
                         new XAttribute("exists", File.Exists(file))));
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 foreach (var folder in Folders)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     xFolders.Add(new XElement("Folder",
                         new XAttribute("path", folder),
                         new XAttribute("name", Path.GetFileName(folder)),
                         new XAttribute("exists", Directory.Exists(folder))));
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (xdoc.Root != null)
@@ -60,7 +69,7 @@ namespace Wexflow.Tasks.FilesExist
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("The result has been written in: {0}", xmlPath);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

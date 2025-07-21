@@ -23,11 +23,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void CsvToYamlTest()
+        public async System.Threading.Tasks.Task CsvToYamlTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(113);
+            _ = await Helper.StartWorkflow(113);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

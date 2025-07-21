@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.ListFiles
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Listing files...");
             //System.Threading.Thread.Sleep(10 * 1000);
 
@@ -37,9 +38,13 @@ namespace Wexflow.Tasks.ListFiles
                 {
                     foreach (var file in files)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         xFiles.Add(file.ToXElement());
                         Info(file.ToString());
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
                         WaitOne();
+                    }
                     }
                 }
 
@@ -51,7 +56,7 @@ namespace Wexflow.Tasks.ListFiles
                 Files.Add(xmlFile);
                 Info(xmlFile.ToString());
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

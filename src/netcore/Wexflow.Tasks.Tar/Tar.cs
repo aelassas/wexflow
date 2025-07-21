@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.Tar
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating tar archive...");
 
             bool success;
@@ -26,7 +27,7 @@ namespace Wexflow.Tasks.Tar
             {
                 success = CreateTar();
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -61,6 +62,7 @@ namespace Wexflow.Tasks.Tar
 
                     foreach (var file in files)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         using (var inputStream = File.OpenRead(file.Path))
                         {
                             var fileSize = inputStream.Length;
@@ -88,7 +90,10 @@ namespace Wexflow.Tasks.Tar
                         }
 
                         tar.CloseEntry();
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
 
                     // Finish/Close arent needed strictly as the using statement does this automatically
@@ -103,7 +108,7 @@ namespace Wexflow.Tasks.Tar
                     InfoFormat("Tar {0} created.", tarPath);
                     Files.Add(new FileInf(tarPath, Id));
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }

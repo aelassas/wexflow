@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void WebToHtmlTest()
+        public async System.Threading.Tasks.Task WebToHtmlTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(97);
+            _ = await Helper.StartWorkflow(97);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
         }

@@ -23,6 +23,7 @@ namespace Wexflow.Tasks.RedditListComments
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Retrieving comment history...");
 
             var status = Status.Success;
@@ -35,7 +36,7 @@ namespace Wexflow.Tasks.RedditListComments
                 InfoFormat("Cake Day: {0}", reddit.Account.Me.Created.ToString("D"));
                 Info("Authentication succeeded.");
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -47,6 +48,7 @@ namespace Wexflow.Tasks.RedditListComments
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 // Retrieve the authenticated user's recent comment history.
                 var comments = reddit.Account.Me.GetCommentHistory(sort: "new", limit: MaxResults, show: "all");
 
@@ -54,6 +56,7 @@ namespace Wexflow.Tasks.RedditListComments
 
                 foreach (var comment in comments)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     XElement xcomment = new("Comment", new XAttribute("id", SecurityElement.Escape(comment.Id) ?? throw new InvalidOperationException()),
                         new XAttribute("subreddit", SecurityElement.Escape(comment.Subreddit) ?? throw new InvalidOperationException()),
                         new XAttribute("author", SecurityElement.Escape(comment.Author) ?? throw new InvalidOperationException()),
@@ -73,7 +76,7 @@ namespace Wexflow.Tasks.RedditListComments
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Comment history written in {0}", xmlPath);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -84,7 +87,10 @@ namespace Wexflow.Tasks.RedditListComments
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished.");

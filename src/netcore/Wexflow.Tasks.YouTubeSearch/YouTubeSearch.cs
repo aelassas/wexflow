@@ -24,15 +24,16 @@ namespace Wexflow.Tasks.YouTubeSearch
             MaxResults = int.Parse(GetSetting("maxResults", "50"));
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Searching for content...");
             var status = Status.Success;
             try
             {
-                Search().Wait();
+                await SearchAsync();
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -43,14 +44,17 @@ namespace Wexflow.Tasks.YouTubeSearch
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished.");
             return new TaskStatus(status);
         }
 
-        private async System.Threading.Tasks.Task Search()
+        private async System.Threading.Tasks.Task SearchAsync()
         {
             YouTubeService youtubeService = new(new BaseClientService.Initializer
             {
@@ -64,6 +68,8 @@ namespace Wexflow.Tasks.YouTubeSearch
 
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
+
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
 
             List<string> videos = [];
             List<string> channels = [];

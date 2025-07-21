@@ -43,12 +43,12 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesJoinerTest()
+        public async System.Threading.Tasks.Task FilesJoinerTest()
         {
             var files = Directory.GetFiles(SourceFilesFolder);
             Assert.AreEqual(16, files.Length);
 
-            _ = Helper.StartWorkflow(147);
+            _ = await Helper.StartWorkflow(147);
 
             files = [.. Directory.GetFiles(TempFolder, "*", SearchOption.AllDirectories).OrderBy(f => f)];
             Assert.AreEqual(4, files.Length);

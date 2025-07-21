@@ -23,6 +23,7 @@ namespace Wexflow.Tasks.Unzip
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Extracting ZIP archives...");
 
             var success = true;
@@ -36,6 +37,7 @@ namespace Wexflow.Tasks.Unzip
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var destFolder = CreateSubDirectoryWithDateTime
                             ? Path.Combine(DestDir,
                                 Path.GetFileNameWithoutExtension(zip.Path) + "_" +
@@ -60,7 +62,7 @@ namespace Wexflow.Tasks.Unzip
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -71,7 +73,10 @@ namespace Wexflow.Tasks.Unzip
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }

@@ -22,6 +22,7 @@ namespace Wexflow.Tasks.Ping
             bool success;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 success = PingHost(Server);
 
                 InfoFormat(
@@ -29,7 +30,7 @@ namespace Wexflow.Tasks.Ping
                         ? "The server {0} responded the ping request."
                         : "The server {0} did not respond to the ping request.", Server);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -40,7 +41,10 @@ namespace Wexflow.Tasks.Ping
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             Info("Task finished");
 

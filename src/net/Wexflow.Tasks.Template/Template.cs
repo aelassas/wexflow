@@ -7,26 +7,32 @@ namespace Wexflow.Tasks.Template
 {
     public class Template : Task
     {
-        public Template(XElement xe, Workflow wf)
-            : base(xe, wf)
+        public Template(XElement xe, Workflow wf): base(xe, wf)
         {
-            // Task settings go here
+            // Initialize task settings from the XML element if needed.
+            // Example: string settingValue = GetSetting("mySetting");
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             try
             {
-                // Task logic goes here
+                // Main task logic goes here.
+                Info("Running my custom task...");
+
+                // Simulate work using asynchronous delay.
+                await System.Threading.Tasks.Task.Delay(2000);
 
                 return new TaskStatus(Status.Success);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
+                // Don't suppress this exception; it allows proper workflow stop handling.
                 throw;
             }
             catch (Exception ex)
             {
+                // Log unexpected errors and return error status.
                 ErrorFormat("An error occured.", ex);
                 return new TaskStatus(Status.Error);
             }

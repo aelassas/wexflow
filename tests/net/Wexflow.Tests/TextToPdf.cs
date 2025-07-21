@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void TextToPdfTest()
+        public async System.Threading.Tasks.Task TextToPdfTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(64);
+            _ = await Helper.StartWorkflow(64);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
         }

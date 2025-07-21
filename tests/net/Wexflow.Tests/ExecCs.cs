@@ -25,11 +25,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ExecCsTest()
+        public async System.Threading.Tasks.Task ExecCsTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(98);
+            _ = await Helper.StartWorkflow(98);
             files = GetFiles();
             Assert.AreEqual(4, files.Length);
             Assert.IsTrue(File.Exists(File1));

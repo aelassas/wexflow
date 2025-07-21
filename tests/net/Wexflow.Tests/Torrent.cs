@@ -28,10 +28,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void TorrentTest()
+        public async System.Threading.Tasks.Task TorrentTest()
         {
             Assert.IsFalse(File.Exists(DownloadedFolder));
-            _ = Helper.StartWorkflow(72);
+            _ = await Helper.StartWorkflow(72);
             Assert.IsTrue(Directory.Exists(DownloadedFolder));
             Thread.Sleep(30 * 1000);
         }

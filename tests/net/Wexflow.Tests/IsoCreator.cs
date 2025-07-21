@@ -24,10 +24,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void IsoCreatorTest()
+        public async System.Threading.Tasks.Task IsoCreatorTest()
         {
             Assert.IsFalse(File.Exists(IsoPath));
-            _ = Helper.StartWorkflow(87);
+            _ = await Helper.StartWorkflow(87);
             Assert.IsTrue(File.Exists(IsoPath));
         }
     }

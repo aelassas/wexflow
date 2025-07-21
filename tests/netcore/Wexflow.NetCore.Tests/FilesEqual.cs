@@ -35,9 +35,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesEqualTest()
+        public async System.Threading.Tasks.Task FilesEqualTest()
         {
-            _ = Helper.StartWorkflow(70);
+            _ = await Helper.StartWorkflow(70);
 
             // Check the workflow result
             var files = Directory.GetFiles(TempFolder, "FilesEqual*.xml", SearchOption.AllDirectories);

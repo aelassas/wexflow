@@ -23,11 +23,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void UglifyHtmlTest()
+        public async System.Threading.Tasks.Task UglifyHtmlTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(106);
+            _ = await Helper.StartWorkflow(106);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

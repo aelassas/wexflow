@@ -44,6 +44,7 @@ namespace Wexflow.Tasks.SshCmd
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 ConnectionInfo connectionInfo = new(Host, Port, Username, new PasswordAuthenticationMethod(Username, Password));
                 SshClient sshclient = new(connectionInfo);
                 sshclient.Connect();
@@ -64,7 +65,7 @@ namespace Wexflow.Tasks.SshCmd
 
                 SendCommand(stream, Cmd);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -76,7 +77,10 @@ namespace Wexflow.Tasks.SshCmd
             finally
             {
                 stream?.Close();
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             var status = Status.Success;
 

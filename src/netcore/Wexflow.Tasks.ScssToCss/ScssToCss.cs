@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.ScssToCss
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Converting SCSS files to CSS files...");
 
             bool success;
@@ -24,7 +25,7 @@ namespace Wexflow.Tasks.ScssToCss
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -49,6 +50,7 @@ namespace Wexflow.Tasks.ScssToCss
 
         private bool ConvertFiles(ref bool atLeastOneSuccess)
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             var success = true;
             var scssFiles = SelectFiles();
 
@@ -56,6 +58,7 @@ namespace Wexflow.Tasks.ScssToCss
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var source = File.ReadAllText(scssFile.Path);
                     var result = Scss.ConvertToCss(source);
 
@@ -68,7 +71,7 @@ namespace Wexflow.Tasks.ScssToCss
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -79,7 +82,10 @@ namespace Wexflow.Tasks.ScssToCss
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
             return success;

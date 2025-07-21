@@ -43,6 +43,7 @@ namespace Wexflow.Tasks.ApproveRecord
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info($"Approval process starting on the reocrd {RecordId} ...");
 
             var status = Core.Status.Success;
@@ -166,6 +167,7 @@ namespace Wexflow.Tasks.ApproveRecord
                                         var reminderNotificationDone = false;
                                         while (true)
                                         {
+                                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                                             // notification onRecordDeleted
                                             record = Workflow.Database.GetRecord(RecordId);
                                             if (record == null)
@@ -639,7 +641,7 @@ namespace Wexflow.Tasks.ApproveRecord
                     status = Core.Status.Error;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 var record = Workflow.Database.GetRecord(RecordId);
                 if (record != null)
@@ -705,7 +707,10 @@ namespace Wexflow.Tasks.ApproveRecord
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                  WaitOne();   
+                }
             }
 
             Info("Approval process finished.");

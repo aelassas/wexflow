@@ -16,17 +16,19 @@ namespace Wexflow.Tasks.FolderExists
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Checking folder...");
 
             bool success;
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 success = System.IO.Directory.Exists(Folder);
 
                 InfoFormat(success ? "The folder {0} exists." : "The folder {0} does not exist.", Folder);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -37,7 +39,10 @@ namespace Wexflow.Tasks.FolderExists
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished");

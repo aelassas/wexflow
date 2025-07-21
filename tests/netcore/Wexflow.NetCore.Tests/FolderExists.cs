@@ -17,15 +17,15 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FolderExistsTest()
+        public async System.Threading.Tasks.Task FolderExistsTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(124);
+            _ = await Helper.StartWorkflow(124);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            _ = Helper.StartWorkflow(125);
+            _ = await Helper.StartWorkflow(125);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

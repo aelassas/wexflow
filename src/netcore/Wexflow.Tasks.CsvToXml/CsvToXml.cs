@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.CsvToXml
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating XML files...");
 
             var success = true;
@@ -24,6 +25,7 @@ namespace Wexflow.Tasks.CsvToXml
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
                     CreateXml(file.Path, xmlPath);
@@ -34,7 +36,7 @@ namespace Wexflow.Tasks.CsvToXml
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -45,7 +47,10 @@ namespace Wexflow.Tasks.CsvToXml
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

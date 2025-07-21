@@ -24,6 +24,7 @@ namespace Wexflow.Tasks.FilesLoader
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Loading files...");
 
             var success = true;
@@ -38,13 +39,17 @@ namespace Wexflow.Tasks.FilesLoader
 
                         foreach (var file in files)
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                             {
-                                FileInf fi = new(file, Id);
-                                Files.Add(fi);
-                                InfoFormat("File loaded: {0}", file);
+                              FileInf fi = new(file, Id);
+                              Files.Add(fi);
+                              InfoFormat("File loaded: {0}", file);
                             }
-                            WaitOne();
+                            if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }
@@ -54,13 +59,17 @@ namespace Wexflow.Tasks.FilesLoader
                     {
                         foreach (var file in Directory.GetFiles(folder))
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                             {
-                                FileInf fi = new(file, Id);
-                                Files.Add(fi);
-                                InfoFormat("File loaded: {0}", file);
+                              FileInf fi = new(file, Id);
+                              Files.Add(fi);
+                              InfoFormat("File loaded: {0}", file);
                             }
-                            WaitOne();
+                            if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }
@@ -79,7 +88,7 @@ namespace Wexflow.Tasks.FilesLoader
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

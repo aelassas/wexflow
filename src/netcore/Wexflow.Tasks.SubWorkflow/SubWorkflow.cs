@@ -28,12 +28,13 @@ namespace Wexflow.Tasks.SubWorkflow
         public SubWorkflow(XElement xe, Workflow wf) : base(xe, wf)
         {
             WorkflowId = int.Parse(GetSetting("id"));
-            Action = Enum.Parse<KickOffAction>(GetSetting("action", "start"), true);
-            Mode = Enum.Parse<KickOffMode>(GetSetting("mode", "sync"), true);
+            Action = (KickOffAction)Enum.Parse(typeof(KickOffAction), GetSetting("action", "start"), true);
+            Mode = (KickOffMode)Enum.Parse(typeof(KickOffMode), GetSetting("mode", "sync"), true);
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             InfoFormat("Processing the sub workflow {0} ...", WorkflowId);
 
             var success = true;
@@ -50,7 +51,7 @@ namespace Wexflow.Tasks.SubWorkflow
                             switch (Mode)
                             {
                                 case KickOffMode.Sync:
-                                    success = workflow.StartSync(Workflow.StartedBy, Guid.NewGuid(), ref warning);
+                                    success = await workflow.StartInternalAsync(Workflow.StartedBy, Guid.NewGuid(), warning);
                                     break;
                                 case KickOffMode.Async:
                                     _ = workflow.StartAsync(Workflow.StartedBy);
@@ -110,7 +111,7 @@ namespace Wexflow.Tasks.SubWorkflow
                     success = false;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -121,7 +122,10 @@ namespace Wexflow.Tasks.SubWorkflow
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             var status = Status.Success;
@@ -137,6 +141,11 @@ namespace Wexflow.Tasks.SubWorkflow
 
             Info("Task finished.");
             return new TaskStatus(status);
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
         }
     }
 }

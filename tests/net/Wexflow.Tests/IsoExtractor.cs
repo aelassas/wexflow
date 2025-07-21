@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void IsoExtractorTest()
+        public async System.Threading.Tasks.Task IsoExtractorTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(88);
+            _ = await Helper.StartWorkflow(88);
             files = GetFiles();
             Assert.AreEqual(10, files.Length);
         }

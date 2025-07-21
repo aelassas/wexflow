@@ -22,11 +22,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ImagesOverlayTest()
+        public async System.Threading.Tasks.Task ImagesOverlayTest()
         {
             var images = GetFiles();
             Assert.AreEqual(0, images.Length);
-            _ = Helper.StartWorkflow(78);
+            _ = await Helper.StartWorkflow(78);
             images = GetFiles();
             Assert.AreEqual(1, images.Length);
 

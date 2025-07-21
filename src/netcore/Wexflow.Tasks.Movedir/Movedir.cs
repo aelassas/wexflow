@@ -27,6 +27,7 @@ namespace Wexflow.Tasks.Movedir
             var succeeded = false;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var move = true;
                 if (Directory.Exists(DestinationFolder))
                 {
@@ -48,7 +49,7 @@ namespace Wexflow.Tasks.Movedir
                     InfoFormat("Folder moved: {0} -> {1}", Folder, DestinationFolder);
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -58,7 +59,10 @@ namespace Wexflow.Tasks.Movedir
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished.");

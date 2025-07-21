@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.Touch
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Touching files...");
 
             var success = true;
@@ -27,6 +28,7 @@ namespace Wexflow.Tasks.Touch
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     TouchFile(file);
                     InfoFormat("File {0} created.", file);
                     Files.Add(new FileInf(file, Id));
@@ -36,7 +38,7 @@ namespace Wexflow.Tasks.Touch
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -47,7 +49,10 @@ namespace Wexflow.Tasks.Touch
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

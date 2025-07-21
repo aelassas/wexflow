@@ -22,10 +22,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void SevenZipTest()
+        public async System.Threading.Tasks.Task SevenZipTest()
         {
             Assert.AreEqual(false, File.Exists(SevenZipFile));
-            _ = Helper.StartWorkflow(89);
+            _ = await Helper.StartWorkflow(89);
             Assert.AreEqual(true, File.Exists(SevenZipFile));
         }
     }

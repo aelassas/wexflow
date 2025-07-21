@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void UntarTest()
+        public async System.Threading.Tasks.Task UntarTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(61);
+            _ = await Helper.StartWorkflow(61);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

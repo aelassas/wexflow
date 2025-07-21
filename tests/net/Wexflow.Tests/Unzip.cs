@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void UnzipTest()
+        public async System.Threading.Tasks.Task UnzipTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(60);
+            _ = await Helper.StartWorkflow(60);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

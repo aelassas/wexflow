@@ -24,6 +24,7 @@ namespace Wexflow.Tasks.FilesCopier
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Copying files...");
 
             var success = true;
@@ -32,6 +33,7 @@ namespace Wexflow.Tasks.FilesCopier
 
             foreach (var file in files)
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 string destPath;
                 if (!string.IsNullOrWhiteSpace(PreserveFolderStructFrom) &&
                     file.Path.StartsWith(PreserveFolderStructFrom, StringComparison.InvariantCultureIgnoreCase))
@@ -69,7 +71,7 @@ namespace Wexflow.Tasks.FilesCopier
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -80,7 +82,10 @@ namespace Wexflow.Tasks.FilesCopier
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

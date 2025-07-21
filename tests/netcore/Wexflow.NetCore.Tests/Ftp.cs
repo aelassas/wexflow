@@ -45,13 +45,13 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FtpTest()
+        public async System.Threading.Tasks.Task FtpTest()
         {
             Assert.IsFalse(File.Exists(File1));
             Assert.IsFalse(File.Exists(File2));
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(55); // list+upload+download+delete
+            _ = await Helper.StartWorkflow(55); // list+upload+download+delete
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

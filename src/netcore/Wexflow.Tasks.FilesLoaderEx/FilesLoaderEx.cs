@@ -44,6 +44,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Loading files...");
 
             var success = true;
@@ -61,12 +62,16 @@ namespace Wexflow.Tasks.FilesLoaderEx
 
                         foreach (var file in files)
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                             {
                                 FileInf fi = new(file, Id);
                                 folderFiles.Add(fi);
                             }
-                            WaitOne();
+                            if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }
@@ -76,12 +81,16 @@ namespace Wexflow.Tasks.FilesLoaderEx
                     {
                         foreach (var file in Directory.GetFiles(folder).OrderBy(f => f))
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             if (string.IsNullOrEmpty(RegexPattern) || Regex.IsMatch(file, RegexPattern))
                             {
                                 FileInf fi = new(file, Id);
                                 folderFiles.Add(fi);
                             }
-                            WaitOne();
+                            if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }
@@ -119,7 +128,7 @@ namespace Wexflow.Tasks.FilesLoaderEx
                     AddFiles(tmpFiles);
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

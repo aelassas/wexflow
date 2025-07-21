@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.FilesRenamer
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Renaming files...");
 
             var success = true;
@@ -27,6 +28,7 @@ namespace Wexflow.Tasks.FilesRenamer
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     if (!string.IsNullOrEmpty(file.RenameTo))
                     {
                         var dirName = Path.GetDirectoryName(file.Path) ?? throw new Exception("File directory is null");
@@ -66,7 +68,7 @@ namespace Wexflow.Tasks.FilesRenamer
                         Files.Add(new FileInf(destPath, file.TaskId));
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -77,7 +79,10 @@ namespace Wexflow.Tasks.FilesRenamer
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.FilesSplitter
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Splitting files into chunks...");
 
             var success = true;
@@ -31,6 +32,7 @@ namespace Wexflow.Tasks.FilesSplitter
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var index = 0;
 
                         const int bufferSize = 20 * 1024;
@@ -63,7 +65,7 @@ namespace Wexflow.Tasks.FilesSplitter
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -74,7 +76,10 @@ namespace Wexflow.Tasks.FilesSplitter
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }

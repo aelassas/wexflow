@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.FilesInfo
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Generating files informations...");
 
             var success = true;
@@ -32,6 +33,7 @@ namespace Wexflow.Tasks.FilesInfo
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         if (xdoc.Root != null)
                         {
                             const string dateFormat = @"MM\/dd\/yyyy HH:mm.ss";
@@ -64,7 +66,7 @@ namespace Wexflow.Tasks.FilesInfo
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -75,7 +77,10 @@ namespace Wexflow.Tasks.FilesInfo
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
                 xdoc.Save(filesInfoPath);

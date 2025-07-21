@@ -25,6 +25,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Uploading images...");
 
             var succeeded = true;
@@ -55,6 +56,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
 
                         foreach (var xvideo in xdoc.XPathSelectElements("/Images/Image"))
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             var filePath = xvideo.Element("FilePath")!.Value;
                             var caption = xvideo.Element("Caption")!.Value;
 
@@ -68,7 +70,7 @@ namespace Wexflow.Tasks.InstagramUploadImage
                             }
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -79,11 +81,14 @@ namespace Wexflow.Tasks.InstagramUploadImage
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

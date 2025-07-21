@@ -16,6 +16,7 @@ namespace Wexflow.Tasks.FilesEncryptor
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Encrypting files...");
             var status = Status.Success;
             var succeeded = true;
@@ -26,13 +27,17 @@ namespace Wexflow.Tasks.FilesEncryptor
                 var files = SelectFiles();
                 foreach (var file in files)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     succeeded &= Encrypt(file.Path, destPath, Workflow.PASS_PHRASE, Workflow.DERIVATION_ITERATIONS);
                     if (!atLeastOneSuccess && succeeded)
                     {
                         atLeastOneSuccess = true;
                     }
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -44,7 +49,7 @@ namespace Wexflow.Tasks.FilesEncryptor
                     status = Status.Error;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

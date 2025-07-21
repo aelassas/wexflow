@@ -29,9 +29,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesCopierTest()
+        public async System.Threading.Tasks.Task FilesCopierTest()
         {
-            _ = Helper.StartWorkflow(2);
+            _ = await Helper.StartWorkflow(2);
 
             // Check the workflow result
             Assert.AreEqual(true, File.Exists(_file1));

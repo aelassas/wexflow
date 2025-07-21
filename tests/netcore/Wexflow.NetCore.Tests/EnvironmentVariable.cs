@@ -18,10 +18,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void EnvironmentVariableTest()
+        public async System.Threading.Tasks.Task EnvironmentVariableTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(116);
+            _ = await Helper.StartWorkflow(116);
             stopwatch.Stop();
 
             var varValue = Environment.GetEnvironmentVariable("OS");

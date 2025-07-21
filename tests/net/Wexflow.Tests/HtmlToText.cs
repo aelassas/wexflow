@@ -23,11 +23,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void HtmlToTextTest()
+        public async System.Threading.Tasks.Task HtmlToTextTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(107);
+            _ = await Helper.StartWorkflow(107);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

@@ -17,10 +17,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void WaitTest()
+        public async System.Threading.Tasks.Task WaitTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(41);
+            _ = await Helper.StartWorkflow(41);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 30000);
         }

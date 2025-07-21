@@ -19,7 +19,7 @@ namespace Wexflow.NetCore.Tests
         public void FileSystemWatcherTest()
         {
             // TODO
-            //_ = Helper.StartWorkflow(151);
+            //_ = await Helper.StartWorkflow(151);
         }
     }
 }

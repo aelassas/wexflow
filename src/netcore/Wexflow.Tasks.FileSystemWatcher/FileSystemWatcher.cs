@@ -39,6 +39,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             InfoFormat("Watching the folder {0} ...", FolderToWatch);
 
             try
@@ -57,6 +58,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                     InfoFormat("FileSystemWatcher.OnFound started for {0}", file);
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         if (SafeMode && WexflowEngine.IsFileLocked(file))
                         {
                             Info($"File lock detected on file {file}");
@@ -76,6 +78,11 @@ namespace Wexflow.Tasks.FileSystemWatcher
                         }
                         _ = Files.RemoveAll(f => f.Path == file);
                     }
+                    catch (OperationCanceledException)
+                    {
+                        // Required for proper stop handling (do not swallow this exception)
+                        throw;
+                    }
                     catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32)
                     {
                         Logger.InfoFormat("There is a sharing violation for the file {0}.", file);
@@ -87,7 +94,10 @@ namespace Wexflow.Tasks.FileSystemWatcher
                     finally
                     {
                         Info("FileSystemWatcher.OnFound finished.");
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                     try
                     {

@@ -16,6 +16,7 @@ namespace Wexflow.Tasks.YamlToJson
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Converting YAML files to JSON files...");
 
             bool success;
@@ -24,7 +25,7 @@ namespace Wexflow.Tasks.YamlToJson
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -58,6 +59,7 @@ namespace Wexflow.Tasks.YamlToJson
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var source = File.ReadAllText(yamlFile.Path);
 
                     Deserializer deserializer = new();
@@ -77,7 +79,7 @@ namespace Wexflow.Tasks.YamlToJson
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -88,7 +90,10 @@ namespace Wexflow.Tasks.YamlToJson
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
             return success;

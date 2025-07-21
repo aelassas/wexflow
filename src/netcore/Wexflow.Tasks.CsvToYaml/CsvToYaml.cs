@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.CsvToYaml
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Converting CSV files to YAML files...");
 
             bool success;
@@ -27,7 +28,7 @@ namespace Wexflow.Tasks.CsvToYaml
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -61,6 +62,7 @@ namespace Wexflow.Tasks.CsvToYaml
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var yaml = Convert(csvFile.Path, Separator);
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csvFile.FileName) + ".yml");
                     File.WriteAllText(destPath, yaml);
@@ -71,7 +73,7 @@ namespace Wexflow.Tasks.CsvToYaml
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -82,7 +84,10 @@ namespace Wexflow.Tasks.CsvToYaml
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

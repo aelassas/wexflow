@@ -36,6 +36,7 @@ namespace Wexflow.Tasks.ImagesTransformer
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Transforming images...");
 
             var success = true;
@@ -45,6 +46,7 @@ namespace Wexflow.Tasks.ImagesTransformer
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var destFilePath = Path.Combine(Workflow.WorkflowTempFolder,
                         OutputFilePattern.Replace("$fileNameWithoutExtension", Path.GetFileNameWithoutExtension(file.FileName)).Replace("$fileName", file.FileName));
 
@@ -91,7 +93,7 @@ namespace Wexflow.Tasks.ImagesTransformer
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -102,7 +104,10 @@ namespace Wexflow.Tasks.ImagesTransformer
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

@@ -16,9 +16,9 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void InstagramUploadImageTest()
+        public async System.Threading.Tasks.Task InstagramUploadImageTest()
         {
-            _ = Helper.StartWorkflow(119);
+            _ = await Helper.StartWorkflow(119);
             // TODO
         }
     }

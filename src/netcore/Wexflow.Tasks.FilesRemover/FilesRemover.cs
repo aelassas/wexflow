@@ -15,6 +15,7 @@ namespace Wexflow.Tasks.FilesRemover
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Removing files...");
 
             var success = true;
@@ -23,6 +24,7 @@ namespace Wexflow.Tasks.FilesRemover
             var files = SelectFiles();
             for (var i = files.Length - 1; i > -1; i--)
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var file = files[i];
 
                 try
@@ -35,7 +37,7 @@ namespace Wexflow.Tasks.FilesRemover
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -46,7 +48,10 @@ namespace Wexflow.Tasks.FilesRemover
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

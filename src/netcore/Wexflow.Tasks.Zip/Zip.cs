@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.Zip
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Zipping files...");
 
             var success = true;
@@ -36,6 +37,7 @@ namespace Wexflow.Tasks.Zip
 
                     foreach (var file in files)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         // Using GetFileName makes the result compatible with XP
                         // as the resulting path is not absolute.
                         var entry = zip.CreateEntry(file.RenameToOrName);
@@ -51,13 +53,16 @@ namespace Wexflow.Tasks.Zip
                             entryStream.Write(buffer, 0, sourceBytes);
                         } while (sourceBytes > 0);
 
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
 
                     InfoFormat("Zip {0} created.", zipPath);
                     Files.Add(new FileInf(zipPath, Id));
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }

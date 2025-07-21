@@ -41,10 +41,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void FilesConcatTest()
+        public async System.Threading.Tasks.Task FilesConcatTest()
         {
             Assert.IsFalse(File.Exists(FilesConcatFile));
-            _ = Helper.StartWorkflow(53);
+            _ = await Helper.StartWorkflow(53);
             Assert.IsTrue(File.Exists(FilesConcatFile));
             var content = File.ReadAllText(FilesConcatFile);
             Assert.AreEqual(ExpectedResult, content);

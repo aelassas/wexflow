@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void UnSevenZipTest()
+        public async System.Threading.Tasks.Task UnSevenZipTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(80);
+            _ = await Helper.StartWorkflow(80);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

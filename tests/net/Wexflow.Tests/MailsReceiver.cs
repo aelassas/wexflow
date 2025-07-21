@@ -22,11 +22,11 @@ namespace Wexflow.Tests
 
         [TestMethod]
         [Ignore]
-        public void MailsReceiverTest()
+        public async System.Threading.Tasks.Task MailsReceiverTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(56);
+            _ = await Helper.StartWorkflow(56);
             files = GetFiles();
             Assert.IsTrue(files.Length > 0);
         }

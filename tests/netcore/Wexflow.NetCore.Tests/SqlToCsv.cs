@@ -28,11 +28,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void SqlToCsvTest()
+        public async System.Threading.Tasks.Task SqlToCsvTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(159);
+            _ = await Helper.StartWorkflow(159);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

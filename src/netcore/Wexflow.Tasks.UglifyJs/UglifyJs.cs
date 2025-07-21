@@ -16,6 +16,7 @@ namespace Wexflow.Tasks.UglifyJs
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Uglifying JavaScript files...");
 
             bool success;
@@ -24,7 +25,7 @@ namespace Wexflow.Tasks.UglifyJs
             {
                 success = UglifyScripts(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -58,6 +59,7 @@ namespace Wexflow.Tasks.UglifyJs
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var source = File.ReadAllText(jsFile.Path);
                     var result = Uglify.Js(source);
                     if (result.HasErrors)
@@ -76,7 +78,7 @@ namespace Wexflow.Tasks.UglifyJs
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -87,7 +89,10 @@ namespace Wexflow.Tasks.UglifyJs
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
             return success;

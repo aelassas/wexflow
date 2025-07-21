@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void TwilioTest()
+        public async System.Threading.Tasks.Task TwilioTest()
         {
-            _ = Helper.StartWorkflow(148);
+            _ = await Helper.StartWorkflow(148);
             // TODO
         }
     }

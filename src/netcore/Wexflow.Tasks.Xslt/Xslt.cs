@@ -26,6 +26,7 @@ namespace Wexflow.Tasks.Xslt
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Transforming files...");
 
             var success = true;
@@ -33,6 +34,7 @@ namespace Wexflow.Tasks.Xslt
 
             foreach (var file in SelectFiles())
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var destPath = Path.Combine(Workflow.WorkflowTempFolder,
                     string.Format(OutputFormat, Path.GetFileNameWithoutExtension(file.FileName), DateTime.Now, Extension));
 
@@ -95,7 +97,7 @@ namespace Wexflow.Tasks.Xslt
                                     ErrorFormat("Cannot find the File: {{fileName: {0}, taskId:{1}}}", fileName, taskId);
                                 }
                             }
-                            catch (ThreadInterruptedException)
+                            catch (OperationCanceledException)
                             {
                                 throw;
                             }
@@ -117,7 +119,7 @@ namespace Wexflow.Tasks.Xslt
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -128,7 +130,10 @@ namespace Wexflow.Tasks.Xslt
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

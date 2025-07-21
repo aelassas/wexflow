@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void ListEntitiesTest()
+        public async System.Threading.Tasks.Task ListEntitiesTest()
         {
-            _ = Helper.StartWorkflow(7);
+            _ = await Helper.StartWorkflow(7);
             // TODO
         }
     }

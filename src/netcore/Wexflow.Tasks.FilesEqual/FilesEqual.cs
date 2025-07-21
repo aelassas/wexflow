@@ -20,16 +20,18 @@ namespace Wexflow.Tasks.FilesEqual
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Checking...");
 
             var success = true;
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 if (!File.Exists(File1))
                 {
-                    Logger.ErrorFormat("The file {0} does not exist.", File1);
-                    return new TaskStatus(Status.Error, false);
+                  Logger.ErrorFormat("The file {0} does not exist.", File1);
+                  return new TaskStatus(Status.Error, false);
                 }
 
                 if (!File.Exists(File2))
@@ -61,10 +63,13 @@ namespace Wexflow.Tasks.FilesEqual
 
                 xdoc.Save(xmlPath);
                 Files.Add(new FileInf(xmlPath, Id));
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
                 InfoFormat("The result has been written in: {0}", xmlPath);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

@@ -43,6 +43,7 @@ namespace Wexflow.Tasks.MailsReceiver
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Receiving mails...");
 
             var success = true;
@@ -65,6 +66,7 @@ namespace Wexflow.Tasks.MailsReceiver
 
                             for (var i = Math.Min(MessageCount, count); i > 0; i--)
                             {
+                                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                                 var message = client.Inbox.GetMessage(uids[i]);
                                 var messageFileName = $"message_{i}_{message.Date:yyyy-MM-dd-HH-mm-ss-fff}";
                                 var messagePath = Path.Combine(Workflow.WorkflowTempFolder, messageFileName + ".eml");
@@ -101,7 +103,10 @@ namespace Wexflow.Tasks.MailsReceiver
                                     atLeastOneSucceed = true;
                                 }
 
-                                WaitOne();
+                                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                                {
+                                    WaitOne();
+                                }
                             }
 
                             client.Disconnect(true);
@@ -160,7 +165,7 @@ namespace Wexflow.Tasks.MailsReceiver
                         break;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

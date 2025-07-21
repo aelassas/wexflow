@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.CsvToJson
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Converting CSV files to JSON files...");
 
             bool success;
@@ -27,7 +28,7 @@ namespace Wexflow.Tasks.CsvToJson
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -61,6 +62,7 @@ namespace Wexflow.Tasks.CsvToJson
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var json = Convert(csvFile.Path, Separator);
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, Path.GetFileNameWithoutExtension(csvFile.FileName) + ".json");
                     File.WriteAllText(destPath, json);
@@ -71,7 +73,7 @@ namespace Wexflow.Tasks.CsvToJson
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -82,7 +84,10 @@ namespace Wexflow.Tasks.CsvToJson
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

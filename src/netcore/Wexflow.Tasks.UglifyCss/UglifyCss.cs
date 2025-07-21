@@ -16,6 +16,7 @@ namespace Wexflow.Tasks.UglifyCss
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Uglifying CSS files...");
 
             bool success;
@@ -24,7 +25,7 @@ namespace Wexflow.Tasks.UglifyCss
             {
                 success = UglifyCssFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -58,6 +59,7 @@ namespace Wexflow.Tasks.UglifyCss
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var source = File.ReadAllText(cssFile.Path);
                     var result = Uglify.Css(source);
                     if (result.HasErrors)
@@ -76,7 +78,7 @@ namespace Wexflow.Tasks.UglifyCss
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -87,7 +89,10 @@ namespace Wexflow.Tasks.UglifyCss
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

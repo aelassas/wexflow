@@ -22,11 +22,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ProcessLauncherTest()
+        public async System.Threading.Tasks.Task ProcessLauncherTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(12);
+            _ = await Helper.StartWorkflow(12);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             Assert.AreEqual(true, File.Exists(Dest));

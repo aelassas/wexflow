@@ -16,17 +16,19 @@ namespace Wexflow.Tasks.EnvironmentVariable
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Getting environment variable...");
 
             var value = string.Empty;
             var succeeded = false;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 value = Environment.GetEnvironmentVariable(VariableName);
                 InfoFormat("The value of the environment variable '{0}' is: {1}", VariableName, value);
                 succeeded = true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -36,7 +38,10 @@ namespace Wexflow.Tasks.EnvironmentVariable
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished.");

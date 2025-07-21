@@ -31,11 +31,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void WmiTest()
+        public async System.Threading.Tasks.Task WmiTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(23);
+            _ = await Helper.StartWorkflow(23);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

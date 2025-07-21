@@ -41,9 +41,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesExistTest()
+        public async System.Threading.Tasks.Task FilesExistTest()
         {
-            _ = Helper.StartWorkflow(42);
+            _ = await Helper.StartWorkflow(42);
 
             // Check the workflow result
             var files = Directory.GetFiles(TempFolder, "FilesExist*.xml", SearchOption.AllDirectories);

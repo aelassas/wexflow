@@ -23,6 +23,7 @@ namespace Wexflow.Tasks.ImagesResizer
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Resizing images...");
             var status = Status.Success;
             var succeeded = true;
@@ -33,13 +34,17 @@ namespace Wexflow.Tasks.ImagesResizer
                 var images = SelectFiles();
                 foreach (var image in images)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, image.FileName);
                     succeeded &= Resize(image.Path, destPath);
                     if (!atLeastOneSuccess && succeeded)
                     {
                         atLeastOneSuccess = true;
                     }
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -51,7 +56,7 @@ namespace Wexflow.Tasks.ImagesResizer
                     status = Status.Error;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -80,7 +85,7 @@ namespace Wexflow.Tasks.ImagesResizer
                 InfoFormat("The image {0} was resized to {1}x{2} -> {3}", srcPath, Width, Height, destPath);
                 return true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

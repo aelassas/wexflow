@@ -26,11 +26,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void MovedirTest()
+        public async System.Threading.Tasks.Task MovedirTest()
         {
             Assert.AreEqual(true, Directory.Exists(Src));
             Assert.AreEqual(false, Directory.Exists(Dest));
-            _ = Helper.StartWorkflow(44);
+            _ = await Helper.StartWorkflow(44);
             Assert.AreEqual(false, Directory.Exists(Src));
             Assert.AreEqual(true, Directory.Exists(Dest));
         }

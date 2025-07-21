@@ -17,15 +17,15 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void FileExistsTest()
+        public async System.Threading.Tasks.Task FileExistsTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(49);
+            _ = await Helper.StartWorkflow(49);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            _ = Helper.StartWorkflow(50);
+            _ = await Helper.StartWorkflow(50);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

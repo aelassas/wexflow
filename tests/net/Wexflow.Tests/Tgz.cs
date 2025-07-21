@@ -22,10 +22,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void TgzTest()
+        public async System.Threading.Tasks.Task TgzTest()
         {
             Assert.AreEqual(false, File.Exists(TgzFile));
-            _ = Helper.StartWorkflow(21);
+            _ = await Helper.StartWorkflow(21);
             Assert.AreEqual(true, File.Exists(TgzFile));
         }
     }

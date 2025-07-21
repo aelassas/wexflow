@@ -21,6 +21,7 @@ namespace Wexflow.Tasks.CsvToSql
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Converting CSV to SQL...");
 
             var succeeded = true;
@@ -32,6 +33,7 @@ namespace Wexflow.Tasks.CsvToSql
 
                 foreach (var csvFile in csvFiles)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var sqlPath = Path.Combine(Workflow.WorkflowTempFolder,
                         $"{Path.GetFileNameWithoutExtension(csvFile.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.sql");
                     succeeded &= ConvertCsvToSql(csvFile.Path, sqlPath, TableName, Separator);
@@ -41,7 +43,7 @@ namespace Wexflow.Tasks.CsvToSql
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -118,7 +120,10 @@ namespace Wexflow.Tasks.CsvToSql
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
         }
     }

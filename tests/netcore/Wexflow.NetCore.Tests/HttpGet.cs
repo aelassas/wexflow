@@ -21,11 +21,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void HttpGetTest()
+        public async System.Threading.Tasks.Task HttpGetTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(108);
+            _ = await Helper.StartWorkflow(108);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
         }

@@ -21,6 +21,7 @@ namespace Wexflow.Tasks.XmlToCsv
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating csv files...");
 
             var success = true;
@@ -30,6 +31,7 @@ namespace Wexflow.Tasks.XmlToCsv
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var csvPath = Path.Combine(Workflow.WorkflowTempFolder,
                         $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.csv");
                     CreateCsv(file.Path, csvPath);
@@ -41,7 +43,7 @@ namespace Wexflow.Tasks.XmlToCsv
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -52,7 +54,10 @@ namespace Wexflow.Tasks.XmlToCsv
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

@@ -10,10 +10,11 @@ Full documentation for creating custom tasks is available [here](https://github.
 
 ## Features
 
-- Base class for custom task development
-- Integrated logging and utility helpers
-- Compatible with all Wexflow editions .NET 4.8 (Legacy) and .NET 8.0+ (Stable)
-- Cross-platform support
+- Base class for building custom workflow tasks
+- Integrated logging and task lifecycle management
+- Supports both async (`RunAsync`) and sync (`Run`) task execution
+- Compatible with all Wexflow editions .NET Framework 4.8 (Legacy) and .NET 8.0+ (Stable)
+- Cross-platform: Windows, Linux, macOS
 
 ## Installation
 
@@ -38,7 +39,70 @@ Install-Package Wexflow
 
 ## Example: Creating a Custom Task
 
-To define your own task, inherit from the `Task` class and override the `Run` method:
+To define your own task, inherit from the `Task` class and override either `RunAsync` (asynchronous) or`Run` (synchronous).
+
+### Example using `RunAsync` (recommended for .NET 8.0+)
+
+If you want to use async/await functionality, override `RunAsync` instead of `Run`. Here's a simple example of a custom task:
+```csharp
+using System;
+using System.Xml.Linq;
+using Wexflow.Core;
+
+namespace Wexflow.Tasks.MyTask
+{
+    public class MyTask : Task
+    {
+        public MyTask(XElement xe, Workflow wf) : base(xe, wf)
+        {
+            // Initialize task settings from the XML element if needed.
+            // Example: string settingValue = GetSetting("mySetting");
+        }
+
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
+        {
+            try
+            {
+                // Check for workflow cancellation at the start of execution.
+                // Always include this check in any long-running or looped logic.
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                // Main task logic goes here.
+                Info("Running my custom task...");
+
+                // Simulate work using asynchronous delay.
+                await System.Threading.Tasks.Task.Delay(2000);
+
+                // Support workflow suspension. This call will block if the workflow is paused.
+                // Only call WaitOne if cancellation hasn't already been requested.
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
+
+                // Return success when the task completes successfully
+                return new TaskStatus(Status.Success);
+            }
+            catch (OperationCanceledException)
+            {
+                // Don't suppress this exception; it allows proper workflow stop handling.
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Log unexpected errors and return error status.
+                ErrorFormat("An error occurred while executing the task.", ex);
+                return new TaskStatus(Status.Error);
+            }
+        }
+    }
+}
+```
+
+### Example using `Run` (legacy compatible)
+
+If you don't need async functionality, you can use the synchronous `Run` method instead. Here's how the same task would look using `Run`:
+
 ```cs
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -59,7 +123,12 @@ namespace Wexflow.Tasks.MyTask
         {
             try
             {
-                // Task logic goes here
+                // Check for workflow cancellation at the start of execution.
+                // Always include this check in any long-running or looped logic.
+                // Required for .NET 8.0+ stable version.
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                // Main task logic goes here.
                 Info("Running my custom task...");
 
                 // WaitOne() enables suspend/resume support in .NET 8.0+.
@@ -71,12 +140,19 @@ namespace Wexflow.Tasks.MyTask
             }
             catch (ThreadInterruptedException)
             {
-                // Required for proper stop handling (do not swallow this exception)
+                // Required for .NET 4.8 legacy version.
+                // Don't suppress this exception; it allows proper workflow stop handling.
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                // Required for .NET 8.0+ stable version.
+                // Don't suppress this exception; it allows proper workflow stop handling.
                 throw;
             }
             catch (Exception ex)
             {
-                // Log unexpected errors and return error status
+                // Log unexpected errors and return error status.
                 ErrorFormat("An error occurred while executing the task.", ex);
                 return new TaskStatus(Status.Error);
             }
@@ -124,9 +200,9 @@ If your custom task depends on additional assemblies (DLLs), copy them as follow
 
 - **.NET 4.8**: `C:\Program Files\Wexflow\`
 - **.NET 8.0+**:
-  - **Windows**: `C:\Wexflow-netcore\Tasks` or `.\Wexflow.Server`
-  - **Linux**: `/opt/wexflow/Wexflow/Tasks` or `/opt/wexflow/Wexflow.Server`
-  - **macOS**: `/Applications/wexflow/Wexflow/Tasks` or `/Applications/wexflow/Wexflow.Server`
+  - **Windows**: `.\Wexflow.Server` or `C:\Wexflow-netcore\Tasks`
+  - **Linux**: `/opt/wexflow/Wexflow.Server` or `/opt/wexflow/Wexflow/Tasks` 
+  - **macOS**:  `/Applications/wexflow/Wexflow.Server` or `/Applications/wexflow/Wexflow/Tasks`
 
 ### Updating a Custom Task
 
@@ -183,5 +259,7 @@ This workflow will appear in the Wexflow Manager. You can launch and monitor it 
 That's it! You're now ready to create, install, and run your own custom tasks in Wexflow.
 
 ---
+
+## Support & Contribution
 
 For issues, contributions, or updates, visit the [Wexflow GitHub repository](https://github.com/aelassas/wexflow).

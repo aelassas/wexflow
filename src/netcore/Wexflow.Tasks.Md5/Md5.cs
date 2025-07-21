@@ -17,6 +17,7 @@ namespace Wexflow.Tasks.Md5
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Generating MD5 sums...");
 
             var success = true;
@@ -34,6 +35,7 @@ namespace Wexflow.Tasks.Md5
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var md5 = GetMd5(file.Path);
                         xdoc.Root?.Add(new XElement("File",
                                 new XAttribute("path", file.Path),
@@ -46,7 +48,7 @@ namespace Wexflow.Tasks.Md5
                             atLeastOneSucceed = true;
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -57,7 +59,10 @@ namespace Wexflow.Tasks.Md5
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
                 xdoc.Save(md5Path);

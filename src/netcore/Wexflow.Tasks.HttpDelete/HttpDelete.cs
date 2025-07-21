@@ -23,10 +23,12 @@ namespace Wexflow.Tasks.HttpDelete
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Executing DELETE request...");
             var status = Status.Success;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var deleteTask = Delete(Url, AuthorizationScheme, AuthorizationParameter);
                 deleteTask.Wait();
                 var result = deleteTask.Result;
@@ -36,7 +38,7 @@ namespace Wexflow.Tasks.HttpDelete
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("DELETE request {0} executed whith success -> {1}", Url, destFile);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -47,7 +49,10 @@ namespace Wexflow.Tasks.HttpDelete
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             Info("Task finished.");
             return new TaskStatus(status);

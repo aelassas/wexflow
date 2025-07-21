@@ -117,10 +117,10 @@ namespace Wexflow.NetCore.Tests
         {
         }
 
-        public static void Execute(int workflowId, string expectedResult)
+        public async System.Threading.Tasks.Task Execute(int workflowId, string expectedResult)
         {
             TestInitialize(workflowId);
-            _ = Helper.StartWorkflow(workflowId);
+            _ = await Helper.StartWorkflow(workflowId);
 
             // Check the workflow result
             var files = Directory.GetFiles(
@@ -134,51 +134,51 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_139AddMaxCreateDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_139AddMaxCreateDate()
         {
-            Execute(139, ExpectedResult138AddMaxCreateDate);
+            await Execute(139, ExpectedResult138AddMaxCreateDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_140AddMinCreateDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_140AddMinCreateDate()
         {
-            Execute(140, ExpectedResult139AddMinCreateDate);
+            await Execute(140, ExpectedResult139AddMinCreateDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_141AddMaxModifyDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_141AddMaxModifyDate()
         {
-            Execute(141, ExpectedResult140AddMaxModifyDate);
+            await Execute(141, ExpectedResult140AddMaxModifyDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_142AddMinModifyDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_142AddMinModifyDate()
         {
-            Execute(142, ExpectedResult141AddMinModifyDate);
+            await Execute(142, ExpectedResult141AddMinModifyDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_143RemoveMaxCreateDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_143RemoveMaxCreateDate()
         {
-            Execute(143, ExpectedResult142RemoveMaxCreateDate);
+            await Execute(143, ExpectedResult142RemoveMaxCreateDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_144RemoveMinCreateDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_144RemoveMinCreateDate()
         {
-            Execute(144, ExpectedResult143RemoveMinCreateDate);
+            await Execute(144, ExpectedResult143RemoveMinCreateDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_145RemoveMaxModifyDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_145RemoveMaxModifyDate()
         {
-            Execute(145, ExpectedResult144RemoveMaxModifyDate);
+            await Execute(145, ExpectedResult144RemoveMaxModifyDate);
         }
 
         [TestMethod]
-        public void FilesLoaderExTest_146RemoveMinModifyDate()
+        public async System.Threading.Tasks.Task FilesLoaderExTest_146RemoveMinModifyDate()
         {
-            Execute(146, ExpectedResult145RemoveMinModifyDate);
+            await Execute(146, ExpectedResult145RemoveMinModifyDate);
         }
     }
 }

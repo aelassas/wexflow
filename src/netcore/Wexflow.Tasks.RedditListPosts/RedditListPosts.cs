@@ -23,6 +23,7 @@ namespace Wexflow.Tasks.RedditListPosts
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Retrieving post history...");
 
             var status = Status.Success;
@@ -35,7 +36,7 @@ namespace Wexflow.Tasks.RedditListPosts
                 InfoFormat("Cake Day: {0}", reddit.Account.Me.Created.ToString("D"));
                 Info("Authentication succeeded.");
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -47,6 +48,7 @@ namespace Wexflow.Tasks.RedditListPosts
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 // Retrieve the authenticated user's recent post history.
                 // Change "new" to "newForced" if you don't want older stickied profile posts to appear first.
                 var posts = reddit.Account.Me.GetPostHistory(sort: "new", limit: MaxResults, show: "all");
@@ -55,6 +57,7 @@ namespace Wexflow.Tasks.RedditListPosts
 
                 foreach (var post in posts)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     XElement xpost = new("Post", new XAttribute("id", SecurityElement.Escape(post.Id) ?? throw new InvalidOperationException()),
                         new XAttribute("subreddit", SecurityElement.Escape(post.Subreddit) ?? throw new InvalidOperationException()),
                         new XAttribute("title", SecurityElement.Escape(post.Title) ?? throw new InvalidOperationException()),
@@ -74,7 +77,7 @@ namespace Wexflow.Tasks.RedditListPosts
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Post history written in {0}", xmlPath);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -85,7 +88,10 @@ namespace Wexflow.Tasks.RedditListPosts
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished.");

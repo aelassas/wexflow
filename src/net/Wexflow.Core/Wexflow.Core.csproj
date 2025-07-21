@@ -141,6 +141,7 @@
     <Compile Include="ExecutionGraph\Node.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="NetworkShareAccesser.cs" />
+    <Compile Include="RunResult.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Tag.cs" />

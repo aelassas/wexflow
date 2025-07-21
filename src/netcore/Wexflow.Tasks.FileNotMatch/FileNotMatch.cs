@@ -22,6 +22,7 @@ namespace Wexflow.Tasks.FileNotMatch
 
         public override Core.TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Checking file...");
 
             var fileMatch = false;
@@ -34,14 +35,18 @@ namespace Wexflow.Tasks.FileNotMatch
                     : Directory.GetFiles(Dir, "*.*", SearchOption.TopDirectoryOnly);
                 foreach (var file in files)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     if (Regex.Match(Path.GetFileName(file), Pattern).Success)
                     {
-                        fileFound = file;
-                        fileMatch = true;
-                        break;
+                      fileFound = file;
+                      fileMatch = true;
+                      break;
                     }
 
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (fileMatch)
@@ -53,7 +58,7 @@ namespace Wexflow.Tasks.FileNotMatch
                     InfoFormat("No file was found in the directory {0} matching the pattern {1}.", Dir, Pattern);
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

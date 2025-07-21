@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.Mkdir
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating folders...");
 
             var success = true;
@@ -27,6 +28,7 @@ namespace Wexflow.Tasks.Mkdir
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     if (!Directory.Exists(folder))
                     {
                         _ = Directory.CreateDirectory(folder ?? throw new InvalidOperationException());
@@ -39,7 +41,7 @@ namespace Wexflow.Tasks.Mkdir
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -50,7 +52,10 @@ namespace Wexflow.Tasks.Mkdir
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

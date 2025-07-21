@@ -20,11 +20,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void MediaInfoTest()
+        public async System.Threading.Tasks.Task MediaInfoTest()
         {
             //string[] files = GetFiles();
             //Assert.AreEqual(0, files.Length);
-            //Helper.StartWorkflow(52);
+            //await Helper.StartWorkflow(52);
             //files = GetFiles();
             //Assert.AreEqual(1, files.Length);
             //string content = File.ReadAllText(files[0]);

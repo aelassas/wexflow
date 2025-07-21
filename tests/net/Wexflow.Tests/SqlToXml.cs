@@ -50,11 +50,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void SqlToXmlTest()
+        public async System.Threading.Tasks.Task SqlToXmlTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(66);
+            _ = await Helper.StartWorkflow(66);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

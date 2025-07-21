@@ -20,6 +20,7 @@ namespace Wexflow.Tasks.Reddit
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Posting on Reddit...");
 
             var success = true;
@@ -36,7 +37,7 @@ namespace Wexflow.Tasks.Reddit
                     InfoFormat("Cake Day: {0}", reddit.Account.Me.Created.ToString("D"));
                     Info("Authentication succeeded.");
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -50,11 +51,13 @@ namespace Wexflow.Tasks.Reddit
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var xdoc = XDocument.Load(file.Path);
 
                         // Self posts
                         foreach (var xPost in xdoc.XPathSelectElements("Reddit/SelfPosts/SelfPost"))
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             var subreddit = xPost.Attribute("subreddit")!.Value;
                             var title = xPost.Attribute("title")!.Value;
                             var text = xPost.Attribute("text")!.Value;
@@ -81,6 +84,7 @@ namespace Wexflow.Tasks.Reddit
                         // Link posts
                         foreach (var xLink in xdoc.XPathSelectElements("Reddit/LinkPosts/LinkPost"))
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             var subreddit = xLink.Attribute("subreddit")!.Value;
                             var title = xLink.Attribute("title")!.Value;
                             var url = xLink.Attribute("url")!.Value;
@@ -104,7 +108,7 @@ namespace Wexflow.Tasks.Reddit
                             }
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -115,7 +119,10 @@ namespace Wexflow.Tasks.Reddit
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }

@@ -16,10 +16,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ExecPythonTest()
+        public async System.Threading.Tasks.Task ExecPythonTest()
         {
             // TODO
-            _ = Helper.StartWorkflow(152);
+            _ = await Helper.StartWorkflow(152);
         }
     }
 }

@@ -16,9 +16,9 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void SlackTest()
+        public async System.Threading.Tasks.Task SlackTest()
         {
-            _ = Helper.StartWorkflow(130);
+            _ = await Helper.StartWorkflow(130);
             // TODO
         }
     }

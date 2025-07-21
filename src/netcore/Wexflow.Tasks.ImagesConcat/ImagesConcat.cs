@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.ImagesConcat
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();          
             Info("Concatenating images...");
             var status = Status.Success;
 
@@ -42,7 +43,7 @@ namespace Wexflow.Tasks.ImagesConcat
                     Error("You must provide at least two images to concatenate them.");
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -80,6 +81,7 @@ namespace Wexflow.Tasks.ImagesConcat
 
                     foreach (var imageFile in imageFiles)
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var image = SKImage.FromEncodedData(imageFile.Path);
                         var bitmap = SKBitmap.FromImage(image);
                         if (nIndex == 0)
@@ -93,7 +95,11 @@ namespace Wexflow.Tasks.ImagesConcat
                             canvas.DrawBitmap(bitmap, new SKPoint(width, 0));
                             width += image.Width;
                         }
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
+                        nIndex++;
                     }
 
                     using var img = surface.Snapshot();
@@ -106,7 +112,7 @@ namespace Wexflow.Tasks.ImagesConcat
 
                 return true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

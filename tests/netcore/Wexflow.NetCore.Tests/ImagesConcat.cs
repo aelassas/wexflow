@@ -24,11 +24,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void ImagesConcatTest()
+        public async System.Threading.Tasks.Task ImagesConcatTest()
         {
             var images = GetFiles();
             Assert.AreEqual(0, images.Length);
-            _ = Helper.StartWorkflow(77);
+            _ = await Helper.StartWorkflow(77);
             images = GetFiles();
             Assert.AreEqual(1, images.Length);
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -13,6 +14,7 @@ namespace Wexflow.Core
     /// </summary>
     public abstract class Task
     {
+        #region Properties
         /// <summary>
         /// Task Id.
         /// </summary>
@@ -61,6 +63,7 @@ namespace Wexflow.Core
         /// Hashtable used as shared memory for tasks.
         /// </summary>
         public Hashtable SharedMemory => Workflow.SharedMemory;
+        #endregion
 
         private readonly XElement _xElement;
 
@@ -72,7 +75,7 @@ namespace Wexflow.Core
 		protected Task(XElement xe, Workflow wf)
         {
             IsStopped = false;
-            Logs = [];
+            Logs = new List<string>();
             _xElement = xe;
             var xId = xe.Attribute("id") ?? throw new Exception("Task id attribute not found.");
             Id = int.Parse(xId.Value);
@@ -84,11 +87,11 @@ namespace Wexflow.Core
             IsEnabled = bool.Parse(xEnabled.Value);
             IsWaitingForApproval = false;
             Workflow = wf;
-            Workflow.FilesPerTask.Add(Id, []);
-            Workflow.EntitiesPerTask.Add(Id, []);
+            Workflow.FilesPerTask.Add(Id, new List<FileInf>());
+            Workflow.EntitiesPerTask.Add(Id, new List<Entity>());
 
             // settings
-            IList<Setting> settings = [];
+            IList<Setting> settings = new List<Setting>();
 
             foreach (var xSetting in xe.XPathSelectElements("wf:Setting", Workflow.XmlNamespaceManager))
             {
@@ -105,26 +108,48 @@ namespace Wexflow.Core
                 }
 
                 // setting attributes
-                IList<Attribute> attributes = [];
+                IList<Attribute> attributes = new List<Attribute>();
 
-                foreach (var xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName is not "name" and not "value"))
+                foreach (var xAttribute in xSetting.Attributes().Where(attr => attr.Name.LocalName != "name" && attr.Name.LocalName != "value"))
                 {
-                    Attribute attr = new(xAttribute.Name.LocalName, xAttribute.Value);
+                    var attr = new Attribute(xAttribute.Name.LocalName, xAttribute.Value);
                     attributes.Add(attr);
                 }
 
-                Setting setting = new(settingName, settingValue, [.. attributes]);
+                var setting = new Setting(settingName, settingValue, attributes.ToArray());
                 settings.Add(setting);
             }
 
-            Settings = [.. settings];
+            Settings = settings.ToArray();
         }
 
         /// <summary>
-        /// Starts the task.
+        /// Executes the task synchronously.
         /// </summary>
-        /// <returns>Task status.</returns>
-        public abstract TaskStatus Run();
+        /// <remarks>
+        /// This method is intended to be overridden in derived classes.
+        /// The default implementation throws a <see cref="NotImplementedException"/> to indicate
+        /// that the method must be implemented if called.
+        /// </remarks>
+        /// <returns>A <see cref="TaskStatus"/> indicating the result of the task execution.</returns>
+        /// <exception cref="NotImplementedException">
+        /// Thrown if the method is not overridden in a derived class and is invoked.
+        /// </exception>
+        public virtual TaskStatus Run()
+        {
+            // Default implementation throws exception to enforce override if called
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Starts the task asynchronously with backward compatibility.
+        /// If not overridden, this runs the synchronous Run() method in a separate thread.
+        /// </summary>
+        /// <returns>A Task representing the asynchronous execution, returning the TaskStatus.</returns>
+        public virtual System.Threading.Tasks.Task<TaskStatus> RunAsync()
+        {
+            return System.Threading.Tasks.Task.Run(Run);
+        }
 
         /// <summary>
         /// Stops the current task.
@@ -240,7 +265,7 @@ namespace Wexflow.Core
         /// <returns>A list of the files loaded by this task through selectFiles setting.</returns>
         public FileInf[] SelectFiles()
         {
-            List<FileInf> files = [];
+            var files = new List<FileInf>();
             foreach (var xSelectFile in GetXSettings("selectFiles"))
             {
                 var xTaskId = xSelectFile.Attribute("value");
@@ -261,7 +286,7 @@ namespace Wexflow.Core
                     files.AddRange(qf);
                 }
             }
-            return [.. files];
+            return files.ToArray();
         }
 
         /// <summary>
@@ -270,9 +295,9 @@ namespace Wexflow.Core
         /// <param name="files">Files to filter.</param>
         /// <param name="xSelectFile">selectFile as an XElement</param>
         /// <returns>A list of files from the tags in selectFiles setting.</returns>
-        public static IEnumerable<FileInf> QueryFiles(IEnumerable<FileInf> files, XElement xSelectFile)
+        public IEnumerable<FileInf> QueryFiles(IEnumerable<FileInf> files, XElement xSelectFile)
         {
-            List<FileInf> fl = [];
+            var fl = new List<FileInf>();
 
             if (xSelectFile.Attributes().Count(t => t.Name != "value") == 1)
             {
@@ -306,13 +331,13 @@ namespace Wexflow.Core
         /// <returns>A list of the entities loaded by this task through selectEntities setting.</returns>
         public Entity[] SelectEntities()
         {
-            List<Entity> entities = [];
+            var entities = new List<Entity>();
             foreach (var id in GetSettings("selectEntities"))
             {
                 var taskId = int.Parse(id);
                 entities.AddRange(Workflow.EntitiesPerTask[taskId]);
             }
-            return [.. entities];
+            return entities.ToArray();
         }
 
         /// <summary>
@@ -336,7 +361,7 @@ namespace Wexflow.Core
         /// <param name="msg">Log message.</param>
         public void Info(string msg)
         {
-            if (Workflow.WexflowEngine.LogLevel is LogLevel.All or LogLevel.Debug)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
             {
                 var message = BuildLogMsg(msg);
                 Logger.Info(message);
@@ -351,7 +376,7 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void InfoFormat(string msg, params object[] args)
         {
-            if (Workflow.WexflowEngine.LogLevel is LogLevel.All or LogLevel.Debug)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug)
             {
                 var message = string.Format(BuildLogMsg(msg), args);
                 Logger.Info(message);
@@ -394,7 +419,7 @@ namespace Wexflow.Core
         /// <param name="msg">Log message.</param>
         public void Error(string msg)
         {
-            if (Workflow.WexflowEngine.LogLevel is LogLevel.All or LogLevel.Debug or LogLevel.Severely)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
                 var message = BuildLogMsg(msg);
                 Logger.Error(message);
@@ -409,7 +434,7 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void ErrorFormat(string msg, params object[] args)
         {
-            if (Workflow.WexflowEngine.LogLevel is LogLevel.All or LogLevel.Debug or LogLevel.Severely)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
                 var message = string.Format(BuildLogMsg(msg), args);
                 Logger.Error(message);
@@ -424,7 +449,7 @@ namespace Wexflow.Core
         /// <param name="e">Exception.</param>
         public void Error(string msg, Exception e)
         {
-            if (Workflow.WexflowEngine.LogLevel is LogLevel.All or LogLevel.Debug or LogLevel.Severely)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
                 var message = BuildLogMsg(msg);
                 Logger.Error(message, e);
@@ -440,7 +465,7 @@ namespace Wexflow.Core
         /// <param name="args">Arguments.</param>
         public void ErrorFormat(string msg, Exception e, params object[] args)
         {
-            if (Workflow.WexflowEngine.LogLevel is LogLevel.All or LogLevel.Debug or LogLevel.Severely)
+            if (Workflow.WexflowEngine.LogLevel == LogLevel.All || Workflow.WexflowEngine.LogLevel == LogLevel.Debug || Workflow.WexflowEngine.LogLevel == LogLevel.Severely)
             {
                 var message = string.Format(BuildLogMsg(msg), args);
                 Logger.Error(message, e);

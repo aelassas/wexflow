@@ -25,11 +25,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void ProcessInfoTest()
+        public async System.Threading.Tasks.Task ProcessInfoTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(63);
+            _ = await Helper.StartWorkflow(63);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var xdoc = XDocument.Load(files[0]);

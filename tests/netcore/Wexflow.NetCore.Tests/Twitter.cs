@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void TwitterTest()
+        public async System.Threading.Tasks.Task TwitterTest()
         {
-            _ = Helper.StartWorkflow(16);
+            _ = await Helper.StartWorkflow(16);
             // TODO
         }
     }

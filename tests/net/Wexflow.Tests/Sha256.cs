@@ -29,11 +29,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void Sha256Test()
+        public async System.Threading.Tasks.Task Sha256Test()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(47);
+            _ = await Helper.StartWorkflow(47);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

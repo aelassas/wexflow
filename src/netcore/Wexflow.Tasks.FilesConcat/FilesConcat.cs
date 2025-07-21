@@ -16,6 +16,7 @@ namespace Wexflow.Tasks.FilesConcat
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Concatenating files...");
 
             var success = true;
@@ -49,17 +50,18 @@ namespace Wexflow.Tasks.FilesConcat
                     {
                         try
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             using (var input = File.OpenRead(file.Path))
-                            {
-                                input.CopyTo(output);
-                            }
+              {
+                input.CopyTo(output);
+              }
 
                             if (!atLeastOneSucceed)
                             {
                                 atLeastOneSucceed = true;
                             }
                         }
-                        catch (ThreadInterruptedException)
+                        catch (OperationCanceledException)
                         {
                             throw;
                         }
@@ -70,7 +72,10 @@ namespace Wexflow.Tasks.FilesConcat
                         }
                         finally
                         {
-                            WaitOne();
+                            if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }

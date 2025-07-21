@@ -17,10 +17,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void ResumeTest()
+        public async System.Threading.Tasks.Task ResumeTest()
         {
             var workflowId = 41;
-            var instanceId = Helper.StartWorkflowAsync(workflowId);
+            var instanceId = await Helper.StartWorkflowAsync(workflowId);
 
             try
             {

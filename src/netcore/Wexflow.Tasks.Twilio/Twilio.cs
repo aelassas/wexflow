@@ -27,6 +27,7 @@ namespace Wexflow.Tasks.Twilio
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Sending SMS...");
 
             var success = true;
@@ -50,9 +51,12 @@ namespace Wexflow.Tasks.Twilio
                 {
                     InfoFormat("SMS sent: message.Sid={0}", message.Sid);
                 }
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

@@ -17,6 +17,7 @@ namespace Wexflow.Tasks.TextsDecryptor
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Decrypting files...");
             var status = Status.Success;
             var succeeded = true;
@@ -27,13 +28,17 @@ namespace Wexflow.Tasks.TextsDecryptor
                 var files = SelectFiles();
                 foreach (var file in files)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder, file.FileName);
                     succeeded &= Decrypt(file.Path, destPath, Workflow.PASS_PHRASE);
                     if (!atLeastOneSuccess && succeeded)
                     {
                         atLeastOneSuccess = true;
                     }
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 if (!succeeded && atLeastOneSuccess)
@@ -45,7 +50,7 @@ namespace Wexflow.Tasks.TextsDecryptor
                     status = Status.Error;
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

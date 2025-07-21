@@ -32,9 +32,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesMoverTest()
+        public async System.Threading.Tasks.Task FilesMoverTest()
         {
-            _ = Helper.StartWorkflow(4);
+            _ = await Helper.StartWorkflow(4);
             Assert.AreEqual(true, File.Exists(Dest));
         }
     }

@@ -29,11 +29,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void XsltTest()
+        public async System.Threading.Tasks.Task XsltTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(18);
+            _ = await Helper.StartWorkflow(18);
             files = GetFiles();
             Assert.AreEqual(1, files.Length);
             var content = File.ReadAllText(files[0]);

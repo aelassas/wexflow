@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.Slack
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Sending slack messages...");
 
             var success = true;
@@ -48,6 +49,7 @@ namespace Wexflow.Tasks.Slack
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var xdoc = XDocument.Load(file.Path);
                         foreach (var xMessage in xdoc.XPathSelectElements("Messages/Message"))
                         {
@@ -67,7 +69,7 @@ namespace Wexflow.Tasks.Slack
                             }
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -78,7 +80,10 @@ namespace Wexflow.Tasks.Slack
                     }
                     finally
                     {
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
                         WaitOne();
+                    }
                     }
                 }
             }

@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void WebToScreenshotTest()
+        public async System.Threading.Tasks.Task WebToScreenshotTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(96);
+            _ = await Helper.StartWorkflow(96);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
         }

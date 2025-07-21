@@ -24,10 +24,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void HttpTest()
+        public async System.Threading.Tasks.Task HttpTest()
         {
             Assert.AreEqual(false, File.Exists(Dest));
-            _ = Helper.StartWorkflow(25);
+            _ = await Helper.StartWorkflow(25);
             Assert.AreEqual(true, File.Exists(Dest));
         }
     }

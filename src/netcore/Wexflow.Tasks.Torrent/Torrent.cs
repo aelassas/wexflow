@@ -19,6 +19,7 @@ namespace Wexflow.Tasks.Torrent
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Downloading torrents...");
 
             bool success;
@@ -27,7 +28,7 @@ namespace Wexflow.Tasks.Torrent
             {
                 success = Download(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -67,7 +68,7 @@ namespace Wexflow.Tasks.Torrent
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -97,6 +98,7 @@ namespace Wexflow.Tasks.Torrent
 
                 while (engine.IsRunning)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     Thread.Sleep(1000);
 
                     if (Math.Abs(manager.Progress - 100.0) < TOLERANCE)
@@ -106,13 +108,16 @@ namespace Wexflow.Tasks.Torrent
                         break;
                     }
 
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 InfoFormat("The torrent {0} download succeeded.", path);
                 return true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

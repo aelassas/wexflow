@@ -28,10 +28,12 @@ namespace Wexflow.Tasks.HttpPost
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Executing POST request...");
             var status = Status.Success;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var postTask = Post(Url, AuthorizationScheme, AuthorizationParameter, Payload);
                 postTask.Wait();
                 var result = postTask.Result;
@@ -41,7 +43,7 @@ namespace Wexflow.Tasks.HttpPost
                 Files.Add(new FileInf(destFile, Id));
                 InfoFormat("POST request {0} executed whith success -> {1}", Url, destFile);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -52,7 +54,10 @@ namespace Wexflow.Tasks.HttpPost
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             Info("Task finished.");
             return new TaskStatus(status);

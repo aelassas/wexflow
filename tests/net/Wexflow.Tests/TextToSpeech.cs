@@ -22,10 +22,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void TextToSpeechTest()
+        public async System.Threading.Tasks.Task TextToSpeechTest()
         {
             Assert.AreEqual(false, File.Exists(WavFile));
-            _ = Helper.StartWorkflow(90);
+            _ = await Helper.StartWorkflow(90);
             Assert.AreEqual(true, File.Exists(WavFile));
         }
     }

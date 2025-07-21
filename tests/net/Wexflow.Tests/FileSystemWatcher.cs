@@ -16,10 +16,10 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void FileSystemWatcherTest()
+        public async System.Threading.Tasks.Task FileSystemWatcherTest()
         {
             // TODO
-            //_ = Helper.StartWorkflow(144);
+            //_ = await Helper.StartWorkflow(144);
         }
     }
 }

@@ -67,6 +67,7 @@ namespace Wexflow.Tasks.Ftp
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Processing files...");
             var atLeastOneSuccess = false;
 
@@ -75,7 +76,7 @@ namespace Wexflow.Tasks.Ftp
             {
                 success = DoWork(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -110,6 +111,7 @@ namespace Wexflow.Tasks.Ftp
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var files = _plugin.List();
                         Files.AddRange(files);
                         if (!atLeastOneSuccess)
@@ -119,7 +121,7 @@ namespace Wexflow.Tasks.Ftp
 
                         break;
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -140,7 +142,10 @@ namespace Wexflow.Tasks.Ftp
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }
@@ -156,6 +161,7 @@ namespace Wexflow.Tasks.Ftp
                     {
                         try
                         {
+                            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                             switch (_cmd)
                             {
                                 case FtpCommad.Upload:
@@ -180,7 +186,7 @@ namespace Wexflow.Tasks.Ftp
 
                             break;
                         }
-                        catch (ThreadInterruptedException)
+                        catch (OperationCanceledException)
                         {
                             throw;
                         }
@@ -201,7 +207,10 @@ namespace Wexflow.Tasks.Ftp
                         }
                         finally
                         {
-                            WaitOne();
+                            if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                WaitOne();
+                            }
                         }
                     }
                 }

@@ -23,11 +23,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void CsvToJsonTest()
+        public async System.Threading.Tasks.Task CsvToJsonTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(153);
+            _ = await Helper.StartWorkflow(153);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

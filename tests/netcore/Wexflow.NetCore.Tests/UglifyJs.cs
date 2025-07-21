@@ -23,11 +23,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void UglifyJsTest()
+        public async System.Threading.Tasks.Task UglifyJsTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(166);
+            _ = await Helper.StartWorkflow(166);
             files = GetFiles();
             Assert.AreEqual(2, files.Length);
             Assert.IsTrue(File.Exists(File1));

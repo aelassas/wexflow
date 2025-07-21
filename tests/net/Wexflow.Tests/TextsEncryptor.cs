@@ -23,11 +23,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void TextsEncryptorTest()
+        public async System.Threading.Tasks.Task TextsEncryptorTest()
         {
             var files = GetFiles(TextsEncryptorFolder);
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(83);
+            _ = await Helper.StartWorkflow(83);
             files = GetFiles(TextsEncryptorFolder);
             Assert.AreEqual(2, files.Length);
             files = GetFiles(TextsDecryptorSrcFolder);

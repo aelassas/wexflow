@@ -16,10 +16,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void CsvToSqlTest()
+        public async System.Threading.Tasks.Task CsvToSqlTest()
         {
             // TODO
-            _ = Helper.StartWorkflow(150);
+            _ = await Helper.StartWorkflow(150);
         }
     }
 }

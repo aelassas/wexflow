@@ -17,15 +17,15 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FileContentMatchTest()
+        public async System.Threading.Tasks.Task FileContentMatchTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(126);
+            _ = await Helper.StartWorkflow(126);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            _ = Helper.StartWorkflow(127);
+            _ = await Helper.StartWorkflow(127);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

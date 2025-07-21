@@ -25,6 +25,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating and starting approval workflows for records...");
 
             var success = true;
@@ -47,6 +48,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                         {
                             try
                             {
+                                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                                 var record = Workflow.Database.GetRecord(recordId);
                                 var workflowId = Workflow.WexflowEngine.Workflows.Select(w => w.Id).Max() + 1;
                                 var workflowName =
@@ -104,7 +106,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                     success = false;
                                 }
                             }
-                            catch (ThreadInterruptedException)
+                            catch (OperationCanceledException)
                             {
                                 throw;
                             }
@@ -116,13 +118,16 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                             }
                             finally
                             {
-                                WaitOne();
+                                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                                {
+                                    WaitOne();
+                                }
                             }
                         }
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

@@ -23,11 +23,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesEncryptorTest()
+        public async System.Threading.Tasks.Task FilesEncryptorTest()
         {
             var files = GetFiles(FilesEncryptorFolder);
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(81);
+            _ = await Helper.StartWorkflow(81);
             files = GetFiles(FilesEncryptorFolder);
             Assert.AreEqual(3, files.Length);
             files = GetFiles(FilesDecryptorSrcFolder);

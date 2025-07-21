@@ -31,11 +31,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void MkdirTest()
+        public async System.Threading.Tasks.Task MkdirTest()
         {
             Assert.AreEqual(false, Directory.Exists(Folder1));
             Assert.AreEqual(false, Directory.Exists(Folder2));
-            _ = Helper.StartWorkflow(11);
+            _ = await Helper.StartWorkflow(11);
             Assert.AreEqual(true, Directory.Exists(Folder1));
             Assert.AreEqual(true, Directory.Exists(Folder2));
         }

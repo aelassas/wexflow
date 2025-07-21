@@ -27,10 +27,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void RmdirTest()
+        public async System.Threading.Tasks.Task RmdirTest()
         {
             Assert.AreEqual(true, Directory.Exists(Src));
-            _ = Helper.StartWorkflow(14);
+            _ = await Helper.StartWorkflow(14);
             Assert.AreEqual(false, Directory.Exists(Src));
         }
     }

@@ -12,14 +12,19 @@ namespace Wexflow.Tasks.ListEntities
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Listing entities...");
 
             foreach (var entities in Workflow.EntitiesPerTask.Values)
             {
                 foreach (var entity in entities)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     InfoFormat("{{taskId: {0}, entity: {1}}}", entity.TaskId, entity);
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

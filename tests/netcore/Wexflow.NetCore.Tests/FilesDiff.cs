@@ -39,9 +39,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void FilesDiffTest()
+        public async System.Threading.Tasks.Task FilesDiffTest()
         {
-            _ = Helper.StartWorkflow(155);
+            _ = await Helper.StartWorkflow(155);
 
             // Check the workflow result
             var files = Directory.GetFiles(TempFolder, "FilesDiff*.diff", SearchOption.AllDirectories);

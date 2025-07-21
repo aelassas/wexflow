@@ -24,11 +24,12 @@ namespace Wexflow.Tasks.Now
             var succeeded = false;
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 value = string.Format(new CultureInfo(Culture), $"{{0:{Format}}}", DateTime.Now);
                 InfoFormat("The value is: {0}", value);
                 succeeded = true;
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -38,7 +39,10 @@ namespace Wexflow.Tasks.Now
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
             Info("Task finished.");
             return new TaskStatus(succeeded ? Status.Success : Status.Error, value);

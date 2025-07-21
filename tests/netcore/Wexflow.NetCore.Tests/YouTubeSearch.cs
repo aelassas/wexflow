@@ -16,9 +16,9 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void YouTubeSearchTest()
+        public async System.Threading.Tasks.Task YouTubeSearchTest()
         {
-            //Helper.StartWorkflow(120);
+            //await Helper.StartWorkflow(120);
             // TODO
         }
     }

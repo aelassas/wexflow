@@ -17,6 +17,7 @@ namespace Wexflow.Tasks.Guid
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Generating Guids...");
 
             var guidPath = Path.Combine(Workflow.WorkflowTempFolder,
@@ -26,8 +27,12 @@ namespace Wexflow.Tasks.Guid
 
             for (var i = 0; i < GuidCount; i++)
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 xguids.Add(new XElement("Guid", System.Guid.NewGuid()));
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             XDocument xdoc = new(xguids);

@@ -22,10 +22,10 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void ZipTest()
+        public async System.Threading.Tasks.Task ZipTest()
         {
             Assert.AreEqual(false, File.Exists(ZipFile));
-            _ = Helper.StartWorkflow(19);
+            _ = await Helper.StartWorkflow(19);
             Assert.AreEqual(true, File.Exists(ZipFile));
         }
     }

@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.Rmdir
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Removing folders...");
 
             var success = true;
@@ -27,6 +28,7 @@ namespace Wexflow.Tasks.Rmdir
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     RmdirRec(folder);
                     InfoFormat("Folder {0} deleted.", folder);
 
@@ -35,7 +37,7 @@ namespace Wexflow.Tasks.Rmdir
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -46,7 +48,10 @@ namespace Wexflow.Tasks.Rmdir
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

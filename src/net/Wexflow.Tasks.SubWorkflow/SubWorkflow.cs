@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.SubWorkflow
             Mode = (KickOffMode)Enum.Parse(typeof(KickOffMode), GetSetting("mode", "sync"), true);
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             InfoFormat("Processing the sub workflow {0} ...", WorkflowId);
 
@@ -50,7 +50,7 @@ namespace Wexflow.Tasks.SubWorkflow
                             switch (Mode)
                             {
                                 case KickOffMode.Sync:
-                                    success = workflow.StartSync(Workflow.StartedBy, Guid.NewGuid(), ref warning);
+                                    success = await workflow.StartInternalAsync(Workflow.StartedBy, Guid.NewGuid(), warning);
                                     break;
                                 case KickOffMode.Async:
                                     _ = workflow.StartAsync(Workflow.StartedBy);
@@ -110,7 +110,7 @@ namespace Wexflow.Tasks.SubWorkflow
                     success = false;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 throw;
             }

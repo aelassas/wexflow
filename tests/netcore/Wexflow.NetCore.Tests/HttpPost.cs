@@ -26,12 +26,12 @@ namespace Wexflow.NetCore.Tests
         //
 
         [TestMethod]
-        public void HttpPostTest()
+        public async System.Threading.Tasks.Task HttpPostTest()
         {
             // TODO
             //var files = GetFiles();
             //Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(100);
+            _ = await Helper.StartWorkflow(100);
             //files = GetFiles();
             //Assert.AreEqual(2, files.Length);
             //Assert.IsTrue(File.Exists(File1));

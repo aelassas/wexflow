@@ -38,11 +38,11 @@ namespace Wexflow.NetCore.Tests
         }
 
         [TestMethod]
-        public void ImagesTransformerTest()
+        public async System.Threading.Tasks.Task ImagesTransformerTest()
         {
             Assert.AreEqual(false, File.Exists(Dest1));
             Assert.AreEqual(false, File.Exists(Dest2));
-            _ = Helper.StartWorkflow(24);
+            _ = await Helper.StartWorkflow(24);
             Assert.AreEqual(true, File.Exists(Dest1));
             Assert.AreEqual(true, File.Exists(Dest2));
         }

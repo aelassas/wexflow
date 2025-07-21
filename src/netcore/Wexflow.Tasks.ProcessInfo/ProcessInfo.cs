@@ -20,6 +20,7 @@ namespace Wexflow.Tasks.ProcessInfo
         {
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 Info("Generating process information...");
 
                 var processes = Process.GetProcessesByName(ProcessName);
@@ -30,6 +31,7 @@ namespace Wexflow.Tasks.ProcessInfo
                 XElement xprocesses = new("Processes");
                 foreach (var process in processes)
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     XElement xprocess = new("Process"
                         , new XAttribute("id", process.Id)
                         , new XAttribute("processName", process.ProcessName)
@@ -46,7 +48,10 @@ namespace Wexflow.Tasks.ProcessInfo
                         , new XAttribute("threadCount", process.Threads.Count)
                         );
                     xprocesses.Add(xprocess);
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
 
                 XDocument xdoc = new(xprocesses);

@@ -26,6 +26,7 @@ namespace Wexflow.Tasks.Vimeo
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Uploading videos...");
             var atLeastOneSuccess = false;
 
@@ -34,7 +35,7 @@ namespace Wexflow.Tasks.Vimeo
             {
                 success = UploadVideos(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -70,6 +71,7 @@ namespace Wexflow.Tasks.Vimeo
                 {
                     try
                     {
+                        Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                         var xdoc = XDocument.Load(file.Path);
 
                         foreach (var xvideo in xdoc.XPathSelectElements("/Videos/Video"))
@@ -100,7 +102,7 @@ namespace Wexflow.Tasks.Vimeo
                             }
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    catch (OperationCanceledException)
                     {
                         throw;
                     }
@@ -111,11 +113,14 @@ namespace Wexflow.Tasks.Vimeo
                     }
                     finally
                     {
-                        WaitOne();
+                        if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            WaitOne();
+                        }
                     }
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }

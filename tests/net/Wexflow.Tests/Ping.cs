@@ -17,15 +17,15 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void PingTest()
+        public async System.Threading.Tasks.Task PingTest()
         {
             var stopwatch = Stopwatch.StartNew();
-            _ = Helper.StartWorkflow(94);
+            _ = await Helper.StartWorkflow(94);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 1000);
             stopwatch.Reset();
             stopwatch.Start();
-            _ = Helper.StartWorkflow(95);
+            _ = await Helper.StartWorkflow(95);
             stopwatch.Stop();
             Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000);
         }

@@ -43,6 +43,7 @@ namespace Wexflow.Tasks.Sql
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Executing SQL scripts...");
 
             var success = true;
@@ -57,7 +58,7 @@ namespace Wexflow.Tasks.Sql
                     Info("The script has been executed through the sql option of the task.");
                 }
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -68,7 +69,10 @@ namespace Wexflow.Tasks.Sql
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             // Execute SQL files scripts
@@ -76,6 +80,7 @@ namespace Wexflow.Tasks.Sql
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var sql = File.ReadAllText(file.Path);
                     ExecuteSql(sql);
                     InfoFormat("The script {0} has been executed.", file.Path);
@@ -85,7 +90,7 @@ namespace Wexflow.Tasks.Sql
                         atLeastOneSucceed = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -96,7 +101,10 @@ namespace Wexflow.Tasks.Sql
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
 

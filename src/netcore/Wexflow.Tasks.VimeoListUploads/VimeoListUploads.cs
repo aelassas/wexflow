@@ -28,6 +28,7 @@ namespace Wexflow.Tasks.VimeoListUploads
 
             try
             {
+                Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 var xmlPath = Path.Combine(Workflow.WorkflowTempFolder,
                     $"VimeoListUploads_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.xml");
 
@@ -58,7 +59,7 @@ namespace Wexflow.Tasks.VimeoListUploads
                 Files.Add(new FileInf(xmlPath, Id));
                 InfoFormat("Results written in {0}", xmlPath);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -69,7 +70,10 @@ namespace Wexflow.Tasks.VimeoListUploads
             }
             finally
             {
-                WaitOne();
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
             }
 
             Info("Task finished.");

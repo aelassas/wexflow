@@ -18,6 +18,7 @@ namespace Wexflow.Tasks.JsonToYaml
 
         public override TaskStatus Run()
         {
+            Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Converting JSON files to YAML files...");
 
             bool success;
@@ -26,7 +27,7 @@ namespace Wexflow.Tasks.JsonToYaml
             {
                 success = ConvertFiles(ref atLeastOneSuccess);
             }
-            catch (ThreadInterruptedException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
@@ -59,6 +60,7 @@ namespace Wexflow.Tasks.JsonToYaml
             {
                 try
                 {
+                    Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                     var source = File.ReadAllText(yamlFile.Path);
 
                     ExpandoObjectConverter expConverter = new();
@@ -76,7 +78,7 @@ namespace Wexflow.Tasks.JsonToYaml
                         atLeastOneSuccess = true;
                     }
                 }
-                catch (ThreadInterruptedException)
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
@@ -87,7 +89,10 @@ namespace Wexflow.Tasks.JsonToYaml
                 }
                 finally
                 {
-                    WaitOne();
+                    if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        WaitOne();
+                    }
                 }
             }
             return success;

@@ -718,7 +718,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StartWorkflow()
         {
-            Post(GetPattern("start"), args =>
+            Post(GetPattern("start"), async args =>
             {
                 var username = Context.CurrentUser.Identity.Name;
 
@@ -729,7 +729,7 @@ namespace Wexflow.Server
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
-                    var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
+                    var instanceId = await WexflowServer.WexflowEngine.StartWorkflowAsync(username, workflowId);
 
                     var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
@@ -746,7 +746,7 @@ namespace Wexflow.Server
                     authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                     if (authorized)
                     {
-                        var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId);
+                        var instanceId =await  WexflowServer.WexflowEngine.StartWorkflowAsync(username, workflowId);
 
                         var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                         var resBytes = Encoding.UTF8.GetBytes(resStr);
@@ -776,7 +776,7 @@ namespace Wexflow.Server
         /// </summary>
         private void StartWorkflowWithVariables()
         {
-            Post(GetPattern("start-with-variables"), args =>
+            Post(GetPattern("start-with-variables"), async args =>
             {
                 var username = Context.CurrentUser.Identity.Name;
 
@@ -799,7 +799,7 @@ namespace Wexflow.Server
 
                 if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                 {
-                    var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
+                    var instanceId = await WexflowServer.WexflowEngine.StartWorkflowAsync(username, workflowId, restVariables);
 
                     var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
@@ -816,7 +816,7 @@ namespace Wexflow.Server
                     authorized = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                     if (authorized)
                     {
-                        var instanceId = WexflowServer.WexflowEngine.StartWorkflow(username, workflowId, restVariables);
+                        var instanceId = await WexflowServer.WexflowEngine.StartWorkflowAsync(username, workflowId, restVariables);
 
                         var resStr = JsonConvert.SerializeObject(instanceId.ToString());
                         var resBytes = Encoding.UTF8.GetBytes(resStr);

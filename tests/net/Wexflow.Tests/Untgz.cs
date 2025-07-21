@@ -21,11 +21,11 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void UntgzTest()
+        public async System.Threading.Tasks.Task UntgzTest()
         {
             var files = GetFiles();
             Assert.AreEqual(0, files.Length);
-            _ = Helper.StartWorkflow(62);
+            _ = await Helper.StartWorkflow(62);
             files = GetFiles();
             Assert.AreEqual(3, files.Length);
         }

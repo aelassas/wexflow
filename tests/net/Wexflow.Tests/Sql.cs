@@ -21,9 +21,9 @@ namespace Wexflow.Tests
         }
 
         [TestMethod]
-        public void SqlTest()
+        public async System.Threading.Tasks.Task SqlTest()
         {
-            _ = Helper.StartWorkflow(22);
+            _ = await Helper.StartWorkflow(22);
 
             // sqlite
             const string sql = "select Id, Description from Data;";
