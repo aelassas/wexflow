@@ -181,7 +181,7 @@
                                                     try {
                                                         const evtSource = new EventSource(`${uri}/sse/status-count`);
 
-                                                        const debounceDelay = 300; // ms
+                                                        const debounceDelay = window.Settings.DebounceDelay || 300; // ms
                                                         const debouncedUpdate = window.Common.debounce(updateStatusCountAndEntries, debounceDelay);
 
                                                         evtSource.addEventListener('statusCount', (event) => {

@@ -39,5 +39,10 @@ window.Settings = (function () {
          * or "netcore" for .NET Core / .NET 5+.
          */
         Version: "net48",
+
+        /**
+         * Debounce delay in milliseconds for real-time updates.
+         */
+        DebounceDelay: 300,
     };
 })()
