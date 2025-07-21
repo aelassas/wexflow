@@ -199,9 +199,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Admin", "src\admin\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Core.Db.LiteDB", "src\net\Wexflow.Core.Db.LiteDB\Wexflow.Core.Db.LiteDB.csproj", "{2BBB9F04-49D7-49A7-A065-4B2C81E66307}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net", "net", "{2B331880-D0F7-40F0-8462-F98DCE7E9888}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net48 (legacy)", "net48 (legacy)", "{2B331880-D0F7-40F0-8462-F98DCE7E9888}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netcore", "netcore", "{496E87FA-B46B-4B32-ADB3-C76605CDBDFA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netcore (stable)", "netcore (stable)", "{496E87FA-B46B-4B32-ADB3-C76605CDBDFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wexflow.Core", "Wexflow.Core", "{70481AA7-1FB5-4F5B-AFE8-07C9E819CF1F}"
 EndProject
