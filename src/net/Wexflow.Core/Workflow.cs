@@ -1,4 +1,3 @@
-using Raven.Client.Documents.Commands.Batches;
 using System;
 using System.Collections;
 using System.Collections.Generic;
