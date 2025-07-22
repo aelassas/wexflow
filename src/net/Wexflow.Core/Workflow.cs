@@ -1047,8 +1047,6 @@ namespace Wexflow.Core
             bool resultWarning,
             List<Variable> restVariables = null)
         {
-            await _semaphore.WaitAsync();
-
             if (IsRunning)
             {
                 if (EnableParallelJobs)
@@ -1082,6 +1080,8 @@ namespace Wexflow.Core
                     return true;
                 }
             }
+
+            await _semaphore.WaitAsync();
 
             var result = new RunResult();
 

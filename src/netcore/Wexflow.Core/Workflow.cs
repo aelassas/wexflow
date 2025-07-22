@@ -1107,11 +1107,6 @@ namespace Wexflow.Core
             bool resultWarning,
             List<Variable> restVariables = null)
         {
-            await _semaphore.WaitAsync();
-
-            var token = CancellationTokenSource.Token;
-            token.ThrowIfCancellationRequested();
-
             if (IsRunning)
             {
                 if (EnableParallelJobs)
@@ -1145,6 +1140,11 @@ namespace Wexflow.Core
                     return true;
                 }
             }
+
+            await _semaphore.WaitAsync();
+
+            var token = CancellationTokenSource.Token;
+            token.ThrowIfCancellationRequested();
 
             var result = new RunResult();
 
