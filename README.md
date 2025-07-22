@@ -74,6 +74,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 * 6+ database engines supported
 * Extensible architecture for custom activities
 * [Push Notifications via SSE - Get real-time workflow job updates without polling](https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE)
+* Asynchronous workflow execution for improved concurrency and performance
 
 ### UI & Visualization
 * Powerful web dashboard
