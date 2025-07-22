@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Wexflow.Core.Service.Contracts;
 
 namespace Wexflow.Core.Service.Client
@@ -105,6 +106,16 @@ namespace Wexflow.Core.Service.Client
         public WorkflowInfo GetWorkflow(string token, int id)
         {
             var uri = $"{Uri}/workflow?w={id}";
+            var webClient = new WebClient();
+            webClient.Headers.Add("Authorization", $"Bearer {token}");
+            var response = webClient.DownloadString(uri);
+            var workflow = JsonConvert.DeserializeObject<WorkflowInfo>(response);
+            return workflow;
+        }
+
+        public WorkflowInfo GetJob(string token, int workflowId, Guid jobId)
+        {
+            var uri = $"{Uri}/job?w={workflowId}&i={jobId}";
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var response = webClient.DownloadString(uri);

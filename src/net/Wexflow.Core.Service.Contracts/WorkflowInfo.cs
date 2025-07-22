@@ -44,6 +44,8 @@ namespace Wexflow.Core.Service.Contracts
         public bool IsExecutionGraphEmpty { get; set; }
         [DataMember]
         public Variable[] LocalVariables { get; set; }
+        [DataMember]
+        public Status Status { get; set; }
 
         public WorkflowInfo(string dbId, int id, Guid instanceId, string name, LaunchType launchType, bool isEnabled, bool isApproval, bool isWaitingForApproval, string desc, bool isRunning, bool isPaused, string period, string cronExpression, bool isExecutionGraphEmpty, Variable[] localVariables)
         {

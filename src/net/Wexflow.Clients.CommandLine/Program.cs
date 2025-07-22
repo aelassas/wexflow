@@ -72,13 +72,13 @@ namespace Wexflow.Clients.CommandLine
                                if (o.Wait)
                                {
                                    Thread.Sleep(1000);
-                                   workflow = client.GetWorkflow(token, o.WorkflowId);
-                                   var isRunning = workflow.IsRunning;
+                                   workflow = client.GetJob(token, o.WorkflowId, instanceId);
+                                   var isRunning = workflow?.IsRunning ?? false;
                                    while (isRunning)
                                    {
                                        Thread.Sleep(100);
-                                       workflow = client.GetWorkflow(token, o.WorkflowId);
-                                       isRunning = workflow.IsRunning;
+                                       workflow = client.GetJob(token, o.WorkflowId, instanceId);
+                                       isRunning = workflow?.IsRunning ?? false;
                                    }
                                }
                                break;

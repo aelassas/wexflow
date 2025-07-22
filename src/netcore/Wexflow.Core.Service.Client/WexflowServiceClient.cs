@@ -126,6 +126,15 @@ namespace Wexflow.Core.Service.Client
             return workflow;
         }
 
+        public async Task<WorkflowInfo> GetJob(string token, int workflowId, Guid jobId)
+        {
+            var uri = $"{Uri}/job?w={workflowId}&i={jobId}";
+            using HttpClient webClient = new();
+            var response = await DownloadStringAsync(webClient, uri, token);
+            var workflow = JsonConvert.DeserializeObject<WorkflowInfo>(response);
+            return workflow;
+        }
+
         public async Task<User> GetUser(string username, string token)
         {
             var uri = $"{Uri}/user?username={System.Uri.EscapeDataString(username)}";
