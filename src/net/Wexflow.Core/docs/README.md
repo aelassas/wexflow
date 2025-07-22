@@ -188,11 +188,11 @@ The `Tasks` folder path can be configured via the `tasksFolder` setting in the c
 If you're using the .NET 8.0+ version of Wexflow, copy `Wexflow.Tasks.MyTask.dll` to the appropriate platform-specific folder:
 
 - **Windows**:
-  - `C:\Wexflow-netcore\Tasks` or `.\Wexflow.Server`
+  - `.\Wexflow.Server` or `C:\Wexflow-netcore\Tasks`
 - **Linux**:
-  - `/opt/wexflow/Wexflow/Tasks` or `/opt/wexflow/Wexflow.Server`
+  - `/opt/wexflow/Wexflow.Server` or `/opt/wexflow/Wexflow/Tasks`
 - **macOS**:
-  - `/Applications/wexflow/Wexflow/Tasks` or `/Applications/wexflow/Wexflow.Server`
+  - `/Applications/wexflow/Wexflow.Server` or `/Applications/wexflow/Wexflow/Tasks`
 
 ### Referenced Assemblies
 
