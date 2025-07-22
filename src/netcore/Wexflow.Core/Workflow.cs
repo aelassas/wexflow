@@ -24,7 +24,7 @@ namespace Wexflow.Core
     /// </summary>
     public class Workflow
     {
-        private readonly object _padlock = new();
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         /// <summary>
         /// This constant is used to determine the key size of the encryption algorithm in bits.
@@ -1107,6 +1107,8 @@ namespace Wexflow.Core
             bool resultWarning,
             List<Variable> restVariables = null)
         {
+            await _semaphore.WaitAsync();
+
             var token = CancellationTokenSource.Token;
             token.ThrowIfCancellationRequested();
 
@@ -1150,8 +1152,6 @@ namespace Wexflow.Core
 
             try
             {
-                lock (_padlock)
-                {
                     StartedOn = DateTime.Now;
                     StartedBy = startedBy;
                     InstanceId = instanceId;
@@ -1211,7 +1211,6 @@ namespace Wexflow.Core
                     };
 
                     OnStatusChanged?.Invoke();
-                }
 
                 IsRunning = true;
                 IsRejected = false;
@@ -1267,7 +1266,7 @@ namespace Wexflow.Core
                 {
                     LogWorkflowFinished();
 
-                    var entry = Database.GetEntry(Id, InstanceId);
+                    entry = Database.GetEntry(Id, InstanceId);
                     entry.StatusDate = DateTime.Now;
                     entry.Logs = string.Join("\r\n", Logs);
 
@@ -1374,6 +1373,8 @@ namespace Wexflow.Core
                     RestVariables.Clear();
                 }
             }
+
+            _semaphore.Release();
 
             return result.Success;
         }

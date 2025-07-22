@@ -23,7 +23,7 @@ namespace Wexflow.Core
     /// </summary>
     public class Workflow
     {
-        private readonly object padlock = new object();
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         /// <summary>
         /// This constant is used to determine the key size of the encryption algorithm in bits.
@@ -1013,7 +1013,7 @@ namespace Wexflow.Core
             // LEGACY THREAD-BASED VERSION
             // Used to capture the thread for support with Thread.Interrupt() in Stop() method.
             // Note: This approach is only suitable for legacy scenarios (e.g., .NET Framework / compatibility mode).
-            _thread = new Thread (() =>
+            _thread = new Thread(() =>
             {
                 try
                 {
@@ -1047,6 +1047,8 @@ namespace Wexflow.Core
             bool resultWarning,
             List<Variable> restVariables = null)
         {
+            await _semaphore.WaitAsync();
+
             if (IsRunning)
             {
                 if (EnableParallelJobs)
@@ -1087,66 +1089,64 @@ namespace Wexflow.Core
 
             try
             {
-                lock (padlock)
+                StartedOn = DateTime.Now;
+                StartedBy = startedBy;
+                InstanceId = instanceId;
+                Jobs.Add(InstanceId, this);
+
+                if (restVariables != null)
                 {
-                    StartedOn = DateTime.Now;
-                    StartedBy = startedBy;
-                    InstanceId = instanceId;
-                    Jobs.Add(InstanceId, this);
+                    RestVariables.Clear();
+                    RestVariables.AddRange(restVariables);
+                }
 
-                    if (restVariables != null)
-                    {
-                        RestVariables.Clear();
-                        RestVariables.AddRange(restVariables);
-                    }
+                var dest = Parse(Xml);
+                Load(dest);
 
-                    var dest = Parse(Xml);
-                    Load(dest);
+                _stopCalled = false;
+                Logs.Clear();
 
-                    _stopCalled = false;
-                    Logs.Clear();
+                if (WexflowEngine.LogLevel != LogLevel.None)
+                {
+                    var msg = $"{LogTag} Workflow started - Instance Id: {InstanceId}";
+                    Logger.Info(msg);
+                    Logs.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  INFO - {msg}");
+                }
 
-                    if (WexflowEngine.LogLevel != LogLevel.None)
-                    {
-                        var msg = $"{LogTag} Workflow started - Instance Id: {InstanceId}";
-                        Logger.Info(msg);
-                        Logs.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  INFO - {msg}");
-                    }
+                Database.IncrementRunningCount();
 
-                    Database.IncrementRunningCount();
-
-                    var entry = Database.GetEntry(Id, InstanceId);
-                    if (entry == null)
-                    {
-                        entry = new Entry
-                        {
-                            WorkflowId = Id,
-                            JobId = InstanceId.ToString(),
-                            Name = Name,
-                            LaunchType = (Db.LaunchType)(int)LaunchType,
-                            Description = Description,
-                            Status = Db.Status.Running,
-                            StatusDate = DateTime.Now,
-                            Logs = string.Join("\r\n", Logs)
-                        };
-                        Database.InsertEntry(entry);
-                    }
-                    else
-                    {
-                        entry.Status = Db.Status.Running;
-                        entry.StatusDate = DateTime.Now;
-                        entry.Logs = string.Join("\r\n", Logs);
-                        Database.UpdateEntry(entry.GetDbId(), entry);
-                    }
-
-                    _historyEntry = new HistoryEntry
+                var entry = Database.GetEntry(Id, InstanceId);
+                if (entry == null)
+                {
+                    entry = new Entry
                     {
                         WorkflowId = Id,
+                        JobId = InstanceId.ToString(),
                         Name = Name,
                         LaunchType = (Db.LaunchType)(int)LaunchType,
-                        Description = Description
+                        Description = Description,
+                        Status = Db.Status.Running,
+                        StatusDate = DateTime.Now,
+                        Logs = string.Join("\r\n", Logs)
                     };
+                    Database.InsertEntry(entry);
                 }
+                else
+                {
+                    entry.Status = Db.Status.Running;
+                    entry.StatusDate = DateTime.Now;
+                    entry.Logs = string.Join("\r\n", Logs);
+                    Database.UpdateEntry(entry.GetDbId(), entry);
+                }
+
+                _historyEntry = new HistoryEntry
+                {
+                    WorkflowId = Id,
+                    Name = Name,
+                    LaunchType = (Db.LaunchType)(int)LaunchType,
+                    Description = Description
+                };
+
 
                 IsRunning = true;
                 IsRejected = false;
@@ -1202,7 +1202,7 @@ namespace Wexflow.Core
                 {
                     LogWorkflowFinished();
 
-                    var entry = Database.GetEntry(Id, InstanceId);
+                    entry = Database.GetEntry(Id, InstanceId);
                     entry.StatusDate = DateTime.Now;
                     entry.Logs = string.Join("\r\n", Logs);
 
@@ -1302,6 +1302,8 @@ namespace Wexflow.Core
                     RestVariables.Clear();
                 }
             }
+
+            _semaphore.Release();
 
             return result.Success;
         }
