@@ -1110,34 +1110,38 @@ namespace Wexflow.Core
             var token = CancellationTokenSource.Token;
             token.ThrowIfCancellationRequested();
 
-            if (IsRunning && EnableParallelJobs)
-            {
-                var pInstanceId = Guid.NewGuid();
-                var warning = false;
-
-                var parallelWorkflow = new Workflow(
-                    WexflowEngine,
-                    ++ParallelJobId,
-                    Jobs,
-                    DbId,
-                    Xml,
-                    WexflowTempFolder,
-                    TasksFolder,
-                    ApprovalFolder,
-                    XsdPath,
-                    Database,
-                    GlobalVariables)
-                {
-                    RestVariables = RestVariables,
-                    StartedBy = startedBy
-                };
-
-                return await parallelWorkflow.StartInternalAsync(startedBy, pInstanceId, warning, restVariables);
-            }
-
             if (IsRunning)
             {
-                return false;
+                if (EnableParallelJobs)
+                {
+                    var pInstanceId = Guid.NewGuid();
+                    var warning = false;
+
+                    var parallelWorkflow = new Workflow(
+                        WexflowEngine,
+                        ++ParallelJobId,
+                        Jobs,
+                        DbId,
+                        Xml,
+                        WexflowTempFolder,
+                        TasksFolder,
+                        ApprovalFolder,
+                        XsdPath,
+                        Database,
+                        GlobalVariables)
+                    {
+                        RestVariables = RestVariables,
+                        StartedBy = startedBy
+                    };
+
+                    return await parallelWorkflow.StartInternalAsync(startedBy, pInstanceId, warning, restVariables);
+                }
+                else
+                {
+                    var job = new Job() { Workflow = this, QueuedOn = DateTime.Now };
+                    _jobsQueue.Enqueue(job);
+                    return true;
+                }
             }
 
             var result = new RunResult();
