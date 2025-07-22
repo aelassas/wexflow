@@ -44,6 +44,7 @@ namespace Wexflow.Core
         /// </summary>
         public const int START_ID = -1;
 
+        #region Properties
         /// <summary>
         /// Wexflow engine.
         /// </summary>
@@ -240,6 +241,7 @@ namespace Wexflow.Core
         /// Job Status.
         /// </summary>
         public Db.Status JobStatus { get; private set; }
+        #endregion
 
         private readonly Queue<Job> _jobsQueue;
         private Thread _thread;
@@ -1045,6 +1047,36 @@ namespace Wexflow.Core
             bool resultWarning,
             List<Variable> restVariables = null)
         {
+            if (IsRunning && EnableParallelJobs)
+            {
+                var pInstanceId = Guid.NewGuid();
+                var warning = false;
+
+                var parallelWorkflow = new Workflow(
+                    WexflowEngine,
+                    ++ParallelJobId,
+                    Jobs,
+                    DbId,
+                    Xml,
+                    WexflowTempFolder,
+                    TasksFolder,
+                    ApprovalFolder,
+                    XsdPath,
+                    Database,
+                    GlobalVariables)
+                {
+                    RestVariables = RestVariables,
+                    StartedBy = startedBy
+                };
+
+                return await parallelWorkflow.StartInternalAsync(startedBy, pInstanceId, warning, restVariables);
+            }
+
+            if (IsRunning)
+            {
+                return false;
+            }
+
             var result = new RunResult();
 
             JobStatus = Db.Status.Running;

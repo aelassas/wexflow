@@ -41,7 +41,7 @@ namespace Wexflow.Tasks.ApproveRecord
             DeleteWorkflowOnApproval = bool.Parse(GetSetting("deleteWorkflowOnApproval", "false"));
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info($"Approval process starting on the reocrd {RecordId} ...");
@@ -607,7 +607,7 @@ namespace Wexflow.Tasks.ApproveRecord
                                                 break;
                                             }
 
-                                            Thread.Sleep(1000);
+                                            await System.Threading.Tasks.Task.Delay(1000, Workflow.CancellationTokenSource.Token);
                                         }
                                     }
                                 }

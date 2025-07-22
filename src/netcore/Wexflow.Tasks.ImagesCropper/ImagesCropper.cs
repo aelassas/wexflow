@@ -81,7 +81,7 @@ namespace Wexflow.Tasks.ImagesCropper
                 using var skBitmap = SKBitmap.Decode(srcPath);
 
                 using var pixmap = new SKPixmap(skBitmap.Info, skBitmap.GetPixels());
-                var rectI = new SKRectI(X, Y, Width, Height);
+                var rectI = new SKRectI(X, Y, X + Width, Y + Height);
 
                 var subset = pixmap.ExtractSubset(rectI);
 

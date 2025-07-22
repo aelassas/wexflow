@@ -23,7 +23,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
             DeleteWorkflowOnApproval = bool.Parse(GetSetting("deleteWorkflowOnApproval", "true"));
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Creating and starting approval workflows for records...");
@@ -86,7 +86,8 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                             "Workflow_" + workflowId + ".xml");
                                         var xdoc = XDocument.Parse(xml);
                                         xdoc.Save(filePath);
-                                        Thread.Sleep(5 * 1000); // Wait until the workflow get reloaded in the system
+                                        // Wait until the workflow get reloaded in the system
+                                        await System.Threading.Tasks.Task.Delay(5 * 1000, Workflow.CancellationTokenSource.Token);
                                         workflow = Workflow.WexflowEngine
                                             .GetWorkflow(workflowId); // Reload the workflow
                                     }

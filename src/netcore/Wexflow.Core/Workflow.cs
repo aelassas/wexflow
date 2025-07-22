@@ -1077,7 +1077,7 @@ namespace Wexflow.Core
             var token = CancellationTokenSource.Token;
 
             // Start internal logic asynchronously (fire-and-forget)
-            _ = System.Threading.Tasks.Task.Run(async () =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(async () =>
             {
                 try
                 {
@@ -1088,7 +1088,7 @@ namespace Wexflow.Core
                 {
                     // Graceful stop
                 }
-            }, token);
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
 
             return instanceId;
         }
@@ -1109,6 +1109,36 @@ namespace Wexflow.Core
         {
             var token = CancellationTokenSource.Token;
             token.ThrowIfCancellationRequested();
+
+            if (IsRunning && EnableParallelJobs)
+            {
+                var pInstanceId = Guid.NewGuid();
+                var warning = false;
+
+                var parallelWorkflow = new Workflow(
+                    WexflowEngine,
+                    ++ParallelJobId,
+                    Jobs,
+                    DbId,
+                    Xml,
+                    WexflowTempFolder,
+                    TasksFolder,
+                    ApprovalFolder,
+                    XsdPath,
+                    Database,
+                    GlobalVariables)
+                {
+                    RestVariables = RestVariables,
+                    StartedBy = startedBy
+                };
+
+                return await parallelWorkflow.StartInternalAsync(startedBy, pInstanceId, warning, restVariables);
+            }
+
+            if (IsRunning)
+            {
+                return false;
+            }
 
             var result = new RunResult();
 
@@ -1483,7 +1513,7 @@ namespace Wexflow.Core
             while (status.Status != Status.Success && retries < RetryCount)
             {
                 // Wait before retrying
-                Thread.Sleep(RetryTimeout);
+                await System.Threading.Tasks.Task.Delay(RetryTimeout, CancellationTokenSource.Token);
 
                 // Log retry attempt
                 task.InfoFormat("Retry attempt {0}", retries + 1);

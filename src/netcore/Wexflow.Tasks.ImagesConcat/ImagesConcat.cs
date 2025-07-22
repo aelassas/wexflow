@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 
@@ -29,8 +28,9 @@ namespace Wexflow.Tasks.ImagesConcat
 
                 if (imageFiles.Length >= 2)
                 {
+                    var extension = Path.GetExtension(imageFiles[0].FileName);
                     var destPath = Path.Combine(Workflow.WorkflowTempFolder,
-                        $"ImagesConcat_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.png");
+                        $"ImagesConcat_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}{extension}");
 
                     var res = ConcatImages(imageFiles, destPath);
                     if (!res)

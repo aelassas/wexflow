@@ -17,7 +17,7 @@ namespace Wexflow.Tasks.Torrent
             SaveFolder = GetSetting("saveFolder");
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             Info("Downloading torrents...");
@@ -26,7 +26,7 @@ namespace Wexflow.Tasks.Torrent
             var atLeastOneSuccess = false;
             try
             {
-                success = Download(ref atLeastOneSuccess);
+                success = await Download(atLeastOneSuccess);
             }
             catch (OperationCanceledException)
             {
@@ -53,7 +53,7 @@ namespace Wexflow.Tasks.Torrent
             return new TaskStatus(status);
         }
 
-        private bool Download(ref bool atLeastOneSuccess)
+        private async System.Threading.Tasks.Task<bool> Download(bool atLeastOneSuccess)
         {
             var success = true;
             try
@@ -61,7 +61,7 @@ namespace Wexflow.Tasks.Torrent
                 var torrents = SelectFiles();
                 foreach (var torrent in torrents)
                 {
-                    success &= DownloadTorrent(torrent.Path);
+                    await DownloadTorrent(torrent.Path, success);
                     if (!atLeastOneSuccess && success)
                     {
                         atLeastOneSuccess = true;
@@ -80,7 +80,7 @@ namespace Wexflow.Tasks.Torrent
             return success;
         }
 
-        private bool DownloadTorrent(string path)
+        private async System.Threading.Tasks.Task DownloadTorrent(string path, bool res)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Wexflow.Tasks.Torrent
                 while (engine.IsRunning)
                 {
                     Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
-                    Thread.Sleep(1000);
+                    await System.Threading.Tasks.Task.Delay(100, Workflow.CancellationTokenSource.Token);
 
                     if (Math.Abs(manager.Progress - 100.0) < TOLERANCE)
                     {
@@ -115,7 +115,7 @@ namespace Wexflow.Tasks.Torrent
                 }
 
                 InfoFormat("The torrent {0} download succeeded.", path);
-                return true;
+                res &= true;
             }
             catch (OperationCanceledException)
             {
@@ -124,7 +124,7 @@ namespace Wexflow.Tasks.Torrent
             catch (Exception e)
             {
                 ErrorFormat("An error occured while downloading the torrent {0}: {1}", path, e.Message);
-                return false;
+                res = false;
             }
         }
     }

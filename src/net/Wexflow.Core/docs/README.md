@@ -41,10 +41,10 @@ Install-Package Wexflow
 
 To define your own task, inherit from the `Task` class and override either `RunAsync` (asynchronous) or`Run` (synchronous).
 
-### Example using `RunAsync` (recommended for .NET 8.0+)
+### Example using `RunAsync`
 
 If you want to use async/await functionality, override `RunAsync` instead of `Run`. Here's a simple example of a custom task:
-```csharp
+```cs
 using System;
 using System.Xml.Linq;
 using Wexflow.Core;
@@ -99,7 +99,7 @@ namespace Wexflow.Tasks.MyTask
 }
 ```
 
-### Example using `Run` (legacy compatible)
+### Example using `Run`
 
 If you don't need async functionality, you can use the synchronous `Run` method instead. Here's how the same task would look using `Run`:
 

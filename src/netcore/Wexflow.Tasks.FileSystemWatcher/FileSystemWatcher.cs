@@ -37,7 +37,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
             CurrentLogs = [];
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             Workflow.CancellationTokenSource.Token.ThrowIfCancellationRequested();
             InfoFormat("Watching the folder {0} ...", FolderToWatch);
@@ -64,7 +64,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                             Info($"File lock detected on file {file}");
                             while (WexflowEngine.IsFileLocked(file))
                             {
-                                Thread.Sleep(1000);
+                                await System.Threading.Tasks.Task.Delay(1000, Workflow.CancellationTokenSource.Token);
                             }
                         }
                         ClearFiles();
@@ -126,11 +126,17 @@ namespace Wexflow.Tasks.FileSystemWatcher
 
                 Info("Begin watching ...");
                 CurrentLogs.AddRange(Logs);
-                while (!IsStopped)
+                try
                 {
-                    Thread.Sleep(1);
+                    while (!IsStopped)
+                    {
+                        await System.Threading.Tasks.Task.Delay(100, Workflow.CancellationTokenSource.Token);
+                    }
                 }
-                Watcher.Dispose();
+                finally
+                {
+                    Watcher.Dispose();
+                }
             }
             catch (Exception e)
             {

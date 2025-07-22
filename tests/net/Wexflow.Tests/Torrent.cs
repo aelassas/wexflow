@@ -7,7 +7,7 @@ namespace Wexflow.Tests
     [TestClass]
     public class Torrent
     {
-        private static readonly string DownloadedFolder = @"C:\WexflowTesting\Torrent\The WIRED CD - Rip. Sample. Mash. Share";
+        private static readonly string DownloadedFolder = @"C:\WexflowTesting\Torrent\Big Buck Bunny";
 
         [TestInitialize]
         public void TestInitialize()

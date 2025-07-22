@@ -64,13 +64,13 @@ namespace Wexflow.NetCore.Tests
             var instanceId = await WexflowEngine.StartWorkflowAsync(USERNAME, workflowId);
 
             // Wait until the workflow finishes
-            Thread.Sleep(1000);
+            await System.Threading.Tasks.Task.Delay(1000);
             var workflow = WexflowEngine.GetWorkflow(workflowId);
             var isRunning = workflow.IsRunning;
             var isWaitingForApproval = workflow.IsWaitingForApproval;
             while (isRunning && !isWaitingForApproval)
             {
-                Thread.Sleep(100);
+                await System.Threading.Tasks.Task.Delay(100);
                 workflow = WexflowEngine.GetWorkflow(workflowId);
                 isRunning = workflow.IsRunning;
                 isWaitingForApproval = workflow.IsWaitingForApproval;
