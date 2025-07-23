@@ -40,15 +40,13 @@ namespace Wexflow.Server.Test
                 Console.WriteLine(jobId);
             }
 
-            new Thread(() =>
+            for (int i = 0; i < 100; i++)
             {
-                startWorkflow();
-            }).Start();
-
-            new Thread(() =>
-            {
-                startWorkflow();
-            }).Start();
+                new Thread(() =>
+                {
+                    startWorkflow();
+                }).Start();
+            }
 
             _ = Console.ReadKey();
         }

@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Wexflow.Core.Service.Contracts;
 
 namespace Wexflow.Core.Service.Client
@@ -16,10 +15,11 @@ namespace Wexflow.Core.Service.Client
             Uri = uri.TrimEnd('/');
         }
 
+
         public string Login(string username, string password, bool stayConnected = false)
         {
             var uri = $"{Uri}/login";
-            using (var webClient = new WebClient())
+            using (var webClient = new WebClientWithTimeout())
             {
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 webClient.Encoding = Encoding.UTF8;
@@ -38,7 +38,7 @@ namespace Wexflow.Core.Service.Client
         public WorkflowInfo[] Search(string keyword, string token)
         {
             var uri = $"{Uri}/search?s={keyword}";
-            var webClient = new WebClient { Encoding = Encoding.UTF8 };
+            var webClient = new WebClientWithTimeout { Encoding = Encoding.UTF8 };
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var response = webClient.DownloadString(uri);
             var workflows = JsonConvert.DeserializeObject<WorkflowInfo[]>(response);
@@ -48,7 +48,7 @@ namespace Wexflow.Core.Service.Client
         public Guid StartWorkflow(int id, string token)
         {
             var uri = $"{Uri}/start?w={id}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var instanceId = webClient.UploadString(uri, string.Empty);
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
@@ -57,7 +57,7 @@ namespace Wexflow.Core.Service.Client
         public Guid StartWorkflowWithVariables(string payload, string token)
         {
             var uri = $"{Uri}/start-with-variables";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var instanceId = webClient.UploadString(uri, payload);
             return Guid.Parse(instanceId.Replace("\"", string.Empty));
@@ -66,7 +66,7 @@ namespace Wexflow.Core.Service.Client
         public void StopWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/stop?w={id}&i={instanceId}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             _ = webClient.UploadString(uri, string.Empty);
         }
@@ -74,7 +74,7 @@ namespace Wexflow.Core.Service.Client
         public void SuspendWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/suspend?w={id}&i={instanceId}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             _ = webClient.UploadString(uri, string.Empty);
         }
@@ -82,7 +82,7 @@ namespace Wexflow.Core.Service.Client
         public void ResumeWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/resume?w={id}&i={instanceId}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             _ = webClient.UploadString(uri, string.Empty);
         }
@@ -90,7 +90,7 @@ namespace Wexflow.Core.Service.Client
         public void ApproveWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/approve?w={id}&i={instanceId}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             _ = webClient.UploadString(uri, string.Empty);
         }
@@ -98,7 +98,7 @@ namespace Wexflow.Core.Service.Client
         public void RejectWorkflow(int id, Guid instanceId, string token)
         {
             var uri = $"{Uri}/reject?w={id}&i={instanceId}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             _ = webClient.UploadString(uri, string.Empty);
         }
@@ -106,7 +106,7 @@ namespace Wexflow.Core.Service.Client
         public WorkflowInfo GetWorkflow(string token, int id)
         {
             var uri = $"{Uri}/workflow?w={id}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var response = webClient.DownloadString(uri);
             var workflow = JsonConvert.DeserializeObject<WorkflowInfo>(response);
@@ -116,7 +116,7 @@ namespace Wexflow.Core.Service.Client
         public WorkflowInfo GetJob(string token, int workflowId, Guid jobId)
         {
             var uri = $"{Uri}/job?w={workflowId}&i={jobId}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var response = webClient.DownloadString(uri);
             var workflow = JsonConvert.DeserializeObject<WorkflowInfo>(response);
@@ -126,7 +126,7 @@ namespace Wexflow.Core.Service.Client
         public User GetUser(string username, string token)
         {
             var uri = $"{Uri}/user?username={System.Uri.EscapeDataString(username)}";
-            var webClient = new WebClient();
+            var webClient = new WebClientWithTimeout();
             webClient.Headers.Add("Authorization", $"Bearer {token}");
             var response = webClient.DownloadString(uri);
             var user = JsonConvert.DeserializeObject<User>(response);

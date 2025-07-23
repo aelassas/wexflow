@@ -37,15 +37,14 @@ try
         Console.WriteLine(jobId);
     }
 
-    new Thread(() =>
+    for(int i = 0; i < 1000; i++)
     {
-        startWorkflow();
-    }).Start();
+        new Thread(() =>
+        {
+            startWorkflow();
+        }).Start();
+    }
 
-    new Thread(() =>
-    {
-        startWorkflow();
-    }).Start();
 }
 catch (Exception e)
 {

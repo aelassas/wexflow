@@ -1031,6 +1031,26 @@ namespace Wexflow.Core
             return string.Empty;
         }
 
+        private List<Variable> CloneVariables(List<Variable> variables)
+        {
+            var clonedVariables = new List<Variable>();
+            
+            if(variables == null || variables.Count == 0)
+            {
+                return clonedVariables;
+            }
+
+            foreach (var variable in variables)
+            {
+                clonedVariables.Add(new Variable
+                {
+                    Key = variable.Key,
+                    Value = variable.Value
+                });
+            }
+            return clonedVariables;
+        }
+
         /// <summary>
         /// Starts this workflow asynchronously.
         /// </summary>
@@ -1062,7 +1082,7 @@ namespace Wexflow.Core
                     Database,
                     GlobalVariables)
                 {
-                    RestVariables = RestVariables,
+                    RestVariables = CloneVariables(RestVariables),
                     StartedBy = startedBy
                 };
 
@@ -1127,7 +1147,7 @@ namespace Wexflow.Core
                         Database,
                         GlobalVariables)
                     {
-                        RestVariables = RestVariables,
+                        RestVariables = CloneVariables(RestVariables),
                         StartedBy = startedBy
                     };
 
