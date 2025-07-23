@@ -15,7 +15,6 @@ namespace Wexflow.Core.Service.Client
             Uri = uri.TrimEnd('/');
         }
 
-
         public string Login(string username, string password, bool stayConnected = false)
         {
             var uri = $"{Uri}/login";

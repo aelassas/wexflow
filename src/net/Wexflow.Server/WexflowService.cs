@@ -6,6 +6,7 @@ using Nancy.Responses;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -1621,7 +1622,7 @@ namespace Wexflow.Server
                     _ = new Core.Workflow(
                              WexflowServer.WexflowEngine
                           , 1
-                          , new Dictionary<Guid, Core.Workflow>()
+                          , new ConcurrentDictionary<Guid, Core.Workflow>()
                           , "-1"
                           , xdoc.ToString()
                           , WexflowServer.WexflowEngine.TempFolder

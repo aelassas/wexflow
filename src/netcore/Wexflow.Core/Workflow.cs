@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -217,7 +218,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Workflow jobs.
         /// </summary>
-        public Dictionary<Guid, Workflow> Jobs { get; }
+        public ConcurrentDictionary<Guid, Workflow> Jobs { get; }
         /// <summary>
         /// Instance Id.
         /// </summary>
@@ -276,7 +277,7 @@ namespace Wexflow.Core
         public Workflow(
               WexflowEngine wexflowEngine
             , int jobId
-            , Dictionary<Guid, Workflow> jobs
+            , ConcurrentDictionary<Guid, Workflow> jobs
             , string dbId
             , string xml
             , string wexflowTempFolder
@@ -1034,8 +1035,8 @@ namespace Wexflow.Core
         private List<Variable> CloneVariables(List<Variable> variables)
         {
             var clonedVariables = new List<Variable>();
-            
-            if(variables == null || variables.Count == 0)
+
+            if (variables == null || variables.Count == 0)
             {
                 return clonedVariables;
             }
@@ -1172,65 +1173,65 @@ namespace Wexflow.Core
 
             try
             {
-                    StartedOn = DateTime.Now;
-                    StartedBy = startedBy;
-                    InstanceId = instanceId;
-                    Jobs.Add(InstanceId, this);
+                StartedOn = DateTime.Now;
+                StartedBy = startedBy;
+                InstanceId = instanceId;
+                Jobs.TryAdd(InstanceId, this);
 
-                    if (restVariables != null)
-                    {
-                        RestVariables.Clear();
-                        RestVariables.AddRange(restVariables);
-                    }
+                if (restVariables != null)
+                {
+                    RestVariables.Clear();
+                    RestVariables.AddRange(restVariables);
+                }
 
-                    var dest = Parse(Xml);
-                    Load(dest);
+                var dest = Parse(Xml);
+                Load(dest);
 
-                    _stopCalled = false;
-                    Logs.Clear();
+                _stopCalled = false;
+                Logs.Clear();
 
-                    if (WexflowEngine.LogLevel != LogLevel.None)
-                    {
-                        var msg = $"{LogTag} Workflow started - Instance Id: {InstanceId}";
-                        Logger.Info(msg);
-                        Logs.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  INFO - {msg}");
-                    }
+                if (WexflowEngine.LogLevel != LogLevel.None)
+                {
+                    var msg = $"{LogTag} Workflow started - Instance Id: {InstanceId}";
+                    Logger.Info(msg);
+                    Logs.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  INFO - {msg}");
+                }
 
-                    Database.IncrementRunningCount();
+                Database.IncrementRunningCount();
 
-                    var entry = Database.GetEntry(Id, InstanceId);
-                    if (entry == null)
-                    {
-                        entry = new Entry
-                        {
-                            WorkflowId = Id,
-                            JobId = InstanceId.ToString(),
-                            Name = Name,
-                            LaunchType = (Db.LaunchType)(int)LaunchType,
-                            Description = Description,
-                            Status = Db.Status.Running,
-                            StatusDate = DateTime.Now,
-                            Logs = string.Join("\r\n", Logs)
-                        };
-                        Database.InsertEntry(entry);
-                    }
-                    else
-                    {
-                        entry.Status = Db.Status.Running;
-                        entry.StatusDate = DateTime.Now;
-                        entry.Logs = string.Join("\r\n", Logs);
-                        Database.UpdateEntry(entry.GetDbId(), entry);
-                    }
-
-                    _historyEntry = new HistoryEntry
+                var entry = Database.GetEntry(Id, InstanceId);
+                if (entry == null)
+                {
+                    entry = new Entry
                     {
                         WorkflowId = Id,
+                        JobId = InstanceId.ToString(),
                         Name = Name,
                         LaunchType = (Db.LaunchType)(int)LaunchType,
-                        Description = Description
+                        Description = Description,
+                        Status = Db.Status.Running,
+                        StatusDate = DateTime.Now,
+                        Logs = string.Join("\r\n", Logs)
                     };
+                    Database.InsertEntry(entry);
+                }
+                else
+                {
+                    entry.Status = Db.Status.Running;
+                    entry.StatusDate = DateTime.Now;
+                    entry.Logs = string.Join("\r\n", Logs);
+                    Database.UpdateEntry(entry.GetDbId(), entry);
+                }
 
-                    OnStatusChanged?.Invoke();
+                _historyEntry = new HistoryEntry
+                {
+                    WorkflowId = Id,
+                    Name = Name,
+                    LaunchType = (Db.LaunchType)(int)LaunchType,
+                    Description = Description
+                };
+
+                OnStatusChanged?.Invoke();
 
                 IsRunning = true;
                 IsRejected = false;
@@ -1345,12 +1346,31 @@ namespace Wexflow.Core
                 Database.DecrementRunningCount();
                 Database.IncrementFailedCount();
 
-                var entry = Database.GetEntry(Id, InstanceId);
-                entry.Status = Db.Status.Failed;
                 JobStatus = Db.Status.Failed;
-                entry.StatusDate = DateTime.Now;
-                entry.Logs = string.Join("\r\n", Logs);
-                Database.UpdateEntry(entry.GetDbId(), entry);
+
+                var entry = Database.GetEntry(Id, InstanceId);
+                if (entry == null)
+                {
+                    entry = new Entry
+                    {
+                        WorkflowId = Id,
+                        JobId = InstanceId.ToString(),
+                        Name = Name,
+                        LaunchType = (Db.LaunchType)(int)LaunchType,
+                        Description = Description,
+                        Status = Db.Status.Running,
+                        StatusDate = DateTime.Now,
+                        Logs = string.Join("\r\n", Logs)
+                    };
+                    Database.InsertEntry(entry);
+                }
+                else
+                {
+                    entry.Status = Db.Status.Failed;
+                    entry.StatusDate = DateTime.Now;
+                    entry.Logs = string.Join("\r\n", Logs);
+                    Database.UpdateEntry(entry.GetDbId(), entry);
+                }
 
                 _historyEntry.Status = Db.Status.Failed;
                 _historyEntry.StatusDate = DateTime.Now;
@@ -1377,7 +1397,7 @@ namespace Wexflow.Core
                 GC.Collect();
 
                 JobId = ++ParallelJobId;
-                Jobs.Remove(InstanceId);
+                Jobs.TryRemove(InstanceId, out _);
 
                 if (_jobsQueue.Count > 0)
                 {
@@ -1925,7 +1945,7 @@ namespace Wexflow.Core
                     Database.InsertHistoryEntry(_historyEntry);
                     IsRejected = false;
                     Logs.Clear();
-                    Jobs.Remove(InstanceId);
+                    Jobs.TryRemove(InstanceId, out _);
 
                     // broadcast final status
                     WexflowEngine.UpdateJobStatus(Id, InstanceId.ToString(), Db.Status.Stopped.ToString());

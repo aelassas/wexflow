@@ -1,6 +1,7 @@
 ﻿using Quartz;
 using Quartz.Impl;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -349,7 +350,7 @@ namespace Wexflow.Core
                 var wf = new Workflow(
                        this
                     , 1
-                    , new Dictionary<Guid, Workflow>()
+                    , new ConcurrentDictionary<Guid, Workflow>()
                     , workflow.GetDbId()
                     , workflow.Xml
                     , TempFolder
@@ -402,7 +403,7 @@ namespace Wexflow.Core
                             _ = new Workflow(
                               this
                             , 1
-                            , new Dictionary<Guid, Workflow>()
+                            , new ConcurrentDictionary<Guid, Workflow>()
                             , "-1"
                             , xml
                             , TempFolder
@@ -444,7 +445,7 @@ namespace Wexflow.Core
                         _ = new Workflow(
                             this
                             , 1
-                            , new Dictionary<Guid, Workflow>()
+                            , new ConcurrentDictionary<Guid, Workflow>()
                             , "-1"
                             , xml
                             , TempFolder
