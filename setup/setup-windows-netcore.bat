@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=9.7
+set version=9.8
 set dst=wexflow-%version%-windows-netcore
 set dstDir=.\%dst%
 set admin=Admin
