@@ -37,7 +37,7 @@ try
         Console.WriteLine(jobId);
     }
 
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < 100; i++)
     {
         new Thread(() =>
         {
