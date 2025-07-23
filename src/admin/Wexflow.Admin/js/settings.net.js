@@ -12,6 +12,7 @@
  * @property {string} Uri - Full API base URI constructed from protocol, hostname, and port.
  * @property {boolean} SSE - Enable Server-Sent Events. Must be true when using the 'netcore' version.
  * @property {"net48"|"netcore"} Version - Indicates the Wexflow server version ('net48' for .NET Framework, 'netcore' for .NET Core/.NET 5+).
+ * @property {number} DebounceDelay - Debounce delay in milliseconds for real-time updates (default is 300).
  */
 window.Settings = (function () {
     // Get the current hostname or fallback to 'localhost'
