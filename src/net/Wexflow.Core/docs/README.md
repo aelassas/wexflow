@@ -133,7 +133,11 @@ namespace Wexflow.Tasks.MyTask
 
                 // WaitOne() enables suspend/resume support in .NET 8.0+.
                 // Call this to pause the task when the workflow is suspended.
-                WaitOne();
+                // Only call WaitOne if cancellation hasn't already been requested.
+                if (!Workflow.CancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    WaitOne();
+                }
 
                 // Return success when the task completes successfully
                 return new TaskStatus(Status.Success);
