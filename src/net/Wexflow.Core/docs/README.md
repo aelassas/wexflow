@@ -214,7 +214,7 @@ To update an existing custom task:
 
 1. Stop Wexflow Server
 1. Replace the old DLL and its referenced assemblies with the new versions in the correct folder.
-1. Start the Wexflow server:
+1. Start Wexflow Server:
 
 - **.NET 4.8**: Start the **Wexflow Windows Service**
 - **.NET 8.0+**:
