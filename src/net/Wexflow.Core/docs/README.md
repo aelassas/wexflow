@@ -212,13 +212,14 @@ If your custom task depends on additional assemblies (DLLs), copy them as follow
 
 To update an existing custom task:
 
+1. Stop Wexflow Server
 1. Replace the old DLL and its referenced assemblies with the new versions in the correct folder.
-2. Restart the Wexflow server:
+1. Start the Wexflow server:
 
-- **.NET 4.8**: Restart the **Wexflow Windows Service**
+- **.NET 4.8**: Start the **Wexflow Windows Service**
 - **.NET 8.0+**:
-  - **Windows**: Run `.\run.bat` or restart Wexflow Service if you installed it as a Windows Service
-  - **Linux**: Run `sudo systemctl restart wexflow`
+  - **Windows**: Run `.\run.bat` or start Wexflow Service if you installed it as a Windows Service
+  - **Linux**: Run `sudo systemctl start wexflow`
   - **macOS**: Run `dotnet /Applications/wexflow/Wexflow.Server/Wexflow.Server.dll`
 
 ### Using Your Custom Task
