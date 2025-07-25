@@ -22,6 +22,7 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 
 - [Download Latest Release](https://github.com/aelassas/wexflow/releases/latest)
 - [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
+- [Official Docker Hub Image](https://hub.docker.com/r/aelassas/wexflow)
 - [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
 - [Configuration Guide](https://github.com/aelassas/wexflow/wiki/Configuration)
 - [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)
