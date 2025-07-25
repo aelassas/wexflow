@@ -1,14 +1,6 @@
 version: "3.9"
 services:
-  wexflow-backend:
-    image: danjellz/http-server
-    ports:
-          - 8011:8011
-    volumes:
-      - ./wexflow/Backend:/public
-    command:
-      http-server --cors -p 8011
-
+  
   # Uncomment the lines below if you want to use MongoDB database
   # You must also update Wexflow.xml https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml
   #mongo:
