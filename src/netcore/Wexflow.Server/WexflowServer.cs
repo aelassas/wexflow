@@ -75,7 +75,7 @@ namespace Wexflow.Server
             }
         }
 
-        public static void Main(string[] args)
+        public static async System.Threading.Tasks.Task Main(string[] args)
         {
             Config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -174,7 +174,7 @@ namespace Wexflow.Server
                     BroadcastStatusCount(statusCount);
                 };
 
-                WexflowEngine.Run();
+                await WexflowEngine.Run();
             }
 
             // Now start the web host and keep it running
@@ -182,7 +182,7 @@ namespace Wexflow.Server
 
             Console.Write("Press any key to stop Wexflow server...");
             _ = Console.ReadKey();
-            WexflowEngine.Stop(true, true);
+            await WexflowEngine.Stop(true, true);
         }
 
         public static void InitializeWorkflowsFileSystemWatcher()

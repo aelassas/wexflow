@@ -76,26 +76,26 @@ namespace Wexflow.Tasks.UnSevenZip
         private bool ExtractFiles(ref bool atLeastOneSuccess)
         {
             var success = true;
-            var rars = SelectFiles();
+            var zips = SelectFiles();
 
-            if (rars.Length > 0)
+            if (zips.Length > 0)
             {
-                foreach (var rar in rars)
+                foreach (var zip in zips)
                 {
                     try
                     {
                         var destFolder = Path.Combine(DestDir
-                            , $"{Path.GetFileNameWithoutExtension(rar.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
+                            , $"{Path.GetFileNameWithoutExtension(zip.Path)}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}");
                         _ = Directory.CreateDirectory(destFolder);
 
-                        Extract7Z(rar.Path, destFolder);
+                        Extract7Z(zip.Path, destFolder);
 
                         foreach (var file in Directory.GetFiles(destFolder, "*.*", SearchOption.AllDirectories))
                         {
                             Files.Add(new FileInf(file, Id));
                         }
 
-                        InfoFormat("7Z {0} extracted to {1}", rar.Path, destFolder);
+                        InfoFormat("7Z {0} extracted to {1}", zip.Path, destFolder);
 
                         if (!atLeastOneSuccess)
                         {
@@ -108,7 +108,7 @@ namespace Wexflow.Tasks.UnSevenZip
                     }
                     catch (Exception e)
                     {
-                        ErrorFormat("An error occured while extracting of the 7Z {0}: {1}", rar.Path, e);
+                        ErrorFormat("An error occured while extracting of the 7Z {0}: {1}", zip.Path, e);
                         success = false;
                     }
                 }

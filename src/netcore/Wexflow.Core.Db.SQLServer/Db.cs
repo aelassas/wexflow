@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Text;
 using System.Xml.Linq;
 
@@ -9,7 +9,7 @@ namespace Wexflow.Core.Db.SQLServer
 {
     public sealed class Db : Core.Db.Db
     {
-        private static readonly object Padlock = new object();
+        private static readonly object _padlock = new object();
         private const string DATE_TIME_FORMAT = "yyyyMMdd HH:mm:ss.fff";
 
         private static string _connectionString;
@@ -20,6 +20,7 @@ namespace Wexflow.Core.Db.SQLServer
 
             var server = string.Empty;
             var trustedConnection = false;
+            var encrypt = false;
             var userId = string.Empty;
             var password = string.Empty;
             var database = string.Empty;
@@ -28,34 +29,41 @@ namespace Wexflow.Core.Db.SQLServer
 
             foreach (var part in connectionStringParts)
             {
-                if (!string.IsNullOrEmpty(part.Trim()))
+                if (string.IsNullOrWhiteSpace(part))
+                    continue;
+
+                var kvp = part.Split(new[] { '=' }, 2);
+                if (kvp.Length != 2)
+                    continue;
+
+                var key = kvp[0].Trim().ToLowerInvariant();
+                var value = kvp[1].Trim();
+
+                switch (key.ToLowerInvariant())
                 {
-                    var connPart = part.TrimStart(' ').TrimEnd(' ');
-                    if (connPart.StartsWith("Server="))
-                    {
-                        server = connPart.Replace("Server=", string.Empty);
-                    }
-                    else if (connPart.StartsWith("Trusted_Connection="))
-                    {
-                        trustedConnection = bool.Parse(connPart.Replace("Trusted_Connection=", string.Empty));
-                    }
-                    else if (connPart.StartsWith("User Id="))
-                    {
-                        userId = connPart.Replace("User Id=", string.Empty);
-                    }
-                    else if (connPart.StartsWith("Password="))
-                    {
-                        password = connPart.Replace("Password=", string.Empty);
-                    }
-                    else if (connPart.StartsWith("Database="))
-                    {
-                        database = connPart.Replace("Database=", string.Empty);
-                    }
+                    case "server":
+                        server = value;
+                        break;
+                    case "trusted_connection":
+                        trustedConnection = bool.TryParse(value, out var tc) && tc;
+                        break;
+                    case "encrypt":
+                        encrypt = bool.TryParse(value, out var enc) && enc;
+                        break;
+                    case "user id":
+                        userId = value;
+                        break;
+                    case "password":
+                        password = value;
+                        break;
+                    case "database":
+                        database = value;
+                        break;
                 }
             }
 
             var helper = new Helper(connectionString);
-            Helper.CreateDatabaseIfNotExists(server, trustedConnection, userId, password, database);
+            Helper.CreateDatabaseIfNotExists(server, trustedConnection, encrypt, userId, password, database);
             helper.CreateTableIfNotExists(Core.Db.Entry.DOCUMENT_NAME, Entry.TABLE_STRUCT);
             helper.CreateTableIfNotExists(Core.Db.HistoryEntry.DOCUMENT_NAME, HistoryEntry.TABLE_STRUCT);
             helper.CreateTableIfNotExists(Core.Db.StatusCount.DOCUMENT_NAME, StatusCount.TABLE_STRUCT);
@@ -164,7 +172,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override bool CheckUserWorkflow(string userId, string workflowId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -185,7 +193,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void ClearEntries()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -201,7 +209,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void ClearStatusCount()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -217,7 +225,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteUser(string username, string password)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -236,7 +244,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteUserWorkflowRelationsByUserId(string userId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -253,7 +261,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteUserWorkflowRelationsByWorkflowId(string workflowDbId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -270,7 +278,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteWorkflow(string id)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -287,7 +295,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteWorkflows(string[] ids)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -313,7 +321,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.User> GetAdministrators(string keyword, UserOrderBy uo)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var admins = new List<User>();
 
@@ -361,7 +369,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Entry> GetEntries()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var entries = new List<Entry>();
 
@@ -408,7 +416,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Entry> GetEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy eo)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var entries = new List<Entry>();
 
@@ -531,7 +539,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override long GetEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -553,7 +561,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.Entry GetEntry(int workflowId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -601,7 +609,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.Entry GetEntry(int workflowId, Guid jobId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -648,7 +656,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override DateTime GetEntryStatusDateMax()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -676,7 +684,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override DateTime GetEntryStatusDateMin()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -704,7 +712,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var entries = new List<HistoryEntry>();
 
@@ -749,7 +757,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var entries = new List<HistoryEntry>();
 
@@ -796,7 +804,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, int page, int entriesCount)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var entries = new List<HistoryEntry>();
 
@@ -847,7 +855,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.HistoryEntry> GetHistoryEntries(string keyword, DateTime from, DateTime to, int page, int entriesCount, EntryOrderBy heo)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var entries = new List<HistoryEntry>();
 
@@ -968,7 +976,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override long GetHistoryEntriesCount(string keyword)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -989,7 +997,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override long GetHistoryEntriesCount(string keyword, DateTime from, DateTime to)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1011,7 +1019,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override DateTime GetHistoryEntryStatusDateMax()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1039,7 +1047,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override DateTime GetHistoryEntryStatusDateMin()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1067,7 +1075,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string GetPassword(string username)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1096,7 +1104,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.StatusCount GetStatusCount()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1142,7 +1150,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.User GetUser(string username)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1186,7 +1194,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.User GetUserById(string userId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1229,7 +1237,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.User> GetUsers()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var users = new List<User>();
 
@@ -1274,7 +1282,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.User> GetUsers(string keyword, UserOrderBy uo)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var users = new List<User>();
 
@@ -1321,7 +1329,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<string> GetUserWorkflows(string userId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var workflowIds = new List<string>();
 
@@ -1354,7 +1362,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.Workflow GetWorkflow(string id)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1387,7 +1395,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Workflow> GetWorkflows()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var workflows = new List<Core.Db.Workflow>();
 
@@ -1422,7 +1430,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         private static void IncrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1478,7 +1486,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         private static void DecrementStatusCountColumn(string statusCountColumnName)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1504,7 +1512,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void InsertEntry(Core.Db.Entry entry)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1537,7 +1545,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void InsertHistoryEntry(Core.Db.HistoryEntry entry)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1568,7 +1576,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void InsertUser(Core.Db.User user)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1597,7 +1605,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void InsertUserWorkflowRelation(Core.Db.UserWorkflow userWorkflow)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1618,7 +1626,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string InsertWorkflow(Core.Db.Workflow workflow)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1640,7 +1648,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateEntry(string id, Core.Db.Entry entry)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1667,7 +1675,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdatePassword(string username, string password)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1687,7 +1695,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateUser(string id, Core.Db.User user)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1712,7 +1720,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateUsernameAndEmailAndUserProfile(string userId, string username, string email, UserProfile up)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1735,7 +1743,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateWorkflow(string dbId, Core.Db.Workflow workflow)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1756,7 +1764,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string GetEntryLogs(string entryId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1785,7 +1793,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string GetHistoryEntryLogs(string entryId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1814,7 +1822,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.User> GetNonRestricedUsers()
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var users = new List<User>();
 
@@ -1863,7 +1871,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string InsertRecord(Core.Db.Record record)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1910,7 +1918,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateRecord(string recordId, Core.Db.Record record)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -1941,7 +1949,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteRecords(string[] recordIds)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 if (recordIds.Length > 0)
                 {
@@ -1970,7 +1978,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.Record GetRecord(string id)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2029,7 +2037,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Record> GetRecords(string keyword)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var records = new List<Record>();
 
@@ -2092,7 +2100,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedBy(string createdBy)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var records = new List<Record>();
 
@@ -2154,7 +2162,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Record> GetRecordsCreatedByOrAssignedTo(string createdBy, string assingedTo, string keyword)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var records = new List<Record>();
 
@@ -2218,7 +2226,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string InsertVersion(Core.Db.Version version)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2245,7 +2253,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateVersion(string versionId, Core.Db.Version version)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2266,7 +2274,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteVersions(string[] versionIds)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 if (versionIds.Length > 0)
                 {
@@ -2295,7 +2303,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Version> GetVersions(string recordId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var versions = new List<Version>();
 
@@ -2336,7 +2344,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override Core.Db.Version GetLatestVersion(string recordId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2376,7 +2384,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string InsertNotification(Core.Db.Notification notification)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2407,7 +2415,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void MarkNotificationsAsRead(string[] notificationIds)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2434,7 +2442,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void MarkNotificationsAsUnread(string[] notificationIds)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2461,7 +2469,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteNotifications(string[] notificationIds)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 if (notificationIds.Length > 0)
                 {
@@ -2490,7 +2498,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Notification> GetNotifications(string assignedTo, string keyword)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var notifications = new List<Notification>();
 
@@ -2537,7 +2545,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override bool HasNotifications(string assignedTo)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2559,7 +2567,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override string InsertApprover(Core.Db.Approver approver)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2588,7 +2596,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void UpdateApprover(string approverId, Core.Db.Approver approver)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2611,7 +2619,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteApproversByRecordId(string recordId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2628,7 +2636,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteApprovedApprovers(string recordId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2648,7 +2656,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override void DeleteApproversByUserId(string userId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
@@ -2665,7 +2673,7 @@ namespace Wexflow.Core.Db.SQLServer
 
         public override IEnumerable<Core.Db.Approver> GetApprovers(string recordId)
         {
-            lock (Padlock)
+            lock (_padlock)
             {
                 var approvers = new List<Approver>();
 

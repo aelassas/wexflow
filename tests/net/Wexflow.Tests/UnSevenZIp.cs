@@ -17,7 +17,7 @@ namespace Wexflow.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            Helper.DeleteFilesAndFolders(SevenZipFolder);
+            //Helper.DeleteFilesAndFolders(SevenZipFolder);
         }
 
         [TestMethod]

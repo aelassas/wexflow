@@ -23,7 +23,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
             DeleteWorkflowOnApproval = bool.Parse(GetSetting("deleteWorkflowOnApproval", "true"));
         }
 
-        public override TaskStatus Run()
+        public override async System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             Info("Creating and starting approval workflows for records...");
 
@@ -67,7 +67,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                     + "</Workflow>\r\n";
 
                             var approver = Workflow.WexflowEngine.GetUser(Approver);
-                            var workflowDbId = Workflow.WexflowEngine.SaveWorkflow(approver.GetDbId(), approver.UserProfile, xml, false);
+                            var workflowDbId = await Workflow.WexflowEngine.SaveWorkflow(approver.GetDbId(), approver.UserProfile, xml, false);
 
                             if (workflowDbId != "-1")
                             {

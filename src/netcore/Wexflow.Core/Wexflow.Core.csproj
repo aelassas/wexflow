@@ -66,13 +66,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="3.0.0" />
-    <PackageReference Include="Quartz" Version="3.13.0" />
-    <PackageReference Include="Quartz.Serialization.Json" Version="3.13.0" />
+    <PackageReference Include="log4net" Version="3.1.0" />
+    <PackageReference Include="Quartz" Version="3.14.0" />
+    <PackageReference Include="Quartz.Serialization.Json" Version="3.14.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wexflow.Core.Db\Wexflow.Core.Db.csproj" />
     <ProjectReference Include="..\Wexflow.Core.Db.Firebird\Wexflow.Core.Db.Firebird.csproj" />
     <ProjectReference Include="..\Wexflow.Core.Db.LiteDB\Wexflow.Core.Db.LiteDB.csproj" />
     <ProjectReference Include="..\Wexflow.Core.Db.MariaDB\Wexflow.Core.Db.MariaDB.csproj" />
@@ -83,6 +82,7 @@
     <ProjectReference Include="..\Wexflow.Core.Db.RavenDB\Wexflow.Core.Db.RavenDB.csproj" />
     <ProjectReference Include="..\Wexflow.Core.Db.SQLite\Wexflow.Core.Db.SQLite.csproj" />
     <ProjectReference Include="..\Wexflow.Core.Db.SQLServer\Wexflow.Core.Db.SQLServer.csproj" />
+    <ProjectReference Include="..\Wexflow.Core.Db\Wexflow.Core.Db.csproj" />
   </ItemGroup>
 
 </Project>

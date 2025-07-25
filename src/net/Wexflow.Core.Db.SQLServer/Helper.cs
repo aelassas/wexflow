@@ -11,9 +11,10 @@ namespace Wexflow.Core.Db.SQLServer
             _connectionString = connectionString;
         }
 
-        public static void CreateDatabaseIfNotExists(string server, bool trustedConnection, string userId, string password, string databaseName)
+        public static void CreateDatabaseIfNotExists(string server, bool trustedConnection, bool encrypt, string userId, string password, string databaseName)
         {
-            using (var conn = new SqlConnection("Server=" + server + (trustedConnection ? ";Trusted_Connection=True;" : ";User Id=" + userId + ";Password=" + password + ";")))
+            var connString = "Server=" + server + (trustedConnection ? ";Trusted_Connection=True;" : ";User Id=" + userId + ";Password=" + password + ";") + "Encrypt=" + encrypt + ";";
+            using (var conn = new SqlConnection(connString))
             {
                 conn.Open();
 

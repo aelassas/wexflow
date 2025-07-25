@@ -1,14 +1,13 @@
-﻿using MySqlConnector;
+﻿using Microsoft.Data.SqlClient;
+using MySqlConnector;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Data.Common;
 using System.Data.Odbc;
 using System.Data.OleDb;
-using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.IO;
-using System.Threading;
 using System.Xml.Linq;
 using Teradata.Client.Provider;
 using Wexflow.Core;

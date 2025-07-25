@@ -15,7 +15,7 @@ namespace Wexflow.Tests
             return $@"<Workflow xmlns='urn:wexflow-schema' id='59' name='Workflow_Periodic' description='Workflow_Periodic'>
 	            <Settings>
 		            <Setting name='launchType' value='periodic' />
-		            <Setting name='period' value='00.00:00:01' />
+		            <Setting name='period' value='00.00:00:05' />
 		            <Setting name='enabled' value='{enabled.ToString().ToLower()}' />
 	            </Settings>
 	            <Tasks>
@@ -32,24 +32,24 @@ namespace Wexflow.Tests
         }
 
         [TestInitialize]
-        public void TestInitialize()
+        public async System.Threading.Tasks.Task TestInitialize()
         {
             Helper.DeleteFiles(StartupFolder);
             Helper.DeleteFilesAndFolders(PeriodicFolder);
 
-            Helper.Run(); // Run Wexflow engine instance (startup+periodic)
+            await Helper.Run(); // Run Wexflow engine instance (startup+periodic)
 
             var wf = GetPeriodicWorkflowXml(true);
-            Helper.SaveWorkflow(wf, true);
+            await Helper.SaveWorkflow(wf, true);
         }
 
         [TestCleanup]
-        public void TestCleanup()
+        public async System.Threading.Tasks.Task TestCleanup()
         {
             var wf = GetPeriodicWorkflowXml(false);
-            Helper.SaveWorkflow(wf, true);
+            await Helper.SaveWorkflow(wf, true);
 
-            Helper.Stop();
+            await Helper.Stop();
             Thread.Sleep(500);
             Helper.DeleteFiles(StartupFolder);
             Helper.DeleteFilesAndFolders(PeriodicFolder);
@@ -59,7 +59,7 @@ namespace Wexflow.Tests
         public void PeriodicAndStratupTest()
         {
             // Periodic test
-            Thread.Sleep(2000); // 2000
+            Thread.Sleep(7 * 1000); // 7 secs
             var files = GetFiles(PeriodicFolder);
             Assert.AreEqual(1, files.Length);
 

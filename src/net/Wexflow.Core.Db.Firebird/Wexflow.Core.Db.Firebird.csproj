@@ -122,7 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FirebirdSql.Data.FirebirdClient">
-      <Version>10.3.1</Version>
+      <Version>10.3.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

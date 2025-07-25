@@ -1,36 +1,49 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 namespace Wexflow.Core.Db.SQLServer
 {
-    public class Helper(string connectionString)
+    public class Helper
     {
-        private readonly string _connectionString = connectionString;
+        private readonly string _connectionString;
 
-        public static void CreateDatabaseIfNotExists(string server, bool trustedConnection, string userId, string password, string databaseName)
+        public Helper(string connectionString)
         {
-            using SqlConnection conn = new("Server=" + server + (trustedConnection ? ";Trusted_Connection=True;" : ";User Id=" + userId + ";Password=" + password + ";"));
-            conn.Open();
+            _connectionString = connectionString;
+        }
 
-            using SqlCommand command1 = new("SELECT COUNT(*) FROM master.dbo.sysdatabases WHERE name = N'" + databaseName + "'", conn);
-
-            var count = (int)command1.ExecuteScalar();
-
-            if (count == 0)
+        public static void CreateDatabaseIfNotExists(string server, bool trustedConnection, bool encrypt, string userId, string password, string databaseName)
+        {
+            var connString = "Server=" + server + (trustedConnection ? ";Trusted_Connection=True;" : ";User Id=" + userId + ";Password=" + password + ";") + "Encrypt=" + encrypt + ";";
+            using (var conn = new SqlConnection(connString))
             {
-                using SqlCommand command2 = new("CREATE DATABASE " + databaseName + ";", conn);
+                conn.Open();
 
-                _ = command2.ExecuteNonQuery();
+                using (var command1 = new SqlCommand("SELECT COUNT(*) FROM master.dbo.sysdatabases WHERE name = N'" + databaseName + "'", conn))
+                {
+                    var count = (int)command1.ExecuteScalar();
+
+                    if (count == 0)
+                    {
+                        using (var command2 = new SqlCommand("CREATE DATABASE " + databaseName + ";", conn))
+                        {
+                            _ = command2.ExecuteNonQuery();
+                        }
+                    }
+                }
             }
         }
 
         public void CreateTableIfNotExists(string tableName, string tableStruct)
         {
-            using SqlConnection conn = new(_connectionString);
-            conn.Open();
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
 
-            using SqlCommand command = new("IF NOT EXISTS (SELECT [name] FROM sys.tables WHERE [name] = '" + tableName + "') CREATE TABLE " + tableName + tableStruct + ";", conn);
-
-            _ = command.ExecuteNonQuery();
+                using (var command = new SqlCommand("IF NOT EXISTS (SELECT [name] FROM sys.tables WHERE [name] = '" + tableName + "') CREATE TABLE " + tableName + tableStruct + ";", conn))
+                {
+                    _ = command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

@@ -123,7 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MySqlConnector">
-      <Version>2.3.7</Version>
+      <Version>2.4.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

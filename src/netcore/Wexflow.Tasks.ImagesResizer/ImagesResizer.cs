@@ -75,7 +75,8 @@ namespace Wexflow.Tasks.ImagesResizer
             try
             {
                 using var skBitmap = SKBitmap.Decode(srcPath);
-                using var scaledBitmap = skBitmap.Resize(new SKImageInfo(Width, Height), SKFilterQuality.Medium);
+                var sampling = new SKSamplingOptions(SKFilterMode.Nearest);
+                using var scaledBitmap = skBitmap.Resize(new SKImageInfo(Width, Height), sampling);
                 using var scaledImage = SKImage.FromBitmap(scaledBitmap);
                 using var codec = SKCodec.Create(srcPath);
                 using var data = scaledImage.Encode(codec.EncodedFormat, 80);

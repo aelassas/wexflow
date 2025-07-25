@@ -1639,7 +1639,7 @@ namespace Wexflow.Server
 
                     if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                     {
-                        var id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
+                        var id = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
                         res = id != "-1";
                     }
                     else if (user.UserProfile == Core.Db.UserProfile.Administrator)
@@ -1652,13 +1652,13 @@ namespace Wexflow.Server
                             var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetDbId(), workflowDbId);
                             if (check)
                             {
-                                var id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
+                                var id = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
                                 res = id != "-1";
                             }
                         }
                         else
                         {
-                            var id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
+                            var id = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xml, true);
                             res = id != "-1";
                         }
                     }
@@ -1884,7 +1884,7 @@ namespace Wexflow.Server
             return null;
         }
 
-        private static SaveResult SaveJsonWorkflow(Core.Db.User user, string json)
+        private static async System.Threading.Tasks.Task<SaveResult> SaveJsonWorkflow(Core.Db.User user, string json)
         {
             var o = JObject.Parse(json);
             var wi = o.SelectToken("WorkflowInfo");
@@ -2052,7 +2052,7 @@ namespace Wexflow.Server
                 }
 
                 xdoc.Add(xwf);
-                var id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
+                var id = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
 
                 if (id == "-1")
                 {
@@ -2329,7 +2329,7 @@ namespace Wexflow.Server
                         xdoc.Root.Add(xeg);
                     }
 
-                    var qid = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
+                    var qid = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
                     if (qid == "-1")
                     {
                         return new SaveResult { FilePath = path, Result = false };
@@ -2392,7 +2392,7 @@ namespace Wexflow.Server
                         }
                     }
 
-                    var res = SaveJsonWorkflow(user, json);
+                    var res = await SaveJsonWorkflow(user, json);
 
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(res));
                 }
@@ -2447,7 +2447,7 @@ namespace Wexflow.Server
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
                         wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
                         xwfEnabled.Attribute("value")!.Value = false.ToString().ToLower();
-                        var qid = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
+                        var qid = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
 
                         if (qid != "-1")
                         {
@@ -2513,7 +2513,7 @@ namespace Wexflow.Server
                         var xwfEnabled = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='enabled']",
                         wf.XmlNamespaceManager) ?? throw new InvalidOperationException();
                         xwfEnabled.Attribute("value")!.Value = true.ToString().ToLower();
-                        var qid = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
+                        var qid = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, xdoc.ToString(), true);
 
                         if (qid != "-1")
                         {
@@ -2598,7 +2598,7 @@ namespace Wexflow.Server
                     {
                         if (isXml)
                         {
-                            var id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, fileValue, true);
+                            var id = await WexflowServer.WexflowEngine.SaveWorkflow(user.GetDbId(), user.UserProfile, fileValue, true);
                             res = id != "-1";
 
                             if (WexflowServer.WexflowEngine.EnableWorkflowsHotFolder)
@@ -2618,7 +2618,7 @@ namespace Wexflow.Server
                         }
                         else
                         {
-                            ressr = SaveJsonWorkflow(user, fileValue);
+                            ressr = await SaveJsonWorkflow(user, fileValue);
                             res = ressr.Result;
                         }
                     }

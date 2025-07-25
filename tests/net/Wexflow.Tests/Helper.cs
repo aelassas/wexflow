@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using Wexflow.Core;
 
 namespace Wexflow.Tests
@@ -25,19 +24,19 @@ namespace Wexflow.Tests
 
         private const string USERNAME = "admin";
 
-        public static void SaveWorkflow(string xml, bool schedule)
+        public static async System.Threading.Tasks.Task SaveWorkflow(string xml, bool schedule)
         {
-            _ = WexflowEngine.SaveWorkflow(USERNAME, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
+            _ = await WexflowEngine.SaveWorkflow(USERNAME, Core.Db.UserProfile.SuperAdministrator, xml, schedule);
         }
 
-        public static void Run()
+        public static async System.Threading.Tasks.Task Run()
         {
-            WexflowEngine.Run();
+            await WexflowEngine.Run();
         }
 
-        public static void Stop()
+        public static async System.Threading.Tasks.Task Stop()
         {
-            WexflowEngine.Stop(false, false);
+            await WexflowEngine.Stop(false, false);
         }
 
         public static async System.Threading.Tasks.Task<System.Guid> StartWorkflow(int workflowId)

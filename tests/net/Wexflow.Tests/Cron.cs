@@ -15,14 +15,14 @@ namespace Wexflow.Tests
                     <Workflow xmlns='urn:wexflow-schema' id='75' name='Workflow_Cron' description='Workflow_Cron'>
                         <Settings>
                         <Setting name='launchType' value='cron' />
-	                    <Setting name='cronExpression' value='0 0/1 * * * ?' /> <!-- Every one minute. -->
+	                    <Setting name='cronExpression' value='0/5 * * * * ?' /> <!-- Every 5 seconds. -->
                         <Setting name='enabled' value='{enabled.ToString().ToLower()}' />
                         </Settings>
                         <Tasks>
                         <Task id='1' name='FilesLoader' description='Loading files' enabled='true'>
                             <Setting name='file' value='C:\WexflowTesting\file1.txt' />
                         </Task>
-	                    <Task id='2' name='Wait' description='Wait for 10 seconds...' enabled='true'>
+	                    <Task id='2' name='Wait' description='Wait for 10 seconds...' enabled='false'>
 			                    <Setting name='duration' value='00.00:00:10' />
 		                </Task>
                         <Task id='3' name='FilesCopier' description='Copying files' enabled='true'>
@@ -35,22 +35,22 @@ namespace Wexflow.Tests
         }
 
         [TestInitialize]
-        public void TestInitialize()
+        public async System.Threading.Tasks.Task TestInitialize()
         {
             Helper.DeleteFiles(CronFolder);
-            Helper.Run(); // Run Wexflow engine instance (cron)
+            await Helper.Run(); // Run Wexflow engine instance (cron)
 
             var wf = GetCronWorkflowXml(true);
-            Helper.SaveWorkflow(wf, true);
+            await Helper.SaveWorkflow(wf, true);
         }
 
         [TestCleanup]
-        public void TestCleanup()
+        public async System.Threading.Tasks.Task TestCleanup()
         {
             var wf = GetCronWorkflowXml(false);
-            Helper.SaveWorkflow(wf, true);
+            await Helper.SaveWorkflow(wf, true);
 
-            Helper.Stop();
+            await Helper.Stop();
             Thread.Sleep(500);
             Helper.DeleteFiles(CronFolder);
         }
@@ -58,7 +58,7 @@ namespace Wexflow.Tests
         [TestMethod]
         public void CronTest()
         {
-            Thread.Sleep(70 * 1000); // 70 seconds
+            Thread.Sleep(7 * 1000); // 7 seconds
             var files = GetFiles(CronFolder);
             Assert.AreEqual(1, files.Length);
         }

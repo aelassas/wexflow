@@ -86,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="VimeoDotNet">
-      <Version>3.2.4</Version>
+      <Version>3.4.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

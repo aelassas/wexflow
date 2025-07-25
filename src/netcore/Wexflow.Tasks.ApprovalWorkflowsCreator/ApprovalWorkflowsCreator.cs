@@ -73,7 +73,7 @@ namespace Wexflow.Tasks.ApprovalWorkflowsCreator
                                     + "</Workflow>\r\n";
 
                                 var approver = Workflow.WexflowEngine.GetUser(Approver);
-                                var workflowDbId = Workflow.WexflowEngine.SaveWorkflow(approver.GetDbId(),
+                                var workflowDbId = await Workflow.WexflowEngine.SaveWorkflow(approver.GetDbId(),
                                     approver.UserProfile, xml, false);
 
                                 if (workflowDbId != "-1")

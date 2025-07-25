@@ -17,7 +17,7 @@
   <!-- MongoDB -->
   <!--<Setting name="connectionString" value="Database=wexflow_netcore;MongoUrl=mongodb://localhost:27017;EnabledSslProtocols=false;SslProtocols=None" />-->
   <!-- SQLServer -->
-  <!--<Setting name="connectionString" value="Server=localhost;Trusted_Connection=True;Database=wexflow_netcore;" />-->
+  <!--<Setting name="connectionString" value="Server=localhost;Trusted_Connection=True;Database=wexflow_netcore;Encrypt=False;" />-->
   <!-- PostgreSQL -->
   <!--<Setting name="connectionString" value="Server=127.0.0.1;User Id=postgres;Password=000000;Database=wexflow_netcore;Port=5432" />-->
   <!-- MySQL -->

@@ -19,34 +19,44 @@
       <group targetFramework="net48">
         <dependency id="log4net" version="3.1.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" />
+        <dependency id="Quartz" version="3.14.0" />
         <dependency id="System.Buffers" version="4.5.1" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="4.7.1" />
+        <dependency id="System.Memory" version="4.5.4" />
         <dependency id="System.Numerics.Vectors" version="4.5.0" />
         <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.3" />
-        <dependency id="System.Memory" version="4.5.4" />
-        <dependency id="System.Diagnostics.DiagnosticSource" version="4.7.1" />
-        <dependency id="Quartz" version="3.13.0" />
       </group>
       <group targetFramework="net8.0">
         <dependency id="log4net" version="3.1.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" />
         <dependency id="Microsoft.NETCore.Platforms" version="2.0.0" />
-        <dependency id="Newtonsoft.Json" version="13.0.1" />
-        <dependency id="Quartz" version="3.13.0" />
-        <dependency id="Quartz.Serialization.Json" version="3.13.0" />
+        <dependency id="Quartz" version="3.14.0" />
+        <dependency id="Quartz.Serialization.Json" version="3.14.0" />
+        <dependency id="System.Buffers" version="4.5.1" />
         <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="4.7.1" />
+        <dependency id="System.Memory" version="4.5.4" />
+        <dependency id="System.Numerics.Vectors" version="4.5.0" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.3" />
         <dependency id="System.Security.AccessControl" version="4.5.0" />
         <dependency id="System.Security.Cryptography.ProtectedData" version="4.5.0" />
         <dependency id="System.Security.Permissions" version="4.5.0" />
         <dependency id="System.Security.Principal.Windows" version="4.5.0" />
       </group>
+
       <group targetFramework="net9.0">
         <dependency id="log4net" version="3.1.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" />
         <dependency id="Microsoft.NETCore.Platforms" version="2.0.0" />
-        <dependency id="Newtonsoft.Json" version="13.0.1" />
-        <dependency id="Quartz" version="3.13.0" />
-        <dependency id="Quartz.Serialization.Json" version="3.13.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" />
+        <dependency id="Quartz" version="3.14.0" />
+        <dependency id="Quartz.Serialization.Json" version="3.14.0" />
+        <dependency id="System.Buffers" version="4.5.1" />
         <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="4.7.1" />
+        <dependency id="System.Memory" version="4.5.4" />
+        <dependency id="System.Numerics.Vectors" version="4.5.0" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.3" />
         <dependency id="System.Security.AccessControl" version="4.5.0" />
         <dependency id="System.Security.Cryptography.ProtectedData" version="4.5.0" />
         <dependency id="System.Security.Permissions" version="4.5.0" />

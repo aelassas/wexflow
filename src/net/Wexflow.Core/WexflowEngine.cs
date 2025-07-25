@@ -377,7 +377,7 @@ namespace Wexflow.Core
         /// <param name="userProfile">User profile.</param>
         /// <param name="schedule">Indicates whether to schedule the workflow or not.</param>
         /// <returns>Workflow db id.</returns>
-        public string SaveWorkflow(string userId, UserProfile userProfile, string xml, bool schedule)
+        public async System.Threading.Tasks.Task<string> SaveWorkflow(string userId, UserProfile userProfile, string xml, bool schedule)
         {
             try
             {
@@ -433,7 +433,7 @@ namespace Wexflow.Core
                         Workflows.Add(newWorkflow);
                         if (schedule)
                         {
-                            ScheduleWorkflow(newWorkflow);
+                            await ScheduleWorkflow(newWorkflow);
                         }
                         return dbId;
                     }
@@ -480,7 +480,7 @@ namespace Wexflow.Core
                         Workflows.Add(updatedWorkflow);
                         if (schedule)
                         {
-                            ScheduleWorkflow(updatedWorkflow);
+                            await ScheduleWorkflow(updatedWorkflow);
                         }
                         return changedWorkflow.DbId;
                     }
@@ -533,12 +533,12 @@ namespace Wexflow.Core
         /// <param name="filePath">Workflow File Path</param>
         /// <param name="schedule">Indicates whether to schedule the workflow or not.</param>
         /// <returns>Workflow DB Id</returns>
-        public string SaveWorkflowFromFile(string userId, UserProfile userProfile, string filePath, bool schedule)
+        public async System.Threading.Tasks.Task<string> SaveWorkflowFromFile(string userId, UserProfile userProfile, string filePath, bool schedule)
         {
             try
             {
                 var xml = File.ReadAllText(filePath);
-                var id = SaveWorkflow(userId, userProfile, xml, schedule);
+                var id = await SaveWorkflow(userId, userProfile, xml, schedule);
                 var workflow = Workflows.First(w => w.DbId == id);
                 workflow.FilePath = filePath;
                 return id;
@@ -749,7 +749,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Starts Wexflow engine.
         /// </summary>
-        public void Run()
+        public async System.Threading.Tasks.Task Run()
         {
             if (EnableWorkflowsHotFolder)
             {
@@ -767,12 +767,12 @@ namespace Wexflow.Core
 
             foreach (var workflow in Workflows)
             {
-                ScheduleWorkflow(workflow);
+                await ScheduleWorkflow(workflow);
             }
 
             if (!QuartzScheduler.IsStarted)
             {
-                QuartzScheduler.Start().Wait();
+                await QuartzScheduler.Start();
             }
 
             Logger.InfoFormat("Scheduling {0} workflows finished.", Workflows.Count);
@@ -800,7 +800,7 @@ namespace Wexflow.Core
             }
         }
 
-        private void ScheduleWorkflow(Workflow wf)
+        private async System.Threading.Tasks.Task ScheduleWorkflow(Workflow wf)
         {
             try
             {
@@ -832,7 +832,7 @@ namespace Wexflow.Core
                             .Build();
 
                         DeleteJob(wf);
-                        QuartzScheduler.ScheduleJob(jobDetail, trigger).Wait();
+                        await QuartzScheduler.ScheduleJob(jobDetail, trigger);
                     }
                     else if (wf.LaunchType == LaunchType.Cron)
                     {
@@ -856,7 +856,7 @@ namespace Wexflow.Core
                             .Build();
 
                         DeleteJob(wf);
-                        QuartzScheduler.ScheduleJob(jobDetail, trigger).Wait();
+                        await QuartzScheduler.ScheduleJob(jobDetail, trigger);
                     }
                 }
                 else
@@ -875,11 +875,11 @@ namespace Wexflow.Core
         /// </summary>
         /// <param name="stopQuartzScheduler">Tells if Quartz scheduler should be stopped or not.</param>
         /// <param name="clearStatusCountAndEntries">Indicates whether to clear statusCount and entries.</param>
-        public void Stop(bool stopQuartzScheduler, bool clearStatusCountAndEntries)
+        public async System.Threading.Tasks.Task Stop(bool stopQuartzScheduler, bool clearStatusCountAndEntries)
         {
             if (stopQuartzScheduler)
             {
-                QuartzScheduler.Shutdown().Wait();
+                await QuartzScheduler.Shutdown();
             }
 
             foreach (var workflow in Workflows)
