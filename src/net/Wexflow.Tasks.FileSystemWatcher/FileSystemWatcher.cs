@@ -43,7 +43,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
             CurrentLogs = new List<string>();
         }
 
-        public override TaskStatus Run()
+        public async override System.Threading.Tasks.Task<TaskStatus> RunAsync()
         {
             InfoFormat("Watching the folder {0} ...", FolderToWatch);
 
@@ -59,7 +59,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                             return new TaskStatus(Status.Error);
                         }
 
-                        InitFileSystemWatcher();
+                        await InitFileSystemWatcher();
                     }
                 }
                 else
@@ -70,7 +70,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
                         return new TaskStatus(Status.Error);
                     }
 
-                    InitFileSystemWatcher();
+                    await InitFileSystemWatcher();
                 }
             }
             catch (ThreadAbortException)
@@ -96,7 +96,7 @@ namespace Wexflow.Tasks.FileSystemWatcher
             return new TaskStatus(Status.Success);
         }
 
-        private void InitFileSystemWatcher()
+        private async System.Threading.Tasks.Task InitFileSystemWatcher()
         {
             Info("Checking existing files...");
             var files = GetFiles();
@@ -172,9 +172,8 @@ namespace Wexflow.Tasks.FileSystemWatcher
             CurrentLogs.AddRange(Logs);
             while (true)
             {
-                Thread.Sleep(1);
+                await System.Threading.Tasks.Task.Delay(100);
             }
-            // ReSharper disable once FunctionNeverReturns
         }
 
         private void OnCreated(object source, FileSystemEventArgs e)

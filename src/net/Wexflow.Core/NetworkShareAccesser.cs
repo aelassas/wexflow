@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-// ReSharper disable All
+
 #pragma warning disable CS0414
 
 namespace Wexflow.Core

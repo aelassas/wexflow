@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace Wexflow.Core
+﻿namespace Wexflow.Core
 {
     /// <summary>
     /// Database type

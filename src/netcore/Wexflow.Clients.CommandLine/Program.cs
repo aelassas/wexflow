@@ -21,23 +21,18 @@ namespace Wexflow.Clients.CommandLine
             Reject
         }
 
-        // ReSharper disable once ClassNeverInstantiated.Local
         private sealed class Options
         {
             [Option('o', "operation", Required = true, HelpText = "start|suspend|resume|stop|approve|reject")]
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public Operation Operation { get; set; }
 
             [Option('i', "workflowId", Required = true, HelpText = "Workflow Id")]
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public int WorkflowId { get; set; }
 
             [Option('j', "jobId", Required = false, HelpText = "Job instance id (Guid)")]
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string JobId { get; set; }
 
             [Option('w', "wait", Required = false, HelpText = "Wait until workflow finishes", Default = false)]
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public bool Wait { get; set; }
         }
 
