@@ -22,8 +22,8 @@ mkdir %dstDir%\%admin%\js\
 mkdir %dstDir%\Documentation\
 
 :: WexflowTesting
-xcopy ..\samples\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e
-xcopy ..\samples\netcore\macos\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e
+xcopy ..\samples\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e /y
+xcopy ..\samples\netcore\macos\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e /y
 
 :: Wexflow
 xcopy ..\samples\netcore\macos\Wexflow\* %dstDir%\Wexflow\ /s /e
@@ -82,8 +82,8 @@ copy netcore\macos\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
 ::copy netcore\macos\Firebird\appsettings.json %dstDir%\Wexflow.Scripts.Firebird
 
 :: Oracle script
-dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --framework net9.0 --runtime osx-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
-copy netcore\macos\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
+@REM dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --framework net9.0 --runtime osx-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
+@REM copy netcore\macos\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
 
 :: MariaDB script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --framework net9.0 --runtime osx-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB

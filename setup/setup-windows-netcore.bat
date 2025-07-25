@@ -20,8 +20,8 @@ mkdir %dstDir%\%admin%\js\
 mkdir %dstDir%\Documentation\
 
 :: WexflowTesting
-xcopy ..\samples\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e
-xcopy ..\samples\netcore\windows\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e
+xcopy ..\samples\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e /y
+xcopy ..\samples\netcore\windows\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e /y
 
 :: Wexflow-netcore
 xcopy ..\samples\netcore\windows\Wexflow\* %dstDir%\Wexflow-netcore\ /s /e
@@ -92,9 +92,9 @@ copy netcore\windows\install-LiteDB.bat %dstDir%
 ::copy netcore\windows\install-Firebird.bat %dstDir%
 
 :: Oracle script
-dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --framework net9.0 --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
-copy netcore\windows\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
-copy netcore\windows\install-Oracle.bat %dstDir%
+@REM dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --framework net9.0 --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
+@REM copy netcore\windows\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
+@REM copy netcore\windows\install-Oracle.bat %dstDir%
 
 :: MariaDB script
 ::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --framework net9.0 --runtime win-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB
