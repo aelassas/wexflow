@@ -1,0 +1,8 @@
+# Copy local download of wexflow-linux-netcore.zip
+# which was pre-downloaded and unzipped from https://github.com/aelassas/wexflow/releases/latest
+
+docker build -t aelassas/wexflow:v9.9 -t aelassas/wexflow:latest .
+docker run -d -p 8000:8000 --name wexflow-test aelassas/wexflow:latest
+docker push aelassas/wexflow:v9.9
+docker push aelassas/wexflow:latest
+docker run -p 8000:8000 aelassas/wexflow:latest
