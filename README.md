@@ -19,6 +19,7 @@ Wexflow targets both developers and technical users who need automation (file op
 Whether you're automating simple scheduled jobs or orchestrating complex business processes, Wexflow offers a flexible, extensible, and developer-friendly solution.
 
 ## Quick Links
+
 - [Download Latest Release](https://github.com/aelassas/wexflow/releases/latest)
 - [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
 - [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
@@ -26,6 +27,19 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 - [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)
 - [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 - [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
+
+## Quick Start
+
+You can run Wexflow using Docker from the official image on Docker Hub:
+```bash
+docker run -d -p 8000:8000 --name wexflow aelassas/wexflow:latest
+```
+
+Then access the Wexflow Admin Panel at: http://localhost:8000
+- **Username:** `admin`  
+- **Password:** `wexflow2018`
+
+For full Docker usage and options, see the [Docker Hub page](https://hub.docker.com/r/aelassas/wexflow).
 
 <!--
 ## Admin Panel Login
