@@ -45,9 +45,10 @@ To define your own task, inherit from the `Task` class and override either `RunA
 
 If you want to use `async/await` functionality, override `RunAsync` instead of `Run`. Here's a simple example of a custom task:
 ```cs
-using System;
 using System.Xml.Linq;
 using Wexflow.Core;
+using Task = Wexflow.Core.Task;
+using TaskStatus = Wexflow.Core.TaskStatus;
 
 namespace Wexflow.Tasks.MyTask
 {
@@ -104,6 +105,8 @@ namespace Wexflow.Tasks.MyTask
 If you don't need `async/await` functionality, you can use the synchronous `Run` method instead. Here's how the same task would look using `Run`:
 
 ```cs
+using System;
+using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 using Task = Wexflow.Core.Task;
