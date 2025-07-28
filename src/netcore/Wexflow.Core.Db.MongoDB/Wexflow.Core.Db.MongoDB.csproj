@@ -49,7 +49,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="3.4.1" />
+    <PackageReference Include="MongoDB.Driver" Version="3.4.2" />
   </ItemGroup>
 
   <ItemGroup>
