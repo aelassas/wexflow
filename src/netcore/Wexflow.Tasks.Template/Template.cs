@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Xml.Linq;
 using Wexflow.Core;
+using Task = Wexflow.Core.Task;
+using TaskStatus = Wexflow.Core.TaskStatus;
 
 namespace Wexflow.Tasks.Template
 {
