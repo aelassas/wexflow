@@ -549,8 +549,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{4D81D1
 	ProjectSection(SolutionItems) = preProject
 		src\docker\docker-compose.docker-hub.yml = src\docker\docker-compose.docker-hub.yml
 		src\docker\docker-compose.yml = src\docker\docker-compose.yml
-		src\docker\docker-hub.sh = src\docker\docker-hub.sh
 		src\docker\Dockerfile = src\docker\Dockerfile
+		src\docker\docker-hub.sh = src\docker\docker-hub.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0D67593B-D05C-4F4D-8FCB-20C2AF3EE39A}"
