@@ -6,7 +6,7 @@
 [![Latest release](https://img.shields.io/github/v/release/aelassas/wexflow?label=Release&logo=github)](https://github.com/aelassas/wexflow/releases/latest)
 -->
 
-[![](https://wexflow.github.io/content/cover.png)](https://wexflow.github.io/)
+[![](https://wexflow.github.io/content/cover-small.png)](https://wexflow.github.io/)
 
 ## Wexflow
 
