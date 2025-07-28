@@ -145,7 +145,6 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 
 1. [Installing](https://github.com/aelassas/wexflow/wiki/Installing)  
    1. [Windows (.NET 4.8 - Legacy)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-48---legacy)  
-      1. [Installation Instructions](https://github.com/aelassas/wexflow/wiki/Installing#installation-instructions)  
    1. [Windows (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-90---stable)  
       1. [Accessing the Admin Panel](https://github.com/aelassas/wexflow/wiki/Installing#accessing-the-admin-panel)  
       1. [Configuration](https://github.com/aelassas/wexflow/wiki/Installing#configuration)  
@@ -270,7 +269,6 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Notification tasks](https://github.com/aelassas/wexflow/wiki/Tasks#notification-tasks)  
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
-
 
 ## Sponsors
 
