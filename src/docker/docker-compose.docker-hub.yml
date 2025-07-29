@@ -7,5 +7,5 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./wexflow/Wexflow.xml:/opt/wexflow/Wexflow/Wexflow.xml
+      - ./wexflow/Wexflow/Wexflow.xml:/opt/wexflow/Wexflow/Wexflow.xml
     restart: unless-stopped
