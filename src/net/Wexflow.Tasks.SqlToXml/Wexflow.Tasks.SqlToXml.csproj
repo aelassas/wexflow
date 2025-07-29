@@ -113,7 +113,7 @@
       <Version>1.0.119</Version>
     </PackageReference>
     <PackageReference Include="Teradata.Client.Provider">
-      <Version>20.0.5</Version>
+      <Version>20.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
