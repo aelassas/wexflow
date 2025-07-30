@@ -28,6 +28,8 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 - [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)
 - [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 - [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
+- [Run From Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
+- [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
 
 ## Quick Start
 
@@ -62,7 +64,6 @@ Wexflow excels at automating technical tasks, such as moving or transforming fil
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
 
-<!--
 ## How Does Wexflow Compare?
 
 | Feature / Tool         | **Wexflow**            | Zapier         | Power Automate   | n8n             | Apache Airflow   |
@@ -77,7 +78,6 @@ You can use Wexflow if your processes are mostly system-based, such as back-offi
 | **Best For**           | Devs & Sysadmins       | Non-tech users | Business users   | Devs & startups | Data engineers   |
 
 Wexflow gives you full control, extensibility, and offline capability with no vendor lock-in.
--->
 
 ## Features
 
@@ -269,6 +269,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Notification tasks](https://github.com/aelassas/wexflow/wiki/Tasks#notification-tasks)  
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
+1. [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
 
 ## Sponsors
 
