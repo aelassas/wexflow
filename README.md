@@ -143,7 +143,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 
 ## Documentation
 
-1. [Installing](https://github.com/aelassas/wexflow/wiki/Installing)  
+1. [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)  
    1. [Windows (.NET 4.8 - Legacy)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-48---legacy)  
    1. [Windows (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-90---stable)  
       1. [Accessing the Admin Panel](https://github.com/aelassas/wexflow/wiki/Installing#accessing-the-admin-panel)  
@@ -162,7 +162,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [HTTPS/SSL](https://github.com/aelassas/wexflow/wiki/SSL)
 1. [Screenshots](https://github.com/aelassas/wexflow/wiki/Screenshots)  
 1. [Docker](https://github.com/aelassas/wexflow/wiki/Docker)  
-1. [Configuration](https://github.com/aelassas/wexflow/wiki/Configuration)  
+1. [Configuration Guide](https://github.com/aelassas/wexflow/wiki/Configuration)  
    1. [Wexflow Server](https://github.com/aelassas/wexflow/wiki/Configuration#wexflow-server-configuration)  
    1. [Wexflow.xml](https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml-configuration-file)  
    1. [Admin Panel](https://github.com/aelassas/wexflow/wiki/Configuration#admin-panel-configuration)  
