@@ -240,7 +240,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Designer Integration](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#designer-integration)
        1. [Registering the Task](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#registering-the-task)
        1. [Adding Settings](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#adding-settings)
-   1. [How to Debug a custom task?](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#how-to-debug-a-custom-task)
+   1. [How to Debug a Custom Task?](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#how-to-debug-a-custom-task)
 1. [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)  
    1. [File system tasks](https://github.com/aelassas/wexflow/wiki/Tasks#file-system-tasks)  
    1. [Encryption tasks](https://github.com/aelassas/wexflow/wiki/Tasks#encryption-tasks)  
