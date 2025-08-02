@@ -143,6 +143,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 
 ## Documentation
 
+<!--
 1. [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)  
    1. [Windows (.NET 4.8 - Legacy)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-48---legacy)  
    1. [Windows (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-90---stable)  
@@ -159,6 +160,8 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Installing the Admin Panel on a Web Server](https://github.com/aelassas/wexflow/wiki/Installing#installing-the-admin-panel-on-a-web-server)  
       1. [.NET 4.8 - Legacy](https://github.com/aelassas/wexflow/wiki/Installing#net-48---legacy)  
       1. [.NET 9.0+ - Stable](https://github.com/aelassas/wexflow/wiki/Installing#net-90---stable)
+-->
+1. [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)  
 1. [HTTPS/SSL](https://github.com/aelassas/wexflow/wiki/SSL)
 1. [Screenshots](https://github.com/aelassas/wexflow/wiki/Screenshots)  
 1. [Docker](https://github.com/aelassas/wexflow/wiki/Docker)  
@@ -270,6 +273,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 1. [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
+
 
 ## Sponsors
 
