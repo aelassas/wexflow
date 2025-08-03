@@ -149,7 +149,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Windows (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-90---stable)  
       1. [Accessing the Admin Panel](https://github.com/aelassas/wexflow/wiki/Installing#accessing-the-admin-panel)  
       1. [Configuration](https://github.com/aelassas/wexflow/wiki/Installing#configuration)  
-      1. [Running Wexflow as a Windows Service using NSSM](https://github.com/aelassas/wexflow/wiki/Installing#running-wexflow-as-a-windows-service-using-nssm)  
+      1. [Running Wexflow as a Windows Service using Servy/NSSM](https://github.com/aelassas/wexflow/wiki/Installing#running-wexflow-as-a-windows-service-using-servynssm)  
       1. [Deleting the Wexflow Windows Service](https://github.com/aelassas/wexflow/wiki/Installing#deleting-the-wexflow-windows-service)  
    1. [Linux (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#linux-net-90---stable)  
       1. [Installing the Admin Panel on NGINX](https://github.com/aelassas/wexflow/wiki/Installing#installing-the-admin-panel-on-nginx)  
