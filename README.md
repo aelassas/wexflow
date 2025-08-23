@@ -1,4 +1,4 @@
-[![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![Nuget](https://img.shields.io/nuget/dt/wexflow)](https://www.nuget.org/packages/Wexflow/) [![](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml) [![NuGet](https://img.shields.io/nuget/v/Wexflow.svg)](https://www.nuget.org/packages/Wexflow/)
+[![Build Status](https://aelassas.visualstudio.com/wexflow/_apis/build/status/aelassas.wexflow?branchName=main)](https://aelassas.visualstudio.com/wexflow/_build/latest?definitionId=3&branchName=main) [![Nuget](https://img.shields.io/nuget/dt/Wexflow)](https://www.nuget.org/packages/Wexflow/) [![](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml) [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexflow/wiki) [![NuGet](https://img.shields.io/nuget/v/Wexflow.svg)](https://www.nuget.org/packages/Wexflow/)
 
 <!--
 [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexflow/wiki)
@@ -28,6 +28,8 @@ Whether you're automating simple scheduled jobs or orchestrating complex busines
 - [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)
 - [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 - [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
+- [Run From Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
+- [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
 
 ## Quick Start
 
@@ -62,7 +64,6 @@ Wexflow excels at automating technical tasks, such as moving or transforming fil
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
 
-<!--
 ## How Does Wexflow Compare?
 
 | Feature / Tool         | **Wexflow**            | Zapier         | Power Automate   | n8n             | Apache Airflow   |
@@ -77,7 +78,6 @@ You can use Wexflow if your processes are mostly system-based, such as back-offi
 | **Best For**           | Devs & Sysadmins       | Non-tech users | Business users   | Devs & startups | Data engineers   |
 
 Wexflow gives you full control, extensibility, and offline capability with no vendor lock-in.
--->
 
 ## Features
 
@@ -88,7 +88,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 * 100+ built-in activities
 * 6+ database engines supported
 * Extensible architecture for custom activities
-* [Push Notifications via SSE - Get real-time workflow job updates without polling](https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE)
+* [Push Notifications via SSE](https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE): Get real-time workflow job updates without polling
 * Asynchronous workflow execution for improved concurrency and performance
 
 ### UI & Visualization
@@ -104,7 +104,7 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 ### Internationalization & APIs
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
-* [REST API Clients – Official examples for popular languages (C#, JS, PHP, Python, Go, Rust, Ruby, Java, C++)](https://github.com/aelassas/wexflow/wiki/RESTful-API#sample-clients)
+* [REST API Clients](https://github.com/aelassas/wexflow/wiki/RESTful-API#sample-clients): Official examples for popular languages (C#, JS, PHP, Python, Go, Rust, Ruby, Java, C++)
 * Extensible with Custom Activities via NuGet
 
 ### Security & Performance
@@ -143,12 +143,13 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 
 ## Documentation
 
-1. [Installing](https://github.com/aelassas/wexflow/wiki/Installing)  
+<!--
+1. [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)  
    1. [Windows (.NET 4.8 - Legacy)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-48---legacy)  
    1. [Windows (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#windows-net-90---stable)  
       1. [Accessing the Admin Panel](https://github.com/aelassas/wexflow/wiki/Installing#accessing-the-admin-panel)  
       1. [Configuration](https://github.com/aelassas/wexflow/wiki/Installing#configuration)  
-      1. [Running Wexflow as a Windows Service using NSSM](https://github.com/aelassas/wexflow/wiki/Installing#running-wexflow-as-a-windows-service-using-nssm)  
+      1. [Running Wexflow as a Windows Service using Servy/NSSM](https://github.com/aelassas/wexflow/wiki/Installing#running-wexflow-as-a-windows-service-using-servynssm)  
       1. [Deleting the Wexflow Windows Service](https://github.com/aelassas/wexflow/wiki/Installing#deleting-the-wexflow-windows-service)  
    1. [Linux (.NET 9.0+ - Stable)](https://github.com/aelassas/wexflow/wiki/Installing#linux-net-90---stable)  
       1. [Installing the Admin Panel on NGINX](https://github.com/aelassas/wexflow/wiki/Installing#installing-the-admin-panel-on-nginx)  
@@ -159,10 +160,12 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Installing the Admin Panel on a Web Server](https://github.com/aelassas/wexflow/wiki/Installing#installing-the-admin-panel-on-a-web-server)  
       1. [.NET 4.8 - Legacy](https://github.com/aelassas/wexflow/wiki/Installing#net-48---legacy)  
       1. [.NET 9.0+ - Stable](https://github.com/aelassas/wexflow/wiki/Installing#net-90---stable)
+-->
+1. [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)  
 1. [HTTPS/SSL](https://github.com/aelassas/wexflow/wiki/SSL)
 1. [Screenshots](https://github.com/aelassas/wexflow/wiki/Screenshots)  
 1. [Docker](https://github.com/aelassas/wexflow/wiki/Docker)  
-1. [Configuration](https://github.com/aelassas/wexflow/wiki/Configuration)  
+1. [Configuration Guide](https://github.com/aelassas/wexflow/wiki/Configuration)  
    1. [Wexflow Server](https://github.com/aelassas/wexflow/wiki/Configuration#wexflow-server-configuration)  
    1. [Wexflow.xml](https://github.com/aelassas/wexflow/wiki/Configuration#wexflowxml-configuration-file)  
    1. [Admin Panel](https://github.com/aelassas/wexflow/wiki/Configuration#admin-panel-configuration)  
@@ -240,7 +243,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Designer Integration](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#designer-integration)
        1. [Registering the Task](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#registering-the-task)
        1. [Adding Settings](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#adding-settings)
-1. [Debugging](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#debugging)
+   1. [How to Debug a Custom Task?](https://github.com/aelassas/wexflow/wiki/Custom-Tasks#how-to-debug-a-custom-task)
 1. [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)  
    1. [File system tasks](https://github.com/aelassas/wexflow/wiki/Tasks#file-system-tasks)  
    1. [Encryption tasks](https://github.com/aelassas/wexflow/wiki/Tasks#encryption-tasks)  
@@ -269,6 +272,8 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Notification tasks](https://github.com/aelassas/wexflow/wiki/Tasks#notification-tasks)  
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
+1. [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
+
 
 ## Sponsors
 
