@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   wexflow:
     image: aelassas/wexflow:latest
     container_name: wexflow
     ports:
       - "8000:8000"
-    volumes:
-      - ./wexflow/Wexflow/Wexflow.xml:/opt/wexflow/Wexflow/Wexflow.xml
+    # volumes:
+    #   - ./wexflow/Wexflow/Wexflow.xml:/opt/wexflow/Wexflow/Wexflow.xml
     restart: unless-stopped

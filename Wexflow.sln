@@ -581,6 +581,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\android.yml = .github\workflows\android.yml
 		.github\workflows\ios.yml = .github\workflows\ios.yml
+		.github\workflows\loc.yml = .github\workflows\loc.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Scripts.RunAllWorkflows", "src\net\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj", "{36CCC8CC-0D33-4A09-8747-15AF5EDF0389}"

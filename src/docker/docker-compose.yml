@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   
   # Uncomment the lines below if you want to use MongoDB database
