@@ -59,7 +59,7 @@ Source: "..\src\net\Wexflow.Tasks.SevenZip\bin\x86\Release\x86\7z.dll"; DestDir:
 ;Source: "..\src\net\Wexflow.Server\bin\Release\x86\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\net\Wexflow.Tasks.MediaInfo\bin\x86\Release\x86\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "..\libs\chromedriver.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\net\Wexflow.Tasks.WebToScreenshot\bin\x86\Release\selenium-manager\*"; DestDir: "{app}\selenium-manager"; Flags: ignoreversion recursesubdirs
+Source: "..\src\net\Wexflow.Tasks.WebToScreenshot\bin\x64\Release\selenium-manager\*"; DestDir: "{app}\selenium-manager"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; Wexflow Manager
 Source: "..\src\net\Wexflow.Clients.Manager\bin\Release\Wexflow.Clients.Manager.exe"; DestDir: "{app}\Manager"; Flags: ignoreversion

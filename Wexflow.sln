@@ -549,8 +549,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{4D81D1
 	ProjectSection(SolutionItems) = preProject
 		src\docker\docker-compose.docker-hub.yml = src\docker\docker-compose.docker-hub.yml
 		src\docker\docker-compose.yml = src\docker\docker-compose.yml
-		src\docker\Dockerfile = src\docker\Dockerfile
 		src\docker\docker-hub.sh = src\docker\docker-hub.sh
+		src\docker\Dockerfile = src\docker\Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0D67593B-D05C-4F4D-8FCB-20C2AF3EE39A}"
@@ -3890,8 +3890,8 @@ Global
 		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Debug|x86.Build.0 = Debug|Any CPU
 		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|x64.ActiveCfg = Release|Any CPU
-		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|x64.Build.0 = Release|Any CPU
+		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|x64.ActiveCfg = Release|x64
+		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|x64.Build.0 = Release|x64
 		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|x86.ActiveCfg = Release|x86
 		{B4B2FCC3-0E5F-48E2-8FE1-6E9023E25AAE}.Release|x86.Build.0 = Release|x86
 		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -3902,8 +3902,8 @@ Global
 		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Debug|x86.Build.0 = Debug|Any CPU
 		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|x64.ActiveCfg = Release|Any CPU
-		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|x64.Build.0 = Release|Any CPU
+		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|x64.ActiveCfg = Release|x64
+		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|x64.Build.0 = Release|x64
 		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|x86.ActiveCfg = Release|x86
 		{5676E57F-D5DB-45CC-BFAE-E517E72FE21F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
