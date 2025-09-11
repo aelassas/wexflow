@@ -31,7 +31,7 @@ jobs:
       - name: Build Docker image
         run: |
           set -e
-          docker build -t aelassas/wexflow:${VERSION} -t aelassas/wexflow:latest wexflow
+          docker build -f src/docker/Dockerfile -t aelassas/wexflow:${VERSION} -t aelassas/wexflow:latest wexflow
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
