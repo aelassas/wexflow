@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Wexflow</id>
-    <version>9.9.0</version>
+    <version>10.0.0</version>
     <title>Wexflow</title>
     <authors>Akram El Assas</authors>
     <license type="file">LICENSE.txt</license>
