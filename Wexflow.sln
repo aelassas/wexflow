@@ -580,6 +580,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C9DA2491-E6D6-4D3A-B6A1-413BD0B0C989}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\android.yml = .github\workflows\android.yml
+		.github\workflows\docker-hub.yml = .github\workflows\docker-hub.yml
 		.github\workflows\ios.yml = .github\workflows\ios.yml
 		.github\workflows\loc.yml = .github\workflows\loc.yml
 	EndProjectSection
