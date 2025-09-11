@@ -25,13 +25,17 @@ jobs:
       - name: Unzip release
         run: |
           set -e
-          rm -rf wexflow
+          rm -rf tmp
+          mkdir tmp
           unzip wexflow-${VERSION}-linux-netcore.zip
+          mv wexflow tmp/wexflow
 
       - name: Build Docker image
         run: |
           set -e
-          docker build -f src/docker/Dockerfile -t aelassas/wexflow:${VERSION} -t aelassas/wexflow:latest wexflow
+          docker build -f src/docker/Dockerfile \
+              -t aelassas/wexflow:${VERSION} \
+              -t aelassas/wexflow:latest tmp
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
