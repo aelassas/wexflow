@@ -64,6 +64,7 @@ Wexflow excels at automating technical tasks, such as moving or transforming fil
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
 
+<!--
 ## How Does Wexflow Compare?
 
 | Feature / Tool         | **Wexflow**            | Zapier         | Power Automate   | n8n             | Apache Airflow   |
@@ -78,7 +79,7 @@ You can use Wexflow if your processes are mostly system-based, such as back-offi
 | **Best For**           | Devs & Sysadmins       | Non-tech users | Business users   | Devs & startups | Data engineers   |
 
 Wexflow gives you full control, extensibility, and offline capability with no vendor lock-in.
-
+-->
 ## Features
 
 ### Workflow Engine
