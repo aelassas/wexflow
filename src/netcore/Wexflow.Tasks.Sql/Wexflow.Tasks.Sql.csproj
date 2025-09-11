@@ -19,10 +19,10 @@
     <PackageReference Include="MySqlConnector" Version="2.4.0" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
-    <PackageReference Include="System.Data.Odbc" Version="9.0.8" />
-    <PackageReference Include="System.Data.OleDb" Version="9.0.8" />
+    <PackageReference Include="System.Data.Odbc" Version="9.0.9" />
+    <PackageReference Include="System.Data.OleDb" Version="9.0.9" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
-    <PackageReference Include="Teradata.Client.Provider" Version="20.0.6" />
+    <PackageReference Include="Teradata.Client.Provider" Version="20.0.7" />
   </ItemGroup>
 
   <ItemGroup>
