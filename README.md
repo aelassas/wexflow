@@ -275,7 +275,6 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 1. [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
 
-1. 
 ## Sponsors
 
 <img alt="JetBrains" src="https://wexflow.github.io/content/jetbrains.png" width="120" />
