@@ -122,9 +122,9 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 
 If this project helped you, saved you time, or inspired you in any way, please consider supporting its future growth and maintenance. You can show your support by starring the repository (it helps increase visibility and shows your appreciation), sharing the project (recommend it to colleagues, communities, or on social media), or making a donation (if you'd like to financially support the development) via [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas). Open-source software requires time, effort, and resources to maintain—your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
 
-<!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>-->
+<!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
-<a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" width="160"></a>
+<a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" width="160"></a>-->
 
 <!--
 ## Website Source Code (wexflow.github.io)
@@ -143,6 +143,12 @@ The website loads in under 1.5 seconds on slow 4G with **0ms blocking**, **0 lay
 
 Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
 -->
+
+## Sponsors
+
+This project is supported by:
+
+<img alt="JetBrains" src="https://aelassas.github.io/content/jetbrains.png" />
 
 ## Documentation
 
@@ -276,10 +282,6 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [SMS tasks](https://github.com/aelassas/wexflow/wiki/Tasks#sms-tasks)  
 1. [Run from Source](https://github.com/aelassas/wexflow/wiki/Run-From-Source)
 1. [Fork, Customize, and Sync](https://github.com/aelassas/wexflow/wiki/Fork,-Customize,-and-Sync)
-
-## Sponsors
-
-<img alt="JetBrains" src="https://wexflow.github.io/content/jetbrains.png" width="120" />
 
 ## License
 
