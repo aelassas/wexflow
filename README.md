@@ -148,7 +148,9 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 
 This project is supported by:
 
-<img alt="JetBrains" src="https://aelassas.github.io/content/jetbrains.png" />
+<a href="https://www.jetbrains.com/community/opensource/">
+  <img alt="JetBrains" src="https://aelassas.github.io/content/jetbrains.png"/>
+</a>
 
 ## Documentation
 
