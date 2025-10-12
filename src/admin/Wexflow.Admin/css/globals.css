@@ -42,6 +42,11 @@
         margin-right: 20px;
     }
 
+.github-button {
+    position: absolute;
+    opacity: 0;
+}
+
 #lang {
     margin-top: 10px;
     margin-right: 20px;

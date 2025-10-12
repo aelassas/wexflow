@@ -119,6 +119,7 @@
     <Content Include="images\en.png" />
     <Content Include="images\fr.png" />
     <Content Include="images\logo.png" />
+    <Content Include="js\github-button.js" />
     <Content Include="js\libs\ace\ace.js" />
     <Content Include="js\approval.js" />
     <Content Include="js\libs\blockly\blockly_compressed.js" />
