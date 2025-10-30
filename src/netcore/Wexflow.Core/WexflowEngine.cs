@@ -129,10 +129,6 @@ namespace Wexflow.Core
         /// Global variables file.
         /// </summary>
         public string GlobalVariablesFile { get; private set; }
-        /// <summary>
-        /// Global variables.
-        /// </summary>
-        public Variable[] GlobalVariables { get; private set; }
         #endregion
 
         //
@@ -239,8 +235,6 @@ namespace Wexflow.Core
 
             Database?.Init();
 
-            LoadGlobalVariables();
-
             LoadWorkflows();
         }
 
@@ -304,24 +298,6 @@ namespace Wexflow.Core
             GlobalVariablesFile = GetWexflowSetting(xdoc, "globalVariablesFile");
         }
 
-        private void LoadGlobalVariables()
-        {
-            var variables = new List<Variable>();
-            var xdoc = XDocument.Load(GlobalVariablesFile);
-
-            foreach (var xvariable in xdoc.Descendants("Variable"))
-            {
-                var variable = new Variable
-                {
-                    Key = (xvariable.Attribute("name") ?? throw new InvalidOperationException("name attribute of global variable not found")).Value,
-                    Value = (xvariable.Attribute("value") ?? throw new InvalidOperationException("value attribute of global variable not found")).Value
-                };
-                variables.Add(variable);
-            }
-
-            GlobalVariables = variables.ToArray();
-        }
-
         private static string GetWexflowSetting(XDocument xdoc, string name)
         {
             try
@@ -375,7 +351,7 @@ namespace Wexflow.Core
                     , ApprovalFolder
                     , XsdPath
                     , Database
-                    , GlobalVariables);
+                    , GlobalVariablesFile);
                 Logger.InfoFormat("Workflow loaded: {0}", wf);
                 return wf;
             }
@@ -428,7 +404,7 @@ namespace Wexflow.Core
                             , ApprovalFolder
                             , XsdPath
                             , Database
-                            , GlobalVariables
+                            , GlobalVariablesFile
                             );
                         }
                         catch (Exception e)
@@ -470,7 +446,7 @@ namespace Wexflow.Core
                             , ApprovalFolder
                             , XsdPath
                             , Database
-                            , GlobalVariables
+                            , GlobalVariablesFile
                         );
                     }
                     catch (Exception e)

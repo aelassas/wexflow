@@ -1581,7 +1581,7 @@ namespace Wexflow.Server
                           , WexflowServer.WexflowEngine.ApprovalFolder
                           , WexflowServer.WexflowEngine.XsdPath
                           , WexflowServer.WexflowEngine.Database
-                          , WexflowServer.WexflowEngine.GlobalVariables
+                          , WexflowServer.WexflowEngine.GlobalVariablesFile
                         );
 
                     await WriteTrue(context);

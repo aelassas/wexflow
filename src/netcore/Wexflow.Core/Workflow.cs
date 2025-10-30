@@ -201,9 +201,9 @@ namespace Wexflow.Core
         /// </summary>
         public Db.Db Database { get; }
         /// <summary>
-        /// Global variables.
+        /// Global variables file path.
         /// </summary>
-        public Variable[] GlobalVariables { get; }
+        public string GlobalVariablesFile { get; }
         /// <summary>
         /// Local variables.
         /// </summary>
@@ -274,7 +274,7 @@ namespace Wexflow.Core
         /// <param name="approvalFolder">Approval folder.</param>
         /// <param name="xsdPath">XSD path.</param>
         /// <param name="database">Database.</param>
-        /// <param name="globalVariables">Global variables.</param>
+        /// <param name="globalVariablesFile">Global variables file path.</param>
         public Workflow(
               WexflowEngine wexflowEngine
             , int jobId
@@ -286,7 +286,7 @@ namespace Wexflow.Core
             , string approvalFolder
             , string xsdPath
             , Db.Db database
-            , Variable[] globalVariables)
+            , string globalVariablesFile)
         {
             WexflowEngine = wexflowEngine;
             Logs = [];
@@ -304,7 +304,7 @@ namespace Wexflow.Core
             FilesPerTask = [];
             EntitiesPerTask = [];
             SharedMemory = [];
-            GlobalVariables = globalVariables;
+            GlobalVariablesFile = globalVariablesFile;
             RestVariables = [];
             StartedOn = DateTime.MinValue;
             Check();
@@ -342,6 +342,24 @@ namespace Wexflow.Core
             {
                 throw new Exception($"The workflow XML document is not valid. Error: {msg}");
             }
+        }
+
+        private List<Variable> LoadGlobalVariables()
+        {
+            var variables = new List<Variable>();
+            var xdoc = XDocument.Load(GlobalVariablesFile);
+
+            foreach (var xvariable in xdoc.Descendants("Variable"))
+            {
+                var variable = new Variable
+                {
+                    Key = (xvariable.Attribute("name") ?? throw new InvalidOperationException("name attribute of global variable not found")).Value,
+                    Value = (xvariable.Attribute("value") ?? throw new InvalidOperationException("value attribute of global variable not found")).Value
+                };
+                variables.Add(variable);
+            }
+
+            return variables;
         }
 
         private void LoadLocalVariables()
@@ -408,15 +426,20 @@ namespace Wexflow.Core
             }
 
             //
+            // Load global variables.
+            //
+            var globalVariables = LoadGlobalVariables();
+
+            //
             // Parse global variables.
             //
-            using (StringReader sr = new(dest))
-            using (StringWriter sw = new())
+            using (var sr = new StringReader(dest))
+            using (var sw = new StringWriter())
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    foreach (var variable in GlobalVariables)
+                    foreach (var variable in globalVariables)
                     {
                         line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
                     }
@@ -1087,7 +1110,7 @@ namespace Wexflow.Core
                     ApprovalFolder,
                     XsdPath,
                     Database,
-                    GlobalVariables)
+                    GlobalVariablesFile)
                 {
                     RestVariables = CloneVariables(RestVariables),
                     StartedBy = startedBy
@@ -1152,7 +1175,7 @@ namespace Wexflow.Core
                         ApprovalFolder,
                         XsdPath,
                         Database,
-                        GlobalVariables)
+                        GlobalVariablesFile)
                     {
                         RestVariables = CloneVariables(RestVariables),
                         StartedBy = startedBy
