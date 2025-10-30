@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -378,6 +379,11 @@ namespace Wexflow.Core
             LocalVariables = [.. localVariables];
         }
 
+        private string EncodeXml(string val)
+        {
+            return SecurityElement.Escape(val);
+        }
+
         private string Parse(string src)
         {
             string dest;
@@ -412,7 +418,7 @@ namespace Wexflow.Core
                 {
                     foreach (var variable in GlobalVariables)
                     {
-                        line = line.Replace($"${variable.Key}", variable.Value);
+                        line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
                     }
                     sw.WriteLine(line);
                 }
@@ -476,7 +482,7 @@ namespace Wexflow.Core
                     }
                     foreach (var variable in localVariablesParsed)
                     {
-                        line = line.Replace($"${variable.Key}", variable.Value);
+                        line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
                     }
                     sw.WriteLine(line);
                 }
@@ -497,7 +503,7 @@ namespace Wexflow.Core
                     {
                         if (variable != null)
                         {
-                            line = line.Replace($"${variable.Key}", variable.Value);
+                            line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
                         }
                     }
                     sw.WriteLine(line);
