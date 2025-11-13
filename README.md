@@ -18,13 +18,7 @@
 
 ## Wexflow
 
-Wexflow is a cross-platform workflow automation engine designed to streamline and automate recurring tasks. It comes with a powerful workflow server, a modern admin panel for managing workflows, and supports both sequential and flowchart-based workflows.
-
-With over 100 built-in activities, Wexflow supports a wide range of tasks out of the box—from file operations and system processes to scripting, networking, and more. You can also extend its capabilities by creating custom activities or integrating with external systems via the Wexflow API.
-
-Wexflow targets both developers and technical users who need automation (file ops, tasks, scheduling, alerts, etc.). Wexflow is more like a task automation and scheduling platform. It focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. It's great when you want to automate system tasks easily without writing much code. For more complex scenarios, you can create your own custom activities, install them, and use them within Wexflow to extend its capabilities.
-
-Whether you're automating simple scheduled jobs or orchestrating complex business processes, Wexflow offers a flexible, extensible, and developer-friendly solution.
+Wexflow is a workflow automation engine that supports a wide range of tasks out of the box—from file operations and system processes to scripting, networking, and more. It comes with a workflow server, an admin panel for managing workflows, and supports both sequential and flowchart-based workflows. Wexflow targets both developers and technical users who need automation (file ops, tasks, scheduling, alerts, etc.). Wexflow is more like a task automation and scheduling platform. It focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. It's great when you want to automate system tasks easily without writing much code. For more complex scenarios, you can create your own custom activities, install them, and use them within Wexflow to extend its capabilities.
 
 ## Quick Links
 
@@ -45,7 +39,7 @@ You can run Wexflow using Docker from the official image on Docker Hub:
 docker run -d -p 8000:8000 --name wexflow aelassas/wexflow:latest
 ```
 
-Then access the Wexflow Admin Panel at: http://localhost:8000
+Then access the admin panel at: http://localhost:8000
 - **Username:** `admin`  
 - **Password:** `wexflow2018`
 
@@ -63,6 +57,7 @@ Once Wexflow is installed, you can access the admin panel at:
 **Important:** For your security, change the default password after your first login.
 -->
 
+<!--
 ## Is Wexflow a Business Process Management Solution?
 
 Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow does not natively support BPMN, human workflows, or built-in user forms. So if your business processes require a lot of human interaction, approvals, or business rule evaluation, Wexflow would be limited.
@@ -70,6 +65,7 @@ Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow
 Wexflow excels at automating technical tasks, such as moving or transforming files, uploading to FTP/SFTP, running scripts (PowerShell, Bash, Python, etc.), scheduling and chaining tasks, triggering workflows by events, manual input, cron or watchfolders, designing flows visually (Designer UI), integrating with APIs and databases, supporting conditional logic (if/else, switch, while).
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
+-->
 
 <!--
 ## How Does Wexflow Compare?
