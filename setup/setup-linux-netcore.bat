@@ -45,55 +45,55 @@ del "%dstDir%\%admin%\js\settings.net.js"
 del "%dstDir%\%admin%\js\settings.netcore.js"
 
 :: Wexflow server
-dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Server
+dotnet publish ..\src\netcore\Wexflow.Server\Wexflow.Server.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Server
 copy netcore\linux\appsettings.json %dstDir%\Wexflow.Server
 
 :: MongoDB script
-dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
+dotnet publish ..\src\netcore\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
 copy netcore\linux\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
 xcopy "..\samples\netcore\linux\Wexflow\Workflows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows\ /s /e
 
 :: RavenDB script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RavenDB
+::dotnet publish ..\src\netcore\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RavenDB
 ::copy netcore\linux\RavenDB\appsettings.json %dstDir%\Wexflow.Scripts.RavenDB
 
 :: PostgreSQL script
-dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
+dotnet publish ..\src\netcore\Wexflow.Scripts.PostgreSQL\Wexflow.Scripts.PostgreSQL.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.PostgreSQL
 copy netcore\linux\PostgreSQL\appsettings.json %dstDir%\Wexflow.Scripts.PostgreSQL
 
 :: SQLServer script
-dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLServer\Wexflow.Scripts.SQLServer.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLServer
 copy netcore\linux\SQLServer\appsettings.json %dstDir%\Wexflow.Scripts.SQLServer
 
 :: MySQL script
-dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
+dotnet publish ..\src\netcore\Wexflow.Scripts.MySQL\Wexflow.Scripts.MySQL.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MySQL
 copy netcore\linux\MySQL\appsettings.json %dstDir%\Wexflow.Scripts.MySQL
 
 :: SQLite script
-dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
+dotnet publish ..\src\netcore\Wexflow.Scripts.SQLite\Wexflow.Scripts.SQLite.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.SQLite
 copy netcore\linux\SQLite\appsettings.json %dstDir%\Wexflow.Scripts.SQLite
 
 :: LiteDB script
-dotnet publish ..\src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.LiteDB
+dotnet publish ..\src\netcore\Wexflow.Scripts.LiteDB\Wexflow.Scripts.LiteDB.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.LiteDB
 copy netcore\linux\LiteDB\appsettings.json %dstDir%\Wexflow.Scripts.LiteDB
 
 :: Firebird script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird
+::dotnet publish ..\src\netcore\Wexflow.Scripts.Firebird\Wexflow.Scripts.Firebird.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Firebird
 :::copy netcore\linux\Firebird\appsettings.json %dstDir%\Wexflow.Scripts.Firebird
 
 :: Oracle script
-@REM dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
+@REM dotnet publish ..\src\netcore\Wexflow.Scripts.Oracle\Wexflow.Scripts.Oracle.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.Oracle
 @REM copy netcore\linux\Oracle\appsettings.json %dstDir%\Wexflow.Scripts.Oracle
 
 :: MariaDB script
-::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB
+::dotnet publish ..\src\netcore\Wexflow.Scripts.MariaDB\Wexflow.Scripts.MariaDB.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.MariaDB
 ::copy netcore\linux\MariaDB\appsettings.json %dstDir%\Wexflow.Scripts.MariaDB
 
 :: Wexflow.Clients.CommandLine
-dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.CommandLine.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Clients.CommandLine
+dotnet publish ..\src\netcore\Wexflow.Clients.CommandLine\Wexflow.Clients.CommandLine.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Clients.CommandLine
 
 :: Wexflow.Scripts.RunAllWorkflows
-dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj --framework net9.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
+dotnet publish ..\src\netcore\Wexflow.Scripts.RunAllWorkflows\Wexflow.Scripts.RunAllWorkflows.csproj --framework net10.0 --runtime linux-x64 --configuration Release --force --output %~dp0\%dstDir%\Wexflow.Scripts.RunAllWorkflows
 
 :: wexflow.service
 copy netcore\linux\wexflow.service %dstDir%

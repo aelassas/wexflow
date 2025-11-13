@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Twilio">
-      <Version>7.13.0</Version>
+      <Version>7.13.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

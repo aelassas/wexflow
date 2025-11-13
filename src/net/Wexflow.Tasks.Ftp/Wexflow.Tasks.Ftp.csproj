@@ -116,10 +116,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentFTP">
-      <Version>53.0.1</Version>
+      <Version>53.0.2</Version>
     </PackageReference>
     <PackageReference Include="SSH.NET">
-      <Version>2025.0.0</Version>
+      <Version>2025.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

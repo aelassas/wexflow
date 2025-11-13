@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>10.0.0</Version>

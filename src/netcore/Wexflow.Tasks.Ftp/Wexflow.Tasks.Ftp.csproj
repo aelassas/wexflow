@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 	<DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms> 
     <Version>10.0.0</Version>
@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentFTP" Version="53.0.1" />
-    <PackageReference Include="SSH.NET" Version="2025.0.0" />
+    <PackageReference Include="FluentFTP" Version="53.0.2" />
+    <PackageReference Include="SSH.NET" Version="2025.1.0" />
   </ItemGroup>
 
   <ItemGroup>

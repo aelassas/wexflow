@@ -650,10 +650,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.10.4</Version>
+      <Version>4.0.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>3.10.4</Version>
+      <Version>4.0.2</Version>
     </PackageReference>
     <PackageReference Include="SevenZipSharp.Interop">
       <Version>19.1.0</Version>

@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
+      <Version>13.0.4</Version>
     </PackageReference>
     <PackageReference Include="YamlDotNet">
       <Version>16.3.0</Version>
