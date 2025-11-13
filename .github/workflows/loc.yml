@@ -18,7 +18,7 @@ jobs:
           badge_label: lines of code
           badge_color: green
           badge: ./output/badge.svg
-          ignore: '.github|setup|*.md|__tests__|*.md|*.txt|samples|*.svg|*.png|*.jpg|*.jpeg|*.gif'
+          ignore: '.github|samples|setup|tests|.gitignore|*.txt|*.md|*.svg|*.png|*.jpg|*.jpeg|*.gif'
 
       - name: Print the output
         run: |
