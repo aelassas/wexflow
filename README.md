@@ -14,6 +14,8 @@
 
 [![](https://wexflow.github.io/content/cover-small.png)](https://wexflow.github.io/)
 
+* [Migration Guide to v10.0](https://github.com/aelassas/wexflow/wiki/Migration-Guide-to-v10.0)
+
 ## Wexflow
 
 Wexflow is a cross-platform workflow automation engine designed to streamline and automate recurring tasks. It comes with a powerful workflow server, a modern admin panel for managing workflows, and supports both sequential and flowchart-based workflows.
