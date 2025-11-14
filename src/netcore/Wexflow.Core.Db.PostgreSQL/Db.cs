@@ -112,7 +112,7 @@ namespace Wexflow.Core.Db.PostgreSQL
             ClearEntries();
 
             // Insert admin user if it does not exist
-            // Backward compatibility: update admin password from MD5 hash to SHA256 hash of "wexflow2018"
+            // Backward compatibility: update admin password from MD5/SHA256 hash to PBKDF2 of "wexflow2018"
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
