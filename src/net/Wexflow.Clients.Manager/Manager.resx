@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -165,7 +165,7 @@
   </data>
   <data name="Form1_toolStripMenuItem1_Click_About" xml:space="preserve">
     <value>Wexflow Manager
-Version 10.0
+Version 10.1
 © 2017-2025 Akram El Assas.
 
 Check if a new version is available?</value>
