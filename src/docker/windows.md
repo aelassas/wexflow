@@ -3,7 +3,7 @@ SQLite won't work on nanoserver-ltsc2025 because it is too minimal and does not 
 1. Open `wexflow\Wexflow\Wexflow.xml` config file
 1. Set `dbType` to `LiteDB`
 1. Comment `SQLite` connection string
-1. Uncomment `LiteDB` connection string located at the end of the file
+1. Uncomment `LiteDB` connection string located at the end of the config file
 
 `wexflow` folder must be next to `Dockerfile`.
 
@@ -24,6 +24,7 @@ COPY wexflow "C:\Apps\Wexflow"
 # Copy wexflow config folder
 RUN mkdir "C:\Apps\Wexflow-netcore"
 COPY wexflow/Wexflow-netcore "C:\Wexflow-netcore"
+COPY wexflow/WexflowTesting "C:\WexflowTesting"
 
 # Set working directory to Wexflow.Server
 WORKDIR "C:\Apps\Wexflow\Wexflow.Server"
@@ -33,4 +34,14 @@ EXPOSE 8000
 
 # Start Wexflow
 ENTRYPOINT ["dotnet", "Wexflow.Server.dll"]
+```
+
+Commands to build and run the container:
+```bash
+docker build -t wexflow-windows:latest .
+docker rm wexflow-windows
+docker run --name wexflow-windows -p 8000:8000 wexflow-windows:latest
+
+# to open command prompt
+docker exec -it wexflow-windows cmd       
 ```
