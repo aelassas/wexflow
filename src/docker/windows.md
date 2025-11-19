@@ -1,6 +1,6 @@
 SQLite won't work on nanoserver-ltsc2025 because it is too minimal and does not support the APIs required by SQLite and Visual C++. You need to switch to another DB, for example LiteDB:
 1. Download [wexflow-10.0-windows-netcore.zip](https://github.com/aelassas/wexflow/releases/download/v10.0/wexflow-10.0-windows-netcore.zip) and extract it to `wexflow` folder
-1. Open `wexflow\Wexflow\Wexflow.xml` file
+1. Open `wexflow\Wexflow\Wexflow.xml` config file
 1. Set `dbType` to `LiteDB`
 1. Comment `SQLite` connection string
 1. Uncomment `LiteDB` connection string located at the end of the file
