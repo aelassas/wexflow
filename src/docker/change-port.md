@@ -32,3 +32,8 @@ window.Settings = (function () {
     };
 })();
 ```
+
+Run the compose:
+```bash
+docker compose up
+```
