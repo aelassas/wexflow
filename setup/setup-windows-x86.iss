@@ -429,30 +429,21 @@ begin
   Result := sVersionString;
 end;
 
-function NumericVersion(sVersion: String): Integer;
+function NumericVersion(const Version: string): Integer;
 var
-  s1, s2, i: Integer;
-  sv : String;
+  Parts: TStringList;
 begin
-  s1 := 0;
-  for i := 1 to Length(sVersion) do
-  begin
-    sv := sVersion[i];
+  Parts := TStringList.Create;
+  try
+    Parts.Delimiter := '.';
+    Parts.DelimitedText := Version;
 
-    if (sv >= '0') and (sv <= '9') then
-      begin
-        s2 := StrToInt(sv);
-
-        if i = 1 then
-        begin
-          s2 := s2  * 10;
-        end;
-        
-        s1 := s1 + s2;
-      end;
+    Result :=
+      StrToIntDef(Parts[0], 0) * 1000 +
+      StrToIntDef(Parts[1], 0);
+  finally
+    Parts.Free;
   end;
-  
-  Result := s1;
 end;
 
 function InitializeSetup(): Boolean;
@@ -460,6 +451,10 @@ var
   sInstalledVersion, message: String;
   installedVersion, myAppVersion: Integer;
   v: Integer;
+  UninstKey: String;
+  Hives: array[0..1] of Integer;
+  Values: array[0..4] of String;
+  i, j: Integer;  
 begin
   Result := True;
   sInstalledVersion := GetInstalledVersion();
@@ -473,15 +468,15 @@ begin
 
     if installedVersion < myAppVersion  then 
     begin 
-      message := 'An older version of Wexflow is already installed. Would you like to replace it with this newer version?';
+      message := 'An older version of Wexflow is already installed. Would you like to upgrade to this newer version?';
     end 
     else if installedVersion > myAppVersion then
     begin
-      message := 'A newer version of Wexflow is already installed. Would you like to replace it with this older version?';
+      message := 'A newer version of Wexflow is already installed. Are you sure you want to downgrade to this older version?';
     end
-    else if installedVersion = myAppVersion then
+    else
     begin
-      message := 'The same version of Wexflow is already installed. Would you like to repair it?';
+      message := 'The same version of Wexflow is already installed. Would you like to reinstall it?';
     end;
 
     v := MsgBox(message, mbInformation, MB_YESNO);
@@ -490,6 +485,25 @@ begin
       Result := False;
     end;
   end;
+  
+  // Uninstall key path
+  UninstKey := ExpandConstant('SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{#SetupSetting("AppId")}_is1');
+
+  // Define the hives and value names to delete
+  Hives[0] := HKLM64;
+  Hives[1] := HKCU;
+  Values[0] := 'Inno Setup: Selected Tasks';
+  Values[1] := 'Inno Setup: Deselected Tasks';
+  Values[2] := 'Inno Setup: Selected Components';
+  Values[3] := 'Inno Setup: Deselected Components';
+  Values[4] := 'Inno Setup: Setup Type';
+
+  // Loop over hives and values to delete
+  for i := 0 to High(Hives) do
+    for j := 0 to High(Values) do
+      if RegValueExists(Hives[i], UninstKey, Values[j]) then
+        RegDeleteValue(Hives[i], UninstKey, Values[j]);  
+  
 end;
 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
