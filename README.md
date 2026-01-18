@@ -23,7 +23,7 @@
 Wexflow is a workflow automation engine that supports a wide range of tasks, from file operations and system processes to scripting, networking, and more. Wexflow targets both developers and technical users who need automation (file ops, tasks, scheduling, alerts, etc.). Wexflow focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. For more complex scenarios, you can create your own custom activities, install them, and use them to extend its capabilities.
 
 ## Quick Links
-
+<!--
 - [Download](https://github.com/aelassas/wexflow/releases/latest)
 - [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
 - [Official Docker Hub Image](https://hub.docker.com/r/aelassas/wexflow)
@@ -32,6 +32,12 @@ Wexflow is a workflow automation engine that supports a wide range of tasks, fro
 - [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API)
 - [Built-in Tasks](https://github.com/aelassas/wexflow/wiki/Tasks)
 - [Custom Tasks](https://github.com/aelassas/wexflow/wiki/Custom-Tasks)
+- [Full Documentation](https://github.com/aelassas/wexflow/wiki)
+-->
+
+- [Download](https://github.com/aelassas/wexflow/releases/latest)
+- [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
+- [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
 - [Full Documentation](https://github.com/aelassas/wexflow/wiki)
 
 ## Quick Start
