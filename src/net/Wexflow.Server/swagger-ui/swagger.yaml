@@ -2,8 +2,6 @@ openapi: 3.0.1
 info:
   title: Swagger Wexflow
   description: Wexflow API.
-  contact:
-    email: akram.elassas@gmail.com
   license:
     name: MIT
     url: https://github.com/aelassas/wexflow/wiki/License
