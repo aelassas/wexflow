@@ -1,3 +1,10 @@
+# ==========================================================================================
+# GitHub Actions Workflow - Lines of Code (LoC) Badges
+# ------------------------------------------------------------------------------------------
+# Calculates lines of executable code (excluding comments and blank lines) using `cloc`.
+# Generates SVG badges via Shields.io and deploys them to the `loc` branch.
+# ==========================================================================================
+
 name: loc
 
 on:
@@ -6,35 +13,138 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: loc-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+env:
+  LOC_BADGE_COLOR: green
+  # Path to production and test source directories
+  PROD_DIR: "./src"
+  TEST_DIR: "./tests"
+  # Directories and file extensions to exclude from cloc analysis
+  CLOC_EXCLUDE_DIRS: ".github,samples,setup,node_modules,coverage,dist,.vscode"
+  CLOC_EXCLUDE_EXTS: "txt,md,svg,png,jpg,jpeg,gif"
+
 jobs:
   loc_job:
     runs-on: ubuntu-latest
-    name: Run
+    timeout-minutes: 10
+    name: Generate LoC Badges
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create the badge
-        uses: shadowmoose/GHA-LoC-Badge@1.0.0
-        id: badge
-        with:
-          debug: true
-          directory: ./
-          badge_label: lines of code
-          badge_color: green
-          badge: ./output/badge.svg
-          ignore: '.github|samples|setup|tests|.gitignore|*.txt|*.md|*.svg|*.png|*.jpg|*.jpeg|*.gif'
+      - name: Install cloc
+        run: sudo apt-get update && sudo apt-get install -y cloc
 
-      - name: Print the output
+      # ------------------------------------------------------------------------------------
+      # Step 1: Calculate Production Lines of Code
+      # ------------------------------------------------------------------------------------
+      - name: Calculate Prod LoC & Generate Badge
+        id: loc_prod
+        shell: bash
         run: |
-          echo "Scanned: ${{ steps.badge.outputs.counted_files }}";
-          echo "Line Count: ${{ steps.badge.outputs.total_lines }}";
+          mkdir -p ./output
 
-      - name: Deploy to loc branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          publish_dir: ./output
-          publish_branch: loc
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+          # Execute cloc in CSV output mode and extract the 5th column (code lines)
+          PROD_LOC=$(cloc "${PROD_DIR}" \
+            --exclude-dir="${CLOC_EXCLUDE_DIRS}" \
+            --exclude-ext="${CLOC_EXCLUDE_EXTS}" \
+            --not-match-f='package-lock.json|LICENSE|CITATION.cff|\.env|tsconfig\.tsbuildinfo' \
+            --csv 2>/dev/null | awk -F',' 'END{print $5}')
+
+          # Default to 0 if directory is empty or command returns no code lines
+          PROD_LOC=${PROD_LOC:-0}
+          echo "prod_lines=${PROD_LOC}" >> $GITHUB_OUTPUT
+
+          # Format output with comma separators for readability
+          export LC_ALL=en_US.UTF-8
+          PROD_COMMA=$(printf "%'d" "${PROD_LOC}")
+          ENCODED_PROD=$(echo "${PROD_COMMA}" | sed 's/,/%2C/g')
+
+          # Fetch badge SVG from Shields.io
+          curl -fsS --retry 3 -o ./output/loc-prod.svg \
+            "https://img.shields.io/badge/LoC_prod-${ENCODED_PROD}-${LOC_BADGE_COLOR}"
+
+      # ------------------------------------------------------------------------------------
+      # Step 2: Calculate Test Lines of Code
+      # ------------------------------------------------------------------------------------
+      - name: Calculate Tests LoC & Generate Badge
+        id: loc_tests
+        shell: bash
+        run: |
+          TESTS_LOC=$(cloc "${TEST_DIR}" \
+            --exclude-dir="${CLOC_EXCLUDE_DIRS}" \
+            --exclude-ext="${CLOC_EXCLUDE_EXTS}" \
+            --not-match-f='package-lock.json|LICENSE|CITATION.cff|\.env|tsconfig\.tsbuildinfo' \
+            --csv 2>/dev/null | awk -F',' 'END{print $5}')
+
+          TESTS_LOC=${TESTS_LOC:-0}
+          echo "tests_lines=${TESTS_LOC}" >> $GITHUB_OUTPUT
+
+          export LC_ALL=en_US.UTF-8
+          TESTS_COMMA=$(printf "%'d" "${TESTS_LOC}")
+          ENCODED_TESTS=$(echo "${TESTS_COMMA}" | sed 's/,/%2C/g')
+
+          curl -fsS --retry 3 -o ./output/loc-tests.svg \
+            "https://img.shields.io/badge/LoC_tests-${ENCODED_TESTS}-${LOC_BADGE_COLOR}"
+
+      # ------------------------------------------------------------------------------------
+      # Step 3: Calculate Total Lines of Code
+      # ------------------------------------------------------------------------------------
+      - name: Calculate Total LoC & Generate Badge
+        id: loc_total
+        env:
+          PROD_LINES: ${{ steps.loc_prod.outputs.prod_lines }}
+          TESTS_LINES: ${{ steps.loc_tests.outputs.tests_lines }}
+        shell: bash
+        run: |
+          TOTAL=$(( PROD_LINES + TESTS_LINES ))
+          echo "total_lines=${TOTAL}" >> $GITHUB_OUTPUT
+
+          export LC_ALL=en_US.UTF-8
+          TOTAL_COMMA=$(printf "%'d" "${TOTAL}")
+          ENCODED_TOTAL=$(echo "${TOTAL_COMMA}" | sed 's/,/%2C/g')
+
+          curl -fsS --retry 3 -o ./output/loc-total.svg \
+            "https://img.shields.io/badge/LoC_total-${ENCODED_TOTAL}-${LOC_BADGE_COLOR}"
+
+      # ------------------------------------------------------------------------------------
+      # Step 4: Add Workflow Summary
+      # ------------------------------------------------------------------------------------
+      - name: Write Step Summary
+        env:
+          PROD_SUMMARY: ${{ steps.loc_prod.outputs.prod_lines }}
+          TESTS_SUMMARY: ${{ steps.loc_tests.outputs.tests_lines }}
+          TOTAL_SUMMARY: ${{ steps.loc_total.outputs.total_lines }}
+        shell: bash
+        run: |
+          echo "### Lines of Code Summary (Excludes Comments & Blank Lines)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Production:** ${PROD_SUMMARY} lines" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tests:** ${TESTS_SUMMARY} lines" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total:** ${TOTAL_SUMMARY} lines" >> $GITHUB_STEP_SUMMARY
+
+      # ------------------------------------------------------------------------------------
+      # Step 5: Publish Badges to the `loc` Branch
+      # ------------------------------------------------------------------------------------
+      - name: Deploy Badges to Orphan Branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          GIT_USER_NAME: "github-actions[bot]"
+          GIT_USER_EMAIL: "github-actions[bot]@users.noreply.github.com"
+        shell: bash
+        run: |
+          cd ./output
+          git init
+          git config user.name "${GIT_USER_NAME}"
+          git config user.email "${GIT_USER_EMAIL}"
+          git checkout -b loc
+          git add -A
+          git commit -m "chore: update LoC badges"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" loc --force

@@ -135,7 +135,10 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 ## Stats for Nerds
 
 [![Nuget](https://img.shields.io/nuget/dt/Wexflow)](https://www.nuget.org/packages/Wexflow/) 
-[![](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
+[![LoC Prod](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/loc-prod.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
+[![LoC Tests](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/loc-tests.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
+[![LoC Total](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/loc-total.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
+
 
 ## Support
 
@@ -176,4 +179,3 @@ This project is supported by:
 ## License
 
 Wexflow is [MIT licensed](https://github.com/aelassas/wexflow/blob/main/LICENSE.txt).
-
