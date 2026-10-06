@@ -1,8 +1,5 @@
 [![build](https://github.com/aelassas/wexflow/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/build.yml)
-[![release](https://github.com/aelassas/wexflow/actions/workflows/release.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/release.yml)
 [![Docker Image](https://img.shields.io/badge/docker-image-brightgreen?style=flat&logo=docker)](https://hub.docker.com/r/aelassas/wexflow)
-[![Nuget](https://img.shields.io/nuget/dt/Wexflow)](https://www.nuget.org/packages/Wexflow/) 
-[![](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
 [![NuGet](https://img.shields.io/nuget/v/Wexflow.svg)](https://www.nuget.org/packages/Wexflow/)
 [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexflow/wiki)
 
@@ -20,13 +17,15 @@
 [![docker-hub](https://github.com/aelassas/wexflow/actions/workflows/docker-hub.yml/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/docker-hub.yml)
 -->
 
+<!--
 [![](https://wexflow.github.io/content/cover-small.png)](https://wexflow.github.io/)
 
 * [Migration Guide to v10.0](https://github.com/aelassas/wexflow/wiki/Migration-Guide-to-v10.0)
+-->
 
 ## Wexflow
 
-Wexflow is a workflow automation engine that supports a wide range of tasks, from file operations and system processes to scripting, networking, and more. Wexflow targets both developers and technical users who need automation (file ops, tasks, scheduling, alerts, etc.). Wexflow focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. For more complex scenarios, you can create your own custom activities, install them, and use them to extend its capabilities.
+Wexflow is an open-source and cross-platform workflow automation engine that supports a wide range of tasks, from file operations and system processes to scripting, networking, and more. Wexflow targets both developers and technical users who need automation (file ops, tasks, scheduling, alerts, etc.). Wexflow focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. For more complex scenarios, you can create your own custom activities, install them, and use them to extend its capabilities.
 
 ## Quick Links
 <!--
@@ -99,9 +98,9 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 -->
 ## Features
 
-### Workflow Engine
+#### Workflow Engine
 * Cross-platform workflow server
-* Supports sequential, flowchart, and approval workflows
+* Supports sequential and flowchart workflows
 * Cron-based scheduling
 * 100+ built-in activities
 * 6+ database engines supported
@@ -109,33 +108,38 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 * Push Notifications via SSE: Get real-time workflow job updates without polling
 * Asynchronous workflow execution for improved concurrency and performance
 
-### UI & Visualization
+#### UI & Visualization
 * Powerful web dashboard
 * Visual workflow designer with drag & drop interface
 * Real-time workflow statistics and monitoring
 * Extensive logging for transparency and debugging
-
-### Multi-Platform Support
+<!--
+#### Multi-Platform Support
 * Native Android app
 * Responsive web interface
-
-### Internationalization & APIs
+-->
+#### Internationalization & APIs
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
 * REST API Clients: Official examples for popular languages (C#, PowerShell, JS, PHP, Python, Go, Rust, Ruby, Java, C++)
 * Extensible with Custom Activities via NuGet
 
-### Security & Performance
+#### Security & Performance
 * Secure against XSS, XST, CSRF, and MITM
 * Docker support for easy deployment
 * Error monitoring
 
-### Deployment & Compatibility
-* Runs on macOS, Linux, Windows, and Docker
+#### Deployment & Compatibility
+* Runs on Windows, Linux, macOS, and Docker
+
+## Stats for Nerds
+
+[![Nuget](https://img.shields.io/nuget/dt/Wexflow)](https://www.nuget.org/packages/Wexflow/) 
+[![](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
 
 ## Support
 
-If this project helped you, saved you time, or inspired you in any way, please consider supporting its future growth and maintenance. You can show your support by starring the repository (it helps increase visibility and shows your appreciation), sharing the project (recommend it to colleagues, communities, or on social media), or if you'd like to financially support the development via [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
+If this project helped you, saved you time, or inspired you, consider supporting its future growth and maintenance. You can show your support by starring the repository, sharing the project, or via [GitHub Sponsors](https://github.com/sponsors/aelassas), [PayPal](https://www.paypal.me/aelassaspp), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
 
 Open-source software requires time, effort, and resources to maintain. Your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
 
