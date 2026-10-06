@@ -137,7 +137,6 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 [![Nuget](https://img.shields.io/nuget/dt/Wexflow)](https://www.nuget.org/packages/Wexflow/)
 [![LoC Total](https://raw.githubusercontent.com/aelassas/wexflow/refs/heads/loc/loc-total.svg)](https://github.com/aelassas/wexflow/actions/workflows/loc.yml)
 
-
 ## Support
 
 If this project helped you, saved you time, or inspired you, consider supporting its future growth and maintenance. You can show your support by starring the repository, sharing the project, or via [GitHub Sponsors](https://github.com/sponsors/aelassas), [PayPal](https://www.paypal.me/aelassaspp), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
