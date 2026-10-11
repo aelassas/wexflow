@@ -10,6 +10,8 @@ Wexflow targets developers, system administrators, and technical users needing r
 - **License**: MIT License
 - **Tech Stack**: .NET 9.0, C#, React, HTML5, CSS3, Docker, NuGet
 
+> **Full Text Documentation:** For full-text concatenated markdown documentation, see [llms-full.txt](https://wexflow.github.io/llms-full.txt).
+
 ## Key Capabilities
 
 - **Workflow Engine**: Supports sequential and flowchart-style workflows, cron-based scheduling, event triggers, watchfolders, and asynchronous execution graphs.
