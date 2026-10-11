@@ -1,0 +1,39 @@
+# Wexflow
+
+> Wexflow is an open-source, cross-platform workflow automation engine designed to automate system tasks, file operations, process orchestration, and complex workflows.
+
+## Overview
+
+Wexflow targets developers, system administrators, and technical users needing robust back-office task automation, ETL pipelines, and workflow orchestration. It supports sequential and flowchart workflows (if/else, while, switch execution logic), asynchronous execution, multi-database persistence (SQLite, PostgreSQL, MySQL, MariaDB, SQL Server, MongoDB), real-time monitoring via Server-Sent Events (SSE), and custom task creation in C#.
+
+- **Repository**: https://github.com/aelassas/wexflow
+- **License**: MIT License
+- **Tech Stack**: .NET 9.0, C#, React, HTML5, CSS3, Docker, NuGet
+
+## Key Capabilities
+
+- **Workflow Engine**: Supports sequential and flowchart-style workflows, cron-based scheduling, event triggers, watchfolders, and asynchronous execution graphs.
+- **100+ Built-in Activities**: Broad built-in library covering file operations, FTP/SFTP transfer, archive compression/encryption, process execution, SQL querying, REST APIs, email notifications, SMS, and scripting (PowerShell, Bash, Python).
+- **Extensible Architecture**: Easy creation and deployment of custom C# tasks via NuGet or assembly reference.
+- **Web Dashboard & Visual Designer**: Modern web interface featuring drag-and-drop flowchart visual designer, real-time workflow stats, execution controls, and log viewing.
+- **RESTful API & SSE Notifications**: Full-featured API for remote engine control with official multi-language API/SSE clients (C#, PowerShell, JS, Python, Go, Rust, Ruby, PHP, Java, C++).
+- **Multi-Database Support**: Flexible persistence support for MongoDB, SQLite, PostgreSQL, MySQL, MariaDB, and SQL Server.
+
+## Core Documentation & Wiki
+
+- [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing): Step-by-step setup guides for Windows, Linux, macOS, NGINX, Apache, and IIS.
+- [Docker Deployment](https://github.com/aelassas/wexflow/wiki/Docker): Container configuration, image setup, and environment variables.
+- [Configuration Guide](https://github.com/aelassas/wexflow/wiki/Configuration): Detailed guide for `Wexflow.config`, `Wexflow.xml`, and web admin security settings.
+- [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started): Quick start instructions for designing and executing your first workflow.
+- [Persistence Providers](https://github.com/aelassas/wexflow/wiki/Persistence-Providers): Database connection configurations for supported database engines.
+- [REST API Reference](https://github.com/aelassas/wexflow/wiki/RESTful-API): Complete endpoint specification, authentication setup, and language client samples.
+- [Workflow Notifications via SSE](https://github.com/aelassas/wexflow/wiki/Workflow-Notifications-via-SSE): Real-time Server-Sent Events integration and client code examples.
+- [Built-in Tasks Reference](https://github.com/aelassas/wexflow/wiki/Tasks): Complete task catalog categorized by filesystem, network, SQL, processes, scripts, and notifications.
+- [Custom Tasks Development](https://github.com/aelassas/wexflow/wiki/Custom-Tasks): Creating, debugging, and registering custom C# task assemblies in Wexflow.
+
+## Repository Resources
+
+- [Releases & Downloads](https://github.com/aelassas/wexflow/releases/latest): Binaries, installers, and package downloads.
+- [Official Docker Image](https://hub.docker.com/r/aelassas/wexflow): Docker Hub registry image details.
+- [NuGet Package](https://www.nuget.org/packages/Wexflow/): Official NuGet package for C# extension development.
+- [Migration Guide to v10.0](https://github.com/aelassas/wexflow/wiki/Migration-Guide-to-v10.0): Version migration notes and breaking changes.
