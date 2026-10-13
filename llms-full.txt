@@ -1,7 +1,7 @@
 # Wexflow - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Wexflow Wiki.
-> Generated on: 2026-10-13T17:34:12Z
+> Generated on: 2026-10-13T17:34:33Z
 
 ---
 
@@ -4389,7 +4389,6 @@ go run sse.go
   <img src="https://wexflow.github.io/content/wexflow.drawio.png" alt="" />
 </p>
 -->
-
 <!--
 Wexflow is a cross-platform workflow automation engine designed to streamline and automate recurring tasks. It comes with a powerful workflow server, a modern admin panel for managing workflows, and supports both sequential and flowchart-based workflows.
 
