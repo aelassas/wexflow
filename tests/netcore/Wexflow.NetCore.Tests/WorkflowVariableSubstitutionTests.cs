@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +36,7 @@ namespace Wexflow.NetCore.Tests
             var workflow = new Workflow(
                 null!,
                 0,
-                new ConcurrentDictionary<Guid, Workflow>(),
+                new ConcurrentDictionary<System.Guid, Workflow>(),
                 "synthetic-empty-db",
                 constructorXml,
                 repoRoot,
