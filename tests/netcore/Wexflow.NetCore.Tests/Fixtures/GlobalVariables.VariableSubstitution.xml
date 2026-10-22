@@ -1,0 +1,5 @@
+<GlobalVariables>
+  <Variable name="name" value="shortGlobal" />
+  <Variable name="nameLong" value="longGlobal" />
+  <Variable name="cash" value="price=$1" />
+</GlobalVariables>
