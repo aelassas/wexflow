@@ -402,6 +402,12 @@ namespace Wexflow.Core
             return SecurityElement.Escape(val);
         }
 
+        private string ReplaceVariable(string line, Variable variable)
+        {
+            var pattern = "\\$" + Regex.Escape(variable.Key) + "(?!\\w)";
+            return Regex.Replace(line, pattern, _ => EncodeXml(variable.Value));
+        }
+
         private string Parse(string src)
         {
             string dest;
@@ -441,7 +447,7 @@ namespace Wexflow.Core
                 {
                     foreach (var variable in globalVariables)
                     {
-                        line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
+                        line = ReplaceVariable(line, variable);
                     }
                     sw.WriteLine(line);
                 }
@@ -505,7 +511,7 @@ namespace Wexflow.Core
                     }
                     foreach (var variable in localVariablesParsed)
                     {
-                        line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
+                        line = ReplaceVariable(line, variable);
                     }
                     sw.WriteLine(line);
                 }
@@ -526,7 +532,7 @@ namespace Wexflow.Core
                     {
                         if (variable != null)
                         {
-                            line = line.Replace($"${variable.Key}", EncodeXml(variable.Value));
+                            line = ReplaceVariable(line, variable);
                         }
                     }
                     sw.WriteLine(line);
