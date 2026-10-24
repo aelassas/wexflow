@@ -25,7 +25,7 @@
 
 ## Wexflow
 
-Wexflow is an open-source and cross-platform workflow automation engine that supports a wide range of tasks, from file operations and system processes to scripting, networking, and more. Wexflow targets both developers and technical users who need automation (file ops, tasks, scheduling, alerts, etc.). Wexflow focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. For more complex scenarios, you can create your own custom activities, install them, and use them to extend its capabilities.
+Wexflow is a cross-platform workflow automation engine that supports a wide range of tasks, from file operations and system processes to scripting, networking, and more. Wexflow targets both developers and technical users who need automation (file operations, tasks, scheduling, alerts, etc.). Wexflow focuses on automating technical jobs like moving or uploading files, sending emails, running scripts, or scheduling batch processes. For more complex scenarios, you can create your own custom activities, install them, and use them to extend its capabilities.
 
 ## Quick Links
 <!--
@@ -41,7 +41,7 @@ Wexflow is an open-source and cross-platform workflow automation engine that sup
 -->
 
 - [Download](https://github.com/aelassas/wexflow/releases/latest)
-- [Install Guide](https://github.com/aelassas/wexflow/wiki/Installing)
+- [Installation Guide](https://github.com/aelassas/wexflow/wiki/Installing)
 - [Getting Started](https://github.com/aelassas/wexflow/wiki/Getting-Started)
 - [Full Documentation](https://github.com/aelassas/wexflow/wiki)
 
@@ -96,41 +96,7 @@ You can use Wexflow if your processes are mostly system-based, such as back-offi
 
 Wexflow gives you full control, extensibility, and offline capability with no vendor lock-in.
 -->
-## Features
 
-#### Workflow Engine
-* Cross-platform workflow server
-* Supports sequential and flowchart workflows
-* Cron-based scheduling
-* 100+ built-in activities
-* 6+ database engines supported
-* Extensible architecture for custom activities
-* Push Notifications via SSE: Get real-time workflow job updates without polling
-* Asynchronous workflow execution for improved concurrency and performance
-
-#### UI & Visualization
-* Powerful web dashboard
-* Visual workflow designer with drag & drop interface
-* Real-time workflow statistics and monitoring
-* Extensive logging for transparency and debugging
-<!--
-#### Multi-Platform Support
-* Native Android app
-* Responsive web interface
--->
-#### Internationalization & APIs
-* Multiple language support (English, French, Danish)
-* RESTful API for integration with external systems
-* REST API Clients: Official examples for popular languages (C#, PowerShell, JS, PHP, Python, Go, Rust, Ruby, Java, C++)
-* Extensible with Custom Activities via NuGet
-
-#### Security & Performance
-* Secure against XSS, XST, CSRF, and MITM
-* Docker support for easy deployment
-* Error monitoring
-
-#### Deployment & Compatibility
-* Runs on Windows, Linux, macOS, and Docker
 
 ## Stats for Nerds
 
@@ -144,9 +110,13 @@ Wexflow gives you full control, extensibility, and offline capability with no ve
 
 ## Support
 
+Wexflow is free and open source. If it helped you, saved you time, or powered your production workflows, consider supporting the project via [GitHub Sponsors](https://github.com/sponsors/aelassas), [PayPal](https://www.paypal.me/aelassaspp), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas) to keep it active, independent, and free for everyone.
+
+<!--
 If this project helped you, saved you time, or inspired you, consider supporting its future growth and maintenance. You can show your support by starring the repository, sharing the project, or via [GitHub Sponsors](https://github.com/sponsors/aelassas), [PayPal](https://www.paypal.me/aelassaspp), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
 
 Open-source software requires time, effort, and resources to maintain. Your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
+-->
 
 <!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
@@ -170,7 +140,7 @@ The website loads in under 1.5 seconds on slow 4G with **0ms blocking**, **0 lay
 Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
 -->
 
-## Sponsors
+## Acknowledgments
 
 This project is supported by:
 
