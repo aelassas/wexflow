@@ -1,7 +1,7 @@
 # Wexflow - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Wexflow Wiki.
-> Generated on: 2026-10-13T17:37:54Z
+> Generated on: 2026-10-24T17:16:02Z
 
 ---
 
@@ -4409,12 +4409,12 @@ Wexflow is primarily a workflow automation engine, not a full BPM suite. Wexflow
 Wexflow excels at automating technical tasks, such as moving or transforming files, uploading to FTP/SFTP, running scripts (PowerShell, Bash, Python, etc.), scheduling and chaining tasks, triggering workflows by events, manual input, cron or watchfolders, designing flows visually (Designer UI), integrating with APIs and databases, supporting conditional logic (if/else, switch, while).
 
 You can use Wexflow if your processes are mostly system-based, such as back-office automation (file syncing, reporting, monitoring), ETL pipelines, DevOps or IT operations automation or API integrations between systems.
-<!--
+
 ## Features
 
-### Workflow Engine
+#### Workflow Engine
 * Cross-platform workflow server
-* Supports sequential, flowchart, and approval workflows
+* Supports sequential and flowchart workflows
 * Cron-based scheduling
 * 100+ built-in activities
 * 6+ database engines supported
@@ -4422,30 +4422,30 @@ You can use Wexflow if your processes are mostly system-based, such as back-offi
 * Push Notifications via SSE: Get real-time workflow job updates without polling
 * Asynchronous workflow execution for improved concurrency and performance
 
-### UI & Visualization
+#### UI & Visualization
 * Powerful web dashboard
 * Visual workflow designer with drag & drop interface
 * Real-time workflow statistics and monitoring
 * Extensive logging for transparency and debugging
-
-### Multi-Platform Support
+<!--
+#### Multi-Platform Support
 * Native Android app
 * Responsive web interface
-
-### Internationalization & APIs
+-->
+#### Internationalization & APIs
 * Multiple language support (English, French, Danish)
 * RESTful API for integration with external systems
 * REST API Clients: Official examples for popular languages (C#, PowerShell, JS, PHP, Python, Go, Rust, Ruby, Java, C++)
 * Extensible with Custom Activities via NuGet
 
-### Security & Performance
+#### Security & Performance
 * Secure against XSS, XST, CSRF, and MITM
 * Docker support for easy deployment
 * Error monitoring
 
-### Deployment & Compatibility
-* Runs on macOS, Linux, Windows, and Docker
--->
+#### Deployment & Compatibility
+* Runs on Windows, Linux, macOS, and Docker
+
 <!--
 Here are some real life use cases:
 
