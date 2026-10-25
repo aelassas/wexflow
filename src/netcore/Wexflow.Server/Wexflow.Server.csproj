@@ -5,7 +5,7 @@
     <TargetFrameworks>net10.0</TargetFrameworks>
     <DebugType>Full</DebugType>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>10.2.0</Version>
+    <Version>10.3.0</Version>
     <StartupObject>Wexflow.Server.WexflowServer</StartupObject>
   </PropertyGroup>
 
