@@ -47,9 +47,20 @@ Wexflow is a cross-platform workflow automation engine that supports a wide rang
 
 ## Quick Start
 
-You can run Wexflow using Docker from the official image on Docker Hub:
+Before starting Wexflow, set `JwtSecret` in `appsettings.json` or
+`Wexflow.Server.exe.config` to a unique random value of at least 32 bytes.
+For example, generate one with `openssl rand -hex 32`. Save it securely and
+reuse it across restarts and instances that share tokens. Missing, blank,
+short, or former public default keys prevent startup. Rotating the key
+invalidates existing tokens.
+
+Installers may start the service automatically; configure the installed file
+and restart the service if the initial start fails.
+
+For Docker, prepare a full `appsettings.json` from the matching Linux release, configure
+its `JwtSecret`, and mount it read-only:
 ```bash
-docker run -d -p 8000:8000 --name wexflow aelassas/wexflow:latest
+docker run -d -v "$(pwd)/appsettings.json:/opt/wexflow/Wexflow.Server/appsettings.json:ro" -p 8000:8000 --name wexflow aelassas/wexflow:latest
 ```
 
 Then access the admin panel at: http://localhost:8000

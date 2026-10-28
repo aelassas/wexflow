@@ -11335,12 +11335,12 @@ Add or update these entries under `<appSettings>`:
 ```xml
 <appSettings>
   <!-- Use a securely generated key (recommended 32+ bytes hex) -->
-  <add key="JwtSecret" value="b7a3c04f10e84c3f95a3f3497bda8e32" />
+  <add key="JwtSecret" value="" />
   <add key="JwtExpireAtMinutes" value="1440" />
 </appSettings>
 ```
 
-- `JwtSecret`: Symmetric secret key used to sign JWTs. Must be at least 128 bits (16 bytes); 256 bits (32 bytes) is safer.
+- `JwtSecret`: Set a unique random signing key of at least 32 bytes. Empty values and the former public default prevent startup.
 - `JwtExpireAtMinutes`: Token expiration duration in minutes (e.g., 1440 = 24 hours).
 
 
@@ -11357,13 +11357,14 @@ And set:
 
 ```json
 {
-  "JwtSecret": "b7a3c04f10e84c3f95a3f3497bda8e32",
+  "JwtSecret": "",
   "JwtExpireAtMinutes": 1440
 }
 ```
 
+- Replace the empty `JwtSecret` with a unique random key of at least 32 bytes before starting.
 - Keep this file out of source control if you're storing secrets directly.
-- Consider using environment variables or a secure secrets manager in production.
+- Keep the configured key stable across restarts; changing it invalidates existing tokens.
 
 
 
