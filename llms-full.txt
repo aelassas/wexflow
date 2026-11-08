@@ -1,7 +1,7 @@
 # Wexflow - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Wexflow Wiki.
-> Generated on: 2026-10-24T17:16:02Z
+> Generated on: 2026-11-08T09:51:10Z
 
 ---
 
@@ -4554,7 +4554,7 @@ Here are some real life use cases:
   -->
   <Task id="$int" name="Http" description="$string" enabled="true|false">
     <!-- 
-      The URL of the file to download. Example: https://aelassas.github.io/wf_logo.png
+      The URL of the file to download. Example: https://wexdev.com/wf_logo.png
     -->
     <Setting name="url" value="$string" />
     <Setting name="url" value="$string" />
