@@ -21,7 +21,14 @@ namespace Wexflow.Server
 
         public static void Initialize(IConfiguration config)
         {
-            SecretKey = config["JwtSecret"] ?? throw new InvalidOperationException("JwtSecret config is missing.");
+            var secret = config["JwtSecret"];
+            // The former public default must not remain active after an upgrade.
+            if (string.IsNullOrWhiteSpace(secret) || Encoding.UTF8.GetByteCount(secret) < 32 ||
+                secret == "b7a3c04f10e84c3f95a3f3497bda8e32")
+            {
+                throw new InvalidOperationException("Configure a unique random JwtSecret of at least 32 bytes in appsettings.json; the former public default is not allowed.");
+            }
+            SecretKey = secret;
             Key = Encoding.UTF8.GetBytes(SecretKey);
         }
 

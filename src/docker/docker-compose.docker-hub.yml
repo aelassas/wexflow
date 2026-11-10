@@ -1,9 +1,11 @@
+# Prepare appsettings.json from the matching Linux release and set a unique JwtSecret.
 services:
   wexflow:
     image: aelassas/wexflow:latest
     container_name: wexflow
     ports:
       - "8000:8000"
-    # volumes:
-    #   - ./wexflow/Wexflow/Wexflow.xml:/opt/wexflow/Wexflow/Wexflow.xml
+    volumes:
+      - ./appsettings.json:/opt/wexflow/Wexflow.Server/appsettings.json:ro
+      # - ./wexflow/Wexflow/Wexflow.xml:/opt/wexflow/Wexflow/Wexflow.xml
     restart: unless-stopped

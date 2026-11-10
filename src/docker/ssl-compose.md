@@ -18,7 +18,8 @@ project/
 
 ## Step 1: Update `appsettings.json`
 
-Here's the default `appsettings.json`:
+Here's the default `appsettings.json`. Replace the empty `JwtSecret` with a
+unique random value of at least 32 bytes before starting Wexflow:
 ```json
 {
   "WexflowSettingsFile": "/opt/wexflow/Wexflow/Wexflow.xml",
@@ -39,7 +40,7 @@ Here's the default `appsettings.json`:
   "HTTPS": false,
   "PfxFile": "/opt/wexflow/Wexflow/wexflow.pfx",
   "PfxPassword": "wexflow2018",
-  "JwtSecret": "b7a3c04f10e84c3f95a3f3497bda8e32",
+  "JwtSecret": "",
   "JwtExpireAtMinutes": 1440,
   "Logging": {
     "LogLevel": {

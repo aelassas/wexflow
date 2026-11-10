@@ -11,11 +11,27 @@ namespace Wexflow.Server
 {
     public static class JwtHelper
     {
-        private static readonly string SecretKey = ConfigurationManager.AppSettings["JwtSecret"]; // min 16 chars for HMAC
-        private static readonly byte[] Key = Encoding.UTF8.GetBytes(SecretKey);
+        private static readonly byte[] Key = LoadKey();
         private const string Issuer = "wexflow";
         private const string Audience = "wexflow-users";
         public static string AuthCookieName = "wf-auth";
+
+        private static byte[] LoadKey()
+        {
+            var secret = ConfigurationManager.AppSettings["JwtSecret"];
+            // The former public default must not remain active after an upgrade.
+            if (string.IsNullOrWhiteSpace(secret) || Encoding.UTF8.GetByteCount(secret) < 32 ||
+                secret == "b7a3c04f10e84c3f95a3f3497bda8e32")
+            {
+                throw new InvalidOperationException("Configure a unique random JwtSecret of at least 32 bytes in Wexflow.Server.exe.config; the former public default is not allowed.");
+            }
+            return Encoding.UTF8.GetBytes(secret);
+        }
+
+        public static void Initialize()
+        {
+            _ = Key;
+        }
 
         public static string GenerateToken(string username, int expireMinutes = 60, bool stayConnected = false)
         {

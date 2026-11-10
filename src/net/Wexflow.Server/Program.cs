@@ -8,6 +8,8 @@ namespace Wexflow.Server
     {
         public static void Main()
         {
+            JwtHelper.Initialize();
+
             // Initialize the service to start
             var servicesToRun = new ServiceBase[]
             {
