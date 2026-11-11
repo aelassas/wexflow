@@ -40,7 +40,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install cloc
-        run: sudo apt-get update && sudo apt-get install -y cloc
+        shell: bash
+        run: sudo npm install -g cloc
 
       # ------------------------------------------------------------------------------------
       # Step 1: Calculate Production Lines of Code
