@@ -1,7 +1,7 @@
 # Wexflow - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Wexflow Wiki.
-> Generated on: 2026-11-08T09:51:10Z
+> Generated on: 2026-11-15T14:06:36Z
 
 ---
 
@@ -11334,8 +11334,8 @@ Add or update these entries under `<appSettings>`:
 
 ```xml
 <appSettings>
-  <!-- Use a securely generated key (recommended 32+ bytes hex) -->
-  <add key="JwtSecret" value="b7a3c04f10e84c3f95a3f3497bda8e32" />
+  <!-- Use a securely generated key (32+ bytes hex) -->
+  <add key="JwtSecret" value="" />
   <add key="JwtExpireAtMinutes" value="1440" />
 </appSettings>
 ```
@@ -11357,7 +11357,7 @@ And set:
 
 ```json
 {
-  "JwtSecret": "b7a3c04f10e84c3f95a3f3497bda8e32",
+  "JwtSecret": "",
   "JwtExpireAtMinutes": 1440
 }
 ```
