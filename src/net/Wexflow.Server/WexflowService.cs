@@ -4384,9 +4384,42 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    var path = (string)Request.Query["p"].ToString();
-                    var file = new FileStream(path, FileMode.Open);
-                    var fileName = Path.GetFileName(path);
+                    var username = Context.CurrentUser?.Identity?.Name;
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+
+                    if (user == null || (user.UserProfile != Core.Db.UserProfile.SuperAdministrator && user.UserProfile != Core.Db.UserProfile.Administrator))
+                    {
+                        return Nancy.HttpStatusCode.Unauthorized;
+                    }
+
+                    var requestedPath = (string)Request.Query["p"].ToString();
+                    if (string.IsNullOrWhiteSpace(requestedPath))
+                    {
+                        return Nancy.HttpStatusCode.BadRequest;
+                    }
+
+                    var fullPath = Path.GetFullPath(requestedPath);
+
+                    var allowedRoots = new[]
+                    {
+                        WexflowServer.WexflowEngine.RecordsFolder,
+                        WexflowServer.WexflowEngine.RecordsTempFolder
+                    }
+                    .Where(dir => !string.IsNullOrWhiteSpace(dir))
+                    .Select(dir => Path.GetFullPath(dir).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar);
+
+                    if (!allowedRoots.Any(root => fullPath.StartsWith(root, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return Nancy.HttpStatusCode.Unauthorized;
+                    }
+
+                    if (!File.Exists(fullPath))
+                    {
+                        return Nancy.HttpStatusCode.NotFound;
+                    }
+
+                    var file = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    var fileName = Path.GetFileName(fullPath).Replace("\"", string.Empty);
 
                     var response = new StreamResponse(() => file, MimeTypes.GetMimeType(fileName));
                     return response.AsAttachment(fileName);

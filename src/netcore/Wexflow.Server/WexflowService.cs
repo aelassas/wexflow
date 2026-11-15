@@ -3893,10 +3893,48 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    var path = context.Request.Query["p"].ToString();
-                    var fileName = Path.GetFileName(path);
+                    var username = context.User.Identity?.Name;
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+
+                    if (user == null || (user.UserProfile != Core.Db.UserProfile.SuperAdministrator && user.UserProfile != Core.Db.UserProfile.Administrator))
+                    {
+                        await Unauthorized(context);
+                        return;
+                    }
+
+                    var requestedPath = context.Request.Query["p"].ToString();
+                    if (string.IsNullOrWhiteSpace(requestedPath))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        return;
+                    }
+
+                    var fullPath = Path.GetFullPath(requestedPath);
+
+                    // Ensure the resolved path stays strictly within allowed record storage directories
+                    var allowedRoots = new[]
+                    {
+                        WexflowServer.WexflowEngine.RecordsFolder,
+                        WexflowServer.WexflowEngine.RecordsTempFolder
+                    }
+                    .Where(dir => !string.IsNullOrWhiteSpace(dir))
+                    .Select(dir => Path.GetFullPath(dir).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar);
+
+                    if (!allowedRoots.Any(root => fullPath.StartsWith(root, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        await Unauthorized(context);
+                        return;
+                    }
+
+                    if (!File.Exists(fullPath))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status404NotFound;
+                        return;
+                    }
+
+                    var fileName = Path.GetFileName(fullPath).Replace("\"", string.Empty);
                     context.Response.Headers.Append("Content-Disposition", $"attachment; filename=\"{fileName}\"");
-                    await context.Response.SendFileAsync(path);
+                    await context.Response.SendFileAsync(fullPath);
                 }
                 catch (Exception e)
                 {
